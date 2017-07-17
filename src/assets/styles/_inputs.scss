@@ -1,0 +1,66 @@
+@import "variables";
+
+input.mist-input {
+  background: transparent;
+  &.mist-input--text {
+    border: 1px solid;
+    border-color: #d4d7d9;
+    color: $main-color;
+  }
+}
+
+input.mist-input--text:focus {
+  border-color: #04143c;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 6px 12px;
+  font-size: $input-font-size;
+  line-height: 1.42857143;
+  color: $form-border-color-focus;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid $form-border-color;
+  border-radius: 0;
+  box-sizing: border-box;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.form-control:focus {
+  border-color: #04143c;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+}
+
+label {
+  color: $label-color;
+  font-size: $input-font-size;
+  margin-bottom: 1rem;
+}
+
+.mdl-button {
+  &.no-bg-on-hover:hover {
+    background: none;
+  }
+  &.icon {
+      height: auto;
+      white-space: nowrap;
+  }
+  &.blue {
+    &.border {
+      border: 2px solid $color--light-blue;
+    }
+    &:hover {
+      background: $color--light-blue;
+      color: #ffffff;
+    }
+  }
+}
+

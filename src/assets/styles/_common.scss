@@ -1,0 +1,77 @@
+@import "variables";
+
+/*common styles*/
+.cs {
+  &-align-center {
+    align-items: center;
+  }
+  &-pt-20 {
+    padding-top: 20px;
+  }
+  &-mt-20 {
+    margin-top: 20px;
+  }
+  &-mb-16 {
+    margin-bottom: 1rem;
+  }
+  &-mt-8 {
+    margin-top: 0.5rem;
+  }
+  &-mb-8 {
+    margin-bottom: 0.5rem;
+  }
+  &-mr-8 {
+    margin-right: 8px;
+  }
+  &-text-right {
+    text-align: right;
+  }
+  &-text-left {
+    text-align: left;
+  }
+  &-text-center {
+    text-align: center;
+  }
+  &-cursor-pointer {
+    cursor: pointer;
+  }
+  &-height-100 {
+    height: 100%;
+  }
+  &-width-100 {
+    width: 100%;
+  }
+  &-height-88 {
+    height: 88%;
+  }
+  &-vertical-middle {
+    vertical-align: middle;
+  }
+  &-relative {
+    position: relative;
+  }
+  &-non-transform {
+    text-transform: none;
+  }
+  &-text-overflow-ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  &-block {
+    display: block;
+  }
+  &-message {
+    &.error {
+      color: $color--failed;
+    }
+  }
+}
+
+.mist {
+  &__separator {
+    &--horizontal {
+      border: 1px solid $aside-bg-color;
+    }
+  }
+}

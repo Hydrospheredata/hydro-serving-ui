@@ -1,0 +1,67 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "project": {
+    "name": "hydro-serving-ui"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "hydro-serving-ui",
+      "assets": [
+        { "glob": "**/*", "input": "./assets/", "output": "./assets/" }
+      ],
+      "index": "index.html",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "hydro",
+      "styles": [
+        "assets/styles/styles.scss",
+        "assets/styles/_variables.scss",
+        "assets/styles/_angular-material-custom.scss",
+        "assets/styles/_inputs.scss",
+        "assets/styles/_dialogs.scss",
+        "assets/styles/_common.scss",
+        "../node_modules/@angular-mdl/core/scss/material-design-lite.scss"
+      ],
+      "stylePreprocessorOptions": {
+        "includePaths": [
+          "assets/styles"
+        ]
+      },
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "lint": [
+    {
+      "project": "src/tsconfig.app.json"
+    },
+    {
+      "project": "src/tsconfig.spec.json"
+    },
+    {
+      "project": "e2e/tsconfig.e2e.json"
+    }
+  ],
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+  "defaults": {
+    "styleExt": "scss",
+    "component": {}
+  }
+}

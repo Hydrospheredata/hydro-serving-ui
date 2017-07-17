@@ -1,0 +1,130 @@
+@import "variables.scss";
+
+.mat-select {
+  font-family: $main-font-family !important;
+  color: $main-color;
+  display: block !important;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #e9ecf2 !important;
+}
+
+.mat-dialog-container {
+  font-family: $main-font-family !important;
+  color: $main-color;
+}
+
+.mat-dialog-title {
+  font-family: $main-font-family !important;
+  color: $main-color;
+  font-size: 36px;
+  font-weight: 400;
+  margin: 0 0 20px;
+  display: block
+}
+
+.mat-select-trigger {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  min-width: 112px;
+  cursor: pointer;
+  position: relative;
+  box-sizing: border-box;
+  font-size: 18px;
+}
+
+.mat-select-value {
+  position: absolute;
+  color: $main-color;
+  max-width: calc(100% - 18px);
+  flex-grow: 1;
+  left: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.mat-select-arrow {
+  color: $main-color;
+}
+
+.mat-select-underline {
+  display: none;
+}
+
+.mat-select:focus:not(.mat-select-disabled).mat-primary .mat-select-arrow,
+.mat-select:focus:not(.mat-select-disabled).mat-primary .mat-select-trigger {
+  color: $main-color;
+}
+
+.mat-dialog-actions {
+  float: right;
+  color: $label-color;
+  font-size: 18px;
+}
+
+.mat-button {
+  font-family: $main-font-family !important;
+  border-radius: 0px !important;
+
+  &.mat-button--big {
+    font-size: 18px;
+    min-height: 50px;
+    min-width: 200px
+  }
+
+  &.mat-button--primary {
+    border: 3px solid $color--light-blue;
+    color: $main-color;
+
+    &.mat-ripple-element {
+      background-color: $color--light-blue;
+    }
+  }
+
+  &.mat-button--primary:hover {
+    background-color: $color--light-blue;
+    color: #fff;
+  }
+
+  &.mat-button--primary[disabled]:hover {
+    background-color: transparent;
+    color: inherit;
+  }
+
+  .mat-button-focus-overlay {
+    background: none;
+  }
+}
+
+.mat-tab-group {
+  font-family: $main-font-family;
+}
+
+.mat-tab-list {
+  margin: 0px 100px 0px 100px;
+}
+
+.mat-tab-label {
+  background: transparent;
+  font-size: 14px;
+  color: $label-color;
+  opacity: 1 !important;
+  padding: 0 25px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  width: 100%;
+  &.mat-tab-label-active {
+    opacity: 1;
+    color: $main-color;
+  }
+  &:focus {
+    background: transparent;
+    color: $main-color;
+    opacity: 1;
+  }
+}
+
+.mat-ink-bar {
+  background-color: $main-color;
+}
