@@ -1,15 +1,15 @@
 @import "variables";
 
-input.mist-input {
+input.hydro-input {
   background: transparent;
-  &.mist-input--text {
+  &.hydro-input--text {
     border: 1px solid;
     border-color: #d4d7d9;
     color: $main-color;
   }
 }
 
-input.mist-input--text:focus {
+input.hydro-input--text:focus {
   border-color: #04143c;
 }
 
