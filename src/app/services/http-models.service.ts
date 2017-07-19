@@ -3,6 +3,7 @@ import { Subject, Observable, Observer } from 'rxjs/Rx';
 import { environment } from '../../environments/environment';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Model } from '@models/model';
+import { RuntimeType } from '@models/runtime-type';
 
 @Injectable()
 export class HttpModelsService {
@@ -30,6 +31,15 @@ export class HttpModelsService {
   }
 
   private toModel(data): Model {
+    let runtimeType: RuntimeType;
+
+    if(data['runtimeType']) {
+      runtimeType = new RuntimeType({
+        name: data['runtimeType']['name'],
+        version: data['runtimeType']['version']
+      });
+    }
+
     let model = new Model({
       description: data['description'],
       lastBuildTimestamp: data['lastBuildTimestamp'],
@@ -37,9 +47,9 @@ export class HttpModelsService {
       lastVersion: data['lastVersion'],
       name: data['name'],
       source: data['source'],
-      watchEnabled: data['watchEnabled']
+      watchEnabled: data['watchEnabled'],
+      runtimeType: runtimeType
     });
     return model;
   }
-
 }

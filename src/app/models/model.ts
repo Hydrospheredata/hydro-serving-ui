@@ -1,3 +1,5 @@
+import { RuntimeType } from '@models/runtime-type';
+
 export class Model {
   public description: string;
   public lastBuildTimestamp: string;
@@ -6,6 +8,7 @@ export class Model {
   public name: string;
   public source: string;
   public watchEnabled: boolean;
+  public runtimeType: RuntimeType;
 
   constructor(modelInfo: any) {
     this.description = modelInfo['description'];
@@ -15,5 +18,6 @@ export class Model {
     this.name = modelInfo['name'];
     this.source = modelInfo['source'];
     this.watchEnabled = modelInfo['watchEnabled'];
+    this.runtimeType = modelInfo['runtimeType'];
   }
 }
