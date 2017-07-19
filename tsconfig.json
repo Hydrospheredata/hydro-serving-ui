@@ -12,6 +12,8 @@
     "paths": {
       "@app/*": ["app/*"],
       "@components/*": ["app/components/*"],
+      "@services/*": ["app/services/*"],
+      "@models/*": ["app/models/*"],
       "@node_modules/*": ["../node_modules/*"]
     },
     "typeRoots": [

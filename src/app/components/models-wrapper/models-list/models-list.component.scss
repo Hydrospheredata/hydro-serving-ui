@@ -1,0 +1,82 @@
+@import 'variables.scss';
+
+.models-table {
+  border: none;
+  width: 100%;
+
+  @media screen and (min-width: 600px) and (max-width: 959px) {
+    font-size: 12px;
+  }
+  @media screen and (max-width: 1279px) and (min-width: 960px) {
+    font-size: 14px;
+  }
+
+  th {
+    text-align: left;
+    padding-left: 0.5rem;
+    padding-right: 0;
+    &:first-child {
+      span {
+        padding-left: 24px;
+      }
+    }
+  }
+
+  tr:hover {
+    background: #fafbfc;
+  }
+
+  td {
+    text-align: left;
+    max-width: 0;
+  }
+  &__tr {
+    height: 90px;
+    cursor: pointer;
+  }
+  &__tr,
+  &__td {
+    border-top: 2px solid $main-bg-color;
+    border-bottom: none;
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
+  &__td {
+    &.models-table__td--icon {
+      width: 6%;
+    }
+    &.models-table__td--job-id {
+      font-size: 18px;
+      text-align: right;
+      width: 22%;
+      @media screen and (max-width: 1279px) and (min-width: 600px) {
+        font-size: 14px;
+      }
+    }
+    &.models-table__td--actions {
+      width: 10%;
+    }
+    &.models-table__td--details {
+      width: 12%;
+    }
+    &.models-table__td--status {
+      width: 22%;
+    }
+    &.models-table__td--endpoint {
+      font-size: 14px;
+      @media screen and (max-width: 1279px) and (min-width: 600px) {
+        font-size: 12px;
+      }
+    }
+    &.models-table__td--namespace {
+      width: 18%;
+      text-align: center;
+      @media screen and (max-width: 1279px) and (min-width: 600px) {
+        font-size: 12px;
+      }
+    }
+    i {
+      font-size: 20px;
+    }
+  }
+}

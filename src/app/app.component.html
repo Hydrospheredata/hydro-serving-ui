@@ -3,6 +3,10 @@
     <!-- Navigation -->
     <hydro-navbar class="mdl-layout--fixed-header"></hydro-navbar>
     <!-- Router Outlet -->
-    <router-outlet></router-outlet>
+    <main class='hydro-layout cs-height-100' fxLayout="row" fxLayoutAlign="space-between stretch">
+      <div fxFlex='100%' class='mdl-layout__content'>
+        <router-outlet></router-outlet>
+      </div>
+    </main>
   </div>
 </div>
