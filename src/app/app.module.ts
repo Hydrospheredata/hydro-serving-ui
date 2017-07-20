@@ -12,7 +12,8 @@ import { ModelsWrapperComponent } from '@components/models-wrapper/models-wrappe
 import { ModelsListComponent } from '@components/models-wrapper/models-list/models-list.component';
 
 // services
-import { HttpModelsService } from '@services/http-models.service'
+import { HttpModelsService } from '@services/http-models.service';
+import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { HttpModelsService } from '@services/http-models.service'
     FlexLayoutModule,
     HydroRouter
   ],
-  providers: [HttpModelsService],
+  providers: [HttpModelsService, HttpRuntimeTypesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
