@@ -66,6 +66,12 @@
       color: $color--failed;
     }
   }
+  &-table {
+    &-responsive {
+      table-layout: fixed;
+      width: 100%;
+    }
+  }
 }
 
 .hydro {

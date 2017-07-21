@@ -300,3 +300,8 @@ md-dialog-container.mat-dialog-container {
 .mat-tab-body-content {
   padding-top: 25px;
 }
+
+.mdl-textfield__label:after,
+.mdl-textfield.is-focused .mdl-textfield__label:after {
+  bottom: 5px;
+}

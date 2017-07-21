@@ -13,10 +13,13 @@
   "private": true,
   "dependencies": {
     "@angular-mdl/core": "^4.0.8",
+    "@angular-mdl/popover": "^0.6.4",
+    "@angular-mdl/select": "^0.10.4",
     "@angular/animations": "^4.3.0",
     "@angular/common": "^4.3.0",
     "@angular/compiler": "^4.3.0",
     "@angular/core": "^4.3.0",
+    "@angular/flex-layout": "^2.0.0-beta.8",
     "@angular/forms": "^4.3.0",
     "@angular/http": "^4.3.0",
     "@angular/platform-browser": "^4.3.0",
