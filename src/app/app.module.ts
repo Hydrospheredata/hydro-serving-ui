@@ -14,6 +14,7 @@ import { ModelsListComponent } from '@components/models-wrapper/models-list/mode
 // services
 import { HttpModelsService } from '@services/http-models.service';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
+import { SingleModelComponent } from './components/models-wrapper/models-list/single-model/single-model.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
     NavbarComponent,
     ModelsWrapperComponent,
     ModelsListComponent,
+    SingleModelComponent,
   ],
   imports: [
     BrowserModule,

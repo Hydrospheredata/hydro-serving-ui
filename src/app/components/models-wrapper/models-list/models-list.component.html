@@ -17,16 +17,16 @@
         </thead>
         <tbody>
         <ng-template ngFor let-model [ngForOf]="models">
-          <tr>
+          <tr class="cs-cursor-pointer" [routerLink]="['/model', model.id]">
             <td class="cs-text-overflow-ellipsis">{{model.name}}</td>
             <td class="cs-text-overflow-ellipsis">{{model.description}}</td>
             <td class="cs-text-overflow-ellipsis">{{model.lastBuildTimestamp}}</td>
-            <td class="cs-text-overflow-ellipsis">{{model.source}}</td>
             <td class="cs-text-overflow-ellipsis">{{model.lastVersion}}</td>
+            <td class="cs-text-overflow-ellipsis">{{model.source}}</td>
             <td class="cs-text-overflow-ellipsis">
-              <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Deploy</button>
-              <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Stop</button>
-              <button mdl-button mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Test</button>
+              <button title="Deploy" mdl-button mdl-button-type="fab" mdl-ripple><mdl-icon>file_upload</mdl-icon></button>
+              <button title="Stop" mdl-button mdl-button-type="fab" mdl-ripple><mdl-icon>remove_circle</mdl-icon></button>
+              <button title="Test" mdl-button mdl-button-type="fab" mdl-ripple><mdl-icon>settings_input_component</mdl-icon></button>
             </td>
           </tr>
         </ng-template>

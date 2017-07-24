@@ -5,6 +5,11 @@
   &-align-center {
     align-items: center;
   }
+  &-text {
+    &-italic {
+      font-style: italic;
+    }
+  }
   &-pt-20 {
     padding-top: 20px;
   }
