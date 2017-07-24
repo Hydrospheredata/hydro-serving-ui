@@ -24,7 +24,8 @@
         "assets/styles/_inputs.scss",
         "assets/styles/_dialogs.scss",
         "assets/styles/_common.scss",
-        "../node_modules/@angular-mdl/core/scss/material-design-lite.scss"
+        "../node_modules/@angular-mdl/core/scss/material-design-lite.scss",
+        "../node_modules/@angular-mdl/select/select.scss"
       ],
       "stylePreprocessorOptions": {
         "includePaths": [

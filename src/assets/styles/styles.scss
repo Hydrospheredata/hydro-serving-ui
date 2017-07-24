@@ -300,3 +300,22 @@ md-dialog-container.mat-dialog-container {
 .mat-tab-body-content {
   padding-top: 25px;
 }
+
+.mdl-textfield__label:after,
+.mdl-textfield.is-focused .mdl-textfield__label:after {
+  bottom: 5px;
+}
+
+.mdl-data-table td {
+  border-top: 1px solid rgba(0,0,0,.04);
+  border-bottom: 1px solid rgba(0,0,0,.04);
+}
+.mdl-chip {
+  font-weight: bold;
+}
+
+.single-model-table {
+  td {
+    text-align: left !important;
+  }
+}

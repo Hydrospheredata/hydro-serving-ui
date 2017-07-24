@@ -16,7 +16,7 @@ export class HttpModelsService {
 
   public getAll(): Observable<Model[]> {
     return this.http.get(this.baseUrl).map((res: Response) => {
-      return this.extractModels(res) 
+      return this.extractModels(res)
     });
   }
 
@@ -41,6 +41,7 @@ export class HttpModelsService {
     }
 
     let model = new Model({
+      id: data['id'],
       description: data['description'],
       lastBuildTimestamp: data['lastBuildTimestamp'],
       lastUpdateTimestamp: data['lastUpdateTimestamp'],

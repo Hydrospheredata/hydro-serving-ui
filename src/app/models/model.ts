@@ -1,6 +1,7 @@
 import { RuntimeType } from '@models/runtime-type';
 
 export class Model {
+  public id: number;
   public description: string;
   public lastBuildTimestamp: string;
   public lastUpdateTimestamp: string;
@@ -11,6 +12,7 @@ export class Model {
   public runtimeType: RuntimeType;
 
   constructor(modelInfo: any) {
+    this.id = modelInfo['id'];
     this.description = modelInfo['description'];
     this.lastBuildTimestamp = modelInfo['lastBuildTimestamp'];
     this.lastUpdateTimestamp = modelInfo['lastUpdateTimestamp'];
