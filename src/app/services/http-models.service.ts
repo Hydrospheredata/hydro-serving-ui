@@ -4,13 +4,17 @@ import { environment } from '../../environments/environment';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Model } from '@models/model';
 import { RuntimeType } from '@models/runtime-type';
+import { ModelBuilder } from '@builders/model.builder';
 
 @Injectable()
 export class HttpModelsService {
 
   private baseUrl: string;
 
-  constructor(private http: Http) {
+  constructor(
+    private http: Http,
+    private modelBuilder: ModelBuilder
+  ) {
     this.baseUrl = `${environment.host}:${environment.port}/api/v1/model`
   }
 
@@ -24,33 +28,9 @@ export class HttpModelsService {
     let data = res.json();
     let models :Model[] = [];
     for(let index in data) {
-      let model = this.toModel(data[index]);
+      let model = this.modelBuilder.build(data[index]);
       models.push(model);
     }
     return models;
-  }
-
-  private toModel(data): Model {
-    let runtimeType: RuntimeType;
-
-    if(data['runtimeType']) {
-      runtimeType = new RuntimeType({
-        name: data['runtimeType']['name'],
-        version: data['runtimeType']['version']
-      });
-    }
-
-    let model = new Model({
-      id: data['id'],
-      description: data['description'],
-      lastBuildTimestamp: data['lastBuildTimestamp'],
-      lastUpdateTimestamp: data['lastUpdateTimestamp'],
-      lastVersion: data['lastVersion'],
-      name: data['name'],
-      source: data['source'],
-      watchEnabled: data['watchEnabled'],
-      runtimeType: runtimeType
-    });
-    return model;
   }
 }

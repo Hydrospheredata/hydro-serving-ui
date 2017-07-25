@@ -10,11 +10,14 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from '@components/navbar/navbar.component';
 import { ModelsWrapperComponent } from '@components/models-wrapper/models-wrapper.component';
 import { ModelsListComponent } from '@components/models-wrapper/models-list/models-list.component';
+import { SingleModelComponent } from './components/models-wrapper/models-list/single-model/single-model.component';
 
 // services
 import { HttpModelsService } from '@services/http-models.service';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
-import { SingleModelComponent } from './components/models-wrapper/models-list/single-model/single-model.component';
+
+//builders
+import { ModelBuilder } from '@builders/model.builder';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,7 @@ import { SingleModelComponent } from './components/models-wrapper/models-list/si
     HydroRouter,
     MdlSelectModule
   ],
-  providers: [HttpModelsService, HttpRuntimeTypesService],
+  providers: [HttpModelsService, HttpRuntimeTypesService, ModelBuilder],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

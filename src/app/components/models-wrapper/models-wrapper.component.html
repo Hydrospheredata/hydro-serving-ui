@@ -1,13 +1,3 @@
 <div>
-
-  <div fxLayout="row" fxLayoutAlign="space-between center">
-    <div class="cs-text-center" fxFlex="40%">
-      <mdl-select label="Run Type" [(ngModel)]="currentRuntimeType">
-        <mdl-option *ngFor="let type of runtimeTypes" [value]="type.name">{{type.name}}</mdl-option>
-      </mdl-select>
-    </div>
-    <div class="cs-text-center" fxFlex="60%">Filter</div>
-  </div>
-
   <hydro-models-list></hydro-models-list>
 </div>
