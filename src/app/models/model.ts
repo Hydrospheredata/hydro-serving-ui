@@ -1,4 +1,5 @@
 import { RuntimeType } from '@models/runtime-type';
+import { ModelBuild } from '@models/model-build';
 
 export class Model {
   public id: string;
@@ -10,6 +11,7 @@ export class Model {
   public created: string;
   public updated: string;
   public runtimeType: RuntimeType;
+  public lastModelBuild: ModelBuild;
 
   constructor(props: any) {
     this.id = props['id'];
