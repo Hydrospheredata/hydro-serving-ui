@@ -33,6 +33,7 @@ export class HttpRuntimeTypesService {
     let runtimeType: RuntimeType;
 
     runtimeType = new RuntimeType({
+      id: data['id'],
       name: data['name'],
       version: data['version']
     });
