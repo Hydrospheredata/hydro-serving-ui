@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpModelsService } from '@services/http-models.service';
+import { ModelStore } from '@stores/model.store';
 
 @Component({
   selector: 'hydro-models-list',
@@ -9,12 +9,13 @@ import { HttpModelsService } from '@services/http-models.service';
 export class ModelsListComponent implements OnInit {
   private  models;
 
-  constructor(private httpModelsService: HttpModelsService) { }
+  constructor(private modelStore: ModelStore) { }
 
   ngOnInit() {
-  	this.httpModelsService.getAll().subscribe((models) => {
-      this.models = models;
-    });
+    this.modelStore.getAll()
+    this.modelStore.items.subscribe((models) => {
+      this.models = models
+    })
   }
 
 }

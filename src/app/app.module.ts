@@ -17,7 +17,7 @@ import { HttpModelsService } from '@services/http-models.service';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 
 // stores
-import { DataStore } from '@stores/data.store';
+import { ModelStore } from '@stores/model.store';
 
 // builders
 import { ModelBuilder } from '@builders/model.builder';
@@ -38,7 +38,7 @@ import { ModelBuilder } from '@builders/model.builder';
     HydroRouter,
     MdlSelectModule
   ],
-  providers: [HttpModelsService, HttpRuntimeTypesService, ModelBuilder, DataStore],
+  providers: [HttpModelsService, HttpRuntimeTypesService, ModelBuilder, ModelStore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
