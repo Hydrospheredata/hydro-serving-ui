@@ -16,7 +16,10 @@ import { SingleModelComponent } from './components/models-wrapper/models-list/si
 import { HttpModelsService } from '@services/http-models.service';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 
-//builders
+// stores
+import { ModelStore } from '@stores/model.store';
+
+// builders
 import { ModelBuilder } from '@builders/model.builder';
 
 @NgModule({
@@ -35,7 +38,7 @@ import { ModelBuilder } from '@builders/model.builder';
     HydroRouter,
     MdlSelectModule
   ],
-  providers: [HttpModelsService, HttpRuntimeTypesService, ModelBuilder],
+  providers: [HttpModelsService, HttpRuntimeTypesService, ModelBuilder, ModelStore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
