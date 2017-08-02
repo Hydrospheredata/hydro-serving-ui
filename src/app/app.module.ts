@@ -21,6 +21,8 @@ import { ModelStore } from '@stores/model.store';
 
 // builders
 import { ModelBuilder } from '@builders/model.builder';
+import { ModelRuntimeBuilder } from '@builders/model-runtime.builder';
+import { RuntimeTypeBuilder } from '@builders/runtime-type.builder';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,17 @@ import { ModelBuilder } from '@builders/model.builder';
     HydroRouter,
     MdlSelectModule
   ],
-  providers: [HttpModelsService, HttpRuntimeTypesService, ModelBuilder, ModelStore],
+  providers: [
+    // services
+    HttpModelsService,
+    HttpRuntimeTypesService,
+    // builders
+    ModelBuilder,
+    ModelRuntimeBuilder,
+    RuntimeTypeBuilder,
+    // stores
+    ModelStore
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

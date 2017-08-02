@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { RuntimeTypeBuilder } from '@builders/runtime-type.builder';
+import { ModelRuntimeBuilder } from '@builders/model-runtime.builder';
 import { Model } from '@models/model';
 import { RuntimeType } from '@models/runtime-type';
 import { ModelRuntime } from '@models/model-runtime';
@@ -6,7 +8,10 @@ import { ModelRuntime } from '@models/model-runtime';
 @Injectable()
 export class ModelBuilder {
 
-  constructor() { }
+  constructor(
+    private runtimeTypeBuilder: RuntimeTypeBuilder,
+    private modelRuntimeBuilder: ModelRuntimeBuilder
+  ) { }
 
   public build(props): Model {
     return this.toModel(props);
@@ -18,23 +23,11 @@ export class ModelBuilder {
     let lastModelRuntime: ModelRuntime;
 
     if(props['runtimeType']) {
-      runtimeType = this.extractRuntimeType(props['runtimeType'])
+      runtimeType = this.runtimeTypeBuilder.build(props['runtimeType']);
     }
 
     if(props['lastModelRuntime']) {
-      lastModelRuntime = new ModelRuntime({
-        id: props['lastModelRuntime']['id'],
-        modelVersion: props['lastModelRuntime']['modelVersion'],
-        modelName: props['lastModelRuntime']['modelName'],
-        imageName: props['lastModelRuntime']['imageName'],
-        imageTag: props['lastModelRuntime']['imageTag'],
-        imageMD5Tag: props['lastModelRuntime']['imageMD5Tag'],
-        runtimeType: props['lastModelRuntime']['runtimeType'],
-        outputFields: props['lastModelRuntime']['outputFields'],
-        inputFields: props['lastModelRuntime']['inputFields'],
-        created: props['lastModelRuntime']['created'],
-        modelId: props['lastModelRuntime']['modelId']
-      });
+      lastModelRuntime = this.modelRuntimeBuilder.build(props['lastModelRuntime']);
     }
 
     model = new Model({
@@ -52,38 +45,4 @@ export class ModelBuilder {
 
     return model;
   }
-
-  private extractRuntimeType(props) {
-    let runtimeType = new RuntimeType({
-      id: props['id'],
-      name: props['name'],
-      version: props['version']
-    });
-
-    return runtimeType
-  }
-
-  private extractModelRuntime(props) {
-    let runtimeType: RuntimeType;
-    if (props['lastModelRuntime']['runtimeType']) {
-      runtimeType = this.extractRuntimeType(props['lastModelRuntime']['runtimeType']);
-    }
-
-    let lastModelRuntime = new ModelRuntime({
-      id: props['lastModelRuntime']['id'],
-      modelVersion: props['lastModelRuntime']['modelVersion'],
-      modelName: props['lastModelRuntime']['modelName'],
-      imageName: props['lastModelRuntime']['imageName'],
-      imageTag: props['lastModelRuntime']['imageTag'],
-      imageMD5Tag: props['lastModelRuntime']['imageMD5Tag'],
-      runtimeType: runtimeType,
-      outputFields: props['lastModelRuntime']['outputFields'],
-      inputFields: props['lastModelRuntime']['inputFields'],
-      created: props['lastModelRuntime']['created'],
-      modelId: props['lastModelRuntime']['modelId']
-    });
-
-    return lastModelRuntime;
-  }
-
 }
