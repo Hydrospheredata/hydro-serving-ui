@@ -1,4 +1,4 @@
-export class ModelBuild {
+export class ModelRuntime {
   public id: string;
   public modelVersion: string;
   public started: string;

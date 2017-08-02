@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Model } from '@models/model';
 import { RuntimeType } from '@models/runtime-type';
-import { ModelBuild } from '@models/model-build';
+import { ModelRuntime } from '@models/model-runtime';
 
 @Injectable()
 export class ModelBuilder {
@@ -15,7 +15,7 @@ export class ModelBuilder {
   private toModel(props) {
     let runtimeType: RuntimeType;
     let model: Model;
-    let lastModelBuild: ModelBuild;
+    let lastModelRuntime: ModelRuntime;
 
     if(props['runtimeType']) {
       runtimeType = new RuntimeType({
@@ -25,8 +25,8 @@ export class ModelBuilder {
       });
     }
 
-    if(props['lastModelBuild']) {
-      lastModelBuild = new ModelBuild({
+    if(props['lastModelRuntime']) {
+      lastModelRuntime = new ModelRuntime({
         id: props['id'],
         modelVersion: props['modelVersion'],
         started: props['started'],
@@ -47,7 +47,7 @@ export class ModelBuilder {
       created: props['created'],
       updated: props['updated'],
       runtimeType: runtimeType,
-      lastModelBuild: lastModelBuild
+      lastModelRuntime: lastModelRuntime
     });
 
     return model;
