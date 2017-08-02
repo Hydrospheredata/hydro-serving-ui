@@ -20,7 +20,10 @@
             <td class='cs-text-overflow-ellipsis'>{{model.description}}</td>
             <td class='cs-text-overflow-ellipsis'>{{model.source}}</td>
             <td class='cs-text-overflow-ellipsis'>
-              <button title='Deploy' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>file_upload</mdl-icon></button>
+              <button title='Build' mdl-button mdl-button-type='mini-fab' mdl-ripple
+                      (click)="buildModel(model.id)">
+                <mdl-icon>file_upload</mdl-icon>
+              </button>
               <button title='Stop' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>remove_circle</mdl-icon></button>
               <button title='Test' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>settings_input_component</mdl-icon></button>
             </td>
