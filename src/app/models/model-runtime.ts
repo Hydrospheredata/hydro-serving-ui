@@ -1,19 +1,28 @@
+import { RuntimeType } from '@models/runtime-type'
 export class ModelRuntime {
   public id: string;
   public modelVersion: string;
-  public started: string;
-  public finished: string;
-  public status: string;
-  public statusText: string;
-  public logsUrl: string;
+  public modelName: string;
+  public imageName: string;
+  public imageTag: string;
+  public imageMD5Tag: string;
+  public runtimeType: RuntimeType;
+  public outputFields: string[];
+  public inputFields: string[];
+  public created: string;
+  public modelId: string;
 
   constructor(props: any) {
     this.id = props['id'];
     this.modelVersion = props['modelVersion'];
-    this.started = props['started'];
-    this.finished = props['finished'];
-    this.status = props['status'];
-    this.statusText = props['statusText'];
-    this.logsUrl = props['logsUrl'];
+    this.modelName = props['modelName'];
+    this.imageName = props['imageName'];
+    this.imageTag = props['imageTag'];
+    this.imageMD5Tag = props['imageMD5Tag'];
+    this.runtimeType = props['runtimeType'];
+    this.outputFields = props['outputFields'];
+    this.inputFields = props['inputFields'];
+    this.created = props['created'];
+    this.modelId = props['modelId'];
   }
 }
