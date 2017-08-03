@@ -18,7 +18,7 @@
   box-sizing: border-box
 }
 
-:after,:before {
+:after, :before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box
@@ -27,61 +27,61 @@
 html, body {
   font-family: $main-font-family !important;
   background-color: $main-bg-color;
-  color:  $main-color;
+  color: $main-color;
 }
 
-.h1,.h2,.h3,.h4,.h5,.h6,h1,h2,h3,h4,h5,h6 {
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
   font-family: 'MuseoSansCyrl';
   font-weight: 500;
   line-height: 1.1;
   color: inherit
 }
 
-.h1 .small,.h1 small,.h2 .small,.h2 small,.h3 .small,.h3 small,.h4 .small,.h4 small,.h5 .small,.h5 small,.h6 .small,.h6 small,h1 .small,h1 small,h2 .small,h2 small,h3 .small,h3 small,h4 .small,h4 small,h5 .small,h5 small,h6 .small,h6 small {
+.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
   font-weight: 400;
   line-height: 1;
   color: $main-color;
 }
 
-.h1,.h2,.h3,h1,h2,h3 {
+.h1, .h2, .h3, h1, h2, h3 {
   margin-top: 20px;
   margin-bottom: 10px
 }
 
-.h1 .small,.h1 small,.h2 .small,.h2 small,.h3 .small,.h3 small,h1 .small,h1 small,h2 .small,h2 small,h3 .small,h3 small {
+.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small {
   font-size: 65%
 }
 
-.h4,.h5,.h6,h4,h5,h6 {
+.h4, .h5, .h6, h4, h5, h6 {
   margin-top: 10px;
   margin-bottom: 10px
 }
 
-.h4 .small,.h4 small,.h5 .small,.h5 small,.h6 .small,.h6 small,h4 .small,h4 small,h5 .small,h5 small,h6 .small,h6 small {
+.h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
   font-size: 75%
 }
 
-.h1,h1 {
+.h1, h1 {
   font-size: 36px
 }
 
-.h2,h2 {
+.h2, h2 {
   font-size: 30px
 }
 
-.h3,h3 {
+.h3, h3 {
   font-size: 24px
 }
 
-.h4,h4 {
+.h4, h4 {
   font-size: 18px
 }
 
-.h5,h5 {
+.h5, h5 {
   font-size: 14px
 }
 
-.h6,h6 {
+.h6, h6 {
   font-size: 12px
 }
 
@@ -106,7 +106,7 @@ li a {
 }
 
 hr {
-   margin: 1em 24px;
+  margin: 1em 24px;
 }
 
 a.hydro-link {
@@ -145,7 +145,6 @@ md-dialog-container.mat-dialog-container {
   width: 100%;
   height: 100%;
 }
-
 
 .mat-dialog-container--big {
   width: 1300px;
@@ -288,6 +287,7 @@ md-dialog-container.mat-dialog-container {
     }
   }
 }
+
 .hydro-label {
   color: $label-color;
   margin-bottom: 10px;
@@ -301,21 +301,11 @@ md-dialog-container.mat-dialog-container {
   padding-top: 25px;
 }
 
-.mdl-textfield__label:after,
-.mdl-textfield.is-focused .mdl-textfield__label:after {
-  bottom: 5px;
-}
 
-.mdl-data-table td {
-  border-top: 1px solid rgba(0,0,0,.04);
-  border-bottom: 1px solid rgba(0,0,0,.04);
-}
-.mdl-chip {
-  font-weight: bold;
-}
 
 .single-model-table {
   td {
     text-align: left !important;
   }
 }
+
