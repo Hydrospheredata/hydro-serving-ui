@@ -3,13 +3,17 @@ import { Subject, Observable, Observer } from 'rxjs/Rx';
 import { environment } from '../../environments/environment';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { RuntimeType } from '@models/runtime-type';
+import { RuntimeTypeBuilder } from '@builders/runtime-type.builder'
 
 @Injectable()
 export class HttpRuntimeTypesService {
 
   private baseUrl: string;
 
-  constructor(private http: Http) {
+  constructor(
+    private http: Http,
+    private runtimeTypeBuilder: RuntimeTypeBuilder
+  ) {
     this.baseUrl = `${environment.host}:${environment.port}/api/v1/runtimeType`
   }
 
@@ -23,21 +27,9 @@ export class HttpRuntimeTypesService {
     let data = res.json();
     let runtimeTypes :RuntimeType[] = [];
     for(let index in data) {
-      let runtimeType = this.toRuntimeType(data[index]);
+      let runtimeType = this.runtimeTypeBuilder.build(data[index]);
       runtimeTypes.push(runtimeType);
     }
     return runtimeTypes;
-  }
-
-  private toRuntimeType(data): RuntimeType {
-    let runtimeType: RuntimeType;
-
-    runtimeType = new RuntimeType({
-      id: data['id'],
-      name: data['name'],
-      version: data['version']
-    });
-
-    return runtimeType;
   }
 }
