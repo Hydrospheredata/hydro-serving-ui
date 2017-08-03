@@ -135,18 +135,20 @@
 }
 
 .mdl-data-table {
-  tbody {
-    tr {
-      border-top: 2px solid #f8f9fb;
-      border-bottom: none;
-      padding-right: 0.5rem;
-      padding-left: 0.5rem;
-      &:hover {
-        background-color: #fafbfc !important;
-      }
-      td {
-        border-top: 0;
-        border-bottom: 0;
+  &.mdl-data-table--models {
+    tbody {
+      tr {
+        border-top: 2px solid #f8f9fb;
+        border-bottom: none;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+        &:hover {
+          background-color: #fafbfc;
+        }
+        td {
+          border-top: 0;
+          border-bottom: 0;
+        }
       }
     }
   }
