@@ -1,36 +1,39 @@
 <div class='models-list'>
-
-
-  <div fxLayout='row'>
-    <div class='models-list__table'>
-
-      <table class='cs-table-responsive mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp'>
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>source</th>
-          <th>actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <ng-template ngFor let-model [ngForOf]="models">
-          <tr class='cs-cursor-pointer' [routerLink]="['/model', model.id]">
-            <td class='cs-text-overflow-ellipsis'>{{model.name}}</td>
-            <td class='cs-text-overflow-ellipsis'>{{model.description}}</td>
-            <td class='cs-text-overflow-ellipsis'>{{model.source}}</td>
-            <td class='cs-text-overflow-ellipsis'>
-              <button title='Build' mdl-button mdl-button-type='mini-fab' mdl-ripple
-                      (click)="buildModel(model.id)">
-                <mdl-icon>file_upload</mdl-icon>
-              </button>
-              <button title='Stop' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>remove_circle</mdl-icon></button>
-              <button title='Test' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>settings_input_component</mdl-icon></button>
-            </td>
-          </tr>
-        </ng-template>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <table class='models-list-table mdl-data-table mdl-js-data-table mdl-shadow--2dp'>
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Version</th>
+      <th>Model Type</th>
+      <th>Runtime Type</th>
+      <th>Deploy status</th>
+      <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-template ngFor let-model [ngForOf]="models">
+      <tr class='models-list-table__tr cs-cursor-pointer'>
+        <td class="models-list-table__td id"><div title="{{model.id}}" class='cs-text-overflow-ellipsis'>{{model.id}}</div></td>
+        <td class="models-list-table__td name"><div title="{{model.name}}" class='cs-text-overflow-ellipsis'>{{model.name}}</div></td>
+        <td class="models-list-table__td version">{{model.runtimeType.version}}</td>
+        <td class="models-list-table__td model-type">Model Type</td>
+        <td class="models-list-table__td run-type"><div title="{{model.runtimeType.name}}" class='cs-text-overflow-ellipsis'>{{model.runtimeType.name}}</div></td>
+        <td class="models-list-table__td status">
+          <div *ngIf="model.lastModelBuild.finished" title="{{model.lastModelBuild.status}}" class='cs-text-overflow-ellipsis'>
+            {{model.lastModelBuild.status}} {{model.lastModelBuild.finished | amTimeAgo}}
+          </div>
+        </td>
+        <td class='cs-text-overflow-ellipsis models-list-table__td actions'>
+          <button title='Build' mdl-button mdl-button-type='mini-fab' mdl-ripple
+                  (click)="buildModel(model)">
+            <mdl-icon>build</mdl-icon>
+          </button>
+          <button title='Stop' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>remove_circle</mdl-icon></button>
+          <button title='Test' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>settings_input_component</mdl-icon></button>
+        </td>
+      </tr>
+    </ng-template>
+    </tbody>
+  </table>
 </div>

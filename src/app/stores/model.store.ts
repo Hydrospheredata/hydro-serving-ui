@@ -19,9 +19,9 @@ export class ModelStore {
 
   public getAll(): void {
     this.backendService.getAll().subscribe((data) => {
-      this.dataStore = data
+      this.dataStore = data;
       this.updateStore();
-    })
+    });
   }
 
   private updateStore(): void {

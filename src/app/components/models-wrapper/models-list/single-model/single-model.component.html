@@ -36,7 +36,7 @@
           </td>
           <td>
             <div class="mdl-color-text--grey-600">
-              {{model.lastBuildTimestamp}}
+              {{model.lastBuildTimestamp | amUtc | amDateFormat: 'YYYY-MM-DD'}}
             </div>
           </td>
         </tr>
@@ -51,7 +51,8 @@
           </td>
           <td>
             <div class="mdl-color-text--grey-600">
-              {{model.lastUpdateTimestamp}}
+              {{'2017-06-08T06:15:07.529' | amParse: 'YYYY-MM-DDTHH:mm:ss.SSSZZ' | amDateFormat: 'YYYY-MM-DD'}}
+
             </div>
           </td>
         </tr>

@@ -13,14 +13,13 @@ export class BuildModelService {
     private http: Http,
     private modelRuntimeBuilder: ModelRuntimeBuilder
   ) {
-    this.baseUrl = `${environment.host}:${environment.port}/api/v1/model/build` 
+    this.baseUrl = `${environment.host}:${environment.port}/api/v1/model/build`;
   }
 
-  public build(modelId: string, version?: string): Observable<ModelRuntime> {
-    let body = { modelId: modelId, version: version }
-    return this.http.post(this.baseUrl, body).map((res: Response) => {
+  public build(options): Observable<ModelRuntime> {
+    return this.http.post(this.baseUrl, options).map((res: Response) => {
       return this.extractModelRuntime(res);
-    })
+    });
   }
 
   private extractModelRuntime(res: Response): ModelRuntime {

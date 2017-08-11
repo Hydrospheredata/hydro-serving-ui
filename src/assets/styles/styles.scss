@@ -301,9 +301,13 @@ md-dialog-container.mat-dialog-container {
   padding-top: 25px;
 }
 
-.mdl-textfield__label:after,
-.mdl-textfield.is-focused .mdl-textfield__label:after {
-  bottom: 5px;
+.mdl-select {
+  .mdl-textfield {
+    .mdl-textfield__label:after,
+    .mdl-textfield.is-focused .mdl-textfield__label:after {
+      bottom: 6px;
+    }
+  }
 }
 
 .mdl-data-table td {
@@ -319,3 +323,4 @@ md-dialog-container.mat-dialog-container {
     text-align: left !important;
   }
 }
+

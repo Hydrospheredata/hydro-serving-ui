@@ -3,9 +3,9 @@ export class RuntimeType {
   public name: string;
   public version: string;
 
-  constructor(props: any) {
-    this.id = props['id'];
-    this.name = props['name'];
-    this.version = props['version'];
+  constructor(props: object = {}) {
+    this.id = props['id'] || '';
+    this.name = props['name'] || '';
+    this.version = props['version'] || '';
   }
 }

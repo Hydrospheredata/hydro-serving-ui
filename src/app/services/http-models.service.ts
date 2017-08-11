@@ -10,27 +10,37 @@ import { ModelBuilder } from '@builders/model.builder';
 export class HttpModelsService {
 
   private baseUrl: string;
+  private models: Model[];
 
   constructor(
     private http: Http,
     private modelBuilder: ModelBuilder
   ) {
-    this.baseUrl = `${environment.host}:${environment.port}/api/v1/model`
+    this.baseUrl = `${environment.host}:${environment.port}${environment.apiUrl}/model`;
   }
 
   public getAll(): Observable<Model[]> {
-    return this.http.get(this.baseUrl).map((res: Response) => {
-      return this.extractModels(res)
+    const url = this.baseUrl + '/withInfo';
+    return this.http.get(url).map((res: Response) => {
+      let data = res.json();
+      this.models = this.extractModels(data);
+      return this.models;
     });
   }
 
-  private extractModels(res: Response) {
-    let data = res.json();
-    let models :Model[] = [];
+  private extractModels(data) {
+    let models: Model[] = [];
     for(let index in data) {
       let model = this.modelBuilder.build(data[index]);
       models.push(model);
     }
     return models;
+  }
+
+  public updateModel(model) {
+    return this.http.put(this.baseUrl, model)
+      .map((response: Response) => {
+        return response.json();
+      });
   }
 }
