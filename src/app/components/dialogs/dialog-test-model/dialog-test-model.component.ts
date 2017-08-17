@@ -64,7 +64,7 @@ export class DialogTestModelComponent implements OnInit {
   createTestModelForm() {
     this.testModelForm = this.fb.group({
       data: ['', [Validators.required]],
-      path: ['', [Validators.required]],
+      path: ['/serve', [Validators.required]],
     });
   }
 

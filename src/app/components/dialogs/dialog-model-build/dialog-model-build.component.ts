@@ -6,6 +6,7 @@ import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { BuildModelService } from '@services/build-model.service';
 import { HttpModelsService } from '@services/http-models.service';
 import { ModelStore } from '@stores/model.store';
+import { ModelStatusPipe } from '@pipes/model-status.pipe';
 
 import 'rxjs/add/operator/mergeMap';
 
@@ -15,7 +16,7 @@ export let injectableModelOptions = new InjectionToken<object>('injectableModelO
   selector: 'hydro-dialog-model-build',
   templateUrl: './dialog-model-build.component.html',
   styleUrls: ['./dialog-model-build.component.scss'],
-  providers: [MdlSnackbarService, FormBuilder, BuildModelService, HttpModelsService]
+  providers: [MdlSnackbarService, FormBuilder, BuildModelService, HttpModelsService, ModelStatusPipe]
 })
 export class DialogModelBuildComponent implements OnInit {
   public buildModelForm: FormGroup;
@@ -30,7 +31,8 @@ export class DialogModelBuildComponent implements OnInit {
               private httpRuntimeTypesService: HttpRuntimeTypesService,
               @Inject(injectableModelOptions) data,
               private buildModelService: BuildModelService,
-              private modelStore: ModelStore
+              private modelStore: ModelStore,
+              private modelStatusPipe: ModelStatusPipe
               ) {
     this.model = data;
   }
@@ -48,12 +50,13 @@ export class DialogModelBuildComponent implements OnInit {
   }
 
   private createBuildModelForm() {
+    const modelStatus = this.modelStatusPipe.transform(this.model);
     const modelType = this.model.lastModelRuntime.runtimeType ? this.model.lastModelRuntime.runtimeType.tags : '';
     this.buildModelForm = this.fb.group({
       version: [this.model.runtimeType.version],
       modelId: [this.model.id],
       name: [this.model.name],
-      status: [this.model.lastModelBuild.status],
+      status: [modelStatus],
       runtimeType: [this.model.runtimeType, [Validators.required]],
       modelType: [modelType, []],
       source: [this.model.source, []],
