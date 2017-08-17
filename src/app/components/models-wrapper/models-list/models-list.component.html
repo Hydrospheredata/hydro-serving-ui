@@ -12,16 +12,18 @@
     </tr>
     </thead>
     <tbody>
-    <ng-template ngFor let-model [ngForOf]="models">
+    <ng-template ngFor let-model [ngForOf]="models | sortBy: 'id'">
       <tr class='models-list-table__tr cs-cursor-pointer'>
         <td class="models-list-table__td id"><div title="{{model.id}}" class='cs-text-overflow-ellipsis'>{{model.id}}</div></td>
-        <td class="models-list-table__td name"><div title="{{model.name}}" class='cs-text-overflow-ellipsis'>{{model.name}}</div></td>
+        <td class="models-list-table__td name"><div title="{{model.source}}" class='cs-text-overflow-ellipsis'>{{model.source}}</div></td>
         <td class="models-list-table__td version">{{model.runtimeType.version}}</td>
-        <td class="models-list-table__td model-type">Model Type</td>
+        <td class="models-list-table__td model-type" title="{{model.lastModelRuntime.runtimeType ? model.lastModelRuntime.runtimeType.tags : ''}}">
+          {{model.lastModelRuntime.runtimeType ? model.lastModelRuntime.runtimeType.tags : ''}}
+        </td>
         <td class="models-list-table__td run-type"><div title="{{model.runtimeType.name}}" class='cs-text-overflow-ellipsis'>{{model.runtimeType.name}}</div></td>
         <td class="models-list-table__td status">
           <div *ngIf="model.lastModelBuild.finished" title="{{model.lastModelBuild.status}}" class='cs-text-overflow-ellipsis'>
-            {{model.lastModelBuild.status}} {{model.lastModelBuild.finished | amTimeAgo}}
+            {{model | modelStatus}} {{model.lastModelBuild.finished | amLocal | amTimeAgo}}
           </div>
         </td>
         <td class='cs-text-overflow-ellipsis models-list-table__td actions'>
@@ -29,8 +31,12 @@
                   (click)="buildModel(model)">
             <mdl-icon>build</mdl-icon>
           </button>
-          <button title='Stop' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>remove_circle</mdl-icon></button>
-          <button title='Test' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>settings_input_component</mdl-icon></button>
+          <button (click)="stopModel(model.id)" title='Stop' mdl-button mdl-button-type='mini-fab' mdl-ripple>
+            <mdl-icon>remove_circle</mdl-icon>
+          </button>
+          <button (click)="testModel(model)" title='Test' mdl-button mdl-button-type='mini-fab' mdl-ripple>
+            <mdl-icon>settings_input_component</mdl-icon>
+          </button>
         </td>
       </tr>
     </ng-template>

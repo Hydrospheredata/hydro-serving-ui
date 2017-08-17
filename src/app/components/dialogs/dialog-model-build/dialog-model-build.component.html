@@ -2,14 +2,13 @@
   <h1 class="mdl-dialog__title mat-dialog-title">Build model #{{model.id}}</h1>
   <form [formGroup]="buildModelForm" (ngSubmit)="submitBuildModelForm(buildModelForm)">
     <div class="mdl-dialog__content">
-      <hydro-input-text label="Version" formControlName="version"></hydro-input-text>
-      <hydro-input-text label="Name" formControlName="name"></hydro-input-text>
-      <hydro-input-text label="Input Fields" formControlName="inputFields"></hydro-input-text>
-      <hydro-input-text label="Output Fields" formControlName="outputFields"></hydro-input-text>
-      <hydro-input-text label="Source" formControlName="source"></hydro-input-text>
+      <hydro-input-text readonly="true" label="Name" formControlName="name"></hydro-input-text>
+      <hydro-input-text readonly="" label="Version" formControlName="version"></hydro-input-text>
+      <hydro-input-text readonly="true" label="Model Type" formControlName="modelType"></hydro-input-text>
+      <hydro-input-text readonly="true" label="Status" formControlName="status"></hydro-input-text>
       <div><label class="">Runtime Type</label></div>
-      <mdl-select formControlName="runtimeType" [(ngModel)]="model.runtimeType">
-        <mdl-option *ngFor="let type of runtimeTypes" [value]="type.id">{{type.name}}</mdl-option>
+      <mdl-select formControlName="runtimeType" [(ngModel)]="currentRuntimeType">
+        <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}</mdl-option>
       </mdl-select>
       <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col cs-text-right">

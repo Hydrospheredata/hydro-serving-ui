@@ -16,7 +16,8 @@
       "@services/*": ["app/services/*"],
       "@stores/*": ["app/stores/*"],
       "@models/*": ["app/models/*"],
-      "@node_modules/*": ["../node_modules/*"]
+      "@node_modules/*": ["../node_modules/*"],
+      "@pipes/*": ["app/pipes/*"]
     },
     "typeRoots": [
       "node_modules/@types"

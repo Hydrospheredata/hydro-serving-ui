@@ -1,9 +1,10 @@
 import { RuntimeType } from '@models/runtime-type';
 import { ModelRuntime } from '@models/model-runtime';
-import { ModelBuild } from "./model-build";
+import { ModelBuild } from './model-build';
+import { CurrentServices } from './current-services';
 
 export class Model {
-  public id: string;
+  public id: number;
   public name: string;
   public source: string;
   public description: string;
@@ -14,6 +15,7 @@ export class Model {
   public runtimeType: RuntimeType;
   public lastModelRuntime: ModelRuntime;
   public lastModelBuild: ModelBuild;
+  public currentServices: CurrentServices[];
 
   constructor(props: any = {}) {
     this.id = props['id'] || '';
@@ -27,5 +29,6 @@ export class Model {
     this.runtimeType = props['runtimeType'] || {};
     this.lastModelRuntime = props['lastModelRuntime'] || {};
     this.lastModelBuild = props['lastModelBuild'] || {};
+    this.currentServices = props['currentServices'];
   }
 }

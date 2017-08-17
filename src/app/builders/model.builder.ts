@@ -6,6 +6,8 @@ import { RuntimeType } from '@models/runtime-type';
 import { ModelRuntime } from '@models/model-runtime';
 import { ModelBuildBuilder } from '@builders/model-build.builder';
 import { ModelBuild } from '@models/model-build';
+import { CurrentServices } from '@models/current-services';
+import { ModelCurrentServicesBuilder } from '@builders/model-current-services.builder';
 
 
 @Injectable()
@@ -14,7 +16,8 @@ export class ModelBuilder {
   constructor(
     private runtimeTypeBuilder: RuntimeTypeBuilder,
     private modelRuntimeBuilder: ModelRuntimeBuilder,
-    private modelBuildBuilder: ModelBuildBuilder
+    private modelBuildBuilder: ModelBuildBuilder,
+    private modelCurrentServicesBuilder: ModelCurrentServicesBuilder
   ) { }
 
   public build(props): Model {
@@ -26,15 +29,20 @@ export class ModelBuilder {
     let model: Model;
     let lastModelRuntime: ModelRuntime;
     let lastModelBuild: ModelBuild;
+    let currentServices: CurrentServices[] = [];
 
-    runtimeType = this.runtimeTypeBuilder.build(props.model['runtimeType']) || new RuntimeType();
+    runtimeType = this.runtimeTypeBuilder.build(props.model['runtimeType']);
 
     if (props['lastModelRuntime']) {
-      lastModelRuntime = this.modelRuntimeBuilder.build(props['lastModelRuntime']) || new ModelRuntime({});
+      lastModelRuntime = this.modelRuntimeBuilder.build(props['lastModelRuntime']);
     }
 
     if (props['lastModelBuild']) {
       lastModelBuild = this.modelBuildBuilder.build(props['lastModelBuild']);
+    }
+
+    if (props['currentServices'].length) {
+      currentServices.push(this.modelCurrentServicesBuilder.build(props['currentServices']));
     }
 
     model = new Model({
@@ -48,7 +56,8 @@ export class ModelBuilder {
       updated: props.model['updated'],
       runtimeType: runtimeType,
       lastModelRuntime: lastModelRuntime,
-      lastModelBuild: lastModelBuild
+      lastModelBuild: lastModelBuild,
+      currentServices: currentServices
     });
 
     return model;

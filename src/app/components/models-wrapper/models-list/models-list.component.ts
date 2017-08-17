@@ -5,6 +5,8 @@ import { Model } from '@models/model';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { RuntimeType } from '@models/runtime-type';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
+import { DialogTestModelComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test-model/dialog-test-model.component';
+import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
 import { MdlDialogService } from '@angular-mdl/core';
 
 @Component({
@@ -19,6 +21,7 @@ export class ModelsListComponent implements OnInit {
   public runtimeTypes: RuntimeType[];
   public currentRuntimeType: RuntimeType;
   private modelOptions: object;
+
 
   constructor(
     private modelStore: ModelStore,
@@ -42,22 +45,47 @@ export class ModelsListComponent implements OnInit {
   }
 
   buildModel(modelOptions) {
-
     this.dialog.showCustomDialog({
       component: DialogModelBuildComponent,
-      styles: {'width': '800px', 'min-height': '85%'},
-      classes: 'job-logs--dialog',
+      styles: {'width': '800px', 'min-height': '75%'},
+      classes: '',
       isModal: true,
       clickOutsideToClose: true,
       enterTransitionDuration: 400,
       leaveTransitionDuration: 400,
       providers: [{provide: injectableModelOptions, useValue: modelOptions}],
     });
-    // console.log(modelOptions);
-    // this.buildModelService.build(modelOptions).subscribe((modelRuntime) => {
-    //   let model = this.models.find((item) => item.id === modelRuntime.modelId);
-    //   model.lastModelRuntime = modelRuntime;
-    // });
+  }
+
+  private setModelStatus() {
+
+  }
+
+  testModel(model) {
+    this.dialog.showCustomDialog({
+      component: DialogTestModelComponent,
+      styles: {'width': '800px', 'min-height': '75%'},
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{provide: injectableModelBuildOptions, useValue: model}],
+    });
+  }
+
+  stopModel(id) {
+    this.dialog.showCustomDialog({
+      component: DialogStopModelComponent,
+      styles: {'width': '600px', 'min-height': '250px'},
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{provide: injectableModelStopOptions, useValue: id}],
+    });
+
   }
 
 }

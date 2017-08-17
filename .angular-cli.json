@@ -25,14 +25,19 @@
         "assets/styles/_dialogs.scss",
         "assets/styles/_common.scss",
         "../node_modules/@angular-mdl/core/scss/material-design-lite.scss",
-        "../node_modules/@angular-mdl/select/select.scss"
+        "../node_modules/@angular-mdl/select/select.scss",
+        "../node_modules/codemirror/lib/codemirror.css",
+        "assets/styles/_codemirror.scss"
       ],
       "stylePreprocessorOptions": {
         "includePaths": [
           "assets/styles"
         ]
       },
-      "scripts": [],
+      "scripts": [
+        "../node_modules/moment/min/moment.min.js",
+        "../node_modules/codemirror/lib/codemirror.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
