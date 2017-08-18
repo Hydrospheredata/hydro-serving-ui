@@ -32,9 +32,9 @@ export class BuildModelService {
       .map((res: Response) => res.json());
   }
 
-  public stopModel(id) {
+  public stopModel(id): Observable<any> {
     const url = `${this.baseUIUrl}/stopService/${id}`;
-    return this.http.delete(url);
+    return this.http.delete(url).map((res: Response) => {});
   }
 
   private extractModelRuntime(res: Response): ModelRuntime {

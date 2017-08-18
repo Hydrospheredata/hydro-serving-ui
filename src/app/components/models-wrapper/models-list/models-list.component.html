@@ -16,7 +16,7 @@
       <tr class='models-list-table__tr cs-cursor-pointer'>
         <td class="models-list-table__td id"><div title="{{model.id}}" class='cs-text-overflow-ellipsis'>{{model.id}}</div></td>
         <td class="models-list-table__td name"><div title="{{model.source}}" class='cs-text-overflow-ellipsis'>{{model.source}}</div></td>
-        <td class="models-list-table__td version">{{model.runtimeType.version}}</td>
+        <td class="models-list-table__td version">{{model.lastModelRuntime.version}}</td>
         <td class="models-list-table__td model-type" title="{{model.lastModelRuntime.runtimeType ? model.lastModelRuntime.runtimeType.tags : ''}}">
           {{model.lastModelRuntime.runtimeType ? model.lastModelRuntime.runtimeType.tags : ''}}
         </td>
@@ -32,7 +32,6 @@
           </div>
         </td>
         <td class='cs-text-overflow-ellipsis models-list-table__td'>
-
           <div fxLayout="row" fxLayoutAlign="space-between center"  class="models-list-table__td__actions">
             <!--<div><mdl-spinner class="models-list-table__td__actions&#45;&#45;icon" *ngIf="(model | modelStatus) == 'DEPLOYED'" single-color [active]="(model | modelStatus) == 'DEPLOYED'"></mdl-spinner></div>-->
             <div class="models-list-table__td__actions--buttons">

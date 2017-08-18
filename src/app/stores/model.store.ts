@@ -22,12 +22,12 @@ export class ModelStore {
   public getAll(): void {
     this.httpModelsService.getAll()
       .subscribe((data) => {
-      this.dataStore = data;
-      this.updateStore();
+        this.dataStore = data;
+        this.updateStore();
     });
   }
 
-  private updateStore(): void {
+  public updateStore(): void {
     this._items.next(this.dataStore);
   }
 

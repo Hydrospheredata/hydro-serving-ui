@@ -10,7 +10,7 @@ export let injectableModelStopOptions = new InjectionToken<object>('injectableMo
   selector: 'hydro-dialog-stop-model',
   templateUrl: './dialog-stop-model.component.html',
   styleUrls: ['./dialog-stop-model.component.scss'],
-  providers: [ModelStore],
+  providers: [],
 })
 export class DialogStopModelComponent implements OnInit {
   private data;
@@ -36,15 +36,15 @@ export class DialogStopModelComponent implements OnInit {
 
   submitStopModelForm() {
     this.modelStore.stopModel(this.modelId)
-      .map((model) => {
-        this.modelStore.getAll();
-      })
       .subscribe(result => {
         this.dialogRef.hide();
-          this.mdlSnackbarService.showSnackbar({
-            message: 'Model has been stopped',
-            timeout: 5000
-          });
+        this.modelStore.getAll();
+        this.modelStore.updateStore();
+
+        this.mdlSnackbarService.showSnackbar({
+          message: 'Model has been stopped',
+          timeout: 5000
+        });
       },
       (error) => {
         this.mdlSnackbarService.showSnackbar({

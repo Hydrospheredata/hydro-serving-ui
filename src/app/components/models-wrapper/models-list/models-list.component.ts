@@ -20,25 +20,21 @@ export class ModelsListComponent implements OnInit {
   public models: Model[];
   public runtimeTypes: RuntimeType[];
   public currentRuntimeType: RuntimeType;
-  private modelOptions: object;
-
 
   constructor(
-    private modelStore: ModelStore,
     private buildModelService: BuildModelService,
+    private modelStore: ModelStore,
     private httpRuntimeTypesService: HttpRuntimeTypesService,
     public dialog: MdlDialogService
   ) {
-    this.modelOptions = {modelId: 1, version: 'version'};
-  }
-
-  ngOnInit() {
     this.modelStore.getAll();
     this.modelStore.items.subscribe((models) => {
       this.models = models;
       console.log(models);
     });
+  }
 
+  ngOnInit() {
     this.httpRuntimeTypesService.getAll().subscribe((runtimeType) => {
       this.runtimeTypes = runtimeType;
     });
