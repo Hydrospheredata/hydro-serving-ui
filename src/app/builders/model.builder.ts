@@ -42,7 +42,7 @@ export class ModelBuilder {
     }
 
     if (props['currentServices'].length) {
-      currentServices.push(this.modelCurrentServicesBuilder.build(props['currentServices']));
+      currentServices = this.modelCurrentServicesBuilder.build(props['currentServices']);
     }
 
     model = new Model({

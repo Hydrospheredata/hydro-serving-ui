@@ -7,17 +7,19 @@ import { Model } from '@models/model';
 export class ModelStatusPipe implements PipeTransform {
 
   transform(model: Model, args?: any): any {
-    let status = null;
     const modelStatuses = {
       deployed: 'DEPLOYED',
       created: 'CREATED',
-      stopped: 'STOPPED'
+      stopped: 'STOPPED',
+      failed: 'FAILED'
     };
 
     if (model.currentServices && model.currentServices.length) {
       status = modelStatuses['deployed'];
     } else if (model.lastModelRuntime) {
       status = modelStatuses['stopped'];
+    } else if (model.lastModelBuild.status == 'ERROR' || model.lastModelBuild.status == 'FAILED') {
+      status = modelStatuses['failed'];
     } else {
       status = modelStatuses['created'];
     }

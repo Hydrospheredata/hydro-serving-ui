@@ -6,13 +6,15 @@ export class ModelCurrentServicesBuilder {
 
   constructor() { }
 
-  public build(props): CurrentServices {
+  public build(props): CurrentServices[] {
     return this.toCurrentServices(props);
   }
 
-  private toCurrentServices(props) {
-    let currentServices: CurrentServices;
-    currentServices = new CurrentServices(props);
+  private toCurrentServices(props): CurrentServices[] {
+    let currentServices: CurrentServices[] = [];
+    for (let i = 0; i < props.length; i++) {
+      currentServices.push(new CurrentServices(props[i]));
+    }
 
     return currentServices;
   }

@@ -20,10 +20,11 @@ export let injectableModelOptions = new InjectionToken<object>('injectableModelO
 })
 export class DialogModelBuildComponent implements OnInit {
   public buildModelForm: FormGroup;
-  public currentRuntimeType;
+  public currentModelRuntimeType;
   public runtimeTypes;
   public data;
   public model;
+  public modelType: string;
 
   constructor(private fb: FormBuilder,
               public dialogRef: MdlDialogReference,
@@ -38,9 +39,11 @@ export class DialogModelBuildComponent implements OnInit {
   }
 
   ngOnInit() {
+    const self = this;
     this.createBuildModelForm();
     this.httpRuntimeTypesService.getAll().subscribe((runtimeType) => {
       this.runtimeTypes = runtimeType;
+      self.currentModelRuntimeType = self.model.runtimeType.id;
     });
   }
 
@@ -51,14 +54,14 @@ export class DialogModelBuildComponent implements OnInit {
 
   private createBuildModelForm() {
     const modelStatus = this.modelStatusPipe.transform(this.model);
-    const modelType = this.model.lastModelRuntime.runtimeType ? this.model.lastModelRuntime.runtimeType.tags : '';
+    this.modelType = this.model.lastModelRuntime.runtimeType ? this.model.lastModelRuntime.runtimeType.tags : '';
     this.buildModelForm = this.fb.group({
-      version: [this.model.runtimeType.version],
+      version: [this.model.lastModelRuntime.modelVersion],
       modelId: [this.model.id],
       name: [this.model.name],
       status: [modelStatus],
       runtimeType: [this.model.runtimeType, [Validators.required]],
-      modelType: [modelType, []],
+      modelType: [this.modelType, []],
       source: [this.model.source, []],
       inputFields: [this.model.inputFields, []],
       outputFields: [this.model.outputFields, []],

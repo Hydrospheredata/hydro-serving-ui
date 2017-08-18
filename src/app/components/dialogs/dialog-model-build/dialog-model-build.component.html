@@ -1,21 +1,30 @@
 <div>
-  <h1 class="mdl-dialog__title mat-dialog-title">Build model #{{model.id}}</h1>
+  <h1 class="mdl-dialog__title mat-dialog-title">Deploy model #{{model.id}}</h1>
   <form [formGroup]="buildModelForm" (ngSubmit)="submitBuildModelForm(buildModelForm)">
     <div class="mdl-dialog__content">
-      <hydro-input-text readonly="true" label="Name" formControlName="name"></hydro-input-text>
+      <div class="cs-mb-32" fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <span class="cs-mr-8">Name</span>
+          <mdl-chip mdl-label="{{model.source}}"></mdl-chip>
+        </div>
+        <div *ngIf="modelType" fxLayout="row" fxLayoutAlign="space-between center">
+          <span class="cs-mr-8">Type</span>
+          <mdl-chip mdl-label="{{modelType}}"></mdl-chip>
+        </div>
+
+      </div>
+
       <hydro-input-text readonly="" label="Version" formControlName="version"></hydro-input-text>
-      <hydro-input-text readonly="true" label="Model Type" formControlName="modelType"></hydro-input-text>
-      <hydro-input-text readonly="true" label="Status" formControlName="status"></hydro-input-text>
       <div><label class="">Runtime Type</label></div>
-      <mdl-select formControlName="runtimeType" [(ngModel)]="currentRuntimeType">
-        <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}</mdl-option>
+      <mdl-select formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
+        <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}:{{type.version}}</mdl-option>
       </mdl-select>
       <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col cs-text-right">
           <button (click)="dialogRef.hide()" type="button" mdl-button class='mat-button mat-button--big'>CANCEL</button>
           <button type="submit" mdl-button [disabled]="buildModelForm.invalid"
                   class='mat-button mat-button--big mat-button--primary'
-                  mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Build model
+                  mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Deploy model
           </button>
         </div>
       </div>

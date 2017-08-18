@@ -47,6 +47,14 @@
   &__tr {
     height: 90px;
     cursor: pointer;
+    td .models-list-table__td__actions--buttons {
+      visibility: hidden;
+    }
+    &:hover {
+      td .models-list-table__td__actions--buttons {
+        visibility: visible;
+      }
+    }
   }
   &__tr,
   &__td {
@@ -79,6 +87,19 @@
     i {
       font-size: 20px;
     }
+
   }
 
+}
+
+.hydro-link {
+  &.mdl-color-text--blue-800:hover {
+    opacity: 0.7;
+  }
+  &.mdl-color-text--grey-800:hover {
+    opacity: 0.7;
+  }
+  &.mdl-color-text--red-800:hover {
+    opacity: 0.7;
+  }
 }

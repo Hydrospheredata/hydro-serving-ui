@@ -7,7 +7,7 @@ export class ModelBuild {
   public model: Model;
   public finished: string;
   public statusText: string;
-  public status: string[];
+  public status: string;
   public modelRuntime: ModelRuntime;
 
   constructor(props: any = {}) {
@@ -15,7 +15,7 @@ export class ModelBuild {
     this.model = props['model'] || new Model();
     this.finished = props['finished'] || '';
     this.statusText = props['statusText'] || '';
-    this.status = props['status'] || [''];
+    this.status = props['status'] || '';
     this.modelRuntime = props['modelRuntime'] || new ModelRuntime();
   }
 }

@@ -47,7 +47,7 @@ export class ModelsListComponent implements OnInit {
   buildModel(modelOptions) {
     this.dialog.showCustomDialog({
       component: DialogModelBuildComponent,
-      styles: {'width': '800px', 'min-height': '75%'},
+      styles: {'width': '800px', 'min-height': '50%'},
       classes: '',
       isModal: true,
       clickOutsideToClose: true,
@@ -64,7 +64,7 @@ export class ModelsListComponent implements OnInit {
   testModel(model) {
     this.dialog.showCustomDialog({
       component: DialogTestModelComponent,
-      styles: {'width': '800px', 'min-height': '75%'},
+      styles: {'width': '800px', 'min-height': '500px'},
       classes: '',
       isModal: true,
       clickOutsideToClose: true,

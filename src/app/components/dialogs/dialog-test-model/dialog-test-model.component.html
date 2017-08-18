@@ -2,18 +2,17 @@
   <h1 class="mdl-dialog__title mat-dialog-title">Test model #{{model.id}}</h1>
   <form [formGroup]="testModelForm" (ngSubmit)="submitTestModelForm(testModelForm)">
     <div class="mdl-dialog__content">
-      <hydro-input-text readonly="" label="Path" formControlName="path"></hydro-input-text>
-      <!--<hydro-input-text readonly="" label="Output" formControlName="output"></hydro-input-text>-->
-
       <div fxLayout="row" fxLayoutAlign="space-around stretch">
         <div fxFlex="49%">
-          <label class="">Input</label>
-          <codemirror  formControlName="data" [config]="codeMirrorInputOptions"></codemirror>
+            <label>Input</label>
+          <div class="cs-mb-8"><codemirror formControlName="data" [config]="codeMirrorInputOptions"></codemirror></div>
+          <div class="cs-text-size-12">Example {{"[{key1: value1}, {key2: value2}]"}}</div>
         </div>
         <div fxFlex="49%">
           <label class="">Output</label>
           <codemirror [ngModelOptions]="{standalone: true}" [(ngModel)]="output" [config]="codeMirrorOutputOptions"></codemirror>
         </div>
+
       </div>
 
       <div class="mdl-grid">

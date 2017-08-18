@@ -22,21 +22,26 @@
         </td>
         <td class="models-list-table__td run-type"><div title="{{model.runtimeType.name}}" class='cs-text-overflow-ellipsis'>{{model.runtimeType.name}}</div></td>
         <td class="models-list-table__td status">
-          <div *ngIf="model.lastModelBuild.finished" title="{{model.lastModelBuild.status}}" class='cs-text-overflow-ellipsis'>
-            {{model | modelStatus}} {{model.lastModelBuild.finished | amLocal | amTimeAgo}}
+          <div title="{{model | modelStatus}}" class='cs-text-overflow-ellipsis'>
+              {{model | modelStatus}} {{model.lastModelBuild.finished | amLocal | amTimeAgo}}
           </div>
         </td>
-        <td class='cs-text-overflow-ellipsis models-list-table__td actions'>
-          <button title='Build' mdl-button mdl-button-type='mini-fab' mdl-ripple
-                  (click)="buildModel(model)">
-            <mdl-icon>build</mdl-icon>
-          </button>
-          <button (click)="stopModel(model.id)" title='Stop' mdl-button mdl-button-type='mini-fab' mdl-ripple>
-            <mdl-icon>remove_circle</mdl-icon>
-          </button>
-          <button (click)="testModel(model)" title='Test' mdl-button mdl-button-type='mini-fab' mdl-ripple>
-            <mdl-icon>settings_input_component</mdl-icon>
-          </button>
+        <td class='cs-text-overflow-ellipsis models-list-table__td'>
+
+          <div fxLayout="row" fxLayoutAlign="space-around center"  class="models-list-table__td__actions">
+            <!--<div><mdl-spinner class="models-list-table__td__actions&#45;&#45;icon" *ngIf="(model | modelStatus) == 'DEPLOYED'" single-color [active]="(model | modelStatus) == 'DEPLOYED'"></mdl-spinner></div>-->
+            <div class="models-list-table__td__actions--buttons">
+              <a title="{{(model | modelStatus) == 'DEPLOYED' ? 'Redeploy' : 'Deploy'}}" (click)="buildModel(model)" class="hydro-link mdl-color-text--grey-700">
+                <mdl-icon><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#212121" viewBox="0 0 24 24"><path d="M7.411 21.39l-4.054 2.61-.266-1.053c-.187-.744-.086-1.534.282-2.199l2.617-4.729c.387 1.6.848 3.272 1.421 5.371zm13.215-.642l-2.646-4.784c-.391 1.656-.803 3.22-1.369 5.441l4.032 2.595.266-1.053c.186-.743.085-1.533-.283-2.199zm-3.626-11.592c-.035 3.267-1.166 7.176-2.347 11.844h-5.273c-1.234-4.534-2.38-8.469-2.38-11.809 0-3.703 1.511-6.688 5-9.191 3.559 2.517 5.04 5.425 5 9.156zm-2.114.578c.114-.328.161-1.187-.063-1.708-1.76.213-3.89.213-5.65 0-.223.521-.176 1.38-.061 1.708.687.195 1.786.292 2.887.292 1.099 0 2.198-.097 2.887-.292zm-1.439 14.266h-2.895l-.552-2h4l-.553 2z"/></svg></mdl-icon>
+              </a>
+              <a *ngIf="(model | modelStatus) == 'DEPLOYED'" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(model.id)" title="Stop">
+                <mdl-icon>delete_forever</mdl-icon>
+              </a>
+              <a *ngIf="(model | modelStatus) == 'DEPLOYED'" (click)="testModel(model)" title='Test' class="hydro-link mdl-color-text--blue-800">
+                <mdl-icon>play_circle_outline</mdl-icon>
+              </a>
+          </div>
+          </div>
         </td>
       </tr>
     </ng-template>

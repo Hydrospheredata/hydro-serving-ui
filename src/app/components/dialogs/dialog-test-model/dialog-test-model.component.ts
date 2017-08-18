@@ -63,7 +63,7 @@ export class DialogTestModelComponent implements OnInit {
 
   createTestModelForm() {
     this.testModelForm = this.fb.group({
-      data: ['', [Validators.required]],
+      data: ['[{}]', [Validators.required]],
       path: ['/serve', [Validators.required]],
     });
   }
@@ -81,7 +81,7 @@ export class DialogTestModelComponent implements OnInit {
       .subscribe(res => {
         this.output = JSON.stringify(res, undefined, 2);
           this.mdlSnackbarService.showSnackbar({
-            message: `Model build was successful`,
+            message: `Model test was successful`,
             timeout: 5000
           });
       },
