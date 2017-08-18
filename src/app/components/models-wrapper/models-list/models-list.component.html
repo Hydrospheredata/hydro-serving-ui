@@ -28,7 +28,7 @@
               'mdl-color-text--red-700': (model | modelStatus) == 'FAILED',
               'mdl-color-text--grey-900': (model | modelStatus) == 'STOPPED'
               }">{{model | modelStatus}}</span></strong>
-            {{model.lastModelBuild.finished | amLocal | amTimeAgo}}
+            {{model.lastModelBuild.finished | utcToLocal | amTimeAgo}}
           </div>
         </td>
         <td class='cs-text-overflow-ellipsis models-list-table__td'>

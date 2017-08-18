@@ -49,6 +49,7 @@ import { DialogTestModelComponent } from './components/dialogs/dialog-test-model
 import { BuildModelService } from '@services/build-model.service';
 import { DialogStopModelComponent } from './components/dialogs/dialog-stop-model/dialog-stop-model.component';
 import { ModelStatusPipe } from './pipes/model-status.pipe';
+import { UtcToLocalPipe } from './pipes/utc-to-local.pipe';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { ModelStatusPipe } from './pipes/model-status.pipe';
     LoaderComponent,
     SortByPipe,
     DialogStopModelComponent,
-    ModelStatusPipe
+    ModelStatusPipe,
+    UtcToLocalPipe
   ],
   imports: [
     BrowserModule,
