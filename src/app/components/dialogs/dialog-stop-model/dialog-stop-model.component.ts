@@ -36,11 +36,11 @@ export class DialogStopModelComponent implements OnInit {
 
   submitStopModelForm() {
     this.modelStore.stopModel(this.modelId)
+      .finally(() => {
+        this.modelStore.getAll();
+      })
       .subscribe(result => {
         this.dialogRef.hide();
-        this.modelStore.getAll();
-        this.modelStore.updateStore();
-
         this.mdlSnackbarService.showSnackbar({
           message: 'Model has been stopped',
           timeout: 5000

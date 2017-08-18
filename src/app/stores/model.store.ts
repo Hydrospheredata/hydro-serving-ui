@@ -27,7 +27,7 @@ export class ModelStore {
     });
   }
 
-  public updateStore(): void {
+  private updateStore(): void {
     this._items.next(this.dataStore);
   }
 

@@ -86,8 +86,10 @@ export class DialogModelBuildComponent implements OnInit {
       .flatMap((model) => {
         return this.buildModelService.build({modelVersion: modelOptions.version, modelId: modelOptions.id, runtimeTypeId: 1});
       })
-      .subscribe((model) => {
+      .finally(() => {
         this.modelStore.getAll();
+      })
+      .subscribe((model) => {
         this.dialogRef.hide();
         this.mdlSnackbarService.showSnackbar({
           message: `Model was successfully updated`,

@@ -63,9 +63,17 @@ export class DialogTestModelComponent implements OnInit {
 
   createTestModelForm() {
     this.testModelForm = this.fb.group({
-      data: ['[{}]', [Validators.required]],
+      data: [this.extractModelInputFields(this.model), [Validators.required]],
       path: ['/serve', [Validators.required]],
     });
+  }
+
+  private extractModelInputFields(model): string {
+    let inputFields: object[] = [];
+    for (let i = 0; i < model['inputFields'].length; i++) {
+      inputFields.push({ [model['inputFields'][i]]: '' });
+    }
+    return JSON.stringify(inputFields, undefined, 2);
   }
 
   submitTestModelForm(form) {

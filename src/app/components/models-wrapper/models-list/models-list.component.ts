@@ -27,14 +27,14 @@ export class ModelsListComponent implements OnInit {
     private httpRuntimeTypesService: HttpRuntimeTypesService,
     public dialog: MdlDialogService
   ) {
+  }
+
+  ngOnInit() {
     this.modelStore.getAll();
     this.modelStore.items.subscribe((models) => {
       this.models = models;
       console.log(models);
     });
-  }
-
-  ngOnInit() {
     this.httpRuntimeTypesService.getAll().subscribe((runtimeType) => {
       this.runtimeTypes = runtimeType;
     });
