@@ -24,9 +24,6 @@ export class LoaderComponent implements AfterViewChecked, OnDestroy {
     this.subscription = this.loaderStateService.loaderState
       .subscribe((state: LoaderState) => {
         this.show = state.show;
-        // workaround to fix Error: ExpressionChangedAfterItHasBeenCheckedError
-        // todo find better solution
-        this.cd.detectChanges();
       });
   }
 
