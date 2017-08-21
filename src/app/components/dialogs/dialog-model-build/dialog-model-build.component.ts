@@ -93,12 +93,12 @@ export class DialogModelBuildComponent implements OnInit {
         this.dialogRef.hide();
         this.mdlSnackbarService.showSnackbar({
           message: `Model was successfully updated`,
-          timeout: 5000
+          timeout: 225000
         });
       }, (error) => {
         this.mdlSnackbarService.showSnackbar({
           message: `Error: ${error}`,
-          timeout: 5000
+          timeout: 225000
         });
       });
   }

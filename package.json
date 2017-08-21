@@ -9,8 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-prod": "ng build --aot --prod --base-href /ui/",
-    "build-prod-tar": "npm run build-prod && PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && tar cfvz mist-ui-${PACKAGE_VERSION}.tar.gz dist"
+    "build-prod": "ng build --aot --prod"
   },
   "private": true,
   "dependencies": {
@@ -33,7 +32,7 @@
     "zone.js": "^0.8.16"
   },
   "devDependencies": {
-    "@angular/cli": "^1.3.0",
+    "@angular/cli": "^1.3.1",
     "@angular/compiler-cli": "^4.3.4",
     "@angular/flex-layout": "^2.0.0-rc.1",
     "@angular/language-service": "^4.3.4",

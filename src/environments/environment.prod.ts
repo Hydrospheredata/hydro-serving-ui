@@ -1,5 +1,7 @@
 export const environment = {
   production: true,
   host: 'http://localhost',
-  port: '10010'
+  port: '8080',
+  apiUrl: '/api/v1',
+  uiUrl: '/ui/v1'
 };
