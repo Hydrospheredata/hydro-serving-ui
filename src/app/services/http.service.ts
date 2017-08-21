@@ -17,6 +17,7 @@ import {LoaderService} from './loader.service';
 export class HttpService extends Http {
   port: string;
   baseUrl: string;
+  private requestCount: number;
 
   constructor(backend: XHRBackend,
               defaultOptions: HydroRequestOptions,
@@ -27,6 +28,7 @@ export class HttpService extends Http {
 
     this.port = environment.production ? window.location.port : environment.port;
     this.baseUrl = `${window.location.protocol}//${window.location.hostname}:${this.port}`;
+    this.requestCount = 0;
   }
 
   get(url: string, options?: RequestOptionsArgs): Observable<any> {
@@ -141,10 +143,13 @@ export class HttpService extends Http {
   }
 
   private showLoader(): void {
+    this.requestCount++;
     this.loaderService.show();
   }
 
   private hideLoader(): void {
-    this.loaderService.hide();
+    if (--this.requestCount === 0) {
+      this.loaderService.hide();
+    }
   }
 }
