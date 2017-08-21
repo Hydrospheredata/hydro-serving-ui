@@ -11,7 +11,7 @@ import {
 } from '@angular/http';
 import { Location } from '@angular/common';
 import { HydroRequestOptions } from './hydro-request-options';
-import {LoaderService} from './loader.service';
+import {LoaderStateService} from './loader-state.service';
 
 @Injectable()
 export class HttpService extends Http {
@@ -22,7 +22,7 @@ export class HttpService extends Http {
   constructor(backend: XHRBackend,
               defaultOptions: HydroRequestOptions,
               private location: Location,
-              private loaderService: LoaderService,
+              private loaderStateService: LoaderStateService,
               ) {
     super(backend, defaultOptions);
 
@@ -143,13 +143,15 @@ export class HttpService extends Http {
   }
 
   private showLoader(): void {
+    if (this.requestCount === 0) {
+      this.loaderStateService.showLoader();
+    }
     this.requestCount++;
-    this.loaderService.show();
   }
 
   private hideLoader(): void {
     if (--this.requestCount === 0) {
-      this.loaderService.hide();
+      this.loaderStateService.hideLoader();
     }
   }
 }

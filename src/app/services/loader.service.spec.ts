@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { LoaderService } from './loader.service';
+import { LoaderStateService } from './loader-state.service';
 
-describe('LoaderService', () => {
+describe('LoaderStateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LoaderService]
+      providers: [LoaderStateService]
     });
   });
 
-  it('should be created', inject([LoaderService], (service: LoaderService) => {
+  it('should be created', inject([LoaderStateService], (service: LoaderStateService) => {
     expect(service).toBeTruthy();
   }));
 });

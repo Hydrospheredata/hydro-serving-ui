@@ -27,7 +27,7 @@ import { CodemirrorModule } from 'ng2-codemirror';
 // services
 import { HttpModelsService } from '@services/http-models.service';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
-import { LoaderService } from '@services/loader.service';
+import { LoaderStateService } from '@services/loader-state.service';
 import { HttpService } from '@services/http.service';
 
 // stores
@@ -100,11 +100,11 @@ import { UtcToLocalPipe } from './pipes/utc-to-local.pipe';
     // stores
     ModelStore,
     HttpService,
-    LoaderService,
+    LoaderStateService,
     {
       provide: HttpService,
       useFactory: httpServiceFactory,
-      deps: [XHRBackend, RequestOptions, Location, LoaderService ]
+      deps: [XHRBackend, RequestOptions, Location, LoaderStateService ]
     }
   ],
   bootstrap: [AppComponent]

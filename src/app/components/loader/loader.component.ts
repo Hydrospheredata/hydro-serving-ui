@@ -1,7 +1,7 @@
 import { Component, OnDestroy, ChangeDetectorRef, AfterViewChecked } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { LoaderService } from '@services/loader.service';
+import { LoaderStateService } from '@services/loader-state.service';
 import { LoaderState } from './loader';
 
 @Component({
@@ -16,12 +16,12 @@ export class LoaderComponent implements AfterViewChecked, OnDestroy {
   private subscription: Subscription;
 
   constructor(
-    private loaderService: LoaderService,
+    private loaderStateService: LoaderStateService,
     private cd: ChangeDetectorRef
   ) { }
 
   ngAfterViewChecked() {
-    this.subscription = this.loaderService.loaderState
+    this.subscription = this.loaderStateService.loaderState
       .subscribe((state: LoaderState) => {
         this.show = state.show;
         // workaround to fix Error: ExpressionChangedAfterItHasBeenCheckedError
