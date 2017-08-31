@@ -128,3 +128,32 @@
 .mat-ink-bar {
   background-color: $main-color;
 }
+
+.mdl-textfield__label:after,
+.mdl-textfield.is-focused .mdl-textfield__label:after {
+  bottom: 5px;
+}
+
+.mdl-data-table {
+  &.mdl-data-table--models {
+    tbody {
+      tr {
+        border-top: 2px solid #f8f9fb;
+        border-bottom: none;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+        &:hover {
+          background-color: #fafbfc;
+        }
+        td {
+          border-top: 0;
+          border-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.mdl-chip {
+  font-weight: bold;
+}
