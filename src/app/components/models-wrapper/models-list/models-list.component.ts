@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModelStore } from '@stores/model.store';
-import { BuildModelService } from '@services/build-model.service';
 import { Model } from '@models/model';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { RuntimeType } from '@models/runtime-type';
@@ -8,36 +7,57 @@ import { DialogModelBuildComponent, injectableModelOptions } from '@components/d
 import { DialogTestModelComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test-model/dialog-test-model.component';
 import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
 import { MdlDialogService } from '@angular-mdl/core';
+import { ActivatedRoute } from '@angular/router';
+import { ModelServiceStore } from '@stores/model-service.store';
 
 @Component({
   selector: 'hydro-models-list',
   templateUrl: './models-list.component.html',
   styleUrls: ['./models-list.component.scss'],
-  providers: [BuildModelService],
+  providers: [],
   encapsulation: ViewEncapsulation.None
 })
 export class ModelsListComponent implements OnInit {
   public models: Model[];
   public runtimeTypes: RuntimeType[];
-  public currentRuntimeType: RuntimeType;
+  private activatedRouteSub: any;
 
   constructor(
-    private buildModelService: BuildModelService,
     private modelStore: ModelStore,
     private httpRuntimeTypesService: HttpRuntimeTypesService,
-    public dialog: MdlDialogService
+    public dialog: MdlDialogService,
+    private activatedRoute: ActivatedRoute,
+    private modelServiceStore: ModelServiceStore
   ) {
   }
 
   ngOnInit() {
-    this.modelStore.getAll();
-    this.modelStore.items.subscribe((models) => {
-      this.models = models;
-      console.log(models);
-    });
+    this.activatedRouteSub = this.activatedRoute.params
+      .map((params) => {
+        return params['modelId'];
+      })
+      .subscribe((modelId) => { this.loadInitialData(modelId) });
+
+
     this.httpRuntimeTypesService.getAll().subscribe((runtimeType) => {
       this.runtimeTypes = runtimeType;
     });
+  }
+
+  loadInitialData(id: string) {
+    if (id === 'all') {
+      this.modelStore.getAll();
+      this.modelStore.items.subscribe((models) => {
+        console.log(models);
+        this.models = models;
+      });
+    } else {
+      // todo set correct query
+      this.modelServiceStore.getAll();
+      this.modelServiceStore.items.subscribe((models) => {
+        this.models = null;
+      });
+    }
   }
 
   buildModel(modelOptions) {
@@ -51,10 +71,6 @@ export class ModelsListComponent implements OnInit {
       leaveTransitionDuration: 400,
       providers: [{provide: injectableModelOptions, useValue: modelOptions}],
     });
-  }
-
-  private setModelStatus() {
-
   }
 
   testModel(model) {
@@ -81,7 +97,6 @@ export class ModelsListComponent implements OnInit {
       leaveTransitionDuration: 400,
       providers: [{provide: injectableModelStopOptions, useValue: id}],
     });
-
   }
 
 }

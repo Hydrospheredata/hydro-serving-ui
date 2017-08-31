@@ -1,6 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-
-import { ModelStore } from './model-store.service';
+import { ModelStore } from './model.store';
 
 describe('ModelStore', () => {
   beforeEach(() => {

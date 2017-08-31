@@ -1,0 +1,60 @@
+<div class='services-list__row services-list__row--big'>
+  <div class='services-list__header'>
+    <div class="mdl-grid cs-align-center cs-mt-8 cs-mb-16 cs-text-right">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
+        <span class='h3'>Services</span>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+        <mdl-button (click)="openDialogWeightedServicesForm()"
+                    class="mist-button blue border icon"
+                    title="Add new endpoint"
+                    mdl-colored="">
+          <!--(click)="openDialogAddEndpointForm()"-->
+          <mdl-icon>add</mdl-icon>
+          <span fxHide.sm fxHide.md>Add</span>
+        </mdl-button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='services-list__row'>
+  <div class='services-list__search'>
+    <hydro-input-text
+      inputClass="services-list__search-input mist-input"
+      placeholder="Search"
+      [(ngModel)]="searchQ"
+      iconName="search"
+      iconDirection="left"
+    ></hydro-input-text>
+  </div>
+</div>
+<div class='services-list__row'>
+  <ul class='mdl-list services-list__ul'>
+    <li class='mdl-list__item services-list__item'
+        routerLinkActive='services-list__item--active'>
+      <a class='mdl-list__item-primary-content services-list__item-content'
+         routerLink="all">
+        <i class='material-icons mdl-list__item-icon services-list__item-icon'>view_comfy</i>
+        All models
+      </a>
+      <span class='services-list__badge'
+            *ngIf="services.length"
+            [mdl-badge]="services.length"></span>
+    </li>
+    <ng-template ngFor let-service [ngForOf]="services | search : 'name' : searchQ">
+      <li class='cs-cursor-pointer mdl-list__item services-list__item' [routerLink]="[service.id]"
+          routerLinkActive='services-list__item--active'>
+        <a fxLayout="row"
+           fxLayoutAlign="space-between center"
+           class='mdl-list__item-primary-content services-list__item-content'>
+          <div>{{ service.serviceName }}</div>
+          <mdl-icon [ngClass]="{'cs-visible': activeService == service.serviceName}"
+                    title="Edit service" (click)="openDialogWeightedServicesForm(service)">settings</mdl-icon>
+        </a>
+        <span class='services-list__badge'
+              *ngIf="service.weights.length"
+              [mdl-badge]="service.weights.length"></span>
+      </li>
+    </ng-template>
+  </ul>
+</div>

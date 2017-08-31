@@ -75,6 +75,9 @@
   &-block {
     display: block;
   }
+  &-hidden {
+    visibility: hidden;
+  }
   &-message {
     &.error {
       color: $color--failed;
@@ -84,6 +87,13 @@
     &-responsive {
       table-layout: fixed;
       width: 100%;
+    }
+  }
+  &-form {
+    &-input {
+      &-text {
+        height: 45px;
+      }
     }
   }
 }

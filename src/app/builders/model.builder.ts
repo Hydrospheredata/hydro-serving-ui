@@ -31,7 +31,9 @@ export class ModelBuilder {
     let lastModelBuild: ModelBuild;
     let currentServices: CurrentServices[] = [];
 
-    runtimeType = this.runtimeTypeBuilder.build(props.model['runtimeType']);
+    if (props.model && props.model['runtimeType']) {
+      runtimeType = this.runtimeTypeBuilder.build(props.model['runtimeType']);
+    }
 
     if (props['lastModelRuntime']) {
       lastModelRuntime = this.modelRuntimeBuilder.build(props['lastModelRuntime']);
@@ -41,7 +43,7 @@ export class ModelBuilder {
       lastModelBuild = this.modelBuildBuilder.build(props['lastModelBuild']);
     }
 
-    if (props['currentServices'].length) {
+    if (props['currentServices'] && props['currentServices'].length) {
       currentServices = this.modelCurrentServicesBuilder.build(props['currentServices']);
     }
 

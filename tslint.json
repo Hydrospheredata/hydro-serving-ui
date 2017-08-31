@@ -117,13 +117,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "hydro",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "hydro",
       "kebab-case"
     ],
     "use-input-property-decorator": true,

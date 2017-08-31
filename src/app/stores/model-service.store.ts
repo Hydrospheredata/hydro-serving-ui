@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { HttpModelsService } from '@services/http-models.service';
+import { HttpModelServiceService } from '@services/http-model-service.service';
 import { BuildModelService } from '@services/build-model.service';
 import { Model } from '@models/model';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class ModelStore {
+export class ModelServiceStore {
   items: Observable<Model[]>;
   private _items: BehaviorSubject<Model[]>;
   private dataStore: Model[];
 
-  constructor(private httpModelsService: HttpModelsService,
+  constructor(private httpModelsServiceService: HttpModelServiceService,
               private buildModelService: BuildModelService) {
     this.dataStore = [];
     this._items = <BehaviorSubject<Model[]>>new BehaviorSubject([]);
@@ -20,7 +20,7 @@ export class ModelStore {
   }
 
   public getAll(): void {
-    this.httpModelsService.getAll()
+    this.httpModelsServiceService.getAll()
       .subscribe((data) => {
         this.dataStore = data;
         this.updateStore();
@@ -32,7 +32,7 @@ export class ModelStore {
   }
 
   public updateModel(modelOptions) {
-    return this.httpModelsService.updateModel(modelOptions)
+    return this.httpModelsServiceService.updateModel(modelOptions)
       .map((model) => {
         this.updateItem(model);
         this.updateStore();
@@ -47,20 +47,6 @@ export class ModelStore {
     } else {
       this.dataStore[idx] = model;
     }
-  }
-
-  public testModel(params) {
-    const service = this.buildModelService
-      .testModel(params);
-
-    return service;
-  }
-
-  public stopModel(id) {
-    const service = this.buildModelService
-      .stopModel(id);
-
-    return service;
   }
 
 }
