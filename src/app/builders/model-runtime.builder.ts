@@ -14,7 +14,7 @@ export class ModelRuntimeBuilder {
 
   private toModelRuntime(props) {
     let runtimeType: RuntimeType;
-    if(props['runtimeType']) {
+    if (props['runtimeType']) {
       runtimeType = this.runtimeTypeBuilder.build(props['runtimeType']);
     }
 
@@ -34,4 +34,5 @@ export class ModelRuntimeBuilder {
 
     return modelRuntime;
   }
+
 }

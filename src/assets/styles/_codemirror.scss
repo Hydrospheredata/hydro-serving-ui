@@ -1,0 +1,26 @@
+@import "variables.scss";
+
+.CodeMirror-wrap {
+  font-family: $main-font-family;
+  color: $main-color;
+  border: 2px solid $border-color;
+}
+
+.job-details {
+  .CodeMirror {
+    display: inline-block;
+    width: 90%;
+  }
+
+  &.job-details--results {
+    .CodeMirror {
+      background: #f1f3f7;
+    }
+  }
+}
+
+.full-screen-json {
+  .CodeMirror {
+    height: 100%;
+  }
+}

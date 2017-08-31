@@ -12,12 +12,8 @@ export class RuntimeTypeBuilder {
 
   private toRuntimeType(props) {
     let runtimeType: RuntimeType;
-    runtimeType = new RuntimeType({
-      id: props['id'],
-      name: props['name'],
-      version: props['version']
-    });
+    runtimeType = new RuntimeType(props);
 
-    return runtimeType
+    return runtimeType;
   }
 }

@@ -129,6 +129,17 @@
   background-color: $main-color;
 }
 
+.mdl-progress {
+  width: 100% !important;
+}
+
+.mdl-snackbar__text {
+  margin: 0 auto;
+}
+
+.mdl-dialog {
+  height: auto;
+}
 .mdl-textfield__label:after,
 .mdl-textfield.is-focused .mdl-textfield__label:after {
   bottom: 5px;

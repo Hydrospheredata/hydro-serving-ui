@@ -9,7 +9,7 @@ describe('HttpRuntimeTypesService', () => {
     });
   });
 
-  it('should be created', inject([HttpRuntimeTypeService], (service: HttpRuntimeTypesService) => {
+  it('should be created', inject([HttpRuntimeTypesService], (service: HttpRuntimeTypesService) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -1,25 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, Observer } from 'rxjs/Rx';
 import { environment } from '../../environments/environment';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import {  Response } from '@angular/http';
 import { RuntimeType } from '@models/runtime-type';
-import { RuntimeTypeBuilder } from '@builders/runtime-type.builder'
+import { RuntimeTypeBuilder } from '@builders/runtime-type.builder';
+import { HttpService } from '@services/http.service';
 
 @Injectable()
 export class HttpRuntimeTypesService {
 
-  private baseUrl: string;
+  private baseAPIUrl: string;
+  private baseUIUrl: string;
 
   constructor(
-    private http: Http,
+    private http: HttpService,
     private runtimeTypeBuilder: RuntimeTypeBuilder
   ) {
-    this.baseUrl = `${environment.host}:${environment.port}/api/v1/runtimeType`
+    this.baseAPIUrl = `${environment.apiUrl}/runtimeType`;
+    this.baseUIUrl = `${environment.uiUrl}/runtimeType`;
   }
 
   public getAll(): Observable<RuntimeType[]> {
-    return this.http.get(this.baseUrl).map((res: Response) => {
-      return this.extractRuntimeTypes(res) 
+    return this.http.get(this.baseAPIUrl).map((res: Response) => {
+      return this.extractRuntimeTypes(res);
     });
   }
 

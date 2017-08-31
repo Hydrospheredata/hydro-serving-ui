@@ -9,6 +9,12 @@
     &-italic {
       font-style: italic;
     }
+    &-size-14 {
+      font-size: 14px !important;
+    }
+    &-size-12 {
+      font-size: 12px !important;
+    }
   }
   &-pt-20 {
     padding-top: 20px;
@@ -18,6 +24,9 @@
   }
   &-mb-16 {
     margin-bottom: 1rem;
+  }
+  &-mb-32 {
+    margin-bottom: 2rem;
   }
   &-mt-8 {
     margin-top: 0.5rem;

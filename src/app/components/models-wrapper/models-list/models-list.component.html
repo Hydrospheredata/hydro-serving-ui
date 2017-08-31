@@ -1,36 +1,54 @@
 <div class='models-list'>
-
-
-  <div fxLayout='row'>
-    <div class='models-list__table'>
-
-      <table class='cs-table-responsive mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-data-table--models mdl-shadow--2dp'>
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>source</th>
-          <th>actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <ng-template ngFor let-model [ngForOf]="models">
-          <tr class='cs-cursor-pointer' [routerLink]="['/model', model.id]">
-            <td class='cs-text-overflow-ellipsis'>{{model.name}}</td>
-            <td class='cs-text-overflow-ellipsis'>{{model.description}}</td>
-            <td class='cs-text-overflow-ellipsis'>{{model.source}}</td>
-            <td class='cs-text-overflow-ellipsis'>
-              <button title='Build' mdl-button mdl-button-type='mini-fab' mdl-ripple
-                      (click)="buildModel(model.id)">
-                <mdl-icon>file_upload</mdl-icon>
-              </button>
-              <button title='Stop' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>remove_circle</mdl-icon></button>
-              <button title='Test' mdl-button mdl-button-type='mini-fab' mdl-ripple><mdl-icon>settings_input_component</mdl-icon></button>
-            </td>
-          </tr>
-        </ng-template>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  <table class='models-list-table mdl-data-table mdl-js-data-table mdl-shadow--2dp'>
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Version</th>
+      <th>Model Type</th>
+      <th>Runtime Type</th>
+      <th>Deploy status</th>
+      <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-template ngFor let-model [ngForOf]="models | sortBy: 'id'">
+      <tr class='models-list-table__tr cs-cursor-pointer'>
+        <td class="models-list-table__td id"><div title="{{model.id}}" class='cs-text-overflow-ellipsis'>{{model.id}}</div></td>
+        <td class="models-list-table__td name"><div title="{{model.source}}" class='cs-text-overflow-ellipsis'>{{model.source}}</div></td>
+        <td class="models-list-table__td version">{{model.lastModelRuntime.modelVersion}}</td>
+        <td class="models-list-table__td model-type" title="{{model.lastModelRuntime.runtimeType ? model.lastModelRuntime.runtimeType.tags : ''}}">
+          {{model.lastModelRuntime.runtimeType ? model.lastModelRuntime.runtimeType.tags : ''}}
+        </td>
+        <td class="models-list-table__td run-type"><div title="{{model.runtimeType.name}}" class='cs-text-overflow-ellipsis'>{{model.runtimeType.name}}</div></td>
+        <td class="models-list-table__td status">
+          <div title="{{model | modelStatus}}" class='cs-text-overflow-ellipsis'>
+            <strong><span [ngClass]="{
+              'mdl-color-text--green-700': (model | modelStatus) == 'DEPLOYED',
+              'mdl-color-text--red-700': (model | modelStatus) == 'FAILED',
+              'mdl-color-text--grey-900': (model | modelStatus) == 'STOPPED'
+              }">{{model | modelStatus}}</span></strong>
+            {{(model.lastModelBuild.finished ? model.lastModelBuild.finished : model.created) | utcToLocal | amTimeAgo}}
+          </div>
+        </td>
+        <td class='cs-text-overflow-ellipsis models-list-table__td'>
+          <div fxLayout="row" fxLayoutAlign="space-between center"  class="models-list-table__td__actions">
+            <!--<div><mdl-spinner class="models-list-table__td__actions&#45;&#45;icon" *ngIf="(model | modelStatus) == 'DEPLOYED'" single-color [active]="(model | modelStatus) == 'DEPLOYED'"></mdl-spinner></div>-->
+            <div class="models-list-table__td__actions--buttons">
+              <a title="{{(model | modelStatus) == 'DEPLOYED' ? 'Redeploy' : 'Deploy'}}" (click)="buildModel(model)" class="hydro-link mdl-color-text--grey-700">
+                <mdl-icon>cloud_upload</mdl-icon>
+              </a>
+              <a *ngIf="(model | modelStatus) == 'DEPLOYED'" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(model.id)" title="Stop">
+                <mdl-icon>delete_forever</mdl-icon>
+              </a>
+              <a *ngIf="(model | modelStatus) == 'DEPLOYED'" (click)="testModel(model)" title='Test' class="hydro-link mdl-color-text--blue-800">
+                <mdl-icon>play_circle_outline</mdl-icon>
+              </a>
+          </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    </tbody>
+  </table>
 </div>

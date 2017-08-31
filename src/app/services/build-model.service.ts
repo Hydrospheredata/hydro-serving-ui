@@ -1,26 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { environment } from '../../environments/environment';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { Response } from '@angular/http';
 import { ModelRuntime } from '@models/model-runtime';
-import { ModelRuntimeBuilder } from '@builders/model-runtime.builder'
+import { ModelRuntimeBuilder } from '@builders/model-runtime.builder';
+import { HttpService } from '@services/http.service';
 
 @Injectable()
 export class BuildModelService {
-  private baseUrl: string;
+  private baseAPIUrl;
+  private baseUIUrl;
 
   constructor(
-    private http: Http,
-    private modelRuntimeBuilder: ModelRuntimeBuilder
+    private http: HttpService,
+    private modelRuntimeBuilder: ModelRuntimeBuilder,
   ) {
-    this.baseUrl = `${environment.host}:${environment.port}/api/v1/model/build` 
+    this.baseAPIUrl = `${environment.apiUrl}/model`;
+    this.baseUIUrl = `${environment.uiUrl}/model`;
   }
 
-  public build(modelId: string, version?: string): Observable<ModelRuntime> {
-    let body = { modelId: modelId, version: version }
-    return this.http.post(this.baseUrl, body).map((res: Response) => {
+  public build(options): Observable<ModelRuntime> {
+    return this.http.post(`${this.baseUIUrl}/build`, options).map((res: Response) => {
       return this.extractModelRuntime(res);
-    })
+    });
+  }
+
+  public testModel(params) {
+    const url = `${this.baseUIUrl}/serve`;
+
+    return this.http.post(url, params)
+      .map((res: Response) => res.json());
+  }
+
+  public stopModel(id): Observable<any> {
+    const url = `${this.baseUIUrl}/stopService/${id}`;
+    return this.http.delete(url).map((res: Response) => {});
   }
 
   private extractModelRuntime(res: Response): ModelRuntime {

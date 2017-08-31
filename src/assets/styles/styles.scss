@@ -1,17 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "variables.scss";
 
-@font-face {
-  font-family: 'MuseoSansCyrl';
-  src: url('/assets/fonts/Museosanscyrl500.woff') format('woff'),
-       url('/assets/fonts/Museosanscyrl500.woff2') format('woff2'),
-       url('/assets/fonts/Museosanscyrl500.ttf') format('truetype');
-
-  font-weight: normal;
-  font-style: normal;
-  line-height: 1.5;
-}
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -31,7 +20,7 @@ html, body {
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-  font-family: 'MuseoSansCyrl';
+  font-family: $main-font-family;
   font-weight: 500;
   line-height: 1.1;
   color: inherit
@@ -301,7 +290,14 @@ md-dialog-container.mat-dialog-container {
   padding-top: 25px;
 }
 
-
+.mdl-select {
+  .mdl-textfield {
+    .mdl-textfield__label:after,
+    .mdl-textfield.is-focused .mdl-textfield__label:after {
+      bottom: 6px;
+    }
+  }
+}
 
 .single-model-table {
   td {

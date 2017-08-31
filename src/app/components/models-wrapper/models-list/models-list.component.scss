@@ -1,6 +1,6 @@
 @import 'variables.scss';
 
-.models-table {
+.models-list-table {
   border: none;
   width: 100%;
 
@@ -29,10 +29,32 @@
   td {
     text-align: left;
     max-width: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    .mdl-select {
+      .mdl-list__item {
+        font-size: 14px;
+      }
+      .mdl-textfield {
+        &__input {
+          font-size: 14px;
+        }
+      }
+    }
+
   }
   &__tr {
     height: 90px;
     cursor: pointer;
+    td .models-list-table__td__actions--buttons {
+      visibility: hidden;
+    }
+    &:hover {
+      td .models-list-table__td__actions--buttons {
+        visibility: visible;
+      }
+    }
   }
   &__tr,
   &__td {
@@ -40,43 +62,44 @@
     border-bottom: none;
     padding-right: 0.5rem;
     padding-left: 0.5rem;
-  }
-  &__td {
-    &.models-table__td--icon {
-      width: 6%;
-    }
-    &.models-table__td--job-id {
-      font-size: 18px;
-      text-align: right;
-      width: 22%;
-      @media screen and (max-width: 1279px) and (min-width: 600px) {
-        font-size: 14px;
-      }
-    }
-    &.models-table__td--actions {
+
+    &.id {
       width: 10%;
     }
-    &.models-table__td--details {
-      width: 12%;
+    &.name {
+      width: 15%;
     }
-    &.models-table__td--status {
-      width: 22%;
+    &.model-type {
+      width: 15%;
     }
-    &.models-table__td--endpoint {
-      font-size: 14px;
-      @media screen and (max-width: 1279px) and (min-width: 600px) {
-        font-size: 12px;
-      }
+    &.run-type {
+      width: 15%;
     }
-    &.models-table__td--namespace {
-      width: 18%;
-      text-align: center;
-      @media screen and (max-width: 1279px) and (min-width: 600px) {
-        font-size: 12px;
-      }
+    &.version {
+      width: 10%;
+    }
+    &.status {
+      width: 20%;
+    }
+    &.actions {
+      width: 20%;
     }
     i {
       font-size: 20px;
     }
+
+  }
+
+}
+
+.hydro-link {
+  &.mdl-color-text--blue-800:hover {
+    opacity: 0.7;
+  }
+  &.mdl-color-text--grey-800:hover {
+    opacity: 0.7;
+  }
+  &.mdl-color-text--red-800:hover {
+    opacity: 0.7;
   }
 }
