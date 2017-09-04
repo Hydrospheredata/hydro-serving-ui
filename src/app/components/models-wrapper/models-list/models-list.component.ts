@@ -1,42 +1,103 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModelStore } from '@stores/model.store';
-import { BuildModelService } from '@services/build-model.service';
 import { Model } from '@models/model';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { RuntimeType } from '@models/runtime-type';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
-import { DialogTestModelComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test-model/dialog-test-model.component';
+import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
 import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
+import { DialogDeleteServiceComponent, injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
 import { MdlDialogService } from '@angular-mdl/core';
+import { ActivatedRoute } from '@angular/router';
+import { ModelServiceStore } from '@stores/model-service.store';
+import { WeightedServiceStore } from '@stores/weighted-service.store';
+import { Observable } from 'rxjs/Observable';
+import { WeightedService } from '@models/weighted-service';
+import {
+  DialogWeightedServiceComponent,
+  injectableWeightedService
+} from '@components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
 
 @Component({
   selector: 'hydro-models-list',
   templateUrl: './models-list.component.html',
   styleUrls: ['./models-list.component.scss'],
-  providers: [BuildModelService],
+  providers: [],
   encapsulation: ViewEncapsulation.None
 })
 export class ModelsListComponent implements OnInit {
   public models: Model[];
   public runtimeTypes: RuntimeType[];
-  public currentRuntimeType: RuntimeType;
+  private activatedRouteSub: any;
+  public weightedServices;
+  public modelServices;
+  public id: string;
 
   constructor(
-    private buildModelService: BuildModelService,
     private modelStore: ModelStore,
     private httpRuntimeTypesService: HttpRuntimeTypesService,
-    public dialog: MdlDialogService
+    public dialog: MdlDialogService,
+    private activatedRoute: ActivatedRoute,
+    private modelServiceStore: ModelServiceStore,
+    private weightedServiceStore: WeightedServiceStore
   ) {
   }
 
   ngOnInit() {
-    this.modelStore.getAll();
-    this.modelStore.items.subscribe((models) => {
-      this.models = models;
-      console.log(models);
-    });
+    this.activatedRouteSub = this.activatedRoute.params
+      .map((params) => {
+        this.id = params['modelId'];
+        return this.id;
+      })
+      .subscribe((modelId) => { this.loadInitialData(modelId) });
+
     this.httpRuntimeTypesService.getAll().subscribe((runtimeType) => {
       this.runtimeTypes = runtimeType;
+    });
+  }
+
+  loadInitialData(id: string) {
+    if (id === 'all') {
+      this.modelStore.getAll();
+      this.modelStore.items.subscribe((models) => {
+        console.log(models);
+        this.models = models;
+      });
+    } else {
+
+      this.modelServiceStore.getAll();
+      this.weightedServiceStore.getAll();
+      Observable.combineLatest(this.modelServiceStore.items, this.weightedServiceStore.items)
+        .subscribe((items) => {
+          this.weightedServices = items[1];
+          this.modelServices = items[0];
+        });
+    }
+  }
+
+  openDialogWeightedServicesForm(service?: WeightedService) {
+    this.dialog.showCustomDialog({
+      component: DialogWeightedServiceComponent,
+      styles: {'width': '850px', 'min-height': '250px'},
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{provide: injectableWeightedService, useValue: service}],
+    });
+  }
+
+  openDialogTestWeightedServicesForm(service?: WeightedService) {
+    this.dialog.showCustomDialog({
+      component: DialogTestComponent,
+      styles: {'width': '850px', 'min-height': '250px'},
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{provide: injectableModelBuildOptions, useValue: service}],
     });
   }
 
@@ -53,13 +114,9 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  private setModelStatus() {
-
-  }
-
   testModel(model) {
     this.dialog.showCustomDialog({
-      component: DialogTestModelComponent,
+      component: DialogTestComponent,
       styles: {'width': '800px', 'min-height': '350px'},
       classes: '',
       isModal: true,
@@ -81,7 +138,19 @@ export class ModelsListComponent implements OnInit {
       leaveTransitionDuration: 400,
       providers: [{provide: injectableModelStopOptions, useValue: id}],
     });
+  }
 
+  deleteWeightedService(id) {
+    this.dialog.showCustomDialog({
+      component: DialogDeleteServiceComponent,
+      styles: {'width': '600px', 'min-height': '250px'},
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{provide: injectableServiceOptions, useValue: id}],
+    });
   }
 
 }

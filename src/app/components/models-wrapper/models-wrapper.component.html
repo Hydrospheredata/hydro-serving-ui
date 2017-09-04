@@ -1,3 +1,8 @@
-<div>
-  <hydro-models-list></hydro-models-list>
+<div fxLayout="row" fxLayoutAlign="space-between stretch">
+  <aside fxFlex="30%">
+    <hydro-services-list></hydro-services-list>
+  </aside>
+  <div fxFlex="70%">
+    <router-outlet></router-outlet>
+  </div>
 </div>
