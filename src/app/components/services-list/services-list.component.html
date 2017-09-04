@@ -43,8 +43,11 @@
     <ng-template ngFor let-service let-i="index" [ngForOf]="weightedServices | search : 'name' : searchQ">
       <li class='cs-cursor-pointer mdl-list__item services-list__item' [routerLink]="[service.id]"
           routerLinkActive='services-list__item--active'>
-          <a class='mdl-list__item-primary-content services-list__item-content'>{{ service.serviceName }}</a>
-          <mdl-icon title="Edit service" (click)="openDialogWeightedServicesForm(service)">settings</mdl-icon>
+          <a fxLayout="row" fxLayoutAlign="space-between center"  class='mdl-list__item-primary-content services-list__item-content'>
+            <span>{{ service.serviceName }}</span>
+            <mdl-icon title="Edit service" (click)="openDialogWeightedServicesForm(service)">settings</mdl-icon>
+          </a>
+
 
           <span class='services-list__badge'
                 *ngIf="service.weights.length"
