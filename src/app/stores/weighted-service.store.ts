@@ -28,6 +28,7 @@ export class WeightedServiceStore {
       });
   }
 
+
   add(weightedService: WeightedService): Observable<string> {
     return this.httpWeightedServicesService.add(weightedService)
       .map((res) => {
@@ -39,13 +40,26 @@ export class WeightedServiceStore {
   }
 
   public update(weightedService: WeightedService): Observable<string> {
-    let self = this;
     return this.httpWeightedServicesService.update(weightedService)
       .map((res: any) => {
         const result = res.json();
-        // this.dataStore.push(result);
+        this.dataStore.push(result);
         this.updateStore();
         return result;
+      });
+  }
+
+
+  private removeItem(id) {
+    let index: number = this.dataStore.indexOf(id);
+    this.dataStore.splice(index, 1);
+    this.updateStore();
+  }
+
+  public delete(id): Observable<any> {
+    return this.httpWeightedServicesService.delete(id)
+      .map((res) => {
+        this.removeItem(id);
       });
   }
 

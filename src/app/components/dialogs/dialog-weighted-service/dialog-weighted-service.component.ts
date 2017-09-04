@@ -6,6 +6,7 @@ import { WeightedService } from '@models/weighted-service';
 import { ModelStore } from '@stores/model.store';
 import { ModelServiceStore } from '@stores/model-service.store';
 import { FormsService } from '@services/form-service.service';
+import { MdlSnackbarService } from '@angular-mdl/core';
 
 export let injectableWeightedService = new InjectionToken<WeightedService>('selectedWeightedService');
 
@@ -34,7 +35,8 @@ export class DialogWeightedServiceComponent implements OnInit {
     private weightedServiceStore: WeightedServiceStore,
     private modelStore: ModelStore,
     private formsService: FormsService,
-    private modelServiceStore: ModelServiceStore
+    private modelServiceStore: ModelServiceStore,
+    private mdlSnackbarService: MdlSnackbarService
   ) {
     this.models = [];
     this.selectedWeightedService = data;
@@ -43,7 +45,11 @@ export class DialogWeightedServiceComponent implements OnInit {
   ngOnInit() {
     this.createWeightedServiceForm();
     this.modelServiceStore.getAll();
-    this.modelServiceStore.items.subscribe((models) => {
+    this.modelServiceStore.items
+      .map((models) => {
+        return models.filter((model) => model.serviceId > 0);
+      })
+      .subscribe((models) => {
       this.models = models;
     });
     this.initFormChangesListener();
@@ -142,8 +148,16 @@ export class DialogWeightedServiceComponent implements OnInit {
     } else {
       this.weightedServiceStore.add(weightedService)
         .subscribe((res) => {
-          console.log(res);
+          this.mdlSnackbarService.showSnackbar({
+            message: `Service was successfully added`,
+            timeout: 5000
+          });
           this.dialogRef.hide();
+        }, (error) => {
+          this.mdlSnackbarService.showSnackbar({
+            message: `Error: ${error}`,
+            timeout: 5000
+          });
         });
     }
 

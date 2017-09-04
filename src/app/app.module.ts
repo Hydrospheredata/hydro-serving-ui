@@ -36,6 +36,7 @@ import { HttpModelServiceService } from '@services/http-model-service.service';
 import { ModelStore } from '@stores/model.store';
 import { WeightedServiceStore } from '@stores/weighted-service.store';
 import { ModelServiceStore } from '@stores/model-service.store';
+import { ModelRuntimeStore } from '@stores/model-runtime.store';
 
 // factories
 import { httpServiceFactory } from './factories/http-service-factory';
@@ -49,7 +50,7 @@ import { ModelCurrentServicesBuilder } from '@builders/model-current-services.bu
 
 // dialogs
 import { DialogModelBuildComponent } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
-import { DialogTestModelComponent } from './components/dialogs/dialog-test-model/dialog-test-model.component';
+import { DialogTestComponent } from './components/dialogs/dialog-test/dialog-test.component';
 import { BuildModelService } from '@services/build-model.service';
 import { DialogStopModelComponent } from './components/dialogs/dialog-stop-model/dialog-stop-model.component';
 import { ModelStatusPipe } from './pipes/model-status.pipe';
@@ -57,6 +58,8 @@ import { UtcToLocalPipe } from './pipes/utc-to-local.pipe';
 import { ServicesListComponent } from './components/services-list/services-list.component';
 import { SearchPipe } from './pipes/search.pipe';
 import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
+import { PositiveNumbersPipe } from './pipes/positive-numbers.pipe';
+import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete-service/dialog-delete-service.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +70,7 @@ import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weig
     SingleModelComponent,
     DialogModelBuildComponent,
     InputTextComponent,
-    DialogTestModelComponent,
+    DialogTestComponent,
     LoaderComponent,
     SortByPipe,
     DialogStopModelComponent,
@@ -75,7 +78,9 @@ import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weig
     UtcToLocalPipe,
     ServicesListComponent,
     SearchPipe,
-    DialogWeightedServiceComponent
+    DialogWeightedServiceComponent,
+    PositiveNumbersPipe,
+    DialogDeleteServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -93,9 +98,10 @@ import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weig
   ],
   entryComponents: [
     DialogModelBuildComponent,
-    DialogTestModelComponent,
+    DialogTestComponent,
     DialogStopModelComponent,
-    DialogWeightedServiceComponent
+    DialogWeightedServiceComponent,
+    DialogDeleteServiceComponent
   ],
   providers: [
     // services
@@ -114,6 +120,7 @@ import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weig
     ModelStore,
     WeightedServiceStore,
     ModelServiceStore,
+    ModelRuntimeStore,
     HttpService,
     LoaderStateService,
     {

@@ -8,7 +8,7 @@ import { HttpService } from '@services/http.service';
 import 'rxjs/add/operator/map';
 
 @Injectable()
-export class HttpModelServiceService {
+export class HttpModelRuntimeService {
   private baseAPIUrl: string;
   private models: Model[];
 
@@ -16,7 +16,7 @@ export class HttpModelServiceService {
     private http: HttpService,
     private modelBuilder: ModelBuilder
   ) {
-    this.baseAPIUrl = `${environment.apiUrl}/modelService`;
+    this.baseAPIUrl = `${environment.apiUrl}/modelRuntime`;
   }
 
   public getAll(): Observable<any> {
@@ -37,20 +37,6 @@ export class HttpModelServiceService {
       models.push(model);
     }
     return models;
-  }
-
-  public updateModel(model) {
-    return this.http.put(this.baseAPIUrl, model)
-      .map((response: Response) => {
-        return response.json();
-      });
-  }
-
-  public serve(data): Observable<any> {
-    return this.http.post(`${this.baseAPIUrl}/serve`, data)
-      .map((response: Response) => {
-        return response.json();
-      });
   }
 
 }

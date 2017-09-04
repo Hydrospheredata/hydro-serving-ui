@@ -78,10 +78,11 @@
       mdl-icon {
         z-index: 10;
         visibility: hidden;
+        position: relative;
+        right: 2rem;
       }
     }
     &-primary-content {
-      padding-left: 1rem;
       margin-right: 2rem;
       height: 100%;
     }

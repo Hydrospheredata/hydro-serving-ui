@@ -3,7 +3,7 @@ import { WeightedServiceStore } from '@stores/weighted-service.store';
 import { WeightedService } from '@models/weighted-service';
 import { MdlDialogService } from '@angular-mdl/core';
 import { DialogWeightedServiceComponent, injectableWeightedService } from '@components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
-import { Router, RoutesRecognized, ActivatedRoute } from '@angular/router';
+import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
 
 @Component({
   selector: 'hydro-services-list',
@@ -15,30 +15,21 @@ export class ServicesListComponent implements OnInit {
   public services: WeightedService[];
   public activeService;
   public weightedServices: WeightedService[];
+  public modelServices;
 
   constructor(
     private dialog: MdlDialogService,
     private weightedServiceStore: WeightedServiceStore,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
   ) {
     this.services = [];
+    this.modelServices = [];
   }
 
   ngOnInit() {
-    this.router.events.subscribe(val => {
-      if (val instanceof RoutesRecognized) {
-        // console.log(val);
-      }
-    });
-
-    this.activatedRoute.parent.params.subscribe(params => {
-      console.log(params);
-    });
-
     this.weightedServiceStore.getAll();
-    this.weightedServiceStore.items.subscribe((services) => {
-        this.services = services;
+    this.weightedServiceStore.items
+      .subscribe((items) => {
+        this.weightedServices = items;
       });
   }
 
@@ -52,6 +43,20 @@ export class ServicesListComponent implements OnInit {
       enterTransitionDuration: 400,
       leaveTransitionDuration: 400,
       providers: [{provide: injectableWeightedService, useValue: service}],
+    });
+  }
+
+  openDialogTestWeightedServicesForm(service?: WeightedService) {
+    console.log(service);
+    this.dialog.showCustomDialog({
+      component: DialogTestComponent,
+      styles: {'width': '850px', 'min-height': '250px'},
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{provide: injectableModelBuildOptions, useValue: service}],
     });
   }
 

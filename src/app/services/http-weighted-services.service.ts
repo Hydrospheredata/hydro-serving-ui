@@ -38,4 +38,8 @@ export class HttpWeightedServicesService {
     return this.http.post(this.baseAPIUrl, service);
   }
 
+  delete(id: string) {
+    return this.http.delete(`${this.baseAPIUrl}/${id}`);
+  }
+
 }

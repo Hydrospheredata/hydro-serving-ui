@@ -2,20 +2,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpModelServiceService } from '@services/http-model-service.service';
-import { BuildModelService } from '@services/build-model.service';
+import { ModelService } from '@models/model-service';
 import { Model } from '@models/model';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class ModelServiceStore {
-  items: Observable<Model[]>;
-  private _items: BehaviorSubject<Model[]>;
-  private dataStore: Model[];
+  items: Observable<ModelService[]>;
+  private _items: BehaviorSubject<ModelService[]>;
+  private dataStore: ModelService[];
 
-  constructor(private httpModelsServiceService: HttpModelServiceService,
-              private buildModelService: BuildModelService) {
+  constructor(private httpModelsServiceService: HttpModelServiceService) {
     this.dataStore = [];
-    this._items = <BehaviorSubject<Model[]>>new BehaviorSubject([]);
+    this._items = <BehaviorSubject<ModelService[]>>new BehaviorSubject([]);
     this.items = this._items.asObservable();
   }
 
@@ -39,14 +38,19 @@ export class ModelServiceStore {
       });
   }
 
-  private updateItem(item: Model) {
-    const idx = this.dataStore.findIndex((dataStoreItem) => dataStoreItem.id === item.id);
-    const model = new Model(item);
+  private updateItem(item: ModelService) {
+    const idx = this.dataStore.findIndex((dataStoreItem) => dataStoreItem.serviceId === item.serviceId);
+    const model = new ModelService(item);
     if (idx === -1) {
       this.dataStore.push(model);
     } else {
       this.dataStore[idx] = model;
     }
+  }
+
+  public serve(modelService: ModelService): Observable<any> {
+    return this.httpModelsServiceService.serve(modelService)
+      .map((response: Response) => response);
   }
 
 }
