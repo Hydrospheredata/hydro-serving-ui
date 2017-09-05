@@ -47,8 +47,6 @@
             <span>{{ service.serviceName }}</span>
             <mdl-icon title="Edit service" (click)="openDialogWeightedServicesForm(service)">settings</mdl-icon>
           </a>
-
-
           <span class='services-list__badge'
                 *ngIf="service.weights.length"
                 [mdl-badge]="service.weights.length">

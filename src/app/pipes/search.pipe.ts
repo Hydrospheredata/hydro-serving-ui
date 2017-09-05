@@ -7,6 +7,7 @@ export class SearchPipe implements PipeTransform {
 
   transform(items: any[], field: string, q: string): any {
     if (!items || !field || !q) return items;
+
     let result;
     const fieldsArr: string[] = field.split(' ');
 
