@@ -4,7 +4,7 @@ import { RuntimeType } from '@models/runtime-type';
 @Injectable()
 export class RuntimeTypeBuilder {
 
-  constructor() { }
+constructor() { }
 
   public build(props): RuntimeType {
     return this.toRuntimeType(props);

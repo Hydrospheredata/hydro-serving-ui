@@ -1,0 +1,40 @@
+<div class='models-list__row models-list__row--big'>
+  <div class='models-list__header'>
+    <div class="mdl-grid cs-align-center cs-mt-8 cs-mb-16 cs-text-right">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
+        <span class='h3'>Models</span>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+      </div>
+    </div>
+  </div>
+</div>
+<div class='models-list__row'>
+  <div class='models-list__search'>
+    <hydro-input-text
+    inputClass="services-list__search-input mist-input"
+    placeholder="Search"
+    [(ngModel)]="searchQ"
+    iconName="search"
+    iconDirection="left"
+  ></hydro-input-text>
+  </div>
+</div>
+<div class='models-list__row'>
+  <ul class='mdl-list models-list__ul'>
+    <li class='mdl-list__item models-list__item'
+        routerLinkActive='models-list__item--active'>
+      <a class='mdl-list__item-primary-content models-list__item-content'
+         routerLink="all">
+        <i class='material-icons mdl-list__item-icon models-list__item-icon'>view_comfy</i>
+        All models
+      </a>
+    </li>
+    <ng-template ngFor let-model let-i="index" [ngForOf]="models | search : 'name' : searchQ">
+      <li class='cs-cursor-pointer mdl-list__item models-list__item' [routerLink]="[model.id]"
+          routerLinkActive='models-list__item--active'>
+          <a class='mdl-list__item-primary-content models-list__item-content'>{{ model.source }}</a>
+      </li>
+    </ng-template>
+  </ul>
+</div>

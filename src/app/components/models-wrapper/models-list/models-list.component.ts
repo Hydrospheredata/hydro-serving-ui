@@ -49,7 +49,7 @@ export class ModelsListComponent implements OnInit {
         this.id = params['modelId'];
         return this.id;
       })
-      .subscribe((modelId) => { this.loadInitialData(modelId) });
+      .subscribe((modelId) => { this.loadInitialData(modelId); });
 
     this.httpRuntimeTypesService.getAll().subscribe((runtimeType) => {
       this.runtimeTypes = runtimeType;

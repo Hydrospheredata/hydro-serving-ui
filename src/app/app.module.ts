@@ -60,6 +60,8 @@ import { SearchPipe } from './pipes/search.pipe';
 import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
 import { PositiveNumbersPipe } from './pipes/positive-numbers.pipe';
 import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete-service/dialog-delete-service.component';
+import { ModelsSidebarComponent } from './components/models-sidebar/models-sidebar.component';
+import { ModelDetailsComponent } from './components/model-details/model-details.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,9 @@ import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete
     SearchPipe,
     DialogWeightedServiceComponent,
     PositiveNumbersPipe,
-    DialogDeleteServiceComponent
+    DialogDeleteServiceComponent,
+    ModelsSidebarComponent,
+    ModelDetailsComponent
   ],
   imports: [
     BrowserModule,
