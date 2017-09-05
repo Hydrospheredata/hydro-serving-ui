@@ -7,6 +7,9 @@ import { ModelStore } from '@stores/model.store';
 import { ModelServiceStore } from '@stores/model-service.store';
 import { FormsService } from '@services/form-service.service';
 import { MdlSnackbarService } from '@angular-mdl/core';
+import { ModelRuntimeStore } from '@stores/model-runtime.store';
+import { ModelRuntime } from '@models/model-runtime';
+import { Model } from '@models/model';
 
 export let injectableWeightedService = new InjectionToken<WeightedService>('selectedWeightedService');
 
@@ -18,9 +21,12 @@ export let injectableWeightedService = new InjectionToken<WeightedService>('sele
 })
 export class DialogWeightedServiceComponent implements OnInit {
   public models;
+  public modelsRuntime: ModelRuntime[];
   public weightedServiceForm: FormGroup;
   public selectedWeightedService: WeightedService;
   public formTitle: string;
+  public currentService;
+  public autocompleteCountryCode: string = null;
   public formErrors = {
     serviceName: '',
     weights: '',
@@ -36,14 +42,19 @@ export class DialogWeightedServiceComponent implements OnInit {
     private modelStore: ModelStore,
     private formsService: FormsService,
     private modelServiceStore: ModelServiceStore,
-    private mdlSnackbarService: MdlSnackbarService
+    private mdlSnackbarService: MdlSnackbarService,
+    private modelRuntimeStore: ModelRuntimeStore
   ) {
     this.models = [];
+    this.modelsRuntime = [];
     this.selectedWeightedService = data;
+    this.currentService = null;
+
   }
 
   ngOnInit() {
     this.createWeightedServiceForm();
+    this.modelRuntimeStore.getAll();
     this.modelServiceStore.getAll();
     this.modelServiceStore.items
       .map((models) => {
@@ -52,6 +63,11 @@ export class DialogWeightedServiceComponent implements OnInit {
       .subscribe((models) => {
       this.models = models;
     });
+
+    this.modelRuntimeStore.items.subscribe((modelRuntime) => {
+      this.modelsRuntime = modelRuntime;
+    });
+
     this.initFormChangesListener();
 
     if (this.selectedWeightedService) {
@@ -68,6 +84,7 @@ export class DialogWeightedServiceComponent implements OnInit {
       // todo fix errors reset
       this.formErrors.weights = '';
       this.formErrors.serviceId = '';
+
       form.weights.forEach((service) => {
         result += +service.weight;
       });
@@ -102,7 +119,7 @@ export class DialogWeightedServiceComponent implements OnInit {
 
   private createWeightsForm() {
     return this.fb.group({
-      serviceId: ['', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
+      serviceId: ['', [Validators.required]],
       weight: ['', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
     });
   }

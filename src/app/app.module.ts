@@ -9,6 +9,7 @@ import { HydroRouter } from '@app/app.router';
 import { MomentModule } from 'angular2-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MdlPopoverModule } from '@angular-mdl/popover';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from '@components/navbar/navbar.component';
@@ -17,6 +18,7 @@ import { ModelsListComponent } from '@components/models-wrapper/models-list/mode
 import { SingleModelComponent } from './components/models-wrapper/models-list/single-model/single-model.component';
 import { InputTextComponent } from './components/form/input-text/input-text.component';
 import { LoaderComponent } from './components/loader/loader.component';
+
 
 // pipes
 import { SortByPipe } from '@pipes/sort-by.pipe';
@@ -31,6 +33,7 @@ import { LoaderStateService } from '@services/loader-state.service';
 import { HttpService } from '@services/http.service';
 import { HttpWeightedServicesService } from '@services/http-weighted-services.service';
 import { HttpModelServiceService } from '@services/http-model-service.service';
+import { HttpModelRuntimeService } from '@services/http-model-runtime.service';
 
 // stores
 import { ModelStore } from '@stores/model.store';
@@ -91,6 +94,7 @@ import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete
     FlexLayoutModule,
     HydroRouter,
     MdlSelectModule,
+    MdlPopoverModule,
     MomentModule,
     CommonModule,
     CodemirrorModule,
@@ -110,6 +114,7 @@ import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete
     HttpRuntimeTypesService,
     HttpWeightedServicesService,
     HttpModelServiceService,
+    HttpModelRuntimeService,
     // builders
     ModelBuilder,
     ModelRuntimeBuilder,

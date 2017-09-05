@@ -10,14 +10,18 @@
         <div *ngFor="let weight of weightedServiceForm['controls'].weights['controls']; let i = index">
             <div [formGroupName]="i">
               <div fxLayout="row" fxLayoutAlign="space-between center">
-                <div fxFlex="20%" class="input-text form-group">
-                  <label hidden class="control-label">Service id</label>
+                <div fxFlex="35%" class="input-text form-group">
 
-                  <mdl-select class="cs-text-center" formControlName="serviceId">
-                    <mdl-option *ngFor="let model of models" [value]="model.serviceId">{{model.serviceId}}</mdl-option>
+                  <label hidden class="control-label">Service id</label>
+                  <mdl-select #autocompleteSelect
+                              ([ngModel])="autocompleteCountryCode"
+                              formControlName="serviceId"
+                              [autocomplete]="true">
+                    <mdl-option *ngFor="let model of modelsRuntime | search: 'source modelVersion': autocompleteSelect.searchQuery"
+                                [value]="model.id">{{model.source + ' v' + model.modelVersion}}</mdl-option>
                   </mdl-select>
                 </div>
-              <hydro-input-text fxFlex="50%"
+              <hydro-input-text fxFlex="45%"
                                 [formErrors]="formErrors.weight"
                                 placeholder="Weight"
                                 name="asd"
