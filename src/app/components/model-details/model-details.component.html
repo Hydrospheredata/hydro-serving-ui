@@ -1,3 +1,35 @@
+
+<div class='services-list__row services-list__row--big'>
+  <div class='services-list__header'>
+    <div class="mdl-grid cs-align-center cs-mt-8 cs-mb-16 cs-text-right">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
+        <span class='h3'>MODEL NAME</span>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+        <mdl-button (click)="openDialogWeightedServicesForm()"
+                    class="mist-button blue border icon"
+                    title="Add new endpoint"
+                    mdl-colored="">
+          Deploy
+        </mdl-button>
+      </div>
+    </div>
+  </div>
+</div>
 <p>
-  {{ builds }}
+  {{ buildsString }}
 </p>
+  <table class='models-list-table mdl-data-table mdl-js-data-table mdl-shadow--2dp'>
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Finished at</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let build of builds" class='models-list-table__tr cs-cursor-pointer'>
+        <td class="models-list-table__td id"><div class='cs-text-overflow-ellipsis'>{{build.id}}</div></td>
+        <td class="models-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{build.finished}}</div></td>
+      </tr>
+    </tbody>
+  </table>

@@ -16,8 +16,12 @@ export const routes: Routes = [
     path: 'models',
     component: ModelsWrapperComponent,
     children: [{
+      path: 'all',
+      pathMatch: 'full',
+      component: ModelsListComponent
+    }, {
       path: ':modelId',
-      pathMatch: 'prefix',
+      pathMatch: 'full',
       component: ModelDetailsComponent
     }]
   }]

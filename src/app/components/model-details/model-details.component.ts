@@ -13,6 +13,7 @@ export class ModelDetailsComponent implements OnInit {
   private activatedRouteSub: any;
   public id: string;
   public builds: any;
+  public buildsString: string;
   constructor(
     private activatedRoute: ActivatedRoute,
     private modelsService: HttpModelsService
@@ -31,9 +32,10 @@ export class ModelDetailsComponent implements OnInit {
   loadInitialData(id: string) {
    this.modelsService.getBuildsByModel(id)
    .subscribe((data) => {
-    this.builds = JSON.stringify(data);
+    this.builds = data;
+    console.log(this.builds);
+    this.buildsString = JSON.stringify(data);
   });
-   console.log(this.builds);
   }
 
 

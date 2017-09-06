@@ -46,33 +46,24 @@ export class ModelsListComponent implements OnInit {
   ngOnInit() {
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
+        console.warn(params);
         this.id = params['modelId'];
+        console.warn(this.id);
         return this.id;
       })
-      .subscribe((modelId) => { this.loadInitialData(modelId); });
+      .subscribe(() => { this.loadInitialData(); });
 
     this.httpRuntimeTypesService.getAll().subscribe((runtimeType) => {
       this.runtimeTypes = runtimeType;
     });
   }
 
-  loadInitialData(id: string) {
-    if (id === 'all') {
+  loadInitialData() {
       this.modelStore.getAll();
       this.modelStore.items.subscribe((models) => {
         console.log(models);
         this.models = models;
       });
-    } else {
-
-      this.modelServiceStore.getAll();
-      this.weightedServiceStore.getAll();
-      Observable.combineLatest(this.modelServiceStore.items, this.weightedServiceStore.items)
-        .subscribe((items) => {
-          this.weightedServices = items[1];
-          this.modelServices = items[0];
-        });
-    }
   }
 
   openDialogWeightedServicesForm(service?: WeightedService) {
