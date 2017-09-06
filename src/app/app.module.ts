@@ -63,6 +63,9 @@ import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete
 import { ModelsSidebarComponent } from './components/models-sidebar/models-sidebar.component';
 import { ModelDetailsComponent } from './components/model-details/model-details.component';
 
+import { ServicesModule } from './modules/services/services.module';
+import { ModelsModule } from './modules/models/models.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -98,7 +101,9 @@ import { ModelDetailsComponent } from './components/model-details/model-details.
     MomentModule,
     CommonModule,
     CodemirrorModule,
-    RouterModule
+    RouterModule,
+    ServicesModule,
+    ModelsModule
   ],
   entryComponents: [
     DialogModelBuildComponent,
