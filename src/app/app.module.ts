@@ -138,6 +138,9 @@ import { ModelsModule } from './modules/models/models.module';
       deps: [XHRBackend, RequestOptions, Location, LoaderStateService ]
     }
   ],
+  exports: [
+    SortByPipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

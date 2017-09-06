@@ -1,13 +1,13 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import { ModelsWrapperComponent } from "./_index";
+import { ModelsWrapperComponent } from './_index';
 
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
-                path: '', 
+                path: '',
                 redirectTo: 'models',
                 pathMatch: 'full'
             },

@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ServicesRoutingModule } from "./services.router";
+import { SortByPipe } from '@pipes/sort-by.pipe';
+
 
 // Импорт страниц данного модуля.
 import { ServicesWrapperComponent, ServicesListComponent } from "./_index";
@@ -18,7 +20,7 @@ import { ServicesWrapperComponent, ServicesListComponent } from "./_index";
         ServicesRoutingModule // настройки маршрутизации для модуля LandingModule
     ],
     declarations: [
-        ServicesWrapperComponent, 
+        ServicesWrapperComponent,
         ServicesListComponent
     ]
 })

@@ -1,6 +1,6 @@
 @import "variables.scss";
 
-.services-list__ {
+.models-list__ {
   &row {
     position: relative;
     overflow: inherit;
@@ -8,7 +8,7 @@
     box-sizing: border-box;
     width: 100%;
   }
-  &.services-list__row--big {
+  &.models-list__row--big {
     height: 100px;
   }
   &search {
@@ -24,7 +24,7 @@
   &title {
   }
   &__item {
-    .services-list__item--hover-disabled:hover {
+    .models-list__item--hover-disabled:hover {
       background-color: $aside-bg-color;
     }
   }
@@ -59,7 +59,7 @@
       color: $label-color;
       display: inline-block;
     }
-    &.services-list__item {
+    &.models-list__item {
       color: $main-color;
       font-family: $main-font-family;
       height: 100%;
@@ -88,7 +88,7 @@
     }
   }
   &item-icon {
-    &.services-list__item-icon {
+    &.models-list__item-icon {
       color: $main-color;
       margin-right: 16px;
     }

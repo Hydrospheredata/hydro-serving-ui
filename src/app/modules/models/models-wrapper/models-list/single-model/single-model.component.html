@@ -1,0 +1,124 @@
+<div class="">
+  <button (click)="historyBack()" mdl-button mdl-ripple>
+    <mdl-icon>keyboard_backspace</mdl-icon>
+    Back
+  </button>
+</div>
+
+<div class="mdl-layout">
+  <div class="mdl-layout__content">
+    <div *ngIf="model">
+      <h3>{{model.name}}</h3>
+
+      <table class='mdl-data-table mdl-js-data-table single-model-table mdl-shadow--2dp cs-width-100'>
+        <tbody>
+        <tr>
+          <td>
+            <mdl-icon>sms</mdl-icon>
+          </td>
+          <td>
+            <span class="mdl-chip">
+              <span class="mdl-chip__text">description</span>
+            </span>
+          </td>
+          <td>
+            <div class="mdl-color-text--grey-600">{{model.description}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mdl-icon>access_time</mdl-icon>
+          </td>
+          <td>
+            <span class="mdl-chip">
+              <span class="mdl-chip__text">Last Build Timestamp</span>
+            </span>
+          </td>
+          <td>
+            <div class="mdl-color-text--grey-600">
+              {{model.lastBuildTimestamp | amUtc | amDateFormat: 'YYYY-MM-DD'}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mdl-icon>access_time</mdl-icon>
+          </td>
+          <td>
+            <span class="mdl-chip">
+              <span class="mdl-chip__text">Last Update Timestamp</span>
+            </span>
+          </td>
+          <td>
+            <div class="mdl-color-text--grey-600">
+              {{'2017-06-08T06:15:07.529' | amParse: 'YYYY-MM-DDTHH:mm:ss.SSSZZ' | amDateFormat: 'YYYY-MM-DD'}}
+
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><mdl-icon>info</mdl-icon></td>
+          <td>
+            <span class="mdl-chip">
+              <span class="mdl-chip__text">Last Version</span>
+            </span>
+          </td>
+          <td>
+            <div class="mdl-color-text--grey-600">
+              {{model.lastVersion}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td><mdl-icon>library_books</mdl-icon>
+          </td>
+          <td>
+            <span class="mdl-chip">
+              <span class="mdl-chip__text">Source</span>
+            </span>
+          </td>
+          <td>
+            <div class="mdl-color-text--grey-600">{{model.source}}</div>
+          </td>
+        </tr>
+        <tr>
+          <td><mdl-icon>hourglass_empty</mdl-icon></td>
+          <td>
+            <span class="mdl-chip">
+              <span class="mdl-chip__text">Watch Enabled</span>
+            </span>
+          </td>
+          <td>
+            <div class="mdl-color-text--grey-600">
+              {{model.watchEnabled}}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mdl-icon>label</mdl-icon>
+          </td>
+          <td>
+            <span class="mdl-chip">
+              <span class="mdl-chip__text">Runtime Type Name</span>
+            </span>
+          </td>
+          <td><div class="mdl-color-text--grey-600">{{model.runtimeType.name}}</div></td>
+        </tr>
+        <tr>
+          <td><mdl-icon>build</mdl-icon></td>
+          <td>
+            <span class="mdl-chip">
+              <span class="mdl-chip__text">Runtime Type Version</span>
+            </span>
+          </td>
+          <td><div class="mdl-color-text--grey-600">{{model.runtimeType.version}}</div></td>
+        </tr>
+        </tbody>
+      </table>
+
+
+    </div>
+  </div>
+
+</div>
