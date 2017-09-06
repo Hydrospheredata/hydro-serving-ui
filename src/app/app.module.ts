@@ -61,6 +61,9 @@ import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weig
 import { PositiveNumbersPipe } from './pipes/positive-numbers.pipe';
 import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete-service/dialog-delete-service.component';
 
+import { ServicesModule } from './modules/services/services.module';
+import { ModelsModule } from './modules/models/models.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,7 +97,9 @@ import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete
     MomentModule,
     CommonModule,
     CodemirrorModule,
-    RouterModule
+    RouterModule,
+    ServicesModule,
+    ModelsModule
   ],
   entryComponents: [
     DialogModelBuildComponent,
