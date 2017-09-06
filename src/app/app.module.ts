@@ -19,7 +19,7 @@ import { InputTextComponent } from './components/form/input-text/input-text.comp
 import { LoaderComponent } from './components/loader/loader.component';
 
 // pipes
-import { SortByPipe } from '@pipes/sort-by.pipe';
+// import { SortByPipe } from '@pipes/sort-by.pipe';
 
 // codemirror
 import { CodemirrorModule } from 'ng2-codemirror';
@@ -53,16 +53,17 @@ import { DialogModelBuildComponent } from '@components/dialogs/dialog-model-buil
 import { DialogTestComponent } from './components/dialogs/dialog-test/dialog-test.component';
 import { BuildModelService } from '@services/build-model.service';
 import { DialogStopModelComponent } from './components/dialogs/dialog-stop-model/dialog-stop-model.component';
-import { ModelStatusPipe } from './pipes/model-status.pipe';
-import { UtcToLocalPipe } from './pipes/utc-to-local.pipe';
+// import { ModelStatusPipe } from './pipes/model-status.pipe';
+// import { UtcToLocalPipe } from './pipes/utc-to-local.pipe';
 import { ServicesListComponent } from './components/services-list/services-list.component';
-import { SearchPipe } from './pipes/search.pipe';
+// import { SearchPipe } from './pipes/search.pipe';
 import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
-import { PositiveNumbersPipe } from './pipes/positive-numbers.pipe';
+// import { PositiveNumbersPipe } from './pipes/positive-numbers.pipe';
 import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete-service/dialog-delete-service.component';
 
 import { ServicesModule } from './modules/services/services.module';
 import { ModelsModule } from './modules/models/models.module';
+import { SharedModule } from './modules/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -75,14 +76,14 @@ import { ModelsModule } from './modules/models/models.module';
     InputTextComponent,
     DialogTestComponent,
     LoaderComponent,
-    SortByPipe,
+    // SortByPipe,
     DialogStopModelComponent,
-    ModelStatusPipe,
-    UtcToLocalPipe,
+    // ModelStatusPipe,
+    // UtcToLocalPipe,
     ServicesListComponent,
-    SearchPipe,
+    // SearchPipe,
     DialogWeightedServiceComponent,
-    PositiveNumbersPipe,
+    // PositiveNumbersPipe,
     DialogDeleteServiceComponent
   ],
   imports: [
@@ -99,7 +100,8 @@ import { ModelsModule } from './modules/models/models.module';
     CodemirrorModule,
     RouterModule,
     ServicesModule,
-    ModelsModule
+    ModelsModule,
+    SharedModule
   ],
   entryComponents: [
     DialogModelBuildComponent,
