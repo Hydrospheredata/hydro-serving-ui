@@ -6,7 +6,7 @@ import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { BuildModelService } from '@services/build-model.service';
 import { HttpModelsService } from '@services/http-models.service';
 import { ModelStore } from '@stores/model.store';
-import { ModelStatusPipe } from '@pipes/model-status.pipe';
+import { ModelStatusPipe } from '../../../modules/shared/pipes/model-status.pipe';
 
 import 'rxjs/add/operator/mergeMap';
 

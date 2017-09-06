@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { ModelsRoutingModule } from './models.router';
+import { SharedModule } from '../shared/shared.module';
 import { CommonModule, Location } from '@angular/common';
-import { SortByPipe } from '@pipes/sort-by.pipe';
-
+import { MomentModule } from 'angular2-moment';
+import { MdlModule } from '@angular-mdl/core';
+import { MdlSelectModule } from '@angular-mdl/select';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { ModelsWrapperComponent } from './_index';
 import { ModelsListComponent } from './_index';
@@ -15,14 +18,19 @@ import { ModelsSidebarComponent } from './_index';
 @NgModule({
     imports: [
         ModelsRoutingModule,
-        CommonModule
+        CommonModule,
+        SharedModule,
+        MomentModule,
+        MdlModule,
+        MdlSelectModule,
+        FlexLayoutModule
     ],
     declarations: [
         ModelsWrapperComponent,
         ModelsListComponent,
         SingleModelComponent,
         ModelDetailsComponent,
-        ModelsSidebarComponent,
+        ModelsSidebarComponent
     ]
 })
 export class ModelsModule { }

@@ -3,7 +3,6 @@ import { ModelStore } from '@stores/model.store';
 import { Model } from '@models/model';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { RuntimeType } from '@models/runtime-type';
-import { SortByPipe } from '@pipes/sort-by.pipe';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
 import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
 import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';

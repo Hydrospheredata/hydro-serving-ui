@@ -12,10 +12,10 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from '@components/navbar/navbar.component';
-import { ModelsWrapperComponent } from '@components/models-wrapper/models-wrapper.component';
-import { ModelsListComponent } from '@components/models-wrapper/models-list/models-list.component';
-import { SingleModelComponent } from './components/models-wrapper/models-list/single-model/single-model.component';
-import { InputTextComponent } from './components/form/input-text/input-text.component';
+// import { ModelsWrapperComponent } from '@components/models-wrapper/models-wrapper.component';
+// import { ModelsListComponent } from '@components/models-wrapper/models-list/models-list.component';
+// import { SingleModelComponent } from './components/models-wrapper/models-list/single-model/single-model.component';
+// import { InputTextComponent } from './components/form/input-text/input-text.component';
 import { LoaderComponent } from './components/loader/loader.component';
 
 // pipes
@@ -71,11 +71,11 @@ import { SharedModule } from './modules/shared/shared.module';
   declarations: [
     AppComponent,
     NavbarComponent,
-    ModelsWrapperComponent,
-    ModelsListComponent,
-    SingleModelComponent,
+    // ModelsWrapperComponent,
+    // ModelsListComponent,
+    // SingleModelComponent,
     DialogModelBuildComponent,
-    InputTextComponent,
+    // InputTextComponent,
     DialogTestComponent,
     LoaderComponent,
     // SortByPipe,
@@ -139,7 +139,6 @@ import { SharedModule } from './modules/shared/shared.module';
     }
   ],
   exports: [
-    SortByPipe
   ],
   bootstrap: [AppComponent]
 })

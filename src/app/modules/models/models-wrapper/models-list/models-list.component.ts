@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModelStore } from '@stores/model.store';
 import { Model } from '@models/model';
-import { SortByPipe } from '@pipes/sort-by.pipe';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { RuntimeType } from '@models/runtime-type';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
@@ -41,7 +40,6 @@ export class ModelsListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private modelServiceStore: ModelServiceStore,
     private weightedServiceStore: WeightedServiceStore,
-    public sortByPipe: SortByPipe
   ) {
   }
 

@@ -1,10 +1,10 @@
 // Импорт зависимостей данного модуля.
-import { NgModule } from "@angular/core";
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ServicesRoutingModule } from "./services.router";
-import { SortByPipe } from '@pipes/sort-by.pipe';
+import { SortByPipe } from '../../modules/shared/pipes/sort-by.pipe';
 
 
 // Импорт страниц данного модуля.
