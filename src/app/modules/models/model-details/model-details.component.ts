@@ -47,6 +47,12 @@ export class ModelDetailsComponent implements OnInit {
     this.modelStore.items
       .subscribe((items) => {
         this.model = items.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
+        this.modelsService.getBuildsByModel(id)
+        .subscribe((data) => {
+          this.builds = data.sort((a, b) => {
+            return moment(b.started).diff(moment(a.started));
+          });
+        });
       });
   }
 

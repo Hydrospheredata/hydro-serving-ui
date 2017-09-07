@@ -46,13 +46,13 @@
       <td class='cs-text-overflow-ellipsis models-list-table__td'>
         <div fxLayout="row" fxLayoutAlign="space-between center"  class="models-list-table__td__actions">
           <div class="models-list-table__td__actions--buttons">
-            <a title="{{(model | modelStatus) == 'DEPLOYED' ? 'Redeploy' : 'Deploy'}}" (click)="buildModel(model)" class="hydro-link mdl-color-text--grey-700">
+            <a title="Deploy" (click)="buildModel(build.model)" class="hydro-link mdl-color-text--grey-700">
               <mdl-icon>cloud_upload</mdl-icon>
             </a>
-            <a *ngIf="(build?.status) == 'FINISHED'" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(model.id)" title="Stop">
+            <a *ngIf="(build?.status) == 'FINISHED'" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(build.model.id)" title="Stop">
               <mdl-icon>delete_forever</mdl-icon>
             </a>
-            <a *ngIf="(build?.status) == 'FINISHED'" (click)="testModel(model)" title='Test' class="hydro-link mdl-color-text--blue-800">
+            <a *ngIf="(build?.status) == 'FINISHED'" (click)="testModel(build.model)" title='Test' class="hydro-link mdl-color-text--blue-800">
               <mdl-icon>play_circle_outline</mdl-icon>
             </a>
         </div>

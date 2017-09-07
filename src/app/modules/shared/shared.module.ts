@@ -3,20 +3,20 @@ import { CommonModule, Location } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 
 // Services
-import { 
-    HttpWeightedServicesService, 
-    BuildModelService, 
-    FormsService, 
-    HttpModelRuntimeService, 
+import {
+    HttpWeightedServicesService,
+    BuildModelService,
+    FormsService,
+    HttpModelRuntimeService,
     HttpModelServiceService,
     HttpModelsService,
     HttpRuntimeTypesService,
     HttpService,
-    LoaderStateService 
+    LoaderStateService
 } from './services/_index';
 
 // Stores
-import { 
+import {
     WeightedServiceStore,
     ModelRuntimeStore,
     ModelServiceStore,
@@ -24,12 +24,12 @@ import {
 } from './stores/_index';
 
 // Pipes
-import { 
-    ModelStatusPipe, 
-    PositiveNumbersPipe, 
-    SearchPipe, 
-    SortByPipe, 
-    UtcToLocalPipe 
+import {
+    ModelStatusPipe,
+    PositiveNumbersPipe,
+    SearchPipe,
+    SortByPipe,
+    UtcToLocalPipe
 } from './pipes/_index';
 
 import { InputTextComponent } from '../../components/form/input-text/input-text.component';
@@ -39,9 +39,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
-        BrowserModule, 
-        CommonModule, 
-        MdlModule, 
+        BrowserModule,
+        CommonModule,
+        MdlModule,
         FormsModule
     ],
     declarations: [
@@ -55,9 +55,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     providers: [
         // Services
         HttpWeightedServicesService,
-        BuildModelService, 
-        FormsService, 
-        HttpModelRuntimeService, 
+        BuildModelService,
+        FormsService,
+        HttpModelRuntimeService,
         HttpModelServiceService,
         HttpModelsService,
         HttpRuntimeTypesService,
