@@ -5,6 +5,13 @@
         <span class='h3'>Models</span>
       </div>
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+        <mdl-button (click)="window.alert('PLACEHOLDER')"
+                    class="mist-button blue border icon"
+                    title="Add new endpoint"
+                    mdl-colored="">
+          <mdl-icon>add</mdl-icon>
+          <span fxHide.sm fxHide.md>Add</span>
+        </mdl-button>
       </div>
     </div>
   </div>
@@ -20,7 +27,7 @@
   ></hydro-input-text> -->
   </div>
 </div>
-<div class='models-list__row'>
+<div class='models-list__models'>
   <ul class='mdl-list models-list__ul'>
     <li class='mdl-list__item models-list__item'
         routerLinkActive='models-list__item--active'>
@@ -30,7 +37,7 @@
         All models
       </a>
     </li>
-    <ng-template ngFor let-model let-i="index" [ngForOf]="models | search : 'name' : searchQ">
+    <ng-template ngFor let-model let-i="index" [ngForOf]="models | search : 'name' : searchQ | sortBy: 'id'">
       <li class='cs-cursor-pointer mdl-list__item models-list__item' [routerLink]="[model.id]"
           routerLinkActive='models-list__item--active'>
           <a class='mdl-list__item-primary-content models-list__item-content'>{{ model.source }}</a>

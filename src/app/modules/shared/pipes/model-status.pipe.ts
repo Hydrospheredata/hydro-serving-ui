@@ -16,9 +16,9 @@ export class ModelStatusPipe implements PipeTransform {
 
     if (model.currentServices && model.currentServices.length) {
       status = modelStatuses['deployed'];
-    } else if (Object.keys(model.lastModelRuntime).length && model.lastModelBuild.status == 'FINISHED') {
+    } else if (Object.keys(model.lastModelRuntime).length && model.lastModelBuild.status === 'FINISHED') {
       status = modelStatuses['stopped'];
-    } else if (model.lastModelBuild.status == 'ERROR' || model.lastModelBuild.status == 'FAILED') {
+    } else if (model.lastModelBuild.status === 'ERROR' || model.lastModelBuild.status === 'FAILED') {
       status = modelStatuses['failed'];
     } else {
       status = modelStatuses['created'];

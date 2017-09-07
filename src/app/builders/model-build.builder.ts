@@ -17,9 +17,11 @@ export class ModelBuildBuilder {
         id: props.id,
         model: props.model,
         finished: props.finished,
+        started: props.started,
         statusText: props.statusText,
         status: props.status,
-        modelRuntime: props.modelRuntime
+        modelRuntime: props.modelRuntime,
+        modelVersion: props.modelVersion
       });
 
       return lastModelBuild;

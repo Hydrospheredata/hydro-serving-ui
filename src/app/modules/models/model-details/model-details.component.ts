@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpModelsService } from '@services/http-models.service';
 import { ActivatedRoute } from '@angular/router';
+import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
+import { MdlDialogService } from '@angular-mdl/core';
+import { ModelStore } from '@stores/model.store';
+import { Model } from '@models/model';
+import * as moment from 'moment';
 
 
 @Component({
@@ -13,10 +18,12 @@ export class ModelDetailsComponent implements OnInit {
   private activatedRouteSub: any;
   public id: string;
   public builds: any;
-  public buildsString: string;
+  public model: Model;
   constructor(
     private activatedRoute: ActivatedRoute,
-    private modelsService: HttpModelsService
+    private modelsService: HttpModelsService,
+    private dialog: MdlDialogService,
+    private modelStore: ModelStore
   ) { }
 
   ngOnInit() {
@@ -25,17 +32,35 @@ export class ModelDetailsComponent implements OnInit {
         this.id = params['modelId'];
         return this.id;
       })
-      .subscribe((modelId) => { this.loadInitialData(modelId); });
-
+      .subscribe((modelId) => {
+        this.loadInitialData(modelId);
+      });
   }
 
   loadInitialData(id: string) {
-   this.modelsService.getBuildsByModel(id)
-   .subscribe((data) => {
-    this.builds = data;
-    console.log(this.builds);
-    this.buildsString = JSON.stringify(data);
-  });
+    this.modelsService.getBuildsByModel(id)
+      .subscribe((data) => {
+        this.builds = data.sort((a, b) => {
+          return moment(b.started).diff(moment(a.started));
+        });
+      });
+    this.modelStore.items
+      .subscribe((items) => {
+        this.model = items.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
+      });
+  }
+
+  buildModel(modelOptions) {
+    this.dialog.showCustomDialog({
+      component: DialogModelBuildComponent,
+      styles: { 'width': '800px', 'min-height': '350px' },
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{ provide: injectableModelOptions, useValue: modelOptions }],
+    });
   }
 
 

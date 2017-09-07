@@ -8,6 +8,10 @@
     box-sizing: border-box;
     width: 100%;
   }
+  &models {
+    height: 80vh;
+    overflow-y: auto;
+  }
   &.models-list__row--big {
     height: 100px;
   }
@@ -69,6 +73,7 @@
       &:hover,
       &--active {
         background-color: #e6e9ed;
+        outline: none;
       }
       &:hover {
         mdl-icon {
