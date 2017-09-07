@@ -2,14 +2,48 @@ import { NgModule } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { ModelStatusPipe, PositiveNumbersPipe, SearchPipe, SortByPipe, UtcToLocalPipe } from './pipes/_index';
+// Services
+import { 
+    HttpWeightedServicesService, 
+    BuildModelService, 
+    FormsService, 
+    HttpModelRuntimeService, 
+    HttpModelServiceService,
+    HttpModelsService,
+    HttpRuntimeTypesService,
+    HttpService,
+    LoaderStateService 
+} from './services/_index';
+
+// Stores
+import { 
+    WeightedServiceStore,
+    ModelRuntimeStore,
+    ModelServiceStore,
+    ModelStore
+} from './stores/_index';
+
+// Pipes
+import { 
+    ModelStatusPipe, 
+    PositiveNumbersPipe, 
+    SearchPipe, 
+    SortByPipe, 
+    UtcToLocalPipe 
+} from './pipes/_index';
+
 import { InputTextComponent } from '../../components/form/input-text/input-text.component';
 import { MdlModule } from '@angular-mdl/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
-    imports: [BrowserModule, CommonModule, MdlModule, FormsModule],
+    imports: [
+        BrowserModule, 
+        CommonModule, 
+        MdlModule, 
+        FormsModule
+    ],
     declarations: [
         ModelStatusPipe,
         PositiveNumbersPipe,
@@ -17,9 +51,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         SortByPipe,
         UtcToLocalPipe,
         InputTextComponent
-
     ],
-    providers: [],
+    providers: [
+        // Services
+        HttpWeightedServicesService,
+        BuildModelService, 
+        FormsService, 
+        HttpModelRuntimeService, 
+        HttpModelServiceService,
+        HttpModelsService,
+        HttpRuntimeTypesService,
+        HttpService,
+        LoaderStateService,
+        // Stores
+        WeightedServiceStore,
+        ModelRuntimeStore,
+        ModelServiceStore,
+        ModelStore
+    ],
     exports: [
         ModelStatusPipe,
         PositiveNumbersPipe,
