@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable, Observer } from 'rxjs/Rx';
 import { environment } from '../../../../environments/environment';
-import { Response } from '@angular/http';
+import { Response, RequestOptionsArgs } from '@angular/http';
 import { Model } from '@models/model';
 import { ModelBuilder } from '@builders/model.builder';
 import { HttpService } from '@services/http.service';
@@ -22,6 +22,17 @@ export class HttpModelRuntimeService {
   public getAll(): Observable<any> {
     const url = `${this.baseAPIUrl}`;
     return this.http.get(url)
+      .map((res: Response) => {
+        return res.json();
+      });
+  }
+
+  public getRuntimeByModel(modelId: number, maximum: number): Observable<any> {
+    const url = `${this.baseAPIUrl}/${modelId}/last`;
+    const requestOptions: RequestOptionsArgs = {
+      params: {maximum}
+    };
+    return this.http.get(url, requestOptions)
       .map((res: Response) => {
         return res.json();
       });

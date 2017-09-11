@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpModelsService } from '@services/http-models.service';
+import { HttpModelRuntimeService } from '@shared/services/http-model-runtime.service';
 import { ActivatedRoute } from '@angular/router';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
 import { MdlDialogService } from '@angular-mdl/core';
 import { ModelStore } from '@stores/model.store';
 import { Model } from '@models/model';
+import { ModelRuntime } from '@models/model-runtime.ts';
 import * as moment from 'moment';
 
 
@@ -19,9 +21,11 @@ export class ModelDetailsComponent implements OnInit {
   public id: string;
   public builds: any;
   public model: Model;
+  public runtimes: ModelRuntime[];
   constructor(
     private activatedRoute: ActivatedRoute,
     private modelsService: HttpModelsService,
+    private modelRuntimeService: HttpModelRuntimeService,
     private dialog: MdlDialogService,
     private modelStore: ModelStore
   ) { }
@@ -44,6 +48,12 @@ export class ModelDetailsComponent implements OnInit {
           return moment(b.started).diff(moment(a.started));
         });
       });
+
+      this.modelRuntimeService.getRuntimeByModel(Number(id), 1000)
+        .subscribe((data: ModelRuntime[]) => {
+          this.runtimes = data;
+      });
+
     this.modelStore.items
       .subscribe((items) => {
         this.model = items.find((dataStoreItem) => dataStoreItem.id === Number(this.id));

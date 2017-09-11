@@ -34,7 +34,7 @@ import {
 
 import { InputTextComponent } from '../../components/form/input-text/input-text.component';
 import { MdlModule } from '@angular-mdl/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({

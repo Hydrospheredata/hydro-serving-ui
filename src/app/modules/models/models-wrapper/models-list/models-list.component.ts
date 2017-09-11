@@ -46,9 +46,7 @@ export class ModelsListComponent implements OnInit {
   ngOnInit() {
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
-        console.warn(params);
         this.id = params['modelId'];
-        console.warn(this.id);
         return this.id;
       })
       .subscribe(() => { this.loadInitialData(); });

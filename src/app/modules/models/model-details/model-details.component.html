@@ -12,6 +12,7 @@
     </div>
   </div>
 </div>
+<h4>Builds</h4>
 <table class='models-list-table mdl-data-table mdl-js-data-table'>
   <thead>
     <tr>
@@ -58,6 +59,56 @@
         </div>
         </div>
       </td>
+    </tr>
+  </tbody>
+</table>
+<h4>Runtimes</h4>
+<table class='models-list-table mdl-data-table mdl-js-data-table'>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Created at</th>
+      <th>Vesion</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let runtime of runtimes" class='models-list-table__tr cs-cursor-pointer'>
+      <td class="models-list-table__td id">
+        <div class='cs-text-overflow-ellipsis'>{{runtime?.id}}</div>
+      </td>
+      <td class="models-list-table__td name">
+        <div class='cs-text-overflow-ellipsis'>{{runtime?.created}}</div>
+      </td>
+      <td class="models-list-table__td name">
+        <div class='cs-text-overflow-ellipsis'>{{runtime?.modelVersion}}</div>
+      </td>
+      <!-- <td class="models-list-table__td status">
+        <div title="{{build}}" class='cs-text-overflow-ellipsis'>
+          <strong><span [ngClass]="{
+            'mdl-color-text--green-700': (build?.status) == 'FINISHED',
+            'mdl-color-text--red-700': (build?.status) == 'ERROR',
+            'mdl-color-text--grey-900': (build?.status) == 'STOPPED'
+            }">{{build?.status}}</span></strong>
+          {{(build.finished ? build.finished : build.started) | utcToLocal | amTimeAgo}}
+        </div>
+      </td>
+      <td class='cs-text-overflow-ellipsis models-list-table__td'>
+        <div fxLayout="row" fxLayoutAlign="space-between center"  class="models-list-table__td__actions">
+          <div class="models-list-table__td__actions--buttons">
+            <a title="Deploy" (click)="buildModel(build.model)" class="hydro-link mdl-color-text--grey-700">
+              <mdl-icon>cloud_upload</mdl-icon>
+            </a>
+            <a *ngIf="(build?.status) == 'FINISHED'" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(build.model.id)" title="Stop">
+              <mdl-icon>delete_forever</mdl-icon>
+            </a>
+            <a *ngIf="(build?.status) == 'FINISHED'" (click)="testModel(build.model)" title='Test' class="hydro-link mdl-color-text--blue-800">
+              <mdl-icon>play_circle_outline</mdl-icon>
+            </a>
+        </div>
+        </div>
+      </td> -->
     </tr>
   </tbody>
 </table>
