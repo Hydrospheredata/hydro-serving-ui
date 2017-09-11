@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ModelsRoutingModule } from './models.router';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 import { CommonModule, Location } from '@angular/common';
 import { MomentModule } from 'angular2-moment';
 import { MdlModule } from '@angular-mdl/core';

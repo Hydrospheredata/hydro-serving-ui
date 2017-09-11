@@ -5,7 +5,7 @@
         <span class='h3'>Services</span>
       </div>
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
-        <mdl-button (click)="openDialogWeightedServicesForm()"
+        <mdl-button (click)="addService()"
                     class="mist-button blue border icon"
                     title="Add new endpoint"
                     mdl-colored="">
@@ -16,7 +16,7 @@
     </div>
   </div>
 </div>
-<!-- <div class='services-list__row'>
+<div class='services-list__row'>
   <div class='services-list__search'>
     <hydro-input-text
       inputClass="services-list__search-input mist-input"
@@ -26,30 +26,21 @@
       iconDirection="left"
     ></hydro-input-text>
   </div>
-</div> -->
+</div>
 <div class='services-list__row'>
   <ul class='mdl-list services-list__ul'>
-    <!-- <li class='mdl-list__item services-list__item'
-        routerLinkActive='services-list__item--active'>
-      <a class='mdl-list__item-primary-content services-list__item-content'
-         routerLink="all">
-        <i class='material-icons mdl-list__item-icon services-list__item-icon'>view_comfy</i>
-        All models
-      </a>
-      <span class='services-list__badge'
-            [mdl-badge]="services.length"></span>
-    </li>
-    <ng-template ngFor let-service let-i="index" [ngForOf]="weightedServices | search : 'name' : searchQ">
+    <ng-template ngFor let-service let-i="index" [ngForOf]="weightedServices | search : 'name' : searchQ | sortBy: 'id'">
       <li class='cs-cursor-pointer mdl-list__item services-list__item' [routerLink]="[service.id]"
           routerLinkActive='services-list__item--active'>
           <a class='mdl-list__item-primary-content services-list__item-content'>{{ service.serviceName }}</a>
-          <mdl-icon title="Edit service" (click)="openDialogWeightedServicesForm(service)">settings</mdl-icon>
+          
+          <mdl-icon title="Delete service" (click)="deleteService(service.id)">delete</mdl-icon>
 
-          <span class='services-list__badge'
+          <!-- <span class='services-list__badge'
                 *ngIf="service.weights.length"
                 [mdl-badge]="service.weights.length">
-              </span>
+              </span> -->
       </li>
-    </ng-template> -->
+    </ng-template>
   </ul>
 </div>
