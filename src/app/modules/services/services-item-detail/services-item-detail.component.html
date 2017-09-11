@@ -1,0 +1,37 @@
+<div class='services-list__row services-list__row--big'>
+  <div class='services-list__header'>
+    <div class="mdl-grid cs-align-center cs-mt-8 cs-mb-16 cs-text-right">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
+        <span class='h3'>{{weightedService?.serviceName}}</span>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+        <mdl-button (click)="editService(weightedService?.id)"
+                    class="mist-button blue border icon"
+                    title="Edit service"
+                    mdl-colored="">
+          Edit
+        </mdl-button>
+      </div>
+    </div>
+  </div>
+</div>
+<table class='services-list-table mdl-data-table mdl-js-data-table mdl-shadow--2dp'>
+  <thead>
+  <tr>
+    <th>ServiceName</th>
+    <th>ModelSource</th>
+    <th>ModelVersion</th>
+    <th>ModelCreateDate</th>
+    <th>ModelStatus</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let service of weightedServicesModels" class='services-list-table__tr cs-cursor-pointer'>
+      <td class="services-list-table__td id"><div class='cs-text-overflow-ellipsis'>{{service.serviceName}}</div></td>
+      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{service.modelRuntime.source}}</div></td>
+      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{service.modelRuntime.modelVersion}}</div></td>
+      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{service.modelRuntime.created}}</div></td>
+      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{service.status}}</div></td>
+    </tr>
+  </tbody>
+</table>

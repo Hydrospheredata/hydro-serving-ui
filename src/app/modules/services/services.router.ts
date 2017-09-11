@@ -1,14 +1,20 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
-import { ServicesWrapperComponent, ServicesListComponent } from "./_index";
+import { ServicesWrapperComponent, ServicesItemDetailComponent } from "./_index";
 
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
                 path: 'services', 
-                component: ServicesWrapperComponent
+                component: ServicesWrapperComponent,
+                children: [
+                    {
+                        path: ':id',
+                        component: ServicesItemDetailComponent
+                    }
+                ]
             }
         ])
     ],

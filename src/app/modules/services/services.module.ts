@@ -2,26 +2,35 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
+import { SharedModule } from '@shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ServicesRoutingModule } from "./services.router";
-import { SortByPipe } from '../../modules/shared/pipes/sort-by.pipe';
+import { SortByPipe } from '@shared/_index';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 // Импорт страниц данного модуля.
-import { ServicesWrapperComponent, ServicesListComponent } from "./_index";
+import { 
+    ServicesWrapperComponent, 
+    ServicesSidebarComponent, 
+    ServicesItemDetailComponent 
+} from "./_index";
 
 
 
 @NgModule({
     imports: [
+        SharedModule,
         FlexLayoutModule,
         CommonModule,
         MdlModule,
-        ServicesRoutingModule // настройки маршрутизации для модуля LandingModule
+        ServicesRoutingModule,
+        FormsModule
     ],
     declarations: [
-        ServicesWrapperComponent,
-        ServicesListComponent
+        ServicesWrapperComponent, 
+        ServicesSidebarComponent,
+        ServicesItemDetailComponent
     ]
 })
 export class ServicesModule { }
