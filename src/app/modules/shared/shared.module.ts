@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
+import { MdlModule } from '@angular-mdl/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Services
 import {
@@ -32,9 +34,15 @@ import {
     UtcToLocalPipe
 } from './pipes/_index';
 
-import { InputTextComponent } from '../../components/form/input-text/input-text.component';
-import { MdlModule } from '@angular-mdl/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// Components
+import { 
+    InputTextComponent, 
+    // DialogDeleteServiceComponent,
+    // DialogModelBuildComponent,
+    // DialogStopModelComponent,
+    // DialogTestComponent,
+    // DialogWeightedServiceComponent
+} from './components/_index';
 
 
 @NgModule({
@@ -42,15 +50,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         BrowserModule,
         CommonModule,
         MdlModule,
-        FormsModule
+        FormsModule,
+        ReactiveFormsModule
     ],
     declarations: [
+        // Pipes
         ModelStatusPipe,
         PositiveNumbersPipe,
         SearchPipe,
         SortByPipe,
         UtcToLocalPipe,
-        InputTextComponent
+        // Components
+        InputTextComponent,
+        // DialogDeleteServiceComponent,
+        // DialogModelBuildComponent,
+        // DialogStopModelComponent,
+        // DialogTestComponent,
+        // DialogWeightedServiceComponent
     ],
     providers: [
         // Services
@@ -70,12 +86,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
         ModelStore
     ],
     exports: [
+        // Pipes
         ModelStatusPipe,
         PositiveNumbersPipe,
         SearchPipe,
         SortByPipe,
         UtcToLocalPipe,
-        InputTextComponent
+        // Components
+        InputTextComponent,
+        // DialogDeleteServiceComponent,
+        // DialogModelBuildComponent,
+        // DialogStopModelComponent,
+        // DialogTestComponent,
+        // DialogWeightedServiceComponent
     ]
 })
 export class SharedModule { }

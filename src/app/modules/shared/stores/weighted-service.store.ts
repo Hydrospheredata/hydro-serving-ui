@@ -29,11 +29,6 @@ export class WeightedServiceStore {
   }
 
   getById(id: string) {
-    this.httpWeightedServicesService.getAll()
-      .subscribe((data) => {
-        this.dataStore = data;
-        this.updateStore();
-      });
   }
 
 
