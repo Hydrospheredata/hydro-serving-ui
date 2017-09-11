@@ -35,8 +35,8 @@ import {
 } from './pipes/_index';
 
 // Components
-import { 
-    InputTextComponent, 
+import {
+    InputTextComponent,
     // DialogDeleteServiceComponent,
     // DialogModelBuildComponent,
     // DialogStopModelComponent,

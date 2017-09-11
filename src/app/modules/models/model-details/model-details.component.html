@@ -12,8 +12,10 @@
     </div>
   </div>
 </div>
-<h4>Builds</h4>
-<table class='models-list-table mdl-data-table mdl-js-data-table'>
+<h5>Model version: {{ model?.lastModelRuntime?.modelVersion }}</h5>
+<h5>Runtime: {{ model?.runtimeType?.name }}</h5>
+<!-- <h4>Builds</h4> -->
+<!-- <table class='models-list-table mdl-data-table mdl-js-data-table'>
   <thead>
     <tr>
       <th>Id</th>
@@ -61,7 +63,7 @@
       </td>
     </tr>
   </tbody>
-</table>
+</table> -->
 <h4>Runtimes</h4>
 <table class='models-list-table mdl-data-table mdl-js-data-table'>
   <thead>
@@ -93,22 +95,22 @@
             }">{{build?.status}}</span></strong>
           {{(build.finished ? build.finished : build.started) | utcToLocal | amTimeAgo}}
         </div>
-      </td>
+      </td> -->
       <td class='cs-text-overflow-ellipsis models-list-table__td'>
         <div fxLayout="row" fxLayoutAlign="space-between center"  class="models-list-table__td__actions">
           <div class="models-list-table__td__actions--buttons">
-            <a title="Deploy" (click)="buildModel(build.model)" class="hydro-link mdl-color-text--grey-700">
+            <a title="Deploy" (click)="buildModel(runtime)" class="hydro-link mdl-color-text--grey-700">
               <mdl-icon>cloud_upload</mdl-icon>
             </a>
-            <a *ngIf="(build?.status) == 'FINISHED'" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(build.model.id)" title="Stop">
+            <a class="hydro-link mdl-color-text--grey-700" (click)="stopModel(runtime.id)" title="Stop">
               <mdl-icon>delete_forever</mdl-icon>
             </a>
-            <a *ngIf="(build?.status) == 'FINISHED'" (click)="testModel(build.model)" title='Test' class="hydro-link mdl-color-text--blue-800">
+            <a (click)="testModel(runtime)" title='Test' class="hydro-link mdl-color-text--blue-800">
               <mdl-icon>play_circle_outline</mdl-icon>
             </a>
         </div>
         </div>
-      </td> -->
+      </td>
     </tr>
   </tbody>
 </table>

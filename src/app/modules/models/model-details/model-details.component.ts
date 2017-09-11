@@ -3,6 +3,9 @@ import { HttpModelsService } from '@services/http-models.service';
 import { HttpModelRuntimeService } from '@shared/services/http-model-runtime.service';
 import { ActivatedRoute } from '@angular/router';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
+import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
+import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
+import { DialogDeleteServiceComponent, injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
 import { MdlDialogService } from '@angular-mdl/core';
 import { ModelStore } from '@stores/model.store';
 import { Model } from '@models/model';
@@ -53,7 +56,7 @@ export class ModelDetailsComponent implements OnInit {
         .subscribe((data: ModelRuntime[]) => {
           this.runtimes = data;
       });
-
+    // TODO: PROPERLY GET BUILDS OR MOVE THEM TO STORE
     this.modelStore.items
       .subscribe((items) => {
         this.model = items.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
@@ -69,15 +72,40 @@ export class ModelDetailsComponent implements OnInit {
   buildModel(modelOptions) {
     this.dialog.showCustomDialog({
       component: DialogModelBuildComponent,
-      styles: { 'width': '800px', 'min-height': '350px' },
+      styles: {'width': '800px', 'min-height': '350px'},
       classes: '',
       isModal: true,
       clickOutsideToClose: true,
       enterTransitionDuration: 400,
       leaveTransitionDuration: 400,
-      providers: [{ provide: injectableModelOptions, useValue: modelOptions }],
+      providers: [{provide: injectableModelOptions, useValue: modelOptions}],
     });
   }
 
+  testModel(model) {
+    this.dialog.showCustomDialog({
+      component: DialogTestComponent,
+      styles: {'width': '800px', 'min-height': '350px'},
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{provide: injectableModelBuildOptions, useValue: model}],
+    });
+  }
+
+  stopModel(id) {
+    this.dialog.showCustomDialog({
+      component: DialogStopModelComponent,
+      styles: {'width': '600px', 'min-height': '250px'},
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{provide: injectableModelStopOptions, useValue: id}],
+    });
+  }
 
 }
