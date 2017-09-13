@@ -8,7 +8,9 @@ import { DialogStopModelComponent, injectableModelStopOptions } from '@component
 import { DialogDeleteServiceComponent, injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
 import { MdlDialogService } from '@angular-mdl/core';
 import { ModelStore } from '@stores/model.store';
+import { ModelServiceStore } from '@shared/stores/model-service.store';
 import { Model } from '@models/model';
+import { ModelService } from '@models/model-service';
 import { ModelRuntime } from '@models/model-runtime.ts';
 import * as moment from 'moment';
 
@@ -25,12 +27,14 @@ export class ModelDetailsComponent implements OnInit {
   public builds: any;
   public model: Model;
   public runtimes: ModelRuntime[];
+  private modelServices: ModelService[];
   constructor(
     private activatedRoute: ActivatedRoute,
     private modelsService: HttpModelsService,
     private modelRuntimeService: HttpModelRuntimeService,
     private dialog: MdlDialogService,
-    private modelStore: ModelStore
+    private modelStore: ModelStore,
+    private modelServiceStore: ModelServiceStore
   ) { }
 
   ngOnInit() {
@@ -60,13 +64,15 @@ export class ModelDetailsComponent implements OnInit {
     this.modelStore.items
       .subscribe((items) => {
         this.model = items.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
-        this.modelsService.getBuildsByModel(id)
-        .subscribe((data) => {
-          this.builds = data.sort((a, b) => {
-            return moment(b.started).diff(moment(a.started));
-          });
-        });
+        // this.modelsService.getBuildsByModel(id)
+        // .subscribe((data) => {
+        //   this.builds = data.sort((a, b) => {
+        //     return moment(b.started).diff(moment(a.started));
+        //   });
+        // });
       });
+
+    this.modelServiceStore.getAll();
   }
 
   buildModel(modelOptions) {

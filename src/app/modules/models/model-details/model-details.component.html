@@ -12,15 +12,18 @@
     </div>
   </div>
 </div>
+<div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left"> 
 <p>Model version: {{ model?.lastModelRuntime?.modelVersion }}</p>
 <p>Runtime: {{ model?.runtimeType?.name }}</p>
 <p>Tags: {{model?.runtimeType?.tags}} </p>
+<p>Input: {{ model?.inputFields }}</p>
+<p>Output: {{ model?.outputFields }}</p>
+</div>
 <h5>Versions</h5>
 <table class='models-list-table mdl-data-table mdl-js-data-table'>
   <thead>
     <tr>
-      <th>Id</th>
-      <th>Created at</th>
+      <th>Created</th>
       <th>Vesion</th>
       <th>Status</th>
       <th>Actions</th>
@@ -28,11 +31,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let runtime of runtimes" class='models-list-table__tr cs-cursor-pointer'>
-      <td class="models-list-table__td id">
-        <div class='cs-text-overflow-ellipsis'>{{runtime?.id}}</div>
-      </td>
       <td class="models-list-table__td name">
-        <div class='cs-text-overflow-ellipsis'>{{runtime?.created}}</div>
+        <div class='cs-text-overflow-ellipsis'>{{runtime?.created | utcToLocal | amTimeAgo}}</div>
       </td>
       <td class="models-list-table__td name">
         <div class='cs-text-overflow-ellipsis'>{{runtime?.modelVersion}}</div>
