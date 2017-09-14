@@ -64,27 +64,42 @@
       font-family: $main-font-family;
       height: 100%;
       font-size: 18px;
-      padding: 1rem 0 1rem 1rem;
       border-bottom: 1px solid #dcdee0;
+      padding: 0;
+      min-height: auto;
       &:hover,
       &--active {
         background-color: #e6e9ed;
       }
-      &:hover {
-        mdl-icon {
-          visibility: visible;
-        }
-      }
       mdl-icon {
         z-index: 10;
-        visibility: hidden;
-        position: relative;
-        right: 2rem;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+          color: red;
+        }
       }
     }
     &-primary-content {
-      margin-right: 2rem;
       height: 100%;
+      position: relative;
+      padding: 1rem 0 1rem 1rem;
+      &:before {
+        content: '';
+        height: 100%;
+        width: 8px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      &.__active {
+        &:before {
+          background-color: #152959;
+        }
+      }
     }
   }
   &item-icon {

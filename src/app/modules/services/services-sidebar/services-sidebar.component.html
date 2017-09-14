@@ -29,29 +29,12 @@
 </div>
 <div class='services-list__row'>
   <ul class='mdl-list services-list__ul'>
-    <li *ngFor="let service of services" class='cs-cursor-pointer mdl-list__item services-list__item' [routerLink]="[service.id]"
-        routerLinkActive='services-list__item--active'>
-        <a class='mdl-list__item-primary-content services-list__item-content'>{{ service.serviceName }}</a>
+    <li *ngFor="let service of services" class='cs-cursor-pointer mdl-list__item services-list__item'>
+        <a class='mdl-list__item-primary-content services-list__item-content' [routerLink]="[service.id]"
+        routerLinkActive='__active'>{{ service.serviceName }}</a>
         
         <mdl-icon title="Delete service" (click)="deleteService(service.id)">delete</mdl-icon>
 
-        <span class='services-list__badge'
-              *ngIf="service.weights.length"
-              [mdl-badge]="service.weights.length">
-            </span>
     </li>
-    <!-- <ng-template ngFor let-service let-i="index" [ngForOf]="weightedServices">
-      <li class='cs-cursor-pointer mdl-list__item services-list__item' [routerLink]="[service.id]"
-          routerLinkActive='services-list__item--active'>
-          <a class='mdl-list__item-primary-content services-list__item-content'>{{ service.serviceName }}</a>
-          
-          <mdl-icon title="Delete service" (click)="deleteService(service.id)">delete</mdl-icon>
-
-          <span class='services-list__badge'
-                *ngIf="service.weights.length"
-                [mdl-badge]="service.weights.length">
-              </span>
-      </li>
-    </ng-template> -->
   </ul>
 </div>
