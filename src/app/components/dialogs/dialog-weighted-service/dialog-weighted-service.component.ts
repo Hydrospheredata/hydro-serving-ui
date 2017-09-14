@@ -1,4 +1,5 @@
 import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference } from '@angular-mdl/core';
 import { WeightedServiceStore } from '@stores/weighted-service.store';
@@ -7,6 +8,13 @@ import { ModelStore } from '@stores/model.store';
 import { ModelServiceStore } from '@stores/model-service.store';
 import { FormsService } from '@services/form-service.service';
 import { MdlSnackbarService } from '@angular-mdl/core';
+
+import { Store } from '@ngrx/store';
+import { ServicesService, Service, ADD_SERVICE } from '@shared/_index';
+
+import { AppState, ModelService } from '@shared/models/_index';
+
+import { ModelServicesService } from '@shared/services/_index';
 
 export let injectableWeightedService = new InjectionToken<WeightedService>('selectedWeightedService');
 
@@ -17,6 +25,7 @@ export let injectableWeightedService = new InjectionToken<WeightedService>('sele
   providers: [FormsService]
 })
 export class DialogWeightedServiceComponent implements OnInit {
+  private modelServicesServiceSubscription: Subscription;
   public models;
   public weightedServiceForm: FormGroup;
   public selectedWeightedService: WeightedService;
@@ -28,6 +37,8 @@ export class DialogWeightedServiceComponent implements OnInit {
     weight: '',
   };
 
+  public modelServices: ModelService[];
+
   constructor(
     @Inject(injectableWeightedService) data: WeightedService,
     private fb: FormBuilder,
@@ -36,7 +47,10 @@ export class DialogWeightedServiceComponent implements OnInit {
     private modelStore: ModelStore,
     private formsService: FormsService,
     private modelServiceStore: ModelServiceStore,
-    private mdlSnackbarService: MdlSnackbarService
+    private mdlSnackbarService: MdlSnackbarService,
+    private store: Store<AppState>,
+    private servicesService: ServicesService,
+    private modelServicesService: ModelServicesService
   ) {
     this.models = [];
     this.selectedWeightedService = data;
@@ -44,14 +58,21 @@ export class DialogWeightedServiceComponent implements OnInit {
 
   ngOnInit() {
     this.createWeightedServiceForm();
-    this.modelServiceStore.getAll();
-    this.modelServiceStore.items
-      .map((models) => {
-        return models.filter((model) => model.serviceId > 0);
-      })
-      .subscribe((models) => {
-      this.models = models;
-    });
+
+    this.store.select('modelService')
+        .subscribe(modelService => {
+            this.modelServices = modelService;
+        });
+    
+    // this.modelServiceStore.getAll();
+    // this.modelServiceStore.items
+    //   .map((models) => {
+    //     console.log(models)
+    //     return models.filter((model) => model.serviceId > 0);
+    //   })
+    //   .subscribe((models) => {
+    //   this.models = models;
+    // });
     this.initFormChangesListener();
 
     if (this.selectedWeightedService) {
@@ -124,7 +145,7 @@ export class DialogWeightedServiceComponent implements OnInit {
 
     const formWeights = form.controls.weights;
     const weights: object[] = [];
-    let weightedService: WeightedService;
+    let service: Service;
 
     for ( let i = 0; i < formWeights.length; i++ ) {
       weights.push({
@@ -133,32 +154,41 @@ export class DialogWeightedServiceComponent implements OnInit {
       });
     }
 
-     weightedService = new WeightedService({
-      id: Number(form.controls.id.value),
-      serviceName: form.controls.serviceName.value,
-      weights: weights
+    service = new Service({
+        id: Number(form.controls.id.value),
+        serviceName: form.controls.serviceName.value,
+        weights: weights
     });
 
     if (this.selectedWeightedService) {
-      this.weightedServiceStore.update(weightedService)
-        .subscribe((res) => {
-          this.dialogRef.hide();
-          console.log(res);
-        });
+        this.weightedServiceStore.update(service)
+            .subscribe((res) => {
+                this.dialogRef.hide();
+            });
     } else {
-      this.weightedServiceStore.add(weightedService)
-        .subscribe((res) => {
-          this.mdlSnackbarService.showSnackbar({
-            message: `Service was successfully added`,
-            timeout: 5000
-          });
-          this.dialogRef.hide();
-        }, (error) => {
-          this.mdlSnackbarService.showSnackbar({
-            message: `Error: ${error}`,
-            timeout: 5000
-          });
-        });
+        this.servicesService.addService(service)
+            .subscribe(services => {
+                this.store.dispatch({ type: ADD_SERVICE, payload: service });
+                this.dialogRef.hide();
+                this.mdlSnackbarService.showSnackbar({
+                    message: 'Service was successfully added',
+                    timeout: 5000
+                });
+            });
+      
+      // this.weightedServiceStore.add(weightedService)
+      //   .subscribe((res) => {
+      //     this.mdlSnackbarService.showSnackbar({
+      //       message: `Service was successfully added`,
+      //       timeout: 5000
+      //     });
+      //     this.dialogRef.hide();
+      //   }, (error) => {
+      //     this.mdlSnackbarService.showSnackbar({
+      //       message: `Error: ${error}`,
+      //       timeout: 5000
+      //     });
+      //   });
     }
 
   }

@@ -14,7 +14,7 @@
                   <label hidden class="control-label">Service id</label>
 
                   <mdl-select class="cs-text-center" formControlName="serviceId">
-                    <mdl-option *ngFor="let model of models" [value]="model.serviceId">{{model.serviceId}}</mdl-option>
+                    <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceId}}</mdl-option>
                   </mdl-select>
                 </div>
               <hydro-input-text fxFlex="50%"
