@@ -4,6 +4,8 @@ import { environment } from '../../../../environments/environment';
 import { WeightedService } from '@models/weighted-service';
 import { Observable } from 'rxjs/Observable';
 
+import { Service } from '@shared/_index';
+
 @Injectable()
 export class HttpWeightedServicesService {
 
@@ -13,11 +15,11 @@ export class HttpWeightedServicesService {
     this.baseAPIUrl = `${environment.apiUrl}/weightedServices`;
   }
 
-  getAll(): Observable<WeightedService[]> {
+  getAll(): Observable<Service[]> {
     return this.http.get(this.baseAPIUrl)
       .map((res: Response): any => {
         console.log(res);
-        return this.toWeightedService(res.json());
+        return res.json();
       });
   }
 
