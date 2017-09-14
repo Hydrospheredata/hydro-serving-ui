@@ -53,6 +53,8 @@ import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete
 import { ModelsSidebarComponent } from './components/models-sidebar/models-sidebar.component';
 import { ModelDetailsComponent } from './components/model-details/model-details.component';
 
+import { DialogAddServiceComponent } from '@components/dialogs/dialog-add-service.component/dialog-add-service.component';
+
 import { ServicesModule } from './modules/services/services.module';
 import { ModelsModule } from './modules/models/models.module';
 import { SharedModule } from './modules/shared/shared.module';
@@ -67,7 +69,8 @@ import { SharedModule } from './modules/shared/shared.module';
     DialogStopModelComponent,
     ServicesListComponent,
     DialogWeightedServiceComponent,
-    DialogDeleteServiceComponent
+    DialogDeleteServiceComponent,
+    DialogAddServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +94,8 @@ import { SharedModule } from './modules/shared/shared.module';
     DialogTestComponent,
     DialogStopModelComponent,
     DialogWeightedServiceComponent,
-    DialogDeleteServiceComponent
+    DialogDeleteServiceComponent,
+    DialogAddServiceComponent
   ],
   providers: [
     // services
