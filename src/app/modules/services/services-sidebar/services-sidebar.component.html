@@ -29,18 +29,29 @@
 </div>
 <div class='services-list__row'>
   <ul class='mdl-list services-list__ul'>
-    <ng-template ngFor let-service let-i="index" [ngForOf]="weightedServices | search : 'name' : searchQ | sortBy: 'id'">
+    <li *ngFor="let service of services" class='cs-cursor-pointer mdl-list__item services-list__item' [routerLink]="[service.id]"
+        routerLinkActive='services-list__item--active'>
+        <a class='mdl-list__item-primary-content services-list__item-content'>{{ service.serviceName }}</a>
+        
+        <mdl-icon title="Delete service" (click)="deleteService(service.id)">delete</mdl-icon>
+
+        <span class='services-list__badge'
+              *ngIf="service.weights.length"
+              [mdl-badge]="service.weights.length">
+            </span>
+    </li>
+    <!-- <ng-template ngFor let-service let-i="index" [ngForOf]="weightedServices">
       <li class='cs-cursor-pointer mdl-list__item services-list__item' [routerLink]="[service.id]"
           routerLinkActive='services-list__item--active'>
           <a class='mdl-list__item-primary-content services-list__item-content'>{{ service.serviceName }}</a>
           
           <mdl-icon title="Delete service" (click)="deleteService(service.id)">delete</mdl-icon>
 
-          <!-- <span class='services-list__badge'
+          <span class='services-list__badge'
                 *ngIf="service.weights.length"
                 [mdl-badge]="service.weights.length">
-              </span> -->
+              </span>
       </li>
-    </ng-template>
+    </ng-template> -->
   </ul>
 </div>
