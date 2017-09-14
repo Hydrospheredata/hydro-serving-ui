@@ -28,10 +28,6 @@ export class WeightedServiceStore {
       });
   }
 
-  getById(id: string) {
-  }
-
-
   add(weightedService: WeightedService): Observable<string> {
     return this.httpWeightedServicesService.add(weightedService)
       .map((res) => {
