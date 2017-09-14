@@ -23,15 +23,17 @@
     <th>ModelVersion</th>
     <th>ModelCreateDate</th>
     <th>ModelStatus</th>
+    <th>Weight</th>
   </tr>
   </thead>
   <tbody>
     <tr *ngFor="let serviceModel of serviceModels" class='services-list-table__tr cs-cursor-pointer'>
-      <td class="services-list-table__td id"><div class='cs-text-overflow-ellipsis'>{{serviceModel.serviceName}}</div></td>
-      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{serviceModel.modelRuntime.source}}</div></td>
-      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{serviceModel.modelRuntime.modelVersion}}</div></td>
-      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{serviceModel.modelRuntime.created}}</div></td>
-      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{serviceModel.status}}</div></td>
+      <td class="services-list-table__td id"><div class='cs-text-overflow-ellipsis'>{{serviceModel.data.serviceName}}</div></td>
+      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{serviceModel.data.modelRuntime.source}}</div></td>
+      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{serviceModel.data.modelRuntime.modelVersion}}</div></td>
+      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{serviceModel.data.modelRuntime.created}}</div></td>
+      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{serviceModel.data.status}}</div></td>
+      <td class="services-list-table__td name"><div class='cs-text-overflow-ellipsis'>{{serviceModel.weight}}</div></td>
     </tr>
   </tbody>
 </table>

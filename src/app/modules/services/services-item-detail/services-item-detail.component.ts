@@ -17,7 +17,7 @@ import { ModelServicesService } from '@shared/services/_index';
 
 export class ServicesItemDetailComponent implements OnInit {
     public id: string;
-    public serviceModels: ModelService[];
+    public serviceModels: any[];
     public services: Service[];
     public service: Service;
 
@@ -52,16 +52,17 @@ export class ServicesItemDetailComponent implements OnInit {
         this.service = service.shift();
         if (this.service) {
             this.service.weights.forEach(weight => {
-                this.getModelServiceData(weight.serviceId);
+                console.log(weight);
+                this.getModelServiceData(weight);
             })
         }
         
     }
 
-    getModelServiceData(id: number) {
-        this.modelServicesService.getModelService(id)
+    getModelServiceData(weight) {
+        this.modelServicesService.getModelService(weight.serviceId)
             .subscribe(data => {
-                this.serviceModels.push(data);
+                this.serviceModels.push({ data: data, weight: weight.weight });
             });
     }
 
