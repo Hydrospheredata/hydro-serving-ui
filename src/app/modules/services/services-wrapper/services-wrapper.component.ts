@@ -3,10 +3,10 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { 
+import {
     ServicesService,
-    Service, 
-    GET_SERVICES 
+    Service,
+    GET_SERVICES
 } from '@shared/_index';
 
 import { AppState } from '@shared/models/_index';
@@ -31,7 +31,7 @@ export class ServicesWrapperComponent implements OnDestroy {
         private store: Store<AppState>,
         private servicesService: ServicesService,
         private modelServicesService: ModelServicesService
-    ) { 
+    ) {
         this.servicesServiceSubscription = this.servicesService.getServices()
             .subscribe(services => {
                 this.store.dispatch({ type: Actions.GET_SERVICES, payload: services });

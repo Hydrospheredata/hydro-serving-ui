@@ -56,7 +56,6 @@ export class ServicesItemDetailComponent implements OnInit {
                 this.getModelServiceData(weight);
             })
         }
-        
     }
 
     getModelServiceData(weight) {
@@ -70,5 +69,5 @@ export class ServicesItemDetailComponent implements OnInit {
         console.log(id);
     }
 
-  
+
 }

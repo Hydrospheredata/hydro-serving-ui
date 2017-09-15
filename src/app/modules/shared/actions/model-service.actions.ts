@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 import { ModelService } from '@shared/models/_index';
 
-export const GET_MODEL_SERVICE = "GET_MODEL_SERVICE";
+export const GET_MODEL_SERVICE = 'GET_MODEL_SERVICE';
 
 export class GetServiceModelsAction implements Action {
   readonly type = GET_MODEL_SERVICE;
@@ -9,4 +9,4 @@ export class GetServiceModelsAction implements Action {
 }
 
 export type ModelServiceActions
-  = GetServiceModelsAction
+  = GetServiceModelsAction;

@@ -30,4 +30,4 @@ export type ServicesActions
   = GetServicesAction
   | AddServiceAction
   | UpdateServiceAction
-  | DeleteServiceAction
+  | DeleteServiceAction;
