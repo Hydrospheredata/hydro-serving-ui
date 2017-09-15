@@ -1,10 +1,10 @@
 import { Action } from '@ngrx/store';
 import { Service } from '@shared/models/_index';
 
-export const GET_SERVICES = "GET_SERVICES";
-export const ADD_SERVICE = "ADD_SERVICE";
-export const UPDATE_SERVICE = "UPDATE_SERVICE";
-export const DELETE_SERVICE = "DELETE_SERVICE";
+export const GET_SERVICES = 'GET_SERVICES';
+export const ADD_SERVICE = 'ADD_SERVICE';
+export const UPDATE_SERVICE = 'UPDATE_SERVICE';
+export const DELETE_SERVICE = 'DELETE_SERVICE';
 
 export class GetServicesAction implements Action {
   readonly type = GET_SERVICES;
