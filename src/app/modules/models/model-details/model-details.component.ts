@@ -62,12 +62,10 @@ export class ModelDetailsComponent implements OnInit {
     this.modelServiceStore.items
     .subscribe((data) => {
       this.modelServices = data;
-      console.warn(this.modelServices);
     });
     this.weightedServicesService.getAll()
       .subscribe((data) => {
         this.weightedServices = data;
-        console.warn(this.weightedServices);
       });
 
     this.modelsService.getBuildsByModel(id)
@@ -75,20 +73,17 @@ export class ModelDetailsComponent implements OnInit {
         this.builds = data.sort((a, b) => {
           return moment(b.started).diff(moment(a.started));
         });
-        console.warn(this.builds);
       });
 
     this.modelRuntimeService.getRuntimeByModel(Number(id), 1000)
       .subscribe((data: ModelRuntime[]) => {
         this.runtimes = data;
-        console.warn(this.runtimes);
       });
     // TODO: PROPERLY GET BUILDS OR MOVE THEM TO STORE
     this.modelStore.items
       .subscribe((items) => {
         this.model = items.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
         this.deployable = this.isDeployable();
-        console.warn(this.model);
       });
   }
 
@@ -113,6 +108,10 @@ export class ModelDetailsComponent implements OnInit {
     const modelUpdated = this.model.updated;
     const runtimeCreated = this.model.lastModelRuntime.created;
     return moment(modelUpdated).isAfter(moment(runtimeCreated));
+  }
+
+  public getPayloadForModelDeploy(runtime) {
+    return {serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id};
   }
 
   buildModel(modelOptions) {
@@ -154,7 +153,7 @@ export class ModelDetailsComponent implements OnInit {
     });
   }
 
-  stopModel(id) {
+  stopModel(modelService) {
     this.dialog.showCustomDialog({
       component: DialogStopModelComponent,
       styles: { 'width': '600px', 'min-height': '250px' },
@@ -163,7 +162,7 @@ export class ModelDetailsComponent implements OnInit {
       clickOutsideToClose: true,
       enterTransitionDuration: 400,
       leaveTransitionDuration: 400,
-      providers: [{ provide: injectableModelStopOptions, useValue: id }],
+      providers: [{ provide: injectableModelStopOptions, useValue: modelService }],
     });
   }
 

@@ -38,8 +38,19 @@ export class DialogDeployModelComponent implements OnInit {
 
   submitDeployModelForm() {
     this.modelServiceService.createService(this.createServiceEntity.serviceName, this.createServiceEntity.modelRuntimeId)
-      .subscribe((data) => {
-        this.modelServiceStore.updateModel(data);
+      .subscribe(result => {
+        this.dialogRef.hide();
+        this.mdlSnackbarService.showSnackbar({
+          message: 'Service has been deployed',
+          timeout: 5000
+        });
+        //this.modelServiceStore.updateModel(data);
+      },
+      (error) => {
+        this.mdlSnackbarService.showSnackbar({
+          message: error,
+          timeout: 5000
+        });
       });
 
   }

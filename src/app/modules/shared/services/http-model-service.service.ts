@@ -36,7 +36,7 @@ export class HttpModelServiceService {
   public removeService(id: number): Observable<any> {
     const url = `${this.baseAPIUrl}/${id}`;
     return this.http.delete(url)
-    .map((res: Response) => res.json());
+    .map((res: Response) => {});
   }
 
   public getModelService(id: number): Observable<any> {

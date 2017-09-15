@@ -45,23 +45,13 @@
           'mdl-color-text--red-700': !getModelService(runtime.id)
           }">{{getModelService(runtime.id) ? 'DEPLOYED' : 'UNDEPLOYED'}}</div>
       </td>
-      <!-- <td class="models-list-table__td status">
-        <div title="{{build}}" class='cs-text-overflow-ellipsis'>
-          <strong><span [ngClass]="{
-            'mdl-color-text--green-700': (build?.status) == 'FINISHED',
-            'mdl-color-text--red-700': (build?.status) == 'ERROR',
-            'mdl-color-text--grey-900': (build?.status) == 'STOPPED'
-            }">{{build?.status}}</span></strong>
-          {{(build.finished ? build.finished : build.started) | utcToLocal | amTimeAgo}}
-        </div>
-      </td> -->
-      <td class='cs-text-overflow-ellipsis '>
+      <td class='cs-text-overflow-ellipsis'>
         <div fxLayout="row" fxLayoutAlign="space-between center"  class="">
           <div class="">
-            <a *ngIf="!getModelService(runtime.id)" title="Deploy" (click)="deployModelService({serviceName: runtime.modelName, modelRuntimeId: runtime.id})" class="hydro-link mdl-color-text--grey-700">
+            <a *ngIf="!getModelService(runtime.id)" title="Deploy" (click)="deployModelService(getPayloadForModelDeploy(runtime))" class="hydro-link mdl-color-text--grey-700">
               <mdl-icon>cloud_upload</mdl-icon>
             </a>
-            <a *ngIf="getModelService(runtime.id)" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(runtime.id)" title="Stop">
+            <a *ngIf="getModelService(runtime.id)" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(getModelService(runtime.id))" title="Stop">
               <mdl-icon>delete_forever</mdl-icon>
             </a>
             <a *ngIf="getModelService(runtime.id)" (click)="testModel(getModelService(runtime.id))" title='Test' class="hydro-link mdl-color-text--blue-800">
