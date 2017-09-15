@@ -46,9 +46,7 @@ export class ModelsListComponent implements OnInit {
   ngOnInit() {
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
-        console.warn(params);
         this.id = params['modelId'];
-        console.warn(this.id);
         return this.id;
       })
       .subscribe(() => { this.loadInitialData(); });
@@ -118,7 +116,7 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  stopModel(id) {
+  stopModel(model) {
     this.dialog.showCustomDialog({
       component: DialogStopModelComponent,
       styles: {'width': '600px', 'min-height': '250px'},
@@ -127,7 +125,7 @@ export class ModelsListComponent implements OnInit {
       clickOutsideToClose: true,
       enterTransitionDuration: 400,
       leaveTransitionDuration: 400,
-      providers: [{provide: injectableModelStopOptions, useValue: id}],
+      providers: [{provide: injectableModelStopOptions, useValue: model}],
     });
   }
 

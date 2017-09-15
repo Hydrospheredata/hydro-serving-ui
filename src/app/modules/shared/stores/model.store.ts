@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpModelsService } from '@services/http-models.service';
 import { BuildModelService } from '@services/build-model.service';
 import { Model } from '@models/model';
+import { ModelBuild } from '@models/model-build';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -11,6 +12,7 @@ export class ModelStore {
   items: Observable<Model[]>;
   private _items: BehaviorSubject<Model[]>;
   private dataStore: Model[];
+  private builds: ModelBuild[];
 
   constructor(private httpModelsService: HttpModelsService,
               private buildModelService: BuildModelService) {
@@ -31,7 +33,7 @@ export class ModelStore {
     this._items.next(this.dataStore);
   }
 
-  public updateModel(modelOptions) {
+  public updateModel(modelOptions): Observable<any> {
     return this.httpModelsService.updateModel(modelOptions)
     .map((model) => {
       this.updateItem(model);
@@ -39,7 +41,7 @@ export class ModelStore {
     });
   }
 
-  private updateItem(item: Model) {
+  private updateItem(item: Model): void {
     const idx = this.dataStore.findIndex((dataStoreItem) => dataStoreItem.id === item.id);
     const model = new Model(item);
     if (idx === -1) {
@@ -49,18 +51,21 @@ export class ModelStore {
     }
   }
 
-  public testModel(params) {
+  public testModel(params): Observable<any> {
     const service = this.buildModelService
       .testModel(params);
-
     return service;
   }
 
-  public stopModel(id) {
+  public stopModel(id): Observable<any> {
     const service = this.buildModelService
       .stopModel(id);
-
     return service;
   }
+
+  public getBuilds() {}
+
+  public getBuildById() {}
+
 
 }

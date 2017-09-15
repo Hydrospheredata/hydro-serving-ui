@@ -50,7 +50,6 @@ export class HttpModelsService {
     return this.http.get(url)
       .map((res: Response) => {
         const data = res.json();
-        console.log(data);
         this.builds = this.extractBuilds(data);
         return this.builds;
       });

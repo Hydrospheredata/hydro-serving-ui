@@ -52,14 +52,12 @@ export class ModelStore {
   public testModel(params) {
     const service = this.buildModelService
       .testModel(params);
-
     return service;
   }
 
   public stopModel(id) {
     const service = this.buildModelService
       .stopModel(id);
-
     return service;
   }
 

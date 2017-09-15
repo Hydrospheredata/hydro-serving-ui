@@ -56,7 +56,6 @@ export class DialogModelBuildComponent implements OnInit {
     const modelStatus = this.modelStatusPipe.transform(this.model);
     this.modelType = this.model.lastModelRuntime.runtimeType ? this.model.lastModelRuntime.runtimeType.tags : '';
     this.buildModelForm = this.fb.group({
-      version: [this.model.lastModelRuntime.modelVersion],
       modelId: [this.model.id],
       name: [this.model.name],
       status: [modelStatus],
@@ -72,7 +71,6 @@ export class DialogModelBuildComponent implements OnInit {
     const controls = buildModelForm.controls;
     const modelOptions = {
       id: controls.modelId.value,
-      version: controls.version.value,
       name: controls.name.value,
       source: controls.source.value,
       status: controls.status.value,
@@ -84,7 +82,7 @@ export class DialogModelBuildComponent implements OnInit {
 
     this.modelStore.updateModel(modelOptions)
       .flatMap((model) => {
-        return this.buildModelService.build({modelVersion: modelOptions.version, modelId: modelOptions.id, runtimeTypeId: 1});
+        return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: 1});
       })
       .finally(() => {
         this.modelStore.getAll();

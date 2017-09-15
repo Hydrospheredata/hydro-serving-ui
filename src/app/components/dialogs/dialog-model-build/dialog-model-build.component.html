@@ -14,11 +14,12 @@
 
       </div>
 
-      <hydro-input-text readonly="" label="Version" formControlName="version"></hydro-input-text>
-      <div><label class="">Runtime Type</label></div>
-      <mdl-select formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
-        <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}:{{type.version}}</mdl-option>
-      </mdl-select>
+      <div class="mdl-grid cs-align-center cs-mt-8 cs-mb-16 cs-text-right"  fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="mdl-cell mdl-cell--5-col mdl-cell--4-col-tablet cs-text-left"><label class="">Runtime Type</label></div>
+        <mdl-select class="mdl-cell mdl-cell--7-col mdl-cell--4-col-tablet" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
+          <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}:{{type.version}}</mdl-option>
+        </mdl-select>
+      </div>
       <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col cs-text-right">
           <button (click)="dialogRef.hide()" type="button" mdl-button class='mat-button mat-button--big'>CANCEL</button>

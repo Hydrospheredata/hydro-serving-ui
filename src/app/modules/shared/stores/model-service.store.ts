@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpModelServiceService } from '@services/http-model-service.service';
@@ -18,8 +19,8 @@ export class ModelServiceStore {
     this.items = this._items.asObservable();
   }
 
-  public getAll(): void {
-    this.httpModelsServiceService.getAll()
+  public getAll(): Subscription {
+    return this.httpModelsServiceService.getAll()
       .subscribe((data) => {
         this.dataStore = data;
         this.updateStore();

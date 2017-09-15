@@ -27,6 +27,18 @@ export class HttpModelServiceService {
       });
   }
 
+  public createService(serviceName: string, modelRuntimeId: number): Observable<any> {
+    const url = `${this.baseAPIUrl}`;
+    const payload = {serviceName, modelRuntimeId};
+    return this.http.post(url, payload).map((response: Response) => response.json());
+  }
+
+  public removeService(id: number): Observable<any> {
+    const url = `${this.baseAPIUrl}/${id}`;
+    return this.http.delete(url)
+    .map((res: Response) => {});
+  }
+
   public getModelService(id: number): Observable<any> {
     const url = `${this.baseAPIUrl}/${id}`;
     return this.http.get(url)

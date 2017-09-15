@@ -6,7 +6,7 @@ import { MomentModule } from 'angular2-moment';
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { ModelsWrapperComponent } from './_index';
 import { ModelsListComponent } from './_index';
