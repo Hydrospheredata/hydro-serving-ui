@@ -2,16 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 
-import { 
-    WeightedServiceStore,
-    HttpModelServiceService 
-} from '@shared/_index';
+import { Store } from '@ngrx/store';
+import { AppState, Service, ModelService } from '@shared/models/_index';
+import { ModelServicesService } from '@shared/services/_index';
 
-import { WeightedService } from '@models/weighted-service';
-import {
-  DialogWeightedServiceComponent,
-  injectableWeightedService
-} from '@components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
 
 
 
@@ -22,50 +16,53 @@ import {
 })
 
 export class ServicesItemDetailComponent implements OnInit {
-    private activatedRouteSub: any;
     public id: string;
-    title: string;
-    models: any = [];
-
-    weightedService: any;
-    weightedServicesModels: any;
+    public serviceModels: any[];
+    public services: Service[];
+    public service: Service;
 
     constructor(
+        public store: Store<AppState>,
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
-        private weightedServiceStore: WeightedServiceStore,
-        private modelService: HttpModelServiceService
-    ) {}
+        private modelServicesService: ModelServicesService
+    ) {
+        this.store.select('services')
+            .subscribe(services => {
+                this.services = services;
+            });
+    }
 
     ngOnInit() {
-        this.activatedRouteSub = this.activatedRoute.params.subscribe((params) => {
-            this.id = params['id'];
-            this.getServiceData(this.id);
-        });
+        this.activatedRoute.params
+            .subscribe(params => {
+                this.id = params['id'];
+                if (this.services.length) {
+                    this.getServiceData(this.id);
+                }
+            });
 
     }
 
     getServiceData(id: string) {
-        this.weightedServicesModels = [];
-        this.weightedServiceStore.items
-            .map((services) => {
-                return services.filter((service) => service.id === +id);
+        this.serviceModels = [];
+        let service = this.services
+            .filter(service => service.id === +id)
+
+        this.service = service.shift();
+        if (this.service) {
+            this.service.weights.forEach(weight => {
+                console.log(weight);
+                this.getModelServiceData(weight);
             })
-            .subscribe((service) => {
-                this.weightedService = service.shift();
-                if (this.weightedService) {
-                    this.weightedService.weights.forEach(item => {
-                        this.getModelServiceData(item.serviceId);
-                    })
-                }
-            });
+        }
+        
     }
 
-    getModelServiceData(id: number) {
-        this.modelService.getModelService(id)
-            .subscribe((data) => {
-                console.log(data);
-                this.weightedServicesModels.push(data);
+    getModelServiceData(weight) {
+        this.modelServicesService.getModelService(weight.serviceId)
+            .subscribe(data => {
+                this.serviceModels.push({ data: data, weight: weight.weight });
             });
     }
 

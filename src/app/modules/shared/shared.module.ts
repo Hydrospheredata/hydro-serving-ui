@@ -14,7 +14,9 @@ import {
     HttpModelsService,
     HttpRuntimeTypesService,
     HttpService,
-    LoaderStateService
+    LoaderStateService,
+    ServicesService,
+    ModelServicesService
 } from './services/_index';
 
 // Stores
@@ -35,13 +37,8 @@ import {
 } from './pipes/_index';
 
 // Components
-import {
-    InputTextComponent,
-    // DialogDeleteServiceComponent,
-    // DialogModelBuildComponent,
-    // DialogStopModelComponent,
-    // DialogTestComponent,
-    // DialogWeightedServiceComponent
+import { 
+    InputTextComponent
 } from './components/_index';
 
 
@@ -61,12 +58,7 @@ import {
         SortByPipe,
         UtcToLocalPipe,
         // Components
-        InputTextComponent,
-        // DialogDeleteServiceComponent,
-        // DialogModelBuildComponent,
-        // DialogStopModelComponent,
-        // DialogTestComponent,
-        // DialogWeightedServiceComponent
+        InputTextComponent
     ],
     providers: [
         // Services
@@ -79,6 +71,8 @@ import {
         HttpRuntimeTypesService,
         HttpService,
         LoaderStateService,
+        ServicesService,
+        ModelServicesService,
         // Stores
         WeightedServiceStore,
         ModelRuntimeStore,
@@ -93,12 +87,7 @@ import {
         SortByPipe,
         UtcToLocalPipe,
         // Components
-        InputTextComponent,
-        // DialogDeleteServiceComponent,
-        // DialogModelBuildComponent,
-        // DialogStopModelComponent,
-        // DialogTestComponent,
-        // DialogWeightedServiceComponent
+        InputTextComponent
     ]
 })
 export class SharedModule { }

@@ -1,4 +1,3 @@
-// Импорт зависимостей данного модуля.
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
@@ -9,7 +8,12 @@ import { SortByPipe } from '@shared/_index';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
-// Импорт страниц данного модуля.
+import { StoreModule } from '@ngrx/store';
+import { ServicesReducer, ModelServiceReducer } from '@shared/reducers/_index';
+
+
+
+
 import { 
     ServicesWrapperComponent, 
     ServicesSidebarComponent, 
@@ -25,7 +29,8 @@ import {
         CommonModule,
         MdlModule,
         ServicesRoutingModule,
-        FormsModule
+        FormsModule,
+        StoreModule.forRoot({ services: ServicesReducer, modelService: ModelServiceReducer })
     ],
     declarations: [
         ServicesWrapperComponent, 

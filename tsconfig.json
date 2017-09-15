@@ -18,6 +18,7 @@
       "@models/*": ["app/models/*"],
       "@node_modules/*": ["../node_modules/*"],
       "@pipes/*": ["app/pipes/*"],
+      "@modules/*": ["app/modules/*"],
       "@shared/*": ["app/modules/shared/*"]
     },
     "typeRoots": [
