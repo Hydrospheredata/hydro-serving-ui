@@ -4,7 +4,7 @@
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
         <span class='h3'>{{model?.name}}</span>
       </div>
-      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet" *ngIf="deployable">
         <mdl-button (click)="buildModel(model)" class="mist-button blue border icon" title="Add new endpoint" mdl-colored="">
           Deploy
         </mdl-button>
@@ -12,8 +12,9 @@
     </div>
   </div>
 </div>
-<div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left"> 
-<p>Model version: {{ model?.lastModelRuntime?.modelVersion }}</p>
+<div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
+<p *ngIf="model?.lastModelRuntime?.modelVersion" >Model version: {{ model?.lastModelRuntime?.modelVersion }}</p>
+<p class="mdl-color-text--green-700" *ngIf="deployable">New version available</p>
 <p>Runtime: {{ model?.runtimeType?.name }}</p>
 <p>Tags: {{model?.runtimeType?.tags}} </p>
 <p>Input: {{ model?.inputFields }}</p>
@@ -27,6 +28,7 @@
       <th>Vesion</th>
       <th>Status</th>
       <th>Actions</th>
+      <th>Services</th>
     </tr>
   </thead>
   <tbody>
@@ -38,7 +40,10 @@
         <div class='cs-text-overflow-ellipsis'>{{runtime?.modelVersion}}</div>
       </td>
       <td class="models-list-table__td name">
-        <div class='cs-text-overflow-ellipsis'>DEPLOYED</div>
+        <div class='cs-text-overflow-ellipsis' [ngClass]="{
+          'mdl-color-text--green-700': getModelService(runtime.id),
+          'mdl-color-text--red-700': !getModelService(runtime.id)
+          }">{{getModelService(runtime.id) ? 'DEPLOYED' : 'UNDEPLOYED'}}</div>
       </td>
       <!-- <td class="models-list-table__td status">
         <div title="{{build}}" class='cs-text-overflow-ellipsis'>
@@ -50,21 +55,22 @@
           {{(build.finished ? build.finished : build.started) | utcToLocal | amTimeAgo}}
         </div>
       </td> -->
-      <td class='cs-text-overflow-ellipsis models-list-table__td'>
-        <div fxLayout="row" fxLayoutAlign="space-between center"  class="models-list-table__td__actions">
-          <div class="models-list-table__td__actions--buttons">
-            <a title="Deploy" (click)="buildModel(runtime)" class="hydro-link mdl-color-text--grey-700">
+      <td class='cs-text-overflow-ellipsis '>
+        <div fxLayout="row" fxLayoutAlign="space-between center"  class="">
+          <div class="">
+            <a *ngIf="!getModelService(runtime.id)" title="Deploy" (click)="deployModelService({serviceName: runtime.modelName, modelRuntimeId: runtime.id})" class="hydro-link mdl-color-text--grey-700">
               <mdl-icon>cloud_upload</mdl-icon>
             </a>
-            <a class="hydro-link mdl-color-text--grey-700" (click)="stopModel(runtime.id)" title="Stop">
+            <a *ngIf="getModelService(runtime.id)" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(runtime.id)" title="Stop">
               <mdl-icon>delete_forever</mdl-icon>
             </a>
-            <a (click)="testModel(runtime)" title='Test' class="hydro-link mdl-color-text--blue-800">
+            <a *ngIf="getModelService(runtime.id)" (click)="testModel(getModelService(runtime.id))" title='Test' class="hydro-link mdl-color-text--blue-800">
               <mdl-icon>play_circle_outline</mdl-icon>
             </a>
         </div>
         </div>
       </td>
+      <td *ngIf="this.weightedServices && this.weightedServices.length > 0">{{  getWeightedServices(runtime.id) }}</td>
     </tr>
   </tbody>
 </table>

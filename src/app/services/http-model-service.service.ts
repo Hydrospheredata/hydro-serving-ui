@@ -24,6 +24,7 @@ export class HttpModelServiceService {
     const url = `${this.baseAPIUrl}`;
     return this.http.get(url)
       .map((res: Response) => {
+        console.log(res.json())
         return res.json();
       });
   }

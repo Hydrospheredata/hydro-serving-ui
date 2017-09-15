@@ -3,6 +3,8 @@ import { MdlDialogReference } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModelStore } from '@stores/model.store';
+import { ModelServiceStore } from '@shared/stores/model-service.store';
+import { Model } from '@models/model';
 
 export let injectableModelStopOptions = new InjectionToken<object>('injectableModelStopOptions');
 
@@ -14,16 +16,17 @@ export let injectableModelStopOptions = new InjectionToken<object>('injectableMo
 })
 export class DialogStopModelComponent implements OnInit {
   private data;
-  public modelId;
+  public model;
 
   constructor(
     @Inject(injectableModelStopOptions) data,
     public dialogRef: MdlDialogReference,
     private fb: FormBuilder,
     private modelStore: ModelStore,
+    private modelServiceStore: ModelServiceStore,
     private mdlSnackbarService: MdlSnackbarService
   ) {
-    this.modelId = data;
+    this.model = data;
   }
 
   ngOnInit() {
@@ -35,10 +38,18 @@ export class DialogStopModelComponent implements OnInit {
   }
 
   submitStopModelForm() {
-    this.modelStore.stopModel(this.modelId)
-      .finally(() => {
-        this.modelStore.getAll();
-      })
+    let apiUrl;
+    let id;
+    if (this.model instanceof Model) {
+      id = this.model.id;
+      apiUrl = this.modelStore.stopModel.bind(this.modelStore);
+    } else {
+      id = this.model.serviceId;
+      apiUrl = this.modelServiceStore.serve.bind(this.modelServiceStore);
+    }
+
+
+    this.modelStore.stopModel(this.model)
       .subscribe(result => {
         this.dialogRef.hide();
         this.mdlSnackbarService.showSnackbar({
