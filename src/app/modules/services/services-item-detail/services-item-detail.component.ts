@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
 import { AppState, Service, ModelService } from '@shared/models/_index';
 import { ModelServicesService } from '@shared/services/_index';
+
+import { 
+    DialogUpdateServiceComponent, 
+    injectableService 
+} from '@components/dialogs/dialog-update-service/dialog-update-service.component';
 
 
 
@@ -15,46 +20,51 @@ import { ModelServicesService } from '@shared/services/_index';
     styleUrls: ['./services-item-detail.component.scss']
 })
 
-export class ServicesItemDetailComponent implements OnInit {
+export class ServicesItemDetailComponent {
     public id: string;
     public serviceModels: any[];
-    public services: Service[];
+    public services: Service[] = [];
     public service: Service;
+    public serviceName: string = '';
 
     constructor(
         public store: Store<AppState>,
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
-        private modelServicesService: ModelServicesService
+        private modelServicesService: ModelServicesService,
+        private router: Router
     ) {
         this.store.select('services')
             .subscribe(services => {
-                this.services = services;
+                if (services.length) {
+                    this.services = services;
+                    if (this.id) {
+                        this.getServiceData(this.id);
+                    }
+                }
             });
-    }
-
-    ngOnInit() {
+        
         this.activatedRoute.params
             .subscribe(params => {
                 this.id = params['id'];
-                if (this.services.length) {
-                    this.getServiceData(this.id);
-                }
+                this.getServiceData(this.id);
             });
-
     }
 
     getServiceData(id: string) {
         this.serviceModels = [];
-        let service = this.services
-            .filter(service => service.id === +id)
 
-        this.service = service.shift();
-        if (this.service) {
-            this.service.weights.forEach(weight => {
-                console.log(weight);
-                this.getModelServiceData(weight);
-            })
+        if (this.services.length) {
+            let service = this.services
+                .filter(service => service.id === +id)
+
+            this.service = service.shift();
+            this.serviceName = this.service.serviceName;
+            if (this.service) {
+                this.service.weights.forEach(weight => {
+                    this.getModelServiceData(weight);
+                })
+            }
         }
         
     }
@@ -66,8 +76,17 @@ export class ServicesItemDetailComponent implements OnInit {
             });
     }
 
-    editService(id) {
-        console.log(id);
+    editService(service: Service) {
+        this.dialog.showCustomDialog({
+            component: DialogUpdateServiceComponent,
+            styles: {'width': '850px', 'min-height': '250px'},
+            classes: '',
+            isModal: true,
+            clickOutsideToClose: true,
+            enterTransitionDuration: 400,
+            leaveTransitionDuration: 400,
+            providers: [{provide: injectableService, useValue: service}]
+        });
     }
 
   
