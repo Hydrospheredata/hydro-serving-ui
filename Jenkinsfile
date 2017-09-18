@@ -73,7 +73,7 @@ def createReleaseInGithub(gitCredentialId, organization, repository, releaseVers
 
 def uploadRelease(gitCredentialId, organization, repository, releaseVersion, releaseId, releaseFile){
   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
-    sh """curl --data-binary @"${releaseFile}" -H "Authorization: token ${GIT_PASSWORD}" -H "Content-Type: application/zip" https://uploads.github.com/repos/${organization}/${repository}/releases/${releaseId}/assets?name=release-${releaseVersion}"""
+    sh """curl --data-binary @"${releaseFile}" -H "Authorization: token ${GIT_PASSWORD}" -H "Content-Type: application/zip" https://uploads.github.com/repos/${organization}/${repository}/releases/${releaseId}/assets?name=release-${releaseVersion}.zip"""
    }
 }
 
