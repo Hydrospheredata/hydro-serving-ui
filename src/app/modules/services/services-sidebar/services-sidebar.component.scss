@@ -78,6 +78,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        font-size: 20px;
+        color: rgba(0,8,86, 0.35);
         &:hover {
           color: red;
         }
