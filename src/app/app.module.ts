@@ -49,7 +49,7 @@ import { BuildModelService } from '@services/build-model.service';
 import { DialogStopModelComponent } from './components/dialogs/dialog-stop-model/dialog-stop-model.component';
 import { DialogDeployModelComponent } from './components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
 import { ServicesListComponent } from './components/services-list/services-list.component';
-import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
+import { DialogUpdateServiceComponent } from '@components/dialogs/dialog-update-service/dialog-update-service.component';
 import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete-service/dialog-delete-service.component';
 import { ModelsSidebarComponent } from './components/models-sidebar/models-sidebar.component';
 import { ModelDetailsComponent } from './components/model-details/model-details.component';
@@ -70,7 +70,7 @@ import { SharedModule } from './modules/shared/shared.module';
     DialogStopModelComponent,
     DialogDeployModelComponent,
     ServicesListComponent,
-    DialogWeightedServiceComponent,
+    DialogUpdateServiceComponent,
     DialogDeleteServiceComponent,
     DialogAddServiceComponent
   ],
@@ -96,7 +96,7 @@ import { SharedModule } from './modules/shared/shared.module';
     DialogTestComponent,
     DialogStopModelComponent,
     DialogDeployModelComponent,
-    DialogWeightedServiceComponent,
+    DialogUpdateServiceComponent,
     DialogDeleteServiceComponent,
     DialogAddServiceComponent
   ],
