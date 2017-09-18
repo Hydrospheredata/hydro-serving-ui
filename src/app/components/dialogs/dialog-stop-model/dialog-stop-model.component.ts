@@ -6,6 +6,15 @@ import { ModelStore } from '@stores/model.store';
 import { ModelServiceStore } from '@shared/stores/model-service.store';
 import { Model } from '@models/model';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
+import {
+  ModelsService,
+  GET_MODELS
+} from '@shared/_index';
+
+import { Store } from '@ngrx/store';
+import { AppState } from '@shared/models/_index';
+import * as Actions from '@shared/actions/_index';
+import { ModelBuilder } from '@shared/builders/_index';
 
 export let injectableModelStopOptions = new InjectionToken<object>('injectableModelStopOptions');
 
@@ -26,7 +35,10 @@ export class DialogStopModelComponent implements OnInit {
     private modelStore: ModelStore,
     private modelServiceStore: ModelServiceStore,
     private mdlSnackbarService: MdlSnackbarService,
-    private modelServiceService: HttpModelServiceService
+    private modelServiceService: HttpModelServiceService,
+    private store: Store<AppState>,
+    private modelsService: ModelsService,
+    private modelBuilder: ModelBuilder
   ) {
     this.model = data;
   }
@@ -50,6 +62,10 @@ export class DialogStopModelComponent implements OnInit {
           message: 'Model has been stopped',
           timeout: 5000
         });
+        this.modelsService.getModels().first()
+        .subscribe(models => {
+            this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
+        });
       },
       (error) => {
         this.mdlSnackbarService.showSnackbar({
@@ -65,6 +81,10 @@ export class DialogStopModelComponent implements OnInit {
         this.mdlSnackbarService.showSnackbar({
           message: 'Model has been stopped',
           timeout: 5000
+        });
+        this.modelsService.getModels().first()
+        .subscribe(models => {
+            this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
         });
       },
       (error) => {

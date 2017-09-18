@@ -77,53 +77,39 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
   loadInitialData(id: string) {
 
-    this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000)
-      .subscribe(modelRuntimes => {
-        this.runtimes = modelRuntimes;
-        this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
 
-      });
-
-      this.servicesServiceSubscription = this.servicesService.getServices()
-      .subscribe(services => {
-          this.store.dispatch({ type: Actions.GET_SERVICES, payload: services });
-      });
-
-      this.modelServicesServiceSubscription = this.modelServicesService.getModelServices()
-      .map(serviceModels => serviceModels.filter(model => model.serviceId > 0))
-      .subscribe(serviceModels => {
-          this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: serviceModels });
-      });
-
-    this.store.select('modelService')
-      .subscribe(modelServices => {
-        this.modelServices = modelServices;
-      });
-
-      this.store.select('services')
-      .subscribe(weightedServices => {
-        this.weightedServices = weightedServices;
-      });
-
-      this.modelsService.getBuildsByModel(id)
+    this.modelsService.getBuildsByModel(id)
       .subscribe((data) => {
         this.builds = data.sort((a, b) => {
           return moment(b.started).diff(moment(a.started));
         });
       });
 
-      this.store.select('models')
-        .subscribe(models => {
-          this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
-          this.deployable = this.isDeployable();
-        });
+    this.store.select('models')
+      .subscribe(models => {
+        this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
+        this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
+          .subscribe(modelRuntimes => {
+            this.runtimes = modelRuntimes;
+            this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
+          });
 
-    // TODO: PROPERLY GET BUILDS OR MOVE THEM TO STORE
-    // this.modelStore.items
-    //   .subscribe((items) => {
-    //     this.model = items.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
-    //     this.deployable = this.isDeployable();
-    //   });
+        this.modelServicesService.getModelServices().first()
+          .map(modelServices => modelServices.filter(model => model.serviceId > 0))
+          .subscribe(modelServices => {
+            this.modelServices = modelServices;
+            this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: modelServices });
+          });
+
+
+        this.servicesService.getServices().first()
+          .subscribe(services => {
+            this.weightedServices = services;
+            this.store.dispatch({ type: Actions.GET_SERVICES, payload: services });
+          });
+
+        this.deployable = this.isDeployable();
+      });
   }
 
   public getModelService(modelRuntimeId: number): ModelService {

@@ -63,7 +63,7 @@ export class DialogWeightedServiceComponent implements OnInit {
         .subscribe(modelService => {
             this.modelServices = modelService;
         });
-    
+
     // this.modelServiceStore.getAll();
     // this.modelServiceStore.items
     //   .map((models) => {
@@ -175,7 +175,7 @@ export class DialogWeightedServiceComponent implements OnInit {
                     timeout: 5000
                 });
             });
-      
+
       // this.weightedServiceStore.add(weightedService)
       //   .subscribe((res) => {
       //     this.mdlSnackbarService.showSnackbar({

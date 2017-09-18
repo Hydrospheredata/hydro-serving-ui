@@ -16,7 +16,7 @@ import { MdlSnackbarService } from '@angular-mdl/core';
     providers: [FormsService]
 })
 export class DialogAddServiceComponent implements OnInit {
-  
+
     public models;
     public form: FormGroup;
     public selectedWeightedService: WeightedService;
@@ -48,7 +48,7 @@ export class DialogAddServiceComponent implements OnInit {
         this.form = this.fb.group({
             serviceName: ['', Validators.required],
             weights: this.fb.array([this.createSelectForm()])
-        })
+        });
     }
 
     createSelectForm() {
