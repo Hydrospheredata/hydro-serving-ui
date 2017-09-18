@@ -129,8 +129,8 @@ node("JenkinsOnDemand") {
 
             def releaseInfo=createReleaseInGithub(gitCredentialId, organization, repository,curVersion,tagComment)
             def props = readJSON text: "${releaseInfo}"
-            sh "cd ${repository} && zip -r release-${curVersion}.zip . && cd .."
-            def releaseFile="${repository}/release-${curVersion}.zip"
+            zip archive: true, dir: "${repository}", glob: "", zipFile: "release-${curVersion}.zip"
+            def releaseFile="release-${curVersion}.zip"
             uploadRelease(gitCredentialId, organization, repository, curVersion, props.id, releaseFile)
         }
     }
