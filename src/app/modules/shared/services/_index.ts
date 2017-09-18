@@ -10,3 +10,5 @@ export * from './loader-state.service';
 export * from './hydro-request-options';
 export * from './services.service';
 export * from './model-services.service';
+export * from './models.service';
+export * from './model-runtimes.service';

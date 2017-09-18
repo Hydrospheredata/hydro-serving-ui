@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModelStore } from '@stores/model.store';
-import { Model } from '@models/model';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { RuntimeType } from '@models/runtime-type';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
@@ -17,6 +16,9 @@ import {
   DialogWeightedServiceComponent,
   injectableWeightedService
 } from '@components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
+import { ModelsService, Model, GET_MODELS } from '@shared/_index';
+import { Store } from '@ngrx/store';
+import { AppState } from '@shared/models/_index';
 
 @Component({
   selector: 'hydro-models-list',
@@ -34,6 +36,7 @@ export class ModelsListComponent implements OnInit {
   public id: string;
 
   constructor(
+    private store: Store<AppState>,
     private modelStore: ModelStore,
     private httpRuntimeTypesService: HttpRuntimeTypesService,
     public dialog: MdlDialogService,
@@ -57,11 +60,11 @@ export class ModelsListComponent implements OnInit {
   }
 
   loadInitialData() {
-      this.modelStore.getAll();
-      this.modelStore.items.subscribe((models) => {
+    this.store.select('models')
+    .subscribe(models => {
         console.log(models);
         this.models = models;
-      });
+    });
   }
 
   openDialogWeightedServicesForm(service?: WeightedService) {

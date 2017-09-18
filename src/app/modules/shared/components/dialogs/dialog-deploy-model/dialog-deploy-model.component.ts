@@ -4,8 +4,7 @@ import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModelServiceStore } from '@stores/model-service.store';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
+
 export let injectableModelDeployOptions = new InjectionToken<object>('injectableModelDeployOptions');
 
 @Component({
@@ -45,7 +44,6 @@ export class DialogDeployModelComponent implements OnInit {
           message: 'Service has been deployed',
           timeout: 5000
         });
-
         //this.modelServiceStore.updateModel(data);
       },
       (error) => {

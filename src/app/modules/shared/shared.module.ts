@@ -16,6 +16,8 @@ import {
     HttpService,
     LoaderStateService,
     ServicesService,
+    ModelsService,
+    ModelRuntimesService,
     ModelServicesService
 } from './services/_index';
 
@@ -37,10 +39,18 @@ import {
 } from './pipes/_index';
 
 // Components
-import { 
+import {
     InputTextComponent
 } from './components/_index';
 
+// Builders
+import {
+  ModelBuilder,
+  ModelRuntimeBuilder,
+  RuntimeTypeBuilder,
+  ModelCurrentServicesBuilder,
+  ModelBuildBuilder,
+} from './builders/_index';
 
 @NgModule({
     imports: [
@@ -72,12 +82,20 @@ import {
         HttpService,
         LoaderStateService,
         ServicesService,
+        ModelRuntimesService,
+        ModelsService,
         ModelServicesService,
         // Stores
         WeightedServiceStore,
         ModelRuntimeStore,
         ModelServiceStore,
-        ModelStore
+        ModelStore,
+        // Builders
+        ModelBuilder,
+        ModelRuntimeBuilder,
+        RuntimeTypeBuilder,
+        ModelCurrentServicesBuilder,
+        ModelBuildBuilder,
     ],
     exports: [
         // Pipes

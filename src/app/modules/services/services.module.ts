@@ -14,10 +14,10 @@ import { ServicesReducer, ModelServiceReducer } from '@shared/reducers/_index';
 
 
 
-import { 
-    ServicesWrapperComponent, 
-    ServicesSidebarComponent, 
-    ServicesItemDetailComponent 
+import {
+    ServicesWrapperComponent,
+    ServicesSidebarComponent,
+    ServicesItemDetailComponent
 } from "./_index";
 
 
@@ -33,7 +33,7 @@ import {
         StoreModule.forRoot({ services: ServicesReducer, modelService: ModelServiceReducer })
     ],
     declarations: [
-        ServicesWrapperComponent, 
+        ServicesWrapperComponent,
         ServicesSidebarComponent,
         ServicesItemDetailComponent
     ]
