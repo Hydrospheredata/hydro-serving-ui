@@ -5,7 +5,7 @@ import * as ServicesActions from '@shared/actions/_index';
 const initialState: Service[] = [];
 
 
-export const ServicesReducer = (state = initialState, action: ServicesActions.ServicesActions) => {
+export const ServicesReducer  = (state = initialState, action: ServicesActions.ServicesActions) => {
     switch (action.type) {
         case ServicesActions.GET_SERVICES:
             return Object.assign([], state, action.payload);
@@ -15,8 +15,16 @@ export const ServicesReducer = (state = initialState, action: ServicesActions.Se
                 action.payload
             ];
         case ServicesActions.UPDATE_SERVICE:
-            // const stateNew = state.filter(service => service.id !== +action.serviceId);
-            return state;
+            return state.map(item => {
+                if (item.id !== action.payload.id) {
+                    return item;
+                }
+
+                return {
+                    ...item,
+                    ...action.payload
+                }
+            });
         case ServicesActions.DELETE_SERVICE:
             return state.filter(service => service.id !== +action.serviceId);
         default:
