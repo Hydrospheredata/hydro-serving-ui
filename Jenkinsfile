@@ -67,7 +67,7 @@ def createReleaseInGithub(gitCredentialId, organization, repository, releaseVers
             }
         """
         def response = httpRequest consoleLogResponseBody: true, acceptType: 'APPLICATION_JSON', contentType: 'APPLICATION_JSON', httpMode: 'POST', requestBody: request, url: "https://api.github.com/repos/${organization}/${repository}/releases?access_token=${GIT_PASSWORD}"
-        return response
+        return response.content
    }
 }
 
