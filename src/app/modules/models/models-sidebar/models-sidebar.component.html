@@ -41,6 +41,9 @@
       <li class='cs-cursor-pointer mdl-list__item models-list__item' [routerLink]="[model.id]"
           routerLinkActive='models-list__item--active'>
           <a class='mdl-list__item-primary-content models-list__item-content'>{{ model.source }}</a>
+          <span class='models-list__badge'
+          *ngIf="model.currentServices.length"
+          [mdl-badge]="model.currentServices.length"></span>
       </li>
     </ng-template>
   </ul>
