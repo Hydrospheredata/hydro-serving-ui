@@ -5,8 +5,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModelServiceStore } from '@stores/model-service.store';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
 import {
-  ModelsService,
-  GET_MODELS
+  ModelsService
 } from '@shared/_index';
 
 import { Store } from '@ngrx/store';

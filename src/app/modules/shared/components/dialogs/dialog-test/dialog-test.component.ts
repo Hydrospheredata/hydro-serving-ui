@@ -7,7 +7,7 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
-import { Model } from '@models/model';
+import { Model } from '@shared/models/_index';
 import { ModelServiceStore } from '@stores/model-service.store';
 
 export let injectableModelBuildOptions = new InjectionToken<object>('injectableModelBuildOptions');

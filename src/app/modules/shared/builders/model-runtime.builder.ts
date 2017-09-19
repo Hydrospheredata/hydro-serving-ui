@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RuntimeTypeBuilder } from '@builders/runtime-type.builder';
-import { RuntimeType } from '@models/runtime-type';
-import { ModelRuntime } from '@models/model-runtime';
+import { RuntimeType, ModelRuntime } from '@shared/models/_index';
+// import { ModelRuntime } from '@models/model-runtime';
 
 @Injectable()
 export class ModelRuntimeBuilder {

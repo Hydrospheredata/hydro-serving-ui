@@ -27,7 +27,7 @@ export class ModelServicesService {
         const url = `${this.baseAPIUrl}/${id}`;
         return this.http.get(url)
                     .map((res: Response): any => {
-                      console.log(res);
+                      // console.log(res);
                       return res.json();
                     });
     }

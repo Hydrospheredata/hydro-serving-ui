@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, Observer } from 'rxjs/Rx';
 import { environment } from '../../../../environments/environment';
 import { Response, RequestOptionsArgs } from '@angular/http';
-import { Model } from '@models/model';
+import { Model } from '@shared/models/_index';
 import { ModelBuilder } from '@builders/model.builder';
 import { HttpService } from '@services/http.service';
 import 'rxjs/add/operator/map';

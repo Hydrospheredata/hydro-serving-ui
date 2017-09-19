@@ -1,6 +1,6 @@
-import { RuntimeType } from '@models/runtime-type';
-import { ModelRuntime } from '@models/model-runtime';
-import { Model } from '@models/model';
+import { RuntimeType } from './runtime-type.model';
+import { ModelRuntime } from './model-runtime.model';
+import { Model } from './model.model';
 
 export class ModelBuild {
   public id: number;

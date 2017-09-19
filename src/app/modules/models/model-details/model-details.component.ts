@@ -12,17 +12,17 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { ModelStore } from '@stores/model.store';
 import { WeightedServiceStore } from '@shared/stores/weighted-service.store';
 import { ModelServiceStore } from '@shared/stores/model-service.store';
-import { Model } from '@models/model';
-import { WeightedService } from '@models/weighted-service';
-import { ModelRuntime } from '@models/model-runtime.ts';
+// import { Model } from '@models/model';
+// import { WeightedService } from '@models/weighted-service';
+// import { ModelRuntime } from '@models/model-runtime.ts';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
+import { AppState, Model, WeightedService } from '@shared/models/_index';
 import { ModelRuntimesService } from '@shared/services/_index';
 import { Subscription } from 'rxjs/Subscription';
 import * as Actions from '@shared/actions/_index';
-import { ModelsService, ModelService } from '@shared/_index';
+import { ModelsService, ModelService, ModelRuntime } from '@shared/_index';
 import { ModelServicesService, ServicesService } from '@shared/services/_index';
 
 

@@ -2,7 +2,7 @@ import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference } from '@angular-mdl/core';
 import { WeightedServiceStore } from '@stores/weighted-service.store';
-import { WeightedService } from '@models/weighted-service';
+import { WeightedService } from '@shared/models/_index';
 import { ModelStore } from '@stores/model.store';
 import { ModelServiceStore } from '@stores/model-service.store';
 import { FormsService } from '@services/form-service.service';

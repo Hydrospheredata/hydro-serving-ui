@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ModelStore } from '@stores/model.store';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
-import { RuntimeType } from '@models/runtime-type';
+// import { RuntimeType } from '@models/runtime-type';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
 import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
 import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
@@ -11,10 +11,10 @@ import { ActivatedRoute } from '@angular/router';
 import { ModelServiceStore } from '@stores/model-service.store';
 import { WeightedServiceStore } from '@stores/weighted-service.store';
 import { Observable } from 'rxjs/Observable';
-import { WeightedService } from '@models/weighted-service';
+// import { WeightedService } from '@models/weighted-service';
 import { ModelsService, Model, GET_MODELS } from '@shared/_index';
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
+import { AppState, RuntimeType, WeightedService } from '@shared/models/_index';
 
 @Component({
   selector: 'hydro-models-list',
