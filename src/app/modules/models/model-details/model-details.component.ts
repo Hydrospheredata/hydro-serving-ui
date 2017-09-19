@@ -6,8 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
 import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
 import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
-import { DialogDeleteServiceComponent, injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
-import { DialogDeployModelComponent, injectableModelDeployOptions } from '@components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
+import {
+  DialogDeleteServiceComponent,
+  injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
+import {
+  DialogDeployModelComponent,
+  injectableModelDeployOptions } from '@components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
 import { MdlDialogService } from '@angular-mdl/core';
 import { ModelStore } from '@stores/model.store';
 import { WeightedServiceStore } from '@shared/stores/weighted-service.store';
@@ -119,6 +123,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   public getModelService(modelRuntimeId: number): ModelService {
+    if (!this.modelServices) {
+      return null;
+    }
     return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
   }
 

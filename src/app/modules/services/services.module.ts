@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
 import { SharedModule } from '@shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ServicesRoutingModule } from "./services.router";
+import { ServicesRoutingModule } from './services.router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -18,7 +18,7 @@ import {
     ServicesWrapperComponent,
     ServicesSidebarComponent,
     ServicesItemDetailComponent
-} from "./_index";
+} from './_index';
 
 
 

@@ -63,8 +63,8 @@ export class HttpModelsService {
 
   private extractModels(data) {
     const models: Model[] = [];
-    for (let index in data) {
-      let model = this.modelBuilder.build(data[index]);
+    for (const index in data) {
+      const model = this.modelBuilder.build(data[index]);
       models.push(model);
     }
     return models;

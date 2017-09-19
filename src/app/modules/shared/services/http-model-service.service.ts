@@ -48,12 +48,12 @@ export class HttpModelServiceService {
   }
 
   public extractModels(data) {
-    let models: Model[] = [];
-    for (let index in data) {
+    const models: Model[] = [];
+    for (const index in data) {
       if (data[index].serviceId < 1) {
         continue;
       }
-      let model = this.modelBuilder.build({model: data[index].modelRuntime});
+      const model = this.modelBuilder.build({model: data[index].modelRuntime});
       models.push(model);
     }
     return models;

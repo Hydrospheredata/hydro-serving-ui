@@ -3,9 +3,15 @@ import { ModelStore } from '@stores/model.store';
 import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { RuntimeType } from '@models/runtime-type';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
-import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
-import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
-import { DialogDeleteServiceComponent, injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
+import {
+  DialogTestComponent,
+  injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
+import {
+  DialogStopModelComponent,
+  injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
+import {
+  DialogDeleteServiceComponent,
+  injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
 import { MdlDialogService } from '@angular-mdl/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModelServiceStore } from '@stores/model-service.store';
@@ -58,7 +64,6 @@ export class ModelsListComponent implements OnInit {
   loadInitialData() {
     this.store.select('models')
     .subscribe(models => {
-        console.log(models);
         this.models = models;
     });
   }
