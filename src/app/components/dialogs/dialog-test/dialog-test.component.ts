@@ -90,6 +90,7 @@ export class DialogTestComponent implements OnInit {
 
   submitTestForm(form) {
     let apiUrl;
+    let snackbarSuccessMsg;
     const controls = form.controls;
     const data = JSON.parse(controls.data.value);
     const testOptions = {
@@ -100,15 +101,17 @@ export class DialogTestComponent implements OnInit {
 
     if (this.model instanceof Model) {
       apiUrl = this.modelStore.testModel.bind(this.modelStore);
+      snackbarSuccessMsg = 'Model test was successful';
     } else {
       apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
+      snackbarSuccessMsg = 'Service test was successful';
     }
 
     apiUrl(JSON.stringify(testOptions))
       .subscribe(res => {
         this.output = JSON.stringify(res, undefined, 2);
           this.mdlSnackbarService.showSnackbar({
-            message: `Model test was successful`,
+            message: snackbarSuccessMsg,
             timeout: 5000
           });
         },

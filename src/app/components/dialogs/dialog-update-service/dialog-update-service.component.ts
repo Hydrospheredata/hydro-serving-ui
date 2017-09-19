@@ -19,6 +19,7 @@ export let injectableService = new InjectionToken<Service>('selectedService');
   providers: [FormsService]
 })
 export class DialogUpdateServiceComponent implements OnInit {
+    public serviceIdLabel: string = 'Models Name';
     public serviceForm: FormGroup;
     public selectedService: Service;
     public formErrors = {
