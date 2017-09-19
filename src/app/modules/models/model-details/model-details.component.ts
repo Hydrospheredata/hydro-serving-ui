@@ -45,6 +45,8 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private modelRuntimesServiceSubscription: Subscription;
   private modelServicesServiceSubscription: Subscription;
   private servicesServiceSubscription: Subscription;
+  private modelsStoreSelectionSubscription: Subscription;
+  private buildsSubscription: Subscription;
 
 
   constructor(
@@ -65,12 +67,18 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    console.log('INIT');
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
         this.id = params['modelId'];
         return this.id;
       })
       .subscribe((modelId) => {
+        if (this.modelsStoreSelectionSubscription) {
+          console.warn('HAZ SUBS');
+          this.modelsStoreSelectionSubscription.unsubscribe();
+        }
+        console.log('PARAMS CHANGE');
         this.loadInitialData(modelId);
       });
   }
@@ -78,23 +86,25 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   loadInitialData(id: string) {
 
 
-    this.modelsService.getBuildsByModel(id)
+   this.modelsService.getBuildsByModel(id)
       .subscribe((data) => {
         this.builds = data.sort((a, b) => {
           return moment(b.started).diff(moment(a.started));
         });
       });
 
-    this.store.select('models')
+      this.modelsStoreSelectionSubscription =  this.store.select('models')
       .subscribe(models => {
+        console.warn('MODELS UPDATE');
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
+
         this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
           .subscribe(modelRuntimes => {
             this.runtimes = modelRuntimes;
             this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
           });
 
-        this.modelServicesService.getModelServices().first()
+        this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
           .map(modelServices => modelServices.filter(model => model.serviceId > 0))
           .subscribe(modelServices => {
             this.modelServices = modelServices;
@@ -102,7 +112,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
           });
 
 
-        this.servicesService.getServices().first()
+        this.servicesServiceSubscription = this.servicesService.getServices().first()
           .subscribe(services => {
             this.weightedServices = services;
             this.store.dispatch({ type: Actions.GET_SERVICES, payload: services });
@@ -155,7 +165,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   deployModelService(modelOptions) {
     this.dialog.showCustomDialog({
       component: DialogDeployModelComponent,
-      styles: { 'width': '800px', 'min-height': '350px' },
+      styles: { 'width': '800px', 'min-height': '250px' },
       classes: '',
       isModal: true,
       clickOutsideToClose: true,
@@ -192,8 +202,12 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    console.log('DESTROY')
     this.servicesServiceSubscription.unsubscribe();
     this.modelServicesServiceSubscription.unsubscribe();
+    this.modelRuntimesServiceSubscription.unsubscribe();
+    this.modelsStoreSelectionSubscription.unsubscribe();
+    this.buildsSubscription.unsubscribe();
   }
 
 }
