@@ -1,4 +1,4 @@
-import { RuntimeType } from '@models/runtime-type'
+import { RuntimeType } from '@models/runtime-type';
 export class ModelRuntime {
   public id: string;
   public modelVersion: string;

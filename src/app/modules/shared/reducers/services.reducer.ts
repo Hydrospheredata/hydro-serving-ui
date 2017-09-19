@@ -23,7 +23,7 @@ export function ServicesReducer (state = initialState, action: ServicesActions.S
                 return {
                     ...item,
                     ...action.payload
-                }
+                };
             });
         case ServicesActions.DELETE_SERVICE:
             return state.filter(service => service.id !== +action.serviceId);
