@@ -3,16 +3,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import {
-    ServicesService,
-    Service,
-    GET_SERVICES
-} from '@shared/_index';
-
 import { AppState } from '@shared/models/_index';
-
 import * as Actions from '@shared/actions/_index';
-import { ModelServicesService } from '@shared/services/_index';
+import { ServicesService, ModelServicesService } from '@shared/services/_index';
 
 
 

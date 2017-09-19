@@ -8,17 +8,18 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ModelServicesService {
     baseAPIUrl: string;
+    servicesAPIUrl: string;
 
     constructor(
         private http: HttpService
     ) {
         this.baseAPIUrl = `${environment.apiUrl}/modelService`;
+        this.servicesAPIUrl = `${environment.apiUrl}/weightedServices`;
     }
 
     getModelServices() {
         return this.http.get(this.baseAPIUrl)
                     .map((res: Response): any => {
-                      // console.log(res);
                       return res.json();
                     });
     }
@@ -33,6 +34,12 @@ export class ModelServicesService {
     createModelService() {}
     removeModelService() {}
     updateModelService() {}
-    serveModelService() {}
+    
+    serveModelService(data): Observable<any> {
+        return this.http.post(`${this.servicesAPIUrl}/serve`, data)
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
 
 }

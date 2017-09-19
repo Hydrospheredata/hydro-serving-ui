@@ -5,6 +5,12 @@
         <span class='h3'>{{serviceName}}</span>
       </div>
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+        <mdl-button (click)="testService(service)"
+                    class="mist-button blue border icon"
+                    title="Test service"
+                    mdl-colored="">
+          Test
+        </mdl-button>
         <mdl-button (click)="editService(service)"
                     class="mist-button blue border icon"
                     title="Edit service"
