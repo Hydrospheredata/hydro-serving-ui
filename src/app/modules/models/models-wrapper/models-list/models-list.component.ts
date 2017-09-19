@@ -12,10 +12,6 @@ import { ModelServiceStore } from '@stores/model-service.store';
 import { WeightedServiceStore } from '@stores/weighted-service.store';
 import { Observable } from 'rxjs/Observable';
 import { WeightedService } from '@models/weighted-service';
-import {
-  DialogWeightedServiceComponent,
-  injectableWeightedService
-} from '@components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
 import { ModelsService, Model, GET_MODELS } from '@shared/_index';
 import { Store } from '@ngrx/store';
 import { AppState } from '@shared/models/_index';
@@ -67,18 +63,18 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  openDialogWeightedServicesForm(service?: WeightedService) {
-    this.dialog.showCustomDialog({
-      component: DialogWeightedServiceComponent,
-      styles: {'width': '850px', 'min-height': '250px'},
-      classes: '',
-      isModal: true,
-      clickOutsideToClose: true,
-      enterTransitionDuration: 400,
-      leaveTransitionDuration: 400,
-      providers: [{provide: injectableWeightedService, useValue: service}],
-    });
-  }
+  // openDialogWeightedServicesForm(service?: WeightedService) {
+  //   this.dialog.showCustomDialog({
+  //     component: DialogWeightedServiceComponent,
+  //     styles: {'width': '850px', 'min-height': '250px'},
+  //     classes: '',
+  //     isModal: true,
+  //     clickOutsideToClose: true,
+  //     enterTransitionDuration: 400,
+  //     leaveTransitionDuration: 400,
+  //     providers: [{provide: injectableWeightedService, useValue: service}],
+  //   });
+  // }
 
   openDialogTestWeightedServicesForm(service?: WeightedService) {
     this.dialog.showCustomDialog({

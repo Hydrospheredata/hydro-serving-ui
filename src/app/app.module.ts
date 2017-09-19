@@ -48,11 +48,11 @@ import { DialogTestComponent } from './components/dialogs/dialog-test/dialog-tes
 import { BuildModelService } from '@services/build-model.service';
 import { DialogStopModelComponent } from './components/dialogs/dialog-stop-model/dialog-stop-model.component';
 import { DialogDeployModelComponent } from './components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
-import { ServicesListComponent } from './components/services-list/services-list.component';
+// import { ServicesListComponent } from './components/services-list/services-list.component';
 import { DialogUpdateServiceComponent } from '@components/dialogs/dialog-update-service/dialog-update-service.component';
 import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete-service/dialog-delete-service.component';
-import { ModelsSidebarComponent } from './components/models-sidebar/models-sidebar.component';
-import { ModelDetailsComponent } from './components/model-details/model-details.component';
+// import { ModelsSidebarComponent } from './components/models-sidebar/models-sidebar.component';
+// import { ModelDetailsComponent } from './components/model-details/model-details.component';
 
 import { DialogAddServiceComponent } from '@components/dialogs/dialog-add-service.component/dialog-add-service.component';
 
@@ -70,7 +70,6 @@ import { SharedModule } from './modules/shared/shared.module';
     DialogTestComponent,
     DialogStopModelComponent,
     DialogDeployModelComponent,
-    ServicesListComponent,
     DialogUpdateServiceComponent,
     DialogDeleteServiceComponent,
     DialogAddServiceComponent

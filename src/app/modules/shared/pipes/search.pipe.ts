@@ -5,7 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SearchPipe implements PipeTransform {
 
-    transform(items: any[], field: string, q: string): any {
+    transform(items: any[] = [], field: string, q: string): any {
+        console.log(items, field, q);
         if (!items || !field || !q) return items;
         return items.filter((item) => {
             const result = item[field].toLowerCase().indexOf(q.toLowerCase()) !== -1;
