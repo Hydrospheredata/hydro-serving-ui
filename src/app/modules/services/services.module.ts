@@ -14,10 +14,10 @@ import { ServicesReducer, ModelServiceReducer } from '@shared/reducers/_index';
 
 
 
-import { 
-    ServicesWrapperComponent, 
-    ServicesSidebarComponent, 
-    ServicesItemDetailComponent 
+import {
+    ServicesWrapperComponent,
+    ServicesSidebarComponent,
+    ServicesItemDetailComponent
 } from "./_index";
 
 
@@ -36,7 +36,7 @@ import {
         })
     ],
     declarations: [
-        ServicesWrapperComponent, 
+        ServicesWrapperComponent,
         ServicesSidebarComponent,
         ServicesItemDetailComponent
     ]

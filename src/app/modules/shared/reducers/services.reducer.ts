@@ -5,7 +5,7 @@ import * as ServicesActions from '@shared/actions/_index';
 const initialState: Service[] = [];
 
 
-export const ServicesReducer  = (state = initialState, action: ServicesActions.ServicesActions) => {
+export function ServicesReducer (state = initialState, action: ServicesActions.ServicesActions) {
     switch (action.type) {
         case ServicesActions.GET_SERVICES:
             return Object.assign([], state, action.payload);

@@ -44,7 +44,6 @@ export class DialogDeleteServiceComponent {
         this.servicesService.deleteService(this.modelId)
             .subscribe(services => {
                 this.store.dispatch({ type: Actions.DELETE_SERVICE, serviceId: this.modelId });
-                
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                   message: 'Service has been deleted',

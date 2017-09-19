@@ -4,15 +4,7 @@ import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModelServiceStore } from '@stores/model-service.store';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
-import {
-  ModelsService,
-  GET_MODELS
-} from '@shared/_index';
 
-import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
-import * as Actions from '@shared/actions/_index';
-import { ModelBuilder } from '@shared/builders/_index';
 export let injectableModelDeployOptions = new InjectionToken<object>('injectableModelDeployOptions');
 
 @Component({
@@ -30,11 +22,8 @@ export class DialogDeployModelComponent implements OnInit {
     public dialogRef: MdlDialogReference,
     private fb: FormBuilder,
     private modelServiceStore: ModelServiceStore,
-    private mdlSnackbarService: MdlSnackbarService,
     private modelServiceService: HttpModelServiceService,
-    private store: Store<AppState>,
-    private modelsService: ModelsService,
-    private modelBuilder: ModelBuilder
+    private mdlSnackbarService: MdlSnackbarService
   ) {
     this.createServiceEntity = data;
   }
@@ -55,10 +44,7 @@ export class DialogDeployModelComponent implements OnInit {
           message: 'Service has been deployed',
           timeout: 5000
         });
-        this.modelsService.getModels().first()
-        .subscribe(models => {
-            this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
-        });
+        //this.modelServiceStore.updateModel(data);
       },
       (error) => {
         this.mdlSnackbarService.showSnackbar({

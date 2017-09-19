@@ -66,7 +66,6 @@ export class ServicesItemDetailComponent {
                 })
             }
         }
-        
     }
 
     getModelServiceData(weight) {
@@ -89,5 +88,5 @@ export class ServicesItemDetailComponent {
         });
     }
 
-  
+
 }

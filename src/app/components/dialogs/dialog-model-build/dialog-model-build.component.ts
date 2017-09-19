@@ -7,7 +7,15 @@ import { BuildModelService } from '@services/build-model.service';
 import { HttpModelsService } from '@services/http-models.service';
 import { ModelStore } from '@stores/model.store';
 import { ModelStatusPipe } from '../../../modules/shared/pipes/model-status.pipe';
+import {
+  ModelsService,
+  GET_MODELS
+} from '@shared/_index';
 
+import { Store } from '@ngrx/store';
+import { AppState } from '@shared/models/_index';
+import * as Actions from '@shared/actions/_index';
+import { ModelBuilder } from '@shared/builders/_index';
 import 'rxjs/add/operator/mergeMap';
 
 export let injectableModelOptions = new InjectionToken<object>('injectableModelOptions');
@@ -33,7 +41,10 @@ export class DialogModelBuildComponent implements OnInit {
               @Inject(injectableModelOptions) data,
               private buildModelService: BuildModelService,
               private modelStore: ModelStore,
-              private modelStatusPipe: ModelStatusPipe
+              private modelStatusPipe: ModelStatusPipe,
+              private store: Store<AppState>,
+              private modelsService: ModelsService,
+              private modelBuilder: ModelBuilder
               ) {
     this.model = data;
   }
@@ -92,6 +103,10 @@ export class DialogModelBuildComponent implements OnInit {
         this.mdlSnackbarService.showSnackbar({
           message: `Model was successfully updated`,
           timeout: 5000
+        });
+        this.modelsService.getModels().first()
+        .subscribe(models => {
+            this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
         });
       }, (error) => {
         this.mdlSnackbarService.showSnackbar({

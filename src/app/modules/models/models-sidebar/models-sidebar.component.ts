@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ModelStore } from '@stores/model.store';
-import { Model } from '@models/model';
 import { MdlDialogService } from '@angular-mdl/core';
 import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
-
+import { ModelsService, Model } from '@shared/_index';
+import { Store } from '@ngrx/store';
+import { AppState } from '@shared/models/_index';
 @Component({
   selector: 'hydro-models-sidebar',
   templateUrl: './models-sidebar.component.html',
@@ -18,17 +19,17 @@ export class ModelsSidebarComponent implements OnInit {
   constructor(
     private dialog: MdlDialogService,
     private modelStore: ModelStore,
+    private store: Store<AppState>,
   ) {
     this.models = [];
     this.modelServices = [];
   }
 
   ngOnInit() {
-    this.modelStore.getAll();
-    this.modelStore.items
-      .subscribe((items) => {
-        this.models = items;
-      });
+    this.store.select('models')
+    .subscribe(models => {
+        this.models = models;
+    });
   }
 
 }

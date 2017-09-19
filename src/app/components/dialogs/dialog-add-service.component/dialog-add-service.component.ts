@@ -62,10 +62,9 @@ export class DialogAddServiceComponent implements OnInit {
     }
 
     private createServiceForm() {
-        this.serviceForm = this.fb.group({
-            id: [''],
-            serviceName: ['', [Validators.required]],
-            weights: this.fb.array([this.createWeightsForm()])
+        this.form = this.fb.group({
+            serviceName: ['', Validators.required],
+            weights: this.fb.array([this.createSelectForm()])
         });
     }
 

@@ -2,7 +2,7 @@ import { Component, OnInit, InjectionToken, HostListener, Inject } from '@angula
 import { MdlDialogReference, MdlDialogService } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { 
+import {
     HttpRuntimeTypesService,
     BuildModelService,
     HttpModelsService,
@@ -87,6 +87,20 @@ export class DialogModelBuildComponent implements OnInit {
       inputFields: controls.inputFields.value,
       outputFields: controls.outputFields.value
     };
+
+    this.buildModelService.build({modelVersion: modelOptions.version, modelId: modelOptions.id, runtimeTypeId: 1})
+      .subscribe((model) => {
+        this.dialogRef.hide();
+        this.mdlSnackbarService.showSnackbar({
+          message: `Model was successfully updated`,
+          timeout: 5000
+        });
+      }, (error) => {
+        this.mdlSnackbarService.showSnackbar({
+          message: `Error: ${error}`,
+          timeout: 5000
+        });
+      });
 
     this.modelStore.updateModel(modelOptions)
       .flatMap((model) => {

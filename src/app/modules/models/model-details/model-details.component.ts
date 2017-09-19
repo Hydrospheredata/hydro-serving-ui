@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpModelsService } from '@services/http-models.service';
 import { HttpWeightedServicesService } from '@shared/services/http-weighted-services.service';
 import { HttpModelRuntimeService } from '@shared/services/http-model-runtime.service';
@@ -14,10 +14,16 @@ import { WeightedServiceStore } from '@shared/stores/weighted-service.store';
 import { ModelServiceStore } from '@shared/stores/model-service.store';
 import { Model } from '@models/model';
 import { WeightedService } from '@models/weighted-service';
-import { ModelService } from '@models/model-service';
 import { ModelRuntime } from '@models/model-runtime.ts';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
+import { Store } from '@ngrx/store';
+import { AppState } from '@shared/models/_index';
+import { ModelRuntimesService } from '@shared/services/_index';
+import { Subscription } from 'rxjs/Subscription';
+import * as Actions from '@shared/actions/_index';
+import { ModelsService, ModelService } from '@shared/_index';
+import { ModelServicesService, ServicesService } from '@shared/services/_index';
 
 
 @Component({
@@ -25,7 +31,7 @@ import { Observable } from 'rxjs/Rx';
   templateUrl: './model-details.component.html',
   styleUrls: ['./model-details.component.scss']
 })
-export class ModelDetailsComponent implements OnInit {
+export class ModelDetailsComponent implements OnInit, OnDestroy {
 
   private activatedRouteSub: any;
   public id: string;
@@ -35,54 +41,83 @@ export class ModelDetailsComponent implements OnInit {
   private modelServices: ModelService[];
   private weightedServices: WeightedService[];
   public deployable = true;
+
+  private modelRuntimesServiceSubscription: Subscription;
+  private modelServicesServiceSubscription: Subscription;
+  private servicesServiceSubscription: Subscription;
+  private modelsStoreSelectionSubscription: Subscription;
+  private buildsSubscription: Subscription;
+
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private modelsService: HttpModelsService,
+    private modelRuntimesService: ModelRuntimesService,
     private modelRuntimeService: HttpModelRuntimeService,
     private weightedServicesService: HttpWeightedServicesService,
     private dialog: MdlDialogService,
     private modelStore: ModelStore,
     private weightedServiceStore: WeightedServiceStore,
-    private modelServiceStore: ModelServiceStore
+    private modelServiceStore: ModelServiceStore,
+    private store: Store<AppState>,
+
+
+    private servicesService: ServicesService,
+    private modelServicesService: ModelServicesService
   ) { }
 
   ngOnInit() {
+    console.log('INIT');
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
         this.id = params['modelId'];
         return this.id;
       })
       .subscribe((modelId) => {
+        if (this.modelsStoreSelectionSubscription) {
+          console.warn('HAZ SUBS');
+          this.modelsStoreSelectionSubscription.unsubscribe();
+        }
+        console.log('PARAMS CHANGE');
         this.loadInitialData(modelId);
       });
   }
 
   loadInitialData(id: string) {
-    this.modelServiceStore.getAll();
-    this.modelServiceStore.items
-    .subscribe((data) => {
-      this.modelServices = data;
-    });
-    this.weightedServicesService.getAll()
-      .subscribe((data) => {
-        this.weightedServices = data;
-      });
 
-    this.modelsService.getBuildsByModel(id)
+
+   this.modelsService.getBuildsByModel(id)
       .subscribe((data) => {
         this.builds = data.sort((a, b) => {
           return moment(b.started).diff(moment(a.started));
         });
       });
 
-    this.modelRuntimeService.getRuntimeByModel(Number(id), 1000)
-      .subscribe((data: ModelRuntime[]) => {
-        this.runtimes = data;
-      });
-    // TODO: PROPERLY GET BUILDS OR MOVE THEM TO STORE
-    this.modelStore.items
-      .subscribe((items) => {
-        this.model = items.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
+      this.modelsStoreSelectionSubscription =  this.store.select('models')
+      .subscribe(models => {
+        console.warn('MODELS UPDATE');
+        this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
+
+        this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
+          .subscribe(modelRuntimes => {
+            this.runtimes = modelRuntimes;
+            this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
+          });
+
+        this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
+          .map(modelServices => modelServices.filter(model => model.serviceId > 0))
+          .subscribe(modelServices => {
+            this.modelServices = modelServices;
+            this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: modelServices });
+          });
+
+
+        this.servicesServiceSubscription = this.servicesService.getServices().first()
+          .subscribe(services => {
+            this.weightedServices = services;
+            this.store.dispatch({ type: Actions.GET_SERVICES, payload: services });
+          });
+
         this.deployable = this.isDeployable();
       });
   }
@@ -111,7 +146,7 @@ export class ModelDetailsComponent implements OnInit {
   }
 
   public getPayloadForModelDeploy(runtime) {
-    return {serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id};
+    return { serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id };
   }
 
   buildModel(modelOptions) {
@@ -130,7 +165,7 @@ export class ModelDetailsComponent implements OnInit {
   deployModelService(modelOptions) {
     this.dialog.showCustomDialog({
       component: DialogDeployModelComponent,
-      styles: { 'width': '800px', 'min-height': '350px' },
+      styles: { 'width': '800px', 'min-height': '250px' },
       classes: '',
       isModal: true,
       clickOutsideToClose: true,
@@ -164,6 +199,15 @@ export class ModelDetailsComponent implements OnInit {
       leaveTransitionDuration: 400,
       providers: [{ provide: injectableModelStopOptions, useValue: modelService }],
     });
+  }
+
+  ngOnDestroy() {
+    console.log('DESTROY')
+    this.servicesServiceSubscription.unsubscribe();
+    this.modelServicesServiceSubscription.unsubscribe();
+    this.modelRuntimesServiceSubscription.unsubscribe();
+    this.modelsStoreSelectionSubscription.unsubscribe();
+    this.buildsSubscription.unsubscribe();
   }
 
 }

@@ -60,7 +60,7 @@
         </div>
         </div>
       </td>
-      <td *ngIf="this.weightedServices && this.weightedServices.length > 0">{{  getWeightedServices(runtime.id) }}</td>
+      <td><div *ngIf="this.weightedServices && this.weightedServices.length > 0" class="cs-text-overflow-ellipsis">{{  getWeightedServices(runtime.id) }}</div></td>
     </tr>
   </tbody>
 </table>

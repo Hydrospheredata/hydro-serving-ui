@@ -13,7 +13,9 @@ import { ModelsListComponent } from './_index';
 import { SingleModelComponent } from './_index';
 import { ModelDetailsComponent } from './_index';
 import { ModelsSidebarComponent } from './_index';
-
+import { StoreModule } from '@ngrx/store';
+import { ModelsReducer, ModelServiceReducer, ModelRuntimeReducer, ServicesReducer } from '@shared/reducers/_index';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 
 @NgModule({
@@ -25,7 +27,15 @@ import { ModelsSidebarComponent } from './_index';
         MdlModule,
         MdlSelectModule,
         FlexLayoutModule,
-        FormsModule
+        FormsModule,
+        StoreModule.forRoot({
+          models: ModelsReducer,
+          modelService: ModelServiceReducer,
+          modelRuntimes: ModelRuntimeReducer,
+          services: ServicesReducer }),
+          StoreDevtoolsModule.instrument({
+            maxAge: 25 //  Retains last 25 states
+          })
     ],
     declarations: [
         ModelsWrapperComponent,
