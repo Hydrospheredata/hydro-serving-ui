@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpModelsService } from '@services/http-models.service';
 import { BuildModelService } from '@services/build-model.service';
 import { Model, ModelBuild } from '@shared/models/_index';
-// import { ModelBuild } from '@models/model-build';
 import 'rxjs/add/operator/map';
 
 @Injectable()
