@@ -24,7 +24,6 @@ export class HttpModelServiceService {
     const url = `${this.baseAPIUrl}`;
     return this.http.get(url)
       .map((res: Response) => {
-        console.log(res.json())
         return res.json();
       });
   }
@@ -45,8 +44,8 @@ export class HttpModelServiceService {
 
 
   public extractModels(data) {
-    let models: Model[] = [];
-    for (let index in data) {
+    const models: Model[] = [];
+    for (const index in data) {
       if (data[index].serviceId < 1) {
         continue;
       }

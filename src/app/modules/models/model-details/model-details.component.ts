@@ -123,6 +123,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   public getModelService(modelRuntimeId: number): ModelService {
+    if (!this.modelServices) {
+      return null;
+    }
     return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
   }
 

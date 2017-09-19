@@ -64,7 +64,6 @@ export class ModelsListComponent implements OnInit {
   loadInitialData() {
     this.store.select('models')
     .subscribe(models => {
-        console.log(models);
         this.models = models;
     });
   }

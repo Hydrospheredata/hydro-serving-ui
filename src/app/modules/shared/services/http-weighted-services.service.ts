@@ -18,13 +18,12 @@ export class HttpWeightedServicesService {
   getAll(): Observable<Service[]> {
     return this.http.get(this.baseAPIUrl)
       .map((res: Response): any => {
-        console.log(res);
         return res.json();
       });
   }
 
   toWeightedService(services): WeightedService[] {
-    let result: WeightedService[] = [];
+    const result: WeightedService[] = [];
 
     for (let i = 0; i < services.length; i++) {
       result.push(new WeightedService(services[i]));
