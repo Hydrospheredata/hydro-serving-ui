@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ModelBuild } from '@models/model-build';
+import { ModelBuild } from '@shared/models/_index';
 
 @Injectable()
 export class ModelBuildBuilder {

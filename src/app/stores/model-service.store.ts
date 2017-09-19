@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpModelServiceService } from '@services/http-model-service.service';
-import { ModelService } from '@models/model-service';
-import { Model } from '@models/model';
+import { Model, ModelService } from '@shared/models/_index';
+// import { Model } from '@models/model';
 import 'rxjs/add/operator/map';
 
 @Injectable()

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpModelsService } from '@services/http-models.service';
 import { BuildModelService } from '@services/build-model.service';
-import { Model } from '@models/model';
+import { Model } from '@shared/models/_index';
 import 'rxjs/add/operator/map';
 
 @Injectable()

@@ -5,7 +5,7 @@ import { BuildModelService } from './build-model.service';
 describe('BuildModelService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ModelBuildService]
+      providers: [BuildModelService]
     });
   });
 

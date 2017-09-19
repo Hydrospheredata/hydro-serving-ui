@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Model } from '@models/model';
+import { Model } from '@shared/models/_index';
 
 @Pipe({
   name: 'modelStatus'

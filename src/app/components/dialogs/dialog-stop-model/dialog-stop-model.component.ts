@@ -4,7 +4,7 @@ import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ModelStore } from '@stores/model.store';
 import { ModelServiceStore } from '@shared/stores/model-service.store';
-import { Model } from '@models/model';
+import { Model } from '@shared/models/_index';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
 import {
   ModelsService,

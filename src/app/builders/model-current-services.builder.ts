@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CurrentServices } from '@models/current-services';
+import { CurrentServices } from '@shared/models/_index';
 
 @Injectable()
 export class ModelCurrentServicesBuilder {
