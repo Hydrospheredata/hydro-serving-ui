@@ -47,7 +47,6 @@ export class DialogWeightedServiceComponent implements OnInit {
     this.modelServiceStore.getAll();
     this.modelServiceStore.items
       .map((models) => {
-        console.log(models)
         return models.filter((model) => model.serviceId > 0);
       })
       .subscribe((models) => {
@@ -144,7 +143,6 @@ export class DialogWeightedServiceComponent implements OnInit {
       this.weightedServiceStore.update(weightedService)
         .subscribe((res) => {
           this.dialogRef.hide();
-          console.log(res);
         });
     } else {
       this.weightedServiceStore.add(weightedService)

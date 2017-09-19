@@ -38,7 +38,7 @@ export class BuildModelService {
   }
 
   private extractModelRuntime(res: Response): ModelRuntime {
-    let props = res.json();
+    const props = res.json();
     return this.modelRuntimeBuilder.build(props);
   }
 }

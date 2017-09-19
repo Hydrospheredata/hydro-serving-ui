@@ -6,8 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
 import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
 import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
-import { DialogDeleteServiceComponent, injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
-import { DialogDeployModelComponent, injectableModelDeployOptions } from '@components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
+import {
+  DialogDeleteServiceComponent,
+  injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
+import {
+  DialogDeployModelComponent,
+  injectableModelDeployOptions } from '@components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
 import { MdlDialogService } from '@angular-mdl/core';
 import { ModelStore } from '@stores/model.store';
 import { WeightedServiceStore } from '@shared/stores/weighted-service.store';
@@ -67,7 +71,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    console.log('INIT');
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
         this.id = params['modelId'];
@@ -75,10 +78,8 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
       })
       .subscribe((modelId) => {
         if (this.modelsStoreSelectionSubscription) {
-          console.warn('HAZ SUBS');
           this.modelsStoreSelectionSubscription.unsubscribe();
         }
-        console.log('PARAMS CHANGE');
         this.loadInitialData(modelId);
       });
   }
@@ -95,7 +96,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
       this.modelsStoreSelectionSubscription =  this.store.select('models')
       .subscribe(models => {
-        console.warn('MODELS UPDATE');
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
 
         this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
@@ -123,6 +123,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   public getModelService(modelRuntimeId: number): ModelService {
+    if (!this.modelServices) {
+      return null;
+    }
     return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
   }
 
@@ -202,12 +205,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('DESTROY')
-    this.servicesServiceSubscription.unsubscribe();
-    this.modelServicesServiceSubscription.unsubscribe();
-    this.modelRuntimesServiceSubscription.unsubscribe();
-    this.modelsStoreSelectionSubscription.unsubscribe();
-    this.buildsSubscription.unsubscribe();
   }
 
 }

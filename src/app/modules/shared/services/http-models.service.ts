@@ -49,7 +49,6 @@ export class HttpModelsService {
     return this.http.get(url)
       .map((res: Response) => {
         const data = res.json();
-        console.log(data);
         this.builds = this.extractBuilds(data);
         return this.builds;
       });
@@ -63,8 +62,8 @@ export class HttpModelsService {
 
   private extractModels(data) {
     const models: Model[] = [];
-    for (let index in data) {
-      let model = this.modelBuilder.build(data[index]);
+    for (const index in data) {
+      const model = this.modelBuilder.build(data[index]);
       models.push(model);
     }
     return models;

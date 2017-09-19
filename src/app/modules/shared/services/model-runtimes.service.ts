@@ -32,7 +32,6 @@ export class ModelRuntimesService {
         };
         return this.http.get(url, requestOptions)
                     .map((res: Response): any => {
-                      console.log(res);
                       return res.json();
                     });
     }
