@@ -1,69 +1,90 @@
 import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdlDialogReference } from '@angular-mdl/core';
-import { FormsService } from '@services/form-service.service';
-import { MdlSnackbarService } from '@angular-mdl/core';
+import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
 
+import { ServicesService, Service, FormsService } from '@shared/_index';
 import * as Actions from '@shared/actions/_index';
-
-import { AppState, ModelService, Service } from '@shared/models/_index';
-
-import { ModelServicesService, ServicesService } from '@shared/services/_index';
+import { AppState, ModelService } from '@shared/models/_index';
 
 export let injectableService = new InjectionToken<Service>('selectedService');
 
+
+
 @Component({
-  selector: 'hydro-dialog-add-service',
-  templateUrl: './dialog-add-service.component.html',
-  styleUrls: ['./dialog-add-service.component.scss'],
+  selector: 'hydro-dialog-update-service',
+  templateUrl: './dialog-update-service.component.html',
+  styleUrls: ['./dialog-update-service.component.scss'],
   providers: [FormsService]
 })
-export class DialogAddServiceComponent implements OnInit {
+export class DialogUpdateServiceComponent implements OnInit {
     public serviceForm: FormGroup;
     public selectedService: Service;
-    public formTitle: string;
     public formErrors = {
         serviceName: '',
         weights: '',
         serviceId: '',
-        weight: '',
+        weight: ''
     };
     public modelServices: ModelService[];
 
-    public services: Service[];
-
     constructor(
         @Inject(injectableService) data: Service,
+        private store: Store<AppState>,
         private fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         private formsService: FormsService,
         private mdlSnackbarService: MdlSnackbarService,
-        private store: Store<AppState>,
-        private servicesService: ServicesService,
-        private modelServicesService: ModelServicesService
+        private servicesService: ServicesService
     ) {
         this.selectedService = data;
-        this.store.select('services')
-            .subscribe(services => {
-                this.services = services;
-            });
-    }
-
-    ngOnInit() {
-        this.createServiceForm();
-
+        
         this.store.select('modelService')
             .subscribe(modelService => {
                 this.modelServices = modelService;
             });
     }
 
+    ngOnInit() {
+        this.createServiceForm();
+        this.initFormChangesListener();
+        this.updateServiceFormValues(this.selectedService);
+    }
+
+    private initFormChangesListener() {
+        this.serviceForm.valueChanges.subscribe((form) => {
+            let result = 0;
+            // todo fix errors reset
+            this.formErrors.weights = '';
+            this.formErrors.serviceId = '';
+            form.weights.forEach((service) => {
+                result += +service.weight;
+            });
+
+            if (result > 100) {
+                this.serviceForm.controls.weights.setErrors({ overflow: true });
+            }
+
+            if (this.serviceForm.invalid) {
+                this.formsService.setErrors(this.serviceForm, this.formErrors, this.formsService.MESSAGES.ERRORS.forms.service);
+            }
+        });
+    }
+
+    private updateServiceFormValues(service: Service) {
+        for (let i = 0; i < service.weights.length - 1; i++) {
+            this.addWeightsForm();
+        }
+        this.serviceForm.patchValue({id: service.id});
+        this.serviceForm.patchValue({serviceName: service.serviceName});
+        this.serviceForm.patchValue({weights: service.weights});
+    }
+
     private createServiceForm() {
         this.serviceForm = this.fb.group({
-            serviceName: ['', Validators.required],
+            id: [''],
+            serviceName: ['', [Validators.required]],
             weights: this.fb.array([this.createWeightsForm()])
         });
     }
@@ -102,20 +123,17 @@ export class DialogAddServiceComponent implements OnInit {
         }
 
         service = {
-            id: this.services.length ? this.services[this.services.length - 1].id + 1 : 0,
+            id: Number(form.controls.id.value),
             serviceName: form.controls.serviceName.value,
             weights: weights
         };
 
-        this.servicesService.addService(service)
-            .subscribe(services => {
-                this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
+        this.servicesService.updateService(service)
+            .subscribe(res => {
+                this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
                 this.dialogRef.hide();
-                this.mdlSnackbarService.showSnackbar({
-                    message: 'Service was successfully added',
-                    timeout: 5000
-                });
             });
+
     }
 
 }

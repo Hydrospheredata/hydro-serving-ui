@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogWeightedServiceComponent } from './dialog-weighted-service.component';
+import { DialogAddServiceComponent } from './dialog-add-service.component';
 
-describe('DialogWeightedServiceComponent', () => {
-  let component: DialogWeightedServiceComponent;
-  let fixture: ComponentFixture<DialogWeightedServiceComponent>;
+describe('DialogAddServiceComponent', () => {
+  let component: DialogAddServiceComponent;
+  let fixture: ComponentFixture<DialogAddServiceComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DialogWeightedServiceComponent ]
+      declarations: [ DialogAddServiceComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DialogWeightedServiceComponent);
+    fixture = TestBed.createComponent(DialogAddServiceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

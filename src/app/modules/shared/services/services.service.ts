@@ -19,7 +19,7 @@ export class ServicesService {
     getServices() {
         return this.http.get(this.baseAPIUrl)
                     .map((res: Response): any => {
-                      return res.json();
+                        return res.json();
                     })
     }
 

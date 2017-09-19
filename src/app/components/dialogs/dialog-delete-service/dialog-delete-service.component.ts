@@ -1,6 +1,7 @@
-import { Component, OnInit, InjectionToken, Inject, HostListener } from '@angular/core';
+import { Component, InjectionToken, Inject, HostListener } from '@angular/core';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 
 import { ServicesService } from '@shared/services/_index';
@@ -16,7 +17,7 @@ export let injectableServiceOptions = new InjectionToken<object>('injectableServ
     templateUrl: './dialog-delete-service.component.html',
     styleUrls: ['./dialog-delete-service.component.scss']
 })
-export class DialogDeleteServiceComponent implements OnInit {
+export class DialogDeleteServiceComponent {
     private data;
     public modelId;
     public id: string;
@@ -27,14 +28,11 @@ export class DialogDeleteServiceComponent implements OnInit {
         public dialogRef: MdlDialogReference,
         private mdlSnackbarService: MdlSnackbarService,
         private servicesService: ServicesService,
-        private router: Router
+        private router: Router,
+        private activatedRoute: ActivatedRoute,
+        private location: Location
     ) {
         this.modelId = data;
-    }
-
-    ngOnInit() {
-        console.log(this.router);
-        console.log(this.router.routerState);
     }
 
     @HostListener('keydown.esc')

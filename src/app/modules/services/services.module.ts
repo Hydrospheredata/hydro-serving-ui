@@ -4,11 +4,11 @@ import { MdlModule } from '@angular-mdl/core';
 import { SharedModule } from '@shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ServicesRoutingModule } from "./services.router";
-import { SortByPipe } from '@shared/_index';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ServicesReducer, ModelServiceReducer } from '@shared/reducers/_index';
 
 
@@ -30,7 +30,10 @@ import {
         MdlModule,
         ServicesRoutingModule,
         FormsModule,
-        StoreModule.forRoot({ services: ServicesReducer, modelService: ModelServiceReducer })
+        StoreModule.forRoot({ services: ServicesReducer, modelService: ModelServiceReducer }),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25
+        })
     ],
     declarations: [
         ServicesWrapperComponent,

@@ -14,7 +14,7 @@ export class FormsService {
   private _MESSAGES = {
     ERRORS: {
       forms: {
-        weightedService: {
+        service: {
           serviceName: {
             'pattern': 'It is not correct format.',
             'required': 'Service name is required.'

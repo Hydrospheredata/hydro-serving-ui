@@ -15,8 +15,16 @@ export function ServicesReducer (state = initialState, action: ServicesActions.S
                 action.payload
             ];
         case ServicesActions.UPDATE_SERVICE:
-            // const stateNew = state.filter(service => service.id !== +action.serviceId);
-            return state;
+            return state.map(item => {
+                if (item.id !== action.payload.id) {
+                    return item;
+                }
+
+                return {
+                    ...item,
+                    ...action.payload
+                }
+            });
         case ServicesActions.DELETE_SERVICE:
             return state.filter(service => service.id !== +action.serviceId);
         default:

@@ -18,7 +18,7 @@ export class AddServiceAction implements Action {
 
 export class UpdateServiceAction implements Action {
   readonly type = UPDATE_SERVICE;
-  constructor(public serviceId: string) { }
+  constructor(public payload: Service) { }
 }
 
 export class DeleteServiceAction implements Action {

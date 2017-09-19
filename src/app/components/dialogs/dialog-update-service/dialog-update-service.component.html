@@ -1,20 +1,20 @@
 <div>
-  <h2 class="mdl-dialog__title mat-dialog-title">{{formTitle}}</h2>
-  <form [formGroup]="weightedServiceForm" (ngSubmit)="submitWeightedServiceForm(weightedServiceForm)">
+  <h2 class="mdl-dialog__title mat-dialog-title">Update Service "{{selectedService.serviceName}}"</h2>
+  <form [formGroup]="serviceForm" (ngSubmit)="submitServiceForm(serviceForm)">
     <div class="mdl-dialog__content">
 
       <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Service Name" formControlName="serviceName"></hydro-input-text>
 
       <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
       <div formArrayName="weights">
-        <div *ngFor="let weight of weightedServiceForm['controls'].weights['controls']; let i = index">
+        <div *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index">
             <div [formGroupName]="i">
               <div fxLayout="row" fxLayoutAlign="space-between center">
                 <div fxFlex="20%" class="input-text form-group">
                   <label hidden class="control-label">Service id</label>
 
                   <mdl-select class="cs-text-center" formControlName="serviceId">
-                    <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceId}}</mdl-option>
+                    <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
                   </mdl-select>
                 </div>
               <hydro-input-text fxFlex="50%"
@@ -29,7 +29,7 @@
                 </mdl-icon>
                 <mdl-icon class="cs-cursor-pointer mdl-color-text--red"
                           (click)="removeWeightsForm(i)"
-                          *ngIf="weightedServiceForm['controls'].weights['controls'].length > 1">remove_circle
+                          *ngIf="serviceForm['controls'].weights['controls'].length > 1">remove_circle
                 </mdl-icon>
               </div>
             </div>
@@ -44,7 +44,7 @@
                   class='mat-button mat-button--big'>
             CANCEL
           </button>
-          <button type="submit" mdl-button [disabled]="weightedServiceForm.invalid"
+          <button type="submit" mdl-button [disabled]="serviceForm.invalid"
                   class='mat-button mat-button--big mat-button--primary'
                   mdl-button-type="raised" mdl-colored="primary" mdl-ripple>
             Add context
