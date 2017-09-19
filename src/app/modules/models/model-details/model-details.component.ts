@@ -67,7 +67,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    console.log('INIT');
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
         this.id = params['modelId'];
@@ -75,10 +74,8 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
       })
       .subscribe((modelId) => {
         if (this.modelsStoreSelectionSubscription) {
-          console.warn('HAZ SUBS');
           this.modelsStoreSelectionSubscription.unsubscribe();
         }
-        console.log('PARAMS CHANGE');
         this.loadInitialData(modelId);
       });
   }
@@ -95,7 +92,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
       this.modelsStoreSelectionSubscription =  this.store.select('models')
       .subscribe(models => {
-        console.warn('MODELS UPDATE');
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
 
         this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
@@ -202,12 +198,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('DESTROY')
-    this.servicesServiceSubscription.unsubscribe();
-    this.modelServicesServiceSubscription.unsubscribe();
-    this.modelRuntimesServiceSubscription.unsubscribe();
-    this.modelsStoreSelectionSubscription.unsubscribe();
-    this.buildsSubscription.unsubscribe();
   }
 
 }
