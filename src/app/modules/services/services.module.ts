@@ -4,7 +4,6 @@ import { MdlModule } from '@angular-mdl/core';
 import { SharedModule } from '@shared/shared.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ServicesRoutingModule } from "./services.router";
-import { SortByPipe } from '@shared/_index';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 

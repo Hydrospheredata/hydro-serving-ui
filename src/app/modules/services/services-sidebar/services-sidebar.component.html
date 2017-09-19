@@ -29,7 +29,7 @@
 </div>
 <div class='services-list__row'>
   <ul class='mdl-list services-list__ul'>
-    <li *ngFor="let service of services" class='cs-cursor-pointer mdl-list__item services-list__item'>
+    <li *ngFor="let service of services | search : 'serviceName' : searchQ | sortBy: 'id'" class='cs-cursor-pointer mdl-list__item services-list__item'>
         <a class='mdl-list__item-primary-content services-list__item-content' [routerLink]="[service.id]"
         routerLinkActive='__active'>{{ service.serviceName }}</a>
         
