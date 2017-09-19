@@ -6,8 +6,16 @@ import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
 import { BuildModelService } from '@services/build-model.service';
 import { HttpModelsService } from '@services/http-models.service';
 import { ModelStore } from '@stores/model.store';
-import { ModelStatusPipe } from '@pipes/model-status.pipe';
+import { ModelStatusPipe } from '../../../modules/shared/pipes/model-status.pipe';
+import {
+  ModelsService,
+  GET_MODELS
+} from '@shared/_index';
 
+import { Store } from '@ngrx/store';
+import { AppState } from '@shared/models/_index';
+import * as Actions from '@shared/actions/_index';
+import { ModelBuilder } from '@shared/builders/_index';
 import 'rxjs/add/operator/mergeMap';
 
 export let injectableModelOptions = new InjectionToken<object>('injectableModelOptions');
@@ -33,7 +41,10 @@ export class DialogModelBuildComponent implements OnInit {
               @Inject(injectableModelOptions) data,
               private buildModelService: BuildModelService,
               private modelStore: ModelStore,
-              private modelStatusPipe: ModelStatusPipe
+              private modelStatusPipe: ModelStatusPipe,
+              private store: Store<AppState>,
+              private modelsService: ModelsService,
+              private modelBuilder: ModelBuilder
               ) {
     this.model = data;
   }
@@ -56,7 +67,6 @@ export class DialogModelBuildComponent implements OnInit {
     const modelStatus = this.modelStatusPipe.transform(this.model);
     this.modelType = this.model.lastModelRuntime.runtimeType ? this.model.lastModelRuntime.runtimeType.tags : '';
     this.buildModelForm = this.fb.group({
-      version: [this.model.lastModelRuntime.modelVersion],
       modelId: [this.model.id],
       name: [this.model.name],
       status: [modelStatus],
@@ -72,7 +82,6 @@ export class DialogModelBuildComponent implements OnInit {
     const controls = buildModelForm.controls;
     const modelOptions = {
       id: controls.modelId.value,
-      version: controls.version.value,
       name: controls.name.value,
       source: controls.source.value,
       status: controls.status.value,
@@ -84,7 +93,7 @@ export class DialogModelBuildComponent implements OnInit {
 
     this.modelStore.updateModel(modelOptions)
       .flatMap((model) => {
-        return this.buildModelService.build({modelVersion: modelOptions.version, modelId: modelOptions.id, runtimeTypeId: 1});
+        return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: 1});
       })
       .finally(() => {
         this.modelStore.getAll();
@@ -94,6 +103,10 @@ export class DialogModelBuildComponent implements OnInit {
         this.mdlSnackbarService.showSnackbar({
           message: `Model was successfully updated`,
           timeout: 5000
+        });
+        this.modelsService.getModels().first()
+        .subscribe(models => {
+            this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
         });
       }, (error) => {
         this.mdlSnackbarService.showSnackbar({

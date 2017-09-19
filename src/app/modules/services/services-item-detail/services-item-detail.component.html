@@ -1,0 +1,39 @@
+<div class='services-list__row services-list__row--big'>
+  <div class='services-list__header'>
+    <div class="mdl-grid cs-align-center cs-mt-8 cs-mb-16 cs-text-right">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
+        <span class='h3'>{{serviceName}}</span>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+        <mdl-button (click)="editService(service)"
+                    class="mist-button blue border icon"
+                    title="Edit service"
+                    mdl-colored="">
+          Edit
+        </mdl-button>
+      </div>
+    </div>
+  </div>
+</div>
+<table class='services-list-table mdl-data-table mdl-js-data-table mdl-shadow--2dp'>
+  <thead>
+  <tr>
+    <th>ServiceName</th>
+    <th>ModelSource</th>
+    <th>ModelVersion</th>
+    <th>ModelCreateDate</th>
+    <th>ModelStatus</th>
+    <th>Weight</th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let serviceModel of serviceModels" class='services-list-table__tr cs-cursor-pointer'>
+      <td class="services-list-table__td"><div class='cs-text-overflow-ellipsis'>{{serviceModel.data.serviceName}}</div></td>
+      <td class="services-list-table__td"><div class='cs-text-overflow-ellipsis'>{{serviceModel.data.modelRuntime.source}}</div></td>
+      <td class="services-list-table__td"><div class='cs-text-overflow-ellipsis'>{{serviceModel.data.modelRuntime.modelVersion}}</div></td>
+      <td class="services-list-table__td"><div class='cs-text-overflow-ellipsis'>{{serviceModel.data.modelRuntime.created}}</div></td>
+      <td class="services-list-table__td"><div class='cs-text-overflow-ellipsis' [ngClass]="serviceModel.data.status === 'running' ? '__success' : ''">{{serviceModel.data.status}}</div></td>
+      <td class="services-list-table__td"><div class='cs-text-overflow-ellipsis'>{{serviceModel.weight}}</div></td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,40 @@
+<div class='services-list__row services-list__row--big'>
+  <div class='services-list__header'>
+    <div class="mdl-grid cs-align-center cs-mt-8 cs-mb-16 cs-text-right">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
+        <span class='h3'>Services</span>
+      </div>
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
+        <mdl-button (click)="addService()"
+                    class="mist-button blue border icon"
+                    title="Add new service"
+                    mdl-colored="">
+          <mdl-icon>add</mdl-icon>
+          <span fxHide.sm fxHide.md>Add</span>
+        </mdl-button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='services-list__row'>
+  <div class='services-list__search'>
+    <hydro-input-text
+      inputClass="services-list__search-input mist-input"
+      placeholder="Search"
+      [(ngModel)]="searchQ"
+      iconName="search"
+      iconDirection="left"
+    ></hydro-input-text>
+  </div>
+</div>
+<div class='services-list__row'>
+  <ul class='mdl-list services-list__ul'>
+    <li *ngFor="let service of services | search : 'serviceName' : searchQ | sortBy: 'id'" class='cs-cursor-pointer mdl-list__item services-list__item'>
+        <a class='mdl-list__item-primary-content services-list__item-content' [routerLink]="[service.id]"
+        routerLinkActive='__active'>{{ service.serviceName }}</a>
+        
+        <mdl-icon title="Delete service" (click)="deleteService(service.id)">delete</mdl-icon>
+
+    </li>
+  </ul>
+</div>

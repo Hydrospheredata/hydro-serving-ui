@@ -33,10 +33,10 @@ export class ModelStore {
 
   public updateModel(modelOptions) {
     return this.httpModelsService.updateModel(modelOptions)
-      .map((model) => {
-        this.updateItem(model);
-        this.updateStore();
-      });
+    .map((model) => {
+      this.updateItem(model);
+      this.updateStore();
+    });
   }
 
   private updateItem(item: Model) {
@@ -52,14 +52,12 @@ export class ModelStore {
   public testModel(params) {
     const service = this.buildModelService
       .testModel(params);
-
     return service;
   }
 
   public stopModel(id) {
     const service = this.buildModelService
       .stopModel(id);
-
     return service;
   }
 
