@@ -8,7 +8,7 @@ import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
 import { Model } from '@shared/models/_index';
-import { ModelServiceStore } from '@stores/model-service.store';
+import { ModelServicesService } from '@shared/services/_index';
 
 export let injectableModelBuildOptions = new InjectionToken<object>('injectableModelBuildOptions');
 
@@ -25,18 +25,27 @@ export class DialogTestComponent implements OnInit {
   public codeMirrorInputOptions: {};
   public codeMirrorOutputOptions: {};
   public output: {};
+  public testBtn: string;
+  public testTitle: string;
 
   constructor(@Inject(injectableModelBuildOptions) data,
               public dialogRef: MdlDialogReference,
               private fb: FormBuilder,
               private modelStore: ModelStore,
               private mdlSnackbarService: MdlSnackbarService,
-              private modelServiceStore: ModelServiceStore
+              private modelServicesService: ModelServicesService
   ) {
     this.model = data;
   }
 
   ngOnInit() {
+    if (!this.model.id) {
+      this.testTitle = `Test model #${this.model.serviceId}`;
+      this.testBtn = 'Test model';
+    } else {
+      this.testTitle = `Test service "${this.model.serviceName}"`;
+      this.testBtn = `Test service`;
+    }
     this.createTestForm();
     this.codeMirrorInputOptions = {
       matchBrackets: true,
@@ -92,7 +101,7 @@ export class DialogTestComponent implements OnInit {
     if (this.model instanceof Model) {
       apiUrl = this.modelStore.testModel.bind(this.modelStore);
     } else {
-      apiUrl = this.modelServiceStore.serve.bind(this.modelServiceStore);
+      apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
     }
 
     apiUrl(JSON.stringify(testOptions))
