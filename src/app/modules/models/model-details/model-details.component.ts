@@ -72,6 +72,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
+        console.warn('PARAMS CHANGE')
         this.id = params['modelId'];
         return this.id;
       })
@@ -86,6 +87,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   loadInitialData(id: string) {
 
 
+
     this.modelsService.getBuildsByModel(id).first()
       .subscribe((data) => {
         this.builds = data.sort((a, b) => {
@@ -95,6 +97,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
     this.modelsStoreSelectionSubscription = this.store.select('models')
       .subscribe(models => {
+        console.warn('MODELS CHANGE')
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
 
         this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
