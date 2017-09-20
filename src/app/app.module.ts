@@ -58,6 +58,7 @@ import { DialogDeleteServiceComponent } from '@components/dialogs/dialog-delete-
 import { DialogAddServiceComponent } from '@components/dialogs/dialog-add-service.component/dialog-add-service.component';
 
 
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { DialogAddServiceComponent } from '@components/dialogs/dialog-add-servic
     RouterModule,
     ServicesModule,
     ModelsModule,
-    SharedModule
+    SharedModule,
+    ClipboardModule
   ],
   entryComponents: [
     DialogModelBuildComponent,

@@ -32,8 +32,6 @@ export class ModelsListComponent implements OnInit {
   public models: Model[];
   public runtimeTypes: RuntimeType[];
   private activatedRouteSub: any;
-  public weightedServices;
-  public modelServices;
   public id: string;
 
   constructor(
@@ -93,7 +91,8 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  buildModel(modelOptions) {
+  buildModel(modelOptions, event) {
+    event.stopPropagation();
     this.dialog.showCustomDialog({
       component: DialogModelBuildComponent,
       styles: {'width': '800px', 'min-height': '350px'},
@@ -106,7 +105,8 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  testModel(model) {
+  testModel(model: Model, event) {
+    event.stopPropagation();
     this.dialog.showCustomDialog({
       component: DialogTestComponent,
       styles: {'width': '800px', 'min-height': '350px'},
@@ -119,7 +119,8 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  stopModel(model) {
+  stopModel(model, event) {
+    event.stopPropagation();
     this.dialog.showCustomDialog({
       component: DialogStopModelComponent,
       styles: {'width': '600px', 'min-height': '250px'},
@@ -132,7 +133,8 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  deleteWeightedService(id) {
+  deleteWeightedService(id, event) {
+    event.stopPropagation();
     this.dialog.showCustomDialog({
       component: DialogDeleteServiceComponent,
       styles: {'width': '600px', 'min-height': '250px'},

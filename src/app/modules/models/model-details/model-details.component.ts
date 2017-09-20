@@ -8,10 +8,12 @@ import { DialogTestComponent, injectableModelBuildOptions } from '@components/di
 import { DialogStopModelComponent, injectableModelStopOptions } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
 import {
   DialogDeleteServiceComponent,
-  injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
+  injectableServiceOptions
+} from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
 import {
   DialogDeployModelComponent,
-  injectableModelDeployOptions } from '@components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
+  injectableModelDeployOptions
+} from '@components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
 import { MdlDialogService } from '@angular-mdl/core';
 import { ModelStore } from '@shared/stores/_index';
 import { WeightedServiceStore } from '@shared/stores/weighted-service.store';
@@ -84,14 +86,14 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   loadInitialData(id: string) {
 
 
-   this.modelsService.getBuildsByModel(id).first()
+    this.modelsService.getBuildsByModel(id).first()
       .subscribe((data) => {
         this.builds = data.sort((a, b) => {
           return moment(b.started).diff(moment(a.started));
         });
       });
 
-      this.modelsStoreSelectionSubscription =  this.store.select('models')
+    this.modelsStoreSelectionSubscription = this.store.select('models')
       .subscribe(models => {
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
 
@@ -175,7 +177,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  testModel(model) {
+  testModel(model: ModelService) {
     this.dialog.showCustomDialog({
       component: DialogTestComponent,
       styles: { 'width': '800px', 'min-height': '350px' },
@@ -188,17 +190,21 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  stopModel(modelService) {
-    this.dialog.showCustomDialog({
-      component: DialogStopModelComponent,
-      styles: { 'width': '600px', 'min-height': '250px' },
-      classes: '',
-      isModal: true,
-      clickOutsideToClose: true,
-      enterTransitionDuration: 400,
-      leaveTransitionDuration: 400,
-      providers: [{ provide: injectableModelStopOptions, useValue: modelService }],
-    });
+  stopModel(modelService, modelRuntimes) {
+    if (modelRuntimes.length > 0) {
+      this.dialog.alert('Model can\'t be stopped while it is used in service.');
+    } else {
+      this.dialog.showCustomDialog({
+        component: DialogStopModelComponent,
+        styles: { 'width': '600px', 'min-height': '250px' },
+        classes: '',
+        isModal: true,
+        clickOutsideToClose: true,
+        enterTransitionDuration: 400,
+        leaveTransitionDuration: 400,
+        providers: [{ provide: injectableModelStopOptions, useValue: modelService }],
+      });
+    }
   }
 
   ngOnDestroy() {
