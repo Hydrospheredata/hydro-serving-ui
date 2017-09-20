@@ -1,7 +1,7 @@
 <div class='services-list__row services-list__row--big'>
   <div class='services-list__header'>
     <div class="mdl-grid cs-align-center cs-mt-8 cs-mb-16 cs-text-right">
-      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
+      <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left model-name">
         <span class='h3'>{{model?.name}}</span>
       </div>
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet" *ngIf="deployable">
@@ -20,7 +20,7 @@
 <p>Input: {{ model?.inputFields }}</p>
 <p>Output: {{ model?.outputFields }}</p>
 </div>
-<h5>Versions</h5>
+<h5 class="model-grid-header">Versions</h5>
 <table class='models-list-table mdl-data-table mdl-js-data-table'>
   <thead>
     <tr>
@@ -60,7 +60,7 @@
         </div>
         </div>
       </td>
-      <td><div *ngIf="this.weightedServices && this.weightedServices.length > 0" class="cs-text-overflow-ellipsis">{{  getWeightedServices(runtime.id) }}</div></td>
+      <td><div *ngIf="this.weightedServices && this.weightedServices.length > 0" class="cs-text-overflow-ellipsis"><a>{{  getWeightedServices(runtime.id) }}</a></div></td>
     </tr>
   </tbody>
 </table>

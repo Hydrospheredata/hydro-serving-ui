@@ -7,7 +7,7 @@ import { ServicesWrapperComponent, ServicesItemDetailComponent } from "./_index"
     imports: [
         RouterModule.forChild([
             {
-                path: 'services', 
+                path: 'services',
                 component: ServicesWrapperComponent,
                 children: [
                     {
