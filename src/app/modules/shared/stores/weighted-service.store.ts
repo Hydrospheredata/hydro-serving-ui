@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpWeightedServicesService } from '../services/_index';
-import { WeightedService } from '@models/weighted-service';
+import { WeightedService } from '@shared/models/_index';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 

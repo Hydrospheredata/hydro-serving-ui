@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { HttpModelsService } from '@services/http-models.service';
+import { HttpModelsService } from '@shared/services/_index';
 
 @Component({
   selector: 'hydro-single-model',

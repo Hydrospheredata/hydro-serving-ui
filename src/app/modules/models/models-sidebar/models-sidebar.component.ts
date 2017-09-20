@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModelStore } from '@stores/model.store';
+import { ModelStore } from '@shared/stores/_index';
 import { MdlDialogService } from '@angular-mdl/core';
 import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
 import { ModelsService, Model } from '@shared/_index';

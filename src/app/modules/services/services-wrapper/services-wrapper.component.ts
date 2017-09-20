@@ -3,16 +3,10 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import {
-    ServicesService,
-    Service,
-    GET_SERVICES
-} from '@shared/_index';
-
 import { AppState } from '@shared/models/_index';
-
 import * as Actions from '@shared/actions/_index';
-import { ModelServicesService } from '@shared/services/_index';
+import { ServicesService, ModelServicesService } from '@shared/services/_index';
+import { ServiceBuilder } from '@shared/builders/_index';
 
 
 
@@ -30,11 +24,12 @@ export class ServicesWrapperComponent implements OnDestroy {
     constructor(
         private store: Store<AppState>,
         private servicesService: ServicesService,
-        private modelServicesService: ModelServicesService
+        private modelServicesService: ModelServicesService,
+        private serviceBuilder: ServiceBuilder
     ) {
         this.servicesServiceSubscription = this.servicesService.getServices()
             .subscribe(services => {
-                this.store.dispatch({ type: Actions.GET_SERVICES, payload: services });
+                this.store.dispatch({ type: Actions.GET_SERVICES, payload: services.map(service => this.serviceBuilder.build(service)) });
             });
         this.modelServicesServiceSubscription = this.modelServicesService.getModelServices()
             .map(serviceModels => serviceModels.filter(model => model.serviceId > 0))

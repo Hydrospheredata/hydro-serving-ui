@@ -11,6 +11,11 @@ import {
     injectableService 
 } from '@components/dialogs/dialog-update-service/dialog-update-service.component';
 
+import { 
+    DialogTestComponent, 
+    injectableModelBuildOptions 
+} from '@components/dialogs/dialog-test/dialog-test.component';
+
 
 
 
@@ -73,6 +78,19 @@ export class ServicesItemDetailComponent {
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });
             });
+    }
+
+    testService(service: Service) {
+        this.dialog.showCustomDialog({
+            component: DialogTestComponent,
+            styles: { 'width': '800px', 'min-height': '350px' },
+            classes: '',
+            isModal: true,
+            clickOutsideToClose: true,
+            enterTransitionDuration: 400,
+            leaveTransitionDuration: 400,
+            providers: [{ provide: injectableModelBuildOptions, useValue: service }],
+        });
     }
 
     editService(service: Service) {

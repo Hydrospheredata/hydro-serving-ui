@@ -2,13 +2,13 @@ import { Component, OnInit, Inject, InjectionToken, HostListener } from '@angula
 import { MdlDialogReference, MdlDialogService } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ModelStore } from '@stores/model.store';
+import { ModelStore } from '@shared/stores/_index';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
-import { Model, ModelService, WeightedService } from '@shared/models/_index';
-import { ModelServicesService } from '@shared/services/_index';
+import { Model, ModelService, Service } from '@shared/models/_index';
+import { ServicesService, ModelServicesService } from '@shared/services/_index';
 
 export let injectableModelBuildOptions = new InjectionToken<object>('injectableModelBuildOptions');
 
@@ -25,18 +25,28 @@ export class DialogTestComponent implements OnInit {
   public codeMirrorInputOptions: {};
   public codeMirrorOutputOptions: {};
   public output: {};
+  public testBtn: string;
+  public testTitle: string;
 
   constructor( @Inject(injectableModelBuildOptions) data,
     public dialogRef: MdlDialogReference,
     private fb: FormBuilder,
     private modelStore: ModelStore,
     private mdlSnackbarService: MdlSnackbarService,
-    private modelServicesService: ModelServicesService
+    private modelServicesService: ModelServicesService,
+    private servicesService: ServicesService
   ) {
     this.model = data;
   }
 
   ngOnInit() {
+    if (!this.model.id) {
+      this.testTitle = `Test model #${this.model.serviceId}`;
+      this.testBtn = 'Test model';
+    } else {
+      this.testTitle = `Test service "${this.model.serviceName}"`;
+      this.testBtn = `Test service`;
+    }
     this.createTestForm();
     this.codeMirrorInputOptions = {
       matchBrackets: true,
@@ -95,29 +105,31 @@ export class DialogTestComponent implements OnInit {
       apiUrl = this.modelStore.testModel.bind(this.modelStore);
       snackbarSuccessMsg = 'Model test was successful';
     } else {
-      if (this.model instanceof WeightedService) {
-        // serve weightedServic
-        // apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
-        // snackbarSuccessMsg = 'Service test was successful';
+      if (this.model instanceof Service) {
+        apiUrl = this.servicesService.serveService.bind(this.servicesService);
+        snackbarSuccessMsg = 'Service test was successful';
       } else {
-      apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
-      snackbarSuccessMsg = 'Service test was successful';
+        apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
+        snackbarSuccessMsg = 'Model test was successful';
       }
     }
 
+    console.log(apiUrl);
+    console.log(JSON.stringify(testOptions));
+
     apiUrl(JSON.stringify(testOptions))
       .subscribe(res => {
-        this.output = JSON.stringify(res, undefined, 2);
-        this.mdlSnackbarService.showSnackbar({
-          message: snackbarSuccessMsg,
-          timeout: 5000
+          this.output = JSON.stringify(res, undefined, 2);
+          this.mdlSnackbarService.showSnackbar({
+            message: snackbarSuccessMsg,
+            timeout: 5000
+          });
+        },
+        (error) => {
+          this.mdlSnackbarService.showSnackbar({
+            message: `Error: ${error}`,
+            timeout: 5000
+          });
         });
-      },
-      (error) => {
-        this.mdlSnackbarService.showSnackbar({
-          message: `Error: ${error}`,
-          timeout: 5000
-        });
-      });
   }
 }

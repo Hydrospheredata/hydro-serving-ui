@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpService } from '@services/http.service';
+import { HttpService } from './http.service';
 import { Observable } from 'rxjs/Observable';
 
 
@@ -18,7 +18,6 @@ export class ModelServicesService {
     getModelServices() {
         return this.http.get(this.baseAPIUrl)
                     .map((res: Response): any => {
-                      // console.log(res);
                       return res.json();
                     });
     }
@@ -33,7 +32,7 @@ export class ModelServicesService {
     createModelService() {}
     removeModelService() {}
     updateModelService() {}
-
+    
     serveModelService(data): Observable<any> {
         return this.http.post(`${this.baseAPIUrl}/serve`, data)
             .map((response: Response) => {

@@ -1,7 +1,7 @@
 import { XHRBackend } from '@angular/http';
-import { HydroRequestOptions } from '@services/hydro-request-options';
-import { HttpService } from '@services/http.service';
-import { LoaderStateService } from '@services/loader-state.service';
+import { HydroRequestOptions } from '@shared/_index';
+import { HttpService } from '@shared/_index';
+import { LoaderStateService } from '@shared/_index';
 import { Location } from '@angular/common';
 
 function httpServiceFactory(backend: XHRBackend, options: HydroRequestOptions, location: Location, loaderStateService: LoaderStateService ) {
