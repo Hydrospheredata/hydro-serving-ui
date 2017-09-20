@@ -35,4 +35,11 @@ export class ServicesService {
         return this.http.delete(`${this.baseAPIUrl}/${id}`);
     }
 
+    serveService(data): Observable<any> {
+        return this.http.post(`${this.baseAPIUrl}/serve`, data)
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
+
 }

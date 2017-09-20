@@ -8,13 +8,11 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ModelServicesService {
     baseAPIUrl: string;
-    servicesAPIUrl: string;
 
     constructor(
         private http: HttpService
     ) {
         this.baseAPIUrl = `${environment.apiUrl}/modelService`;
-        this.servicesAPIUrl = `${environment.apiUrl}/weightedServices`;
     }
 
     getModelServices() {

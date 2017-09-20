@@ -7,8 +7,8 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
-import { Model, ModelService, WeightedService } from '@shared/models/_index';
-import { ModelServicesService } from '@shared/services/_index';
+import { Model, ModelService, Service } from '@shared/models/_index';
+import { ServicesService, ModelServicesService } from '@shared/services/_index';
 
 export let injectableModelBuildOptions = new InjectionToken<object>('injectableModelBuildOptions');
 
@@ -33,7 +33,8 @@ export class DialogTestComponent implements OnInit {
     private fb: FormBuilder,
     private modelStore: ModelStore,
     private mdlSnackbarService: MdlSnackbarService,
-    private modelServicesService: ModelServicesService
+    private modelServicesService: ModelServicesService,
+    private servicesService: ServicesService
   ) {
     this.model = data;
   }
@@ -104,14 +105,17 @@ export class DialogTestComponent implements OnInit {
       apiUrl = this.modelStore.testModel.bind(this.modelStore);
       snackbarSuccessMsg = 'Model test was successful';
     } else {
-      if (this.model instanceof WeightedService) {
-        // apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
-        // snackbarSuccessMsg = 'Service test was successful';
+      if (this.model instanceof Service) {
+        apiUrl = this.servicesService.serveService.bind(this.servicesService);
+        snackbarSuccessMsg = 'Service test was successful';
       } else {
         apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
         snackbarSuccessMsg = 'Model test was successful';
       }
     }
+
+    console.log(apiUrl);
+    console.log(JSON.stringify(testOptions));
 
     apiUrl(JSON.stringify(testOptions))
       .subscribe(res => {
