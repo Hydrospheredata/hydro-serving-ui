@@ -1,16 +1,11 @@
 import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MdlDialogReference } from '@angular-mdl/core';
-// import { FormsService } from '@shared/form-service.service';
-import { MdlSnackbarService } from '@angular-mdl/core';
+import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
-
 import * as Actions from '@shared/actions/_index';
-
 import { AppState, ModelService, Service } from '@shared/models/_index';
-
 import { FormsService, ModelServicesService, ServicesService } from '@shared/services/_index';
 
 export let injectableService = new InjectionToken<Service>('selectedService');
@@ -124,7 +119,7 @@ export class DialogAddServiceComponent implements OnInit {
         }
 
         service = {
-            id: this.services.length ? this.services[this.services.length - 1].id + 1 : 0,
+            id: this.services.length ? this.services[this.services.length - 1].id + 1 : 1,
             serviceName: form.controls.serviceName.value,
             weights: weights
         };

@@ -30,7 +30,6 @@ export class ServicesItemDetailComponent {
     public serviceModels: any[];
     public services: Service[] = [];
     public service: Service;
-    public serviceName: string = '';
 
     constructor(
         public store: Store<AppState>,
@@ -64,7 +63,6 @@ export class ServicesItemDetailComponent {
                 .filter(service => service.id === +id)
 
             this.service = service.shift();
-            this.serviceName = this.service.serviceName;
             if (this.service) {
                 this.service.weights.forEach(weight => {
                     this.getModelServiceData(weight);

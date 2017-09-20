@@ -17,6 +17,7 @@ export class FormsService {
         service: {
           serviceName: {
             'pattern': 'It is not correct format.',
+            'maxLength': 'Service name\'\s max length is 30.',
             'required': 'Service name is required.'
           },
           serviceId: {
