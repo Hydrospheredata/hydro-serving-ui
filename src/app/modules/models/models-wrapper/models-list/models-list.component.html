@@ -13,7 +13,7 @@
     </thead>
     <tbody >
     <ng-template ngFor let-model [ngForOf]="models | sortBy: 'id'">
-      <tr class='models-list-table__tr cs-cursor-pointer'>
+      <tr class='models-list-table__tr cs-cursor-pointer' [routerLink]="['../../models/', model.id]">
         <td class="models-list-table__td id"><div title="{{model.id}}" class='cs-text-overflow-ellipsis'>{{model.id}}</div></td>
         <td class="models-list-table__td name"><div title="{{model.source}}" class='cs-text-overflow-ellipsis'>{{model.source}}</div></td>
         <td class="models-list-table__td version">{{model.lastModelRuntime.modelVersion}}</td>
@@ -34,13 +34,13 @@
         <td class='cs-text-overflow-ellipsis models-list-table__td'>
           <div fxLayout="row" fxLayoutAlign="space-between center"  class="models-list-table__td__actions">
             <div class="models-list-table__td__actions--buttons">
-              <a title="{{(model | modelStatus) == 'DEPLOYED' ? 'Redeploy' : 'Deploy'}}" (click)="buildModel(model)" class="hydro-link mdl-color-text--grey-700">
+              <a title="{{(model | modelStatus) == 'DEPLOYED' ? 'Redeploy' : 'Deploy'}}" (click)="buildModel(model, $event)" class="hydro-link mdl-color-text--grey-700">
                 <mdl-icon>cloud_upload</mdl-icon>
               </a>
-              <a *ngIf="(model | modelStatus) == 'DEPLOYED'" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(model)" title="Stop">
+              <a *ngIf="(model | modelStatus) == 'DEPLOYED'" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(model, $event)" title="Stop">
                 <mdl-icon>delete_forever</mdl-icon>
               </a>
-              <a *ngIf="(model | modelStatus) == 'DEPLOYED'" (click)="testModel(model)" title='Test' class="hydro-link mdl-color-text--blue-800">
+              <a *ngIf="(model | modelStatus) == 'DEPLOYED'" (click)="testModel(model, $event)" title='Test' class="hydro-link mdl-color-text--blue-800">
                 <mdl-icon>play_circle_outline</mdl-icon>
               </a>
           </div>

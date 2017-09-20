@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ModelStore } from '@stores/model.store';
+import { ModelStore } from '@shared/stores/_index';
 import { MdlDialogService } from '@angular-mdl/core';
 import { DialogTestComponent, injectableModelBuildOptions } from '@components/dialogs/dialog-test/dialog-test.component';
-import { ModelsService, Model } from '@shared/_index';
+import { ModelsService, Model, ModelService } from '@shared/_index';
 import { Store } from '@ngrx/store';
 import { AppState } from '@shared/models/_index';
 @Component({
@@ -14,7 +14,7 @@ export class ModelsSidebarComponent implements OnInit {
   public searchQ: string;
   public models: Model[];
   public activeService;
-  public modelServices;
+  public modelServices: ModelService[];
 
   constructor(
     private dialog: MdlDialogService,

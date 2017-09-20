@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpService } from '@services/http.service';
+import { HttpService } from './http.service';
 import { environment } from '../../../../environments/environment';
 import { WeightedService } from '@shared/models/_index';
 import { Observable } from 'rxjs/Observable';

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { HttpModelsService } from '@services/http-models.service';
-import { BuildModelService } from '@services/build-model.service';
+import { HttpModelsService } from '@shared/services/_index';
+import { BuildModelService } from '@shared/services/_index';
 import { Model, ModelBuild } from '@shared/models/_index';
 import 'rxjs/add/operator/map';
 

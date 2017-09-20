@@ -50,6 +50,7 @@ import {
   RuntimeTypeBuilder,
   ModelCurrentServicesBuilder,
   ModelBuildBuilder,
+  ServiceBuilder,
 } from './builders/_index';
 
 @NgModule({
@@ -96,6 +97,7 @@ import {
         RuntimeTypeBuilder,
         ModelCurrentServicesBuilder,
         ModelBuildBuilder,
+        ServiceBuilder
     ],
     exports: [
         // Pipes

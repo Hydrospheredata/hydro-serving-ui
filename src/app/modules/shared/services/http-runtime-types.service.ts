@@ -3,8 +3,8 @@ import { Subject, Observable, Observer } from 'rxjs/Rx';
 import { environment } from '../../../../environments/environment';
 import {  Response } from '@angular/http';
 import { RuntimeType } from '@shared/models/_index';
-import { RuntimeTypeBuilder } from '@builders/runtime-type.builder';
-import { HttpService } from '@services/http.service';
+import { RuntimeTypeBuilder } from '@shared/builders/_index';
+import { HttpService } from './http.service';
 
 @Injectable()
 export class HttpRuntimeTypesService {

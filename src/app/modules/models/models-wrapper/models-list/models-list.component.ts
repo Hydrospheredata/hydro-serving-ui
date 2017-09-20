@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ModelStore } from '@stores/model.store';
-import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
-// import { RuntimeType } from '@models/runtime-type';
+import { ModelStore } from '@shared/stores/_index';
+import { HttpRuntimeTypesService } from '@shared/services/_index';
 import { DialogModelBuildComponent, injectableModelOptions } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
 import {
   DialogTestComponent,
@@ -14,11 +13,11 @@ import {
   injectableServiceOptions } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
 import { MdlDialogService } from '@angular-mdl/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModelServiceStore } from '@stores/model-service.store';
-import { WeightedServiceStore } from '@stores/weighted-service.store';
+import { ModelServiceStore } from '@shared/stores/_index';
+import { WeightedServiceStore } from '@shared/stores/_index';
 import { Observable } from 'rxjs/Observable';
-// import { WeightedService } from '@models/weighted-service';
-import { ModelsService, Model, GET_MODELS } from '@shared/_index';
+
+import { ModelsService, Model } from '@shared/_index';
 import { Store } from '@ngrx/store';
 import { AppState, RuntimeType, WeightedService } from '@shared/models/_index';
 
@@ -33,8 +32,6 @@ export class ModelsListComponent implements OnInit {
   public models: Model[];
   public runtimeTypes: RuntimeType[];
   private activatedRouteSub: any;
-  public weightedServices;
-  public modelServices;
   public id: string;
 
   constructor(
@@ -94,7 +91,8 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  buildModel(modelOptions) {
+  buildModel(modelOptions, event) {
+    event.stopPropagation();
     this.dialog.showCustomDialog({
       component: DialogModelBuildComponent,
       styles: {'width': '800px', 'min-height': '350px'},
@@ -107,7 +105,8 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  testModel(model) {
+  testModel(model: Model, event) {
+    event.stopPropagation();
     this.dialog.showCustomDialog({
       component: DialogTestComponent,
       styles: {'width': '800px', 'min-height': '350px'},
@@ -120,7 +119,8 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  stopModel(model) {
+  stopModel(model, event) {
+    event.stopPropagation();
     this.dialog.showCustomDialog({
       component: DialogStopModelComponent,
       styles: {'width': '600px', 'min-height': '250px'},
@@ -133,7 +133,8 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  deleteWeightedService(id) {
+  deleteWeightedService(id, event) {
+    event.stopPropagation();
     this.dialog.showCustomDialog({
       component: DialogDeleteServiceComponent,
       styles: {'width': '600px', 'min-height': '250px'},

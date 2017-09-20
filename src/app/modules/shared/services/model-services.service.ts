@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpService } from '@services/http.service';
+import { HttpService } from './http.service';
 import { Observable } from 'rxjs/Observable';
 
 
@@ -8,13 +8,11 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ModelServicesService {
     baseAPIUrl: string;
-    servicesAPIUrl: string;
 
     constructor(
         private http: HttpService
     ) {
         this.baseAPIUrl = `${environment.apiUrl}/modelService`;
-        this.servicesAPIUrl = `${environment.apiUrl}/weightedServices`;
     }
 
     getModelServices() {
@@ -36,7 +34,7 @@ export class ModelServicesService {
     updateModelService() {}
     
     serveModelService(data): Observable<any> {
-        return this.http.post(`${this.servicesAPIUrl}/serve`, data)
+        return this.http.post(`${this.baseAPIUrl}/serve`, data)
             .map((response: Response) => {
                 return response.json();
             });

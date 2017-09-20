@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-import { HttpService } from '@services/http.service';
+import { HttpService } from './http.service';
 import { RequestOptionsArgs } from '@angular/http';
 import { ModelRuntime } from '@shared/_index';
 import { Observable } from 'rxjs/Observable';
