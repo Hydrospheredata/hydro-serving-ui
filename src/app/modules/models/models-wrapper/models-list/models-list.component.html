@@ -13,7 +13,7 @@
     </thead>
     <tbody >
     <ng-template ngFor let-model [ngForOf]="models | sortBy: 'id'">
-      <tr class='models-list-table__tr cs-cursor-pointer'>
+      <tr class='models-list-table__tr cs-cursor-pointer' >
         <td class="models-list-table__td id"><div title="{{model.id}}" class='cs-text-overflow-ellipsis'>{{model.id}}</div></td>
         <td class="models-list-table__td name"><div title="{{model.source}}" class='cs-text-overflow-ellipsis'>{{model.source}}</div></td>
         <td class="models-list-table__td version">{{model.lastModelRuntime.modelVersion}}</td>

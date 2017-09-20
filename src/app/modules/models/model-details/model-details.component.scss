@@ -1,5 +1,25 @@
+@import 'variables.scss';
+
 .models-list-table {
   width: 100%;
+  td {
+    text-align: left;
+    max-width: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    .mdl-select {
+      .mdl-list__item {
+        font-size: 14px;
+      }
+      .mdl-textfield {
+        &__input {
+          font-size: 14px;
+        }
+      }
+    }
+
+  }
 }
 .model-name {
   margin-left: 0;

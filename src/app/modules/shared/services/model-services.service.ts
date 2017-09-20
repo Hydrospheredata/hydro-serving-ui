@@ -36,7 +36,7 @@ export class ModelServicesService {
     updateModelService() {}
     
     serveModelService(data): Observable<any> {
-        return this.http.post(`${this.servicesAPIUrl}/serve`, data)
+        return this.http.post(`${this.baseAPIUrl}/serve`, data)
             .map((response: Response) => {
                 return response.json();
             });
