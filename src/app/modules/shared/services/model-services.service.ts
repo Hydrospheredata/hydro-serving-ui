@@ -33,6 +33,12 @@ export class ModelServicesService {
     createModelService() {}
     removeModelService() {}
     updateModelService() {}
-    serveModelService() {}
+
+    serveModelService(data): Observable<any> {
+        return this.http.post(`${this.baseAPIUrl}/serve`, data)
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
 
 }

@@ -7,8 +7,8 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
-import { Model } from '@models/model';
-import { ModelServiceStore } from '@stores/model-service.store';
+import { Model, ModelService, WeightedService } from '@shared/models/_index';
+import { ModelServicesService } from '@shared/services/_index';
 
 export let injectableModelBuildOptions = new InjectionToken<object>('injectableModelBuildOptions');
 
@@ -26,12 +26,12 @@ export class DialogTestComponent implements OnInit {
   public codeMirrorOutputOptions: {};
   public output: {};
 
-  constructor(@Inject(injectableModelBuildOptions) data,
-              public dialogRef: MdlDialogReference,
-              private fb: FormBuilder,
-              private modelStore: ModelStore,
-              private mdlSnackbarService: MdlSnackbarService,
-              private modelServiceStore: ModelServiceStore
+  constructor( @Inject(injectableModelBuildOptions) data,
+    public dialogRef: MdlDialogReference,
+    private fb: FormBuilder,
+    private modelStore: ModelStore,
+    private mdlSnackbarService: MdlSnackbarService,
+    private modelServicesService: ModelServicesService
   ) {
     this.model = data;
   }
@@ -69,18 +69,20 @@ export class DialogTestComponent implements OnInit {
   }
 
   private extractModelInputFields(model): string {
-    if (!model['inputFields']) {
+    let inputFields;
+    if (model.inputFields) {
+      inputFields = model.inputFields;
+    } else if (model.modelRuntime && model.modelRuntime.inputFields) {
+      inputFields = model.modelRuntime.inputFields;
+    } else {
       return JSON.stringify([{}]);
     }
-    let inputFields: object[] = [];
-    for (let i = 0; i < model['inputFields'].length; i++) {
-      inputFields.push({ [model['inputFields'][i]]: '' });
-    }
-    return JSON.stringify(inputFields, undefined, 2);
+    return JSON.stringify(inputFields.map(field => ({[field]: ''})), undefined, 2);
   }
 
   submitTestForm(form) {
     let apiUrl;
+    let snackbarSuccessMsg;
     const controls = form.controls;
     const data = JSON.parse(controls.data.value);
     const testOptions = {
@@ -91,23 +93,31 @@ export class DialogTestComponent implements OnInit {
 
     if (this.model instanceof Model) {
       apiUrl = this.modelStore.testModel.bind(this.modelStore);
+      snackbarSuccessMsg = 'Model test was successful';
     } else {
-      apiUrl = this.modelServiceStore.serve.bind(this.modelServiceStore);
+      if (this.model instanceof WeightedService) {
+        // serve weightedServic
+        // apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
+        // snackbarSuccessMsg = 'Service test was successful';
+      } else {
+      apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
+      snackbarSuccessMsg = 'Service test was successful';
+      }
     }
 
     apiUrl(JSON.stringify(testOptions))
       .subscribe(res => {
         this.output = JSON.stringify(res, undefined, 2);
-          this.mdlSnackbarService.showSnackbar({
-            message: `Model test was successful`,
-            timeout: 5000
-          });
-        },
-        (error) => {
-          this.mdlSnackbarService.showSnackbar({
-            message: `Error: ${error}`,
-            timeout: 5000
-          });
+        this.mdlSnackbarService.showSnackbar({
+          message: snackbarSuccessMsg,
+          timeout: 5000
+        });
+      },
+      (error) => {
+        this.mdlSnackbarService.showSnackbar({
+          message: `Error: ${error}`,
+          timeout: 5000
+        });
       });
   }
 }
