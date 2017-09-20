@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpModelsService } from '@services/http-models.service';
+import { HttpModelsService } from '@shared/services/_index';
 import { HttpWeightedServicesService } from '@shared/services/http-weighted-services.service';
 import { HttpModelRuntimeService } from '@shared/services/http-model-runtime.service';
 import { ActivatedRoute } from '@angular/router';
@@ -13,12 +13,9 @@ import {
   DialogDeployModelComponent,
   injectableModelDeployOptions } from '@components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
 import { MdlDialogService } from '@angular-mdl/core';
-import { ModelStore } from '@stores/model.store';
+import { ModelStore } from '@shared/stores/_index';
 import { WeightedServiceStore } from '@shared/stores/weighted-service.store';
 import { ModelServiceStore } from '@shared/stores/model-service.store';
-// import { Model } from '@models/model';
-// import { WeightedService } from '@models/weighted-service';
-// import { ModelRuntime } from '@models/model-runtime.ts';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';

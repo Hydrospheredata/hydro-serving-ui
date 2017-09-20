@@ -2,7 +2,7 @@ import { Component, OnInit, InjectionToken, Inject, HostListener } from '@angula
 import { MdlDialogReference } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ModelServiceStore } from '@stores/model-service.store';
+import { ModelServiceStore } from '@shared/stores/_index';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
 import {
   ModelsService

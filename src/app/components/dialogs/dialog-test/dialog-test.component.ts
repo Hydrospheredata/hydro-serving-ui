@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, InjectionToken, HostListener } from '@angula
 import { MdlDialogReference, MdlDialogService } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ModelStore } from '@stores/model.store';
+import { ModelStore } from '@shared/stores/_index';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';

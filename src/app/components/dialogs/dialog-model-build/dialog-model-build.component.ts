@@ -2,10 +2,10 @@ import { Component, OnInit, InjectionToken, HostListener, Inject } from '@angula
 import { MdlDialogReference, MdlDialogService } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
-import { BuildModelService } from '@services/build-model.service';
-import { HttpModelsService } from '@services/http-models.service';
-import { ModelStore } from '@stores/model.store';
+import { HttpRuntimeTypesService } from '@shared/_index';
+import { BuildModelService } from '@shared/_index';
+import { HttpModelsService } from '@shared/_index';
+import { ModelStore } from '@shared/stores/_index';
 import { ModelStatusPipe } from '../../../modules/shared/pipes/model-status.pipe';
 import {
   ModelsService,

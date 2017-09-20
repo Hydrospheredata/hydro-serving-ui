@@ -3,9 +3,9 @@ import { Subject, Observable, Observer } from 'rxjs/Rx';
 import { environment } from '../../../../environments/environment';
 import { Response } from '@angular/http';
 import { Model, ModelBuild } from '@shared/models/_index';
-import { ModelBuilder } from '@builders/model.builder';
-import { ModelBuildBuilder } from '@builders/model-build.builder';
-import { HttpService } from '@services/http.service';
+import { ModelBuilder } from '@shared/builders/_index';
+import { ModelBuildBuilder } from '@shared/builders/_index';
+import { HttpService } from './http.service';
 
 @Injectable()
 export class HttpModelsService {

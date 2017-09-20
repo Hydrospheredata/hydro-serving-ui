@@ -3,8 +3,8 @@ import { Observable } from 'rxjs/Rx';
 import { environment } from '../../../../environments/environment';
 import { Response } from '@angular/http';
 import { ModelRuntime } from '@shared/models/_index';
-import { ModelRuntimeBuilder } from '@builders/model-runtime.builder';
-import { HttpService } from '@services/http.service';
+import { ModelRuntimeBuilder } from '@shared/builders/_index';
+import { HttpService } from './http.service';
 
 @Injectable()
 export class BuildModelService {
