@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpWeightedServicesService } from '@services/http-weighted-services.service';
-import { WeightedService } from '@models/weighted-service';
+import { WeightedService } from '@shared/models/_index';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -21,6 +21,14 @@ export class WeightedServiceStore {
   }
 
   getAll() {
+    this.httpWeightedServicesService.getAll()
+      .subscribe((data) => {
+        this.dataStore = data;
+        this.updateStore();
+      });
+  }
+
+  getById(id: string) {
     this.httpWeightedServicesService.getAll()
       .subscribe((data) => {
         this.dataStore = data;

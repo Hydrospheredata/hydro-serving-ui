@@ -10,16 +10,10 @@ import { MomentModule } from 'angular2-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+// Global components
 import { AppComponent } from './app.component';
 import { NavbarComponent } from '@components/navbar/navbar.component';
-import { ModelsWrapperComponent } from '@components/models-wrapper/models-wrapper.component';
-import { ModelsListComponent } from '@components/models-wrapper/models-list/models-list.component';
-import { SingleModelComponent } from './components/models-wrapper/models-list/single-model/single-model.component';
-import { InputTextComponent } from './components/form/input-text/input-text.component';
-import { LoaderComponent } from './components/loader/loader.component';
-
-// pipes
-import { SortByPipe } from '@pipes/sort-by.pipe';
+import { LoaderComponent } from '@components/loader/loader.component';
 
 // codemirror
 import { CodemirrorModule } from 'ng2-codemirror';
@@ -53,34 +47,28 @@ import { DialogModelBuildComponent } from '@components/dialogs/dialog-model-buil
 import { DialogTestComponent } from './components/dialogs/dialog-test/dialog-test.component';
 import { BuildModelService } from '@services/build-model.service';
 import { DialogStopModelComponent } from './components/dialogs/dialog-stop-model/dialog-stop-model.component';
-import { ModelStatusPipe } from './pipes/model-status.pipe';
-import { UtcToLocalPipe } from './pipes/utc-to-local.pipe';
-import { ServicesListComponent } from './components/services-list/services-list.component';
-import { SearchPipe } from './pipes/search.pipe';
-import { DialogWeightedServiceComponent } from './components/dialogs/dialog-weighted-service/dialog-weighted-service.component';
-import { PositiveNumbersPipe } from './pipes/positive-numbers.pipe';
+import { DialogDeployModelComponent } from './components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
+import { DialogUpdateServiceComponent } from '@components/dialogs/dialog-update-service/dialog-update-service.component';
 import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete-service/dialog-delete-service.component';
+import { DialogAddServiceComponent } from '@components/dialogs/dialog-add-service.component/dialog-add-service.component';
+
+import { ServicesModule } from './modules/services/services.module';
+import { ModelsModule } from './modules/models/models.module';
+import { SharedModule } from './modules/shared/shared.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    ModelsWrapperComponent,
-    ModelsListComponent,
-    SingleModelComponent,
-    DialogModelBuildComponent,
-    InputTextComponent,
-    DialogTestComponent,
     LoaderComponent,
-    SortByPipe,
+    DialogModelBuildComponent,
+    DialogTestComponent,
     DialogStopModelComponent,
-    ModelStatusPipe,
-    UtcToLocalPipe,
-    ServicesListComponent,
-    SearchPipe,
-    DialogWeightedServiceComponent,
-    PositiveNumbersPipe,
-    DialogDeleteServiceComponent
+    DialogDeployModelComponent,
+    DialogUpdateServiceComponent,
+    DialogDeleteServiceComponent,
+    DialogAddServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -94,14 +82,19 @@ import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete
     MomentModule,
     CommonModule,
     CodemirrorModule,
-    RouterModule
+    RouterModule,
+    ServicesModule,
+    ModelsModule,
+    SharedModule
   ],
   entryComponents: [
     DialogModelBuildComponent,
     DialogTestComponent,
     DialogStopModelComponent,
-    DialogWeightedServiceComponent,
-    DialogDeleteServiceComponent
+    DialogDeployModelComponent,
+    DialogUpdateServiceComponent,
+    DialogDeleteServiceComponent,
+    DialogAddServiceComponent
   ],
   providers: [
     // services
@@ -128,6 +121,8 @@ import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete
       useFactory: httpServiceFactory,
       deps: [XHRBackend, RequestOptions, Location, LoaderStateService ]
     }
+  ],
+  exports: [
   ],
   bootstrap: [AppComponent]
 })

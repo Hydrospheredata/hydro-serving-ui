@@ -7,8 +7,8 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
-import { Model } from '@models/model';
-import { ModelServiceStore } from '@stores/model-service.store';
+import { Model } from '@shared/models/_index';
+import { ModelServicesService } from '@shared/services/_index';
 
 export let injectableModelBuildOptions = new InjectionToken<object>('injectableModelBuildOptions');
 
@@ -25,18 +25,27 @@ export class DialogTestComponent implements OnInit {
   public codeMirrorInputOptions: {};
   public codeMirrorOutputOptions: {};
   public output: {};
+  public testBtn: string;
+  public testTitle: string;
 
   constructor(@Inject(injectableModelBuildOptions) data,
               public dialogRef: MdlDialogReference,
               private fb: FormBuilder,
               private modelStore: ModelStore,
               private mdlSnackbarService: MdlSnackbarService,
-              private modelServiceStore: ModelServiceStore
+              private modelServicesService: ModelServicesService
   ) {
     this.model = data;
   }
 
   ngOnInit() {
+    if (!this.model.id) {
+      this.testTitle = `Test model #${this.model.serviceId}`;
+      this.testBtn = 'Test model';
+    } else {
+      this.testTitle = `Test service "${this.model.serviceName}"`;
+      this.testBtn = `Test service`;
+    }
     this.createTestForm();
     this.codeMirrorInputOptions = {
       matchBrackets: true,
@@ -81,6 +90,7 @@ export class DialogTestComponent implements OnInit {
 
   submitTestForm(form) {
     let apiUrl;
+    let snackbarSuccessMsg;
     const controls = form.controls;
     const data = JSON.parse(controls.data.value);
     const testOptions = {
@@ -91,15 +101,17 @@ export class DialogTestComponent implements OnInit {
 
     if (this.model instanceof Model) {
       apiUrl = this.modelStore.testModel.bind(this.modelStore);
+      snackbarSuccessMsg = 'Model test was successful';
     } else {
-      apiUrl = this.modelServiceStore.serve.bind(this.modelServiceStore);
+      apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
+      snackbarSuccessMsg = 'Service test was successful';
     }
 
     apiUrl(JSON.stringify(testOptions))
       .subscribe(res => {
         this.output = JSON.stringify(res, undefined, 2);
           this.mdlSnackbarService.showSnackbar({
-            message: `Model test was successful`,
+            message: snackbarSuccessMsg,
             timeout: 5000
           });
         },

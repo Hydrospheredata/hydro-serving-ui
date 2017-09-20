@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, Observer } from 'rxjs/Rx';
 import { environment } from '../../environments/environment';
 import {  Response } from '@angular/http';
-import { RuntimeType } from '@models/runtime-type';
+import { RuntimeType } from '@shared/models/_index';
 import { RuntimeTypeBuilder } from '@builders/runtime-type.builder';
 import { HttpService } from '@services/http.service';
 

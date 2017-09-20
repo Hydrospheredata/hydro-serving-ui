@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, Observer } from 'rxjs/Rx';
 import { environment } from '../../environments/environment';
 import { Response } from '@angular/http';
-import { Model } from '@models/model';
+import { Model, ModelService } from '@shared/models/_index';
 import { ModelBuilder } from '@builders/model.builder';
 import { HttpService } from '@services/http.service';
 import 'rxjs/add/operator/map';
@@ -27,13 +27,28 @@ export class HttpModelServiceService {
       });
   }
 
+  public createService(modelService): Observable<any> {
+    const url = `${this.baseAPIUrl}`;
+    return this.http.post(url, modelService).map((response: Response) => response.json());
+  }
+
+  public getbyId(id: number): Observable<any> {
+    const url = `${this.baseAPIUrl}/fetchByIds`;
+    return this.http.get(url).
+      map((response: Response) => response.json());
+  }
+
+  public removeService() {}
+
+
+
   public extractModels(data) {
-    let models: Model[] = [];
-    for (let index in data) {
+    const models: Model[] = [];
+    for (const index in data) {
       if (data[index].serviceId < 1) {
         continue;
       }
-      let model = this.modelBuilder.build({model: data[index].modelRuntime});
+      const model = this.modelBuilder.build({model: data[index].modelRuntime});
       models.push(model);
     }
     return models;

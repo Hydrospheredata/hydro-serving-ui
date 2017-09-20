@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpModelsService } from '@services/http-models.service';
 import { BuildModelService } from '@services/build-model.service';
-import { Model } from '@models/model';
+import { Model } from '@shared/models/_index';
 import 'rxjs/add/operator/map';
 
 @Injectable()
@@ -33,10 +33,10 @@ export class ModelStore {
 
   public updateModel(modelOptions) {
     return this.httpModelsService.updateModel(modelOptions)
-      .map((model) => {
-        this.updateItem(model);
-        this.updateStore();
-      });
+    .map((model) => {
+      this.updateItem(model);
+      this.updateStore();
+    });
   }
 
   private updateItem(item: Model) {
@@ -52,14 +52,12 @@ export class ModelStore {
   public testModel(params) {
     const service = this.buildModelService
       .testModel(params);
-
     return service;
   }
 
   public stopModel(id) {
     const service = this.buildModelService
       .stopModel(id);
-
     return service;
   }
 
