@@ -65,32 +65,6 @@ export class ModelsListComponent implements OnInit {
     });
   }
 
-  // openDialogWeightedServicesForm(service?: WeightedService) {
-  //   this.dialog.showCustomDialog({
-  //     component: DialogWeightedServiceComponent,
-  //     styles: {'width': '850px', 'min-height': '250px'},
-  //     classes: '',
-  //     isModal: true,
-  //     clickOutsideToClose: true,
-  //     enterTransitionDuration: 400,
-  //     leaveTransitionDuration: 400,
-  //     providers: [{provide: injectableWeightedService, useValue: service}],
-  //   });
-  // }
-
-  openDialogTestWeightedServicesForm(service?: WeightedService) {
-    this.dialog.showCustomDialog({
-      component: DialogTestComponent,
-      styles: {'width': '850px', 'min-height': '250px'},
-      classes: '',
-      isModal: true,
-      clickOutsideToClose: true,
-      enterTransitionDuration: 400,
-      leaveTransitionDuration: 400,
-      providers: [{provide: injectableModelBuildOptions, useValue: service}],
-    });
-  }
-
   buildModel(modelOptions, event) {
     event.stopPropagation();
     this.dialog.showCustomDialog({

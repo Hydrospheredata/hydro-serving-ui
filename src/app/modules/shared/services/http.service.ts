@@ -27,7 +27,7 @@ export class HttpService extends Http {
     super(backend, defaultOptions);
 
     this.port = environment.production ? window.location.port : environment.port;
-    this.baseUrl = `http://54.191.51.127:${this.port}`;
+    this.baseUrl = `http://localhost:${this.port}`;
     this.requestCount = 0;
   }
 

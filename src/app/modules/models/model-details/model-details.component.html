@@ -16,9 +16,9 @@
 <p *ngIf="model?.lastModelRuntime?.modelVersion" >Model version: {{ model?.lastModelRuntime?.modelVersion }}</p>
 <p class="mdl-color-text--green-700" *ngIf="deployable">New version available</p>
 <p>Runtime: {{ model?.runtimeType?.name }}</p>
-<p>Tags: {{model?.runtimeType?.tags}} </p>
+<p>Tags: {{model?.runtimeType?.tags.join(", ") }} </p>
 <p>Input: {{ model?.inputFields }}</p>
-<p>Output: {{ model?.outputFields }}</p>
+<p>Output: {{ model?.outputFields.join(", ") }}</p>
 </div>
 <h5 class="model-grid-header">Versions</h5>
 <table class='models-list-table mdl-data-table mdl-js-data-table'>

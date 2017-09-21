@@ -59,12 +59,12 @@ export class DialogTestComponent implements OnInit {
       this.testTitle = `Test service "${this.model.serviceName}"`;
       this.testBtn = `Test service`;
     }
-    this.requestBody = this.createCURLString(this.extractModelInputFields(this.model));
     this.createTestForm();
+    this.requestBody = this.createCURLString(this.testForm);
     this.testForm.valueChanges.subscribe(form => {
       let inputPayload = '';
       inputPayload = JSON.stringify(JSON.parse(form.data));
-      this.requestBody = this.createCURLString(inputPayload);
+      this.requestBody = this.createCURLString(form);
     });
     this.codeMirrorInputOptions = {
       matchBrackets: true,
@@ -85,8 +85,9 @@ export class DialogTestComponent implements OnInit {
 
   }
 
-  private createCURLString (inputPayload) {
+  private createCURLString (form) {
     let path = '';
+    const payload = JSON.stringify(this.createTestOptions(form));
     if (this.model.cloudDriverId) {
       path = `${this.apiUrl}/modelService/serve`;
     } else if (this.model.weights && this.model.weights.length > 0) {
@@ -94,8 +95,8 @@ export class DialogTestComponent implements OnInit {
     } else {
       path = `${window.location.protocol}//${window.location.hostname}:${this.port}${environment.uiUrl}/model/serve`;
     }
-    return `curl -X POST --header 'Content-Type: application/json' --header 'Accept: text/plain, application/json'
-    -d ${inputPayload}
+    return `curl -X POST --header 'Content-Type: application/json'
+    -d '${payload}'
     '${path}'`;
   }
 
@@ -120,7 +121,11 @@ export class DialogTestComponent implements OnInit {
     } else {
       return JSON.stringify([{}]);
     }
-    return JSON.stringify(inputFields.map(field => ({ [field]: '' })), undefined, 2);
+    const reducedFields = inputFields.reduce((payload, field) => {
+       payload[field] = '';
+       return payload;
+    }, {});
+    return JSON.stringify([reducedFields], undefined, 2);
   }
 
 
@@ -131,9 +136,7 @@ export class DialogTestComponent implements OnInit {
     });
   }
 
-  submitTestForm(form) {
-    let apiUrl;
-    let snackbarSuccessMsg;
+  public createTestOptions(form) {
     const controls = form.controls;
     const data = JSON.parse(controls.data.value);
     const testOptions = {
@@ -141,6 +144,13 @@ export class DialogTestComponent implements OnInit {
       path: controls.path.value,
       data: data
     };
+    return testOptions;
+  }
+
+  submitTestForm(form) {
+    let apiUrl;
+    let snackbarSuccessMsg;
+    const testOptions = this.createTestOptions(form);
 
     if (this.model instanceof Model) {
       apiUrl = this.modelStore.testModel.bind(this.modelStore);
@@ -155,8 +165,6 @@ export class DialogTestComponent implements OnInit {
       }
     }
 
-    console.log(apiUrl);
-    console.log(JSON.stringify(testOptions));
 
     apiUrl(JSON.stringify(testOptions))
       .subscribe(res => {
