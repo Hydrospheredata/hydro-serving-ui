@@ -15,7 +15,6 @@ import {LoaderStateService} from './loader-state.service';
 
 @Injectable()
 export class HttpService extends Http {
-  port: string;
   baseUrl: string;
   private requestCount: number;
 
@@ -26,8 +25,9 @@ export class HttpService extends Http {
               ) {
     super(backend, defaultOptions);
 
-    this.port = environment.production ? window.location.port : environment.port;
-    this.baseUrl = `http://localhost:${this.port}`;
+    this.baseUrl = environment.production ?
+    `http://${window.location.hostname}:${window.location.port}`
+    : `${environment.host}:${environment.port}`;
     this.requestCount = 0;
   }
 

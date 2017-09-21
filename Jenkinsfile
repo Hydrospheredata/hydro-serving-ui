@@ -99,7 +99,7 @@ node("JenkinsOnDemand") {
     stage('Build') {
         def curVersion = currentVersion()
         sh "npm install"
-        sh "./node_modules/.bin/ng build --production"
+        sh "./node_modules/.bin/ng build --prod"
     }
 
     stage('Test') {
