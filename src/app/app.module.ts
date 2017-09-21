@@ -26,7 +26,7 @@ import { SharedModule } from './modules/shared/shared.module';
 // Factories
 import { httpServiceFactory } from './factories/http-service-factory';
 
-import { 
+import {
   // Services
   HttpModelsService,
   HttpRuntimeTypesService,
