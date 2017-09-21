@@ -36,14 +36,14 @@ export class ServicesSidebarComponent {
         private dialog: MdlDialogService,
         private servicesService: ServicesService,
         private activatedRoute: ActivatedRoute
-    ) { 
+    ) {
         this.store.select('services')
             .subscribe(services => {
                 this.services = services;
             });
     }
 
-    addService(service: Service) {
+    addService(service?: Service) {
         this.dialog.showCustomDialog({
             component: DialogAddServiceComponent,
             styles: {'width': '850px', 'min-height': '250px'},

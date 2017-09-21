@@ -34,7 +34,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
           modelRuntimes: ModelRuntimeReducer,
           services: ServicesReducer }),
           StoreDevtoolsModule.instrument({
-            maxAge: 25 //  Retains last 25 states
+            maxAge: 25
           })
     ],
     declarations: [
