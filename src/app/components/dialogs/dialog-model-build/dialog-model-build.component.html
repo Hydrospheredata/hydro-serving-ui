@@ -15,8 +15,8 @@
       </div>
 
       <div class="cs-mb-32" fxLayout="row" fxLayoutAlign="space-between center">
-        <div class="mdl-cell mdl-cell--5-col mdl-cell--4-col-tablet cs-text-left"><label class="">Runtime Type</label></div>
-        <mdl-select class="mdl-cell mdl-cell--7-col mdl-cell--4-col-tablet" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
+        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left runtime-label"><label class="">Runtime Type</label></div>
+        <mdl-select class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet runtime-select" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
           <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}:{{type.version}}</mdl-option>
         </mdl-select>
       </div>

@@ -39,7 +39,4 @@ export class ModelsWrapperComponent implements OnDestroy {
 
   ngOnDestroy() {
   }
-
-
-
 }

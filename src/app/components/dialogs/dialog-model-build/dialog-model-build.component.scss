@@ -4,3 +4,11 @@
   // minus header height
   height: calc(100% - 64px);
 }
+
+.runtime-select > .mdl-textfield {
+  padding: 0;
+}
+
+.runtime-label {
+  margin-left: 0;
+}

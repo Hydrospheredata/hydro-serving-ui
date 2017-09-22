@@ -60,7 +60,7 @@
         </div>
         </div>
       </td>
-      <td><div *ngIf="this.weightedServices && this.weightedServices.length > 0" class="cs-text-overflow-ellipsis"><a>{{  getWeightedServices(runtime.id) }}</a></div></td>
+      <td><div *ngIf="this.weightedServices && this.weightedServices.length > 0" class="cs-text-overflow-ellipsis"><a *ngFor="let weightedService of getWeightedServices(runtime.id)" [routerLink]="['/services', weightedService.id]">{{  weightedService.serviceName }}</a></div></td>
     </tr>
   </tbody>
 </table>
