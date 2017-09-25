@@ -15,18 +15,15 @@ import { CodemirrorModule } from 'ng2-codemirror';
 
 // Global components
 import { AppComponent } from './app.component';
-import { NavbarComponent } from '@components/navbar/navbar.component';
-import { LoaderComponent } from '@components/loader/loader.component';
 
 // Modules
-import { ServicesModule } from './modules/services/services.module';
-import { ModelsModule } from './modules/models/models.module';
-import { SharedModule } from './modules/shared/shared.module';
-
-// Factories
-import { httpServiceFactory } from './factories/http-service-factory';
+import { ServicesModule } from '../modules/services/services.module';
+import { ModelsModule } from '../modules/models/models.module';
+import { SharedModule } from '../modules/shared/shared.module';
 
 import {
+  // Factories
+  httpServiceFactory,
   // Services
   HttpModelsService,
   HttpRuntimeTypesService,
@@ -45,18 +42,14 @@ import {
   ModelRuntimeBuilder,
   ModelBuildBuilder,
   RuntimeTypeBuilder,
-  ModelCurrentServicesBuilder
+  ModelCurrentServicesBuilder,
+  // Components
+  LoaderComponent,
+  NavbarComponent
 } from '@shared/_index';
 
 // Dialogs
-import { DialogModelBuildComponent } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
-import { DialogTestComponent } from '@components/dialogs/dialog-test/dialog-test.component';
-import { DialogStopModelComponent } from '@components/dialogs/dialog-stop-model/dialog-stop-model.component';
-import { DialogDeployModelComponent } from '@components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
-import { DialogUpdateServiceComponent } from '@components/dialogs/dialog-update-service/dialog-update-service.component';
-import { DialogDeleteServiceComponent } from '@components/dialogs/dialog-delete-service/dialog-delete-service.component';
-import { DialogAddServiceComponent } from '@components/dialogs/dialog-add-service.component/dialog-add-service.component';
-
+import * as Dialog from '@components/dialogs/_index';
 
 import { ClipboardModule } from 'ngx-clipboard';
 
@@ -65,13 +58,13 @@ import { ClipboardModule } from 'ngx-clipboard';
     AppComponent,
     NavbarComponent,
     LoaderComponent,
-    DialogModelBuildComponent,
-    DialogTestComponent,
-    DialogStopModelComponent,
-    DialogDeployModelComponent,
-    DialogUpdateServiceComponent,
-    DialogDeleteServiceComponent,
-    DialogAddServiceComponent
+    Dialog.DialogModelBuildComponent,
+    Dialog.DialogTestComponent,
+    Dialog.DialogStopModelComponent,
+    Dialog.DialogDeployModelComponent,
+    Dialog.DialogUpdateServiceComponent,
+    Dialog.DialogDeleteServiceComponent,
+    Dialog.DialogAddServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -92,13 +85,13 @@ import { ClipboardModule } from 'ngx-clipboard';
     ClipboardModule
   ],
   entryComponents: [
-    DialogModelBuildComponent,
-    DialogTestComponent,
-    DialogStopModelComponent,
-    DialogDeployModelComponent,
-    DialogUpdateServiceComponent,
-    DialogDeleteServiceComponent,
-    DialogAddServiceComponent
+    Dialog.DialogModelBuildComponent,
+    Dialog.DialogTestComponent,
+    Dialog.DialogStopModelComponent,
+    Dialog.DialogDeployModelComponent,
+    Dialog.DialogUpdateServiceComponent,
+    Dialog.DialogDeleteServiceComponent,
+    Dialog.DialogAddServiceComponent
   ],
   providers: [
     // services
