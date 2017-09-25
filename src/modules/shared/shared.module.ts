@@ -18,7 +18,8 @@ import {
     ServicesService,
     ModelsService,
     ModelRuntimesService,
-    ModelServicesService
+    ModelServicesService,
+    CheckServiceExistService
 } from './services/_index';
 
 // Stores
@@ -55,6 +56,11 @@ import {
   ServiceBuilder,
 } from './builders/_index';
 
+// Guards
+import {
+    RedirectToServicesGuard
+} from './guards/_index';
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -88,6 +94,7 @@ import {
         ModelRuntimesService,
         ModelsService,
         ModelServicesService,
+        CheckServiceExistService,
         // Stores
         WeightedServiceStore,
         ModelRuntimeStore,
@@ -99,7 +106,9 @@ import {
         RuntimeTypeBuilder,
         ModelCurrentServicesBuilder,
         ModelBuildBuilder,
-        ServiceBuilder
+        ServiceBuilder,
+        // Guards
+        RedirectToServicesGuard
     ],
     exports: [
         // Pipes
