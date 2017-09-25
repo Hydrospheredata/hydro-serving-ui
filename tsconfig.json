@@ -10,16 +10,12 @@
     "experimentalDecorators": true,
     "target": "es5",
     "paths": {
+      "@environments/*": ["environments/*"],
       "@app/*": ["app/*"],
-      "@builders/*": ["app/builders/*"],
       "@components/*": ["app/components/*"],
-      "@services/*": ["app/services/*"],
-      "@stores/*": ["app/stores/*"],
-      "@models/*": ["app/models/*"],
       "@node_modules/*": ["../node_modules/*"],
-      "@pipes/*": ["app/pipes/*"],
       "@modules/*": ["app/modules/*"],
-      "@shared/*": ["app/modules/shared/*"]
+      "@shared/*": ["modules/shared/*"]
     },
     "typeRoots": [
       "node_modules/@types"
