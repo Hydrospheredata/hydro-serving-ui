@@ -41,3 +41,4 @@ testem.log
 .DS_Store
 Thumbs.db
 .vscode/launch.json
+TESTS-HeadlessChrome_0.0.0_(Mac_OS_X_10.12.6).xml
