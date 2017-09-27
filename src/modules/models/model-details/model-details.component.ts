@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { 
-  HttpModelsService, 
+import {
+  HttpModelsService,
   HttpWeightedServicesService,
   HttpModelRuntimeService,
-  ModelRuntimesService, 
-  ModelServicesService, 
+  ModelRuntimesService,
+  ModelServicesService,
   ServicesService
 } from '@shared/services/_index';
 
 
-import { 
+import {
   DialogModelBuildComponent,
   DialogDeployModelComponent,
   DialogTestComponent,
@@ -156,7 +156,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     return { serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id };
   }
 
-  buildModel(modelOptions) {
+  buildModel(modelOptions: Model) {
     this.dialog.showCustomDialog({
       component: DialogModelBuildComponent,
       styles: { 'width': '800px', 'min-height': '350px' },

@@ -14,10 +14,10 @@ import { SharedModule } from '@shared/shared.module';
 import { Store } from '@ngrx/store';
 import { AppState } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
-import { ModelBuilder } from '@shared/builders/_index';
+import { ModelBuilder, ModelRuntimeBuilder } from '@shared/builders/_index';
 import { ModelServiceStore } from '@shared/stores/_index';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
-import { injectableModelDeployOptions } from '@components/dialogs/_index';
+import { injectableModelOptions } from '@components/dialogs/_index';
 import { ServicesService } from '@shared/services/_index';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -31,7 +31,9 @@ describe('DialogModelBuildComponent', () => {
   let dialogStub = {};
   let servicesServiceStub = {};
   let routerStub = {};
-
+  const HttpRuntimeTypesServiceStub = {
+    getAll() { return []; }
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -39,22 +41,26 @@ describe('DialogModelBuildComponent', () => {
       providers: [
         { provide: MdlDialogReference, useValue: dialogStub },
         MdlSnackbarService,
-        { provide: injectableModelDeployOptions, useValue: modelStub },
+        { provide: injectableModelOptions, useValue: modelStub },
         { provide: Store, useValue: store },
         { provide: ModelServiceStore, useValue: store },
+        { provide: ModelStore, useValue: store },
         { provide: ServicesService, useValue: servicesServiceStub },
         { provide: ModelsService, useValue: servicesServiceStub },
         { provide: ModelBuilder, useValue: servicesServiceStub },
+        { provide: ModelRuntimeBuilder, useValue: servicesServiceStub },
         { provide: Router, useValue: routerStub },
         { provide: HttpService, useValue: {} },
         { provide: ActivatedRoute, useValue: routerStub },
         { provide: Location, useValue: store },
         { provide: HttpModelServiceService, useValue: store },
+        { provide: HttpRuntimeTypesService, useValue: store },
+
         FormBuilder,
         { provide: FormGroup, useValue: store }
 
       ],
-      imports: [MdlModule, FormsModule, ReactiveFormsModule, MdlSelectModule, SharedModule]
+      imports: [MdlModule, FormsModule, ReactiveFormsModule, MdlSelectModule]
     })
       .compileComponents();
   }));
