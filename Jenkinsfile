@@ -103,7 +103,7 @@ node("JenkinsOnDemand") {
     }
 
     stage('Test') {
-        //TODO test???
+        sh "./node_modules/.bin/ng test --browsers=\"ChromeNoSandboxHeadless\" --code-coverage --single-run"
     }
     if (isReleaseJob()) {
         //if (currentBuild.result == 'UNSTABLE') {

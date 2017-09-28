@@ -6,6 +6,7 @@
 /out-tsc
 
 # dependencies
+/coverage
 /node_modules
 
 # IDEs and editors
@@ -41,3 +42,4 @@ testem.log
 .DS_Store
 Thumbs.db
 .vscode/launch.json
+TESTS-*.xml

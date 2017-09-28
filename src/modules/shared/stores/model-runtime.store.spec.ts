@@ -1,11 +1,12 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { ModelRuntimeStore } from './model-runtime.store';
+import { HttpModelServiceService, BuildModelService } from '@shared/services/_index';
 
 describe('ModelRuntimeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ModelRuntimeStore]
+      providers: [ModelRuntimeStore, { provide: HttpModelServiceService, useValue: {} }, { provide: BuildModelService, useValue: {} }]
     });
   });
 

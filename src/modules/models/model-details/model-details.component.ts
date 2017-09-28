@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { 
-  HttpModelsService, 
+import {
+  HttpModelsService,
   HttpWeightedServicesService,
   HttpModelRuntimeService,
-  ModelRuntimesService, 
-  ModelServicesService, 
+  ModelRuntimesService,
+  ModelServicesService,
   ServicesService
 } from '@shared/services/_index';
 
 
-import { 
+import {
   DialogModelBuildComponent,
   DialogDeployModelComponent,
   DialogTestComponent,
@@ -78,7 +78,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
-        console.warn('PARAMS CHANGE')
         this.id = params['modelId'];
         return this.id;
       })
@@ -92,8 +91,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
   loadInitialData(id: string) {
 
-
-
     this.modelsService.getBuildsByModel(id).first()
       .subscribe((data) => {
         this.builds = data.sort((a, b) => {
@@ -103,7 +100,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
     this.modelsStoreSelectionSubscription = this.store.select('models')
       .subscribe(models => {
-        console.warn('MODELS CHANGE')
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
 
         this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
@@ -137,14 +133,14 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
   }
 
-  public getWeightedServices(modelRuntimeId: number): String[] {
+  public getWeightedServices(modelRuntimeId: number): WeightedService[] {
     const modelService = this.getModelService(modelRuntimeId);
     if (!modelRuntimeId || !modelService) {
-      return [''];
+      return [];
     }
     return this.weightedServices.filter((weightedService) => {
       return weightedService.weights.some((weight) => weight.serviceId === modelService.serviceId);
-    }).map((weightedService) => weightedService.serviceName);
+    });
   }
 
   public isDeployable() {
@@ -160,7 +156,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     return { serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id };
   }
 
-  buildModel(modelOptions) {
+  buildModel(modelOptions: Model) {
     this.dialog.showCustomDialog({
       component: DialogModelBuildComponent,
       styles: { 'width': '800px', 'min-height': '350px' },
