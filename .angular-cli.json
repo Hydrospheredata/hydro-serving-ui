@@ -20,6 +20,7 @@
       "styles": [
         "assets/styles/styles.scss",
         "assets/styles/_variables.scss",
+        "assets/styles/_fonts.scss",
         "assets/styles/_angular-material-custom.scss",
         "assets/styles/_inputs.scss",
         "assets/styles/_dialogs.scss",
