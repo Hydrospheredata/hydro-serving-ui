@@ -23,10 +23,43 @@
 
 }
 .model-name {
-  margin-left: 0;
+  padding: 55px 92px;
 }
+
+.model-details-label {
+  width: 100%;
+  ::before {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    content:
+      ". . . . . . . . . . . . . . . . . . . . "
+  }
+}
+
+.model-details {
+
+  padding: 27px 121px;
+  width: 50%;
+  >p {
+    >span {
+      font-weight: bold;
+    }
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    // justify-content: space-between;
+  }
+  &-table {
+
+}
+}
+
 .model-grid-header {
   margin-left: 8px;
+  text-align: center;
+  color: #818994;
 }
 
 .models-list-table th {
