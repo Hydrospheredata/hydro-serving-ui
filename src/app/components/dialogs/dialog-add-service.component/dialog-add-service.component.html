@@ -3,7 +3,7 @@
   <form [formGroup]="serviceForm" (ngSubmit)="submitServiceForm(serviceForm)">
     <div class="mdl-dialog__content">
 
-      <input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Service Name" formControlName="serviceName"></input-text>
+      <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Service Name" formControlName="serviceName"></hydro-input-text>
 
       <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
       <div formArrayName="weights">
@@ -18,12 +18,12 @@
                 </mdl-select>
               </div>
               <div fxFlex="30" fxLayout="row" fxLayoutAlign="space-between center">
-                <input-text fxFlex="70"
+                <hydro-input-text fxFlex="70"
                                   [formErrors]="formErrors.weight"
                                   placeholder="Weight"
                                   name="asd"
                                   formControlName="weight">
-                </input-text>
+                </hydro-input-text>
                 <div class="btn-group__actions">
                   <mdl-icon class="cs-cursor-pointer mdl-color-text--light-blue-700" (click)="addWeightsForm()">
                     add_circle

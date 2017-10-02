@@ -1,6 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
+import { RedirectToServicesGuard } from '@shared/_index';
+
 import { ServicesWrapperComponent, ServicesItemDetailComponent } from "./_index";
 
 @NgModule({
@@ -12,7 +14,8 @@ import { ServicesWrapperComponent, ServicesItemDetailComponent } from "./_index"
                 children: [
                     {
                         path: ':id',
-                        component: ServicesItemDetailComponent
+                        component: ServicesItemDetailComponent,
+                        canActivate: [RedirectToServicesGuard]
                     }
                 ]
             }

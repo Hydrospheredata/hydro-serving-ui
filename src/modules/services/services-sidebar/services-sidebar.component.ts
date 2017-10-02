@@ -7,11 +7,10 @@ import { Store } from '@ngrx/store';
 import { ServicesService, Service } from '@shared/_index';
 import { AppState } from '@shared/models/_index';
 
-import { 
-    DialogAddServiceComponent, 
-    DialogDeleteServiceComponent, 
-    injectableService, 
-    injectableServiceOptions 
+import {
+    DialogAddServiceComponent,
+    DialogDeleteServiceComponent,
+    injectableServiceOptions
 } from '@components/dialogs/_index';
 
 
@@ -48,8 +47,8 @@ export class ServicesSidebarComponent {
             isModal: true,
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-            providers: [{provide: injectableService, useValue: service}]
+            leaveTransitionDuration: 400
+            // providers: [{provide: injectableService, useValue: service}]
         });
     }
 

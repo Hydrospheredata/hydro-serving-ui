@@ -4,9 +4,9 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
 
-import { ServicesService, Service, FormsService } from '@shared/_index';
+import { ServicesService, FormsService } from '@shared/services/_index';
 import * as Actions from '@shared/actions/_index';
-import { AppState, ModelService } from '@shared/models/_index';
+import { AppState, ModelService, Service } from '@shared/models/_index';
 
 export let injectableServiceUpdate = new InjectionToken<Service>('selectedService');
 

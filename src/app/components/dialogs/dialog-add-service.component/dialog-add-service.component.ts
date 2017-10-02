@@ -8,7 +8,7 @@ import * as Actions from '@shared/actions/_index';
 import { AppState, ModelService, Service } from '@shared/models/_index';
 import { FormsService, ModelServicesService, ServicesService } from '@shared/services/_index';
 
-export let injectableService = new InjectionToken<Service>('selectedService');
+
 
 @Component({
   selector: 'hydro-dialog-add-service',
@@ -32,7 +32,6 @@ export class DialogAddServiceComponent implements OnInit {
     public services: Service[];
 
     constructor(
-        @Inject(injectableService) data: Service,
         private fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         private formsService: FormsService,
@@ -41,7 +40,6 @@ export class DialogAddServiceComponent implements OnInit {
         private servicesService: ServicesService,
         private modelServicesService: ModelServicesService
     ) {
-        this.selectedService = data;
         this.store.select('services')
             .subscribe(services => {
                 this.services = services;

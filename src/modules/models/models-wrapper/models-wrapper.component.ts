@@ -1,17 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import {
-  ModelsService,
-  Model,
-  GET_MODELS
-} from '@shared/_index';
 
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
+import { AppState, Model } from '@shared/models/_index';
 import { ModelBuilder } from '@shared/builders/_index';
 import * as Actions from '@shared/actions/_index';
-import { ModelServicesService, ServicesService } from '@shared/services/_index';
+import { ModelsService, ModelServicesService, ServicesService } from '@shared/services/_index';
 @Component({
   selector: 'hydro-models-wrapper',
   templateUrl: './models-wrapper.component.html',
@@ -24,6 +19,9 @@ export class ModelsWrapperComponent implements OnDestroy {
   private modelRuntimesServiceSubscription: Subscription;
   private servicesServiceSubscription: Subscription;
 
+  private data: Model[];
+  private dataType: string = 'models';
+
   constructor(
       private modelBuilder: ModelBuilder,
       private store: Store<AppState>,
@@ -33,7 +31,8 @@ export class ModelsWrapperComponent implements OnDestroy {
   ) {
       this.modelsServiceSubscription = this.modelsService.getModels().first()
           .subscribe(models => {
-              this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
+              this.data = models.map(this.modelBuilder.build, this.modelBuilder);
+              this.store.dispatch({ type: Actions.GET_MODELS, payload: this.data });
           });
   }
 

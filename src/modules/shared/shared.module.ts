@@ -3,6 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { MdlModule } from '@angular-mdl/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 // Services
 import {
@@ -18,7 +19,8 @@ import {
     ServicesService,
     ModelsService,
     ModelRuntimesService,
-    ModelServicesService
+    ModelServicesService,
+    CheckServiceExistService
 } from './services/_index';
 
 // Stores
@@ -42,7 +44,9 @@ import {
 import {
     InputTextComponent,
     LoaderComponent,
-    NavbarComponent
+    NavbarComponent,
+    SidebarComponent,
+    ContentComponent
 } from './components/_index';
 
 // Builders
@@ -55,13 +59,19 @@ import {
   ServiceBuilder,
 } from './builders/_index';
 
+// Guards
+import {
+    RedirectToServicesGuard
+} from './guards/_index';
+
 @NgModule({
     imports: [
         BrowserModule,
         CommonModule,
         MdlModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterModule
     ],
     declarations: [
         // Pipes
@@ -71,7 +81,9 @@ import {
         SortByPipe,
         UtcToLocalPipe,
         // Components
-        InputTextComponent
+        InputTextComponent,
+        SidebarComponent,
+        ContentComponent
     ],
     providers: [
         // Services
@@ -88,6 +100,7 @@ import {
         ModelRuntimesService,
         ModelsService,
         ModelServicesService,
+        CheckServiceExistService,
         // Stores
         WeightedServiceStore,
         ModelRuntimeStore,
@@ -99,7 +112,9 @@ import {
         RuntimeTypeBuilder,
         ModelCurrentServicesBuilder,
         ModelBuildBuilder,
-        ServiceBuilder
+        ServiceBuilder,
+        // Guards
+        RedirectToServicesGuard
     ],
     exports: [
         // Pipes
@@ -109,7 +124,9 @@ import {
         SortByPipe,
         UtcToLocalPipe,
         // Components
-        InputTextComponent
+        InputTextComponent,
+        SidebarComponent,
+        ContentComponent
     ]
 })
 export class SharedModule { }

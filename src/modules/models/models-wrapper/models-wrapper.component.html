@@ -1,8 +1,4 @@
 <div fxLayout="row" fxLayoutAlign="space-between stretch">
-  <aside fxFlex="25%">
-    <hydro-models-sidebar></hydro-models-sidebar>
-  </aside>
-  <div fxFlex="75%">
-    <router-outlet></router-outlet>
-  </div>
+    <hydro-sidebar fxFlex="25%" [dataType]="dataType"></hydro-sidebar>
+    <hydro-content fxFlex="75%"></hydro-content>
 </div>

@@ -4,7 +4,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms
 const noop = (_?: any) => {};
 
 @Component({
-  selector: 'input-text',
+  selector: 'hydro-input-text',
   templateUrl: './input-text.component.html',
   styleUrls: ['./input-text.component.scss'],
   providers: [
