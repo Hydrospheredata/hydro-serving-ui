@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output , EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output , EventEmitter, OnChanges} from '@angular/core';
 import { MdlDialogService } from '@angular-mdl/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Service, Model } from '@shared/models/_index';
@@ -17,13 +17,15 @@ import {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnChanges {
 
-    private sidebarList: any[];
+    private sidebarList: any[]; // ToDo: Fix any type
     private title: string = '';
 
     @Input() isAddBtnEnabled: boolean;
-    @Input() dataType: string;
+    @Input() sidebarTitle: string;
+
+    @Input() data: any; // ToDo: Fix any type
 
 
     constructor(
@@ -32,20 +34,12 @@ export class SidebarComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.title = this.dataType;
-        // ToDo
-        // Fix dynamic select from store
-        if (this.dataType === 'services') {
-            this.store.select("services")
-                .subscribe(items => {
-                    this.sidebarList = items;
-                });
-        } else {
-            this.store.select("models")
-                .subscribe(items => {
-                    this.sidebarList = items;
-                });
-        }
+    }
+
+    ngOnChanges() {
+        this.data.subscribe(items => {
+            this.sidebarList = items;
+        })
     }
 
     addService() {

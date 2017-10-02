@@ -28,7 +28,8 @@ export class ServicesWrapperComponent implements OnDestroy {
     private servicesServiceSubscription: Subscription;
     private modelServicesServiceSubscription: Subscription;
     private data: Service[];
-    private dataType: string = 'services';
+    private sidebarTitle: string = 'Services';
+    private services: any;
 
     constructor(
         private store: Store<AppState>,
@@ -47,6 +48,7 @@ export class ServicesWrapperComponent implements OnDestroy {
             .subscribe(serviceModels => {
                 this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: serviceModels });
             });
+        this.services = this.store.select('services');
     }
 
     addService(value) {

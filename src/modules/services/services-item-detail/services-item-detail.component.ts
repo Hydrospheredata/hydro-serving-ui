@@ -28,6 +28,12 @@ export class ServicesItemDetailComponent {
     public services: Service[] = [];
     public service: Service;
 
+    data: any;
+    
+    private tableHead: string[] = [
+        'Model', 'Version', 'Created Date', 'Weight'
+    ]
+
     constructor(
         public store: Store<AppState>,
         public dialog: MdlDialogService,
@@ -35,6 +41,9 @@ export class ServicesItemDetailComponent {
         private modelServicesService: ModelServicesService,
         private router: Router
     ) {
+
+        this.data = this.store.select('services');
+
         this.store.select('services')
             .subscribe(services => {
                 if (services.length) {

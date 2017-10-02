@@ -46,7 +46,8 @@ import {
     LoaderComponent,
     NavbarComponent,
     SidebarComponent,
-    ContentComponent
+    ContentComponent,
+    TableComponent
 } from './components/_index';
 
 // Builders
@@ -83,7 +84,8 @@ import {
         // Components
         InputTextComponent,
         SidebarComponent,
-        ContentComponent
+        ContentComponent,
+        TableComponent
     ],
     providers: [
         // Services
@@ -126,7 +128,8 @@ import {
         // Components
         InputTextComponent,
         SidebarComponent,
-        ContentComponent
+        ContentComponent,
+        TableComponent
     ]
 })
 export class SharedModule { }

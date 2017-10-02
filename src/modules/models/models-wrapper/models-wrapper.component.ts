@@ -20,7 +20,8 @@ export class ModelsWrapperComponent implements OnDestroy {
   private servicesServiceSubscription: Subscription;
 
   private data: Model[];
-  private dataType: string = 'models';
+  private sidebarTitle: string = 'Models';
+  private models: any;
 
   constructor(
       private modelBuilder: ModelBuilder,
@@ -34,6 +35,7 @@ export class ModelsWrapperComponent implements OnDestroy {
               this.data = models.map(this.modelBuilder.build, this.modelBuilder);
               this.store.dispatch({ type: Actions.GET_MODELS, payload: this.data });
           });
+      this.models = this.store.select('models');
   }
 
   ngOnDestroy() {
