@@ -1,4 +1,4 @@
-import { Service } from '@shared/_index';
+import { Service } from '@shared/models/_index';
 import * as ServicesActions from '@shared/actions/_index';
 
 

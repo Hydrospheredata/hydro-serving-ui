@@ -1,6 +1,6 @@
 import { Component, InjectionToken, Inject, HostListener } from '@angular/core';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 import { Location } from '@angular/common';
 import { Store } from '@ngrx/store';
 
@@ -43,6 +43,7 @@ export class DialogDeleteServiceComponent {
     submitDeleteServiceForm() {
         this.servicesService.deleteService(this.modelId)
             .subscribe(services => {
+                console.log(services);
                 this.store.dispatch({ type: Actions.DELETE_SERVICE, serviceId: this.modelId });
                 this.router.navigate(['/services']);
                 this.dialogRef.hide();

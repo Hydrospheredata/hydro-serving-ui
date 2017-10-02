@@ -3,6 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { MdlModule } from '@angular-mdl/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 // Services
 import {
@@ -43,7 +44,9 @@ import {
 import {
     InputTextComponent,
     LoaderComponent,
-    NavbarComponent
+    NavbarComponent,
+    SidebarComponent,
+    ContentComponent
 } from './components/_index';
 
 // Builders
@@ -67,7 +70,8 @@ import {
         CommonModule,
         MdlModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterModule
     ],
     declarations: [
         // Pipes
@@ -77,7 +81,9 @@ import {
         SortByPipe,
         UtcToLocalPipe,
         // Components
-        InputTextComponent
+        InputTextComponent,
+        SidebarComponent,
+        ContentComponent
     ],
     providers: [
         // Services
@@ -118,7 +124,9 @@ import {
         SortByPipe,
         UtcToLocalPipe,
         // Components
-        InputTextComponent
+        InputTextComponent,
+        SidebarComponent,
+        ContentComponent
     ]
 })
 export class SharedModule { }

@@ -1,18 +1,12 @@
 import { Component, OnInit, InjectionToken, Inject, HostListener } from '@angular/core';
-import { MdlDialogReference } from '@angular-mdl/core';
-import { MdlSnackbarService } from '@angular-mdl/core';
+import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ModelStore } from '@shared/stores/_index';
-import { ModelServiceStore } from '@shared/stores/model-service.store';
-import { Model } from '@shared/models/_index';
-import { HttpModelServiceService } from '@shared/services/http-model-service.service';
-import {
-  ModelsService,
-  GET_MODELS
-} from '@shared/_index';
+import { ModelStore, ModelServiceStore } from '@shared/stores/_index';
+
+import { AppState, Model } from '@shared/models/_index';
+import { HttpModelServiceService, ModelsService } from '@shared/services/_index';
 
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 import { ModelBuilder } from '@shared/builders/_index';
 
