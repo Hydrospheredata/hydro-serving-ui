@@ -1,36 +1,30 @@
 @import 'variables.scss';
 
-.models-list-table {
-  width: 100%;
-  td {
-    text-align: left;
-    max-width: 0;
-    padding-left: 5px;
-    padding-right: 5px;
-
-    .mdl-select {
-      .mdl-list__item {
-        font-size: 14px;
-      }
-      .mdl-textfield {
-        &__input {
-          font-size: 14px;
-        }
-      }
-    }
-
-  }
-
-}
 .model-name {
-  margin-left: 0;
+  padding: 55px 92px;
 }
+
+
+.model-details {
+  padding: 27px 121px;
+  width: 50%;
+  >p {
+    >span {
+      font-weight: bold;
+    }
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+  }
+}
+
 .model-grid-header {
   margin-left: 8px;
+  text-align: center;
+  color: #818994;
 }
 
-.models-list-table th {
-  text-align: left;
-  padding-left: 0.5rem;
-  padding-right: 0;
+.model-details-row {
+  padding-top: 10px;
+  font-size: 16px;
 }

@@ -9,10 +9,10 @@ import * as Actions from '@shared/actions/_index';
 import { ServicesService, ModelServicesService } from '@shared/services/_index';
 import { ServiceBuilder } from '@shared/builders/_index';
 
-import { 
-    DialogAddServiceComponent, 
+import {
+    DialogAddServiceComponent,
     DialogDeleteServiceComponent,
-    injectableServiceOptions 
+    injectableServiceOptions
 } from '@components/dialogs/_index';
 
 
