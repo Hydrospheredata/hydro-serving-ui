@@ -115,7 +115,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: modelServices });
           });
 
-
         this.servicesServiceSubscription = this.servicesService.getServices().first()
           .subscribe(services => {
             this.weightedServices = services;

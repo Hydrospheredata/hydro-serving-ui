@@ -1,21 +1,25 @@
 <div class="model-name">
-  <span class='h3'>{{model?.name}}</span>
+  <span class='h3'>{{model?.source}}</span>
 </div>
 <div class="model-details">
-  <table class="model-details-table">
-    <tr>
-      <td class="model-details-label"><span>Model</span></td>
-      <td>{{ model?.lastModelRuntime?.modelVersion }}</td>
-    </tr>
-    <tr>
-      <td class="model-details-label"><span>Runtime</span></td>
-      <td>{{ model?.runtimeType?.name }}</td>
-    </tr>
-    <tr>
-      <td class="model-details-label"><span>Tags</span></td>
-      <td>{{ model?.runtimeType?.tags.join(", ") }}</td>
-    </tr>
-  </table>
+  <div class="model-details-table">
+    <div class="model-details-row">
+      <span class="model-details-label">Model</span>
+      <span>...................</span>
+      <span class="model-details-value">{{ model?.lastModelRuntime?.modelVersion }}</span>
+    </div>
+    <div class="model-details-row">
+      <span class="model-details-label">Runtime</span>
+      <span>...............</span>
+      <span class="model-details-value">{{ model?.runtimeType?.name }}</span>
+    </div>
+    <div class="model-details-row">
+      <span class="model-details-label">Tags</span>
+      <span>......................</span>
+      <span class="model-details-value">{{ model?.runtimeType?.tags.join(", ") }}</span>
+    </div>
+  </div>
+
 
 </div>
 <h5 class="model-grid-header">Versions</h5>
