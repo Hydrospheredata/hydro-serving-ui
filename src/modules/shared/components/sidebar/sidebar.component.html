@@ -26,12 +26,12 @@
             <li *ngFor="let item of sidebarList | search : 'serviceName' || 'name' : searchQ | sortBy: 'id'" class='sidebar-list__item' [routerLink]="[item.id]" routerLinkActive='__active'>
                 <span>{{ item.serviceName || item.source }}</span>
                 <span class='sidebar-list__item-status' *ngIf="item.currentServices && item.currentServices.length && this.dataType === 'services'" [mdl-badge]="item.currentServices.length"></span>
-                <div class="sidebar-list__item-details">
+                <div *ngIf="this.dataType !== 'services'" class="sidebar-list__item-details">
                     <span class="sidebar-list__item--version">{{item.lastModelRuntime.modelVersion}}</span>
                     <svg class="icon sidebar-list__item--deploy">
                       <use xlink:href="#icon-arrow" />
                     </svg>
-                  </div>
+                </div>
             </li>
         </ul>
     </div>

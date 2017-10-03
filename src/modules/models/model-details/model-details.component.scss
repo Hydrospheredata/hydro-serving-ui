@@ -4,7 +4,6 @@
   padding: 55px 92px;
 }
 
-
 .model-details {
   padding: 27px 121px;
   width: 50%;
@@ -25,6 +24,26 @@
 }
 
 .model-details-row {
-  padding-top: 10px;
+  padding-top: 16px;
   font-size: 16px;
+}
+
+.runtime {
+  font-weight: 700;
+}
+
+.model-details-value {
+  span {
+    padding: 2px 3px;
+    background-color: #e9ecf2;
+    border-radius: 5px;
+    ::after {
+      content: ',';
+    }
+  }
+}
+
+.model-details-label {
+  color: #808080;
+  font-weight: 300;
 }

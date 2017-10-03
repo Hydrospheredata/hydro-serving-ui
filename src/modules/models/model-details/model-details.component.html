@@ -4,19 +4,21 @@
 <div class="model-details">
   <div class="model-details-table">
     <div class="model-details-row">
-      <span class="model-details-label">Model</span>
-      <span>...................</span>
-      <span class="model-details-value">{{ model?.lastModelRuntime?.modelVersion }}</span>
+      <span class="model-details-label">Version</span>
+      <span class="model-details-label">.................</span>
+      <span class="model-details-value runtime">{{ model?.lastModelRuntime?.modelVersion }}</span>
     </div>
     <div class="model-details-row">
       <span class="model-details-label">Runtime</span>
-      <span>...............</span>
-      <span class="model-details-value">{{ model?.runtimeType?.name }}</span>
+      <span class="model-details-label">...............</span>
+      <span class="model-details-value runtime">{{ model?.runtimeType?.name }}</span>
     </div>
     <div class="model-details-row">
       <span class="model-details-label">Tags</span>
-      <span>......................</span>
-      <span class="model-details-value">{{ model?.runtimeType?.tags.join(", ") }}</span>
+      <span class="model-details-label">......................</span>
+      <span class="model-details-value">
+         <span *ngFor="let tag of model?.runtimeType?.tags">{{ tag }} </span>
+      </span>
     </div>
   </div>
 
