@@ -18,9 +18,11 @@
 }
 
 .model-grid-header {
-  margin-left: 8px;
   text-align: center;
   color: #818994;
+  font-size: 18px;
+  font-family: $main-font-family;
+  font-weight: 700;
 }
 
 .model-details-row {
@@ -32,16 +34,13 @@
   font-weight: 700;
 }
 
-.model-details-value {
-  span {
-    padding: 2px 3px;
+
+.model-details-tag {
+    padding: 5px 8px;
     background-color: #e9ecf2;
     border-radius: 5px;
-    ::after {
-      content: ',';
-    }
   }
-}
+
 
 .model-details-label {
   color: #808080;

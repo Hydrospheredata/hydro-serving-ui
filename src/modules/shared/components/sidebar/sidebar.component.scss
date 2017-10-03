@@ -14,7 +14,12 @@
       }
     }
   }
+  &-definitions {
+    font-size: 14px;
+    color: #818994;
+  }
   &-title {
+    font-weight: 700;
     font-family: $main-font-family;
     font-size: $title-font-size;
     margin: 0;
@@ -68,4 +73,16 @@
 .icon {
   width: 12px;
   height: 12px;
+}
+
+svg {
+  fill: inherit;
+}
+
+.deployed use {
+  fill: #8cc63e!important;
+}
+
+.undeployed {
+  fill: #e1e4eb;
 }

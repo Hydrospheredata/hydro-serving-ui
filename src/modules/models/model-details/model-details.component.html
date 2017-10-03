@@ -3,7 +3,7 @@
 </div>
 <div class="model-details">
   <div class="model-details-table">
-    <div class="model-details-row">
+    <div class="model-details-row" *ngIf="model?.lastModelRuntime?.modelVersion">
       <span class="model-details-label">Version</span>
       <span class="model-details-label">.................</span>
       <span class="model-details-value runtime">{{ model?.lastModelRuntime?.modelVersion }}</span>
@@ -17,15 +17,17 @@
       <span class="model-details-label">Tags</span>
       <span class="model-details-label">......................</span>
       <span class="model-details-value">
-         <span *ngFor="let tag of model?.runtimeType?.tags">{{ tag }} </span>
+         <span *ngFor="let tag of model?.runtimeType?.tags; last as isLast">
+           <span class="model-details-tag">{{ tag }}</span> {{isLast ? '' : ', '}}
+        </span>
       </span>
     </div>
   </div>
 
 
 </div>
-<h5 class="model-grid-header">Versions</h5>
-<table class='models-list-table mdl-data-table mdl-js-data-table'>
+<h5 *ngIf="runtimes?.length > 0" class="model-grid-header">Versions</h5>
+<table *ngIf="runtimes?.length > 0" class='models-list-table'>
   <thead>
     <tr>
       <th>Created</th>

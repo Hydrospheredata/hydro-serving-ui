@@ -9,6 +9,14 @@
                 <mdl-icon>add</mdl-icon>
                 <span fxHide.sm fxHide.md>Add service</span>
             </mdl-button>
+            <div class="sidebar-definitions" *ngIf="this.dataType !== 'services'">
+                <span><svg class="icon deployed">
+                      <use xlink:href="#icon-arrow"/>
+                  </svg> - Deployed</span>
+                <span style="margin-left: 5px;"> <svg class="icon undeployed">
+                      <use xlink:href="#icon-arrow"/>
+                  </svg> - Undeployed</span>
+              </div>
         </div>
         <div class="sidebar-header__row">
             <hydro-input-text class="sidebar-search"
@@ -28,7 +36,7 @@
                 <span class='sidebar-list__item-status' *ngIf="item.currentServices && item.currentServices.length && this.dataType === 'services'" [mdl-badge]="item.currentServices.length"></span>
                 <div *ngIf="this.dataType !== 'services'" class="sidebar-list__item-details">
                     <span class="sidebar-list__item--version">{{item.lastModelRuntime.modelVersion}}</span>
-                    <svg class="icon sidebar-list__item--deploy">
+                    <svg class="icon sidebar-list__item--deploy" [ngClass]="item?.currentServices?.length > 0 ? 'deployed' : 'undeployed'">
                       <use xlink:href="#icon-arrow" />
                     </svg>
                 </div>
