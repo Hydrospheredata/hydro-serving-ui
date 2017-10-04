@@ -17,6 +17,9 @@
   &-definitions {
     font-size: 14px;
     color: #818994;
+    span:last-of-type {
+      margin-left: 5px;
+    }
   }
   &-title {
     font-weight: 700;
