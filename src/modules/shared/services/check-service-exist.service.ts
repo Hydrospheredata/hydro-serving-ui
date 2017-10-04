@@ -22,17 +22,18 @@ export class CheckServiceExistService {
     }
 
     isExist(id: string) {
-        if (this.services.length) {
-            if (this.services.filter(service => service.id === +id).length) {
-                return true;
-            } else {
-                this.router.navigate(['/services']);
-                return false;
-            }
-        } else {
-            this.router.navigate(['/services']);
-            return false;
-        }
+        return true;
+        // if (this.services.length) {
+        //     if (this.services.filter(service => service.id === +id).length) {
+        //         return true;
+        //     } else {
+        //         this.router.navigate(['/services']);
+        //         return false;
+        //     }
+        // } else {
+        //     this.router.navigate(['/services']);
+        //     return false;
+        // }
     }
 
 }

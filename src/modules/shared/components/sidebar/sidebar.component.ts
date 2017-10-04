@@ -1,14 +1,13 @@
 import { Component, OnInit, Input, Output , EventEmitter, OnChanges} from '@angular/core';
 import { MdlDialogService } from '@angular-mdl/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Service, Model } from '@shared/models/_index';
-
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
 
-import { 
-    DialogAddServiceComponent
-} from '@components/dialogs/_index';
+import { AppState } from '@shared/models/_index';
+import { Service, Model } from '@shared/models/_index';
+import { Observable } from 'rxjs/Observable';
+
+import { DialogAddServiceComponent } from '@components/dialogs/_index';
 
 
 
@@ -25,7 +24,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     @Input() isAddBtnEnabled: boolean;
     @Input() sidebarTitle: string;
 
-    @Input() data: any; // ToDo: Fix any type
+    @Input() sidebarData: Observable<any>; // ToDo: Fix any type
 
 
     constructor(
@@ -37,7 +36,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        this.data.subscribe(items => {
+        this.sidebarData.subscribe(items => {
             this.sidebarList = items;
         })
     }

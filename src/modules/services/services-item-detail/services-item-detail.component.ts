@@ -27,12 +27,12 @@ export class ServicesItemDetailComponent {
     public serviceModels: any[];
     public services: Service[] = [];
     public service: Service;
-
-    data: any;
     
-    private tableHead: string[] = [
+    private tableHeader: string[] = [
         'Model', 'Version', 'Created Date', 'Weight'
     ]
+
+    private tableData: any;
 
     constructor(
         public store: Store<AppState>,
@@ -41,9 +41,6 @@ export class ServicesItemDetailComponent {
         private modelServicesService: ModelServicesService,
         private router: Router
     ) {
-
-        this.data = this.store.select('services');
-
         this.store.select('services')
             .subscribe(services => {
                 if (services.length) {
@@ -81,6 +78,7 @@ export class ServicesItemDetailComponent {
         this.modelServicesService.getModelService(weight.serviceId)
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });
+                this.tableData = this.serviceModels;
             });
     }
 

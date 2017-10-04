@@ -7,9 +7,9 @@ import { Store } from '@ngrx/store';
 import { ServicesService, Service } from '@shared/_index';
 import { AppState } from '@shared/models/_index';
 
-import {
-    DialogAddServiceComponent,
-    DialogDeleteServiceComponent,
+import { 
+    DialogAddServiceComponent, 
+    DialogDeleteServiceComponent, 
     injectableServiceOptions
 } from '@components/dialogs/_index';
 

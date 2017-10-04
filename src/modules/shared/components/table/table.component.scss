@@ -1,8 +1,26 @@
 @import 'variables.scss';
 
+$table-padding: 18px;
+
 .table {
+  border-collapse: collapse;
+  width: 100%;
   &-head {
-    
+    &__cell {
+      font-size: 12px;
+      color: #abafb2;
+      padding: $table-padding $table-padding * 2;
+      text-align: left;
+    }
+  }
+  &-body {
+    &__row {
+      background-color: $main-bg-color;
+      border-bottom: 2px solid #ffffff;
+    }
+    &__cell {
+      padding: $table-padding * 1.7 $table-padding * 2;
+    }
   }
 }
 

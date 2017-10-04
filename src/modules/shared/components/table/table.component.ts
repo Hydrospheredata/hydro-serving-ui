@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'hydro-table',
@@ -7,8 +8,9 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 })
 export class TableComponent implements OnInit, OnChanges {
 
-    @Input() tableHead: string[];
-    @Input() data: any;
+    private tableList: any[]; // ToDo: Fix any type
+    @Input() tableHeader: string[];
+    @Input() tableData: any;
 
     constructor() {}
 
@@ -16,7 +18,14 @@ export class TableComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        console.log(this.data)
+        if (this.tableData) {
+            this.tableList = this.tableData;
+        }
+        console.log(this.tableList);
+        // this.tableData.subscribe(items => {
+        //     console.log(items);
+        //     this.tableList = items;
+        // });
     }
 
 }

@@ -8,11 +8,11 @@ import { MdlSelectModule } from '@angular-mdl/select';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 
-import { ModelsWrapperComponent } from './_index';
-import { ModelsListComponent } from './_index';
-import { SingleModelComponent } from './_index';
-import { ModelDetailsComponent } from './_index';
-// import { ModelsSidebarComponent } from './_index';
+import { 
+  ModelsWrapperComponent,
+  ModelsListComponent,
+  ModelDetailsComponent
+} from './_index';
 import { StoreModule } from '@ngrx/store';
 import { ModelsReducer, ModelServiceReducer, ModelRuntimeReducer, ServicesReducer } from '@shared/reducers/_index';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -40,9 +40,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     declarations: [
         ModelsWrapperComponent,
         ModelsListComponent,
-        SingleModelComponent,
-        ModelDetailsComponent,
-        // ModelsSidebarComponent
+        ModelDetailsComponent
     ]
 })
 export class ModelsModule { }

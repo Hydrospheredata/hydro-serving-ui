@@ -57,6 +57,12 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private modelsStoreSelectionSubscription: Subscription;
   private buildsSubscription: Subscription;
 
+  private tableHeader: string[] = [
+      'Created', 'Version', 'Status', 'Actions', 'Services'
+  ]
+
+  private tableData: any;
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -105,6 +111,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
           .subscribe(modelRuntimes => {
             this.runtimes = modelRuntimes;
+            this.tableData = modelRuntimes;
             this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
           });
 
