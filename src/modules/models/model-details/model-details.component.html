@@ -1,8 +1,6 @@
 <hydro-content-header [contentHeaderTitle]="model?.source"></hydro-content-header>
 
-<div class="model-name">
-  <span class='h3'>{{model?.source}}</span>
-</div>
+
 <div class="model-details">
   <div class="model-details-table">
     <div class="model-details-row" *ngIf="model?.lastModelRuntime?.modelVersion">
@@ -84,4 +82,5 @@
     </tr>
   </tbody>
 </table>
- -->
+
+<hydro-table [tableHeader]="tableHeader" [tableData]="tableData" ></hydro-table>

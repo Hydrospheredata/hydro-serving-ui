@@ -2,7 +2,6 @@ import { Component, OnInit, Inject, InjectionToken, HostListener } from '@angula
 import { MdlDialogReference, MdlDialogService } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { ModelStore } from '@shared/stores/_index';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
@@ -37,7 +36,6 @@ export class DialogTestComponent implements OnInit {
   constructor( @Inject(injectableModelBuildOptions) data,
     public dialogRef: MdlDialogReference,
     private fb: FormBuilder,
-    private modelStore: ModelStore,
     private mdlSnackbarService: MdlSnackbarService,
     private modelServicesService: ModelServicesService,
     private location: Location,
@@ -153,7 +151,7 @@ export class DialogTestComponent implements OnInit {
     const testOptions = this.createTestOptions(form);
 
     if (this.model instanceof Model) {
-      apiUrl = this.modelStore.testModel.bind(this.modelStore);
+      // apiUrl = this.modelStore.testModel.bind(this.modelStore);
       snackbarSuccessMsg = 'Model test was successful';
     } else {
       if (this.model instanceof Service) {

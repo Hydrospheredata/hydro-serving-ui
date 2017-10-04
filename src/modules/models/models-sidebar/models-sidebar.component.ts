@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ModelStore } from '@shared/stores/_index';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Model, ModelService } from '@shared/_index';
 import { Store } from '@ngrx/store';
@@ -20,7 +19,6 @@ export class ModelsSidebarComponent implements OnInit {
 
   constructor(
     private dialog: MdlDialogService,
-    private modelStore: ModelStore,
     private store: Store<AppState>,
   ) {
     this.models = [];

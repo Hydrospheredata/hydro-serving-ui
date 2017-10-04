@@ -1,22 +1,20 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ModelStore } from '@shared/stores/_index';
 import { HttpRuntimeTypesService } from '@shared/services/_index';
 
-import { 
+import {
   DialogModelBuildComponent,
-  injectableModelOptions, 
+  injectableModelOptions,
   DialogTestComponent,
-  injectableModelBuildOptions, 
+  injectableModelBuildOptions,
   DialogStopModelComponent,
   injectableModelStopOptions,
   DialogDeleteServiceComponent,
-  injectableServiceOptions 
+  injectableServiceOptions
 } from '@components/dialogs/_index';
 
 import { MdlDialogService } from '@angular-mdl/core';
 import { ActivatedRoute } from '@angular/router';
-import { ModelServiceStore } from '@shared/stores/_index';
-import { WeightedServiceStore } from '@shared/stores/_index';
+
 import { Observable } from 'rxjs/Observable';
 
 import { ModelsService, Model } from '@shared/_index';
@@ -38,12 +36,9 @@ export class ModelsListComponent implements OnInit {
 
   constructor(
     private store: Store<AppState>,
-    private modelStore: ModelStore,
     private httpRuntimeTypesService: HttpRuntimeTypesService,
     public dialog: MdlDialogService,
     private activatedRoute: ActivatedRoute,
-    private modelServiceStore: ModelServiceStore,
-    private weightedServiceStore: WeightedServiceStore,
   ) {
   }
 

@@ -2,7 +2,6 @@ import { Component, OnInit, InjectionToken, HostListener, Inject } from '@angula
 import { MdlDialogReference, MdlDialogService, MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { HttpRuntimeTypesService, BuildModelService, HttpModelsService, ModelsService } from '@shared/services/_index';
-import { ModelStore } from '@shared/stores/_index';
 import { ModelStatusPipe } from '@shared/pipes/_index';
 
 import { Store } from '@ngrx/store';
@@ -33,7 +32,6 @@ export class DialogModelBuildComponent implements OnInit {
               private httpRuntimeTypesService: HttpRuntimeTypesService,
               @Inject(injectableModelOptions) data,
               private buildModelService: BuildModelService,
-              private modelStore: ModelStore,
               private modelStatusPipe: ModelStatusPipe,
               private store: Store<AppState>,
               private modelsService: ModelsService,
@@ -84,29 +82,29 @@ export class DialogModelBuildComponent implements OnInit {
       outputFields: controls.outputFields.value
     };
 
-    this.modelStore.updateModel(modelOptions)
-      .flatMap((model) => {
-        return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: 1});
-      })
-      .finally(() => {
-        this.modelStore.getAll();
-      })
-      .subscribe((model) => {
-        this.dialogRef.hide();
-        this.mdlSnackbarService.showSnackbar({
-          message: `Model was successfully updated`,
-          timeout: 5000
-        });
-        this.modelsService.getModels().first()
-        .subscribe(models => {
-            this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
-        });
-      }, (error) => {
-        this.mdlSnackbarService.showSnackbar({
-          message: `Error: ${error}`,
-          timeout: 5000
-        });
-      });
+  //   this.modelStore.updateModel(modelOptions)
+  //     .flatMap((model) => {
+  //       return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: 1});
+  //     })
+  //     .finally(() => {
+  //       this.modelStore.getAll();
+  //     })
+  //     .subscribe((model) => {
+  //       this.dialogRef.hide();
+  //       this.mdlSnackbarService.showSnackbar({
+  //         message: `Model was successfully updated`,
+  //         timeout: 5000
+  //       });
+  //       this.modelsService.getModels().first()
+  //       .subscribe(models => {
+  //           this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
+  //       });
+  //     }, (error) => {
+  //       this.mdlSnackbarService.showSnackbar({
+  //         message: `Error: ${error}`,
+  //         timeout: 5000
+  //       });
+  //     });
   }
 
 }
