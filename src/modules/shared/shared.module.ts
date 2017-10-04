@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MdlModule } from '@angular-mdl/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MomentModule } from 'angular2-moment';
 
 // Services
 import {
@@ -65,7 +66,8 @@ import {
         MdlModule,
         FormsModule,
         ReactiveFormsModule,
-        RouterModule
+        RouterModule,
+        MomentModule
     ],
     declarations: [
         // Pipes

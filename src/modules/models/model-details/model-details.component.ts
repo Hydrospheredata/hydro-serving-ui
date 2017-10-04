@@ -50,6 +50,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private modelServices: ModelService[];
   private weightedServices: WeightedService[];
   public deployable = true;
+  public isModels = true;
 
   private modelRuntimesServiceSubscription: Subscription;
   private modelServicesServiceSubscription: Subscription;
@@ -145,7 +146,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
       return [];
     }
     return this.weightedServices.filter((weightedService) => {
-      return weightedService.weights.some((weight) => weight.serviceId === modelService.serviceId);
+      return weightedService.weights.some((weight) => weight.service.serviceId === modelService.serviceId);
     });
   }
 

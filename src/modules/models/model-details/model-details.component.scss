@@ -76,6 +76,10 @@ $table-padding: 18px;
       padding: $table-padding * 1.7 $table-padding * 2;
     }
   }
+  &-link {
+    color: #539ae9;
+    text-decoration: none;
+  }
 }
 
 .services-list-table {
@@ -167,4 +171,37 @@ $table-padding: 18px;
 
   }
 
+}
+
+.deployed {
+  color: #8cc63e;
+  use {
+    fill:#8cc63e
+  }
+}
+
+.undeployed {
+  color:#818994;
+  use {
+    fill: #e1e4eb
+  }
+}
+
+.action {
+  color:#5b95de;
+  use{
+    fill: #539ae9;
+  }
+}
+
+.icon {
+  width: 12px;
+  height: 12px;
+  &-label {
+    margin-left: 9px;
+  }
+}
+
+.hydro-link:last-of-type {
+  margin-left: 19px;
 }

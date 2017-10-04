@@ -47,7 +47,12 @@
                 <span>{{ item.serviceName || item.source }}</span>
                 <span class='sidebar-list__item-status' *ngIf="item.currentServices && item.currentServices.length && this.dataType === 'services'" [mdl-badge]="item.currentServices.length"></span>
                 <div *ngIf="isModels" class="sidebar-list__item-details">
-                    <span class="sidebar-list__item--version">{{item.lastModelRuntime.modelVersion}}</span>
+                    <span class="sidebar-list__item--version"
+                    [ngClass]="{
+                      'version-new': isDeployable(item),
+                      'version-failed': item.lastModelBuild.status === 'FAILED'
+                    }"
+                    >{{item.lastModelRuntime.modelVersion}}</span>
                     <svg class="icon sidebar-list__item--deploy" [ngClass]="item?.currentServices?.length > 0 ? 'deployed' : 'undeployed'">
                       <use xlink:href="#icon-arrow" />
                     </svg>

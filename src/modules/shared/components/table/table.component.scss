@@ -117,5 +117,23 @@ $table-padding: 18px;
     }
 
   }
+}
 
+.deployed {
+  color: #8cc63e;
+  use {
+    fill:#8cc63e
+  }
+}
+
+.undeployed {
+  color:#818994;
+  use {
+    fill: #e1e4eb
+  }
+}
+
+.icon {
+  width: 12px;
+  height: 12px;
 }

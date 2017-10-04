@@ -2,6 +2,7 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ModelService, Service } from '@shared/models/_index';
+import * as moment from 'moment';
 
 
 
