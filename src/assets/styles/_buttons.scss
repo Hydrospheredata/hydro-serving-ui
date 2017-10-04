@@ -1,4 +1,56 @@
+$btn-primary: $color--light-blue;
+$btn-secondary: $main-color;
+$btn-icon-size: 12px;
+
 .btn {
     background-color: transparent;
-    color: $color--light-blue;
+    border: 2px solid $color--blue;
+    color: $btn-primary;
+    padding: 7px 14px;
+    font-size: 14px;
+    font-family: "Museo Sans", sans-serif !important;
+    text-transform: uppercase;
+    outline: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    &:hover,
+    &:focus {
+        background-color: $btn-primary;
+        color: $main-color;
+    }
+    > svg {
+        width: $btn-icon-size;
+        height: $btn-icon-size;
+        fill: $btn-primary;
+        margin-right: $btn-icon-size;
+    }
+    &.btn-flat {
+        border: none;
+        &:hover,
+        &:focus {
+            background-color: transparent;
+            color: $btn-secondary;
+            > svg {
+                fill: $btn-secondary;
+            }
+        }
+    }
+    &.btn-secondary {
+        color: $btn-secondary;
+        padding: 10px 18px;
+        > svg {
+            fill: $btn-secondary;
+        }
+    }
+    &-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        > .btn {
+            margin: 0 8px;
+        }
+    }
 }
