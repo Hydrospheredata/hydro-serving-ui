@@ -23,14 +23,6 @@ import {
     CheckServiceExistService
 } from './services/_index';
 
-// Stores
-import {
-    WeightedServiceStore,
-    ModelRuntimeStore,
-    ModelServiceStore,
-    ModelStore
-} from './stores/_index';
-
 // Pipes
 import {
     ModelStatusPipe,
@@ -105,11 +97,6 @@ import {
         ModelsService,
         ModelServicesService,
         CheckServiceExistService,
-        // Stores
-        WeightedServiceStore,
-        ModelRuntimeStore,
-        ModelServiceStore,
-        ModelStore,
         // Builders
         ModelBuilder,
         ModelRuntimeBuilder,

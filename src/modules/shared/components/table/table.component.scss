@@ -12,11 +12,16 @@ $table-padding: 18px;
       padding: $table-padding $table-padding * 2;
       text-align: left;
     }
+    .table-models & {
+      border-bottom: 2px solid $secondary-color;
+    }
   }
   &-body {
     &__row {
-      background-color: $main-bg-color;
-      border-bottom: 2px solid #ffffff;
+      .table-services & {
+        background-color: $main-bg-color;
+        border-bottom: 2px solid #ffffff;
+      }
     }
     &__cell {
       padding: $table-padding * 1.7 $table-padding * 2;

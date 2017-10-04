@@ -21,7 +21,6 @@ export class ServicesService {
     getServices() {
         return this.http.get(this.baseUiUrl)
                     .map((res: Response): any => {
-                        console.log(res.json());
                         return res.json();
                     })
     }

@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import {
   HttpModelsService,
-  HttpWeightedServicesService,
-  HttpModelRuntimeService,
+  // HttpWeightedServicesService,
+  // HttpModelRuntimeService,
   ModelRuntimesService,
   ModelServicesService,
   ServicesService
@@ -23,7 +23,7 @@ import {
 } from '@components/dialogs/_index';
 
 import { MdlDialogService } from '@angular-mdl/core';
-import { ModelStore, WeightedServiceStore, ModelServiceStore } from '@shared/stores/_index';
+// import { ModelStore, WeightedServiceStore, ModelServiceStore } from '@shared/stores/_index';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
@@ -68,12 +68,12 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private modelsService: HttpModelsService,
     private modelRuntimesService: ModelRuntimesService,
-    private modelRuntimeService: HttpModelRuntimeService,
-    private weightedServicesService: HttpWeightedServicesService,
+    // private modelRuntimeService: HttpModelRuntimeService,
+    // private weightedServicesService: HttpWeightedServicesService,
     private dialog: MdlDialogService,
-    private modelStore: ModelStore,
-    private weightedServiceStore: WeightedServiceStore,
-    private modelServiceStore: ModelServiceStore,
+    // private modelStore: ModelStore,
+    // private weightedServiceStore: WeightedServiceStore,
+    // private modelServiceStore: ModelServiceStore,
     private store: Store<AppState>,
 
 
