@@ -22,6 +22,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     private title: string = '';
 
     @Input() isAddBtnEnabled: boolean;
+    @Input() isModels: boolean;
     @Input() sidebarTitle: string;
 
     @Input() sidebarData: Observable<any>; // ToDo: Fix any type

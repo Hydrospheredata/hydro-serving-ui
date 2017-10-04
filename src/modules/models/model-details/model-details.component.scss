@@ -4,7 +4,6 @@
   padding: 55px 92px;
 }
 
-
 .model-details {
   padding: 27px 121px;
   width: 50%;
@@ -19,12 +18,31 @@
 }
 
 .model-grid-header {
-  margin-left: 8px;
   text-align: center;
   color: #818994;
+  font-size: 18px;
+  font-family: $main-font-family;
+  font-weight: 700;
 }
 
 .model-details-row {
-  padding-top: 10px;
+  padding-top: 16px;
   font-size: 16px;
+}
+
+.runtime {
+  font-weight: 700;
+}
+
+
+.model-details-tag {
+    padding: 5px 8px;
+    background-color: #e9ecf2;
+    border-radius: 5px;
+  }
+
+
+.model-details-label {
+  color: #808080;
+  font-weight: 300;
 }

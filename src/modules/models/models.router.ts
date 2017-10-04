@@ -11,17 +11,13 @@ import { ModelDetailsComponent } from './_index';
         RouterModule.forChild([
             {
                 path: '',
-                redirectTo: 'models/all',
+                redirectTo: 'models',
                 pathMatch: 'full'
             },
             {
                 path: 'models',
                 component: ModelsWrapperComponent,
                 children: [{
-                  path: 'all',
-                  pathMatch: 'full',
-                  component: ModelsListComponent
-                }, {
                   path: ':modelId',
                   pathMatch: 'full',
                   component: ModelDetailsComponent
