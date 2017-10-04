@@ -24,6 +24,7 @@ html, body {
   font-family: $main-font-family !important;
   background-color: $main-bg-color;
   color: $main-color;
+  height: 100%;
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
@@ -310,5 +311,18 @@ md-dialog-container.mat-dialog-container {
   td {
     text-align: left !important;
   }
+}
+
+.content {
+    &-wrapper {
+        display: flex;
+        flex-direction: row;
+        > hydro-sidebar {
+            flex-basis: 25%;
+        }
+        > hydro-content {
+            flex-basis: 75%;
+        }
+    }
 }
 
