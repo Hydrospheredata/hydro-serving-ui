@@ -32,11 +32,6 @@ import {
   HttpWeightedServicesService,
   HttpModelServiceService,
   BuildModelService,
-  // Stores
-  // ModelStore,
-  // WeightedServiceStore,
-  // ModelServiceStore,
-  // ModelRuntimeStore,
   // Builders
   ModelBuilder,
   ModelRuntimeBuilder,
@@ -106,11 +101,6 @@ import { ClipboardModule } from 'ngx-clipboard';
     RuntimeTypeBuilder,
     ModelCurrentServicesBuilder,
     ModelBuildBuilder,
-    // stores
-    // ModelStore,
-    // WeightedServiceStore,
-    // ModelServiceStore,
-    // ModelRuntimeStore,
     HttpService,
     LoaderStateService,
     {
