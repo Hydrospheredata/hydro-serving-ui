@@ -40,6 +40,7 @@ export class DialogUpdateServiceComponent implements OnInit {
         private servicesService: ServicesService
     ) {
         this.selectedService = data;
+        console.log(this.selectedService);
         this.store.select('modelService')
             .subscribe(modelService => {
                 this.modelServices = modelService;

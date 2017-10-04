@@ -1,6 +1,10 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { ModelService, Service } from '@shared/models/_index';
+
+
+
 @Component({
   selector: 'hydro-table',
   templateUrl: './table.component.html',
@@ -8,9 +12,12 @@ import { Observable } from 'rxjs/Observable';
 })
 export class TableComponent implements OnInit, OnChanges {
 
-    private tableList: any[]; // ToDo: Fix any type
+    private tableList: any[] = []; // ToDo: Fix any type
+    private modelServices: ModelService[];
+    private services: Service[];
     @Input() tableHeader: string[];
     @Input() tableData: any;
+    @Input() isModels: boolean;
 
     constructor() {}
 
@@ -21,11 +28,23 @@ export class TableComponent implements OnInit, OnChanges {
         if (this.tableData) {
             this.tableList = this.tableData;
         }
-        console.log(this.tableList);
-        // this.tableData.subscribe(items => {
-        //     console.log(items);
-        //     this.tableList = items;
-        // });
+    }
+
+    getModelService(modelRuntimeId: number): ModelService {
+        if (!this.modelServices) {
+            return null;
+        }
+        return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
+    }
+
+    getServices(modelRuntimeId: number): Service[] {
+        const modelService = this.getModelService(modelRuntimeId);
+        if (!modelRuntimeId || !modelService) {
+            return [];
+        }
+        return this.services.filter((service) => {
+            return service.weights.some((weight) => weight.serviceId === modelService.serviceId);
+        });
     }
 
 }

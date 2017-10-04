@@ -124,12 +124,14 @@ export class DialogAddServiceComponent implements OnInit {
 
         this.servicesService.addService(service)
             .subscribe(services => {
+                console.log(services);
                 this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully added',
                     timeout: 5000
                 });
+                console.log(services);
             });
     }
 

@@ -24,12 +24,12 @@ import {
 } from './services/_index';
 
 // Stores
-import {
-    WeightedServiceStore,
-    ModelRuntimeStore,
-    ModelServiceStore,
-    ModelStore
-} from './stores/_index';
+// import {
+//     WeightedServiceStore,
+//     ModelRuntimeStore,
+//     ModelServiceStore,
+//     ModelStore
+// } from './stores/_index';
 
 // Pipes
 import {
@@ -106,10 +106,10 @@ import {
         ModelServicesService,
         CheckServiceExistService,
         // Stores
-        WeightedServiceStore,
-        ModelRuntimeStore,
-        ModelServiceStore,
-        ModelStore,
+        // WeightedServiceStore,
+        // ModelRuntimeStore,
+        // ModelServiceStore,
+        // ModelStore,
         // Builders
         ModelBuilder,
         ModelRuntimeBuilder,

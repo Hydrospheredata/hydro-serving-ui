@@ -27,17 +27,21 @@
   </div>
 
 
+  <button class="btn" (click)="buildModel(model)">build</button>
+
+
 </div>
 
-<h5 *ngIf="runtimes?.length > 0" class="model-grid-header">Versions</h5>
+<div class="model-panel">
+  <h5 *ngIf="runtimes?.length > 0" class="model-grid-header">Versions</h5>
+  <hydro-table [tableHeader]="tableHeader" [tableData]="tableData" [isModels]="true"></hydro-table>
+</div>
 
-<hydro-table [tableHeader]="tableHeader" [tableData]="tableData" ></hydro-table>
-
-<table *ngIf="runtimes?.length > 0" class='models-list-table'>
+<!-- <table *ngIf="runtimes?.length > 0" class='models-list-table'>
   <thead>
     <tr>
       <th>Created</th>
-      <th>Vesion</th>
+      <th>Version</th>
       <th>Status</th>
       <th>Actions</th>
       <th>Services</th>
@@ -79,3 +83,4 @@
     </tr>
   </tbody>
 </table>
+ -->
