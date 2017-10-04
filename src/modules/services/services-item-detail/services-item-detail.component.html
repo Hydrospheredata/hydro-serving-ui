@@ -1,13 +1,10 @@
-<div class='services-list__row services-list__row--big'>
+<!-- <div class='services-list__row services-list__row--big'>
   <div class='services-list__header'>
     <div class="mdl-grid cs-align-center cs-mt-8 cs-mb-16 cs-text-right">
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left">
         <span class='h3'>{{service?.serviceName}}</span>
       </div>
       <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet">
-        <button class="btn">
-          Test
-        </button>
         <mdl-button (click)="testService(service)"
                     class="mist-button blue border icon"
                     title="Test service"
@@ -23,7 +20,9 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
+
+<hydro-content-header [contentHeaderTitle]="service?.serviceName" [isActionsEnabled]="true"></hydro-content-header>
 
 <hydro-table [tableHeader]="tableHeader" [tableData]="tableData" ></hydro-table>
 

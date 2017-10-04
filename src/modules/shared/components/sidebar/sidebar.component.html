@@ -2,13 +2,19 @@
     <div class="sidebar-header">
         <div class="sidebar-header__row">
             <h3 class='sidebar-title'>{{sidebarTitle}}</h3>
-            <mdl-button *ngIf="isAddBtnEnabled" (click)="addService($event)"
+            <button class="btn btn-secondary" *ngIf="isAddBtnEnabled" (click)="addService($event)" title="Add new service">
+                <svg>
+                    <use xlink:href="#icon-plus"></use>
+                </svg>
+                Add service
+            </button>
+            <!-- <mdl-button *ngIf="isAddBtnEnabled" (click)="addService($event)"
                 class="mist-button blue border icon"
                 title="Add new service"
                 mdl-colored="">
                 <mdl-icon>add</mdl-icon>
                 <span fxHide.sm fxHide.md>Add service</span>
-            </mdl-button>
+            </mdl-button> -->
             <div class="sidebar-definitions" *ngIf="isModels">
                 <span><svg class="icon deployed">
                       <use xlink:href="#icon-arrow"/>
