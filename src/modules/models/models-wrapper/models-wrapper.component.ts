@@ -23,6 +23,7 @@ export class ModelsWrapperComponent implements OnDestroy {
   private sidebarTitle: string = 'Models';
   private models: any;
 
+
   constructor(
       private modelBuilder: ModelBuilder,
       private store: Store<AppState>,
