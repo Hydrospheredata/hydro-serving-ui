@@ -8,36 +8,38 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ServicesService {
-    baseUrl: string;
+    baseUiUrl: string;
+    baseApiUrl: string;
     
     constructor(
         private http: HttpService
     ) {
-        this.baseUrl = `${environment.uiUrl}/weightedServices`;
+        this.baseUiUrl = `${environment.uiUrl}/weightedServices`;
+        this.baseApiUrl = `${environment.apiUrl}/weightedServices`;
     }
 
     getServices() {
-        return this.http.get(this.baseUrl)
+        return this.http.get(this.baseUiUrl)
                     .map((res: Response): any => {
-                        console.log(res);
+                        console.log(res.json());
                         return res.json();
                     })
     }
 
     updateService(service: Service): Observable<Service> {
-      return this.http.put(this.baseUrl, service);
+      return this.http.put(this.baseUiUrl, service);
     }
 
     addService(service: Service) {
-        return this.http.post(this.baseUrl, service);
+        return this.http.post(this.baseUiUrl, service);
     }
 
     deleteService(id: string) {
-        return this.http.delete(`${this.baseUrl}/${id}`);
+        return this.http.delete(`${this.baseApiUrl}/${id}`);
     }
 
     serveService(data): Observable<any> {
-        return this.http.post(`${this.baseUrl}/serve`, data)
+        return this.http.post(`${this.baseUiUrl}/serve`, data)
             .map((response: Response) => {
                 return response.json();
             });

@@ -5,7 +5,7 @@ import { LoaderStateService } from '@shared/services/_index';
 import { LoaderState } from './loader';
 
 @Component({
-  selector: 'loader',
+  selector: 'hydro-loader',
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss']
 })

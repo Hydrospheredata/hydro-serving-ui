@@ -75,37 +75,11 @@ export class ServicesItemDetailComponent {
     }
 
     getModelServiceData(weight) {
-        this.modelServicesService.getModelService(weight.serviceId)
+        this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });
                 this.tableData = this.serviceModels;
             });
-    }
-
-    testService(service: Service) {
-        this.dialog.showCustomDialog({
-            component: DialogTestComponent,
-            styles: { 'width': '800px', 'min-height': '350px' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-            providers: [{ provide: injectableModelBuildOptions, useValue: service }],
-        });
-    }
-
-    editService(service: Service) {
-        this.dialog.showCustomDialog({
-            component: DialogUpdateServiceComponent,
-            styles: {'width': '850px', 'min-height': '250px'},
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-            providers: [{provide: injectableServiceUpdate, useValue: service}]
-        });
     }
 
 

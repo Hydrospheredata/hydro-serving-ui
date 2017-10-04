@@ -38,7 +38,9 @@ export class SidebarComponent implements OnInit, OnChanges {
 
     ngOnChanges() {
         this.sidebarData.subscribe(items => {
-            this.sidebarList = items;
+            if (items.length) {
+                this.sidebarList = items;
+            }
         })
     }
 
