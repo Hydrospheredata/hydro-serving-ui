@@ -1,19 +1,19 @@
 <div class="content-header">
     <div class="content-header__title">{{contentHeaderTitle}}</div>
     <div class="btn-group" *ngIf="isActionsEnabled">
-        <button class="btn">
+        <button class="btn" (click)="testService(service)">
             <svg>
                 <use xlink:href="#icon-start"></use>
             </svg>
             Test
         </button>
-        <button class="btn btn-flat">
+        <button class="btn btn-flat" (click)="editService(service)">
             <svg>
                 <use xlink:href="#icon-edit"></use>
             </svg>
             Edit
         </button>
-        <button class="btn btn-flat">
+        <button class="btn btn-flat" (click)="removeService(service.id)">
             <svg>
                 <use xlink:href="#icon-remove"></use>
             </svg>
