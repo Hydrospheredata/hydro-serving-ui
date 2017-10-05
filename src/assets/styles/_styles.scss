@@ -326,7 +326,8 @@ md-dialog-container.mat-dialog-container {
         > hydro-sidebar {
             flex-basis: 25%;
         }
-        > hydro-content {
+        > hydro-services-item-detail,
+          hydro-model-item-detail {
             flex-basis: 75%;
         }
     }
