@@ -38,7 +38,6 @@ import {
     LoaderComponent,
     NavbarComponent,
     SidebarComponent,
-    ContentComponent,
     ContentHeaderComponent
 } from './components/_index';
 
@@ -76,7 +75,6 @@ import {
         // Components
         InputTextComponent,
         SidebarComponent,
-        ContentComponent,
         ContentHeaderComponent
     ],
     providers: [
@@ -115,7 +113,6 @@ import {
         // Components
         InputTextComponent,
         SidebarComponent,
-        ContentComponent,
         ContentHeaderComponent
     ]
 })
