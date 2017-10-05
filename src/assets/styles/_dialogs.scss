@@ -6,3 +6,16 @@
     right: 1rem;
   }
 }
+
+.mdl-dialog {
+    padding: 54px 64px;
+    color: $main-color;
+    &__title {
+        font-family: 'Museo Sans Bold';
+        padding: 0;
+        margin-bottom: 36px;
+    }
+    &__content {
+        padding: 0;
+    }
+}
