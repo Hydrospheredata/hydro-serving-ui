@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
+
 import { Store } from '@ngrx/store';
 import { AppState, Service } from '@shared/models/_index';
 
@@ -14,26 +15,24 @@ export class CheckServiceExistService {
     constructor(
         private store: Store<AppState>,
         private router: Router
-    ) {
-        this.store.select('services')
-            .subscribe(services => {
-                this.services = services;
-            });
-    }
+    ) {}
 
     isExist(id: string) {
+        this.store.select('services').subscribe(services => {
+            this.services = services;
+            if (this.services.length) {
+                if (this.services.filter(service => service.id === +id).length) {
+                    return true;
+                } else {
+                    this.router.navigate(['/services']);
+                    return false;
+                }
+            } else {
+                this.router.navigate(['/services']);
+                return false;
+            }
+        });
         return true;
-        // if (this.services.length) {
-        //     if (this.services.filter(service => service.id === +id).length) {
-        //         return true;
-        //     } else {
-        //         this.router.navigate(['/services']);
-        //         return false;
-        //     }
-        // } else {
-        //     this.router.navigate(['/services']);
-        //     return false;
-        // }
     }
 
 }
