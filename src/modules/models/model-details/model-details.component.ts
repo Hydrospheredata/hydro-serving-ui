@@ -135,7 +135,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
       return [];
     }
     return this.weightedServices.filter((weightedService) => {
-      return weightedService.weights.some((weight) => weight.service.serviceId === modelService.serviceId);
+      return weightedService.weights.some((weight) => weight.service ? weight.service.serviceId === modelService.serviceId : false);
     });
   }
 
@@ -150,6 +150,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
   public getPayloadForModelDeploy(runtime) {
     return { serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id };
+  }
+
+  public getLatestVersion() {
+    return '0.0.1';
   }
 
   buildModel(modelOptions: Model) {

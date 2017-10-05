@@ -150,10 +150,6 @@ export class DialogTestComponent implements OnInit {
     let snackbarSuccessMsg;
     const testOptions = this.createTestOptions(form);
 
-    if (this.model instanceof Model) {
-      // apiUrl = this.modelStore.testModel.bind(this.modelStore);
-      snackbarSuccessMsg = 'Model test was successful';
-    } else {
       if (this.model instanceof Service) {
         apiUrl = this.servicesService.serveService.bind(this.servicesService);
         snackbarSuccessMsg = 'Service test was successful';
@@ -161,8 +157,6 @@ export class DialogTestComponent implements OnInit {
         apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
         snackbarSuccessMsg = 'Model test was successful';
       }
-    }
-
 
     apiUrl(JSON.stringify(testOptions))
       .subscribe(res => {
