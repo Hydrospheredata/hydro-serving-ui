@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { ModelsWrapperComponent } from './_index';
-import { ModelsListComponent } from './_index';
 import { ModelDetailsComponent } from './_index';
 
 
