@@ -25,9 +25,12 @@ export class DialogAddServiceComponent implements OnInit {
         serviceName: '',
         weights: '',
         serviceId: '',
+        modelVersion: '',
         weight: '',
     };
     public modelServices: ModelService[];
+
+    public modelVersions: string[] = [];
 
     public services: Service[];
 
@@ -44,16 +47,16 @@ export class DialogAddServiceComponent implements OnInit {
             .subscribe(services => {
                 this.services = services;
             });
+        this.store.select('modelService')
+            .subscribe(modelService => {
+                this.modelServices = modelService;
+                console.log(this.modelServices);
+            });
     }
 
     ngOnInit() {
         this.createServiceForm();
         this.initFormChangesListener();
-
-        this.store.select('modelService')
-            .subscribe(modelService => {
-                this.modelServices = modelService;
-            });
     }
 
     private initFormChangesListener() {
@@ -98,6 +101,10 @@ export class DialogAddServiceComponent implements OnInit {
     removeWeightsForm(i: number) {
         const control = <FormArray>this.serviceForm.controls['weights'];
         control.removeAt(i);
+    }
+
+    setModelService(value) {
+        console.log(value);
     }
 
     submitServiceForm(form) {

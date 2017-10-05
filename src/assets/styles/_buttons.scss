@@ -9,15 +9,20 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     color: $btn-primary;
     padding: 7px 14px;
     font-size: 14px;
-    font-family: "Museo Sans", sans-serif !important;
+    font-family: "Museo Sans Regular";
     text-transform: uppercase;
     outline: none;
     display: flex;
     align-items: center;
     cursor: pointer;
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color $transition-type, color $transition-type;
-    &:hover,
-    &:focus {
+    &[disabled] {
+        cursor: default;
+        color: $secondary-color;
+        border-color: $secondary-color;
+    }
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
         background-color: $btn-primary;
         color: $btn-secondary;
         > svg {
@@ -31,10 +36,16 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         fill: $btn-primary;
         margin-right: $btn-icon-size;
     }
+    &.btn-large {
+        font-family: 'Museo Sans Bold';
+        font-size: 18px;
+        padding: 10px 24px;
+        letter-spacing: 1px;
+    }
     &.btn-flat {
         border: none;
-        &:hover,
-        &:focus {
+        &:not([disabled]):hover,
+        &:not([disabled]):focus {
             background-color: transparent;
             color: $btn-secondary;
             > svg {

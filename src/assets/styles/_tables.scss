@@ -10,13 +10,13 @@ $table-padding: 18px;
       padding: $table-padding $table-padding * 2;
       text-align: left;
     }
-    .hydro-table-models & {
+    [class$="models"] & {
       border-bottom: 2px solid $secondary-color;
     }
   }
   &-body {
     &__row {
-      .hydro-table-services & {
+      [class$="services"] & {
         background-color: $main-bg-color;
         border-bottom: 2px solid #ffffff;
       }

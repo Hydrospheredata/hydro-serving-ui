@@ -1,59 +1,60 @@
 <div>
-  <h2 class="mdl-dialog__title mat-dialog-title">Add Service</h2>
+  <h2 class="mdl-dialog__title">Add Service</h2>
   <form [formGroup]="serviceForm" (ngSubmit)="submitServiceForm(serviceForm)">
     <div class="mdl-dialog__content">
 
       <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Service Name" formControlName="serviceName"></hydro-input-text>
 
-      <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
-      <div formArrayName="weights">
-        <div *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index">
-          <div [formGroupName]="i">
-            <div fxLayout="row" fxLayoutAlign="space-between center">
-              <div fxFlex="60" class="input-text form-group">
-                <label hidden class="control-label">Service id</label>
+      <div class="hydro-form-group">
+        <label>Use Kafka source</label>
+      </div>
+      <div class="hydro-form-group">
+        <label>Models</label>
+        <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
+        <div formArrayName="weights">
+          <div *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index">
+            <div [formGroupName]="i">
+              <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="60" class="input-text form-group">
+                  <label hidden class="control-label">Service id</label>
 
-                <mdl-select #autocompleteSelect [autocomplete]="true" label="{{serviceIdLabel}}" floating-label class="cs-text-center" formControlName="serviceId">
-                  <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
-                </mdl-select>
-              </div>
-              <div fxFlex="30" fxLayout="row" fxLayoutAlign="space-between center">
-                <hydro-input-text fxFlex="70"
-                                  [formErrors]="formErrors.weight"
-                                  placeholder="Weight"
-                                  name="asd"
-                                  formControlName="weight">
-                </hydro-input-text>
-                <div class="btn-group__actions">
-                  <mdl-icon class="cs-cursor-pointer mdl-color-text--light-blue-700" (click)="addWeightsForm()">
-                    add_circle
-                  </mdl-icon>
-                  <mdl-icon class="cs-cursor-pointer mdl-color-text--red"
-                            (click)="removeWeightsForm(i)"
-                            *ngIf="serviceForm['controls'].weights['controls'].length > 1">remove_circle
-                  </mdl-icon>
+                  <!-- <mdl-select #autocompleteSelect [autocomplete]="true" label="{{serviceIdLabel}}" floating-label class="cs-text-center" formControlName="serviceId">
+                    <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
+                  </mdl-select> -->
+
+                  <select #autocompleteSelect formControlName="serviceId" (ngModelChange)="setModelService($event)">
+                    <option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</option>
+                  </select>
+
+                  <select #autocompleteSelect formControlName="modelVersion">
+                    <option *ngFor="let version of modelVersions" [value]="version">{{version}}</option>
+                  </select>
+
+                </div>
+                <div fxFlex="30" fxLayout="row" fxLayoutAlign="space-between center">
+                  <hydro-input-text fxFlex="70"
+                                    [formErrors]="formErrors.weight"
+                                    placeholder="Weight"
+                                    name="asd"
+                                    formControlName="weight">
+                  </hydro-input-text>
+                  <div class="btn-group__actions">
+                    <mdl-icon class="cs-cursor-pointer mdl-color-text--light-blue-700" (click)="addWeightsForm()">add_circle</mdl-icon>
+                    <mdl-icon class="cs-cursor-pointer mdl-color-text--red"
+                              (click)="removeWeightsForm(i)"
+                              *ngIf="serviceForm['controls'].weights['controls'].length > 1">remove_circle
+                    </mdl-icon>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="cs-mt-30 cs-mb-32">
-      <div class="mdl-grid mdl-grid--no-spacing">
-        <div class="mdl-cell mdl-cell--12-col cs-text-right">
-          <button (click)="dialogRef.hide()" type="button" mdl-button
-                  class='mat-button mat-button--big'>
-            CANCEL
-          </button>
-          <button type="submit" mdl-button [disabled]="serviceForm.invalid"
-                  class='mat-button mat-button--big mat-button--primary'
-                  mdl-button-type="raised" mdl-colored="primary" mdl-ripple>
-            Add service
-          </button>
-        </div>
+      <div class="btn-group">
+        <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
+        <button class="btn btn-large" type="submit" [disabled]="serviceForm.invalid">Add service</button>
       </div>
     </div>
-
   </form>
 </div>
