@@ -34,54 +34,46 @@
 
 <div class="model-panel">
   <h5 *ngIf="runtimes?.length > 0" class="model-grid-header">Versions</h5>
-  <hydro-table [tableHeader]="tableHeader" [tableData]="tableData" [isModels]="true"></hydro-table>
+  <table class='hydro-table hydro-table-models'>
+      <thead class="hydro-table-head">
+          <tr>
+              <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let runtime of runtimes" class='hydro-table-body__row'>
+              <td class="hydro-table-body__cell">
+                  <div class='cs-text-overflow-ellipsis'>{{runtime?.created | utcToLocal | amTimeAgo}}</div>
+              </td>
+              <td class="hydro-table-body__cell">
+                  <div class='cs-text-overflow-ellipsis'>{{runtime?.modelVersion}}</div>
+              </td>
+              <td class="hydro-table-body__cell">
+                  <div class='cs-text-overflow-ellipsis' [ngClass]="{
+                  'mdl-color-text--green-700': getModelService(runtime.id),
+                  'mdl-color-text--red-700': !getModelService(runtime.id)
+                  }">{{getModelService(runtime.id) ? 'DEPLOYED' : 'UNDEPLOYED'}}</div>
+              </td>
+              <td class="hydro-table-body__cell">
+                  <div fxLayout="row" fxLayoutAlign="space-between center" class="">
+                      <div class="">
+                          <a *ngIf="!getModelService(runtime.id)" title="Deploy" (click)="deployModelService(getPayloadForModelDeploy(runtime))" class="hydro-link mdl-color-text--grey-700">
+                          <mdl-icon>cloud_upload</mdl-icon>
+                          </a>
+                          <a *ngIf="getModelService(runtime.id)" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(getModelService(runtime.id), getWeightedServices(runtime.id))"
+                          title="Stop">
+                          <mdl-icon>not_interested</mdl-icon>
+                          </a>
+                          <a *ngIf="getModelService(runtime.id)" (click)="testModel(getModelService(runtime.id))" title='Test' class="hydro-link mdl-color-text--blue-800">
+                          <mdl-icon>play_circle_outline</mdl-icon>
+                          </a>
+                      </div>
+                  </div>
+              </td>
+              <td class="hydro-table-body__cell">
+                  <div *ngIf="this.weightedServices && this.weightedServices.length > 0" class="cs-text-overflow-ellipsis"><a *ngFor="let weightedService of getWeightedServices(runtime.id)" [routerLink]="['/services', weightedService.id]">{{  weightedService.serviceName }}</a></div>
+              </td>
+          </tr>
+      </tbody>
+  </table>
 </div>
-
-<!--
-<table *ngIf="runtimes?.length > 0" class='models-list-table table'>
-  <thead>
-    <tr>
-      <th class="table-head__cell">Created</th>
-      <th class="table-head__cell">Vesion</th>
-      <th class="table-head__cell">Status</th>
-      <th class="table-head__cell">Actions</th>
-      <th class="table-head__cell">Services</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let runtime of runtimes" class='table-body__row'>
-      <td class="models-list-table__td name table-body__cell">
-        <div class='cs-text-overflow-ellipsis'>{{runtime?.created | utcToLocal | amTimeAgo}}</div>
-      </td>
-      <td class="models-list-table__td name table-body__cell">
-        <div class='cs-text-overflow-ellipsis'>{{runtime?.modelVersion}}</div>
-      </td>
-      <td class="models-list-table__td name table-body__cell">
-        <div class='cs-text-overflow-ellipsis' [ngClass]="{
-          'mdl-color-text--green-700': getModelService(runtime.id),
-          'mdl-color-text--red-700': !getModelService(runtime.id)
-          }">{{getModelService(runtime.id) ? 'DEPLOYED' : 'UNDEPLOYED'}}</div>
-      </td>
-      <td class='cs-text-overflow-ellipsis table-body__cell'>
-        <div fxLayout="row" fxLayoutAlign="space-between center" class="">
-          <div class="">
-            <a *ngIf="!getModelService(runtime.id)" title="Deploy" (click)="deployModelService(getPayloadForModelDeploy(runtime))" class="hydro-link mdl-color-text--grey-700">
-              <mdl-icon>cloud_upload</mdl-icon>
-            </a>
-            <a *ngIf="getModelService(runtime.id)" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(getModelService(runtime.id), getWeightedServices(runtime.id))"
-              title="Stop">
-              <mdl-icon>not_interested</mdl-icon>
-            </a>
-            <a *ngIf="getModelService(runtime.id)" (click)="testModel(getModelService(runtime.id))" title='Test' class="hydro-link mdl-color-text--blue-800">
-              <mdl-icon>play_circle_outline</mdl-icon>
-            </a>
-          </div>
-        </div>
-      </td>
-      <td class="table-body__cell">
-        <div *ngIf="this.weightedServices && this.weightedServices.length > 0" class="cs-text-overflow-ellipsis"><a *ngFor="let weightedService of getWeightedServices(runtime.id)" [routerLink]="['/services', weightedService.id]">{{  weightedService.serviceName }}</a></div>
-      </td>
-    </tr>
-  </tbody>
-</table>
- -->
