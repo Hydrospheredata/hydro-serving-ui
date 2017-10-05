@@ -1,18 +1,7 @@
 <div>
-  <h2 class="mdl-dialog__title mat-dialog-title">Deploy model #{{model.id}}</h2>
+  <h2 class="mdl-dialog__title mat-dialog-title">Deploy model {{model.name}}</h2>
   <form [formGroup]="buildModelForm" (ngSubmit)="submitBuildModelForm(buildModelForm)">
     <div class="mdl-dialog__content">
-      <div class="cs-mb-32" fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxLayout="row" fxLayoutAlign="space-between center">
-          <span class="cs-mr-8">Name</span>
-          <mdl-chip mdl-label="{{model.source}}"></mdl-chip>
-        </div>
-        <div *ngIf="modelType" fxLayout="row" fxLayoutAlign="space-between center">
-          <span class="cs-mr-8">Type</span>
-          <mdl-chip mdl-label="{{modelType}}"></mdl-chip>
-        </div>
-
-      </div>
 
       <div class="cs-mb-32" fxLayout="row" fxLayoutAlign="space-between center">
         <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet cs-text-left runtime-label"><label class="">Runtime Type</label></div>

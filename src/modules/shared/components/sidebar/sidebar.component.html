@@ -45,7 +45,7 @@
                       'version-new': isDeployable(item),
                       'version-failed': item.lastModelBuild.status === 'FAILED'
                     }"
-                    >{{item.lastModelRuntime.modelVersion}}</span>
+                    >{{item.lastModelRuntime.modelVersion || '0.0.1'}}</span>
                     <svg class="icon sidebar-list__item--deploy" [ngClass]="item?.currentServices?.length > 0 ? 'deployed' : 'undeployed'">
                       <use xlink:href="#icon-arrow" />
                     </svg>

@@ -1,99 +1,128 @@
 @import 'variables.scss';
-
 .model {
-  &-panel {
-    background-color: $main-bg-color;
-    padding: 32px 26px;
-    &__title {
-
+    &-panel {
+        background-color: $main-bg-color;
+        padding: 32px 26px;
     }
-  }
 }
 
 .model-name {
-  padding: 55px 92px;
+    padding: 55px 92px;
 }
 
 .model-details {
-  padding: 27px 121px;
-  > p {
-    > span {
-      font-weight: bold;
+    padding: 27px 121px;
+    >p {
+        >span {
+            font-weight: bold;
+        }
+        font-size: 16px;
+        display: flex;
+        flex-direction: row;
     }
-    font-size: 16px;
-    display: flex;
-    flex-direction: row;
-  }
 }
 
 .model-grid-header {
-  text-align: center;
-  color: #818994;
-  font-size: 18px;
-  font-family: "Museo Sans Bold";
+    text-align: center;
+    color: #818994;
+    font-size: 18px;
+    font-family: "Museo Sans Bold";
 }
 
 .model-details-row {
-  padding-top: 16px;
-  font-size: 16px;
+    padding-top: 16px;
+    font-size: 16px;
 }
 
 .runtime {
-  font-family: "Museo Sans Bold";
+    font-family: "Museo Sans Bold";
 }
 
 .model-details-tag {
     padding: 5px 8px;
     background-color: #e9ecf2;
     border-radius: 5px;
-  }
+}
 
 .model-details-label {
-  color: #808080;
-  font-family: "Museo Sans Light"
+    color: #808080;
+    font-family: "Museo Sans Light"
 }
 
 .deployed {
-  color: #8cc63e;
-  use {
-    fill:#8cc63e
-  }
+    color: #8cc63e;
+    use {
+        fill: #8cc63e
+    }
 }
 
 .undeployed {
-  color:#818994;
-  use {
-    fill: #e1e4eb
-  }
+    color: #818994;
+    use {
+        fill: #e1e4eb
+    }
 }
 
 .action {
-  color:#5b95de;
-  use{
-    fill: #539ae9;
-  }
+    color: #5b95de;
+    use {
+        fill: #539ae9;
+    }
 }
 
 .icon {
-  width: 12px;
-  height: 12px;
-  &-label {
-    margin-left: 9px;
-  }
+    width: 12px;
+    height: 12px;
+    margin-top: -2px;
+    &-label {
+        margin-left: 5px;
+    }
 }
 
 .hydro-link:last-of-type {
-  margin-left: 19px;
+    margin-left: 14px;
 }
 
 .new-version-label {
-  background-color: #f28a03;
-  border-radius: 2px;
-  color: #ffffff;
-  font-size: 12px;
-  padding: 5px 7px;
+    margin-left: 10px;
+    background-color: #f28a03;
+    border-radius: 2px;
+    color: #ffffff;
+    font-size: 12px;
+    padding: 5px 7px;
 }
 
 .new-version {
-  color:#f28a03;
+    color: #f28a03;
+    &::after {
+        content: '˚';
+    }
+}
+
+.deploy-btn {
+    background-color: #539ae9;
+    color: #FFFFFF;
+    font-family: "Museo Sans Bold";
+    font-size: 12px;
+    fill: #FFFFFF;
+    padding: 3px 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.hydro-table-head__cell {
+    text-align: center;
+}
+
+.hydro-table-body__cell {
+    text-align: center;
+}
+
+.model-details-table {
+    margin-bottom: 50px
+}
+
+.model-details-link {
+    color: #539ae9;
+    text-decoration: none;
 }

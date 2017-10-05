@@ -92,7 +92,11 @@ svg {
 }
 
 .version-new {
+  padding-right: 27px!important;
   color: #f28a03;
+  &::after {
+    content: '˚';
+  }
 }
 
 .version-failed {
