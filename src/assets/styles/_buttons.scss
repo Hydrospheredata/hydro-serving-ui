@@ -1,6 +1,7 @@
 $btn-primary: $color--light-blue;
 $btn-secondary: $main-color;
 $btn-icon-size: 12px;
+$transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
 .btn {
     background-color: transparent;
@@ -14,13 +15,17 @@ $btn-icon-size: 12px;
     display: flex;
     align-items: center;
     cursor: pointer;
-    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color $transition-type, color $transition-type;
     &:hover,
     &:focus {
         background-color: $btn-primary;
-        color: $main-color;
+        color: $btn-secondary;
+        > svg {
+            fill: $btn-secondary;
+        }
     }
     > svg {
+        transition: fill $transition-type;
         width: $btn-icon-size;
         height: $btn-icon-size;
         fill: $btn-primary;

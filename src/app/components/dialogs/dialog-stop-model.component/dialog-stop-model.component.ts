@@ -42,51 +42,51 @@ export class DialogStopModelComponent implements OnInit {
     this.dialogRef.hide();
   }
 
-  // submitStopModelForm() {
-  //   let id;
-  //   if (this.model instanceof Model) {
-  //     id = this.model.id;
-  //     this.modelStore.stopModel(this.model)
-  //     .subscribe(result => {
-  //       this.dialogRef.hide();
-  //       this.mdlSnackbarService.showSnackbar({
-  //         message: 'Model has been stopped',
-  //         timeout: 5000
-  //       });
-  //       this.modelsService.getModels().first()
-  //       .subscribe(models => {
-  //           this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
-  //       });
-  //     },
-  //     (error) => {
-  //       this.mdlSnackbarService.showSnackbar({
-  //         message: error,
-  //         timeout: 5000
-  //       });
-  //     });
-  //   } else {
-  //     id = this.model.serviceId;
-  //     this.modelServiceService.removeService(id)
-  //     .subscribe((data) => {
-  //       this.dialogRef.hide();
-  //       this.mdlSnackbarService.showSnackbar({
-  //         message: 'Model has been stopped',
-  //         timeout: 5000
-  //       });
-  //       this.modelsService.getModels().first()
-  //       .subscribe(models => {
-  //           this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
-  //       });
-  //     },
-  //     (error) => {
-  //       this.mdlSnackbarService.showSnackbar({
-  //         message: error,
-  //         timeout: 5000
-  //       });
-  //     });
+  submitStopModelForm() {
+    let id;
+    // if (this.model instanceof Model) {
+    //   id = this.model.id;
+    //   this.modelStore.stopModel(this.model)
+    //   .subscribe(result => {
+    //     this.dialogRef.hide();
+    //     this.mdlSnackbarService.showSnackbar({
+    //       message: 'Model has been stopped',
+    //       timeout: 5000
+    //     });
+    //     this.modelsService.getModels().first()
+    //     .subscribe(models => {
+    //         this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
+    //     });
+    //   },
+    //   (error) => {
+    //     this.mdlSnackbarService.showSnackbar({
+    //       message: error,
+    //       timeout: 5000
+    //     });
+    //   });
+    // } else {
+    //   id = this.model.serviceId;
+    //   this.modelServiceService.removeService(id)
+    //   .subscribe((data) => {
+    //     this.dialogRef.hide();
+    //     this.mdlSnackbarService.showSnackbar({
+    //       message: 'Model has been stopped',
+    //       timeout: 5000
+    //     });
+    //     this.modelsService.getModels().first()
+    //     .subscribe(models => {
+    //         this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
+    //     });
+    //   },
+    //   (error) => {
+    //     this.mdlSnackbarService.showSnackbar({
+    //       message: error,
+    //       timeout: 5000
+    //     });
+    //   });
 
-  //   }
+    // }
 
-  // }
+  }
 
 }

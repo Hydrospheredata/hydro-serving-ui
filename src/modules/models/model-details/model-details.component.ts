@@ -3,8 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 
 import {
   HttpModelsService,
-  // HttpWeightedServicesService,
-  // HttpModelRuntimeService,
   ModelRuntimesService,
   ModelServicesService,
   ServicesService
@@ -23,7 +21,6 @@ import {
 } from '@components/dialogs/_index';
 
 import { MdlDialogService } from '@angular-mdl/core';
-// import { ModelStore, WeightedServiceStore, ModelServiceStore } from '@shared/stores/_index';
 
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
@@ -62,19 +59,12 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
       'Created', 'Version', 'Status', 'Actions', 'Services'
   ]
 
-  private tableData: any;
-
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private modelsService: HttpModelsService,
     private modelRuntimesService: ModelRuntimesService,
-    // private modelRuntimeService: HttpModelRuntimeService,
-    // private weightedServicesService: HttpWeightedServicesService,
     private dialog: MdlDialogService,
-    // private modelStore: ModelStore,
-    // private weightedServiceStore: WeightedServiceStore,
-    // private modelServiceStore: ModelServiceStore,
     private store: Store<AppState>,
 
 
@@ -112,7 +102,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
           .subscribe(modelRuntimes => {
             this.runtimes = modelRuntimes;
-            this.tableData = modelRuntimes;
             this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
           });
 

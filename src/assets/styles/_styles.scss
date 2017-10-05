@@ -7,6 +7,7 @@
 @import "common.scss";
 @import "codemirror.scss";
 @import "buttons.scss";
+@import "tables.scss";
 
 * {
   -webkit-box-sizing: border-box;
@@ -317,6 +318,7 @@ md-dialog-container.mat-dialog-container {
     &-wrapper {
         display: flex;
         flex-direction: row;
+        min-height: 100%;
         > hydro-sidebar {
             flex-basis: 25%;
         }

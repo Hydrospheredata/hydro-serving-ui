@@ -82,29 +82,30 @@ export class DialogModelBuildComponent implements OnInit {
       outputFields: controls.outputFields.value
     };
 
-  //   this.modelStore.updateModel(modelOptions)
-  //     .flatMap((model) => {
-  //       return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: 1});
-  //     })
-  //     .finally(() => {
-  //       this.modelStore.getAll();
-  //     })
-  //     .subscribe((model) => {
-  //       this.dialogRef.hide();
-  //       this.mdlSnackbarService.showSnackbar({
-  //         message: `Model was successfully updated`,
-  //         timeout: 5000
-  //       });
-  //       this.modelsService.getModels().first()
-  //       .subscribe(models => {
-  //           this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
-  //       });
-  //     }, (error) => {
-  //       this.mdlSnackbarService.showSnackbar({
-  //         message: `Error: ${error}`,
-  //         timeout: 5000
-  //       });
-  //     });
+    // this.modelStore.updateModel(modelOptions)
+    //   .flatMap((model) => {
+    //     return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: 1});
+    //   })
+    //   .finally(() => {
+    //     this.modelStore.getAll();
+    //   })
+    //   .subscribe((model) => {
+    //     this.dialogRef.hide();
+    //     this.mdlSnackbarService.showSnackbar({
+    //       message: `Model was successfully updated`,
+    //       timeout: 5000
+    //     });
+    //     this.modelsService.getModels().first()
+    //     .subscribe(models => {
+    //         this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
+    //     });
+    //   }, (error) => {
+    //     this.mdlSnackbarService.showSnackbar({
+    //       message: `Error: ${error}`,
+    //       timeout: 5000
+    //     });
+    //   });
+
   }
 
 }

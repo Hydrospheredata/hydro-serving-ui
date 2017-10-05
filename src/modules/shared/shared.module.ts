@@ -40,7 +40,6 @@ import {
     NavbarComponent,
     SidebarComponent,
     ContentComponent,
-    TableComponent,
     ContentHeaderComponent
 } from './components/_index';
 
@@ -80,7 +79,6 @@ import {
         InputTextComponent,
         SidebarComponent,
         ContentComponent,
-        TableComponent,
         ContentHeaderComponent
     ],
     providers: [
@@ -120,7 +118,6 @@ import {
         InputTextComponent,
         SidebarComponent,
         ContentComponent,
-        TableComponent,
         ContentHeaderComponent
     ]
 })
