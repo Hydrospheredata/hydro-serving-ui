@@ -84,23 +84,26 @@ export class DialogModelBuildComponent implements OnInit {
     console.log(JSON.stringify(modelOptions));
 
 
-    // TODO: DISPATCH ACTION
-    this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: modelOptions.runtimeTypeId})
+    this.modelsService.updateModel(modelOptions)
+    .flatMap(model => {
+      return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: modelOptions.runtimeTypeId})
+    })
     .subscribe((model) => {
-          this.dialogRef.hide();
-          this.mdlSnackbarService.showSnackbar({
-            message: `Model was successfully updated`,
-            timeout: 5000
-          });
-          this.modelsService.getModels().first()
-          .subscribe(models => {
-              this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
-          });
-        }, (error) => {
-          this.mdlSnackbarService.showSnackbar({
-            message: `Error: ${error}`,
-            timeout: 5000
-          });
-        });
+      this.dialogRef.hide();
+      this.mdlSnackbarService.showSnackbar({
+        message: `Model was successfully updated`,
+        timeout: 5000
+      });
+      this.modelsService.getModels().first()
+      .subscribe(models => {
+          this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
+      });
+    }, (error) => {
+      this.mdlSnackbarService.showSnackbar({
+        message: `Error: ${error}`,
+        timeout: 5000
+      });
+    });
+
   }
 }

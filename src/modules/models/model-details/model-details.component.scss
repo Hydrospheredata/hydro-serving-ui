@@ -1,14 +1,9 @@
 @import 'variables.scss';
-.model {
-    &-panel {
-        background-color: $main-bg-color;
-        padding: 32px 26px;
-    }
-}
 
-.model-name {
-    padding: 55px 92px;
-}
+$default-blue: #539ae9;
+$default-green: #8cc63e;
+$bold: "Museo Sans Bold";
+$light: "Museo Sans Light";
 
 .model-details {
     padding: 27px 121px;
@@ -20,53 +15,60 @@
         display: flex;
         flex-direction: row;
     }
-}
-
-.model-grid-header {
-    text-align: center;
-    color: #818994;
-    font-size: 18px;
-    font-family: "Museo Sans Bold";
-}
-
-.model-details-row {
-    padding-top: 16px;
-    font-size: 16px;
+    &-row {
+      padding-top: 16px;
+      font-size: 16px;
+    }
+    &-tag {
+      padding: 5px 8px;
+      background-color: #e9ecf2;
+      border-radius: 5px;
+    }
+    &-label {
+      color: #808080;
+      font-family: $light;
+    }
+    &-panel {
+      background-color: $main-bg-color;
+      padding: 32px 26px;
+    }
+    &-grid-header {
+      text-align: center;
+      color: #818994;
+      font-size: 18px;
+      font-family: $bold;
+    }
+    &-table {
+      margin-bottom: 70px
+    }
+    &-link {
+      color: $default-blue;
+      text-decoration: none;
+    }
 }
 
 .runtime {
-    font-family: "Museo Sans Bold";
-}
-
-.model-details-tag {
-    padding: 5px 8px;
-    background-color: #e9ecf2;
-    border-radius: 5px;
-}
-
-.model-details-label {
-    color: #808080;
-    font-family: "Museo Sans Light"
+    font-family: $bold;
 }
 
 .deployed {
-    color: #8cc63e;
+    color: $default-green;
     use {
-        fill: #8cc63e
+        fill: $default-green;
     }
 }
 
 .undeployed {
     color: #818994;
     use {
-        fill: #e1e4eb
+        fill: #e1e4eb;
     }
 }
 
 .action {
     color: #5b95de;
     use {
-        fill: #539ae9;
+        fill: $default-blue;
     }
 }
 
@@ -83,26 +85,25 @@
     margin-left: 14px;
 }
 
-.new-version-label {
-    margin-left: 10px;
-    background-color: #f28a03;
-    border-radius: 2px;
-    color: #ffffff;
-    font-size: 12px;
-    padding: 5px 7px;
-}
-
 .new-version {
     color: #f28a03;
     &::after {
         content: '˚';
     }
+    &-label {
+      margin-left: 10px;
+      background-color: #f28a03;
+      border-radius: 2px;
+      color: #FFFFFF;
+      font-size: 12px;
+      padding: 5px 7px;
+    }
 }
 
 .deploy-btn {
-    background-color: #539ae9;
+    background-color: $default-blue;
     color: #FFFFFF;
-    font-family: "Museo Sans Bold";
+    font-family: $bold;
     font-size: 12px;
     fill: #FFFFFF;
     padding: 3px 20px;
@@ -110,19 +111,11 @@
     margin-left: 10px;
 }
 
-.hydro-table-head__cell {
-    text-align: center;
-}
-
-.hydro-table-body__cell {
-    text-align: center;
-}
-
-.model-details-table {
-    margin-bottom: 50px
-}
-
-.model-details-link {
-    color: #539ae9;
-    text-decoration: none;
+.hydro-table {
+    &-head__cell {
+      text-align: center;
+    }
+    &-body__cell {
+      text-align: center;
+    }
 }
