@@ -6,6 +6,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'angular2-moment';
 
+import { SelectModule } from 'ng2-select';
+
 // Services
 import {
     HttpWeightedServicesService,
@@ -36,6 +38,7 @@ import {
 // Components
 import {
     InputTextComponent,
+    SelectComponent,
     LoaderComponent,
     NavbarComponent,
     SidebarComponent,
@@ -65,7 +68,8 @@ import {
         FormsModule,
         ReactiveFormsModule,
         RouterModule,
-        MomentModule
+        MomentModule,
+        SelectModule
     ],
     declarations: [
         // Pipes
@@ -76,6 +80,7 @@ import {
         UtcToLocalPipe,
         // Components
         InputTextComponent,
+        SelectComponent,
         SidebarComponent,
         ContentHeaderComponent
     ],
@@ -114,6 +119,7 @@ import {
         UtcToLocalPipe,
         // Components
         InputTextComponent,
+        SelectComponent,
         SidebarComponent,
         ContentHeaderComponent
     ]
