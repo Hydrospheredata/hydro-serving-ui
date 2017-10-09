@@ -1,23 +1,5 @@
-@import 'variables';
-:host {
-  display: block;
-  // minus header height
-  height: calc(100% - 64px);
-}
+@import 'variables.scss';
 
-.runtime-select > .mdl-textfield {
-  padding: 0;
-}
-
-.runtime-label {
-  margin-left: 0;
-}
-
-
-
-
-// TEMPORARY WORKAROUND
-// TODO:REMOVE AND USE PROPER COMPONENT
 $default-blue: #539ae9;
 $default-green: #8cc63e;
 $bold: "Museo Sans Bold";
@@ -82,4 +64,3 @@ $light: "Museo Sans Light";
 .runtime {
   font-family: $bold;
 }
-

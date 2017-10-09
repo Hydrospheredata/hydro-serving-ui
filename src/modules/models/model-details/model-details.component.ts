@@ -26,7 +26,7 @@ import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { AppState, Model, Service } from '@shared/models/_index';
-import {  } from '@shared/services/_index';
+import { } from '@shared/services/_index';
 import { Subscription } from 'rxjs/Subscription';
 import * as Actions from '@shared/actions/_index';
 import { ModelsService, ModelService, ModelRuntime } from '@shared/_index';
@@ -56,7 +56,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private buildsSubscription: Subscription;
 
   private tableHeader: string[] = [
-      'Created', 'Version', 'Status', 'Actions', 'Services'
+    'Created', 'Version', 'Status', 'Actions', 'Services'
   ]
 
 
@@ -87,7 +87,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   loadInitialData(id: string) {
-
     this.modelsService.getBuildsByModel(id).first()
       .subscribe((data) => {
         this.builds = data.sort((a, b) => {
@@ -172,7 +171,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   deployModelService(modelOptions) {
     this.dialog.showCustomDialog({
       component: DialogDeployModelComponent,
-      styles: { 'width': '800px', 'min-height': '250px' },
+      styles: { 'width': '800px', 'min-height': '350px' },
       classes: '',
       isModal: true,
       clickOutsideToClose: true,
@@ -195,21 +194,22 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  stopModel(modelService, modelRuntimes) {
-    if (modelRuntimes.length > 0) {
-      this.dialog.alert('Model can\'t be stopped while it is used in service.');
-    } else {
-      this.dialog.showCustomDialog({
-        component: DialogStopModelComponent,
-        styles: { 'width': '600px', 'min-height': '250px' },
-        classes: '',
-        isModal: true,
-        clickOutsideToClose: true,
-        enterTransitionDuration: 400,
-        leaveTransitionDuration: 400,
-        providers: [{ provide: injectableModelStopOptions, useValue: modelService }],
-      });
-    }
+  stopModel(modelService, weightedServices) {
+    const payload = {
+      model: modelService,
+      hasWeightedServices: weightedServices.length > 0
+    };
+    this.dialog.showCustomDialog({
+      component: DialogStopModelComponent,
+      styles: { 'width': '800px', 'min-height': '350px' },
+      classes: '',
+      isModal: true,
+      clickOutsideToClose: true,
+      enterTransitionDuration: 400,
+      leaveTransitionDuration: 400,
+      providers: [{ provide: injectableModelStopOptions, useValue: payload }],
+    });
+
   }
 
   ngOnDestroy() {

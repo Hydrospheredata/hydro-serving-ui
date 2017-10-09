@@ -10,7 +10,8 @@ import { FormsModule } from '@angular/forms';
 
 import {
   ModelsWrapperComponent,
-  ModelDetailsComponent
+  ModelDetailsComponent,
+  ModelDetailsSummaryComponent
 } from './_index';
 import { StoreModule } from '@ngrx/store';
 import { ModelsReducer, ModelServiceReducer, ModelRuntimeReducer, ServicesReducer } from '@shared/reducers/_index';
@@ -38,7 +39,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     ],
     declarations: [
         ModelsWrapperComponent,
-        ModelDetailsComponent
+        ModelDetailsComponent,
+        ModelDetailsSummaryComponent
+    ],
+    exports: [
+      ModelDetailsSummaryComponent
     ]
 })
 export class ModelsModule { }

@@ -18,7 +18,7 @@ export let injectableModelDeployOptions = new InjectionToken<object>('injectable
 })
 export class DialogDeployModelComponent implements OnInit {
   private data;
-  public createServiceEntity;
+  public model;
 
   constructor(
     @Inject(injectableModelDeployOptions) data,
@@ -30,7 +30,7 @@ export class DialogDeployModelComponent implements OnInit {
     private modelsService: ModelsService,
     private modelBuilder: ModelBuilder
   ) {
-    this.createServiceEntity = data;
+    this.model = data;
   }
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export class DialogDeployModelComponent implements OnInit {
   }
 
   submitDeployModelForm() {
-    this.modelServiceService.createService(this.createServiceEntity.serviceName, this.createServiceEntity.modelRuntimeId)
+    this.modelServiceService.createService(`${this.model.modelName}_${this.model.modelVersion}`, this.model.id)
       .subscribe(result => {
         this.dialogRef.hide();
         this.mdlSnackbarService.showSnackbar({

@@ -108,6 +108,9 @@ $light: "Museo Sans Light";
     padding: 3px 20px;
     cursor: pointer;
     margin-left: 10px;
+    &-new {
+      width: 50%
+    }
 }
 
 .hydro-table {
@@ -117,4 +120,8 @@ $light: "Museo Sans Light";
     &-body__cell {
       text-align: center;
     }
+}
+
+.actions > div {
+  justify-content: center!important;
 }

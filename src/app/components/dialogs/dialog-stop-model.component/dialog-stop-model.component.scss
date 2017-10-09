@@ -1,0 +1,12 @@
+.warning {
+  color: #ffffff;
+  background-color: #f28a03;
+  font-size: 18px;
+  &-icon {
+    margin: 7px;
+  }
+  &-text {
+    text-align: center;
+    vertical-align: super;
+  }
+}

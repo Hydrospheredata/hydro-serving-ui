@@ -20,6 +20,7 @@ export let injectableModelStopOptions = new InjectionToken<object>('injectableMo
 export class DialogStopModelComponent implements OnInit {
   private data;
   public model;
+  public hasWeightedServices: boolean;
 
   constructor(
     @Inject(injectableModelStopOptions) data,
@@ -31,7 +32,8 @@ export class DialogStopModelComponent implements OnInit {
     private modelsService: ModelsService,
     private modelBuilder: ModelBuilder
   ) {
-    this.model = data;
+    this.model = data.model;
+    this.hasWeightedServices = data.hasWeightedServices;
   }
 
   ngOnInit() {
@@ -43,7 +45,7 @@ export class DialogStopModelComponent implements OnInit {
   }
 
   submitStopModelForm() {
-      let id = this.model.serviceId;
+      const id = this.model.serviceId;
       this.modelServiceService.removeService(id)
       .subscribe((data) => {
         this.dialogRef.hide();

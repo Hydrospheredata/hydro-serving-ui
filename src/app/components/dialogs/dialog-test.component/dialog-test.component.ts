@@ -60,8 +60,6 @@ export class DialogTestComponent implements OnInit {
     this.createTestForm();
     this.requestBody = this.createCURLString(this.testForm);
     this.testForm.valueChanges.subscribe(form => {
-      let inputPayload = '';
-      inputPayload = JSON.stringify(JSON.parse(form.data));
       this.requestBody = this.createCURLString(form);
     });
     this.codeMirrorInputOptions = {
@@ -85,7 +83,8 @@ export class DialogTestComponent implements OnInit {
 
   private createCURLString (form) {
     let path = '';
-    const payload = JSON.stringify(this.createTestOptions(form));
+    let payload = '';
+    payload = JSON.stringify(this.createTestOptions(form));
     if (this.model.cloudDriverId) {
       path = `${this.apiUrl}/modelService/serve`;
     } else if (this.model.weights && this.model.weights.length > 0) {

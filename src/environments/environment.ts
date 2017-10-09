@@ -5,8 +5,8 @@
 
 export const environment = {
   production: false,
-  host: 'http://54.191.51.127',
+  host: 'http://localhost',
   apiUrl: '/api/v1',
   uiUrl: '/ui/v1',
-  port: '80'
+  port: '8080'
 };
