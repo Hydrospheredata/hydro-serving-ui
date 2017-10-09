@@ -17,6 +17,7 @@ import { FormsService, ModelServicesService, ServicesService } from '@shared/ser
   providers: [FormsService]
 })
 export class DialogAddServiceComponent implements OnInit {
+    private isKafkaEnabled: boolean = false;
     public serviceIdLabel: string = 'Models Name';
     public serviceForm: FormGroup;
     public selectedService: Service;
