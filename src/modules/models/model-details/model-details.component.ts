@@ -25,7 +25,7 @@ import { MdlDialogService } from '@angular-mdl/core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { AppState, Model, WeightedService } from '@shared/models/_index';
+import { AppState, Model, Service } from '@shared/models/_index';
 import {  } from '@shared/services/_index';
 import { Subscription } from 'rxjs/Subscription';
 import * as Actions from '@shared/actions/_index';
@@ -45,8 +45,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   public model: Model;
   public runtimes: ModelRuntime[];
   private modelServices: ModelService[];
-  private weightedServices: WeightedService[];
+  private weightedServices: Service[];
   public deployable = true;
+  public isModels = true;
 
   private modelRuntimesServiceSubscription: Subscription;
   private modelServicesServiceSubscription: Subscription;
@@ -128,13 +129,13 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
   }
 
-  public getWeightedServices(modelRuntimeId: number): WeightedService[] {
+  public getWeightedServices(modelRuntimeId: number): Service[] {
     const modelService = this.getModelService(modelRuntimeId);
     if (!modelRuntimeId || !modelService) {
       return [];
     }
     return this.weightedServices.filter((weightedService) => {
-      return weightedService.weights.some((weight) => weight.serviceId === modelService.serviceId);
+      return weightedService.weights.some((weight) => weight.service ? weight.service.serviceId === modelService.serviceId : false);
     });
   }
 
@@ -149,6 +150,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
   public getPayloadForModelDeploy(runtime) {
     return { serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id };
+  }
+
+  public getLatestVersion() {
+    return '0.0.1';
   }
 
   buildModel(modelOptions: Model) {

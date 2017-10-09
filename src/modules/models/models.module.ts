@@ -8,9 +8,8 @@ import { MdlSelectModule } from '@angular-mdl/select';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 
-import { 
+import {
   ModelsWrapperComponent,
-  ModelsListComponent,
   ModelDetailsComponent
 } from './_index';
 import { StoreModule } from '@ngrx/store';
@@ -39,7 +38,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     ],
     declarations: [
         ModelsWrapperComponent,
-        ModelsListComponent,
         ModelDetailsComponent
     ]
 })

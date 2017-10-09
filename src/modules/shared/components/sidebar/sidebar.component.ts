@@ -8,6 +8,7 @@ import { Service, Model } from '@shared/models/_index';
 import { Observable } from 'rxjs/Observable';
 
 import { DialogAddServiceComponent } from '@components/dialogs/_index';
+import * as moment from 'moment';
 
 
 
@@ -39,7 +40,7 @@ export class SidebarComponent implements OnInit, OnChanges {
     ngOnChanges() {
         this.sidebarData.subscribe(items => {
             this.sidebarList = items;
-        })
+        });
     }
 
     addService() {
@@ -52,6 +53,15 @@ export class SidebarComponent implements OnInit, OnChanges {
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400
         });
+    }
+
+    public isDeployable(model) {
+      if (!model || !model.lastModelRuntime.created) {
+        return true;
+      }
+      const modelUpdated = model.updated;
+      const runtimeCreated = model.lastModelRuntime.created;
+      return moment(modelUpdated).isAfter(moment(runtimeCreated));
     }
 
 }

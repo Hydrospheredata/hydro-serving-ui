@@ -1,170 +1,121 @@
 @import 'variables.scss';
 
-.model {
-  &-panel {
-    background-color: $main-bg-color;
-    padding: 32px 26px;
-    &__title {
-
-    }
-  }
-}
-
-.model-name {
-  padding: 55px 92px;
-}
+$default-blue: #539ae9;
+$default-green: #8cc63e;
+$bold: "Museo Sans Bold";
+$light: "Museo Sans Light";
 
 .model-details {
-  padding: 27px 121px;
-  > p {
-    > span {
-      font-weight: bold;
+    padding: 27px 121px;
+    >p {
+        >span {
+            font-weight: bold;
+        }
+        font-size: 16px;
+        display: flex;
+        flex-direction: row;
     }
-    font-size: 16px;
-    display: flex;
-    flex-direction: row;
-  }
-}
-
-.model-grid-header {
-  text-align: center;
-  color: #818994;
-  font-size: 18px;
-  font-family: "Museo Sans Bold";
-}
-
-.model-details-row {
-  padding-top: 16px;
-  font-size: 16px;
+    &-row {
+      padding-top: 16px;
+      font-size: 16px;
+    }
+    &-tag {
+      padding: 5px 8px;
+      background-color: #e9ecf2;
+      border-radius: 5px;
+    }
+    &-label {
+      color: #808080;
+      font-family: $light;
+    }
+    &-panel {
+      background-color: $main-bg-color;
+      padding: 32px 26px;
+    }
+    &-grid-header {
+      text-align: center;
+      color: #818994;
+      font-size: 18px;
+      font-family: $bold;
+    }
+    &-table {
+      margin-bottom: 70px
+    }
+    &-link {
+      color: $default-blue;
+      text-decoration: none;
+    }
 }
 
 .runtime {
-  font-family: "Museo Sans Bold";
+    font-family: $bold;
 }
 
-.model-details-tag {
-    padding: 5px 8px;
-    background-color: #e9ecf2;
-    border-radius: 5px;
-  }
-
-.model-details-label {
-  color: #808080;
-  font-family: "Museo Sans Light"
+.deployed {
+    color: $default-green;
+    use {
+        fill: $default-green;
+    }
 }
 
+.undeployed {
+    color: #818994;
+    use {
+        fill: #e1e4eb;
+    }
+}
 
-$table-padding: 18px;
+.action {
+    color: #5b95de;
+    use {
+        fill: $default-blue;
+    }
+}
 
-.table {
-  border-collapse: collapse;
-  width: 100%;
-  &-head {
-    &__cell {
+.icon {
+    width: 12px;
+    height: 12px;
+    margin-top: -2px;
+    &-label {
+        margin-left: 5px;
+    }
+}
+
+.hydro-link:last-of-type {
+    margin-left: 14px;
+}
+
+.new-version {
+    color: #f28a03;
+    &::after {
+        content: '˚';
+    }
+    &-label {
+      margin-left: 10px;
+      background-color: #f28a03;
+      border-radius: 2px;
+      color: #FFFFFF;
       font-size: 12px;
-      color: #abafb2;
-      padding: $table-padding $table-padding * 2;
-      text-align: left;
+      padding: 5px 7px;
     }
-  }
-  &-body {
-    &__row {
-      background-color: $main-bg-color;
-      border-bottom: 2px solid #ffffff;
-    }
-    &__cell {
-      padding: $table-padding * 1.7 $table-padding * 2;
-    }
-  }
 }
 
-.services-list-table {
-  border: none;
-  width: 100%;
-
-  @media screen and (min-width: 600px) and (max-width: 959px) {
+.deploy-btn {
+    background-color: $default-blue;
+    color: #FFFFFF;
+    font-family: $bold;
     font-size: 12px;
-  }
-  @media screen and (max-width: 1279px) and (min-width: 960px) {
-    font-size: 14px;
-  }
-
-  th {
-    text-align: left;
-    padding-left: 0.5rem;
-    padding-right: 0;
-    &:first-child {
-      span {
-        padding-left: 24px;
-      }
-    }
-  }
-
-  tr:hover {
-    background: #fafbfc;
-  }
-
-  td {
-    text-align: left;
-    max-width: 0;
-    padding-left: 5px;
-    padding-right: 5px;
-
-    .mdl-select {
-      .mdl-list__item {
-        font-size: 14px;
-      }
-      .mdl-textfield {
-        &__input {
-          font-size: 14px;
-        }
-      }
-    }
-
-  }
-  &__tr {
+    fill: #FFFFFF;
+    padding: 3px 20px;
     cursor: pointer;
-    td .services-list-table__td__actions--buttons {
-      visibility: hidden;
-    }
-    &:hover {
-      td .services-list-table__td__actions--buttons {
-        visibility: visible;
-      }
-    }
-  }
-  &__tr,
-  &__td {
-    border-top: 2px solid $main-bg-color;
-    border-bottom: none;
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
+    margin-left: 10px;
+}
 
-    &.id {
-      width: 10%;
+.hydro-table {
+    &-head__cell {
+      text-align: center;
     }
-    &.name {
-      width: 15%;
+    &-body__cell {
+      text-align: center;
     }
-    &.model-type {
-      width: 15%;
-    }
-    &.run-type {
-      width: 15%;
-    }
-    &.version {
-      width: 10%;
-    }
-    &.status {
-      width: 20%;
-    }
-    &.actions {
-      width: 20%;
-    }
-    i {
-      font-size: 20px;
-    }
-
-  }
-
 }

@@ -25,7 +25,7 @@ export class ModelsService {
                     });
     }
 
-    updateModel(model: Model): Observable<Model> {
+    updateModel(model): Observable<Model> {
       return this.http.put(this.baseAPIUrl, model);
     }
 

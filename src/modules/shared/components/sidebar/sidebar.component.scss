@@ -90,3 +90,15 @@ svg {
 .undeployed {
   fill: #e1e4eb;
 }
+
+.version-new {
+  padding-right: 27px!important;
+  color: #f28a03;
+  &::after {
+    content: '˚';
+  }
+}
+
+.version-failed {
+  color:#d24a43;
+}
