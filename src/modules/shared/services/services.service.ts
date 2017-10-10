@@ -38,7 +38,7 @@ export class ServicesService {
     }
 
     serveService(data): Observable<any> {
-        return this.http.post(`${this.baseUiUrl}/serve`, data)
+        return this.http.post(`${this.baseApiUrl}/serve`, data)
             .map((response: Response) => {
                 return response.json();
             });

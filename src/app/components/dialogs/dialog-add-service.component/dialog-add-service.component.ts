@@ -18,6 +18,9 @@ import { FormsService, ModelServicesService, ServicesService } from '@shared/ser
   providers: [FormsService]
 })
 export class DialogAddServiceComponent implements OnInit {
+    model = {
+        weight: '100'
+    }
     private labels = {
         kafka: {
             input: 'input topic = ',
@@ -64,7 +67,9 @@ export class DialogAddServiceComponent implements OnInit {
             });
         this.store.select('modelService')
             .subscribe(modelService => {
-                this.modelServices = modelService;
+                this.modelServices = modelService.filter(item => {
+                    return item.modelRuntime.runtimeType 
+                });
             });
     }
 
@@ -84,7 +89,7 @@ export class DialogAddServiceComponent implements OnInit {
     private addWeightToModel(model?: string) {
         return this.fb.group({
             serviceId: [model ? model : '', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
-            weight: ['0', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
+            weight: ['100', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
         });
     }
 
@@ -108,7 +113,7 @@ export class DialogAddServiceComponent implements OnInit {
                 result += +service.weight;
             });
 
-            if (result > 100) {
+            if (result != 100) {
                 this.serviceForm.controls.weights.setErrors({ overflow: true });
             }
 
@@ -160,7 +165,7 @@ export class DialogAddServiceComponent implements OnInit {
                 serviceId: 0,
                 sourceTopic: kafka.sourceTopic,
                 destinationTopic: kafka.destinationTopic,
-                brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,:\/|()[\]{}<>( )]/g) : kafka.brokerList
+                brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g) : kafka.brokerList
             });
         });
 
@@ -170,7 +175,7 @@ export class DialogAddServiceComponent implements OnInit {
             kafkaStreamingSources: kafkaStreamingSources,
         };
 
-        const service: Service = Object.assign( serviceInfo, { weights: weights } );
+        const service = new Service(Object.assign( serviceInfo, { weights: weights } ));
 
         console.log(service);
 

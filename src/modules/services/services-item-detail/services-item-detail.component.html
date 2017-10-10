@@ -23,6 +23,18 @@
         </div>
     </div>
 
+    <!-- Edit here -->
+    <ul class="content-info__list" *ngIf="service.kafkaStreamingSources[0].sourceTopic">
+        <li class="content-info__list-item" *ngFor="let kafka of service.kafkaStreamingSources">
+            <ol class="content-info__sublist">
+                <li class="content-info__sublist-item" *ngFor="let item of kafka | iterateAsArray | slice: 1">
+                    <span class="content-info__sublist-item-title">{{item}}</span>
+                    <span class="content-info__sublist-item-value">{{kafka[item]}}</span>
+                </li>
+            </ol>
+        </li>
+    </ul>
+
     <table class='hydro-table hydro-table-services'>
         <thead class="hydro-table-head">
             <tr>
