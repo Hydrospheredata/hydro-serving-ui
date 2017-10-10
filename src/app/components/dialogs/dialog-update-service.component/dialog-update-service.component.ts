@@ -19,6 +19,9 @@ export let injectableServiceUpdate = new InjectionToken<Service>('selectedServic
   providers: [FormsService]
 })
 export class DialogUpdateServiceComponent implements OnInit {
+    model = {
+        weight: ''
+    }
     private labels = {
         kafka: {
             input: 'input topic = ',
@@ -82,7 +85,7 @@ export class DialogUpdateServiceComponent implements OnInit {
     private addWeightToModel() {
         return this.fb.group({
             serviceId: ['', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
-            weight: ['0', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
+            weight: ['100', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
         });
     }
 
@@ -105,7 +108,7 @@ export class DialogUpdateServiceComponent implements OnInit {
                 result += +service.weight;
             });
 
-            if (result > 100) {
+            if (result != 100) {
                 this.serviceForm.controls.weights.setErrors({ overflow: true });
             }
 
@@ -117,10 +120,10 @@ export class DialogUpdateServiceComponent implements OnInit {
 
     private updateServiceFormValues(service: Service) {
         for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
-            this.addKafkaSource();
+            this.addKafkaToService();
         }
         for (let i = 0; i < service.weights.length - 1; i++) {
-            this.addWeightToModel();
+            this.addModelToService();
         }
         this.serviceForm.patchValue({id: service.id});
         this.serviceForm.patchValue({serviceName: service.serviceName});
