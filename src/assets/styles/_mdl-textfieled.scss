@@ -1,0 +1,17 @@
+.mdl-textfield {
+    padding: 0;
+    &__label {
+        left: 10px;
+        top: 4px;
+        &:after {
+            display: none;
+        }
+    }
+    &__input {
+        border: none;
+        padding: 7px 12px;
+        background-color: #e9ecf2;
+        border-radius: 5px;
+        color: #04143c;
+    }
+}

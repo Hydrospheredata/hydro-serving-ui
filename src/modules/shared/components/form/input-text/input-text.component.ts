@@ -20,13 +20,13 @@ export class InputTextComponent implements ControlValueAccessor  {
   protected onChange: (_: any) => void = noop;
   protected onTouched: () => void = noop;
 
-  @Input() public inputClass: string;
+  @Input() public inputClass: string = '';
   @Input() public label: string;
   @Input() public name: string;
   @Input() public iconName: string;
   @Input() public iconClass: string;
   @Input() public formErrors: string;
-  @Input() public wrapClassName: string;
+  @Input() public wrapClassName: string = '';
   @Input() public disabled: string;
   @Input() public readonly: string;
   /**
@@ -40,9 +40,7 @@ export class InputTextComponent implements ControlValueAccessor  {
   @Input() public iconDirection: string;
   @Output() onIconClick = new EventEmitter<NgModel>();
 
-  constructor() {
-    this.wrapClassName = this.wrapClassName || '';
-  }
+  constructor() {}
 
   public iconClick(model: NgModel) {
     this.onIconClick.emit(model);

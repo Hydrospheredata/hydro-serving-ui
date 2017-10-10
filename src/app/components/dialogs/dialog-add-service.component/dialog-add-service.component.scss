@@ -44,3 +44,118 @@
     }
   }
 }
+
+.form {
+  &-kafkaSources {
+    &__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      padding-left: 42px;
+      &-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        width: 100%;
+        &:before {
+          content: '';
+          position: absolute;
+          border-left: 1px solid #818994;
+          border-bottom: 1px solid #818994;
+          width: 24px;
+          height: 24px;
+          left: -35px;
+          margin-top: -17px;
+        }
+        &-fields {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          > .input-field,
+          > .output-field {
+            flex: 0 0 50%;
+          }
+          > .bootstrapServers-field {
+            flex: 0 0 100%;
+          }
+        }
+        &--add {
+          color: #4d9bf1;
+          outline: none;
+          cursor: pointer;
+          > svg {
+            fill: #4d9bf1;
+            width: 10px;
+            height: 10px; 
+          }
+          > span {
+            border-bottom: 1px dashed #4d9bf1;
+            line-height: 1;
+          }
+        }
+      }
+    }
+  }
+  &-weights {
+    &__list {
+      counter-reset: counter;
+      margin: 0;
+      padding: 0;
+      &-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        &:before {
+          content: counter(counter)".";
+          counter-increment: counter;
+          font-size: 16px;
+          color: #818994;
+          margin-right: 12px;
+        }
+        &--weight {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          > hydro-input-text {
+            margin-bottom: 0;
+          }
+        }
+        &--add {
+          display: flex;
+          align-items: center;
+          > svg {
+            width: 10px;
+            height: 10px;
+            margin-right: 15px;
+            fill: #818994;
+          }
+        }
+      }
+    }
+  }
+  &-actions {
+    justify-content: flex-end;
+    > .btn {
+      &:first-child {
+        margin-left: 0;
+        color: #818994;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.delete {
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+  margin-top: -1rem;
+  fill: #969da6;
+}

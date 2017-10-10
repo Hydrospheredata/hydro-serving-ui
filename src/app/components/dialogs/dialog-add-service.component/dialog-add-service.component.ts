@@ -4,6 +4,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
+import { DialogBaseComponent } from '@shared/_index';
 import * as Actions from '@shared/actions/_index';
 import { AppState, ModelService, Service } from '@shared/models/_index';
 import { FormsService, ModelServicesService, ServicesService } from '@shared/services/_index';
@@ -17,9 +18,22 @@ import { FormsService, ModelServicesService, ServicesService } from '@shared/ser
   providers: [FormsService]
 })
 export class DialogAddServiceComponent implements OnInit {
+    private labels = {
+        kafka: {
+            input: 'input topic = ',
+            output: 'output topic = ',
+            bootstrapServers: 'bootstrapServers = ',
+        },
+        weight: 'Weight'
+    }
+    private wrapToInlineControlClass: string = 'form-group__inline';
+    private weightInputClass: string = '__modelWeight';
+    private kafkaInputClass: string = '__kafkaInput';
+    
+    private serviceForm: FormGroup;
     private isKafkaEnabled: boolean = false;
-    public serviceIdLabel: string = 'Models Name';
-    public serviceForm: FormGroup;
+    public addSelectLabel: string = 'choose model';
+    
     public selectedService: Service;
     public formTitle: string;
     public formErrors = {
@@ -51,7 +65,6 @@ export class DialogAddServiceComponent implements OnInit {
         this.store.select('modelService')
             .subscribe(modelService => {
                 this.modelServices = modelService;
-                console.log(this.modelServices);
             });
     }
 
@@ -60,13 +73,38 @@ export class DialogAddServiceComponent implements OnInit {
         this.initFormChangesListener();
     }
 
+    private createServiceForm() {
+        this.serviceForm = this.fb.group({
+            serviceName: ['', Validators.required],
+            weights: this.fb.array([this.addWeightToModel()]),
+            kafkaStreamingSources: this.fb.array([this.addKafkaSource()])
+        });
+    }
+
+    private addWeightToModel(model?: string) {
+        return this.fb.group({
+            serviceId: [model ? model : '', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
+            weight: ['0', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
+        });
+    }
+
+    private addKafkaSource() {
+        return this.fb.group({
+            serviceId: [0],
+            sourceTopic: [''],
+            destinationTopic: [''],
+            brokerList: [['']]
+        });
+    }
+
     private initFormChangesListener() {
         this.serviceForm.valueChanges.subscribe((form) => {
+
             let result = 0;
             // todo fix errors reset
             this.formErrors.weights = '';
             this.formErrors.serviceId = '';
-            form.weights.forEach((service) => {
+            form.weights.forEach(service => {
                 result += +service.weight;
             });
 
@@ -80,66 +118,70 @@ export class DialogAddServiceComponent implements OnInit {
         });
     }
 
-    private createServiceForm() {
-        this.serviceForm = this.fb.group({
-            serviceName: ['', Validators.required],
-            weights: this.fb.array([this.createWeightsForm()])
-        });
-    }
-
-    private createWeightsForm() {
-        return this.fb.group({
-            serviceId: ['', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
-            weight: ['', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
-        });
-    }
-
-    addWeightsForm() {
+    addModelToService(model?: string) {
         const control = <FormArray>this.serviceForm.controls['weights'];
-        control.push(this.createWeightsForm());
+        control.push(this.addWeightToModel(model));
     }
 
-    removeWeightsForm(i: number) {
+    addKafkaToService() {
+        const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
+        control.push(this.addKafkaSource());
+    }
+
+    removeModelFromService(i: number) {
         const control = <FormArray>this.serviceForm.controls['weights'];
         control.removeAt(i);
     }
 
-    setModelService(value) {
-        console.log(value);
+    onChooseModel(value) {
+        console.log(typeof value);
+        this.addModelToService(value);
     }
 
-    submitServiceForm(form) {
-        if (this.serviceForm.invalid) {
-            return;
-        }
+    onSubmit() {
+        console.log(this.serviceForm)
+        
+        // if (this.serviceForm.invalid) {
+        //     return;
+        // }
 
-        const formWeights = form.controls.weights;
-        const weights: object[] = [];
-        let service: Service;
+        let weights: {serviceId: number, weight: number}[] = [];
+        let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
 
-        for ( let i = 0; i < formWeights.length; i++ ) {
+        this.serviceForm.value.weights.forEach(model => {
             weights.push({
-                serviceId: Number(formWeights.controls[i].controls.serviceId.value),
-                weight: Number(formWeights.controls[i].controls.weight.value)
+                serviceId: model.serviceId,
+                weight: Number(model.weight) 
             });
-        }
+        });
 
-        service = {
+        this.serviceForm.value.kafkaStreamingSources.forEach(kafka => {
+            kafkaStreamingSources.push({
+                serviceId: 0,
+                sourceTopic: kafka.sourceTopic,
+                destinationTopic: kafka.destinationTopic,
+                brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,:\/|()[\]{}<>( )]/g) : kafka.brokerList
+            });
+        });
+
+        const serviceInfo = {
             id: this.services.length ? this.services[this.services.length - 1].id + 1 : 1,
-            serviceName: form.controls.serviceName.value,
-            weights: weights
+            serviceName: this.serviceForm.value.serviceName,
+            kafkaStreamingSources: kafkaStreamingSources,
         };
+
+        const service: Service = Object.assign( serviceInfo, { weights: weights } );
+
+        console.log(service);
 
         this.servicesService.addService(service)
             .subscribe(services => {
-                console.log(services);
                 this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully added',
                     timeout: 5000
                 });
-                console.log(services);
             });
     }
 
