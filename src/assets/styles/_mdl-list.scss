@@ -1,0 +1,20 @@
+.mdl-list {
+    .mdl-select & {
+        box-shadow: none;
+        background-color: #e9ecf2;
+    }
+    &__item {
+        .mdl-select & {
+            padding: 6px 14px;
+            min-height: auto;
+            font-family: 'Museo Sans Regular';
+            color: #04143c;
+            &.is-active,
+            &:hover,
+            &:focus {
+                background-color: transparent;
+                color: #539ae9;
+            }
+        }
+    }
+}

@@ -1,14 +1,8 @@
 <hydro-loader></hydro-loader>
-<div class="mdl-layout__container">
-  <div class="mdl-layout mdl-layout--no-drawer-button">
-    <!-- Navigation -->
-    <hydro-navbar class="mdl-layout--fixed-header"></hydro-navbar>
-    <!-- Router Outlet -->
-    <main class='hydro-layout cs-height-100' fxLayout="row" fxLayoutAlign="space-between stretch">
-      <div fxFlex='100%' class='mdl-layout__content' fxFlexFill>
+<div class="app-container">
+    <hydro-navbar class="app-header"></hydro-navbar>
+    <main class="app-body">
         <router-outlet></router-outlet>
-      </div>
     </main>
-  </div>
 </div>
 <dialog-outlet></dialog-outlet>

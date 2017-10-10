@@ -1,59 +1,87 @@
-<div>
-  <h2 class="mdl-dialog__title mat-dialog-title">Add Service</h2>
-  <form [formGroup]="serviceForm" (ngSubmit)="submitServiceForm(serviceForm)">
-    <div class="mdl-dialog__content">
+<h2 class="mdl-dialog__title">Add Service</h2>
+<form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
+  <div class="mdl-dialog__content">
 
-      <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Service Name" formControlName="serviceName"></hydro-input-text>
+    <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Service Name" formControlName="serviceName"></hydro-input-text>
 
-      <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
-      <div formArrayName="weights">
-        <div *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index">
-          <div [formGroupName]="i">
-            <div fxLayout="row" fxLayoutAlign="space-between center">
-              <div fxFlex="60" class="input-text form-group">
-                <label hidden class="control-label">Service id</label>
-
-                <mdl-select #autocompleteSelect [autocomplete]="true" label="{{serviceIdLabel}}" floating-label class="cs-text-center" formControlName="serviceId">
-                  <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
-                </mdl-select>
-              </div>
-              <div fxFlex="30" fxLayout="row" fxLayoutAlign="space-between center">
-                <hydro-input-text fxFlex="70"
-                                  [formErrors]="formErrors.weight"
-                                  placeholder="Weight"
-                                  name="asd"
-                                  formControlName="weight">
-                </hydro-input-text>
-                <div class="btn-group__actions">
-                  <mdl-icon class="cs-cursor-pointer mdl-color-text--light-blue-700" (click)="addWeightsForm()">
-                    add_circle
-                  </mdl-icon>
-                  <mdl-icon class="cs-cursor-pointer mdl-color-text--red"
-                            (click)="removeWeightsForm(i)"
-                            *ngIf="serviceForm['controls'].weights['controls'].length > 1">remove_circle
-                  </mdl-icon>
-                </div>
-              </div>
-            </div>
+    <div class="hydro-form-group">
+      <label class="hydro-checkbox">
+        <input type="checkbox" [checked]="isKafkaEnabled" (change)="isKafkaEnabled = $event.target.checked">
+        <span>Use Kafka source</span>
+      </label>
+      <ul class="form-kafkaSources__list" *ngIf="isKafkaEnabled" formArrayName="kafkaStreamingSources">
+        <li class="form-kafkaSources__list-item" *ngFor="let kafka of serviceForm['controls'].kafkaStreamingSources['controls']; let i = index" [formGroupName]="i">
+          <div class="form-kafkaSources__list-item-fields">
+            <hydro-input-text class="input-field" [formErrors]="formErrors.weight"
+                              [wrapClassName]="wrapToInlineControlClass"
+                              [inputClass]="kafkaInputClass"
+                              [label]="labels.kafka.input"
+                              name="inputTopic"
+                              formControlName="sourceTopic">
+            </hydro-input-text>
+            <hydro-input-text class="output-field" [formErrors]="formErrors.weight"
+                              [wrapClassName]="wrapToInlineControlClass"
+                              [inputClass]="kafkaInputClass"
+                              [label]="labels.kafka.output"
+                              name="outputTopic"
+                              formControlName="destinationTopic">
+            </hydro-input-text>
+            <hydro-input-text class="bootstrapServers-field" [formErrors]="formErrors.weight"
+                              [wrapClassName]="wrapToInlineControlClass"
+                              [inputClass]="kafkaInputClass"
+                              [label]="labels.kafka.bootstrapServers"
+                              name="bootstrapServers"
+                              formControlName="brokerList">
+            </hydro-input-text>
           </div>
-        </div>
-      </div>
+          <svg class="delete" (click)="removeModelFromService(i)" *ngIf="serviceForm['controls'].kafkaStreamingSources['controls'].length > 1">
+            <use xlink:href="#icon-remove"></use>
+          </svg>
+        </li>
+        <li class="form-kafkaSources__list-item--add" *ngIf="isKafkaEnabled" (click)="addKafkaToService()">
+          <svg><use xlink:href="#icon-plus"></use></svg>
+          <span>Add More Parameters</span>
+        </li>
+      </ul>
     </div>
-    <div class="cs-mt-30 cs-mb-32">
-      <div class="mdl-grid mdl-grid--no-spacing">
-        <div class="mdl-cell mdl-cell--12-col cs-text-right">
-          <button (click)="dialogRef.hide()" type="button" mdl-button
-                  class='mat-button mat-button--big'>
-            CANCEL
-          </button>
-          <button type="submit" mdl-button [disabled]="serviceForm.invalid"
-                  class='mat-button mat-button--big mat-button--primary'
-                  mdl-button-type="raised" mdl-colored="primary" mdl-ripple>
-            Add context
-          </button>
-        </div>
-      </div>
-    </div>
+    <div class="hydro-form-group">
+      <label>Models</label>
+      <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
+      <ul class="form-weights__list" formArrayName="weights">
+        <li class="form-weights__list-item" *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index" [formGroupName]="i">
+          
+          <mdl-select #autocompleteSelect [autocomplete]="true" label="{{serviceIdLabel}}" floating-label class="cs-text-center" formControlName="serviceId">
+            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
+          </mdl-select>
+          
+          <div class="form-weights__list-item--weight">
+            <hydro-input-text [formErrors]="formErrors.weight"
+                              [wrapClassName]="wrapToInlineControlClass"
+                              [inputClass]="weightInputClass"
+                              [label]="labels.weight"
+                              name="asd"
+                              formControlName="weight">
+            </hydro-input-text>%
+          </div>
 
-  </form>
-</div>
+          <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight"></mdl-slider>
+
+          <svg class="delete" (click)="removeModelFromService(i)" *ngIf="serviceForm['controls'].weights['controls'].length > 1">
+            <use xlink:href="#icon-remove"></use>
+          </svg>
+          
+        </li>
+        <li class="form-weights__list-item--add">
+          <svg><use xlink:href="#icon-plus"></use></svg>
+          <mdl-select (change)="onChooseModel($event)" #autocompleteSelect [autocomplete]="true" label="{{addSelectLabel}}" floating-label class="cs-text-center">
+            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
+          </mdl-select>
+        </li>
+      </ul>
+    </div>
+    <div class="btn-group form-actions">
+      <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
+      <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">Add service</button>
+    </div>
+  </div>
+</form>

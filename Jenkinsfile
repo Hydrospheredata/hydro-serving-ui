@@ -99,11 +99,11 @@ node("JenkinsOnDemand") {
     stage('Build') {
         def curVersion = currentVersion()
         sh "npm install"
-        sh "./node_modules/.bin/ng build --production"
+        sh "./node_modules/.bin/ng build --prod"
     }
 
     stage('Test') {
-        //TODO test???
+        sh "./node_modules/.bin/ng test --browsers=\"ChromeNoSandboxHeadless\" --code-coverage --single-run"
     }
     if (isReleaseJob()) {
         //if (currentBuild.result == 'UNSTABLE') {

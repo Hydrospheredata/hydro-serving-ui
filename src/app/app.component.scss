@@ -1,0 +1,12 @@
+.app {
+    &-container {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        height: 100%;
+    }
+    &-body {
+        overflow: scroll;
+        height: 100%;
+    }
+}

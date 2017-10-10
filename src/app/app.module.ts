@@ -5,70 +5,61 @@ import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { HydroRouter } from '@app/app.router';
-import { MomentModule } from 'angular2-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
-// Global components
-import { AppComponent } from './app.component';
-import { NavbarComponent } from '@components/navbar/navbar.component';
-import { LoaderComponent } from '@components/loader/loader.component';
+import { MomentModule } from 'angular2-moment';
+import { HydroRouter } from '@app/app.router';
 
 // codemirror
 import { CodemirrorModule } from 'ng2-codemirror';
 
-// services
-import { HttpModelsService } from '@services/http-models.service';
-import { HttpRuntimeTypesService } from '@services/http-runtime-types.service';
-import { LoaderStateService } from '@services/loader-state.service';
-import { HttpService } from '@services/http.service';
-import { HttpWeightedServicesService } from '@services/http-weighted-services.service';
-import { HttpModelServiceService } from '@services/http-model-service.service';
+// Global components
+import { AppComponent } from './app.component';
 
-// stores
-import { ModelStore } from '@stores/model.store';
-import { WeightedServiceStore } from '@stores/weighted-service.store';
-import { ModelServiceStore } from '@stores/model-service.store';
-import { ModelRuntimeStore } from '@stores/model-runtime.store';
+// Modules
+import { ServicesModule } from '../modules/services/services.module';
+import { ModelsModule } from '../modules/models/models.module';
+import { SharedModule } from '../modules/shared/shared.module';
 
-// factories
-import { httpServiceFactory } from './factories/http-service-factory';
+import {
+  // Factories
+  httpServiceFactory,
+  // Services
+  HttpModelsService,
+  HttpRuntimeTypesService,
+  LoaderStateService,
+  HttpService,
+  HttpWeightedServicesService,
+  HttpModelServiceService,
+  BuildModelService,
+  // Builders
+  ModelBuilder,
+  ModelRuntimeBuilder,
+  ModelBuildBuilder,
+  RuntimeTypeBuilder,
+  ModelCurrentServicesBuilder,
+  // Components
+  LoaderComponent,
+  NavbarComponent
+} from '@shared/_index';
 
-// builders
-import { ModelBuilder } from '@builders/model.builder';
-import { ModelRuntimeBuilder } from '@builders/model-runtime.builder';
-import { ModelBuildBuilder } from '@builders/model-build.builder';
-import { RuntimeTypeBuilder } from '@builders/runtime-type.builder';
-import { ModelCurrentServicesBuilder } from '@builders/model-current-services.builder';
+// Dialogs
+import * as Dialog from '@components/dialogs/_index';
 
-// dialogs
-import { DialogModelBuildComponent } from '@components/dialogs/dialog-model-build/dialog-model-build.component';
-import { DialogTestComponent } from './components/dialogs/dialog-test/dialog-test.component';
-import { BuildModelService } from '@services/build-model.service';
-import { DialogStopModelComponent } from './components/dialogs/dialog-stop-model/dialog-stop-model.component';
-import { DialogDeployModelComponent } from './components/dialogs/dialog-deploy-model/dialog-deploy-model.component';
-import { DialogUpdateServiceComponent } from '@components/dialogs/dialog-update-service/dialog-update-service.component';
-import { DialogDeleteServiceComponent } from './components/dialogs/dialog-delete-service/dialog-delete-service.component';
-import { DialogAddServiceComponent } from '@components/dialogs/dialog-add-service.component/dialog-add-service.component';
-
-import { ServicesModule } from './modules/services/services.module';
-import { ModelsModule } from './modules/models/models.module';
-import { SharedModule } from './modules/shared/shared.module';
-
+import { ClipboardModule } from 'ngx-clipboard';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     LoaderComponent,
-    DialogModelBuildComponent,
-    DialogTestComponent,
-    DialogStopModelComponent,
-    DialogDeployModelComponent,
-    DialogUpdateServiceComponent,
-    DialogDeleteServiceComponent,
-    DialogAddServiceComponent
+    Dialog.DialogModelBuildComponent,
+    Dialog.DialogTestComponent,
+    Dialog.DialogStopModelComponent,
+    Dialog.DialogDeployModelComponent,
+    Dialog.DialogUpdateServiceComponent,
+    Dialog.DialogDeleteServiceComponent,
+    Dialog.DialogAddServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -85,16 +76,17 @@ import { SharedModule } from './modules/shared/shared.module';
     RouterModule,
     ServicesModule,
     ModelsModule,
-    SharedModule
+    SharedModule,
+    ClipboardModule
   ],
   entryComponents: [
-    DialogModelBuildComponent,
-    DialogTestComponent,
-    DialogStopModelComponent,
-    DialogDeployModelComponent,
-    DialogUpdateServiceComponent,
-    DialogDeleteServiceComponent,
-    DialogAddServiceComponent
+    Dialog.DialogModelBuildComponent,
+    Dialog.DialogTestComponent,
+    Dialog.DialogStopModelComponent,
+    Dialog.DialogDeployModelComponent,
+    Dialog.DialogUpdateServiceComponent,
+    Dialog.DialogDeleteServiceComponent,
+    Dialog.DialogAddServiceComponent
   ],
   providers: [
     // services
@@ -109,11 +101,6 @@ import { SharedModule } from './modules/shared/shared.module';
     RuntimeTypeBuilder,
     ModelCurrentServicesBuilder,
     ModelBuildBuilder,
-    // stores
-    ModelStore,
-    WeightedServiceStore,
-    ModelServiceStore,
-    ModelRuntimeStore,
     HttpService,
     LoaderStateService,
     {

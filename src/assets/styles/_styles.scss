@@ -1,0 +1,348 @@
+/* You can add global styles to this file, and also import other style files */
+@import "fonts.scss";
+@import "variables.scss";
+@import "angular-material-custom.scss";
+@import "inputs.scss";
+@import "dialogs.scss";
+@import "common.scss";
+@import "codemirror.scss";
+@import "buttons.scss";
+@import "tables.scss";
+@import "forms.scss";
+@import "mdl-textfieled.scss";
+@import "mdl-list.scss";
+@import "mdl-select.scss";
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box
+}
+
+:after, :before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box
+}
+
+html, body {
+  font-family: $main-font-family !important;
+  background-color: $main-bg-color;
+  color: $main-color;
+  height: 100%;
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-family: $main-font-family;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit
+}
+
+.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+  font-weight: 400;
+  line-height: 1;
+  color: $main-color;
+}
+
+.h1, .h2, .h3, h1, h2, h3 {
+  margin-top: 20px;
+  margin-bottom: 10px
+}
+
+.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small {
+  font-size: 65%
+}
+
+.h4, .h5, .h6, h4, h5, h6 {
+  margin-top: 10px;
+  margin-bottom: 10px
+}
+
+.h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+  font-size: 75%
+}
+
+.h1, h1 {
+  font-size: 36px
+}
+
+.h2, h2 {
+  font-size: 30px
+}
+
+.h3, h3 {
+  font-size: 24px
+}
+
+.h4, h4 {
+  font-size: 18px
+}
+
+.h5, h5 {
+  font-size: 14px
+}
+
+.h6, h6 {
+  font-size: 12px
+}
+
+label {
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+button:focus, input:focus {
+  outline: 0;
+}
+
+aside {
+  background-color: $aside-bg-color;
+  flex-shrink: 0;
+}
+
+li a {
+  color: $main-color;
+}
+
+hr {
+  margin: 1em 24px;
+}
+
+a.hydro-link {
+  font-size: 12px;
+  text-decoration: none;
+  color: $label-color;
+  &:hover {
+    cursor: pointer;
+    color: $color--light-blue;
+  }
+
+  &.hydro-link--big {
+    font-size: 18px;
+  }
+
+  i {
+    vertical-align: middle;
+    font-size: 24px;
+  }
+
+  span {
+    vertical-align: middle;
+  }
+}
+
+md-dialog-container.mat-dialog-container {
+  box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2),
+              0 24px 38px 3px rgba(0, 0, 0, .14),
+              0 9px 46px 8px rgba(0, 0, 0, .12);
+  display: block;
+  padding: 45px;
+  border-radius: 2px;
+  box-sizing: border-box;
+  overflow: auto;
+  max-width: 80vw;
+  width: 100%;
+  height: 100%;
+}
+
+.mat-dialog-container--big {
+  width: 1300px;
+}
+
+.md-40 {
+  font-size: 40px;
+}
+
+.rotate-90 {
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+.hydro {
+  &-layout {
+    display: flex;
+  }
+
+  &-page {
+    &-container {
+      margin: 2rem 1.5rem 1.5rem 1.5rem;
+      background-color: #fff;
+      &.hydro-page-container--transparent {
+        background: transparent;
+      }
+    }
+
+    &-content {
+      height: 100%;
+      overflow-x: auto;
+      padding-bottom: 24px;
+    }
+  }
+
+  &-label {
+    color: $label-color;
+    font-size: 14px;
+    margin-bottom: 10px;
+    &::after {
+      content: ':';
+    }
+  }
+
+  &-btn {
+    background: transparent;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    float: right;
+    font-size: 14px;
+    font-weight: 500;
+    border: 3px solid $color--light-blue;
+    width: 96px;
+    height: 43px;
+    margin: 28px auto;
+
+    &:hover {
+      background-color: $color--light-blue;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    &__icon {
+      font-size: 20px;
+      margin-right: 10px;
+      position: relative;
+      vertical-align: text-bottom;
+    }
+  }
+}
+
+.font-color {
+
+  &--success {
+    color: $color--success;
+  }
+
+  &--failed {
+    color: $color--failed;
+  }
+
+  &--primary {
+    color: $color--primary;
+  }
+}
+
+.namespace {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 12px;
+  height: 32px;
+  font-size: 14px;
+  line-height: 32px;
+  border-radius: 5px;
+  background-color: #e9ecf2;
+
+  &--select {
+    padding-right: 0;
+  }
+
+  &__label {
+    color: $label-color;
+  }
+
+  &__label::after {
+    content: '=';
+    margin: 0 5px;
+  }
+}
+
+.status-icon {
+  border-radius: 50%;
+  color: #fff;
+  padding: 5px;
+  vertical-align: middle;
+
+  &--success {
+    background-color: $color--success;
+
+    &::before {
+      content: 'done'
+    }
+  }
+
+  &--failed {
+    color: $color--failed;
+
+    &::before {
+      content: 'clear'
+    }
+  }
+
+  &--primary {
+    color: $color--primary;
+
+    &::before {
+      content: 'rotate_left'
+    }
+  }
+}
+
+.hydro-label {
+  color: $label-color;
+  margin-bottom: 10px;
+
+  &::after {
+    content: ':'
+  }
+}
+
+.mat-tab-body-content {
+  padding-top: 25px;
+}
+
+.mdl-select {
+  .mdl-textfield {
+    .mdl-textfield__label:after,
+    .mdl-textfield.is-focused .mdl-textfield__label:after {
+      bottom: 6px;
+    }
+  }
+}
+
+.single-model-table {
+  td {
+    text-align: left !important;
+  }
+}
+
+.content {
+    margin: 16px 24px;
+    padding: 56px 96px;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
+    &-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 76px;
+        &__title {
+            font-size: 24px;
+        }
+    }
+    &-wrapper {
+        display: flex;
+        flex-direction: row;
+        min-height: 100%;
+        > hydro-sidebar {
+            flex-basis: 25%;
+        }
+        > hydro-services-item-detail,
+          hydro-model-details {
+            flex-basis: 75%;
+        }
+    }
+}
+

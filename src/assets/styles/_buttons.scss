@@ -1,0 +1,80 @@
+$btn-primary: $color--light-blue;
+$btn-secondary: $main-color;
+$btn-icon-size: 12px;
+$transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+.btn {
+    background-color: transparent;
+    border: 2px solid $color--blue;
+    color: $btn-primary;
+    padding: 7px 14px;
+    font-size: 14px;
+    font-family: "Museo Sans Regular";
+    text-transform: uppercase;
+    outline: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color $transition-type, color $transition-type;
+    &[disabled] {
+        cursor: default;
+        color: $secondary-color;
+        border-color: $secondary-color;
+    }
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
+        background-color: $btn-primary;
+        color: $btn-secondary;
+        > svg {
+            fill: $btn-secondary;
+        }
+    }
+    > svg {
+        transition: fill $transition-type;
+        width: $btn-icon-size;
+        height: $btn-icon-size;
+        fill: $btn-primary;
+        margin-right: $btn-icon-size;
+    }
+    &.btn-colored {
+        background-color: $btn-primary;
+        color: white;
+        &[disabled] {
+            color: #818994;
+            background-color: $secondary-color;
+        }
+    }
+    &.btn-large {
+        font-family: 'Museo Sans Bold';
+        font-size: 18px;
+        padding: 10px 24px;
+        letter-spacing: 1px;
+    }
+    &.btn-flat {
+        border: none;
+        &:not([disabled]):hover,
+        &:not([disabled]):focus {
+            background-color: transparent;
+            color: $btn-secondary;
+            > svg {
+                fill: $btn-secondary;
+            }
+        }
+    }
+    &.btn-secondary {
+        color: $btn-secondary;
+        padding: 10px 18px;
+        > svg {
+            fill: $btn-secondary;
+        }
+    }
+    &-group {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        > .btn {
+            margin: 0 8px;
+        }
+    }
+}

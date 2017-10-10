@@ -1,0 +1,56 @@
+<aside class="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-header__row">
+            <h3 class='sidebar-title'>{{sidebarTitle}}</h3>
+            <button class="btn btn-secondary" *ngIf="isAddBtnEnabled" (click)="addService($event)" title="Add new service">
+                <svg>
+                    <use xlink:href="#icon-plus"></use>
+                </svg>
+                Add service
+            </button>
+            <div class="sidebar-definitions" *ngIf="isModels">
+                <span>
+                  <svg class="icon deployed">
+                      <use xlink:href="#icon-arrow"/>
+                  </svg>
+                  - Deployed
+                </span>
+                <span>
+                  <svg class="icon undeployed">
+                      <use xlink:href="#icon-arrow"/>
+                  </svg>
+                  - Undeployed
+                </span>
+              </div>
+        </div>
+        <div class="sidebar-header__row">
+            <hydro-input-text class="sidebar-search"
+                inputClass="sidebar-search"
+                placeholder="Search"
+                [(ngModel)]="searchQ"
+                iconName="search"
+                iconDirection="left"
+            ></hydro-input-text>
+        </div>
+    </div>
+
+    <div class="sidebar-body">
+        <ul class='sidebar-list'>
+            <li *ngFor="let item of sidebarList | search : (isModels ? 'name' : 'serviceName') : searchQ | sortBy: 'id'" class='sidebar-list__item' [routerLink]="[item.id]" routerLinkActive='__active'>
+                <span>{{ item.serviceName || item.source }}</span>
+                <span class='sidebar-list__item-status' *ngIf="item.currentServices && item.currentServices.length && this.dataType === 'services'" [mdl-badge]="item.currentServices.length"></span>
+                <div *ngIf="isModels" class="sidebar-list__item-details">
+                    <span class="sidebar-list__item--version"
+                    [ngClass]="{
+                      'version-new': isDeployable(item),
+                      'version-failed': item.lastModelBuild.status === 'FAILED'
+                    }"
+                    >{{item.lastModelRuntime.modelVersion || '0.0.1'}}</span>
+                    <svg class="icon sidebar-list__item--deploy" [ngClass]="item?.currentServices?.length > 0 ? 'deployed' : 'undeployed'">
+                      <use xlink:href="#icon-arrow" />
+                    </svg>
+                </div>
+            </li>
+        </ul>
+    </div>
+</aside>

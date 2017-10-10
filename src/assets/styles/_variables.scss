@@ -1,18 +1,26 @@
-$main-color: #000856;
+$main-color: #04143c;
 $main-bg-color: #f8f9fb;
-$main-font-family: 'Open Sans', sans-serif;
+$main-font-family: 'Museo Sans Regular',  sans-serif;
 $aside-bg-color: #f2f4f7;
 $color--success: #8cc63e;
 $color--failed: #ef3a41;
 $color--primary: #b8d7f9;
+
 $color--light-blue: #4d9bf1;
+$color--blue: #539ae9;
+
 $logs-bg-color: #0c152a;
 $border-color: #f1f3f7;
 
+$secondary-color: #e6e9ed;
+
+
+$base-font-size: 16px;
+$title-font-size: $base-font-size * 1.5;
 
 // forms section
 $form-border-color-focus: #04143c;
-$form-border-color: #e6e9ed;
+$form-border-color: $secondary-color;
 $label-color: #818994;
 
 // 18px

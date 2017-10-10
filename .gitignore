@@ -6,6 +6,7 @@
 /out-tsc
 
 # dependencies
+/coverage
 /node_modules
 
 # IDEs and editors
@@ -32,6 +33,7 @@
 npm-debug.log
 testem.log
 /typings
+/hydro-serving-ui
 
 # e2e
 /e2e/*.js
@@ -40,3 +42,6 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+.vscode/launch.json
+TESTS-*.xml
+src/environments/environment.ts

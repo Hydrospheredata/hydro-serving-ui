@@ -1,5 +1,3 @@
-@import "variables";
-
 /*common styles*/
 .cs {
   &-align-center {
@@ -9,11 +7,26 @@
     &-italic {
       font-style: italic;
     }
+    &-light {
+      font-family:'Museo Sans Light';
+    }
+    &-ultrabold {
+      font-family:'Museo Sans UltraBold';
+    }
+    &-bold {
+      font-family:'Museo Sans Bold';
+    }
     &-size-14 {
       font-size: 14px !important;
     }
     &-size-12 {
       font-size: 12px !important;
+    }
+    &-size-18 {
+      font-size: 18px !important;
+    }
+    &-size-24 {
+      font-size: 24px !important;
     }
   }
   &-pt-20 {

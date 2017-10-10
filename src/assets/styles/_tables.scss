@@ -1,0 +1,28 @@
+$table-padding: 18px;
+
+.hydro-table {
+  border-collapse: collapse;
+  width: 100%;
+  &-head {
+    &__cell {
+      font-size: 12px;
+      color: #abafb2;
+      padding: $table-padding $table-padding * 2;
+      text-align: left;
+    }
+    [class$="models"] & {
+      border-bottom: 2px solid $secondary-color;
+    }
+  }
+  &-body {
+    &__row {
+      [class$="services"] & {
+        background-color: $main-bg-color;
+        border-bottom: 2px solid #ffffff;
+      }
+    }
+    &__cell {
+      padding: $table-padding * 1.7 $table-padding * 2;
+    }
+  }
+}

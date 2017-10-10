@@ -1,0 +1,85 @@
+@import 'variables';
+:host {
+  display: block;
+  // minus header height
+  height: calc(100% - 64px);
+}
+
+.runtime-select > .mdl-textfield {
+  padding: 0;
+}
+
+.runtime-label {
+  margin-left: 0;
+}
+
+
+
+
+// TEMPORARY WORKAROUND
+// TODO:REMOVE AND USE PROPER COMPONENT
+$default-blue: #539ae9;
+$default-green: #8cc63e;
+$bold: "Museo Sans Bold";
+$light: "Museo Sans Light";
+
+.model-details {
+  >p {
+      >span {
+          font-weight: bold;
+      }
+      font-size: 16px;
+      display: flex;
+      flex-direction: row;
+  }
+  &-row {
+    padding-top: 16px;
+    font-size: 16px;
+  }
+  &-tag {
+    padding: 5px 8px;
+    background-color: #e9ecf2;
+    border-radius: 5px;
+  }
+  &-label {
+    color: #808080;
+    font-family: $light;
+  }
+  &-panel {
+    background-color: $main-bg-color;
+    padding: 32px 26px;
+  }
+  &-grid-header {
+    text-align: center;
+    color: #818994;
+    font-size: 18px;
+    font-family: $bold;
+  }
+  &-table {
+    margin-bottom: 70px
+  }
+  &-link {
+    color: $default-blue;
+    text-decoration: none;
+  }
+}
+
+.new-version {
+  color: #f28a03;
+  &::after {
+      content: '˚';
+  }
+  &-label {
+    margin-left: 10px;
+    background-color: #f28a03;
+    border-radius: 2px;
+    color: #FFFFFF;
+    font-size: 12px;
+    padding: 5px 7px;
+  }
+}
+
+.runtime {
+  font-family: $bold;
+}
+
