@@ -20,8 +20,8 @@ export class ModelsWrapperComponent implements OnDestroy {
   private servicesServiceSubscription: Subscription;
 
   private data: Model[];
-  private sidebarTitle: string = 'Models';
-  private models: any;
+  public sidebarTitle: string = 'Models';
+  public models: any;
 
 
   constructor(

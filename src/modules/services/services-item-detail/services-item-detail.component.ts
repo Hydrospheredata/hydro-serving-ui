@@ -6,11 +6,11 @@ import { Store } from '@ngrx/store';
 import { AppState, Service, ModelService } from '@shared/models/_index';
 import { ModelServicesService } from '@shared/services/_index';
 
-import { 
-    DialogTestComponent, 
-    DialogUpdateServiceComponent, 
-    injectableModelBuildOptions, 
-    injectableServiceUpdate 
+import {
+    DialogTestComponent,
+    DialogUpdateServiceComponent,
+    injectableModelBuildOptions,
+    injectableServiceUpdate
 } from '@components/dialogs/_index';
 
 
@@ -27,12 +27,12 @@ export class ServicesItemDetailComponent {
     public serviceModels: any[];
     public services: Service[] = [];
     public service: Service;
-    
-    private tableHeader: string[] = [
-        'Model', 'Version', 'Created Date', 'Weight'
-    ]
 
-    private tableData: any;
+    public tableHeader: string[] = [
+        'Model', 'Version', 'Created Date', 'Weight'
+    ];
+
+    public tableData: any;
 
     constructor(
         public store: Store<AppState>,
@@ -50,7 +50,7 @@ export class ServicesItemDetailComponent {
                     }
                 }
             });
-        
+
         this.activatedRoute.params
             .subscribe(params => {
                 this.id = params['id'];
@@ -62,14 +62,14 @@ export class ServicesItemDetailComponent {
         this.serviceModels = [];
 
         if (this.services.length) {
-            let service = this.services
-                .filter(service => service.id === +id)
+            const service = this.services
+                .filter(service => service.id === +id);
 
             this.service = service.shift();
             if (this.service) {
                 this.service.weights.forEach(weight => {
                     this.getModelServiceData(weight);
-                })
+                });
             }
         }
     }

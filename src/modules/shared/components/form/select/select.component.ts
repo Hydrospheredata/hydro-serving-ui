@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
- 
+
 @Component({
   selector: 'hydro-select',
   templateUrl: './select.component.html',
@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 export class SelectComponent {
 
     // @Input() items: any[];
-    
+
     public items:Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
         'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
         'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
@@ -22,7 +22,7 @@ export class SelectComponent {
 
     private value: any = {};
     private _disabledV: string = '0';
-    private disabled: boolean = false;
+    public disabled: boolean = false;
 
     private get disabledV(): string {
         return this._disabledV;
