@@ -19,8 +19,9 @@ import * as moment from 'moment';
 })
 export class SidebarComponent implements OnInit, OnChanges {
 
-    private sidebarList: any[]; // ToDo: Fix any type
+    public sidebarList: any[]; // ToDo: Fix any type
     private title: string = '';
+    public searchQ: string;
 
     @Input() isAddBtnEnabled: boolean;
     @Input() isModels: boolean;

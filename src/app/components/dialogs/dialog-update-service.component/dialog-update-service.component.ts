@@ -31,7 +31,7 @@ export class DialogUpdateServiceComponent implements OnInit {
     private weightInputClass: string = '__modelWeight';
     private kafkaInputClass: string = '__kafkaInput';
 
-    private isKafkaEnabled: boolean = false;
+    public isKafkaEnabled: boolean = false;
     public addSelectLabel: string = 'choose model';
 
     public serviceIdLabel: string = 'Models Name';
@@ -79,9 +79,9 @@ export class DialogUpdateServiceComponent implements OnInit {
         });
     }
 
-    private addWeightToModel() {
+    private addWeightToModel(model?: string) {
         return this.fb.group({
-            serviceId: ['', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
+            serviceId: [model ? model : '', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
             weight: ['0', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
         });
     }
@@ -128,9 +128,9 @@ export class DialogUpdateServiceComponent implements OnInit {
         this.serviceForm.patchValue({kafkaStreamingSources: service.kafkaStreamingSources});
     }
 
-    addModelToService() {
+    addModelToService(model?: string) {
         const control = <FormArray>this.serviceForm.controls['weights'];
-        control.push(this.addWeightToModel());
+        control.push(this.addWeightToModel(model));
     }
 
     addKafkaToService() {
@@ -143,9 +143,14 @@ export class DialogUpdateServiceComponent implements OnInit {
         control.removeAt(i);
     }
 
+    onChooseModel(value) {
+      console.log(typeof value);
+      this.addModelToService(value);
+    }
+
     onSubmit() {
         console.log(this.serviceForm);
-        
+
         // if (this.serviceForm.invalid) {
         //     return;
         // }
@@ -156,7 +161,7 @@ export class DialogUpdateServiceComponent implements OnInit {
         this.serviceForm.value.weights.forEach(model => {
             weights.push({
                 serviceId: model.serviceId,
-                weight: Number(model.weight) 
+                weight: Number(model.weight)
             });
         });
 

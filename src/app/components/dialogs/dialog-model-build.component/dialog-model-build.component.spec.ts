@@ -6,7 +6,6 @@ import { Component, OnInit, InjectionToken, HostListener, Inject } from '@angula
 import { MdlDialogReference, MdlDialogService, MdlModule } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { HttpRuntimeTypesService, BuildModelService, HttpModelsService, ModelsService } from '@shared/services/_index';
-import { ModelStore } from '@shared/stores/_index';
 import { ModelStatusPipe } from '@shared/pipes/_index';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { HttpService } from '@shared/services/http.service';
@@ -15,7 +14,6 @@ import { Store } from '@ngrx/store';
 import { AppState } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 import { ModelBuilder, ModelRuntimeBuilder } from '@shared/builders/_index';
-import { ModelServiceStore } from '@shared/stores/_index';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
 import { injectableModelOptions } from '@components/dialogs/_index';
 import { ServicesService } from '@shared/services/_index';
@@ -43,8 +41,6 @@ describe('DialogModelBuildComponent', () => {
         MdlSnackbarService,
         { provide: injectableModelOptions, useValue: modelStub },
         { provide: Store, useValue: store },
-        { provide: ModelServiceStore, useValue: store },
-        { provide: ModelStore, useValue: store },
         { provide: ServicesService, useValue: servicesServiceStub },
         { provide: ModelsService, useValue: servicesServiceStub },
         { provide: ModelBuilder, useValue: servicesServiceStub },

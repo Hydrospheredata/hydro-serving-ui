@@ -55,9 +55,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private modelsStoreSelectionSubscription: Subscription;
   private buildsSubscription: Subscription;
 
-  private tableHeader: string[] = [
+  public tableHeader: string[] = [
     'Created', 'Version', 'Status', 'Actions', 'Services'
-  ]
+  ];
 
 
   constructor(

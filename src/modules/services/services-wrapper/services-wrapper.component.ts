@@ -28,8 +28,8 @@ export class ServicesWrapperComponent implements OnDestroy {
     private servicesServiceSubscription: Subscription;
     private modelServicesServiceSubscription: Subscription;
     private data: Service[];
-    private sidebarTitle: string = 'Services';
-    private services: any;
+    public sidebarTitle = 'Services';
+    public services: any;
 
     constructor(
         private store: Store<AppState>,

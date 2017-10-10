@@ -33,6 +33,7 @@
 npm-debug.log
 testem.log
 /typings
+/hydro-serving-ui
 
 # e2e
 /e2e/*.js
