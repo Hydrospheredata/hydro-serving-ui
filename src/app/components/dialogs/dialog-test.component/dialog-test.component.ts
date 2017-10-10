@@ -60,6 +60,7 @@ export class DialogTestComponent implements OnInit {
     this.createTestForm();
     this.requestBody = this.createCURLString(this.testForm);
     this.testForm.valueChanges.subscribe(form => {
+      console.log(this.testForm);
       this.requestBody = this.createCURLString(form);
     });
     this.codeMirrorInputOptions = {
@@ -104,7 +105,7 @@ export class DialogTestComponent implements OnInit {
 
   private createTestForm() {
     this.testForm = this.fb.group({
-      data: [this.extractModelInputFields(this.model), [Validators.required]],
+      data: [this.extractModelInputFields(this.model), [Validators.required, this.validateInput]],
       path: ['/serve', [Validators.required]],
     });
   }
@@ -123,6 +124,19 @@ export class DialogTestComponent implements OnInit {
        return payload;
     }, {});
     return JSON.stringify([reducedFields], undefined, 2);
+  }
+
+  private validateInput(input) {
+    try {
+      JSON.parse(input.value);
+    } catch (e) {
+      return {
+        validateInput: {
+          valid: false
+        }
+      };
+    }
+    return null;
   }
 
 
