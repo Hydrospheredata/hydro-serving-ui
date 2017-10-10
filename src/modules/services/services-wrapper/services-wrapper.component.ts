@@ -41,6 +41,7 @@ export class ServicesWrapperComponent implements OnDestroy {
         this.servicesServiceSubscription = this.servicesService.getServices()
             .subscribe(services => {
                 this.data = services.map(service => this.serviceBuilder.build(service));
+                console.log(this.data);
                 this.store.dispatch({ type: Actions.GET_SERVICES, payload: this.data });
             });
         this.modelServicesServiceSubscription = this.modelServicesService.getModelServices()
@@ -49,20 +50,6 @@ export class ServicesWrapperComponent implements OnDestroy {
                 this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: serviceModels });
             });
         this.services = this.store.select('services');
-    }
-
-    addService(value) {
-        console.log(value);
-        // this.dialog.showCustomDialog({
-        //     component: DialogAddServiceComponent,
-        //     styles: {'width': '850px', 'min-height': '250px'},
-        //     classes: '',
-        //     isModal: true,
-        //     clickOutsideToClose: true,
-        //     enterTransitionDuration: 400,
-        //     leaveTransitionDuration: 400,
-        //     providers: [{provide: injectableService}]
-        // });
     }
 
     ngOnDestroy() {

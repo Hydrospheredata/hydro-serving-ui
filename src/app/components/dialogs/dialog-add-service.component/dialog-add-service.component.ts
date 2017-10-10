@@ -160,7 +160,7 @@ export class DialogAddServiceComponent implements OnInit {
                 serviceId: 0,
                 sourceTopic: kafka.sourceTopic,
                 destinationTopic: kafka.destinationTopic,
-                brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,:\/|()[\]{}<>( )]/g) : kafka.brokerList
+                brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g) : kafka.brokerList
             });
         });
 
@@ -170,7 +170,7 @@ export class DialogAddServiceComponent implements OnInit {
             kafkaStreamingSources: kafkaStreamingSources,
         };
 
-        const service: Service = Object.assign( serviceInfo, { weights: weights } );
+        const service = new Service(Object.assign( serviceInfo, { weights: weights } ));
 
         console.log(service);
 
