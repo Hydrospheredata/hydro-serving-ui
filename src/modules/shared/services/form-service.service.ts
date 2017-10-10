@@ -29,7 +29,7 @@ export class FormsService {
             'required': 'Weight is required.'
           },
           weights: {
-            'overflow': 'Error. Sum of weights can\'t be more than 100%'
+            'overflow': 'Error. Sum of weights should be 100%.'
           }
         }
       }

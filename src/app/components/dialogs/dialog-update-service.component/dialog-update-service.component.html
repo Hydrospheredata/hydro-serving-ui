@@ -40,7 +40,7 @@
         </li>
         <li class="form-kafkaSources__list-item--add" *ngIf="isKafkaEnabled" (click)="addKafkaToService()">
           <svg><use xlink:href="#icon-plus"></use></svg>
-          <span>Add More Parameters</span>
+          <span>Add More Sources</span>
         </li>
       </ul>
     </div>
@@ -51,7 +51,7 @@
         <li class="form-weights__list-item" *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index" [formGroupName]="i">
           
           <mdl-select #autocompleteSelect [autocomplete]="true" label="{{serviceIdLabel}}" floating-label class="cs-text-center" formControlName="serviceId">
-            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
+            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.modelRuntime.modelName}}</mdl-option>
           </mdl-select>
           
           <div class="form-weights__list-item--weight">
@@ -60,11 +60,11 @@
                               [inputClass]="weightInputClass"
                               [label]="labels.weight"
                               name="asd"
-                              formControlName="weight">
+                              formControlName="weight" [(ngModel)]="model.weight">
             </hydro-input-text>%
           </div>
 
-          <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight"></mdl-slider>
+          <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight" [(ngModel)]="model.weight"></mdl-slider>
           
           <svg class="delete" (click)="removeModelFromService(i)" *ngIf="serviceForm['controls'].weights['controls'].length > 1">
             <use xlink:href="#icon-remove"></use>
