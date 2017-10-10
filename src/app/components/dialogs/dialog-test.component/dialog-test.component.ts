@@ -51,7 +51,7 @@ export class DialogTestComponent implements OnInit {
 
   ngOnInit() {
     if (!this.model.id || this.model instanceof Model) {
-      this.testTitle = `Test model #${this.model.id ? this.model.id : this.model.serviceId}`;
+      this.testTitle = `Test model "${this.model.modelRuntime.modelName}"`;
       this.testBtn = 'Test model';
     } else {
       this.testTitle = `Test service "${this.model.serviceName}"`;
