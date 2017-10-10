@@ -42,7 +42,7 @@ import {
     LoaderComponent,
     NavbarComponent,
     SidebarComponent,
-    ContentHeaderComponent
+    DialogBaseComponent
 } from './components/_index';
 
 // Builders
@@ -82,7 +82,7 @@ import {
         InputTextComponent,
         SelectComponent,
         SidebarComponent,
-        ContentHeaderComponent
+        DialogBaseComponent
     ],
     providers: [
         // Services
@@ -121,7 +121,7 @@ import {
         InputTextComponent,
         SelectComponent,
         SidebarComponent,
-        ContentHeaderComponent
+        DialogBaseComponent
     ]
 })
 export class SharedModule { }

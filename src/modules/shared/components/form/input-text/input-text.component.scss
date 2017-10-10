@@ -76,10 +76,36 @@ input.form-control {
   &:after {
     clear: both;
   }
+  &.__modelWeight {
+    border-color: #f2f2f2;
+    max-width: 60px;
+    width: 60px;
+    height: 36px;
+    text-align: right;
+  }
+  &.__kafkaInput {
+    border: none;
+    padding: 7px 12px;
+    background-color: #e9ecf2;
+    border-radius: 5px;
+    color: #04143c;
+    height: 28px;
+  }
 }
 
 .form-group {
+  display: flex;
+  flex-direction: column;
   position: relative;
+  &__inline {
+    flex-direction: row;
+    align-items: center;
+    > .control-label {
+      margin: 0;
+      margin-right: 8px;
+      font-family: 'Consolas';
+    }
+  }
 }
 
 mdl-icon.input-icon {
