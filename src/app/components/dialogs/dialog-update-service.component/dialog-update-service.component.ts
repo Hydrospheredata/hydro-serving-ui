@@ -64,9 +64,7 @@ export class DialogUpdateServiceComponent implements OnInit {
         }
         this.store.select('modelService')
             .subscribe(modelService => {
-                this.modelServices = modelService.filter(item => {
-                    return item.modelRuntime.runtimeType 
-                });
+                this.modelServices = modelService;
             });
     }
 
@@ -180,7 +178,7 @@ export class DialogUpdateServiceComponent implements OnInit {
         });
 
         const serviceInfo = {
-            id: this.selectedService.length ? this.selectedService[this.selectedService.length - 1].id + 1 : 1,
+            id: this.selectedService.id,
             serviceName: this.serviceForm.value.serviceName,
             kafkaStreamingSources: this.isKafkaEnabled ? kafkaStreamingSources : [],
         };
