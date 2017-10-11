@@ -43,12 +43,12 @@ export class ServicesItemDetailComponent {
         private modelServicesService: ModelServicesService,
         private router: Router
     ) {
-        this.storeSub = this.store.select('services')
+        this.storeSub = this.store.select('services').filter(services => services.length > 0)
             .subscribe(services => {
                 if (services.length) {
                     this.services = services;
                     if (this.id) {
-                        this.getServiceData(this.id);
+                        // this.getServiceData(this.id);
                     }
                 }
             });

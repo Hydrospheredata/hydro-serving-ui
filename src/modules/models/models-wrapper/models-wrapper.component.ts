@@ -1,7 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-
 import { Store } from '@ngrx/store';
 import { AppState, Model } from '@shared/models/_index';
 import { ModelBuilder } from '@shared/builders/_index';
@@ -20,25 +19,26 @@ export class ModelsWrapperComponent implements OnDestroy {
   private servicesServiceSubscription: Subscription;
 
   private data: Model[];
-  public sidebarTitle: string = 'Models';
+  public sidebarTitle = 'Models';
   public models: any;
 
 
   constructor(
-      private modelBuilder: ModelBuilder,
-      private store: Store<AppState>,
-      private modelsService: ModelsService,
-      private servicesService: ServicesService,
-      private modelServicesService: ModelServicesService
+    private modelBuilder: ModelBuilder,
+    private store: Store<AppState>,
+    private modelsService: ModelsService,
+    private servicesService: ServicesService,
+    private modelServicesService: ModelServicesService
   ) {
-      this.modelsServiceSubscription = this.modelsService.getModels().first()
-          .subscribe(models => {
-              this.data = models.map(this.modelBuilder.build, this.modelBuilder);
-              this.store.dispatch({ type: Actions.GET_MODELS, payload: this.data });
-          });
-      this.models = this.store.select('models');
+    this.modelsServiceSubscription = this.modelsService.getModels().first()
+      .subscribe(models => {
+        this.data = models.map(this.modelBuilder.build, this.modelBuilder);
+        this.store.dispatch({ type: Actions.GET_MODELS, payload: this.data });
+      });
+    this.models = this.store.select('models');
   }
 
   ngOnDestroy() {
+    this.modelsServiceSubscription.unsubscribe();
   }
 }
