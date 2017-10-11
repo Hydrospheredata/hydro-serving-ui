@@ -44,8 +44,6 @@ export class SidebarComponent implements OnInit, OnChanges {
 
     ngOnInit() {
       this.activatedRoute.url.subscribe(params => {
-        console.warn(params);
-        console.warn(this.sidebarList);
         if (this.sidebarList.length > 0) {
           const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
           this.router.navigate([sorted[0].id], {relativeTo: this.activatedRoute});
