@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
+import { Subscription } from 'rxjs/Subscription';
 
 import { Store } from '@ngrx/store';
 import { AppState, Service, ModelService } from '@shared/models/_index';
@@ -25,6 +26,7 @@ import {
 })
 
 export class ServicesItemDetailComponent {
+    public storeSub: Subscription;
     public id: string;
     public serviceModels: any[];
     public services: Service[] = [];
@@ -41,7 +43,7 @@ export class ServicesItemDetailComponent {
         private modelServicesService: ModelServicesService,
         private router: Router
     ) {
-        this.store.select('services')
+        this.storeSub = this.store.select('services')
             .subscribe(services => {
                 if (services.length) {
                     this.services = services;
@@ -56,6 +58,10 @@ export class ServicesItemDetailComponent {
                 this.id = params['id'];
                 this.getServiceData(this.id);
             });
+    }
+
+    ngOnDestroy() {
+        this.storeSub.unsubscribe();
     }
 
     getServiceData(id: string) {
