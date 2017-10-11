@@ -34,6 +34,8 @@
     margin-bottom: 0;
   }
   &-list {
+    height: 71vh;
+    overflow: scroll;
     display: flex;
     flex-direction: column;
     list-style: none;
@@ -42,7 +44,7 @@
     &__item {
       line-height: 15px;
       border-bottom: 1px solid $secondary-color;
-      padding: 16px 36px;
+      padding: 23px 36px;
       padding-right: 12px;
       cursor: pointer;
       outline: none;
@@ -72,6 +74,10 @@
       }
     }
   }
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 .icon {

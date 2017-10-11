@@ -19,6 +19,9 @@ export let injectableServiceUpdate = new InjectionToken<Service>('selectedServic
   providers: [FormsService]
 })
 export class DialogUpdateServiceComponent implements OnInit {
+    model = {
+        weight: ''
+    }
     private labels = {
         kafka: {
             input: 'input topic = ',
@@ -61,7 +64,9 @@ export class DialogUpdateServiceComponent implements OnInit {
         }
         this.store.select('modelService')
             .subscribe(modelService => {
-                this.modelServices = modelService;
+                this.modelServices = modelService.filter(item => {
+                    return item.modelRuntime.runtimeType 
+                });
             });
     }
 
@@ -105,7 +110,7 @@ export class DialogUpdateServiceComponent implements OnInit {
                 result += +service.weight;
             });
 
-            if (result > 100) {
+            if (result != 100) {
                 this.serviceForm.controls.weights.setErrors({ overflow: true });
             }
 
@@ -117,10 +122,10 @@ export class DialogUpdateServiceComponent implements OnInit {
 
     private updateServiceFormValues(service: Service) {
         for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
-            this.addKafkaSource();
+            this.addKafkaToService();
         }
         for (let i = 0; i < service.weights.length - 1; i++) {
-            this.addWeightToModel();
+            this.addModelToService();
         }
         this.serviceForm.patchValue({id: service.id});
         this.serviceForm.patchValue({serviceName: service.serviceName});
@@ -170,17 +175,17 @@ export class DialogUpdateServiceComponent implements OnInit {
                 serviceId: 0,
                 sourceTopic: kafka.sourceTopic,
                 destinationTopic: kafka.destinationTopic,
-                brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,:\/|()[\]{}<>( )]/g) : kafka.brokerList
+                brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g) : kafka.brokerList
             });
         });
 
         const serviceInfo = {
-            id: this.selectedService.id,
+            id: this.selectedService.length ? this.selectedService[this.selectedService.length - 1].id + 1 : 1,
             serviceName: this.serviceForm.value.serviceName,
             kafkaStreamingSources: kafkaStreamingSources,
         };
 
-        const service: Service = Object.assign( serviceInfo, { weights: weights } );
+        const service = new Service(Object.assign( serviceInfo, { weights: weights } ));
 
         console.log(service);
 

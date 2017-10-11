@@ -32,7 +32,8 @@ import {
     PositiveNumbersPipe,
     SearchPipe,
     SortByPipe,
-    UtcToLocalPipe
+    UtcToLocalPipe,
+    IterateAsArrayPipe
 } from './pipes/_index';
 
 // Components
@@ -78,6 +79,7 @@ import {
         SearchPipe,
         SortByPipe,
         UtcToLocalPipe,
+        IterateAsArrayPipe,
         // Components
         InputTextComponent,
         SelectComponent,
@@ -117,6 +119,7 @@ import {
         SearchPipe,
         SortByPipe,
         UtcToLocalPipe,
+        IterateAsArrayPipe,
         // Components
         InputTextComponent,
         SelectComponent,

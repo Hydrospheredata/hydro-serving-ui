@@ -344,5 +344,42 @@ md-dialog-container.mat-dialog-container {
             flex-basis: 75%;
         }
     }
+    &-info {
+        &__list,
+        &__sublist {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        &__list {
+            &-item {
+                margin-bottom: 15px;
+            }
+        }
+        &__sublist {
+            &-item {
+                display: flex;
+                align-items: center;
+                font-size: 16px;
+                margin-bottom: 6px;
+                &-title {
+                    max-width: 250px;
+                    width: 250px;
+                    overflow-x: hidden;
+                    color: #808080;
+                    font-size: 16px;
+                    font-family: "Museo Sans Light";
+                    text-transform: capitalize;
+                    &:after {
+                        content: '.........................................................................................................';
+                        margin-left: 6px;
+                    }
+                }
+                &-value {
+                    margin-left: 6px;
+                }
+            }
+        }
+    }
 }
 
