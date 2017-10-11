@@ -175,7 +175,7 @@ export class DialogUpdateServiceComponent implements OnInit {
         const serviceInfo = {
             id: this.selectedService.id,
             serviceName: this.serviceForm.value.serviceName,
-            kafkaStreamingSources: kafkaStreamingSources,
+            kafkaStreamingSources: this.isKafkaEnabled ? kafkaStreamingSources : [],
         };
 
         const service = new Service(Object.assign( serviceInfo, { weights: weights } ));
