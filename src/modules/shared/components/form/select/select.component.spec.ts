@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputTextComponent } from './input-text.component';
+import { InputTextComponent } from '@shared/components/form/input-text/input-text.component';
 
 describe('InputTextComponent', () => {
   let component: InputTextComponent;

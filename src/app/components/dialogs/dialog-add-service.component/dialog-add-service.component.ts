@@ -32,11 +32,11 @@ export class DialogAddServiceComponent implements OnInit {
     private wrapToInlineControlClass: string = 'form-group__inline';
     private weightInputClass: string = '__modelWeight';
     private kafkaInputClass: string = '__kafkaInput';
-    
-    private serviceForm: FormGroup;
-    private isKafkaEnabled: boolean = false;
+
+    public serviceForm: FormGroup;
+    public isKafkaEnabled: boolean = false;
     public addSelectLabel: string = 'choose model';
-    
+
     public selectedService: Service;
     public formTitle: string;
     public formErrors = {
@@ -145,7 +145,7 @@ export class DialogAddServiceComponent implements OnInit {
 
     onSubmit() {
         console.log(this.serviceForm)
-        
+
         // if (this.serviceForm.invalid) {
         //     return;
         // }
@@ -156,7 +156,7 @@ export class DialogAddServiceComponent implements OnInit {
         this.serviceForm.value.weights.forEach(model => {
             weights.push({
                 serviceId: model.serviceId,
-                weight: Number(model.weight) 
+                weight: Number(model.weight)
             });
         });
 
