@@ -73,6 +73,8 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.activatedRoute.url.subscribe((url) => { console.log(url); });
+
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
         this.id = params['modelId'];
