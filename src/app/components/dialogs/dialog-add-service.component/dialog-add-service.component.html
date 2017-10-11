@@ -34,7 +34,7 @@
                               formControlName="brokerList">
             </hydro-input-text>
           </div>
-          <svg class="delete" (click)="removeModelFromService(i)" *ngIf="serviceForm['controls'].kafkaStreamingSources['controls'].length > 1">
+          <svg class="delete" (click)="removeKafkaFromService(i)" *ngIf="serviceForm['controls'].kafkaStreamingSources['controls'].length > 1">
             <use xlink:href="#icon-remove"></use>
           </svg>
         </li>
@@ -51,7 +51,7 @@
         <li class="form-weights__list-item" *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index" [formGroupName]="i">
           
           <mdl-select #autocompleteSelect [autocomplete]="true" label="{{serviceIdLabel}}" floating-label class="cs-text-center" formControlName="serviceId">
-            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
+            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.modelRuntime.modelName}}</mdl-option>
           </mdl-select>
           
           <div class="form-weights__list-item--weight">
@@ -71,13 +71,13 @@
           </svg>
           
         </li>
-        <li class="form-weights__list-item--add">
-          <svg><use xlink:href="#icon-plus"></use></svg>
-          <mdl-select (change)="onChooseModel($event)" #autocompleteSelect [autocomplete]="true" label="{{addSelectLabel}}" floating-label class="cs-text-center">
-            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
-          </mdl-select>
-        </li>
       </ul>
+      <div class="form-weights__list-item--add">
+        <svg><use xlink:href="#icon-plus"></use></svg>
+        <mdl-select (change)="onAddingModel($event)" label="{{addSelectLabel}}" class="cs-text-center">
+          <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.modelRuntime.modelName}}</mdl-option>
+        </mdl-select>
+      </div>
     </div>
     <div class="btn-group form-actions">
       <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>

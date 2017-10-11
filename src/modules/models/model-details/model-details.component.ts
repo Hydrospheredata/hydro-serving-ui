@@ -73,7 +73,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.activatedRoute.url.subscribe((url) => { console.log(url); });
 
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
@@ -96,15 +95,19 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         });
       });
 
-    this.modelsStoreSelectionSubscription = this.store.select('models')
+    this.modelsStoreSelectionSubscription = this.store.select('models').filter(models => models.length > 0)
       .subscribe(models => {
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
+
+
 
         this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
           .subscribe(modelRuntimes => {
             this.runtimes = modelRuntimes;
             this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
           });
+
+
 
         this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
           .map(modelServices => modelServices.filter(model => model.serviceId > 0))
@@ -215,6 +218,12 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+      if (this.modelsStoreSelectionSubscription) {
+        this.modelsStoreSelectionSubscription.unsubscribe();
+      }
+     this.modelRuntimesServiceSubscription.unsubscribe();
+     this.modelServicesServiceSubscription.unsubscribe();
+     this.servicesServiceSubscription.unsubscribe();
   }
 
 }

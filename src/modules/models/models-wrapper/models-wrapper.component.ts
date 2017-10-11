@@ -30,7 +30,7 @@ export class ModelsWrapperComponent implements OnDestroy {
     private servicesService: ServicesService,
     private modelServicesService: ModelServicesService
   ) {
-    this.modelsServiceSubscription = this.modelsService.getModels()
+    this.modelsServiceSubscription = this.modelsService.getModels().first()
       .subscribe(models => {
         this.data = models.map(this.modelBuilder.build, this.modelBuilder);
         this.store.dispatch({ type: Actions.GET_MODELS, payload: this.data });
@@ -39,5 +39,6 @@ export class ModelsWrapperComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    this.modelsServiceSubscription.unsubscribe();
   }
 }

@@ -38,13 +38,13 @@ export class ServicesWrapperComponent implements OnDestroy {
         private serviceBuilder: ServiceBuilder,
         private dialog: MdlDialogService,
     ) {
-        this.servicesServiceSubscription = this.servicesService.getServices()
+        this.servicesServiceSubscription = this.servicesService.getServices().first()
             .subscribe(services => {
                 this.data = services.map(service => this.serviceBuilder.build(service));
                 console.log(this.data);
                 this.store.dispatch({ type: Actions.GET_SERVICES, payload: this.data });
             });
-        this.modelServicesServiceSubscription = this.modelServicesService.getModelServices()
+        this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
             .map(serviceModels => serviceModels.filter(model => model.serviceId > 0))
             .subscribe(serviceModels => {
                 this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: serviceModels });

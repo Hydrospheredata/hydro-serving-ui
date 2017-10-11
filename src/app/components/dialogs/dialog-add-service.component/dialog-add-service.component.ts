@@ -134,13 +134,18 @@ export class DialogAddServiceComponent implements OnInit {
         control.push(this.addKafkaSource());
     }
 
+    removeKafkaFromService(i: number) {
+        const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
+        control.removeAt(i);
+    }
+
     removeModelFromService(i: number) {
         const control = <FormArray>this.serviceForm.controls['weights'];
         control.removeAt(i);
     }
 
-    onChooseModel(value) {
-        console.log(typeof value, value);
+    onAddingModel(value) {
+        console.log(value);
         this.addModelToService(value);
     }
 
