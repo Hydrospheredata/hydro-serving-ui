@@ -23,7 +23,6 @@
         </div>
     </div>
 
-    <!-- Edit here -->
     <ul class="content-info__list" *ngIf="service.kafkaStreamingSources[0]">
         <li class="content-info__list-item" *ngFor="let kafka of service.kafkaStreamingSources">
             <ol class="content-info__sublist">
@@ -42,8 +41,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let item of tableData" class='hydro-table-body__row'>
-                <td class="hydro-table-body__cell"><div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>{{item.data.serviceName}}</div></td>
+            <tr *ngFor="let item of serviceModels" class='hydro-table-body__row'>
+                <td class="hydro-table-body__cell"><div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelName}}</div></td>
                 <td class="hydro-table-body__cell"><div class='cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelVersion}}</div></td>
                 <td class="hydro-table-body__cell"><div class='cs-text-size-12 cs-text-overflow-ellipsis'>{{item.data.modelRuntime.created | utcToLocal | date:'medium'}}</div></td>
                 <td class="hydro-table-body__cell"><div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{item.weight}}%</div></td>

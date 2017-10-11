@@ -68,8 +68,9 @@ export class DialogAddServiceComponent implements OnInit {
         this.store.select('modelService')
             .subscribe(modelService => {
                 this.modelServices = modelService.filter(item => {
-                    return item.modelRuntime.runtimeType 
+                    return item.modelRuntime.runtimeType;
                 });
+                console.log(this.modelServices);
             });
     }
 
@@ -139,7 +140,7 @@ export class DialogAddServiceComponent implements OnInit {
     }
 
     onChooseModel(value) {
-        console.log(typeof value);
+        console.log(typeof value, value);
         this.addModelToService(value);
     }
 
