@@ -190,7 +190,7 @@ export class DialogUpdateServiceComponent implements OnInit {
         });
 
         const serviceInfo = {
-            id: this.selectedService.id,
+            id: this.selectedService.length ? this.selectedService[this.selectedService.length - 1].id + 1 : 1,
             serviceName: this.serviceForm.value.serviceName,
             kafkaStreamingSources: kafkaStreamingSources,
         };
