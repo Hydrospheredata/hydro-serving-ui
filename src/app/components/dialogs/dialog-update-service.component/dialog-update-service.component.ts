@@ -58,13 +58,14 @@ export class DialogUpdateServiceComponent implements OnInit {
         private servicesService: ServicesService
     ) {
         this.selectedService = data;
-        console.log(this.selectedService);
         if (this.selectedService.kafkaStreamingSources.length) {
             this.isKafkaEnabled = true;
         }
         this.store.select('modelService')
             .subscribe(modelService => {
-                this.modelServices = modelService;
+                this.modelServices = modelService.filter(item => {
+                    return item.modelRuntime.runtimeType 
+                });
             });
     }
 
@@ -91,10 +92,9 @@ export class DialogUpdateServiceComponent implements OnInit {
 
     private addKafkaSource() {
         return this.fb.group({
-            serviceId: [0],
             sourceTopic: [''],
             destinationTopic: [''],
-            brokerList: [['']]
+            brokerList: ['']
         });
     }
 
@@ -122,13 +122,25 @@ export class DialogUpdateServiceComponent implements OnInit {
         for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
             this.addKafkaToService();
         }
+
         for (let i = 0; i < service.weights.length - 1; i++) {
             this.addModelToService();
         }
-        this.serviceForm.patchValue({id: service.id});
-        this.serviceForm.patchValue({serviceName: service.serviceName});
-        this.serviceForm.patchValue({weights: service.weights});
-        this.serviceForm.patchValue({kafkaStreamingSources: service.kafkaStreamingSources});
+        
+        let weights: { serviceId: number, weight: number }[] = [];
+
+        service.weights.map(service => {
+            weights.push({
+                serviceId: service.service ? service.service.serviceId : service.serviceId,
+                weight: service.weight
+            })
+        });
+        
+        this.serviceForm.patchValue({
+            serviceName: service.serviceName,
+            weights: weights,
+            kafkaStreamingSources: service.kafkaStreamingSources
+        });
     }
 
     addModelToService(model?: string) {
@@ -152,11 +164,9 @@ export class DialogUpdateServiceComponent implements OnInit {
     }
 
     onSubmit() {
-        console.log(this.serviceForm);
-
-        // if (this.serviceForm.invalid) {
-        //     return;
-        // }
+        if (this.serviceForm.invalid) {
+            return;
+        }
 
         let weights: {serviceId: number, weight: number}[] = [];
         let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
@@ -169,23 +179,23 @@ export class DialogUpdateServiceComponent implements OnInit {
         });
 
         this.serviceForm.value.kafkaStreamingSources.forEach(kafka => {
-            kafkaStreamingSources.push({
-                serviceId: 0,
-                sourceTopic: kafka.sourceTopic,
-                destinationTopic: kafka.destinationTopic,
-                brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g) : kafka.brokerList
-            });
+            if (this.isKafkaEnabled) {
+                kafkaStreamingSources.push({
+                    serviceId: 0,
+                    sourceTopic: kafka.sourceTopic,
+                    destinationTopic: kafka.destinationTopic,
+                    brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g) : kafka.brokerList
+                });
+            }
         });
 
         const serviceInfo = {
             id: this.selectedService.id,
             serviceName: this.serviceForm.value.serviceName,
-            kafkaStreamingSources: this.isKafkaEnabled ? kafkaStreamingSources : [],
+            kafkaStreamingSources: kafkaStreamingSources,
         };
 
         const service = new Service(Object.assign( serviceInfo, { weights: weights } ));
-
-        console.log(service);
 
         this.servicesService.updateService(service)
             .subscribe(res => {

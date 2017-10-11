@@ -34,8 +34,6 @@ export class ServicesItemDetailComponent {
         'Model', 'Version', 'Created Date', 'Weight'
     ];
 
-    public tableData: any;
-
     constructor(
         public store: Store<AppState>,
         public dialog: MdlDialogService,
@@ -47,7 +45,6 @@ export class ServicesItemDetailComponent {
             .subscribe(services => {
                 if (services.length) {
                     this.services = services;
-                    console.log(this.services);
                     if (this.id) {
                         this.getServiceData(this.id);
                     }
@@ -81,7 +78,6 @@ export class ServicesItemDetailComponent {
         this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });
-                this.tableData = this.serviceModels;
             });
     }
 
