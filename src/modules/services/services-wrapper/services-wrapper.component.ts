@@ -29,7 +29,7 @@ export class ServicesWrapperComponent implements OnDestroy {
     private modelServicesServiceSubscription: Subscription;
     private data: Service[];
     public sidebarTitle = 'Services';
-    public services: any;
+    public services: Store<Service[]>;
 
     constructor(
         private store: Store<AppState>,
@@ -50,7 +50,7 @@ export class ServicesWrapperComponent implements OnDestroy {
                 this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: serviceModels });
             });
         this.services = this.store.select('services');
-    }
+      }
 
     ngOnDestroy() {
         this.servicesServiceSubscription.unsubscribe();

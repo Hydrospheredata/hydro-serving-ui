@@ -30,6 +30,7 @@ import { } from '@shared/services/_index';
 import { Subscription } from 'rxjs/Subscription';
 import * as Actions from '@shared/actions/_index';
 import { ModelsService, ModelService, ModelRuntime } from '@shared/_index';
+import { ServiceBuilder } from '@shared/builders/_index';
 
 
 @Component({
@@ -67,12 +68,13 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     private dialog: MdlDialogService,
     private store: Store<AppState>,
 
-
+    private serviceBuilder: ServiceBuilder,
     private servicesService: ServicesService,
     private modelServicesService: ModelServicesService
   ) { }
 
   ngOnInit() {
+    this.activatedRoute.url.subscribe((url) => { console.log(url); });
 
     this.activatedRouteSub = this.activatedRoute.params
       .map((params) => {
@@ -119,7 +121,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.servicesServiceSubscription = this.servicesService.getServices().first()
           .subscribe(services => {
             this.weightedServices = services;
-            this.store.dispatch({ type: Actions.GET_SERVICES, payload: services });
+            this.store.dispatch({ type: Actions.GET_SERVICES, payload: services.map(service => this.serviceBuilder.build(service)) });
           });
 
         this.deployable = this.isDeployable();

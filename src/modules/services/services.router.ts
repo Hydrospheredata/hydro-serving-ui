@@ -14,8 +14,7 @@ import { ServicesWrapperComponent, ServicesItemDetailComponent } from "./_index"
                 children: [
                     {
                         path: ':id',
-                        component: ServicesItemDetailComponent,
-                        canActivate: [RedirectToServicesGuard]
+                        component: ServicesItemDetailComponent
                     }
                 ]
             }
