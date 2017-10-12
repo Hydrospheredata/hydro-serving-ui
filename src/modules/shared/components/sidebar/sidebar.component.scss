@@ -72,6 +72,12 @@
           padding-right: 30px;
         }
       }
+      &-name {
+        max-width: 14vw;
+        line-break: strict;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 }
