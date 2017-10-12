@@ -127,4 +127,8 @@ $light: "Museo Sans Light";
     > div {
     justify-content: center!important;
   }
+  @media screen and (max-width: 1450px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }
