@@ -1,11 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { AppState, Model } from '@shared/models/_index';
 import { ModelBuilder } from '@shared/builders/_index';
 import * as Actions from '@shared/actions/_index';
-import { ModelsService, ModelServicesService, ServicesService } from '@shared/services/_index';
+import { ModelsService } from '@shared/services/_index';
+
 @Component({
   selector: 'hydro-models-wrapper',
   templateUrl: './models-wrapper.component.html',
@@ -14,9 +14,6 @@ import { ModelsService, ModelServicesService, ServicesService } from '@shared/se
 export class ModelsWrapperComponent implements OnDestroy {
 
   private modelsServiceSubscription: Subscription;
-  private modelServicesServiceSubscription: Subscription;
-  private modelRuntimesServiceSubscription: Subscription;
-  private servicesServiceSubscription: Subscription;
 
   private data: Model[];
   public sidebarTitle = 'Models';
@@ -26,9 +23,7 @@ export class ModelsWrapperComponent implements OnDestroy {
   constructor(
     private modelBuilder: ModelBuilder,
     private store: Store<AppState>,
-    private modelsService: ModelsService,
-    private servicesService: ServicesService,
-    private modelServicesService: ModelServicesService
+    private modelsService: ModelsService
   ) {
     this.modelsServiceSubscription = this.modelsService.getModels().first()
       .subscribe(models => {
