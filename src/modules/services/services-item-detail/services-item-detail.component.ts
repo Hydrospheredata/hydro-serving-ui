@@ -72,6 +72,7 @@ export class ServicesItemDetailComponent {
                 .filter(service => service.id === +id);
 
             this.service = service.shift();
+            console.log(this.service);
             if (this.service) {
                 this.service.weights.forEach(weight => {
                     this.getModelServiceData(weight);
@@ -88,6 +89,7 @@ export class ServicesItemDetailComponent {
     }
 
     testService(service: Service) {
+        console.log(service);
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
             styles: { 'width': '800px', 'min-height': '350px' },

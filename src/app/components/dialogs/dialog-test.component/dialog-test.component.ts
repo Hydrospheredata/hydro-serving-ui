@@ -61,7 +61,7 @@ export class DialogTestComponent implements OnInit {
     this.requestBody = this.createCURLString(this.testForm);
     this.testForm.valueChanges.subscribe(form => {
       console.log(this.testForm);
-      this.requestBody = this.createCURLString(form);
+      this.requestBody = this.createCURLString(this.testForm);
     });
     this.codeMirrorInputOptions = {
       matchBrackets: true,
@@ -82,16 +82,15 @@ export class DialogTestComponent implements OnInit {
 
   }
 
-  private createCURLString (form) {
+  private createCURLString(form) {
     let path = '';
     let payload = '';
     payload = JSON.stringify(this.createTestOptions(form));
-    if (this.model.cloudDriverId) {
-      path = `${this.apiUrl}/modelService/serve`;
-    } else if (this.model.weights && this.model.weights.length > 0) {
+
+    if (this.model instanceof Service) {
       path = `${this.apiUrl}/weightedServices/serve`;
     } else {
-      path = `${window.location.protocol}//${window.location.hostname}:${this.port}${environment.uiUrl}/model/serve`;
+      path = `${this.apiUrl}/modelService/serve`;
     }
     return `curl -X POST --header 'Content-Type: application/json'
     -d '${payload}'
@@ -120,8 +119,8 @@ export class DialogTestComponent implements OnInit {
       return JSON.stringify([{}]);
     }
     const reducedFields = inputFields.reduce((payload, field) => {
-       payload[field] = '';
-       return payload;
+      payload[field] = '';
+      return payload;
     }, {});
     return JSON.stringify([reducedFields], undefined, 2);
   }
@@ -149,9 +148,14 @@ export class DialogTestComponent implements OnInit {
 
   public createTestOptions(form) {
     const controls = form.controls;
-    const data = JSON.parse(controls.data.value);
+    let data = '';
+    try {
+      data = JSON.parse(controls.data.value);
+    } catch (e) {
+      data = '';
+    }
     const testOptions = {
-      id: this.model.id,
+      id: this.model instanceof Service ? this.model.id : this.model.serviceId,
       path: controls.path.value,
       data: data
     };
@@ -162,14 +166,13 @@ export class DialogTestComponent implements OnInit {
     let apiUrl;
     let snackbarSuccessMsg;
     const testOptions = this.createTestOptions(form);
-
-      if (this.model instanceof Service) {
-        apiUrl = this.servicesService.serveService.bind(this.servicesService);
-        snackbarSuccessMsg = 'Service test was successful';
-      } else {
-        apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
-        snackbarSuccessMsg = 'Model test was successful';
-      }
+    if (this.model instanceof Service) {
+      apiUrl = this.servicesService.serveService.bind(this.servicesService);
+      snackbarSuccessMsg = 'Service test was successful';
+    } else {
+      apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
+      snackbarSuccessMsg = 'Model test was successful';
+    }
 
     apiUrl(JSON.stringify(testOptions))
       .subscribe(res => {

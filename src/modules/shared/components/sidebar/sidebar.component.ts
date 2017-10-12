@@ -22,7 +22,7 @@ import * as moment from 'moment';
 })
 export class SidebarComponent implements OnInit, OnChanges {
 
-    public sidebarList: any[]; // ToDo: Fix any type
+    public sidebarList: Service[] | Model[];
     private title = '';
     public searchQ: string;
     private needsToGo = false;
