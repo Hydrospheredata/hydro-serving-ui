@@ -122,6 +122,9 @@ $light: "Museo Sans Light";
     }
 }
 
-.actions > div {
-  justify-content: center!important;
+.actions {
+    display: inline-flex;
+    > div {
+    justify-content: center!important;
+  }
 }
