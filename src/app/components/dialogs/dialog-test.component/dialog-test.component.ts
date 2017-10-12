@@ -151,7 +151,7 @@ export class DialogTestComponent implements OnInit {
     const controls = form.controls;
     const data = JSON.parse(controls.data.value);
     const testOptions = {
-      id: this.model instanceof Model ? this.model.id : this.model.serviceId,
+      id: this.model.id,
       path: controls.path.value,
       data: data
     };
