@@ -86,7 +86,7 @@ export class DialogModelBuildComponent implements OnInit {
 
     this.modelsService.updateModel(modelOptions)
     .flatMap(model => {
-      return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: modelOptions.runtimeTypeId})
+      return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: modelOptions.runtimeTypeId});
     })
     .subscribe((model) => {
       this.dialogRef.hide();

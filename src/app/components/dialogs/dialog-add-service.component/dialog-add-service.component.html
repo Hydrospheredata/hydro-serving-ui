@@ -44,6 +44,7 @@
         </li>
       </ul>
     </div>
+    
     <div class="hydro-form-group">
       <label>Models</label>
       <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
@@ -79,6 +80,7 @@
         </mdl-select>
       </div>
     </div>
+    
     <div class="btn-group form-actions">
       <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
       <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">Add service</button>
