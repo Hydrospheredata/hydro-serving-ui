@@ -59,8 +59,10 @@ export class SidebarComponent implements OnInit, OnChanges {
             this.sidebarList = items;
             if (this.needsToGo) {
               this.needsToGo = false;
+              if (this.sidebarList.length > 0) {
               const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
               this.router.navigate([sorted[0].id], {relativeTo: this.activatedRoute});
+              }
             }
         });
     }
