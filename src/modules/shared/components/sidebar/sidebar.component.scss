@@ -14,13 +14,6 @@
       }
     }
   }
-  &-definitions {
-    font-size: 14px;
-    color: #818994;
-    span:last-of-type {
-      margin-left: 5px;
-    }
-  }
   &-title {
     font-weight: 700;
     font-family: $main-font-family;
@@ -67,6 +60,9 @@
         justify-content: space-between;
       }
       &-details {
+        min-width: 80px;
+        display: inline-flex;
+        justify-content: flex-end;
         padding-right: 10px;
         > span {
           padding-right: 30px;
@@ -104,7 +100,7 @@ svg {
 }
 
 .version-new {
-  padding-right: 27px!important;
+  padding-right: 26px!important;
   color: #f28a03;
   &::after {
     content: '˚';

@@ -108,9 +108,6 @@ $light: "Museo Sans Light";
     padding: 3px 20px;
     cursor: pointer;
     margin-left: 10px;
-    &-new {
-      // width: 50%
-    }
 }
 
 .hydro-table {
@@ -122,6 +119,13 @@ $light: "Museo Sans Light";
     }
 }
 
-.actions > div {
-  justify-content: center!important;
+.actions {
+    display: inline-flex;
+    > div {
+    justify-content: center!important;
+  }
+  @media screen and (max-width: 1450px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
 }

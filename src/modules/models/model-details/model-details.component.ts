@@ -23,13 +23,12 @@ import {
 import { MdlDialogService } from '@angular-mdl/core';
 
 import * as moment from 'moment';
-import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { AppState, Model, Service } from '@shared/models/_index';
 import { } from '@shared/services/_index';
 import { Subscription } from 'rxjs/Subscription';
 import * as Actions from '@shared/actions/_index';
-import { ModelsService, ModelService, ModelRuntime } from '@shared/_index';
+import { ModelService, ModelRuntime } from '@shared/_index';
 import { ServiceBuilder } from '@shared/builders/_index';
 
 
@@ -54,7 +53,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private modelServicesServiceSubscription: Subscription;
   private servicesServiceSubscription: Subscription;
   private modelsStoreSelectionSubscription: Subscription;
-  private buildsSubscription: Subscription;
 
   public tableHeader: string[] = [
     'Created', 'Version', 'Status', 'Actions', 'Services'
@@ -100,13 +98,11 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
 
 
-
-        this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
+       this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
           .subscribe(modelRuntimes => {
             this.runtimes = modelRuntimes;
             this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
           });
-
 
 
         this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
