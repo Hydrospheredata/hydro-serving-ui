@@ -44,6 +44,8 @@ export class DialogBase {
 
     public services: Service[];
 
+    public weightsForSlider: any[] = [100];
+
     constructor(
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
@@ -55,7 +57,7 @@ export class DialogBase {
         this.store.select('modelService')
             .subscribe(modelService => {
                 this.modelServices = modelService.filter(item => {
-                    return item.modelRuntime.runtimeType;
+                    return item.modelRuntime.runtimeType && item.serviceId > 0;
                 });
             });
     }
@@ -77,7 +79,6 @@ export class DialogBase {
 
     public addKafkaSource() {
         return this.fb.group({
-            serviceId: [0],
             sourceTopic: [''],
             destinationTopic: [''],
             brokerList: [['']]
@@ -126,28 +127,28 @@ export class DialogBase {
     }
 
     public onAddingModel(value) {
-        console.log(value);
         this.addModelToService(value);
+        this.weightsForSlider.push(0);
     }
 
     public getFormData(data) {
         let weights: {serviceId: number, weight: number}[] = [];
-        let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
+        let kafkaStreamingSources: {sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
 
-        this.serviceForm.value.weights.forEach(model => {
+        data.value.weights.forEach(model => {
             weights.push({
                 serviceId: model.serviceId,
                 weight: Number(model.weight)
             });
         });
 
-        this.serviceForm.value.kafkaStreamingSources.forEach(kafka => {
+        data.value.kafkaStreamingSources.forEach(kafka => {
+            console.log(kafka);
             if (this.isKafkaEnabled) {
                 kafkaStreamingSources.push({
-                    serviceId: 0,
                     sourceTopic: kafka.sourceTopic,
                     destinationTopic: kafka.destinationTopic,
-                    brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g) : kafka.brokerList
+                    brokerList: kafka.brokerList[0] ? kafka.brokerList[0].split(/[#;,\/|()[\]{}<>( )]/g) : kafka.brokerList
                 });
             }
         });

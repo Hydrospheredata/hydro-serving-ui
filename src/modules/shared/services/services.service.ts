@@ -26,7 +26,7 @@ export class ServicesService {
     }
 
     updateService(service: Service): Observable<Service> {
-      return this.http.put(this.baseUiUrl, service);
+        return this.http.put(this.baseUiUrl, service);
     }
 
     addService(service: Service) {

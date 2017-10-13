@@ -43,12 +43,13 @@ export class ServicesItemDetailComponent {
         private modelServicesService: ModelServicesService,
         private router: Router
     ) {
-        this.storeSub = this.store.select('services').filter(services => services.length > 0)
+        this.storeSub = this.store.select('services')
+            .filter(services => services.length > 0)
             .subscribe(services => {
                 if (services.length) {
                     this.services = services;
                     if (this.id) {
-                        // this.getServiceData(this.id);
+                        this.getServiceData(this.id);
                     }
                 }
             });
@@ -72,6 +73,13 @@ export class ServicesItemDetailComponent {
                 .filter(service => service.id === +id);
 
             this.service = service.shift();
+            if (this.service.kafkaStreamingSources[0]) {
+                this.service.kafkaStreamingSources.forEach(kafka => {
+                    if (kafka.serviceId) {
+                        delete kafka.serviceId;
+                    }
+                })
+            }
             console.log(this.service);
             if (this.service) {
                 this.service.weights.forEach(weight => {

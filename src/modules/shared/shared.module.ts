@@ -23,7 +23,8 @@ import {
     ModelsService,
     ModelRuntimesService,
     ModelServicesService,
-    CheckServiceExistService
+    CheckServiceExistService,
+    ServicesRouterResolver
 } from './services/_index';
 
 // Pipes
@@ -102,6 +103,7 @@ import {
         ModelsService,
         ModelServicesService,
         CheckServiceExistService,
+        ServicesRouterResolver,
         // Builders
         ModelBuilder,
         ModelRuntimeBuilder,

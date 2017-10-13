@@ -1,4 +1,4 @@
-import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
@@ -6,7 +6,7 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { DialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
-import { AppState, ModelService, Service } from '@shared/models/_index';
+import { AppState, Service } from '@shared/models/_index';
 import { FormsService, ServicesService } from '@shared/services/_index';
 
 
@@ -40,6 +40,7 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
         this.store.select('services')
             .subscribe(services => {
                 this.services = services;
+                console.log(this.services);
             });
     }
 
