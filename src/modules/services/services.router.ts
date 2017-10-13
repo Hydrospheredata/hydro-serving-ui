@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
-import { RedirectToServicesGuard } from '@shared/_index';
+import { ServicesRouterResolver, RedirectToServicesGuard } from '@shared/_index';
 
 import { ServicesWrapperComponent, ServicesItemDetailComponent } from "./_index";
 

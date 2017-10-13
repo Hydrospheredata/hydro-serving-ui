@@ -60,11 +60,11 @@
                               [inputClass]="weightInputClass"
                               [label]="labels.weight"
                               name="asd"
-                              formControlName="weight">
+                              formControlName="weight" [(ngModel)]="weightsForSlider[i]">
             </hydro-input-text>%
           </div>
 
-          <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight"></mdl-slider>
+          <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight" [(ngModel)]="weightsForSlider[i]"></mdl-slider>
           
           <svg class="delete" (click)="removeModelFromService(i)" *ngIf="serviceForm['controls'].weights['controls'].length > 1">
             <use xlink:href="#icon-remove"></use>

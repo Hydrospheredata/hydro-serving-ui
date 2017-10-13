@@ -23,6 +23,8 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
 
     public dialogType: string = 'Edit';
 
+    public weightsForSlider: any[] = [];
+
     constructor(
         @Inject(injectableServiceUpdate) data: Service,
         public store: Store<AppState>,
@@ -67,7 +69,8 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
             weights.push({
                 serviceId: service.service ? service.service.serviceId : service.serviceId,
                 weight: service.weight
-            })
+            });
+            this.weightsForSlider.push(service.weight);
         });
         
         this.serviceForm.patchValue({
