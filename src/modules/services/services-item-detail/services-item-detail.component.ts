@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { AppState, Service, ModelService } from '@shared/models/_index';
 import { ModelServicesService } from '@shared/services/_index';
+import { ServiceBuilder } from '@shared/builders/_index';
 
 import {
     DialogTestComponent,
@@ -41,13 +42,14 @@ export class ServicesItemDetailComponent {
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
         private modelServicesService: ModelServicesService,
-        private router: Router
+        private router: Router,
+        private serviceBuilder: ServiceBuilder
     ) {
         this.storeSub = this.store.select('services')
             .filter(services => services.length > 0)
             .subscribe(services => {
                 if (services.length) {
-                    this.services = services;
+                    this.services = services.map(service => this.serviceBuilder.build(service));;
                     if (this.id) {
                         this.getServiceData(this.id);
                     }
@@ -73,7 +75,7 @@ export class ServicesItemDetailComponent {
                 .filter(service => service.id === +id);
 
             this.service = service.shift();
-            if (this.service.kafkaStreamingSources[0]) {
+            if (this.service.kafkaStreamingSources.length) {
                 this.service.kafkaStreamingSources.forEach(kafka => {
                     if (kafka.serviceId) {
                         delete kafka.serviceId;

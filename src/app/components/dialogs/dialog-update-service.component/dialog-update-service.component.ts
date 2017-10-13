@@ -95,6 +95,8 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
 
         const service = new Service(Object.assign( serviceInfo, { weights: data.weights } ));
 
+        console.log(service);
+
         this.servicesService.updateService(service)
             .subscribe(res => {
                 this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
