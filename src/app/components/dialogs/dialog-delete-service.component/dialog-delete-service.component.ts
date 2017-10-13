@@ -1,7 +1,6 @@
 import { Component, InjectionToken, Inject, HostListener } from '@angular/core';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
-import { Router, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
-import { Location } from '@angular/common';
+import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { ServicesService } from '@shared/services/_index';
@@ -28,9 +27,7 @@ export class DialogDeleteServiceComponent {
         public dialogRef: MdlDialogReference,
         private mdlSnackbarService: MdlSnackbarService,
         private servicesService: ServicesService,
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
-        private location: Location
+        private router: Router
     ) {
         this.modelId = data;
     }
@@ -43,7 +40,6 @@ export class DialogDeleteServiceComponent {
     submitDeleteServiceForm() {
         this.servicesService.deleteService(this.modelId)
             .subscribe(services => {
-                console.log(services);
                 this.store.dispatch({ type: Actions.DELETE_SERVICE, serviceId: this.modelId });
                 this.router.navigate(['/services']);
                 this.dialogRef.hide();

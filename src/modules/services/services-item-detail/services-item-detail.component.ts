@@ -45,6 +45,7 @@ export class ServicesItemDetailComponent {
         private router: Router,
         private serviceBuilder: ServiceBuilder
     ) {
+        // FIX: Subscribe to store and watching route changes with one Observable
         this.storeSub = this.store.select('services')
             .filter(services => services.length > 0)
             .subscribe(services => {
@@ -69,20 +70,17 @@ export class ServicesItemDetailComponent {
 
     getServiceData(id: string) {
         this.serviceModels = [];
-
         if (this.services.length) {
             const service = this.services
                 .filter(service => service.id === +id);
-
             this.service = service.shift();
-            if (this.service.kafkaStreamingSources.length) {
-                this.service.kafkaStreamingSources.forEach(kafka => {
-                    if (kafka.serviceId) {
-                        delete kafka.serviceId;
-                    }
-                })
-            }
-            console.log(this.service);
+            // if (this.service.kafkaStreamingSources.length) {
+            //     this.service.kafkaStreamingSources.forEach(kafka => {
+            //         if (kafka.serviceId) {
+            //             delete kafka.serviceId;
+            //         }
+            //     })
+            // }
             if (this.service) {
                 this.service.weights.forEach(weight => {
                     this.getModelServiceData(weight);
@@ -99,7 +97,6 @@ export class ServicesItemDetailComponent {
     }
 
     testService(service: Service) {
-        console.log(service);
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
             styles: { 'width': '800px', 'min-height': '350px' },
