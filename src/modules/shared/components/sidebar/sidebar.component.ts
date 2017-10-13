@@ -73,7 +73,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   addService() {
     this.dialog.showCustomDialog({
       component: DialogAddServiceComponent,
-      styles: { 'width': '850px', 'min-height': '250px' },
+      styles: { 'width': '850px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },
       classes: '',
       isModal: true,
       clickOutsideToClose: true,
