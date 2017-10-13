@@ -63,7 +63,10 @@ export class SidebarComponent implements OnInit, OnChanges {
         this.needsToGo = false;
         if (this.sidebarList.length > 0) {
           const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
-          this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
+          // EXTREMELY AWFUL HACK DO NOT TRY THIS AT HOME I REPEAT DO NOT TRY THIS AT HOME!!!!
+          if (this.router.url.split('/').length <= 2) {
+            this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
+          }
         }
       }
     });
@@ -73,7 +76,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   addService() {
     this.dialog.showCustomDialog({
       component: DialogAddServiceComponent,
-      styles: { 'width': '850px', 'min-height': '250px' },
+      styles: { 'width': '850px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },
       classes: '',
       isModal: true,
       clickOutsideToClose: true,
