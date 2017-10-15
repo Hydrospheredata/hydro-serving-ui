@@ -80,7 +80,7 @@ export class DialogBase {
 
     public addWeightToModel(model?) {
         return this.fb.group({
-            selectedModel: ['', Validators.required],
+            selectedModel: [model ? this.modelServicesFiltered.find(item => item.modelRuntime.modelId === model).modelRuntime.modelId : '', Validators.required],
             model: [model ? model : '', [Validators.required]],
             weight: ['100', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
         });
@@ -143,6 +143,7 @@ export class DialogBase {
     }
 
     public onAddingModel(value) {
+        console.log(value);
         this.addModelToService(value);
         this.weightsForSlider.push(0);
     }
