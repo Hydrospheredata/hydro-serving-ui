@@ -74,7 +74,8 @@ export class DialogBase {
         this.serviceForm = this.fb.group({
             serviceName: ['', Validators.required],
             weights: this.fb.array([this.addWeightToModel()]),
-            kafkaStreamingSources: this.fb.array([this.addKafkaSource()])
+            kafkaStreamingSources: this.fb.array([this.addKafkaSource()]),
+            addModelToService: ''
         });
     }
 
@@ -143,9 +144,12 @@ export class DialogBase {
     }
 
     public onAddingModel(value) {
-        console.log(value);
         this.addModelToService(value);
+        this.onSelectModel(value);
         this.weightsForSlider.push(0);
+        this.serviceForm.patchValue({
+            addModelToService: ''
+        });
     }
 
     public getFormData(data) {

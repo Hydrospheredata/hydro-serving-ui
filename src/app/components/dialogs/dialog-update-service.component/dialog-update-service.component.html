@@ -78,7 +78,7 @@
       </ul>
       <div class="form-weights__list-item--add">
         <svg><use xlink:href="#icon-plus"></use></svg>
-        <mdl-select (change)="onAddingModel($event)" label="{{addSelectLabel}}" class="cs-text-center">
+        <mdl-select formControlName="addModelToService" (change)="onAddingModel($event)" label="{{addSelectLabel}}" class="cs-text-center">
           <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
         </mdl-select>
       </div>
