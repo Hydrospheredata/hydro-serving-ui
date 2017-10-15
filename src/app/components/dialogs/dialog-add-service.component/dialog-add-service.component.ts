@@ -58,8 +58,7 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
         };
 
         serviceInfo.kafkaStreamingSources.forEach(kafka => {
-            console.log(kafka);
-            delete kafka.serviceId;
+            kafka.serviceId = 0;
         });
 
         const service = new Service(Object.assign( serviceInfo, { weights: data.weights } ));

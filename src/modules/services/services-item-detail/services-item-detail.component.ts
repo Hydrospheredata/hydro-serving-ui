@@ -28,6 +28,7 @@ import {
 
 export class ServicesItemDetailComponent {
     public storeSub: Subscription;
+    public activeRouteSub: Subscription;
     public id: string;
     public serviceModels: any[];
     public services: Service[] = [];
@@ -57,7 +58,7 @@ export class ServicesItemDetailComponent {
                 }
             });
 
-        this.activatedRoute.params
+        this.activeRouteSub = this.activatedRoute.params
             .subscribe(params => {
                 this.id = params['id'];
                 this.getServiceData(this.id);
@@ -66,6 +67,7 @@ export class ServicesItemDetailComponent {
 
     ngOnDestroy() {
         this.storeSub.unsubscribe();
+        this.activeRouteSub.unsubscribe();
     }
 
     getServiceData(id: string) {
