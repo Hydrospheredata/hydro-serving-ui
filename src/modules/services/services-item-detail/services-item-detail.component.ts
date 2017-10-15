@@ -92,7 +92,7 @@ export class ServicesItemDetailComponent {
 
     getModelServiceData(weight) {
         console.log(weight);
-        this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.runtimeId)
+        this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });
             });
