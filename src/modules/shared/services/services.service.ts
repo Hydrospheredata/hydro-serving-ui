@@ -30,7 +30,10 @@ export class ServicesService {
     }
 
     addService(service: Service) {
-        return this.http.post(this.baseUiUrl, service);
+        return this.http.post(this.baseUiUrl, service)
+                    .map((res: Response): any => {
+                        return res.json();
+                    });
     }
 
     deleteService(id: string) {

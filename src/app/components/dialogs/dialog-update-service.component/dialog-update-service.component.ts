@@ -5,7 +5,7 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';
-import { ServicesService, FormsService } from '@shared/services/_index';
+import { ServicesService, FormsService, ModelServicesService } from '@shared/services/_index';
 import * as Actions from '@shared/actions/_index';
 import { AppState, ModelService, Service } from '@shared/models/_index';
 
@@ -24,6 +24,9 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
     public dialogType: string = 'Edit';
 
     public weightsForSlider: any[] = [];
+    public selectedModels: any[] = [];
+
+    public 
 
     constructor(
         @Inject(injectableServiceUpdate) data: Service,
@@ -32,7 +35,7 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public servicesService: ServicesService
+        public servicesService: ServicesService,
     ) {
         super(
             fb,
@@ -40,7 +43,8 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
             formsService,
             mdlSnackbarService,
             store,
-            servicesService
+            servicesService,
+            
         );
         this.selectedService = data;
         if (this.selectedService.kafkaStreamingSources.length) {
@@ -55,6 +59,7 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
     }
 
     private updateServiceFormValues(service: Service) {
+        console.log(service);
         for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
             this.addKafkaToService();
         }
@@ -63,14 +68,21 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
             this.addModelToService();
         }
         
-        let weights: { serviceId: number, weight: number }[] = [];
+        let weights: any[] = [];
 
-        service.weights.map(service => {
+        service.weights.map(self => {
+            console.log(self);
             weights.push({
-                serviceId: service.service ? service.service.serviceId : service.serviceId,
-                weight: service.weight
+                selectedModel: self.service ? self.service.modelRuntime.modelId : self.runtimeId,
+                model: self.service ? self.service : '',
+                weight: self.weight
             });
-            this.weightsForSlider.push(service.weight);
+            this.weightsForSlider.push(self.weight);
+            if (self.service) {
+                this.onSelectModel(self.service.modelRuntime.modelId);
+            } else {
+                this.onSelectModel(self.runtimeId);
+            }
         });
         
         this.serviceForm.patchValue({
@@ -95,9 +107,12 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
 
         const service = new Service(Object.assign( serviceInfo, { weights: data.weights } ));
 
+        console.log(service);
+
         this.servicesService.updateService(service)
             .subscribe(res => {
-                this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
+                console.log(res);
+                this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: new Service(service) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully updated',

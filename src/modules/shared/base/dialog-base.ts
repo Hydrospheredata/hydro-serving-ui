@@ -39,8 +39,9 @@ export class DialogBase {
         weight: '',
     };
     public modelServices: ModelService[];
+    public modelServicesFiltered: ModelService[];
 
-    public modelVersions: string[] = [];
+    public modelVersions: ModelService[] = [];
 
     public services: Service[];
 
@@ -59,6 +60,13 @@ export class DialogBase {
                 this.modelServices = modelService.filter(item => {
                     return item.modelRuntime.runtimeType && item.serviceId > 0;
                 });
+                this.modelServicesFiltered = this.modelServices.filter((item, index, self) => {
+                    return self.findIndex(t => { return t.modelRuntime.modelId === item.modelRuntime.modelId}) === index;
+                });
+            });
+        this.store.select('services')
+            .subscribe(services => {
+                this.services = services;
             });
     }
 
@@ -70,15 +78,17 @@ export class DialogBase {
         });
     }
 
-    public addWeightToModel(model?: string) {
+    public addWeightToModel(model?) {
         return this.fb.group({
-            serviceId: [model ? model : '', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
+            selectedModel: ['', Validators.required],
+            model: [model ? model : '', [Validators.required]],
             weight: ['100', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
         });
     }
 
     public addKafkaSource() {
         return this.fb.group({
+            serviceId: ['0'],
             sourceTopic: [''],
             destinationTopic: [''],
             brokerList: ['']
@@ -106,7 +116,7 @@ export class DialogBase {
         });
     }
 
-    public addModelToService(model?: string) {
+    public addModelToService(model?) {
         const control = <FormArray>this.serviceForm.controls['weights'];
         control.push(this.addWeightToModel(model));
     }
@@ -126,25 +136,37 @@ export class DialogBase {
         control.removeAt(i);
     }
 
+    public onSelectModel(value) {
+        this.modelVersions = this.modelServices.filter((item, index, self) => {
+            return item.modelRuntime.modelId === value;
+        });
+    }
+
     public onAddingModel(value) {
         this.addModelToService(value);
         this.weightsForSlider.push(0);
     }
 
     public getFormData(data) {
-        let weights: {serviceId: number, weight: number}[] = [];
-        let kafkaStreamingSources: {sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
 
-        data.value.weights.forEach(model => {
+        console.log(data);
+
+        let weights: {serviceId: number, runtimeId: number, weight: number}[] = [];
+        let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
+
+        data.value.weights.forEach(self => {
+            console.log(self);
             weights.push({
-                serviceId: model.serviceId,
-                weight: Number(model.weight)
+                serviceId: self.model.serviceId,
+                runtimeId: self.model.modelRuntime.id,
+                weight: Number(self.weight)
             });
         });
 
         data.value.kafkaStreamingSources.forEach(kafka => {
             if (this.isKafkaEnabled) {
                 kafkaStreamingSources.push({
+                    serviceId: kafka.serviceId,
                     sourceTopic: kafka.sourceTopic,
                     destinationTopic: kafka.destinationTopic,
                     brokerList: kafka.brokerList instanceof Array ? kafka.brokerList : kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g)

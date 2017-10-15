@@ -5,6 +5,7 @@ import { CurrentServices } from './current-services.model';
 
 export class Model {
   public id: number;
+  public modelId: number;
   public name: string;
   public source: string;
   public description: string;
@@ -22,6 +23,7 @@ export class Model {
     this.name = props['name'] || '';
     this.source = props['source'] || '';
     this.description = props['description'] || '';
+    this.modelId = props['modelId'] || '';
     this.outputFields = props['outputFields'] || [''];
     this.inputFields = props['inputFields'] || [''];
     this.created = props['created'] || '';
