@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { AppState, Service, ModelService } from '@shared/models/_index';
 import { ModelServicesService } from '@shared/services/_index';
+import { ServiceBuilder } from '@shared/builders/_index';
 
 import {
     DialogTestComponent,
@@ -41,13 +42,15 @@ export class ServicesItemDetailComponent {
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
         private modelServicesService: ModelServicesService,
-        private router: Router
+        private router: Router,
+        private serviceBuilder: ServiceBuilder
     ) {
+        // FIX: Subscribe to store and watching route changes with one Observable
         this.storeSub = this.store.select('services')
             .filter(services => services.length > 0)
             .subscribe(services => {
                 if (services.length) {
-                    this.services = services;
+                    this.services = services.map(service => this.serviceBuilder.build(service));;
                     if (this.id) {
                         this.getServiceData(this.id);
                     }
@@ -67,20 +70,17 @@ export class ServicesItemDetailComponent {
 
     getServiceData(id: string) {
         this.serviceModels = [];
-
         if (this.services.length) {
             const service = this.services
                 .filter(service => service.id === +id);
-
             this.service = service.shift();
-            if (this.service.kafkaStreamingSources[0]) {
-                this.service.kafkaStreamingSources.forEach(kafka => {
-                    if (kafka.serviceId) {
-                        delete kafka.serviceId;
-                    }
-                })
-            }
-            console.log(this.service);
+            // if (this.service.kafkaStreamingSources.length) {
+            //     this.service.kafkaStreamingSources.forEach(kafka => {
+            //         if (kafka.serviceId) {
+            //             delete kafka.serviceId;
+            //         }
+            //     })
+            // }
             if (this.service) {
                 this.service.weights.forEach(weight => {
                     this.getModelServiceData(weight);
@@ -97,7 +97,6 @@ export class ServicesItemDetailComponent {
     }
 
     testService(service: Service) {
-        console.log(service);
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
             styles: { 'width': '800px', 'min-height': '350px' },

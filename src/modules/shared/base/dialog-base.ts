@@ -81,7 +81,7 @@ export class DialogBase {
         return this.fb.group({
             sourceTopic: [''],
             destinationTopic: [''],
-            brokerList: [['']]
+            brokerList: ['']
         });
     }
 
@@ -143,12 +143,11 @@ export class DialogBase {
         });
 
         data.value.kafkaStreamingSources.forEach(kafka => {
-            console.log(kafka);
             if (this.isKafkaEnabled) {
                 kafkaStreamingSources.push({
                     sourceTopic: kafka.sourceTopic,
                     destinationTopic: kafka.destinationTopic,
-                    brokerList: kafka.brokerList[0] ? kafka.brokerList[0].split(/[#;,\/|()[\]{}<>( )]/g) : kafka.brokerList
+                    brokerList: kafka.brokerList instanceof Array ? kafka.brokerList : kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g)
                 });
             }
         });

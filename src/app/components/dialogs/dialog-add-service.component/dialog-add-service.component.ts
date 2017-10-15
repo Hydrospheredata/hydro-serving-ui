@@ -40,7 +40,6 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
         this.store.select('services')
             .subscribe(services => {
                 this.services = services;
-                console.log(this.services);
             });
     }
 
@@ -63,8 +62,6 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
         };
 
         const service = new Service(Object.assign( serviceInfo, { weights: data.weights } ));
-
-        console.log(service);
 
         this.servicesService.addService(service)
             .subscribe(services => {
