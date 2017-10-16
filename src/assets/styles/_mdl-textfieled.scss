@@ -1,5 +1,10 @@
 .mdl-textfield {
+    width: 250px;
     padding: 0;
+    .__versions & {
+        width: 100px;
+        margin: 0 15px;
+    }
     &__label {
         left: 10px;
         top: 4px;

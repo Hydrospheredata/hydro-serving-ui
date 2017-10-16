@@ -28,6 +28,7 @@ import {
 
 export class ServicesItemDetailComponent {
     public storeSub: Subscription;
+    public activeRouteSub: Subscription;
     public id: string;
     public serviceModels: any[];
     public services: Service[] = [];
@@ -50,14 +51,14 @@ export class ServicesItemDetailComponent {
             .filter(services => services.length > 0)
             .subscribe(services => {
                 if (services.length) {
-                    this.services = services.map(service => this.serviceBuilder.build(service));;
+                    this.services = services.map(service => this.serviceBuilder.build(service));
                     if (this.id) {
                         this.getServiceData(this.id);
                     }
                 }
             });
 
-        this.activatedRoute.params
+        this.activeRouteSub = this.activatedRoute.params
             .subscribe(params => {
                 this.id = params['id'];
                 this.getServiceData(this.id);
@@ -66,6 +67,7 @@ export class ServicesItemDetailComponent {
 
     ngOnDestroy() {
         this.storeSub.unsubscribe();
+        this.activeRouteSub.unsubscribe();
     }
 
     getServiceData(id: string) {
@@ -74,6 +76,7 @@ export class ServicesItemDetailComponent {
             const service = this.services
                 .filter(service => service.id === +id);
             this.service = service.shift();
+            console.log(this.service);
             // if (this.service.kafkaStreamingSources.length) {
             //     this.service.kafkaStreamingSources.forEach(kafka => {
             //         if (kafka.serviceId) {
@@ -90,6 +93,7 @@ export class ServicesItemDetailComponent {
     }
 
     getModelServiceData(weight) {
+        console.log(weight);
         this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });

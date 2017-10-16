@@ -35,12 +35,8 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
             formsService,
             mdlSnackbarService,
             store,
-            servicesService
+            servicesService 
         );
-        this.store.select('services')
-            .subscribe(services => {
-                this.services = services;
-            });
     }
 
     ngOnInit() {
@@ -61,11 +57,15 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
             kafkaStreamingSources: this.isKafkaEnabled ? data.kafkaStreamingSources : [],
         };
 
+        serviceInfo.kafkaStreamingSources.forEach(kafka => {
+            kafka.serviceId = 0;
+        });
+
         const service = new Service(Object.assign( serviceInfo, { weights: data.weights } ));
 
         this.servicesService.addService(service)
-            .subscribe(services => {
-                this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
+            .subscribe(res => {
+                this.store.dispatch({ type: Actions.ADD_SERVICE, payload: new Service(service) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully added',

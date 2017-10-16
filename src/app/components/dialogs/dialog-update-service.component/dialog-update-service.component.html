@@ -50,8 +50,12 @@
       <ul class="form-weights__list" formArrayName="weights">
         <li class="form-weights__list-item" *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index" [formGroupName]="i">
           
-          <mdl-select #autocompleteSelect [autocomplete]="true" label="{{serviceIdLabel}}" floating-label class="cs-text-center" formControlName="serviceId">
-            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.modelRuntime.modelName}}</mdl-option>
+          <mdl-select formControlName="selectedModel" label="{{serviceIdLabel}}" class="cs-text-center" (change)="onSelectModel($event)">
+            <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
+          </mdl-select>
+
+          <mdl-select class="__versions cs-text-center" formControlName="model">
+            <mdl-option *ngFor="let model of modelVersions" [value]="model">{{model.modelRuntime.modelVersion}}</mdl-option>
           </mdl-select>
           
           <div class="form-weights__list-item--weight">
@@ -75,7 +79,7 @@
       <div class="form-weights__list-item--add">
         <svg><use xlink:href="#icon-plus"></use></svg>
         <mdl-select (change)="onAddingModel($event)" label="{{addSelectLabel}}" class="cs-text-center">
-          <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.modelRuntime.modelName}}</mdl-option>
+          <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
         </mdl-select>
       </div>
     </div>
