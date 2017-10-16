@@ -17,6 +17,8 @@ export class Model {
   public lastModelRuntime: ModelRuntime;
   public lastModelBuild: ModelBuild;
   public currentServices: CurrentServices[];
+  public nextVersion: string;
+  public nextVersionAvailable: boolean;
 
   constructor(props: any = {}) {
     this.id = props['id'] || '';
@@ -32,5 +34,7 @@ export class Model {
     this.lastModelRuntime = props['lastModelRuntime'] || {};
     this.lastModelBuild = props['lastModelBuild'] || {};
     this.currentServices = props['currentServices'];
+    this.nextVersion = props['nextVersion'] || '';
+    this.nextVersionAvailable = props['nextVersionAvailable'] || false;
   }
 }

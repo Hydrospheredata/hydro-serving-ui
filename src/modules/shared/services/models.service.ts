@@ -8,33 +8,41 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ModelsService {
-    baseAPIUrl: string;
-    baseUIUrl: string;
+  baseAPIUrl: string;
+  baseUIUrl: string;
 
-    constructor(
-        private http: HttpService
-    ) {
-        this.baseAPIUrl = `${environment.apiUrl}/model`;
-        this.baseUIUrl = `${environment.uiUrl}/model`;
-    }
+  constructor(
+    private http: HttpService
+  ) {
+    this.baseAPIUrl = `${environment.apiUrl}/model`;
+    this.baseUIUrl = `${environment.uiUrl}/model`;
+  }
 
-    getModels() {
-        return this.http.get(`${this.baseUIUrl}/withInfo`)
-                    .map((res: Response): any => {
-                      return res.json();
-                    });
-    }
+  getModels() {
+    return this.http.get(`${this.baseUIUrl}/withInfo`)
+      .map((res: Response): any => {
+        return res.json();
+      });
+  }
 
-    updateModel(model): Observable<Model> {
-      return this.http.put(this.baseAPIUrl, model);
-    }
+  getModelWithInfo(id: string) {
+    return this.http.get(`${this.baseUIUrl}/withInfo/${id}`)
+      .map((res: Response): any => {
+        return res.json();
+      });
 
-    addModel(model: Model) {
-        return this.http.post(this.baseAPIUrl, model);
-    }
+  }
 
-    deleteModel(id: string) {
-        return this.http.delete(`${this.baseAPIUrl}/${id}`);
-    }
+  updateModel(model): Observable<Model> {
+    return this.http.put(this.baseAPIUrl, model);
+  }
+
+  addModel(model: Model) {
+    return this.http.post(this.baseAPIUrl, model);
+  }
+
+  deleteModel(id: string) {
+    return this.http.delete(`${this.baseAPIUrl}/${id}`);
+  }
 
 }
