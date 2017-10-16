@@ -153,7 +153,20 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   public getLatestVersion() {
-    return '0.0.1';
+    if (!this.runtimes || this.runtimes.length < 1) {
+      return '0.0.1';
+    }
+    const sortedRuntimes = this.runtimes.sort((a, b) => {
+      if (a.imageTag > b.imageTag) {
+        return -1;
+      }
+      if (a.imageTag < b.imageTag) {
+        return 1;
+      }
+      return 0;
+    });
+    const newVersion = `0.0.${Number(sortedRuntimes[0].imageTag.split('.')[2]) + 1}`;
+    return newVersion;
   }
 
   buildModel(modelOptions: Model) {

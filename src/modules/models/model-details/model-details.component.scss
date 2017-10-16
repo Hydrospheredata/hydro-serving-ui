@@ -120,9 +120,11 @@ $light: "Museo Sans Light";
 }
 
 .actions {
-    display: inline-flex;
     > div {
     justify-content: center!important;
+    > div {
+        display: inline-flex;
+    }
   }
   @media screen and (max-width: 1450px) {
     padding-left: 0px;
