@@ -49,7 +49,7 @@ export class DialogModelBuildComponent implements OnInit {
     });
   }
 
-  @HostListener('keydown.esc')
+  @HostListener('document:keydown.escape')
   public onEsc(): void {
     this.dialogRef.hide();
   }
@@ -67,6 +67,15 @@ export class DialogModelBuildComponent implements OnInit {
       inputFields: [this.model.inputFields, []],
       outputFields: [this.model.outputFields, []],
     });
+  }
+
+  public getRuntimeTypeTages(runtimeTypeId: number) {
+    console.warn(runtimeTypeId);
+    if (!this.runtimeTypes || this.runtimeTypes.length === 0) {
+      return [];
+    }
+    console.log(this.runtimeTypes.find(runtimeType => runtimeType.id === Number(runtimeTypeId)));
+    return this.runtimeTypes.find(runtimeType => runtimeType.id === Number(runtimeTypeId))['tags'];
   }
 
   submitBuildModelForm(buildModelForm) {

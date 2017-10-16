@@ -97,7 +97,7 @@ export class DialogTestComponent implements OnInit {
     '${path}'`;
   }
 
-  @HostListener('keydown.esc')
+  @HostListener('document:keydown.escape')
   public onEsc(): void {
     this.dialogRef.hide();
   }

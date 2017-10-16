@@ -53,6 +53,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private servicesServiceSubscription: Subscription;
   private modelsStoreSelectionSubscription: Subscription;
   private getModelByIdSubscription: Subscription;
+  public nestedModelRuntimes: any;
   public tableHeader: string[] = [
     'Created', 'Version', 'Status', 'Actions', 'Services'
   ];
@@ -93,57 +94,65 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         });
       });
 
+
+
     this.modelsStoreSelectionSubscription = this.store.select('models').filter(models => models.length > 0)
       .subscribe(models => {
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
 
+        this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimesWithInfo(Number(id)).first()
+        .subscribe((data) => {
+          this.nestedModelRuntimes = data;
+          console.log(data);
+          }
+        );
 
-       this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
-          .subscribe(modelRuntimes => {
-            this.runtimes = modelRuntimes;
-            this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
-          });
+        // this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
+        //   .subscribe(modelRuntimes => {
+        //     this.runtimes = modelRuntimes;
+        //     this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
+        //   });
 
-         this.getModelByIdSubscription = this.newModelsService.getModelWithInfo(this.id).first()
-            .subscribe(version => {
-              this.model = this.modelBuilder.build(version);
-              console.log(version);
-            });
+        // this.getModelByIdSubscription = this.newModelsService.getModelWithInfo(this.id).first()
+        //   .subscribe(version => {
+        //     this.model = this.modelBuilder.build(version);
+        //     console.log(version);
+        //   });
 
 
-        this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
-          .map(modelServices => modelServices.filter(model => model.serviceId > 0))
-          .subscribe(modelServices => {
-            this.modelServices = modelServices;
-            this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: modelServices });
-          });
+        // this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
+        //   .map(modelServices => modelServices.filter(model => model.serviceId > 0))
+        //   .subscribe(modelServices => {
+        //     this.modelServices = modelServices;
+        //     this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: modelServices });
+        //   });
 
-        this.servicesServiceSubscription = this.servicesService.getServices().first()
-          .subscribe(services => {
-            this.weightedServices = services;
-            this.store.dispatch({ type: Actions.GET_SERVICES, payload: services.map(service => this.serviceBuilder.build(service)) });
-          });
+        // this.servicesServiceSubscription = this.servicesService.getServices().first()
+        //   .subscribe(services => {
+        //     this.weightedServices = services;
+        //     this.store.dispatch({ type: Actions.GET_SERVICES, payload: services.map(service => this.serviceBuilder.build(service)) });
+        //   });
 
         this.deployable = this.isDeployable();
       });
   }
 
-  public getModelService(modelRuntimeId: number): ModelService {
-    if (!this.modelServices) {
-      return null;
-    }
-    return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
-  }
+  // public getModelService(modelRuntimeId: number): ModelService {
+  //   if (!this.modelServices) {
+  //     return null;
+  //   }
+  //   return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
+  // }
 
-  public getWeightedServices(modelRuntimeId: number): Service[] {
-    const modelService = this.getModelService(modelRuntimeId);
-    if (!modelRuntimeId || !modelService) {
-      return [];
-    }
-    return this.weightedServices.filter((weightedService) => {
-      return weightedService.weights.some((weight) => weight.service ? weight.service.serviceId === modelService.serviceId : false);
-    });
-  }
+  // public getWeightedServices(modelRuntimeId: number): Service[] {
+  //   const modelService = this.getModelService(modelRuntimeId);
+  //   if (!modelRuntimeId || !modelService) {
+  //     return [];
+  //   }
+  //   return this.weightedServices.filter((weightedService) => {
+  //     return weightedService.weights.some((weight) => weight.service ? weight.service.serviceId === modelService.serviceId : false);
+  //   });
+  // }
 
   public isDeployable() {
     if (!this.model || !this.model.lastModelRuntime.created) {
@@ -204,7 +213,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  testModel(model: ModelService) {
+  testModel(model) {
     this.dialog.showCustomDialog({
       component: DialogTestComponent,
       styles: { 'width': '800px', 'min-height': '350px' },
@@ -217,10 +226,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  stopModel(modelService, weightedServices) {
+  stopModel(modelService) {
     const payload = {
-      model: modelService,
-      hasWeightedServices: weightedServices.length > 0
+      model: modelService.service,
+      hasWeightedServices: modelService.weightedServices.length > 0
     };
     this.dialog.showCustomDialog({
       component: DialogStopModelComponent,
@@ -236,13 +245,13 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-      if (this.modelsStoreSelectionSubscription) {
-        this.modelsStoreSelectionSubscription.unsubscribe();
-      }
-     this.modelRuntimesServiceSubscription.unsubscribe();
-     this.modelServicesServiceSubscription.unsubscribe();
-     this.servicesServiceSubscription.unsubscribe();
-     this.getModelByIdSubscription.unsubscribe();
+    if (this.modelsStoreSelectionSubscription) {
+      this.modelsStoreSelectionSubscription.unsubscribe();
+    }
+    // this.modelRuntimesServiceSubscription.unsubscribe();
+    // this.modelServicesServiceSubscription.unsubscribe();
+    // this.servicesServiceSubscription.unsubscribe();
+    // this.getModelByIdSubscription.unsubscribe();
   }
 
 }

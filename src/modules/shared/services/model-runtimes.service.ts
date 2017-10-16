@@ -10,20 +10,27 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ModelRuntimesService {
     baseAPIUrl: string;
+    baseUIUrl: string;
 
     constructor(
         private http: HttpService
     ) {
         this.baseAPIUrl = `${environment.apiUrl}/modelRuntime`;
-    }
+        this.baseUIUrl = `${environment.uiUrl}/modelRuntime`;
+      }
 
     getModelRuntimes() {
         return this.http.get(this.baseAPIUrl)
                     .map((res: Response): any => {
-                      // console.log(res);
                       return res.json();
                     });
     }
+    getModelRuntimesWithInfo(modelId: number) {
+      return this.http.get(`${this.baseUIUrl}/withInfo/${modelId}`)
+                  .map((res: Response): any => {
+                    return res.json();
+                  });
+  }
 
     getModelRuntimeByModelId(id: number, maximum: number): Observable<any> {
         const url = `${this.baseAPIUrl}/${id}/last`;
