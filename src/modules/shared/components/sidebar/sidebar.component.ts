@@ -86,6 +86,17 @@ export class SidebarComponent implements OnInit, OnChanges {
     });
   }
 
+  public getLatestVersion(item) {
+    if (!item.lastModelRuntime.id) {
+      return '0.0.1';
+    }
+    if (this.isDeployable(item)) {
+      return `0.0.${Number(item.lastModelRuntime.modelVersion.split('.')[2]) + 1}`;
+    }
+    return item.lastModelRuntime.modelVersion;
+
+  }
+
   public isDeployable(model) {
     if (!model || !model.lastModelRuntime.created) {
       return true;

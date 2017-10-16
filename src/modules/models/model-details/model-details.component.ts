@@ -28,8 +28,8 @@ import { AppState, Model, Service } from '@shared/models/_index';
 import { } from '@shared/services/_index';
 import { Subscription } from 'rxjs/Subscription';
 import * as Actions from '@shared/actions/_index';
-import { ModelService, ModelRuntime } from '@shared/_index';
-import { ServiceBuilder } from '@shared/builders/_index';
+import { ModelService, ModelRuntime, ModelsService } from '@shared/_index';
+import { ServiceBuilder, ModelBuilder } from '@shared/builders/_index';
 
 
 @Component({
@@ -48,12 +48,11 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private weightedServices: Service[];
   public deployable = true;
   public isModels = true;
-
   private modelRuntimesServiceSubscription: Subscription;
   private modelServicesServiceSubscription: Subscription;
   private servicesServiceSubscription: Subscription;
   private modelsStoreSelectionSubscription: Subscription;
-
+  private getModelByIdSubscription: Subscription;
   public tableHeader: string[] = [
     'Created', 'Version', 'Status', 'Actions', 'Services'
   ];
@@ -65,8 +64,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     private modelRuntimesService: ModelRuntimesService,
     private dialog: MdlDialogService,
     private store: Store<AppState>,
-
+    private newModelsService: ModelsService,
     private serviceBuilder: ServiceBuilder,
+    private modelBuilder: ModelBuilder,
     private servicesService: ServicesService,
     private modelServicesService: ModelServicesService
   ) { }
@@ -103,6 +103,12 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             this.runtimes = modelRuntimes;
             this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
           });
+
+         this.getModelByIdSubscription = this.newModelsService.getModelWithInfo(this.id).first()
+            .subscribe(version => {
+              this.model = this.modelBuilder.build(version);
+              console.log(version);
+            });
 
 
         this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
@@ -165,6 +171,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
       }
       return 0;
     });
+    if (!this.isDeployable()) {
+      return sortedRuntimes[0].imageTag;
+    }
     const newVersion = `0.0.${Number(sortedRuntimes[0].imageTag.split('.')[2]) + 1}`;
     return newVersion;
   }
@@ -233,6 +242,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
      this.modelRuntimesServiceSubscription.unsubscribe();
      this.modelServicesServiceSubscription.unsubscribe();
      this.servicesServiceSubscription.unsubscribe();
+     this.getModelByIdSubscription.unsubscribe();
   }
 
 }
