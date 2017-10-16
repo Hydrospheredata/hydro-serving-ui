@@ -28,7 +28,7 @@ export class ServicesWrapperComponent implements OnDestroy {
     private servicesServiceSubscription: Subscription;
     private modelServicesServiceSubscription: Subscription;
     private data: Service[];
-    public sidebarTitle = 'Services';
+    public sidebarTitle = 'Applications';
     public services: Store<Service[]>;
 
     constructor(
@@ -41,7 +41,6 @@ export class ServicesWrapperComponent implements OnDestroy {
         this.servicesServiceSubscription = this.servicesService.getServices().first()
             .subscribe(services => {
                 this.data = services.map(service => this.serviceBuilder.build(service));
-                console.log(this.data);
                 this.store.dispatch({ type: Actions.GET_SERVICES, payload: this.data });
             });
         this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()

@@ -1,8 +1,8 @@
-<h2 class="mdl-dialog__title">Edit Service</h2>
+<h2 class="mdl-dialog__title">Edit Application</h2>
 <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
   <div class="mdl-dialog__content">
 
-    <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Service Name" formControlName="serviceName"></hydro-input-text>
+    <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Application Name" formControlName="serviceName"></hydro-input-text>
 
     <div class="hydro-form-group">
       <label class="hydro-checkbox">

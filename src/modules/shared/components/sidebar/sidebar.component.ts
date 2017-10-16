@@ -59,7 +59,6 @@ export class SidebarComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.sidebarData.subscribe(items => {
       this.sidebarList = items;
-      console.log(this.sidebarList);
       if (this.needsToGo) {
         this.needsToGo = false;
         if (this.sidebarList.length > 0) {

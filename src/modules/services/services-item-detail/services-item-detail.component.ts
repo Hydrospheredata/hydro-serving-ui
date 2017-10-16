@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 import { Store } from '@ngrx/store';
 import { AppState, Service, ModelService } from '@shared/models/_index';
@@ -28,9 +29,10 @@ import {
 
 export class ServicesItemDetailComponent {
     public storeSub: Subscription;
+    public combineSub: Subscription;
     public activeRouteSub: Subscription;
-    public id: string;
-    public serviceModels: any[];
+    public id: string = '';
+    public serviceModels: any[] = [];
     public serviceModelsFiltered: any[];
     public services: Service[] = [];
     public service: Service;
@@ -47,36 +49,44 @@ export class ServicesItemDetailComponent {
         private router: Router,
         private serviceBuilder: ServiceBuilder
     ) {
-        // FIX: Subscribe to store and watching route changes with one Observable
+
+        this.activeRouteSub = this.activatedRoute.params
+            .map((params) => {
+                this.id = params['id'];
+                return this.id;
+            })
+            .subscribe(id => {
+                if (this.storeSub) {
+                  this.storeSub.unsubscribe();
+                }
+                this.loadInitialData(id);
+            });
+    }
+
+    loadInitialData(id) {
         this.storeSub = this.store.select('services')
             .filter(services => services.length > 0)
             .subscribe(services => {
                 if (services.length) {
                     this.services = services.map(service => this.serviceBuilder.build(service));
-                    if (this.id) {
-                        this.getServiceData(this.id);
-                    }
+                    this.getServiceData(id);
                 }
-            });
-
-        this.activeRouteSub = this.activatedRoute.params
-            .subscribe(params => {
-                this.id = params['id'];
-                this.getServiceData(this.id);
             });
     }
 
     ngOnDestroy() {
-        this.storeSub.unsubscribe();
         this.activeRouteSub.unsubscribe();
+        this.storeSub.unsubscribe();
     }
 
     getServiceData(id: string) {
+        console.log(id);
         this.serviceModels = [];
         if (this.services.length) {
             const service = this.services
                 .filter(service => service.id === +id);
             this.service = service.shift();
+            console.log(this.service);
             if (this.service) {
                 this.service.weights.forEach(weight => {
                     this.getModelServiceData(weight);
@@ -91,7 +101,7 @@ export class ServicesItemDetailComponent {
                 this.serviceModels.push({ data: data, weight: weight.weight });
                 if (this.serviceModels.length) {
                     this.serviceModelsFiltered = this.serviceModels.filter((item, index, self) => {
-                        return self.findIndex(t => { return t.data.modelRuntime.modelId === item.data.modelRuntime.modelId}) === index;
+                        return self.findIndex(t => { return t.data.serviceId === item.data.serviceId}) === index;
                     });
                 }
             });
