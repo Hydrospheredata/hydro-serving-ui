@@ -22,7 +22,7 @@ export class ModelServicesService {
                     });
     }
 
-    getModelService(id: number): Observable<any> {
+    getModelService(id: number) {
         const url = `${this.baseAPIUrl}/${id}`;
         return this.http.get(url)
                     .map((res: Response): any => {
