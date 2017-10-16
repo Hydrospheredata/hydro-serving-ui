@@ -77,6 +77,8 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
             } else {
                 selectedModel = this.modelServices.filter(item => item.serviceId === self.serviceId).shift()
             }
+
+            console.log(selectedModel);
             
             weights.push({
                 selectedModel: selectedModel.modelRuntime.modelId,
@@ -95,7 +97,7 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
         
         this.serviceForm.patchValue({
             serviceName: service.serviceName,
-            // weights: weights,
+            weights: weights,
             kafkaStreamingSources: service.kafkaStreamingSources
         });
     }
