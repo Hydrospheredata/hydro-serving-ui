@@ -31,6 +31,7 @@ export class ServicesItemDetailComponent {
     public activeRouteSub: Subscription;
     public id: string;
     public serviceModels: any[];
+    public serviceModelsFiltered: any[];
     public services: Service[] = [];
     public service: Service;
 
@@ -76,14 +77,6 @@ export class ServicesItemDetailComponent {
             const service = this.services
                 .filter(service => service.id === +id);
             this.service = service.shift();
-            console.log(this.service);
-            // if (this.service.kafkaStreamingSources.length) {
-            //     this.service.kafkaStreamingSources.forEach(kafka => {
-            //         if (kafka.serviceId) {
-            //             delete kafka.serviceId;
-            //         }
-            //     })
-            // }
             if (this.service) {
                 this.service.weights.forEach(weight => {
                     this.getModelServiceData(weight);
@@ -93,10 +86,14 @@ export class ServicesItemDetailComponent {
     }
 
     getModelServiceData(weight) {
-        console.log(weight);
         this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });
+                if (this.serviceModels.length) {
+                    this.serviceModelsFiltered = this.serviceModels.filter((item, index, self) => {
+                        return self.findIndex(t => { return t.data.modelRuntime.modelId === item.data.modelRuntime.modelId}) === index;
+                    });
+                }
             });
     }
 

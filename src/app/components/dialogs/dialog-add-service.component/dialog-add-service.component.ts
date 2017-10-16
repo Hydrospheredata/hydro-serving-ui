@@ -67,6 +67,7 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
 
         this.servicesService.addService(service)
             .subscribe(res => {
+                console.log(res);
                 this.store.dispatch({ type: Actions.ADD_SERVICE, payload: new Service(service) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
