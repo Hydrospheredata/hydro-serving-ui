@@ -4,7 +4,8 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
 
-import { ServicesService, FormsService } from '@shared/services/_index';
+import { DialogBase } from '@shared/base/_index';
+import { ServicesService, FormsService, ModelServicesService } from '@shared/services/_index';
 import * as Actions from '@shared/actions/_index';
 import { AppState, ModelService, Service } from '@shared/models/_index';
 
@@ -18,51 +19,37 @@ export let injectableServiceUpdate = new InjectionToken<Service>('selectedServic
   styleUrls: ['./dialog-update-service.component.scss'],
   providers: [FormsService]
 })
-export class DialogUpdateServiceComponent implements OnInit {
-    private labels = {
-        kafka: {
-            input: 'input topic = ',
-            output: 'output topic = ',
-            bootstrapServers: 'bootstrapServers = ',
-        },
-        weight: 'Weight'
-    }
-    private wrapToInlineControlClass: string = 'form-group__inline';
-    private weightInputClass: string = '__modelWeight';
-    private kafkaInputClass: string = '__kafkaInput';
+export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
 
-    public isKafkaEnabled: boolean = false;
-    public addSelectLabel: string = 'choose model';
+    public dialogType: string = 'Edit';
 
-    public serviceIdLabel: string = 'Models Name';
-    public serviceForm: FormGroup;
-    public selectedService: Service;
-    public formErrors = {
-        serviceName: '',
-        weights: '',
-        serviceId: '',
-        weight: ''
-    };
-    public modelServices: ModelService[];
+    public weightsForSlider: any[] = [];
+    public selectedModels: any[] = [];
+
+    public 
 
     constructor(
         @Inject(injectableServiceUpdate) data: Service,
-        private store: Store<AppState>,
-        private fb: FormBuilder,
+        public store: Store<AppState>,
+        public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
-        private formsService: FormsService,
-        private mdlSnackbarService: MdlSnackbarService,
-        private servicesService: ServicesService
+        public formsService: FormsService,
+        public mdlSnackbarService: MdlSnackbarService,
+        public servicesService: ServicesService,
     ) {
+        super(
+            fb,
+            dialogRef,
+            formsService,
+            mdlSnackbarService,
+            store,
+            servicesService,
+            
+        );
         this.selectedService = data;
-        console.log(this.selectedService);
         if (this.selectedService.kafkaStreamingSources.length) {
             this.isKafkaEnabled = true;
         }
-        this.store.select('modelService')
-            .subscribe(modelService => {
-                this.modelServices = modelService;
-            });
     }
 
     ngOnInit() {
@@ -71,122 +58,71 @@ export class DialogUpdateServiceComponent implements OnInit {
         this.updateServiceFormValues(this.selectedService);
     }
 
-    private createServiceForm() {
-        this.serviceForm = this.fb.group({
-            serviceName: ['', Validators.required],
-            weights: this.fb.array([this.addWeightToModel()]),
-            kafkaStreamingSources: this.fb.array([this.addKafkaSource()])
-        });
-    }
-
-    private addWeightToModel(model?: string) {
-        return this.fb.group({
-            serviceId: [model ? model : '', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
-            weight: ['0', [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
-        });
-    }
-
-    private addKafkaSource() {
-        return this.fb.group({
-            serviceId: [0],
-            sourceTopic: [''],
-            destinationTopic: [''],
-            brokerList: [['']]
-        });
-    }
-
-    private initFormChangesListener() {
-        this.serviceForm.valueChanges.subscribe((form) => {
-            let result = 0;
-            // todo fix errors reset
-            this.formErrors.weights = '';
-            this.formErrors.serviceId = '';
-            form.weights.forEach((service) => {
-                result += +service.weight;
-            });
-
-            if (result > 100) {
-                this.serviceForm.controls.weights.setErrors({ overflow: true });
-            }
-
-            if (this.serviceForm.invalid) {
-                this.formsService.setErrors(this.serviceForm, this.formErrors, this.formsService.MESSAGES.ERRORS.forms.service);
-            }
-        });
-    }
-
     private updateServiceFormValues(service: Service) {
+        console.log(service);
         for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
-            this.addKafkaSource();
+            this.addKafkaToService();
         }
+
         for (let i = 0; i < service.weights.length - 1; i++) {
-            this.addWeightToModel();
+            this.addModelToService();
         }
-        this.serviceForm.patchValue({id: service.id});
-        this.serviceForm.patchValue({serviceName: service.serviceName});
-        this.serviceForm.patchValue({weights: service.weights});
-        this.serviceForm.patchValue({kafkaStreamingSources: service.kafkaStreamingSources});
-    }
+        
+        let weights: any[] = [];
 
-    addModelToService(model?: string) {
-        const control = <FormArray>this.serviceForm.controls['weights'];
-        control.push(this.addWeightToModel(model));
-    }
+        service.weights.map(self => {
+            let selectedModel
+            if (self.service) { 
+                selectedModel = self.service
+            } else {
+                selectedModel = this.modelServices.filter(item => item.serviceId === self.serviceId).shift()
+            }
 
-    addKafkaToService() {
-        const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
-        control.push(this.addKafkaSource());
-    }
+            console.log(selectedModel);
+            
+            weights.push({
+                selectedModel: selectedModel.modelRuntime.modelId,
+                model: self.service ? self.service : selectedModel,
+                weight: self.weight
+            });
+            this.weightsForSlider.push(self.weight);
+            if (self.service) {
+                this.onSelectModel(self.service.modelRuntime.modelId);
+            } else {
+                this.onSelectModel(selectedModel.modelRuntime.modelId);
+            }
+        });
 
-    removeModelFromService(i: number) {
-        const control = <FormArray>this.serviceForm.controls['weights'];
-        control.removeAt(i);
-    }
-
-    onChooseModel(value) {
-      console.log(typeof value);
-      this.addModelToService(value);
+        console.log(weights);
+        
+        this.serviceForm.patchValue({
+            serviceName: service.serviceName,
+            weights: weights,
+            kafkaStreamingSources: service.kafkaStreamingSources
+        });
     }
 
     onSubmit() {
-        console.log(this.serviceForm);
+        if (this.serviceForm.invalid) {
+            return;
+        }
 
-        // if (this.serviceForm.invalid) {
-        //     return;
-        // }
-
-        let weights: {serviceId: number, weight: number}[] = [];
-        let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
-
-        this.serviceForm.value.weights.forEach(model => {
-            weights.push({
-                serviceId: model.serviceId,
-                weight: Number(model.weight)
-            });
-        });
-
-        this.serviceForm.value.kafkaStreamingSources.forEach(kafka => {
-            kafkaStreamingSources.push({
-                serviceId: 0,
-                sourceTopic: kafka.sourceTopic,
-                destinationTopic: kafka.destinationTopic,
-                brokerList: kafka.brokerList[0] ? kafka.brokerList.split(/[#;,:\/|()[\]{}<>( )]/g) : kafka.brokerList
-            });
-        });
+        const data = this.getFormData(this.serviceForm);
 
         const serviceInfo = {
             id: this.selectedService.id,
             serviceName: this.serviceForm.value.serviceName,
-            kafkaStreamingSources: kafkaStreamingSources,
+            kafkaStreamingSources: data.kafkaStreamingSources,
         };
 
-        const service: Service = Object.assign( serviceInfo, { weights: weights } );
+        const service = new Service(Object.assign( serviceInfo, { weights: data.weights } ));
 
         console.log(service);
 
         this.servicesService.updateService(service)
             .subscribe(res => {
-                this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
+                console.log(res);
+                this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: new Service(service) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully updated',

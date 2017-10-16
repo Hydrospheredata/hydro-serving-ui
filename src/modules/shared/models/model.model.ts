@@ -5,6 +5,7 @@ import { CurrentServices } from './current-services.model';
 
 export class Model {
   public id: number;
+  public modelId: number;
   public name: string;
   public source: string;
   public description: string;
@@ -16,12 +17,15 @@ export class Model {
   public lastModelRuntime: ModelRuntime;
   public lastModelBuild: ModelBuild;
   public currentServices: CurrentServices[];
+  public nextVersion: string;
+  public nextVersionAvailable: boolean;
 
   constructor(props: any = {}) {
     this.id = props['id'] || '';
     this.name = props['name'] || '';
     this.source = props['source'] || '';
     this.description = props['description'] || '';
+    this.modelId = props['modelId'] || '';
     this.outputFields = props['outputFields'] || [''];
     this.inputFields = props['inputFields'] || [''];
     this.created = props['created'] || '';
@@ -30,5 +34,7 @@ export class Model {
     this.lastModelRuntime = props['lastModelRuntime'] || {};
     this.lastModelBuild = props['lastModelBuild'] || {};
     this.currentServices = props['currentServices'];
+    this.nextVersion = props['nextVersion'] || '';
+    this.nextVersionAvailable = props['nextVersionAvailable'] || false;
   }
 }

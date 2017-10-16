@@ -1,8 +1,8 @@
-<h2 class="mdl-dialog__title">Edit Service</h2>
+<h2 class="mdl-dialog__title">Edit Application</h2>
 <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
   <div class="mdl-dialog__content">
 
-    <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Service Name" formControlName="serviceName"></hydro-input-text>
+    <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Application Name" formControlName="serviceName"></hydro-input-text>
 
     <div class="hydro-form-group">
       <label class="hydro-checkbox">
@@ -34,13 +34,13 @@
                               formControlName="brokerList">
             </hydro-input-text>
           </div>
-          <svg class="delete" (click)="removeModelFromService(i)" *ngIf="serviceForm['controls'].kafkaStreamingSources['controls'].length > 1">
+          <svg class="delete" (click)="removeKafkaFromService(i)" *ngIf="serviceForm['controls'].kafkaStreamingSources['controls'].length > 1">
             <use xlink:href="#icon-remove"></use>
           </svg>
         </li>
         <li class="form-kafkaSources__list-item--add" *ngIf="isKafkaEnabled" (click)="addKafkaToService()">
           <svg><use xlink:href="#icon-plus"></use></svg>
-          <span>Add More Parameters</span>
+          <span>Add More Sources</span>
         </li>
       </ul>
     </div>
@@ -50,8 +50,12 @@
       <ul class="form-weights__list" formArrayName="weights">
         <li class="form-weights__list-item" *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index" [formGroupName]="i">
           
-          <mdl-select #autocompleteSelect [autocomplete]="true" label="{{serviceIdLabel}}" floating-label class="cs-text-center" formControlName="serviceId">
-            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
+          <mdl-select formControlName="selectedModel" label="{{serviceIdLabel}}" class="cs-text-center" (change)="onSelectModel($event)">
+            <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
+          </mdl-select>
+
+          <mdl-select class="__versions cs-text-center" formControlName="model">
+            <mdl-option *ngFor="let model of modelVersions" [value]="model">{{model.modelRuntime.modelVersion}}</mdl-option>
           </mdl-select>
           
           <div class="form-weights__list-item--weight">
@@ -60,24 +64,24 @@
                               [inputClass]="weightInputClass"
                               [label]="labels.weight"
                               name="asd"
-                              formControlName="weight">
+                              formControlName="weight" [(ngModel)]="weightsForSlider[i]">
             </hydro-input-text>%
           </div>
 
-          <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight"></mdl-slider>
+          <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight" [(ngModel)]="weightsForSlider[i]"></mdl-slider>
           
           <svg class="delete" (click)="removeModelFromService(i)" *ngIf="serviceForm['controls'].weights['controls'].length > 1">
             <use xlink:href="#icon-remove"></use>
           </svg>
           
         </li>
-        <li class="form-weights__list-item--add">
-          <svg><use xlink:href="#icon-plus"></use></svg>
-          <mdl-select (change)="onChooseModel($event)" #autocompleteSelect [autocomplete]="true" label="{{addSelectLabel}}" floating-label class="cs-text-center">
-            <mdl-option *ngFor="let model of modelServices" [value]="model.serviceId">{{model.serviceName}}</mdl-option>
-          </mdl-select>
-        </li>
       </ul>
+      <div class="form-weights__list-item--add">
+        <svg><use xlink:href="#icon-plus"></use></svg>
+        <mdl-select formControlName="addModelToService" (change)="onAddingModel($event)" label="{{addSelectLabel}}" class="cs-text-center">
+          <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
+        </mdl-select>
+      </div>
     </div>
     <div class="btn-group form-actions">
       <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>

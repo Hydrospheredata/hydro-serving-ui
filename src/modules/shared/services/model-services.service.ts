@@ -22,13 +22,23 @@ export class ModelServicesService {
                     });
     }
 
-    getModelService(id: number): Observable<any> {
+    getModelService(id: number) {
         const url = `${this.baseAPIUrl}/${id}`;
         return this.http.get(url)
                     .map((res: Response): any => {
                       return res.json();
                     });
     }
+
+    getModelRuntimes(id: number): Observable<any> {
+        const countRuntimes = 10;
+        const url = `${this.baseAPIUrl}/${id}/last?maximum=${countRuntimes}`;
+        return this.http.get(url)
+                    .map((res: Response): any => {
+                        return res.json();
+                    });
+    }
+
     createModelService() {}
     removeModelService() {}
     updateModelService() {}

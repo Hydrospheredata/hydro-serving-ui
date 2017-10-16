@@ -23,7 +23,8 @@ import {
     ModelsService,
     ModelRuntimesService,
     ModelServicesService,
-    CheckServiceExistService
+    CheckServiceExistService,
+    ServicesRouterResolver
 } from './services/_index';
 
 // Pipes
@@ -32,7 +33,9 @@ import {
     PositiveNumbersPipe,
     SearchPipe,
     SortByPipe,
-    UtcToLocalPipe
+    UtcToLocalPipe,
+    IterateAsArrayPipe,
+    RemoveDublicatesPipe
 } from './pipes/_index';
 
 // Components
@@ -78,6 +81,8 @@ import {
         SearchPipe,
         SortByPipe,
         UtcToLocalPipe,
+        IterateAsArrayPipe,
+        RemoveDublicatesPipe,
         // Components
         InputTextComponent,
         SelectComponent,
@@ -100,6 +105,7 @@ import {
         ModelsService,
         ModelServicesService,
         CheckServiceExistService,
+        ServicesRouterResolver,
         // Builders
         ModelBuilder,
         ModelRuntimeBuilder,
@@ -117,6 +123,8 @@ import {
         SearchPipe,
         SortByPipe,
         UtcToLocalPipe,
+        IterateAsArrayPipe,
+        RemoveDublicatesPipe,
         // Components
         InputTextComponent,
         SelectComponent,

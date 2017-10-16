@@ -51,7 +51,7 @@ export class DialogTestComponent implements OnInit {
 
   ngOnInit() {
     if (!this.model.id || this.model instanceof Model) {
-      this.testTitle = `Test model #${this.model.id ? this.model.id : this.model.serviceId}`;
+      this.testTitle = `Test model "${this.model.modelRuntime.modelName}"`;
       this.testBtn = 'Test model';
     } else {
       this.testTitle = `Test service "${this.model.serviceName}"`;
@@ -60,7 +60,8 @@ export class DialogTestComponent implements OnInit {
     this.createTestForm();
     this.requestBody = this.createCURLString(this.testForm);
     this.testForm.valueChanges.subscribe(form => {
-      this.requestBody = this.createCURLString(form);
+      console.log(this.testForm);
+      this.requestBody = this.createCURLString(this.testForm);
     });
     this.codeMirrorInputOptions = {
       matchBrackets: true,
@@ -81,16 +82,15 @@ export class DialogTestComponent implements OnInit {
 
   }
 
-  private createCURLString (form) {
+  private createCURLString(form) {
     let path = '';
     let payload = '';
     payload = JSON.stringify(this.createTestOptions(form));
-    if (this.model.cloudDriverId) {
-      path = `${this.apiUrl}/modelService/serve`;
-    } else if (this.model.weights && this.model.weights.length > 0) {
+
+    if (this.model instanceof Service) {
       path = `${this.apiUrl}/weightedServices/serve`;
     } else {
-      path = `${window.location.protocol}//${window.location.hostname}:${this.port}${environment.uiUrl}/model/serve`;
+      path = `${this.apiUrl}/modelService/serve`;
     }
     return `curl -X POST --header 'Content-Type: application/json'
     -d '${payload}'
@@ -104,7 +104,7 @@ export class DialogTestComponent implements OnInit {
 
   private createTestForm() {
     this.testForm = this.fb.group({
-      data: [this.extractModelInputFields(this.model), [Validators.required]],
+      data: [this.extractModelInputFields(this.model), [Validators.required, this.validateInput]],
       path: ['/serve', [Validators.required]],
     });
   }
@@ -119,10 +119,23 @@ export class DialogTestComponent implements OnInit {
       return JSON.stringify([{}]);
     }
     const reducedFields = inputFields.reduce((payload, field) => {
-       payload[field] = '';
-       return payload;
+      payload[field] = '';
+      return payload;
     }, {});
     return JSON.stringify([reducedFields], undefined, 2);
+  }
+
+  private validateInput(input) {
+    try {
+      JSON.parse(input.value);
+    } catch (e) {
+      return {
+        validateInput: {
+          valid: false
+        }
+      };
+    }
+    return null;
   }
 
 
@@ -135,9 +148,14 @@ export class DialogTestComponent implements OnInit {
 
   public createTestOptions(form) {
     const controls = form.controls;
-    const data = JSON.parse(controls.data.value);
+    let data = '';
+    try {
+      data = JSON.parse(controls.data.value);
+    } catch (e) {
+      data = '';
+    }
     const testOptions = {
-      id: this.model instanceof Model ? this.model.id : this.model.serviceId,
+      id: this.model instanceof Service ? this.model.id : this.model.serviceId,
       path: controls.path.value,
       data: data
     };
@@ -148,14 +166,13 @@ export class DialogTestComponent implements OnInit {
     let apiUrl;
     let snackbarSuccessMsg;
     const testOptions = this.createTestOptions(form);
-
-      if (this.model instanceof Service) {
-        apiUrl = this.servicesService.serveService.bind(this.servicesService);
-        snackbarSuccessMsg = 'Service test was successful';
-      } else {
-        apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
-        snackbarSuccessMsg = 'Model test was successful';
-      }
+    if (this.model instanceof Service) {
+      apiUrl = this.servicesService.serveService.bind(this.servicesService);
+      snackbarSuccessMsg = 'Service test was successful';
+    } else {
+      apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
+      snackbarSuccessMsg = 'Model test was successful';
+    }
 
     apiUrl(JSON.stringify(testOptions))
       .subscribe(res => {

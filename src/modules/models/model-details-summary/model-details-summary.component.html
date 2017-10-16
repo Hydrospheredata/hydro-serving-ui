@@ -2,7 +2,7 @@
   <div class="model-details-row">
     <span class="model-details-label">Version</span>
     <span class="model-details-label">.................</span>
-    <span class="model-details-value runtime" [ngClass]="{'new-version': isDeployable}">{{ model?.lastModelRuntime?.modelVersion || getLatestVersion() }}</span>
+    <span class="model-details-value runtime" [ngClass]="{'new-version': isDeployable}">{{ version || model?.lastModelRuntime?.modelVersion || getLatestVersion() }}</span>
     <span *ngIf="isDeployable" class="new-version-label">New version available</span>
   </div>
   <div class="model-details-row">

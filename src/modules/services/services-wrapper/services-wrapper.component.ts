@@ -28,8 +28,8 @@ export class ServicesWrapperComponent implements OnDestroy {
     private servicesServiceSubscription: Subscription;
     private modelServicesServiceSubscription: Subscription;
     private data: Service[];
-    public sidebarTitle = 'Services';
-    public services: any;
+    public sidebarTitle = 'Applications';
+    public services: Store<Service[]>;
 
     constructor(
         private store: Store<AppState>,
@@ -38,32 +38,18 @@ export class ServicesWrapperComponent implements OnDestroy {
         private serviceBuilder: ServiceBuilder,
         private dialog: MdlDialogService,
     ) {
-        this.servicesServiceSubscription = this.servicesService.getServices()
+        this.servicesServiceSubscription = this.servicesService.getServices().first()
             .subscribe(services => {
                 this.data = services.map(service => this.serviceBuilder.build(service));
                 this.store.dispatch({ type: Actions.GET_SERVICES, payload: this.data });
             });
-        this.modelServicesServiceSubscription = this.modelServicesService.getModelServices()
+        this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
             .map(serviceModels => serviceModels.filter(model => model.serviceId > 0))
             .subscribe(serviceModels => {
                 this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: serviceModels });
             });
         this.services = this.store.select('services');
-    }
-
-    addService(value) {
-        console.log(value);
-        // this.dialog.showCustomDialog({
-        //     component: DialogAddServiceComponent,
-        //     styles: {'width': '850px', 'min-height': '250px'},
-        //     classes: '',
-        //     isModal: true,
-        //     clickOutsideToClose: true,
-        //     enterTransitionDuration: 400,
-        //     leaveTransitionDuration: 400,
-        //     providers: [{provide: injectableService}]
-        // });
-    }
+      }
 
     ngOnDestroy() {
         this.servicesServiceSubscription.unsubscribe();

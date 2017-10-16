@@ -26,11 +26,14 @@ export class ServicesService {
     }
 
     updateService(service: Service): Observable<Service> {
-      return this.http.put(this.baseUiUrl, service);
+        return this.http.put(this.baseUiUrl, service);
     }
 
     addService(service: Service) {
-        return this.http.post(this.baseUiUrl, service);
+        return this.http.post(this.baseUiUrl, service)
+                    .map((res: Response): any => {
+                        return res.json();
+                    });
     }
 
     deleteService(id: string) {
@@ -38,7 +41,7 @@ export class ServicesService {
     }
 
     serveService(data): Observable<any> {
-        return this.http.post(`${this.baseUiUrl}/serve`, data)
+        return this.http.post(`${this.baseApiUrl}/serve`, data)
             .map((response: Response) => {
                 return response.json();
             });

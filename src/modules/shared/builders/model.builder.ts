@@ -1,3 +1,4 @@
+import { negativeOf } from '@angular/flex-layout/flexbox/api/show-hide';
 import { Injectable } from '@angular/core';
 import { RuntimeTypeBuilder } from './runtime-type.builder';
 import { ModelRuntimeBuilder } from './model-runtime.builder';
@@ -52,12 +53,15 @@ export class ModelBuilder {
       inputFields: props.model['inputFields'],
       created: props.model['created'],
       updated: props.model['updated'],
+      nextVersion: props['nextVersion'],
+      nextVersionAvailable: props['nextVersionAvailable'],
       runtimeType: runtimeType,
       lastModelRuntime: lastModelRuntime,
       lastModelBuild: lastModelBuild,
       currentServices: currentServices
     });
-
+    console.log(props);
+    console.log(model);
     return model;
   }
 }
