@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngIf="isDeployable()">
+          <!-- <tr *ngIf="isDeployable()">
             <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis'>{{model?.updated | utcToLocal | amTimeAgo}}</div>
             </td>
@@ -42,7 +42,7 @@
             <td class="hydro-table-body__cell">
               –
             </td>
-          </tr>
+          </tr> -->
           <tr *ngFor="let runtime of nestedModelRuntimes" class='hydro-table-body__row'>
             <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis'>{{runtime?.runtime?.created | utcToLocal | amTimeAgo}}</div>

@@ -53,7 +53,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private servicesServiceSubscription: Subscription;
   private modelsStoreSelectionSubscription: Subscription;
   private getModelByIdSubscription: Subscription;
-  public nestedModelRuntimes: any;
+  public nestedModelRuntimes: any[];
   public tableHeader: string[] = [
     'Created', 'Version', 'Status', 'Actions', 'Services'
   ];
@@ -99,39 +99,13 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     this.modelsStoreSelectionSubscription = this.store.select('models').filter(models => models.length > 0)
       .subscribe(models => {
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
-
-        this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimesWithInfo(Number(id)).first()
-        .subscribe((data) => {
-          this.nestedModelRuntimes = data;
-          console.log(data);
-          }
-        );
-
-        // this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
-        //   .subscribe(modelRuntimes => {
-        //     this.runtimes = modelRuntimes;
-        //     this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
-        //   });
-
-        // this.getModelByIdSubscription = this.newModelsService.getModelWithInfo(this.id).first()
-        //   .subscribe(version => {
-        //     this.model = this.modelBuilder.build(version);
-        //     console.log(version);
-        //   });
+        this.store.dispatch({type: Actions.SWITCH_MODEL, payload: this.id});
+        this.store.select('modelRuntimes')
+        .subscribe(modelRuntimes => {
+          this.nestedModelRuntimes = modelRuntimes;
+        });
 
 
-        // this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
-        //   .map(modelServices => modelServices.filter(model => model.serviceId > 0))
-        //   .subscribe(modelServices => {
-        //     this.modelServices = modelServices;
-        //     this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: modelServices });
-        //   });
-
-        // this.servicesServiceSubscription = this.servicesService.getServices().first()
-        //   .subscribe(services => {
-        //     this.weightedServices = services;
-        //     this.store.dispatch({ type: Actions.GET_SERVICES, payload: services.map(service => this.serviceBuilder.build(service)) });
-        //   });
 
         this.deployable = this.isDeployable();
       });
@@ -155,12 +129,13 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   // }
 
   public isDeployable() {
-    if (!this.model || !this.model.lastModelRuntime.created) {
-      return true;
-    }
-    const modelUpdated = this.model.updated;
-    const runtimeCreated = this.model.lastModelRuntime.created;
-    return moment(modelUpdated).isAfter(moment(runtimeCreated));
+    return false;
+    // if (!this.model || !this.model.lastModelRuntime.created) {
+    //   return true;
+    // }
+    // const modelUpdated = this.model.updated;
+    // const runtimeCreated = this.model.lastModelRuntime.created;
+    // return moment(modelUpdated).isAfter(moment(runtimeCreated));
   }
 
   public getPayloadForModelDeploy(runtime) {
@@ -248,10 +223,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     if (this.modelsStoreSelectionSubscription) {
       this.modelsStoreSelectionSubscription.unsubscribe();
     }
-    // this.modelRuntimesServiceSubscription.unsubscribe();
-    // this.modelServicesServiceSubscription.unsubscribe();
-    // this.servicesServiceSubscription.unsubscribe();
-    // this.getModelByIdSubscription.unsubscribe();
   }
 
 }

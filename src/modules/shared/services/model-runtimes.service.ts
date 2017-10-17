@@ -1,3 +1,4 @@
+import * as stringDecoder from 'string_decoder';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { HttpService } from './http.service';
@@ -25,7 +26,7 @@ export class ModelRuntimesService {
                       return res.json();
                     });
     }
-    getModelRuntimesWithInfo(modelId: number) {
+    getModelRuntimesWithInfo(modelId: string) {
       return this.http.get(`${this.baseUIUrl}/withInfo/${modelId}`)
                   .map((res: Response): any => {
                     return res.json();
