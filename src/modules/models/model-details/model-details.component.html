@@ -16,7 +16,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- <tr *ngIf="isDeployable()">
+          <tr *ngIf="isDeployable()">
             <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis'>{{model?.updated | utcToLocal | amTimeAgo}}</div>
             </td>
@@ -42,7 +42,7 @@
             <td class="hydro-table-body__cell">
               –
             </td>
-          </tr> -->
+          </tr>
           <tr *ngFor="let runtime of nestedModelRuntimes" class='hydro-table-body__row'>
             <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis'>{{runtime?.runtime?.created | utcToLocal | amTimeAgo}}</div>
@@ -52,28 +52,28 @@
             </td>
             <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis' [ngClass]="{
-              'deployed': runtime.services.length > 0,
-              'undeployed': runtime.services.length < 1
+              'deployed': runtime?.services?.length > 0,
+              'undeployed': runtime?.services?.length < 1
               }">
                 <svg class="icon" [ngClass]="{
-                  'deployed': runtime.services.length > 0,
-                  'undeployed': runtime.services.length < 1
+                  'deployed': runtime?.services?.length > 0,
+                  'undeployed': runtime?.services?.length < 1
                 }">
                   <use xlink:href="#icon-arrow" />
                 </svg>
-                <span class="icon-label">{{runtime.services.length > 0 ? 'Deployed' : 'Undeployed'}}</span>
+                <span class="icon-label">{{runtime?.services?.length > 0 ? 'Deployed' : 'Undeployed'}}</span>
               </div>
             </td>
             <td class="hydro-table-body__cell actions">
               <div fxLayout="row" fxLayoutAlign="space-between center" class="">
                 <div class="">
-                  <div *ngIf="runtime.services.length < 1" class='cs-text-overflow-ellipsis deploy-btn' (click)="deployModelService(runtime.runtime)">
+                  <div *ngIf="runtime?.services?.length < 1" class='cs-text-overflow-ellipsis deploy-btn' (click)="deployModelService(runtime.runtime)">
                     <svg class="icon">
                       <use xlink:href="#icon-arrow" />
                     </svg>
                     <span class="icon-label">DEPLOY</span>
                   </div>
-                  <a *ngIf="runtime.services.length > 0" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(runtime.services[0])"
+                  <a *ngIf="runtime?.services?.length > 0" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(runtime.services[0])"
                     title="Stop">
                     <span class="action">
                       <svg class="icon">
@@ -82,7 +82,7 @@
                       <span class="icon-label">STOP</span>
                     </span>
                   </a>
-                  <a *ngIf="runtime.services.length > 0" (click)="testModel(runtime.services[0].service)" title='Test' class="hydro-link mdl-color-text--blue-800">
+                  <a *ngIf="runtime?.services?.length > 0" (click)="testModel(runtime.services[0].service)" title='Test' class="hydro-link mdl-color-text--blue-800">
                     <span class="action">
                       <svg class="icon">
                         <use xlink:href="#icon-start" />

@@ -24,7 +24,7 @@ export class AddModelAction implements Action {
 
 export class UpdateModelAction implements Action {
   readonly type = UPDATE_MODEL;
-  constructor(public modelId: string) { }
+  constructor(public payload: Model) { }
 }
 
 export class DeleteModelAction implements Action {
@@ -42,22 +42,7 @@ export class SwitchModelAction implements Action {
   constructor(public payload: any) { }
 }
 
-// export class StopModelAction implements Action {
-//   readonly type = STOP_MODEL;
-//   constructor(public modelId: string) { }
-// }
-// export class DeployModelAction implements Action {
-//   readonly type = DEPLOY_MODEL;
-//   constructor(public modelId: string) { }
-// }
-// export class BuildModelAction implements Action {
-//   readonly type = BUILD_MODEL;
-//   constructor(public modelId: string) { }
-// }
-// export class TestModelAction implements Action {
-//   readonly type = TEST_MODEL;
-//   constructor(public modelId: string) { }
-// }
+
 
 
 export type ModelActions

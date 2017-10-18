@@ -94,48 +94,30 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         });
       });
 
+    this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: this.id });
 
+
+    this.store.select('modelRuntimes')
+      .subscribe(modelRuntimes => {
+        console.warn(modelRuntimes);
+        this.nestedModelRuntimes = modelRuntimes;
+      });
 
     this.modelsStoreSelectionSubscription = this.store.select('models').filter(models => models.length > 0)
       .subscribe(models => {
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
-        this.store.dispatch({type: Actions.SWITCH_MODEL, payload: this.id});
-        this.store.select('modelRuntimes')
-        .subscribe(modelRuntimes => {
-          this.nestedModelRuntimes = modelRuntimes;
-        });
-
-
-
         this.deployable = this.isDeployable();
       });
   }
 
-  // public getModelService(modelRuntimeId: number): ModelService {
-  //   if (!this.modelServices) {
-  //     return null;
-  //   }
-  //   return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
-  // }
-
-  // public getWeightedServices(modelRuntimeId: number): Service[] {
-  //   const modelService = this.getModelService(modelRuntimeId);
-  //   if (!modelRuntimeId || !modelService) {
-  //     return [];
-  //   }
-  //   return this.weightedServices.filter((weightedService) => {
-  //     return weightedService.weights.some((weight) => weight.service ? weight.service.serviceId === modelService.serviceId : false);
-  //   });
-  // }
-
   public isDeployable() {
-    return false;
-    // if (!this.model || !this.model.lastModelRuntime.created) {
-    //   return true;
-    // }
-    // const modelUpdated = this.model.updated;
-    // const runtimeCreated = this.model.lastModelRuntime.created;
-    // return moment(modelUpdated).isAfter(moment(runtimeCreated));
+    // return false;
+    if (!this.model || !this.model.lastModelRuntime.created) {
+      return true;
+    }
+    const modelUpdated = this.model.updated;
+    const runtimeCreated = this.model.lastModelRuntime.created;
+    return moment(modelUpdated).isAfter(moment(runtimeCreated));
   }
 
   public getPayloadForModelDeploy(runtime) {

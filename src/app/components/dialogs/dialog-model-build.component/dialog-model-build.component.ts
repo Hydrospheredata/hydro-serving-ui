@@ -103,10 +103,7 @@ export class DialogModelBuildComponent implements OnInit {
         message: `Model was successfully updated`,
         timeout: 5000
       });
-      this.modelsService.getModels().first()
-      .subscribe(models => {
-          this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
-      });
+      this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: this.model.modelRuntime.modelId });
     }, (error) => {
       this.mdlSnackbarService.showSnackbar({
         message: `Error: ${error}`,

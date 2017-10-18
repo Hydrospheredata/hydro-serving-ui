@@ -18,11 +18,16 @@ export class ModelEffects {
       .map(data => ({ type: HydroActions.GET_MODELS, payload: data.map(this.modelBuilder.build, this.modelBuilder) }))
     );
 
-  @Effect() switchModels$: Observable<Action> = this.actions.ofType(HydroActions.SWITCH_MODEL)
+  @Effect() switchModelsRuntime$: Observable<Action> = this.actions.ofType(HydroActions.SWITCH_MODEL)
     .mergeMap((action: HydroActions.SwitchModelAction) => this.modelRuntimesService.getModelRuntimesWithInfo(action.payload).first()
-      .map(data => ({ type: HydroActions.GET_MODEL_RUNTIME, payload: data })))
-    .switchMap(action => this.oldModelsService.getBuildsByModel(action.payload[0].runtime.modelId).first()
       .map(data => ({ type: HydroActions.GET_MODEL_RUNTIME, payload: data })));
+
+  @Effect() switchModelsModel$: Observable<Action> = this.actions.ofType(HydroActions.SWITCH_MODEL)
+  .mergeMap((action: HydroActions.SwitchModelAction) => this.modelsService.getModelWithInfo(action.payload).first()
+     .map(data => ({ type: HydroActions.UPDATE_MODEL, payload: data })));
+
+
+
 
   constructor(
     private modelBuilder: ModelBuilder,
