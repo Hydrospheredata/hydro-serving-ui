@@ -99,7 +99,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
     this.store.select('modelRuntimes')
       .subscribe(modelRuntimes => {
-        console.warn(modelRuntimes);
         this.nestedModelRuntimes = modelRuntimes;
       });
 

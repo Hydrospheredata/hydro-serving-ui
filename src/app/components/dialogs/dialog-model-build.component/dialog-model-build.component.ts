@@ -70,11 +70,9 @@ export class DialogModelBuildComponent implements OnInit {
   }
 
   public getRuntimeTypeTages(runtimeTypeId: number) {
-    console.warn(runtimeTypeId);
     if (!this.runtimeTypes || this.runtimeTypes.length === 0) {
       return [];
     }
-    console.log(this.runtimeTypes.find(runtimeType => runtimeType.id === Number(runtimeTypeId)));
     return this.runtimeTypes.find(runtimeType => runtimeType.id === Number(runtimeTypeId))['tags'];
   }
 
@@ -90,7 +88,6 @@ export class DialogModelBuildComponent implements OnInit {
       inputFields: controls.inputFields.value,
       outputFields: controls.outputFields.value
     };
-    console.log(JSON.stringify(modelOptions));
 
 
     this.modelsService.updateModel(modelOptions)
@@ -103,7 +100,7 @@ export class DialogModelBuildComponent implements OnInit {
         message: `Model was successfully updated`,
         timeout: 5000
       });
-      this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: this.model.modelRuntime.modelId });
+      this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: modelOptions.id });
     }, (error) => {
       this.mdlSnackbarService.showSnackbar({
         message: `Error: ${error}`,

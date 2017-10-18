@@ -43,33 +43,32 @@ export class SidebarComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
-    this.activatedRoute.url.subscribe(params => {
-      if (this.sidebarList.length > 0) {
-        const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
-        // EXTREMELY AWFUL HACK DO NOT TRY THIS AT HOME I REPEAT DO NOT TRY THIS AT HOME!!!!
-        if (this.router.url.split('/').length <= 2) {
-          this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
-        }
-      } else {
-        this.needsToGo = true;
-      }
-    });
+    // this.activatedRoute.url.subscribe(params => {
+    //   if (this.sidebarList.length > 0) {
+    //     const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
+    //     // EXTREMELY AWFUL HACK DO NOT TRY THIS AT HOME I REPEAT DO NOT TRY THIS AT HOME!!!!
+    //     if (this.router.url.split('/').length <= 2) {
+    //       this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
+    //     }
+    //   } else {
+    //     this.needsToGo = true;
+    //   }
+    // });
   }
 
   ngOnChanges() {
     this.sidebarData.subscribe(items => {
       this.sidebarList = items;
-      console.log(this.sidebarList);
-      if (this.needsToGo) {
-        this.needsToGo = false;
-        if (this.sidebarList.length > 0) {
-          const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
-          // EXTREMELY AWFUL HACK DO NOT TRY THIS AT HOME I REPEAT DO NOT TRY THIS AT HOME!!!!
-          if (this.router.url.split('/').length <= 2) {
-            this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
-          }
-        }
-      }
+      // if (this.needsToGo) {
+      //   this.needsToGo = false;
+      //   if (this.sidebarList.length > 0) {
+      //     const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
+      //     // EXTREMELY AWFUL HACK DO NOT TRY THIS AT HOME I REPEAT DO NOT TRY THIS AT HOME!!!!
+      //     if (this.router.url.split('/').length <= 2) {
+      //       this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
+      //     }
+      //   }
+      // }
     });
   }
 

@@ -32,7 +32,6 @@ export class TestServiceModelsAction implements Action {
   constructor(public payload: any) { }
 }
 
-
 export type ModelServiceActions
   = GetServiceModelsAction
   | DeployServiceModelsAction

@@ -34,7 +34,6 @@ export class DialogStopModelComponent implements OnInit {
   ) {
     this.model = data.model;
     this.hasWeightedServices = data.hasWeightedServices;
-    console.log(this.model);
   }
 
   ngOnInit() {

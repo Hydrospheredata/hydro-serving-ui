@@ -24,8 +24,7 @@ export class ModelEffects {
 
   @Effect() switchModelsModel$: Observable<Action> = this.actions.ofType(HydroActions.SWITCH_MODEL)
   .mergeMap((action: HydroActions.SwitchModelAction) => this.modelsService.getModelWithInfo(action.payload).first()
-     .map(data => ({ type: HydroActions.UPDATE_MODEL, payload: data })));
-
+     .map(data => ({ type: HydroActions.UPDATE_MODEL, payload: this.modelBuilder.build(data) })));
 
 
 

@@ -43,8 +43,6 @@ export class SwitchModelAction implements Action {
 }
 
 
-
-
 export type ModelActions
   = GetModelsAction
   | AddModelAction
