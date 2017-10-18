@@ -11,7 +11,7 @@
         <div class="model-details-row">
             <span class="model-details-label">Runtime</span>
             <span class="model-details-label">...............</span>
-            <mdl-select class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet runtime-select" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
+            <mdl-select style="margin-left: 0;" class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet runtime-select" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
               <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}:{{type.version}}</mdl-option>
             </mdl-select>
         </div>
@@ -19,7 +19,7 @@
             <span class="model-details-label">Tags</span>
             <span class="model-details-label">......................</span>
             <span class="model-details-value">
-     <span *ngFor="let tag of model?.runtimeType?.tags; last as isLast">
+     <span *ngFor="let tag of getRuntimeTypeTages(currentModelRuntimeType); last as isLast">
        <span class="model-details-tag">{{ tag }}</span> {{isLast ? '' : ', '}}
             </span>
             </span>

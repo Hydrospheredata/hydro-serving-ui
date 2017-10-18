@@ -5,7 +5,7 @@
 
 
   <div class="model-details">
-    <hydro-model-details-summary [model]="model" [isDeployable]="isDeployable()" [isModelService]="false"></hydro-model-details-summary>
+    <hydro-model-details-summary [model]="model" [isDeployable]="isDeployable()" [isModelService]="false" [version]="getLatestVersion()"></hydro-model-details-summary>
 
     <div class="model-details-panel">
       <h5 class="model-details-grid-header">Versions</h5>
@@ -43,37 +43,37 @@
               –
             </td>
           </tr>
-          <tr *ngFor="let runtime of runtimes" class='hydro-table-body__row'>
+          <tr *ngFor="let runtime of nestedModelRuntimes" class='hydro-table-body__row'>
             <td class="hydro-table-body__cell">
-              <div class='cs-text-overflow-ellipsis'>{{runtime?.created | utcToLocal | amTimeAgo}}</div>
+              <div class='cs-text-overflow-ellipsis'>{{runtime?.runtime?.created | utcToLocal | amTimeAgo}}</div>
             </td>
             <td class="hydro-table-body__cell">
-              <div class='cs-text-overflow-ellipsis'>{{runtime?.modelVersion}}</div>
+              <div class='cs-text-overflow-ellipsis'>{{runtime?.runtime?.modelVersion}}</div>
             </td>
             <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis' [ngClass]="{
-              'deployed': getModelService(runtime.id),
-              'undeployed': !getModelService(runtime.id)
+              'deployed': runtime?.services?.length > 0,
+              'undeployed': runtime?.services?.length < 1
               }">
                 <svg class="icon" [ngClass]="{
-                'deployed': getModelService(runtime.id),
-                'undeployed': !getModelService(runtime.id)
+                  'deployed': runtime?.services?.length > 0,
+                  'undeployed': runtime?.services?.length < 1
                 }">
                   <use xlink:href="#icon-arrow" />
                 </svg>
-                <span class="icon-label">{{getModelService(runtime.id) ? 'Deployed' : 'Undeployed'}}</span>
+                <span class="icon-label">{{runtime?.services?.length > 0 ? 'Deployed' : 'Undeployed'}}</span>
               </div>
             </td>
             <td class="hydro-table-body__cell actions">
               <div fxLayout="row" fxLayoutAlign="space-between center" class="">
                 <div class="">
-                  <div *ngIf="!getModelService(runtime.id)" class='cs-text-overflow-ellipsis deploy-btn' (click)="deployModelService(runtime)">
+                  <div *ngIf="runtime?.services?.length < 1" class='cs-text-overflow-ellipsis deploy-btn' (click)="deployModelService(runtime.runtime)">
                     <svg class="icon">
                       <use xlink:href="#icon-arrow" />
                     </svg>
                     <span class="icon-label">DEPLOY</span>
                   </div>
-                  <a *ngIf="getModelService(runtime.id)" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(getModelService(runtime.id), getWeightedServices(runtime.id))"
+                  <a *ngIf="runtime?.services?.length > 0" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(runtime.services[0])"
                     title="Stop">
                     <span class="action">
                       <svg class="icon">
@@ -82,7 +82,7 @@
                       <span class="icon-label">STOP</span>
                     </span>
                   </a>
-                  <a *ngIf="getModelService(runtime.id)" (click)="testModel(getModelService(runtime.id))" title='Test' class="hydro-link mdl-color-text--blue-800">
+                  <a *ngIf="runtime?.services?.length > 0" (click)="testModel(runtime.services[0].service)" title='Test' class="hydro-link mdl-color-text--blue-800">
                     <span class="action">
                       <svg class="icon">
                         <use xlink:href="#icon-start" />
@@ -95,7 +95,7 @@
             </td>
             <td class="hydro-table-body__cell">
               <div *ngIf="this.weightedServices && this.weightedServices.length > 0" class="cs-text-overflow-ellipsis">
-                <span *ngFor="let weightedService of getWeightedServices(runtime.id); last as isLast">
+                <span *ngFor="let weightedService of runtime.services[0].weightedServices; last as isLast">
                   <a class="hydro-table-link model-details-link" [routerLink]="['/services', weightedService.id]">
                     {{ weightedService.serviceName }}
                   </a>{{isLast ? '' : ', '}}

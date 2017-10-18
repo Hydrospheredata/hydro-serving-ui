@@ -28,8 +28,8 @@ import { AppState, Model, Service } from '@shared/models/_index';
 import { } from '@shared/services/_index';
 import { Subscription } from 'rxjs/Subscription';
 import * as Actions from '@shared/actions/_index';
-import { ModelService, ModelRuntime } from '@shared/_index';
-import { ServiceBuilder } from '@shared/builders/_index';
+import { ModelService, ModelRuntime, ModelsService } from '@shared/_index';
+import { ServiceBuilder, ModelBuilder } from '@shared/builders/_index';
 
 
 @Component({
@@ -48,12 +48,12 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private weightedServices: Service[];
   public deployable = true;
   public isModels = true;
-
   private modelRuntimesServiceSubscription: Subscription;
   private modelServicesServiceSubscription: Subscription;
   private servicesServiceSubscription: Subscription;
   private modelsStoreSelectionSubscription: Subscription;
-
+  private getModelByIdSubscription: Subscription;
+  public nestedModelRuntimes: any[];
   public tableHeader: string[] = [
     'Created', 'Version', 'Status', 'Actions', 'Services'
   ];
@@ -65,8 +65,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     private modelRuntimesService: ModelRuntimesService,
     private dialog: MdlDialogService,
     private store: Store<AppState>,
-
+    private newModelsService: ModelsService,
     private serviceBuilder: ServiceBuilder,
+    private modelBuilder: ModelBuilder,
     private servicesService: ServicesService,
     private modelServicesService: ModelServicesService
   ) { }
@@ -93,53 +94,24 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         });
       });
 
+    this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: this.id });
+
+
+    this.store.select('modelRuntimes')
+      .subscribe(modelRuntimes => {
+        console.warn(modelRuntimes);
+        this.nestedModelRuntimes = modelRuntimes;
+      });
+
     this.modelsStoreSelectionSubscription = this.store.select('models').filter(models => models.length > 0)
       .subscribe(models => {
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
-
-
-       this.modelRuntimesServiceSubscription = this.modelRuntimesService.getModelRuntimeByModelId(Number(id), 1000).first()
-          .subscribe(modelRuntimes => {
-            this.runtimes = modelRuntimes;
-            this.store.dispatch({ type: Actions.GET_MODEL_RUNTIME, payload: modelRuntimes });
-          });
-
-
-        this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
-          .map(modelServices => modelServices.filter(model => model.serviceId > 0))
-          .subscribe(modelServices => {
-            this.modelServices = modelServices;
-            this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: modelServices });
-          });
-
-        this.servicesServiceSubscription = this.servicesService.getServices().first()
-          .subscribe(services => {
-            this.weightedServices = services;
-            this.store.dispatch({ type: Actions.GET_SERVICES, payload: services.map(service => this.serviceBuilder.build(service)) });
-          });
-
         this.deployable = this.isDeployable();
       });
   }
 
-  public getModelService(modelRuntimeId: number): ModelService {
-    if (!this.modelServices) {
-      return null;
-    }
-    return this.modelServices.find((modelService) => modelService.modelRuntime.id === modelRuntimeId);
-  }
-
-  public getWeightedServices(modelRuntimeId: number): Service[] {
-    const modelService = this.getModelService(modelRuntimeId);
-    if (!modelRuntimeId || !modelService) {
-      return [];
-    }
-    return this.weightedServices.filter((weightedService) => {
-      return weightedService.weights.some((weight) => weight.service ? weight.service.serviceId === modelService.serviceId : false);
-    });
-  }
-
   public isDeployable() {
+    // return false;
     if (!this.model || !this.model.lastModelRuntime.created) {
       return true;
     }
@@ -165,6 +137,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
       }
       return 0;
     });
+    if (!this.isDeployable()) {
+      return sortedRuntimes[0].imageTag;
+    }
     const newVersion = `0.0.${Number(sortedRuntimes[0].imageTag.split('.')[2]) + 1}`;
     return newVersion;
   }
@@ -195,7 +170,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  testModel(model: ModelService) {
+  testModel(model) {
     this.dialog.showCustomDialog({
       component: DialogTestComponent,
       styles: { 'width': '800px', 'min-height': '350px' },
@@ -208,10 +183,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  stopModel(modelService, weightedServices) {
+  stopModel(modelService) {
     const payload = {
-      model: modelService,
-      hasWeightedServices: weightedServices.length > 0
+      model: modelService.service,
+      hasWeightedServices: modelService.weightedServices.length > 0
     };
     this.dialog.showCustomDialog({
       component: DialogStopModelComponent,
@@ -227,12 +202,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-      if (this.modelsStoreSelectionSubscription) {
-        this.modelsStoreSelectionSubscription.unsubscribe();
-      }
-     this.modelRuntimesServiceSubscription.unsubscribe();
-     this.modelServicesServiceSubscription.unsubscribe();
-     this.servicesServiceSubscription.unsubscribe();
+    if (this.modelsStoreSelectionSubscription) {
+      this.modelsStoreSelectionSubscription.unsubscribe();
+    }
   }
 
 }

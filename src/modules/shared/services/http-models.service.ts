@@ -43,7 +43,8 @@ export class HttpModelsService {
       });
   }
 
-  public getBuildsByModel(id: string): Observable<ModelBuild[]> {
+  public getBuildsByModel(id: any): Observable<ModelBuild[]> {
+    console.log(id);
     const url = `${this.baseAPIUrl}/builds/${id}`;
     return this.http.get(url)
       .map((res: Response) => {

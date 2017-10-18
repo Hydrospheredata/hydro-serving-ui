@@ -10,6 +10,7 @@ export class ModelDetailsSummaryComponent implements OnInit {
 @Input() model: Model;
 @Input() isDeployable: boolean;
 @Input() isModelService: boolean;
+@Input() version?: string;
 // @Input() runtimes: any[];
   constructor() { }
 
