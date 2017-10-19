@@ -71,19 +71,29 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
         let weights: any[] = [];
 
         service.weights.map(self => {
-            console.log(self);
+            let selectedModel
+            if (self.service) { 
+                selectedModel = self.service
+            } else {
+                selectedModel = this.modelServices.filter(item => item.serviceId === self.serviceId).shift()
+            }
+
+            console.log(selectedModel);
+            
             weights.push({
-                selectedModel: self.service ? self.service.modelRuntime.modelId : self.runtimeId,
-                model: self.service ? self.service : '',
+                selectedModel: selectedModel.modelRuntime.modelId,
+                model: self.service ? self.service : selectedModel,
                 weight: self.weight
             });
             this.weightsForSlider.push(self.weight);
             if (self.service) {
                 this.onSelectModel(self.service.modelRuntime.modelId);
             } else {
-                this.onSelectModel(self.runtimeId);
+                this.onSelectModel(selectedModel.modelRuntime.modelId);
             }
         });
+
+        console.log(weights);
         
         this.serviceForm.patchValue({
             serviceName: service.serviceName,

@@ -1,8 +1,8 @@
-<h2 class="mdl-dialog__title">Add Service</h2>
+<h2 class="mdl-dialog__title">Add Application</h2>
 <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
   <div class="mdl-dialog__content">
 
-    <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Service Name" formControlName="serviceName"></hydro-input-text>
+    <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Application Name" formControlName="serviceName"></hydro-input-text>
 
     <div class="hydro-form-group">
       <label class="hydro-checkbox">
@@ -79,7 +79,7 @@
       </ul>
       <div class="form-weights__list-item--add">
         <svg><use xlink:href="#icon-plus"></use></svg>
-        <mdl-select (change)="onAddingModel($event)" label="{{addSelectLabel}}" class="cs-text-center">
+        <mdl-select formControlName="addModelToService" (change)="onAddingModel($event)" label="{{addSelectLabel}}" class="cs-text-center">
           <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
         </mdl-select>
       </div>
@@ -87,7 +87,7 @@
     
     <div class="btn-group form-actions">
       <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
-      <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">Add service</button>
+      <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">Add app</button>
     </div>
   </div>
 </form>

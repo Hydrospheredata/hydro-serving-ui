@@ -41,7 +41,7 @@ export class DialogBase {
     public modelServices: ModelService[];
     public modelServicesFiltered: ModelService[];
 
-    public modelVersions: ModelService[] = [];
+    public modelVersions: any[] = [];
 
     public services: Service[];
 
@@ -63,6 +63,22 @@ export class DialogBase {
                 this.modelServicesFiltered = this.modelServices.filter((item, index, self) => {
                     return self.findIndex(t => { return t.modelRuntime.modelId === item.modelRuntime.modelId}) === index;
                 });
+                this.modelServicesFiltered.forEach(filteredItem => {
+                    // console.log(filteredItem);
+                    // let groupedModelServices = this.modelServices.filter((item, index, self) => {
+                    //     return item.modelRuntime.modelId === filteredItem.modelRuntime.modelId;
+                    // });
+                    // console.log(groupedModelServices);
+                    // this.modelVersions.push({
+                    //     modelId: filteredItem.modelRuntime.modelId,
+                    //     versions: groupedModelServices
+                    // });
+                    // let versions = this.modelServices.filter((item, index, self) => {
+                    //     return item.modelRuntime.modelId === item.modelRuntime.modelId;
+                    // });
+                    // this.modelVersions.push(versions);
+                });
+                // console.log(this.modelVersions);
             });
         this.store.select('services')
             .subscribe(services => {
@@ -74,7 +90,8 @@ export class DialogBase {
         this.serviceForm = this.fb.group({
             serviceName: ['', Validators.required],
             weights: this.fb.array([this.addWeightToModel()]),
-            kafkaStreamingSources: this.fb.array([this.addKafkaSource()])
+            kafkaStreamingSources: this.fb.array([this.addKafkaSource()]),
+            addModelToService: ''
         });
     }
 
@@ -143,9 +160,12 @@ export class DialogBase {
     }
 
     public onAddingModel(value) {
-        console.log(value);
         this.addModelToService(value);
+        this.onSelectModel(value);
         this.weightsForSlider.push(0);
+        this.serviceForm.patchValue({
+            addModelToService: ''
+        });
     }
 
     public getFormData(data) {

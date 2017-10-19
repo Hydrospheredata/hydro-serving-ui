@@ -1,4 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
@@ -27,7 +28,8 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
         public store: Store<AppState>,
-        public servicesService: ServicesService
+        public servicesService: ServicesService,
+        private router: Router
     ) {
         super(
             fb,
@@ -65,6 +67,8 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
 
         this.servicesService.addService(service)
             .subscribe(res => {
+                console.log(res);
+                // this.router.navigate(['./services', serviceInfo.id]);
                 this.store.dispatch({ type: Actions.ADD_SERVICE, payload: new Service(service) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
