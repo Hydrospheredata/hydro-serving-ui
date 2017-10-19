@@ -1,9 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { MdlDialogService } from '@angular-mdl/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Store } from '@ngrx/store';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { SortByPipe } from '@shared/pipes/sort-by.pipe';
+import { Subscription } from 'rxjs/Subscription';
 
 import { AppState } from '@shared/models/_index';
 import { Service, Model } from '@shared/models/_index';
@@ -20,9 +21,9 @@ import * as moment from 'moment';
   providers: [SortByPipe],
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnChanges {
+export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
 
-  public sidebarList: Service[] | Model[];
+  public sidebarList: Service[] | Model[] = [];
   private title = '';
   public searchQ: string;
   private needsToGo = false;
@@ -32,7 +33,7 @@ export class SidebarComponent implements OnInit, OnChanges {
   @Input() sidebarTitle: string;
 
   @Input() sidebarData: Observable<any>; // ToDo: Fix any type
-
+  private routeSubscription: Subscription;
 
   constructor(
     private sortByPipe: SortByPipe,
@@ -40,36 +41,38 @@ export class SidebarComponent implements OnInit, OnChanges {
     private router: Router,
     private store: Store<AppState>,
     private dialog: MdlDialogService
-  ) { }
+  ) {
+    this.routeSubscription = this.router.events
+      .subscribe(event => {
+        if (event instanceof NavigationEnd && event.url.split('/').length <= 2) {
+          this.needsToGo = true;
+          this.transitToFirstItem();
+        }
+      });
+  }
 
   ngOnInit() {
-    // this.activatedRoute.url.subscribe(params => {
-    //   if (this.sidebarList.length > 0) {
-    //     const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
-    //     // EXTREMELY AWFUL HACK DO NOT TRY THIS AT HOME I REPEAT DO NOT TRY THIS AT HOME!!!!
-    //     if (this.router.url.split('/').length <= 2) {
-    //       this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
-    //     }
-    //   } else {
-    //     this.needsToGo = true;
-    //   }
-    // });
   }
 
   ngOnChanges() {
     this.sidebarData.subscribe(items => {
       this.sidebarList = items;
-      // if (this.needsToGo) {
-      //   this.needsToGo = false;
-      //   if (this.sidebarList.length > 0) {
-      //     const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
-      //     // EXTREMELY AWFUL HACK DO NOT TRY THIS AT HOME I REPEAT DO NOT TRY THIS AT HOME!!!!
-      //     if (this.router.url.split('/').length <= 2) {
-      //       this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
-      //     }
-      //   }
-      // }
+      console.log(this.needsToGo);
+      this.transitToFirstItem();
     });
+  }
+
+  private transitToFirstItem() {
+    if (this.needsToGo && this.sidebarList.length > 0) {
+      this.needsToGo = false;
+      const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
+      console.warn(sorted);
+      this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
+    }
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 
 

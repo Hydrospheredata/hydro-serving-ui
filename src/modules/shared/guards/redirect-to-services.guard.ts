@@ -12,12 +12,6 @@ export class RedirectToServicesGuard implements CanActivate {
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot) {
-        this.router.events.subscribe(event => {
-          console.log(event);
-        });
-        console.warn('CANACTIVATE YO');
-        console.warn(this.router.url);
-        console.warn(route.url);
-        return true;
+      return this.checkServiceExistService.isExist(route.params.id);
     }
 }

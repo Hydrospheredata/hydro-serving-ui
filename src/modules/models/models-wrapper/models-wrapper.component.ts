@@ -22,18 +22,11 @@ export class ModelsWrapperComponent implements OnInit {
     private store: Store<AppState>,
     private activatedRoute: ActivatedRoute
   ) {
-    console.warn(this.router.url);
 
   }
   ngOnInit() {
     this.store.dispatch({ type: Actions.LOAD_MODELS, payload: null });
     this.models = this.store.select('models');
-    this.store.select('models').filter(models => models.length > 0).first().subscribe(models => {
-      if (this.router.url.split('/').length <= 2) {
-              this.router.navigate([models[0].id], { relativeTo: this.activatedRoute });
-            }
-
-    });
   }
 
 }

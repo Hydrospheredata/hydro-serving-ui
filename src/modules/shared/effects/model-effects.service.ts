@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, toPayload } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
 import { ModelsService, ModelRuntimesService, ModelServicesService, HttpModelsService } from '@shared/services/_index';
@@ -26,6 +26,8 @@ export class ModelEffects {
   .mergeMap((action: HydroActions.SwitchModelAction) => this.modelsService.getModelWithInfo(action.payload).first()
      .map(data => ({ type: HydroActions.UPDATE_MODEL, payload: this.modelBuilder.build(data) })));
 
+  // @Effect() routerNavigation$: Observable<Action> = this.actions.ofType('ROUTER_NAVIGATION').map(toPayload);
+
 
 
   constructor(
@@ -36,4 +38,6 @@ export class ModelEffects {
     private oldModelsService: HttpModelsService
   ) { }
 
+
+  // this.routerNavigation$.subscribe();
 }
