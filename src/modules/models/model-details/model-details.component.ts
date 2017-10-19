@@ -49,6 +49,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   public deployable = true;
   public isModels = true;
   private modelRuntimesServiceSubscription: Subscription;
+  private modelsRuntimesSub: Subscription;
   private modelServicesServiceSubscription: Subscription;
   private servicesServiceSubscription: Subscription;
   private modelsStoreSelectionSubscription: Subscription;
@@ -97,7 +98,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: this.id });
 
 
-    this.store.select('modelRuntimes')
+    this.modelsRuntimesSub = this.store.select('modelRuntimes')
       .subscribe(modelRuntimes => {
         console.warn(modelRuntimes);
         this.nestedModelRuntimes = modelRuntimes;
@@ -205,6 +206,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     if (this.modelsStoreSelectionSubscription) {
       this.modelsStoreSelectionSubscription.unsubscribe();
     }
+    this.modelsRuntimesSub.unsubscribe();
   }
 
 }
