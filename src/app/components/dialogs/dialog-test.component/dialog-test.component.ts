@@ -60,7 +60,6 @@ export class DialogTestComponent implements OnInit {
     this.createTestForm();
     this.requestBody = this.createCURLString(this.testForm);
     this.testForm.valueChanges.subscribe(form => {
-      console.log(this.testForm);
       this.requestBody = this.createCURLString(this.testForm);
     });
     this.codeMirrorInputOptions = {
@@ -97,7 +96,7 @@ export class DialogTestComponent implements OnInit {
     '${path}'`;
   }
 
-  @HostListener('keydown.esc')
+  @HostListener('document:keydown.escape')
   public onEsc(): void {
     this.dialogRef.hide();
   }

@@ -36,7 +36,7 @@ export class DialogDeployModelComponent implements OnInit {
   ngOnInit() {
   }
 
-  @HostListener('keydown.esc')
+  @HostListener('document:keydown.escape')
   public onEsc(): void {
     this.dialogRef.hide();
   }
@@ -49,10 +49,7 @@ export class DialogDeployModelComponent implements OnInit {
           message: 'Service has been deployed',
           timeout: 5000
         });
-        this.modelsService.getModels().first()
-        .subscribe(models => {
-            this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
-        });
+        this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: this.model.modelId });
       },
       (error) => {
         this.mdlSnackbarService.showSnackbar({

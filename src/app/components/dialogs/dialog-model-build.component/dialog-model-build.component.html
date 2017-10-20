@@ -19,21 +19,16 @@
             <span class="model-details-label">Tags</span>
             <span class="model-details-label">......................</span>
             <span class="model-details-value">
-     <span *ngFor="let tag of model?.runtimeType?.tags; last as isLast">
+     <span *ngFor="let tag of getRuntimeTypeTages(currentModelRuntimeType); last as isLast">
        <span class="model-details-tag">{{ tag }}</span> {{isLast ? '' : ', '}}
             </span>
             </span>
         </div>
     </div>
 
-      <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--12-col cs-text-right">
-          <button (click)="dialogRef.hide()" type="button" mdl-button class='mat-button mat-button--big'>CANCEL</button>
-          <button type="submit" mdl-button [disabled]="buildModelForm.invalid"
-                  class='mat-button mat-button--big mat-button--primary'
-                  mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Deploy model
-          </button>
-        </div>
+      <div class="btn-group form-actions">
+        <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">CANCEL</button>
+        <button class="btn btn-colored btn-large" type="submit" [disabled]="buildModelForm.invalid">Deploy model</button>
       </div>
   </form>
 </div>
