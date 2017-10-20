@@ -111,7 +111,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   public isDeployable() {
-    // return false;
     if (!this.model || !this.model.lastModelRuntime.created) {
       return true;
     }

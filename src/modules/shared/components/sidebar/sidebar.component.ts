@@ -57,7 +57,6 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges() {
     this.sidebarData.subscribe(items => {
       this.sidebarList = items;
-      console.log(this.needsToGo);
       this.transitToFirstItem();
     });
   }
@@ -66,7 +65,6 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
     if (this.needsToGo && this.sidebarList.length > 0) {
       this.needsToGo = false;
       const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
-      console.warn(sorted);
       this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
     }
   }

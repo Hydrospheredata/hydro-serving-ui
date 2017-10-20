@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState, Model } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
-import { CanActivate, Router, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
 
 @Component({
   selector: 'hydro-models-wrapper',
@@ -18,9 +17,7 @@ export class ModelsWrapperComponent implements OnInit {
 
 
   constructor(
-    private router: Router,
     private store: Store<AppState>,
-    private activatedRoute: ActivatedRoute
   ) {
 
   }
