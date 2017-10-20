@@ -102,7 +102,7 @@ node("JenkinsOnDemand") {
         sh "npm install"
         sh "./node_modules/.bin/ng build --prod"
         sh "cp -r ${repository} docker"
-        sh "cd docker && docker build -t hydrosphere/frontend:${curVersion} ."
+        sh "cd docker && docker build -t hydrosphere/serving-manager-ui:${curVersion} ."
     }
 
     stage('Test') {
@@ -128,7 +128,7 @@ node("JenkinsOnDemand") {
 
             pushSource(gitCredentialId, organization, repository, "")
             pushSource(gitCredentialId, organization, repository, "refs/tags/${curVersion}")
-            sh "docker push hydrosphere/frontend:${curVersion}"
+            sh "docker push hydrosphere/serving-manager-ui:${curVersion}"
             def releaseInfo=createReleaseInGithub(gitCredentialId, organization, repository,curVersion,tagComment)
             def props = readJSON text: "${releaseInfo}"
             zip archive: true, dir: "${repository}", glob: "", zipFile: "release-${curVersion}.zip"
