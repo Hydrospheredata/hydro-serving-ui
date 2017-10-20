@@ -4,4 +4,5 @@ export interface AppState {
     services: Service[];
     models: Model[];
     modelService: ModelService[];
+    modelRuntimes: any;
 }

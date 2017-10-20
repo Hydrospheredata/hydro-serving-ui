@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -37,13 +37,18 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
             formsService,
             mdlSnackbarService,
             store,
-            servicesService 
+            servicesService
         );
     }
 
     ngOnInit() {
         this.createServiceForm();
         this.initFormChangesListener();
+    }
+
+    @HostListener('document:keydown.escape')
+    public onEsc(): void {
+      this.dialogRef.hide();
     }
 
     onSubmit() {

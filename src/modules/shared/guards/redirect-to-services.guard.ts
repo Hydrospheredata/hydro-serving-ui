@@ -12,6 +12,6 @@ export class RedirectToServicesGuard implements CanActivate {
     ) {}
 
     canActivate(route: ActivatedRouteSnapshot) {
-        return this.checkServiceExistService.isExist(route.params.id);
+      return this.checkServiceExistService.isExist(route.params.id);
     }
 }
