@@ -32,7 +32,7 @@ export class DialogDeleteServiceComponent {
         this.modelId = data;
     }
 
-    @HostListener('keydown.esc')
+    @HostListener('document:keydown.escape')
     public onEsc(): void {
         this.dialogRef.hide();
     }

@@ -49,7 +49,7 @@ export class DialogModelBuildComponent implements OnInit {
     });
   }
 
-  @HostListener('keydown.esc')
+  @HostListener('document:keydown.escape')
   public onEsc(): void {
     this.dialogRef.hide();
   }
@@ -69,6 +69,13 @@ export class DialogModelBuildComponent implements OnInit {
     });
   }
 
+  public getRuntimeTypeTages(runtimeTypeId: number) {
+    if (!this.runtimeTypes || this.runtimeTypes.length === 0) {
+      return [];
+    }
+    return this.runtimeTypes.find(runtimeType => runtimeType.id === Number(runtimeTypeId))['tags'];
+  }
+
   submitBuildModelForm(buildModelForm) {
     const controls = buildModelForm.controls;
     const modelOptions = {
@@ -81,7 +88,6 @@ export class DialogModelBuildComponent implements OnInit {
       inputFields: controls.inputFields.value,
       outputFields: controls.outputFields.value
     };
-    console.log(JSON.stringify(modelOptions));
 
 
     this.modelsService.updateModel(modelOptions)
@@ -94,10 +100,7 @@ export class DialogModelBuildComponent implements OnInit {
         message: `Model was successfully updated`,
         timeout: 5000
       });
-      this.modelsService.getModels().first()
-      .subscribe(models => {
-          this.store.dispatch({ type: Actions.GET_MODELS, payload: models.map(this.modelBuilder.build, this.modelBuilder) });
-      });
+      this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: modelOptions.id });
     }, (error) => {
       this.mdlSnackbarService.showSnackbar({
         message: `Error: ${error}`,

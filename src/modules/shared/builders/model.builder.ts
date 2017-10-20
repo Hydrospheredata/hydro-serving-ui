@@ -60,8 +60,6 @@ export class ModelBuilder {
       lastModelBuild: lastModelBuild,
       currentServices: currentServices
     });
-    console.log(props);
-    console.log(model);
     return model;
   }
 }

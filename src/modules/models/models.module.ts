@@ -16,7 +16,8 @@ import {
 import { StoreModule } from '@ngrx/store';
 import { ModelsReducer, ModelServiceReducer, ModelRuntimeReducer, ServicesReducer } from '@shared/reducers/_index';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
+import { EffectsModule } from '@ngrx/effects';
+import { ModelEffects } from '@shared/effects/model-effects.service';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
           services: ServicesReducer }),
           StoreDevtoolsModule.instrument({
             maxAge: 25
-          })
+          }),
+          EffectsModule.forRoot([ModelEffects])
     ],
     declarations: [
         ModelsWrapperComponent,

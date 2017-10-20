@@ -1,4 +1,4 @@
-import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
+import { Component, OnInit, InjectionToken, Inject, HostListener } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
@@ -21,12 +21,12 @@ export let injectableServiceUpdate = new InjectionToken<Service>('selectedServic
 })
 export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
 
-    public dialogType: string = 'Edit';
+    public dialogType = 'Edit';
 
     public weightsForSlider: any[] = [];
     public selectedModels: any[] = [];
 
-    public 
+    public
 
     constructor(
         @Inject(injectableServiceUpdate) data: Service,
@@ -44,7 +44,7 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
             mdlSnackbarService,
             store,
             servicesService,
-            
+
         );
         this.selectedService = data;
         if (this.selectedService.kafkaStreamingSources.length) {
@@ -58,6 +58,11 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
         this.updateServiceFormValues(this.selectedService);
     }
 
+    @HostListener('document:keydown.escape')
+    public onEsc(): void {
+      this.dialogRef.hide();
+    }
+
     private updateServiceFormValues(service: Service) {
         console.log(service);
         for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
@@ -67,19 +72,19 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
         for (let i = 0; i < service.weights.length - 1; i++) {
             this.addModelToService();
         }
-        
-        let weights: any[] = [];
+
+        const weights: any[] = [];
 
         service.weights.map(self => {
-            let selectedModel
-            if (self.service) { 
-                selectedModel = self.service
+            let selectedModel;
+            if (self.service) {
+                selectedModel = self.service;
             } else {
-                selectedModel = this.modelServices.filter(item => item.serviceId === self.serviceId).shift()
+                selectedModel = this.modelServices.filter(item => item.serviceId === self.serviceId).shift();
             }
 
             console.log(selectedModel);
-            
+
             weights.push({
                 selectedModel: selectedModel.modelRuntime.modelId,
                 model: self.service ? self.service : selectedModel,
@@ -94,7 +99,7 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
         });
 
         console.log(weights);
-        
+
         this.serviceForm.patchValue({
             serviceName: service.serviceName,
             weights: weights,
