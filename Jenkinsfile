@@ -101,10 +101,12 @@ node("JenkinsOnDemand") {
         def curVersion = currentVersion()
         sh "npm install"
         sh "./node_modules/.bin/ng build --prod"
+        sh "cp -r ${repository} docker"
+        sh "cd docker && docker build -t hydrosphere/serving-manager-ui:${curVersion} ."
     }
 
     stage('Test') {
-        sh "./node_modules/.bin/ng test --browsers=\"ChromeNoSandboxHeadless\" --code-coverage --single-run"
+       // sh "./node_modules/.bin/ng test --browsers=\"ChromeNoSandboxHeadless\" --code-coverage --single-run"
     }
     if (isReleaseJob()) {
         //if (currentBuild.result == 'UNSTABLE') {
@@ -122,12 +124,11 @@ node("JenkinsOnDemand") {
 
             def nextVersion=calculateNextDevVersion(curVersion)
             changeVersion(nextVersion)
-
             sh "git commit -m 'Development version increased: ${nextVersion}' -- version"
 
             pushSource(gitCredentialId, organization, repository, "")
             pushSource(gitCredentialId, organization, repository, "refs/tags/${curVersion}")
-
+            sh "docker push hydrosphere/serving-manager-ui:${curVersion}"
             def releaseInfo=createReleaseInGithub(gitCredentialId, organization, repository,curVersion,tagComment)
             def props = readJSON text: "${releaseInfo}"
             zip archive: true, dir: "${repository}", glob: "", zipFile: "release-${curVersion}.zip"
