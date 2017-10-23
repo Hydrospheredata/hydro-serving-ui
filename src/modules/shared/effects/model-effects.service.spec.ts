@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 import * as Actions from '@shared/actions/_index';
-import { ModelEffectsService } from './model-effects.service';
+import { ModelEffects } from './model-effects.service';
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
