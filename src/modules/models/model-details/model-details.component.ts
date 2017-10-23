@@ -47,6 +47,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private modelServices: ModelService[];
   private weightedServices: Service[];
   public deployable = true;
+  public latestVersion: string;
   public isModels = true;
   private modelRuntimesServiceSubscription: Subscription;
   private modelsRuntimesSub: Subscription;
@@ -107,10 +108,11 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
       .subscribe(models => {
         this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
         this.deployable = this.isDeployable();
+        this.latestVersion = this.getLatestVersion();
       });
   }
 
-  public isDeployable() {
+  public isDeployable(): boolean {
     if (!this.model || !this.model.lastModelRuntime.created) {
       return true;
     }
@@ -123,7 +125,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     return { serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id };
   }
 
-  public getLatestVersion() {
+  public getLatestVersion(): string {
+    if (this.isDeployable()) {
+      return this.model.nextVersion;
+    }
     if (!this.runtimes || this.runtimes.length < 1) {
       return '0.0.1';
     }
@@ -136,11 +141,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
       }
       return 0;
     });
-    if (!this.isDeployable()) {
-      return sortedRuntimes[0].imageTag;
-    }
-    const newVersion = `0.0.${Number(sortedRuntimes[0].imageTag.split('.')[2]) + 1}`;
-    return newVersion;
+    return sortedRuntimes[0].imageTag;
   }
 
   buildModel(modelOptions: Model) {
