@@ -10,11 +10,11 @@ import { ModelsService } from '@shared/services/_index';
 describe('ModelEffectsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ModelEffectsService]
+      providers: [ModelEffects]
     });
   });
 
-  it('should be created', inject([ModelEffectsService], (service: ModelEffectsService) => {
+  it('should be created', inject([ModelEffects], (service: ModelEffects) => {
     // expect(service).toBeTruthy();
   }));
 });
