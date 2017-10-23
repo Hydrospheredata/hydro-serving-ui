@@ -5,7 +5,7 @@
 
 
   <div class="model-details">
-    <hydro-model-details-summary [model]="model" [isDeployable]="isDeployable()" [isModelService]="false" [version]="getLatestVersion()"></hydro-model-details-summary>
+    <hydro-model-details-summary [model]="model" [isDeployable]="isDeployable()" [isModelService]="false" [version]="latestVersion"></hydro-model-details-summary>
 
     <div class="model-details-panel">
       <h5 class="model-details-grid-header">Versions</h5>
@@ -21,7 +21,7 @@
               <div class='cs-text-overflow-ellipsis'>{{model?.updated | utcToLocal | amTimeAgo}}</div>
             </td>
             <td class="hydro-table-body__cell">
-              <div class='cs-text-overflow-ellipsis new-version'>{{getLatestVersion()}}</div>
+              <div class='cs-text-overflow-ellipsis new-version'>{{latestVersion}}</div>
             </td>
             <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis undeployed'>
