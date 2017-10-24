@@ -1,6 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 set -eu
 
-render-templates.sh /etc/nginx/sites-templates /etc/nginx/sites-enabled
+sed -i "s/MANAGER_HOST/${MANAGER_HOST}/g" /etc/nginx/sites-templates/manager.conf.tmpl
+rm /etc/nginx/conf.d/default.conf
+cp /etc/nginx/sites-templates/manager.conf.tmpl /etc/nginx/conf.d/manager.conf
 exec $@
