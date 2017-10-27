@@ -69,8 +69,8 @@ export class DialogModelBuildComponent implements OnInit {
     });
   }
 
-  public getRuntimeTypeTages(runtimeTypeId: number) {
-    if (!this.runtimeTypes || this.runtimeTypes.length === 0) {
+  public getRuntimeTypeTags(runtimeTypeId: number) {
+    if (!this.runtimeTypes || this.runtimeTypes.length === 0 || !runtimeTypeId) {
       return [];
     }
     return this.runtimeTypes.find(runtimeType => runtimeType.id === Number(runtimeTypeId))['tags'];
