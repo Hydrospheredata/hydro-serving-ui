@@ -94,7 +94,8 @@
               </div>
             </td>
             <td class="hydro-table-body__cell">
-              <div *ngIf="this.weightedServices && this.weightedServices.length > 0" class="cs-text-overflow-ellipsis">
+              <!-- todo: make more optimal -->
+              <div *ngIf="runtime && runtime.services[0] && runtime.services[0].weightedServices && runtime.services[0].weightedServices.length > 0" class="cs-text-overflow-ellipsis">
                 <span *ngFor="let weightedService of runtime.services[0].weightedServices; last as isLast">
                   <a class="hydro-table-link model-details-link" [routerLink]="['/services', weightedService.id]">
                     {{ weightedService.serviceName }}

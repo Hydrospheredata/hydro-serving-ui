@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
   private title = '';
   public searchQ: string;
   private needsToGo = false;
-
+  public deployedFilter = {'deployed': true, 'undeployed': true};
   @Input() isAddBtnEnabled: boolean;
   @Input() isModels: boolean;
   @Input() sidebarTitle: string;
@@ -95,6 +95,10 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
     }
     return item.lastModelRuntime.modelVersion;
 
+  }
+
+  toggleModelFilter(option) {
+    this.deployedFilter[option] = !this.deployedFilter[option];
   }
 
   public isDeployable(model) {

@@ -3,7 +3,7 @@
 .sidebar {
   height: 100%;
   &-header {
-    padding: 45px 32px 42px;
+    padding: 45px 32px 26px;
     border-bottom: 2px solid #d4d7d9;
     &__row {
       display: flex;
@@ -35,6 +35,7 @@
     margin: 0;
     padding: 0;
     &__item {
+      height: 0px;
       line-height: 15px;
       border-bottom: 1px solid $secondary-color;
       padding: 23px 36px;
@@ -76,6 +77,44 @@
       }
     }
   }
+  &-filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &__label {
+      color: #818994;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      padding-right: 10px;
+    }
+    &__button {
+      height: 33px;
+      border-radius: 5px;
+      background-color: #e6e9ed;
+      border: none;
+      cursor: pointer;
+      margin-right: 10px;
+      display: inline-flex;
+      &--label {
+        font-family: $main-font-family;        
+        color: #818994;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 24px;
+        letter-spacing: 0.35px;
+      }
+      &--icon {
+        margin-top: 5px;
+        margin-right: 5px;
+      }
+    }
+  &__selected {
+    background: none;
+  }
+  }
 }
 
 ::-webkit-scrollbar {
@@ -97,6 +136,10 @@ svg {
 
 .undeployed {
   fill: #e1e4eb;
+}
+
+.undeployed-filter {
+  fill: #d2d5d9;
 }
 
 .version-new {
