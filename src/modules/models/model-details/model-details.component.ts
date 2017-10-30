@@ -41,7 +41,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
   private activatedRouteSub: any;
   public id: string;
-  public builds: any;
+  public builds: any; // TODO: FIX TYPE
   public model: Model;
   public runtimes: ModelRuntime[];
   private modelServices: ModelService[];
@@ -55,7 +55,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private servicesServiceSubscription: Subscription;
   private modelsStoreSelectionSubscription: Subscription;
   private getModelByIdSubscription: Subscription;
-  public nestedModelRuntimes: any[];
+  public nestedModelRuntimes: any[]; // TODO: FIX TYPE
   public tableHeader: string[] = [
     'Created', 'Version', 'Status', 'Actions', 'Services'
   ];
@@ -129,14 +129,14 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     if (this.isDeployable()) {
       return this.model.nextVersion;
     }
-    if (!this.runtimes || this.runtimes.length < 1) {
+    if (!this.nestedModelRuntimes || this.nestedModelRuntimes.length < 1) {
       return '0.0.1';
     }
-    const sortedRuntimes = this.runtimes.sort((a, b) => {
-      if (a.imageTag > b.imageTag) {
+    const sortedRuntimes = this.nestedModelRuntimes.sort((a, b) => {
+      if (Number(a.runtime.imageTag) < Number(b.runtime.imageTag)) {
         return -1;
       }
-      if (a.imageTag < b.imageTag) {
+      if (Number(a.runtime.imageTag) > Number(b.runtime.imageTag)) {
         return 1;
       }
       return 0;
