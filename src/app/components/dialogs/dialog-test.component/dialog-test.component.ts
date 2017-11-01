@@ -52,47 +52,44 @@ export class DialogTestComponent implements OnInit {
 
 
   ngOnInit() {
+    this.codeMirrorInputOptions = {
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      mode: { name: 'javascript', json: true },
+      lineWrapping: true,
+      readOnly: false,
+      scrollbarStyle: 'null'
+    };
+    this.codeMirrorOutputOptions = {
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      mode: { name: 'javascript', json: true },
+      lineWrapping: true,
+      readOnly: true,
+      scrollbarStyle: 'null'
+    };
+
+
     if (this.model instanceof Service) {
-      this.input = {}
-    }
-    else {
-    this.modelRuntimesService.generateInputs(this.model.modelRuntime.id).first()
-      .subscribe(data => {
-        this.input = data;
-        if (!this.model.id || this.model instanceof Model) {
+      this.input = [{}];
+      this.testTitle = `Test service "${this.model.serviceName}"`;
+      this.testBtn = `Test service`;
+      this.createTestForm();
+    } else {
+      // TODO: come up with better way of sending async data into formbuilder
+      this.modelRuntimesService.generateInputs(this.model.modelRuntime.id).first()
+        .subscribe(data => {
+          this.input = data;
           this.testTitle = `Test model "${this.model.modelRuntime.modelName}"`;
           this.testBtn = 'Test model';
-        } else {
-          this.testTitle = `Test service "${this.model.serviceName}"`;
-          this.testBtn = `Test service`;
-        }
-        console.log(this.input);
-        this.createTestForm();
-        this.requestBody = this.createCURLString(this.testForm);
-        this.testForm.valueChanges.subscribe(form => {
-          this.requestBody = this.createCURLString(this.testForm);
+          this.createTestForm();
         });
-        this.codeMirrorInputOptions = {
-          matchBrackets: true,
-          autoCloseBrackets: true,
-          mode: { name: 'javascript', json: true },
-          lineWrapping: true,
-          readOnly: false,
-          scrollbarStyle: 'null'
-        };
-        this.codeMirrorOutputOptions = {
-          matchBrackets: true,
-          autoCloseBrackets: true,
-          mode: { name: 'javascript', json: true },
-          lineWrapping: true,
-          readOnly: true,
-          scrollbarStyle: 'null'
-        };
-      });
     }
 
 
   }
+
+
 
   private createCURLString(form) {
     let path = '';
@@ -116,8 +113,12 @@ export class DialogTestComponent implements OnInit {
 
   private createTestForm() {
     this.testForm = this.fb.group({
-      data: [JSON.stringify(this.input), [Validators.required, this.validateInput]],
+      data: [JSON.stringify(this.input, null, 2), [Validators.required, this.validateInput]],
       path: ['/serve', [Validators.required]],
+    });
+    this.requestBody = this.createCURLString(this.testForm);
+    this.testForm.valueChanges.subscribe(form => {
+      this.requestBody = this.createCURLString(this.testForm);
     });
   }
 
