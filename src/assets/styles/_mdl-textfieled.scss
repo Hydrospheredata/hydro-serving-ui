@@ -20,3 +20,7 @@
         color: #04143c;
     }
 }
+// hack for dialog-model-build
+.runtime-select > .mdl-textfield {
+  width:60%;
+}
