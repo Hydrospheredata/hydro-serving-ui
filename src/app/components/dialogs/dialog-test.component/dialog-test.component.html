@@ -1,6 +1,6 @@
 <div>
   <h1 class="mdl-dialog__title mat-dialog-title">{{testTitle}}</h1>
-  <form [formGroup]="testForm" (ngSubmit)="submitTestForm(testForm)">
+  <form *ngIf="input" [formGroup]="testForm" (ngSubmit)="submitTestForm(testForm)">
     <div class="mdl-dialog__content">
       <div fxLayout="row" fxLayoutAlign="space-around stretch">
         <div fxFlex="49%">

@@ -14,3 +14,11 @@
   margin-top: 20px;
   margin-bottom: 10px;
 }
+
+.input {
+  &-text {
+    &__input {
+      font-family: monospace;
+    }
+  }
+}

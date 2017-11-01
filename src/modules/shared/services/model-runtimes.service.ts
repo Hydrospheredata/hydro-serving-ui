@@ -43,6 +43,12 @@ export class ModelRuntimesService {
                       return res.json();
                     });
     }
+    generateInputs(id: number): Observable<any>{
+      const url = `${this.baseAPIUrl}/generateInputs/${id}`;
+      return this.http.get(url).map((res: Response) => {
+        return res.json();
+      })
+    }
     createModelRuntime() {}
     removeModelRuntime() {}
     updateModelRuntime() {}

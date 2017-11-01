@@ -7,7 +7,7 @@ import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
 import { Model, ModelService, Service } from '@shared/models/_index';
-import { ServicesService, ModelServicesService } from '@shared/services/_index';
+import { ServicesService, ModelServicesService, ModelRuntimesService } from '@shared/services/_index';
 import { environment } from 'environments/environment';
 import { Location } from '@angular/common';
 
@@ -26,6 +26,7 @@ export class DialogTestComponent implements OnInit {
   public testForm: FormGroup;
   public codeMirrorInputOptions: {};
   public codeMirrorOutputOptions: {};
+  public input: {};
   public output: {};
   public testBtn: string;
   public testTitle: string;
@@ -38,6 +39,7 @@ export class DialogTestComponent implements OnInit {
     private fb: FormBuilder,
     private mdlSnackbarService: MdlSnackbarService,
     private modelServicesService: ModelServicesService,
+    private modelRuntimesService: ModelRuntimesService,
     private location: Location,
     private servicesService: ServicesService
   ) {
@@ -50,18 +52,6 @@ export class DialogTestComponent implements OnInit {
 
 
   ngOnInit() {
-    if (!this.model.id || this.model instanceof Model) {
-      this.testTitle = `Test model "${this.model.modelRuntime.modelName}"`;
-      this.testBtn = 'Test model';
-    } else {
-      this.testTitle = `Test service "${this.model.serviceName}"`;
-      this.testBtn = `Test service`;
-    }
-    this.createTestForm();
-    this.requestBody = this.createCURLString(this.testForm);
-    this.testForm.valueChanges.subscribe(form => {
-      this.requestBody = this.createCURLString(this.testForm);
-    });
     this.codeMirrorInputOptions = {
       matchBrackets: true,
       autoCloseBrackets: true,
@@ -79,7 +69,27 @@ export class DialogTestComponent implements OnInit {
       scrollbarStyle: 'null'
     };
 
+
+    if (this.model instanceof Service) {
+      this.input = [{}];
+      this.testTitle = `Test service "${this.model.serviceName}"`;
+      this.testBtn = `Test service`;
+      this.createTestForm();
+    } else {
+      // TODO: come up with better way of sending async data into formbuilder
+      this.modelRuntimesService.generateInputs(this.model.modelRuntime.id).first()
+        .subscribe(data => {
+          this.input = data;
+          this.testTitle = `Test model "${this.model.modelRuntime.modelName}"`;
+          this.testBtn = 'Test model';
+          this.createTestForm();
+        });
+    }
+
+
   }
+
+
 
   private createCURLString(form) {
     let path = '';
@@ -103,25 +113,17 @@ export class DialogTestComponent implements OnInit {
 
   private createTestForm() {
     this.testForm = this.fb.group({
-      data: [this.extractModelInputFields(this.model), [Validators.required, this.validateInput]],
+      data: [JSON.stringify(this.input, null, 2), [Validators.required, this.validateInput]],
       path: ['/serve', [Validators.required]],
+    });
+    this.requestBody = this.createCURLString(this.testForm);
+    this.testForm.valueChanges.subscribe(form => {
+      this.requestBody = this.createCURLString(this.testForm);
     });
   }
 
   private extractModelInputFields(model): string {
-    let inputFields;
-    if (model.inputFields) {
-      inputFields = model.inputFields;
-    } else if (model.modelRuntime && model.modelRuntime.inputFields) {
-      inputFields = model.modelRuntime.inputFields;
-    } else {
-      return JSON.stringify([{}]);
-    }
-    const reducedFields = inputFields.reduce((payload, field) => {
-      payload[field] = '';
-      return payload;
-    }, {});
-    return JSON.stringify([reducedFields], undefined, 2);
+    return '{}';
   }
 
   private validateInput(input) {
