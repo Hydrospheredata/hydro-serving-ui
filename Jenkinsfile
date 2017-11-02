@@ -135,5 +135,18 @@ node("JenkinsOnDemand") {
             def releaseFile="release-${curVersion}.zip"
             uploadRelease(gitCredentialId, organization, repository, curVersion, props.id, releaseFile)
         }
-    }
+    } else {
+        stage("Publish_snapshoot"){
+            def curVersion = currentVersion()
+            GIT_COMMIT = sh (
+                     script: 'git rev-parse --short HEAD',
+                     returnStdout: true
+            ).trim()
+            sh "docker tag hydrosphere/serving-manager-ui:${curVersion} 060183668755.dkr.ecr.eu-central-1.amazonaws.com/serving-manager-ui:${GIT_COMMIT}"
+            IMAGE = "060183668755.dkr.ecr.eu-central-1.amazonaws.com/serving-manager-ui:${GIT_COMMIT}"
+            docker.withRegistry('https://060183668755.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:jenkins_aws') {
+              docker.image(IMAGE).push()
+            }
+        }
+     }
 }
