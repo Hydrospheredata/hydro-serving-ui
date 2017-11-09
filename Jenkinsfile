@@ -30,14 +30,22 @@ def calculateNextDevVersion(releaseVersion) {
 
 def checkoutSource(gitCredentialId, organization, repository) {
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
-        git url: "https://github.com/${organization}/${repository}.git", branch: env.BRANCH_NAME, credentialsId: gitCredentialId
+        git url: "https://github.com/${organization}/${repository}.git", branch: master, credentialsId: gitCredentialId
         sh """
             git config --global push.default simple
             git config --global user.name '${GIT_USERNAME}'
             git config --global user.email '${GIT_USERNAME}'
         """
-    if (env.CHANGE_ID) {
-        sh "git merge ${env.CHANGE_TARGET}"     
+   if (env.CHANGE_ID) {
+       sh """
+             git fetch origin pull/${env.BRANCH_NAME}/head:pullrequest
+             git checkout pullrequest
+             git merge ${env.CHANGE_TARGET}
+       """     
+    } else {
+        sh """
+            git checkout ${env.BRANCH_NAME}
+        """
     }
     }
 }
