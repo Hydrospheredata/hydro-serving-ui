@@ -3,9 +3,9 @@ import { MdlDialogReference, MdlDialogService, MdlSnackbarService } from '@angul
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { HttpRuntimeTypesService, BuildModelService, HttpModelsService, ModelsService } from '@shared/services/_index';
 import { ModelStatusPipe } from '@shared/pipes/_index';
-
+import { ServingEnvironmentService } from '@shared/services/_index';
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
+import { AppState, ServingEnvironment } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 import { ModelBuilder } from '@shared/builders/_index';
 import 'rxjs/add/operator/mergeMap';
@@ -21,10 +21,12 @@ export let injectableModelOptions = new InjectionToken<object>('injectableModelO
 export class DialogModelBuildComponent implements OnInit {
   public buildModelForm: FormGroup;
   public currentModelRuntimeType;
+  public currentModelEnvironment;
   public runtimeTypes;
   public data;
   public model;
   public modelType: string;
+  public environments: ServingEnvironment[];
 
   constructor(private fb: FormBuilder,
               public dialogRef: MdlDialogReference,
@@ -35,7 +37,8 @@ export class DialogModelBuildComponent implements OnInit {
               private modelStatusPipe: ModelStatusPipe,
               private store: Store<AppState>,
               private modelsService: ModelsService,
-              private modelBuilder: ModelBuilder
+              private modelBuilder: ModelBuilder,
+              private servingEnvironmentService: ServingEnvironmentService
               ) {
     this.model = data;
   }
@@ -47,6 +50,12 @@ export class DialogModelBuildComponent implements OnInit {
       this.runtimeTypes = runtimeType;
       self.currentModelRuntimeType = self.model.runtimeType.id;
     });
+    this.servingEnvironmentService.getEnvironments().subscribe(data => {
+      this.environments = data;
+      console.log(this.environments);
+      this.currentModelEnvironment = data[0].id;
+    });
+
   }
 
   @HostListener('document:keydown.escape')
@@ -62,6 +71,7 @@ export class DialogModelBuildComponent implements OnInit {
       name: [this.model.name],
       status: [modelStatus],
       runtimeType: [this.model.runtimeType, [Validators.required]],
+      environment: [this.currentModelEnvironment, [Validators.required]],
       modelType: [this.modelType, []],
       source: [this.model.source, []],
       inputFields: [this.model.inputFields, []],
@@ -86,13 +96,18 @@ export class DialogModelBuildComponent implements OnInit {
       runtimeTypeId: +controls.runtimeType.value,
       modelType: controls.modelType.value,
       inputFields: controls.inputFields.value,
-      outputFields: controls.outputFields.value
+      outputFields: controls.outputFields.value,
+      environmentId: controls.environment.value
     };
 
 
     this.modelsService.updateModel(modelOptions)
     .flatMap(model => {
-      return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: modelOptions.runtimeTypeId});
+      return this.buildModelService.build(
+        {modelVersion: null,
+          modelId: modelOptions.id,
+          runtimeTypeId: modelOptions.runtimeTypeId,
+          environmentId: Number(modelOptions.environmentId)});
     })
     .subscribe((model) => {
       this.dialogRef.hide();

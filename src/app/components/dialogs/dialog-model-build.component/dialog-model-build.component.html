@@ -16,6 +16,13 @@
             </mdl-select>
         </div>
         <div class="model-details-row">
+          <span class="model-details-label">Environment</span>
+          <span class="model-details-label">......</span>
+          <mdl-select style="margin-left: 0;" class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet runtime-select" formControlName="environment" [(ngModel)]="currentModelEnvironment">
+            <mdl-option *ngFor="let environment of environments" value="{{environment.id}}">{{environment.name}}</mdl-option>
+          </mdl-select>
+      </div>
+        <div class="model-details-row">
             <span class="model-details-label">Tags</span>
             <span class="model-details-label">......................</span>
             <span class="model-details-value">

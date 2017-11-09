@@ -45,9 +45,11 @@ export class DialogTestComponent implements OnInit {
   ) {
     this.model = data;
 
-    this.port = environment.production ? window.location.port : environment.port;
+    this.port = environment.production ?
+    window.location.port ? `:${window.location.port}` : ''
+    : `:${environment.port}`;
     const path = this.location.prepareExternalUrl(environment.apiUrl).replace('/ui' + environment.apiUrl, environment.apiUrl);
-    this.apiUrl = `${window.location.protocol}//${window.location.hostname}:${this.port}${path}`;
+    this.apiUrl = `${window.location.protocol}//${window.location.hostname}${this.port}${path}`;
   }
 
 
@@ -101,9 +103,7 @@ export class DialogTestComponent implements OnInit {
     } else {
       path = `${this.apiUrl}/modelService/serve`;
     }
-    return `curl -X POST --header 'Content-Type: application/json'
-    -d '${payload}'
-    '${path}'`;
+    return `curl -X POST --header 'Content-Type: application/json' -d '${payload}' '${path}'`;
   }
 
   @HostListener('document:keydown.escape')
