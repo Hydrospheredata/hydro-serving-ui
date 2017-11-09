@@ -36,6 +36,8 @@ def checkoutSource(gitCredentialId, organization, repository) {
             git config --global user.name '${GIT_USERNAME}'
             git config --global user.email '${GIT_USERNAME}'
         """
+    if (env.CHANGE_ID) {
+        sh "git merge ${env.CHANGE_TARGET}"     
     }
 }
 
