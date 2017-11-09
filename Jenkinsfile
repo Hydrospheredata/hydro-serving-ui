@@ -30,7 +30,7 @@ def calculateNextDevVersion(releaseVersion) {
 
 def checkoutSource(gitCredentialId, organization, repository) {
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
-        git url: "https://github.com/${organization}/${repository}.git", branch: env.BRANCH_NAME, credentialsId: gitCredentialId
+        git url: "https://github.com/${organization}/${repository}.git", credentialsId: gitCredentialId
         sh """
             git config --global push.default simple
             git config --global user.name '${GIT_USERNAME}'
