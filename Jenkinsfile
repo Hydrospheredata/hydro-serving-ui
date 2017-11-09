@@ -38,8 +38,8 @@ def checkoutSource(gitCredentialId, organization, repository) {
         """
    if (env.CHANGE_ID) {
        sh """
-             git fetch origin pull/${env.BRANCH_NAME}/head:pullrequest
-             git checkout pullrequest
+             git fetch origin +refs/pull/*/head:refs/remotes/origin/pr/*
+             git checkout pr/${env.BRANCH_NAME}
              git merge ${env.CHANGE_TARGET}
        """     
     } else {
