@@ -39,6 +39,7 @@ def checkoutSource(gitCredentialId, organization, repository) {
     if (env.CHANGE_ID) {
         sh "git merge ${env.CHANGE_TARGET}"     
     }
+    }
 }
 
 def pushSource(gitCredentialId, organization, repository, pushCommand) {
