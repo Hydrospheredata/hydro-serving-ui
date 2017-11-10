@@ -30,7 +30,7 @@
         <span class="sidebar-filter__button--label">Undeployed</span>
       </button>
       <button *ngIf="!isModels" (click)="toggleSidebarFilter('apps')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['apps']}" >
-        <span class="sidebar-filter__button--label">Apps</span>
+        <span class="sidebar-filter__button--label">App</span>
       </button>
       <button *ngIf="!isModels" (click)="toggleSidebarFilter('pipelines')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['pipelines']}" >
         <span class="sidebar-filter__button--label">Pipeline</span>
