@@ -13,21 +13,9 @@ import { FormsService, ServicesService } from '@shared/services/_index';
 
 @Injectable()
 export class DialogBase {
-    public labels = {
-        kafka: {
-            input: 'input topic = ',
-            output: 'output topic = ',
-            bootstrapServers: 'bootstrapServers = ',
-        },
-        weight: 'Weight'
-    }
-    public wrapToInlineControlClass: string = 'form-group__inline';
-    public weightInputClass: string = '__modelWeight';
-    public kafkaInputClass: string = '__kafkaInput';
 
     public serviceForm: FormGroup;
     public isKafkaEnabled: boolean = false;
-    public addSelectLabel: string = 'choose model';
 
     public selectedService: Service;
     public formTitle: string;

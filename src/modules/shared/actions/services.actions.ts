@@ -2,12 +2,17 @@ import { Action } from '@ngrx/store';
 import { Service } from '@shared/models/_index';
 
 export const GET_SERVICES = 'GET_SERVICES';
+export const GET_SERVICES_SUCCESS = 'GET_SERVICES_SUCCESS';
 export const ADD_SERVICE = 'ADD_SERVICE';
 export const UPDATE_SERVICE = 'UPDATE_SERVICE';
 export const DELETE_SERVICE = 'DELETE_SERVICE';
 
 export class GetServicesAction implements Action {
   readonly type = GET_SERVICES;
+}
+
+export class GetServicesSuccessAction implements Action {
+  readonly type = GET_SERVICES_SUCCESS;
   constructor(public payload: Service[]) { }
 }
 
@@ -28,6 +33,7 @@ export class DeleteServiceAction implements Action {
 
 export type ServicesActions
   = GetServicesAction
+  | GetServicesSuccessAction
   | AddServiceAction
   | UpdateServiceAction
   | DeleteServiceAction;

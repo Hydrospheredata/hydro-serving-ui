@@ -28,6 +28,9 @@ import {
 })
 
 export class ServicesItemDetailComponent {
+    public JSON = JSON;
+    public title: string = '';
+    public isService: boolean = true;
     public storeSub: Subscription;
     public combineSub: Subscription;
     public activeRouteSub: Subscription;
@@ -37,9 +40,18 @@ export class ServicesItemDetailComponent {
     public services: Service[] = [];
     public service: Service;
 
-    public tableHeader: string[] = [
-        'Model', 'Version', 'Created Date', 'Weight'
-    ];
+    public fullHeight: boolean = false;
+
+    public tableHeader: string[] = ['Model', 'Version', 'Created Date', 'Weight'];
+
+    public codeMirrorOptions: {} = {
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        mode: { name: 'javascript', json: true },
+        lineWrapping: true,
+        readOnly: true,
+        scrollbarStyle: 'null'
+    };
 
     constructor(
         public store: Store<AppState>,
@@ -80,22 +92,29 @@ export class ServicesItemDetailComponent {
     }
 
     getServiceData(id: string) {
-        console.log(id);
         this.serviceModels = [];
         if (this.services.length) {
-            const service = this.services
-                .filter(service => service.id === +id);
+            let service = this.services
+                .filter(service => service.id === Number(id));
+
             this.service = service.shift();
-            console.log(this.service);
-            if (this.service) {
-                this.service.weights.forEach(weight => {
+            
+            if (this.service && this.service.stages.length === 1) { // Checking for app
+                this.title = this.service.serviceName;
+                this.isService = true;
+                this.service.stages[0].forEach(weight => {
                     this.getModelServiceData(weight);
                 });
+            } else {
+                this.title = `Pipeline: ${this.service.serviceName}`;
+                this.isService = false;
+                // this.setPipeline();
             }
         }
     }
 
     getModelServiceData(weight) {
+        // Add effect to prevent get if exist in store, something like CACHE
         this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });
@@ -105,6 +124,15 @@ export class ServicesItemDetailComponent {
                     });
                 }
             });
+    }
+
+    setPipeline() {
+        this.service.stages.forEach(stage => {
+            stage.forEach(weight => {
+                // console.log(weight);
+                // this.getModelServiceData(weight);
+            });
+        });
     }
 
     testService(service: Service) {

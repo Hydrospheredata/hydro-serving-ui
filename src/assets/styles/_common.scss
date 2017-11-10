@@ -109,6 +109,16 @@
       }
     }
   }
+  &-flex {
+    display: flex;
+    flex-direction: row;
+    &-column {
+      flex-direction: column;
+    }
+    &-space-between {
+      justify-content: space-between;
+    }
+  }
 }
 
 .hydro {

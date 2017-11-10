@@ -69,13 +69,13 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
             this.addKafkaToService();
         }
 
-        for (let i = 0; i < service.weights.length - 1; i++) {
+        for (let i = 0; i < service.stages.length - 1; i++) {
             this.addModelToService();
         }
 
         const weights: any[] = [];
 
-        service.weights.map(self => {
+        service.stages.map(self => {
             let selectedModel;
             if (self.service) {
                 selectedModel = self.service;

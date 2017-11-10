@@ -13,23 +13,23 @@
         <li class="form-kafkaSources__list-item" *ngFor="let kafka of serviceForm['controls'].kafkaStreamingSources['controls']; let i = index" [formGroupName]="i">
           <div class="form-kafkaSources__list-item-fields">
             <hydro-input-text class="input-field" [formErrors]="formErrors.weight"
-                              [wrapClassName]="wrapToInlineControlClass"
-                              [inputClass]="kafkaInputClass"
-                              [label]="labels.kafka.input"
+                              [wrapClassName]="'form-group__inline'"
+                              [inputClass]="'__kafkaInput'"
+                              [label]="'input topic = '"
                               name="inputTopic"
                               formControlName="sourceTopic">
             </hydro-input-text>
             <hydro-input-text class="output-field" [formErrors]="formErrors.weight"
-                              [wrapClassName]="wrapToInlineControlClass"
-                              [inputClass]="kafkaInputClass"
-                              [label]="labels.kafka.output"
+                              [wrapClassName]="'form-group__inline'"
+                              [inputClass]="'__kafkaInput'"
+                              [label]="'output topic = '"
                               name="outputTopic"
                               formControlName="destinationTopic">
             </hydro-input-text>
             <hydro-input-text class="bootstrapServers-field" [formErrors]="formErrors.weight"
-                              [wrapClassName]="wrapToInlineControlClass"
-                              [inputClass]="kafkaInputClass"
-                              [label]="labels.kafka.bootstrapServers"
+                              [wrapClassName]="'form-group__inline'"
+                              [inputClass]="'__kafkaInput'"
+                              [label]="'bootstrapServers = '"
                               name="bootstrapServers"
                               formControlName="brokerList">
             </hydro-input-text>
@@ -50,7 +50,7 @@
       <ul class="form-weights__list" formArrayName="weights">
         <li class="form-weights__list-item" *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index" [formGroupName]="i">
           
-          <mdl-select formControlName="selectedModel" label="{{serviceIdLabel}}" class="cs-text-center" (change)="onSelectModel($event)">
+          <mdl-select formControlName="selectedModel" label="Choose model" class="cs-text-center" (change)="onSelectModel($event)">
             <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
           </mdl-select>
 
@@ -60,9 +60,9 @@
           
           <div class="form-weights__list-item--weight">
             <hydro-input-text [formErrors]="formErrors.weight"
-                              [wrapClassName]="wrapToInlineControlClass"
-                              [inputClass]="weightInputClass"
-                              [label]="labels.weight"
+                              [wrapClassName]="'form-group__inline'"
+                              [inputClass]="'__modelWeight'"
+                              [label]="'Weight'"
                               name="asd"
                               formControlName="weight" [(ngModel)]="weightsForSlider[i]">
             </hydro-input-text>%
@@ -78,7 +78,7 @@
       </ul>
       <div class="form-weights__list-item--add">
         <svg><use xlink:href="#icon-plus"></use></svg>
-        <mdl-select formControlName="addModelToService" (change)="onAddingModel($event)" label="{{addSelectLabel}}" class="cs-text-center">
+        <mdl-select formControlName="addModelToService" (change)="onAddingModel($event)" label="add model" class="cs-text-center">
           <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
         </mdl-select>
       </div>

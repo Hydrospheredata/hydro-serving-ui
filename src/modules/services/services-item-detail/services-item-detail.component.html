@@ -1,7 +1,7 @@
 <div class="content">
     <div class="content-header">
-        <div class="content-header__title">{{service?.serviceName}}</div>
-        <div class="btn-group">
+        <div class="content-header__title">{{title}}</div>
+        <div class="btn-group" *ngIf="isService">
             <button class="btn" (click)="testService(service)">
                 <svg>
                     <use xlink:href="#icon-start"></use>
@@ -34,13 +34,13 @@
         </li>
     </ul>
 
-    <table class='hydro-table hydro-table-services'>
+    <table *ngIf="isService" class='hydro-table hydro-table-services'>
         <thead class="hydro-table-head">
             <tr>
                 <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="hydro-table-body">
             <tr *ngFor="let item of serviceModelsFiltered" class='hydro-table-body__row'>
                 <td class="hydro-table-body__cell"><div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelName}}</div></td>
                 <td class="hydro-table-body__cell"><div class='cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelVersion}}</div></td>
@@ -49,4 +49,27 @@
             </tr>
         </tbody>
     </table>
+
+    <div *ngIf="!isService" class='hydro-table hydro-table-services'>
+        <div *ngFor="let stage of service.stages" class='hydro-table-body__row'>
+            <div class="hydro-table-body__cell cs-flex cs-flex-space-between">
+                <div *ngFor="let item of stage">
+                    <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>
+                        {{item.service.modelRuntime.modelName}}
+                    </div>
+                    <div class='cs-text-overflow-ellipsis'>{{item.service.modelRuntime.modelVersion}}</div>
+                    <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{item.weight}}%</div>
+                </div>
+            </div>
+            <div class="hydro-table-body__cell cs-flex cs-flex-space-between">
+                <div class="cs-flex cs-flex-column">
+                    <hydro-textarea [readonly]="true" [label]="'Input'" [ngModel]="JSON.stringify(stage[0].service.modelRuntime.inputFields, null, '\t')"></hydro-textarea>
+                </div>
+                <div class="cs-flex cs-flex-column">
+                    <hydro-textarea [readonly]="true" [label]="'Output'" [ngModel]="JSON.stringify(stage[0].service.modelRuntime.outputFields, null, '\t')"></hydro-textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

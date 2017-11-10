@@ -18,7 +18,7 @@ export class ServicesService {
         this.baseApiUrl = `${environment.apiUrl}/weightedServices`;
     }
 
-    getServices() {
+    getServices(): Observable<Service[]> {
         return this.http.get(this.baseUiUrl)
                     .map((res: Response): any => {
                         return res.json();

@@ -7,7 +7,7 @@ const initialState: Service[] = [];
 
 export function ServicesReducer (state = initialState, action: ServicesActions.ServicesActions) {
     switch (action.type) {
-        case ServicesActions.GET_SERVICES:
+        case ServicesActions.GET_SERVICES_SUCCESS:
             return Object.assign([], state, action.payload);
         case ServicesActions.ADD_SERVICE:
             return [

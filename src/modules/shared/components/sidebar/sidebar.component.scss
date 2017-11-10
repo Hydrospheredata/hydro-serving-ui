@@ -61,7 +61,6 @@
         justify-content: space-between;
       }
       &-details {
-        min-width: 80px;
         display: inline-flex;
         justify-content: flex-end;
         padding-right: 10px;
@@ -121,13 +120,10 @@
   display: none;
 }
 
-.icon {
-  width: 12px;
-  height: 12px;
-}
-
-svg {
-  fill: inherit;
+.icon-pipeline {
+  width: 18px;
+  height: 20px;
+  fill: #d4d7d9;
 }
 
 .deployed use {

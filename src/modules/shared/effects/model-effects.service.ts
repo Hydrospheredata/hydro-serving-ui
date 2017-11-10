@@ -36,7 +36,9 @@ export class ModelEffects {
     private modelRuntimesService: ModelRuntimesService,
     private actions: Actions,
     private oldModelsService: HttpModelsService
-  ) { }
+  ) {
+    console.log("Model Effects: ", this);
+  }
 
 
   // this.routerNavigation$.subscribe();

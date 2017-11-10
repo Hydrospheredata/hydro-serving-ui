@@ -23,7 +23,6 @@ import {
     ModelsService,
     ModelRuntimesService,
     ModelServicesService,
-    CheckServiceExistService,
     ServicesRouterResolver
 } from './services/_index';
 
@@ -41,8 +40,11 @@ import {
 
 // Components
 import {
+    // Forms
     InputTextComponent,
     SelectComponent,
+    TextareaComponent,
+
     LoaderComponent,
     NavbarComponent,
     SidebarComponent,
@@ -61,7 +63,7 @@ import {
 
 // Guards
 import {
-    RedirectToServicesGuard
+    ServicesGuard
 } from './guards/_index';
 
 @NgModule({
@@ -87,6 +89,7 @@ import {
         RemoveDublicatesPipe,
         // Components
         InputTextComponent,
+        TextareaComponent,
         SelectComponent,
         SidebarComponent,
         DialogBaseComponent
@@ -106,7 +109,6 @@ import {
         ModelRuntimesService,
         ModelsService,
         ModelServicesService,
-        CheckServiceExistService,
         ServicesRouterResolver,
         // Builders
         ModelBuilder,
@@ -116,7 +118,7 @@ import {
         ModelBuildBuilder,
         ServiceBuilder,
         // Guards
-        RedirectToServicesGuard
+        ServicesGuard
     ],
     exports: [
         // Pipes
@@ -130,6 +132,7 @@ import {
         RemoveDublicatesPipe,
         // Components
         InputTextComponent,
+        TextareaComponent,
         SelectComponent,
         SidebarComponent,
         DialogBaseComponent
