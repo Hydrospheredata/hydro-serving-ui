@@ -44,7 +44,11 @@
         </li>
       </ul>
     </div>
-    <div class="hydro-form-group">
+    <label class="hydro-checkbox">
+      <input type="checkbox" [checked]="isJsonModeEnabled" (change)="isJsonModeEnabled = $event.target.checked">
+      <span>Create pipeline</span>
+    </label>
+    <div class="hydro-form-group" *ngIf="!isJsonModeEnabled">
       <label>Models</label>
       <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
       <ul class="form-weights__list" formArrayName="weights">
@@ -83,6 +87,11 @@
         </mdl-select>
       </div>
     </div>
+
+    <div class="hydro-form-group" *ngIf="isJsonModeEnabled">
+      <codemirror [ngModelOptions]="{standalone: true}" [(ngModel)]="pipelineEditorValue" [config]="codeMirrorOptions"></codemirror>
+    </div>
+
     <div class="btn-group form-actions">
       <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
       <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">save changes</button>

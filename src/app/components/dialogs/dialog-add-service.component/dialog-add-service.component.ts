@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject, HostListener } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
-import { DialogBase } from '@shared/base/_index';
+import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
 import { AppState, Service } from '@shared/models/_index';
 import { FormsService, ServicesService } from '@shared/services/_index';
@@ -18,7 +18,7 @@ import { FormsService, ServicesService } from '@shared/services/_index';
   styleUrls: ['./dialog-add-service.component.scss'],
   providers: [FormsService]
 })
-export class DialogAddServiceComponent extends DialogBase implements OnInit {
+export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 
     public dialogType: string = 'Add';
 
@@ -46,11 +46,6 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
         this.initFormChangesListener();
     }
 
-    @HostListener('document:keydown.escape')
-    public onEsc(): void {
-      this.dialogRef.hide();
-    }
-
     onSubmit() {
         if (this.serviceForm.invalid) {
             return;
@@ -68,13 +63,14 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
             kafka.serviceId = 0;
         });
 
-        const service = new Service(Object.assign( serviceInfo, { weights: data.weights } ));
+        const service = new Service(Object.assign( serviceInfo, { stages: data.stages } ));
 
         this.servicesService.addService(service)
             .subscribe(res => {
                 console.log(res);
+                // TODO: navigate to created app
                 // this.router.navigate(['./services', serviceInfo.id]);
-                this.store.dispatch({ type: Actions.ADD_SERVICE, payload: new Service(service) });
+                this.store.dispatch({ type: Actions.ADD_SERVICE, payload: new Service(res) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully added',
