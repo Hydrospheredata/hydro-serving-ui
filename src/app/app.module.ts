@@ -51,6 +51,8 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { EffectsModule } from '@ngrx/effects';
 import { ServicesEffects, ModelEffects } from '@shared/effects/_index';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
