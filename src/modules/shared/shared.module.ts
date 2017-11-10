@@ -29,7 +29,7 @@ import {
 
 // Pipes
 import {
-    ModelFilterPipe,
+    SidebarFilterPipe,
     ModelStatusPipe,
     PositiveNumbersPipe,
     SearchPipe,
@@ -80,7 +80,7 @@ import {
     ],
     declarations: [
         // Pipes
-        ModelFilterPipe,
+        SidebarFilterPipe,
         ModelStatusPipe,
         PositiveNumbersPipe,
         SearchPipe,
@@ -122,7 +122,7 @@ import {
     ],
     exports: [
         // Pipes
-        ModelFilterPipe,
+        SidebarFilterPipe,
         ModelStatusPipe,
         PositiveNumbersPipe,
         SearchPipe,
