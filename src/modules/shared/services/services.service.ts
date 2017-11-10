@@ -14,8 +14,8 @@ export class ServicesService {
     constructor(
         private http: HttpService
     ) {
-        this.baseUiUrl = `${environment.uiUrl}/weightedServices`;
-        this.baseApiUrl = `${environment.apiUrl}/weightedServices`;
+        this.baseUiUrl = `${environment.uiUrl}/applications`;
+        this.baseApiUrl = `${environment.apiUrl}/applications`;
     }
 
     getServices(): Observable<Service[]> {
@@ -36,7 +36,7 @@ export class ServicesService {
                     });
     }
 
-    deleteService(id: string) {
+    deleteService(id: number) {
         return this.http.delete(`${this.baseApiUrl}/${id}`);
     }
 

@@ -1,8 +1,8 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{title}}</div>
-        <div class="btn-group" *ngIf="isService">
-            <button class="btn" (click)="testService(service)">
+        <div class="btn-group">
+            <button class="btn" *ngIf="isService" (click)="testService(service)">
                 <svg>
                     <use xlink:href="#icon-start"></use>
                 </svg>
@@ -21,6 +21,10 @@
                 remove
             </button>
         </div>
+    </div>
+
+    <div class="content-info__list-item">
+        <b>Public path:</b> <a>{{path}}</a>
     </div>
 
     <ul class="content-info__list" *ngIf="service?.kafkaStreamingSources[0]">

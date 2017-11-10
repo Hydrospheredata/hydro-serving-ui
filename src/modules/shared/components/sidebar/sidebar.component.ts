@@ -42,13 +42,13 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
     private store: Store<AppState>,
     private dialog: MdlDialogService
   ) {
-    // this.routeSubscription = this.router.events
-    //   .subscribe(event => {
-    //     if (event instanceof NavigationEnd && event.url.split('/').length <= 2) {
-    //       this.needsToGo = true;
-    //       this.transitToFirstItem();
-    //     }
-    //   });
+    this.routeSubscription = this.router.events
+      .subscribe(event => {
+        if (event instanceof NavigationEnd && event.url.split('/').length <= 2) {
+          this.needsToGo = true;
+          this.transitToFirstItem();
+        }
+      });
   }
 
   ngOnInit() {
@@ -57,7 +57,7 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges() {
     this.sidebarData.subscribe(items => {
       this.sidebarList = items;
-      // this.transitToFirstItem();
+      this.transitToFirstItem();
     });
   }
 
@@ -70,7 +70,7 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.routeSubscription.unsubscribe();
+    this.routeSubscription.unsubscribe();
   }
 
 

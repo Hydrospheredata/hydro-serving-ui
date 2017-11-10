@@ -12,7 +12,7 @@ import {
     imports: [
         RouterModule.forChild([
             {
-                path: 'services',
+                path: 'applications',
                 component: ServicesWrapperComponent,
                 children: [
                     {

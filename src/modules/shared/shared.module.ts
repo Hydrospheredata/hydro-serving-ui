@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { MdlModule } from '@angular-mdl/core';
+import { MdlSelectModule } from '@angular-mdl/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'angular2-moment';
@@ -47,8 +48,7 @@ import {
 
     LoaderComponent,
     NavbarComponent,
-    SidebarComponent,
-    DialogBaseComponent
+    SidebarComponent
 } from './components/_index';
 
 // Builders
@@ -68,6 +68,7 @@ import {
 
 @NgModule({
     imports: [
+        MdlSelectModule,
         BrowserModule,
         CommonModule,
         MdlModule,
@@ -91,8 +92,7 @@ import {
         InputTextComponent,
         TextareaComponent,
         SelectComponent,
-        SidebarComponent,
-        DialogBaseComponent
+        SidebarComponent
     ],
     providers: [
         // Services
@@ -134,8 +134,7 @@ import {
         InputTextComponent,
         TextareaComponent,
         SelectComponent,
-        SidebarComponent,
-        DialogBaseComponent
+        SidebarComponent
     ]
 })
 export class SharedModule { }

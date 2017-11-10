@@ -9,6 +9,8 @@ import { AppState, Service, ModelService } from '@shared/models/_index';
 import { ModelServicesService } from '@shared/services/_index';
 import { ServiceBuilder } from '@shared/builders/_index';
 
+import { environment } from '../../../environments/environment';
+
 import {
     DialogTestComponent,
     DialogUpdateServiceComponent,
@@ -39,6 +41,7 @@ export class ServicesItemDetailComponent {
     public serviceModelsFiltered: any[];
     public services: Service[] = [];
     public service: Service;
+    public path: string = '';
 
     public fullHeight: boolean = false;
 
@@ -62,14 +65,15 @@ export class ServicesItemDetailComponent {
         private serviceBuilder: ServiceBuilder
     ) {
 
+        this.path = `${environment.host}:${environment.port}${environment.uiUrl}${this.router.url}`;
         this.activeRouteSub = this.activatedRoute.params
-            .map((params) => {
+            .map(params => {
                 this.id = params['id'];
                 return this.id;
             })
             .subscribe(id => {
                 if (this.storeSub) {
-                  this.storeSub.unsubscribe();
+                    this.storeSub.unsubscribe();
                 }
                 this.loadInitialData(id);
             });
@@ -80,7 +84,7 @@ export class ServicesItemDetailComponent {
             .filter(services => services.length > 0)
             .subscribe(services => {
                 if (services.length) {
-                    this.services = services.map(service => this.serviceBuilder.build(service));
+                    this.services = services;
                     this.getServiceData(id);
                 }
             });
@@ -94,10 +98,8 @@ export class ServicesItemDetailComponent {
     getServiceData(id: string) {
         this.serviceModels = [];
         if (this.services.length) {
-            let service = this.services
-                .filter(service => service.id === Number(id));
-
-            this.service = service.shift();
+            
+            this.service = this.services.filter(service => service.id === Number(id)).shift();
             
             if (this.service && this.service.stages.length === 1) { // Checking for app
                 this.title = this.service.serviceName;
@@ -108,13 +110,13 @@ export class ServicesItemDetailComponent {
             } else {
                 this.title = `Pipeline: ${this.service.serviceName}`;
                 this.isService = false;
-                // this.setPipeline();
             }
         }
     }
 
     getModelServiceData(weight) {
-        // Add effect to prevent get if exist in store, something like CACHE
+        // TODO: Add effect to prevent get if exist in store, something like CACHE
+        // this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: null });
         this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });
@@ -124,15 +126,6 @@ export class ServicesItemDetailComponent {
                     });
                 }
             });
-    }
-
-    setPipeline() {
-        this.service.stages.forEach(stage => {
-            stage.forEach(weight => {
-                // console.log(weight);
-                // this.getModelServiceData(weight);
-            });
-        });
     }
 
     testService(service: Service) {

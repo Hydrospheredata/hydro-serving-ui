@@ -1,18 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 
 import { AppState, Service } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
-import { ServicesService, ModelServicesService } from '@shared/services/_index';
-import { ServiceBuilder } from '@shared/builders/_index';
-
-import {
-    DialogAddServiceComponent,
-    DialogDeleteServiceComponent,
-    injectableServiceOptions
-} from '@components/dialogs/_index';
 
 
 
@@ -22,39 +12,19 @@ import {
   styleUrls: ['./services-wrapper.component.scss']
 })
 
-export class ServicesWrapperComponent implements OnDestroy {
+export class ServicesWrapperComponent {
 
-    private servicesServiceSubscription: Subscription;
-    private modelServicesServiceSubscription: Subscription;
     private data: Service[];
     public sidebarTitle = 'Applications';
     public services: Store<Service[]>;
 
     constructor(
-        private store: Store<AppState>,
-        private servicesService: ServicesService,
-        private modelServicesService: ModelServicesService,
-        private serviceBuilder: ServiceBuilder
+        private store: Store<AppState>
     ) {
         
         this.store.dispatch({ type: Actions.GET_SERVICES, payload: null });
+        this.store.dispatch({ type: Actions.GET_MODEL_SERVICES, payload: null });
         this.services = this.store.select('services');
-        
-        // this.servicesServiceSubscription = this.servicesService.getServices().first()
-        //     .subscribe(services => {
-        //         this.data = services.map(service => this.serviceBuilder.build(service));
-        //         this.store.dispatch({ type: Actions.GET_SERVICES, payload: this.data });
-        //     });
-        this.modelServicesServiceSubscription = this.modelServicesService.getModelServices().first()
-            .map(serviceModels => serviceModels.filter(model => model.serviceId > 0))
-            .subscribe(serviceModels => {
-                this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: serviceModels });
-            });
-      }
-
-    ngOnDestroy() {
-        // this.servicesServiceSubscription.unsubscribe();
-        this.modelServicesServiceSubscription.unsubscribe();
     }
 
 
