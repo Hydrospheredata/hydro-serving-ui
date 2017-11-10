@@ -27,9 +27,9 @@ export class HttpModelServiceService {
       });
   }
 
-  public createService(serviceName: string, modelRuntimeId: number): Observable<any> {
+  public createService(serviceName: string, modelRuntimeId: number, environmentId: number): Observable<any> {
     const url = `${this.baseAPIUrl}`;
-    const payload = {serviceName, modelRuntimeId};
+    const payload = {serviceName, modelRuntimeId, environmentId};
     return this.http.post(url, payload).map((response: Response) => response.json());
   }
 

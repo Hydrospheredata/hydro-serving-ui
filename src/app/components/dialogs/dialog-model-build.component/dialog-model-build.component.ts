@@ -1,9 +1,14 @@
 import { Component, OnInit, InjectionToken, HostListener, Inject } from '@angular/core';
 import { MdlDialogReference, MdlDialogService, MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { HttpRuntimeTypesService, BuildModelService, HttpModelsService, ModelsService } from '@shared/services/_index';
+import {
+  HttpRuntimeTypesService,
+  BuildModelService,
+  HttpModelsService,
+  ModelsService,
+  ServingEnvironmentService
+} from '@shared/services/_index';
 import { ModelStatusPipe } from '@shared/pipes/_index';
-import { ServingEnvironmentService } from '@shared/services/_index';
 import { Store } from '@ngrx/store';
 import { AppState, ServingEnvironment } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
