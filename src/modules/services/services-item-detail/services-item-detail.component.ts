@@ -65,13 +65,13 @@ export class ServicesItemDetailComponent {
         private serviceBuilder: ServiceBuilder
     ) {
 
-        this.path = `${environment.host}:${environment.port}${environment.uiUrl}${this.router.url}`;
         this.activeRouteSub = this.activatedRoute.params
             .map(params => {
                 this.id = params['id'];
                 return this.id;
             })
             .subscribe(id => {
+                this.path = `${environment.host}:${environment.port}${environment.uiUrl}${this.router.url}`;
                 if (this.storeSub) {
                     this.storeSub.unsubscribe();
                 }
@@ -128,7 +128,7 @@ export class ServicesItemDetailComponent {
             });
     }
 
-    testService(service: Service) {
+    testApp(service: Service) {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
             styles: { 'width': '800px', 'min-height': '350px' },

@@ -38,7 +38,7 @@ export class DialogDeleteServiceComponent extends DialogBase {
 
     submitDeleteServiceForm() {
         
-        this.router.navigate(['services']);
+        this.router.navigate(['applications']);
         this.store.dispatch({ type: Actions.DELETE_SERVICE, applicationId: this.applicationId });
         this.dialogRef.hide();
         this.mdlSnackbarService.showSnackbar({
