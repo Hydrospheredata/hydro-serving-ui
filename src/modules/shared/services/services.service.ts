@@ -26,7 +26,10 @@ export class ServicesService {
     }
 
     updateService(service: Service): Observable<Service> {
-        return this.http.put(this.baseUiUrl, service);
+        return this.http.put(this.baseUiUrl, service)
+                    .map((res: Response): any => {
+                        return res.json();
+                    });
     }
 
     addService(service: Service) {

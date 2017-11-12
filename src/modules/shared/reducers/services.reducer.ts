@@ -9,12 +9,12 @@ export function ServicesReducer (state = initialState, action: ServicesActions.S
     switch (action.type) {
         case ServicesActions.GET_SERVICES_SUCCESS:
             return Object.assign([], state, action.payload);
-        case ServicesActions.ADD_SERVICE:
+        case ServicesActions.ADD_SERVICE_SUCCESS:
             return [
                 ...state.slice(0),
                 action.payload
             ];
-        case ServicesActions.UPDATE_SERVICE:
+        case ServicesActions.UPDATE_SERVICE_SUCCESS:
             return state.map(item => {
                 if (item.id !== action.payload.id) {
                     return item;

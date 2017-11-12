@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, toPayload } from '@ngrx/effects';
+import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 
-import { ServiceBuilder, ModelBuilder } from '@shared/builders/_index';
-
-import { ServicesService, ModelsService } from '@shared/services/_index';
-import { AppState, Service, ModelService } from '@shared/models/_index';
+import { ServiceBuilder } from '@shared/builders/_index';
+import { ServicesService } from '@shared/services/_index';
+import { AppState, Service } from '@shared/models/_index';
 import * as HydroActions from '@shared/actions/_index';
 
 @Injectable()
@@ -19,6 +18,24 @@ export class ServicesEffects {
                 .map((services: Service[]) => {
                     let data = services.map(service => this.serviceBuilder.build(service));
                     return ({ type: HydroActions.GET_SERVICES_SUCCESS, payload: data })
+                })
+        });
+
+    @Effect() addService$: Observable<Action> = this.actions.ofType(HydroActions.ADD_SERVICE)
+        .map((action: HydroActions.AddServiceAction) => action.payload)
+        .switchMap(payload => {
+            return this.servicesService.addService(payload)
+                .map((service: Service) => {
+                    return ({ type: HydroActions.ADD_SERVICE_SUCCESS, payload: new Service(service) })
+                })
+        });
+
+    @Effect() updateService$: Observable<Action> = this.actions.ofType(HydroActions.UPDATE_SERVICE)
+        .map((action: HydroActions.UpdateServiceAction) => action.payload)
+        .switchMap(payload => {
+            return this.servicesService.updateService(payload)
+                .map((service: Service) => {
+                    return ({ type: HydroActions.UPDATE_SERVICE_SUCCESS, payload: new Service(service) })
                 })
         });
 
@@ -34,8 +51,6 @@ export class ServicesEffects {
     constructor(
         private actions: Actions,
         private servicesService: ServicesService,
-        private modelsService: ModelsService,
-        private serviceBuilder: ServiceBuilder,
-        private modelBuilder: ModelBuilder,
+        private serviceBuilder: ServiceBuilder
     ) {}
 }

@@ -52,6 +52,14 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
         }
         if (this.selectedService.stages.length > 1) {
             this.isJsonModeEnabled = true;
+            console.log(this.selectedService.stages);
+            // this.selectedService.stages.forEach(stage => {
+            //     stage.forEach(item => {
+            //         {
+            //             weight: item.weight
+            //         }
+            //     })
+            // })
             this.pipelineEditorValue = JSON.stringify(this.selectedService.stages);
         }
     }
@@ -75,15 +83,12 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
             const weights: any[] = [];
 
             service.stages[0].map(self => {
-                console.log(self);
                 let selectedModel;
                 if (self.service) {
                     selectedModel = self.service;
                 } else {
                     selectedModel = this.modelServicesFiltered.filter(item => item.serviceId === self.serviceId).shift();
                 }
-
-                console.log(selectedModel);
 
                 weights.push({
                     selectedModel: selectedModel.modelRuntime.modelId,
@@ -124,20 +129,14 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
             kafkaStreamingSources: data.kafkaStreamingSources,
         };
 
-        const service = new Service(Object.assign( serviceInfo, { stages: data.stages } ));
+        const service = Object.assign( serviceInfo, { stages: data.stages } );
 
-        console.log(service);
-
-        this.servicesService.updateService(service)
-            .subscribe(res => {
-                console.log(res);
-                this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: new Service(res) });
-                this.dialogRef.hide();
-                this.mdlSnackbarService.showSnackbar({
-                    message: 'Service was successfully updated',
-                    timeout: 5000
-                });
-            });
+        this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
+        this.dialogRef.hide();
+        this.mdlSnackbarService.showSnackbar({
+            message: 'Service was successfully updated',
+            timeout: 5000
+        });
 
     }
 
