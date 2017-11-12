@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import "fonts.scss";
 @import "variables.scss";
+@import "content.scss";
 @import "angular-material-custom.scss";
 @import "inputs.scss";
 @import "dialogs.scss";
@@ -8,6 +9,7 @@
 @import "codemirror.scss";
 @import "buttons.scss";
 @import "tables.scss";
+@import "panel.scss";
 @import "forms.scss";
 @import "mdl-textfieled.scss";
 @import "mdl-list.scss";
@@ -317,70 +319,5 @@ md-dialog-container.mat-dialog-container {
   td {
     text-align: left !important;
   }
-}
-
-.content {
-    margin: 16px 24px;
-    padding: 56px 96px;
-    background-color: #ffffff;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
-    &-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 76px;
-        &__title {
-            font-size: 24px;
-        }
-    }
-    &-wrapper {
-        display: flex;
-        flex-direction: row;
-        min-height: 100%;
-        > hydro-sidebar {
-            flex-basis: 25%;
-        }
-        > hydro-services-item-detail,
-          hydro-model-details {
-            flex-basis: 75%;
-        }
-    }
-    &-info {
-        &__list,
-        &__sublist {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        &__list {
-            &-item {
-                margin-bottom: 15px;
-            }
-        }
-        &__sublist {
-            &-item {
-                display: flex;
-                align-items: center;
-                font-size: 16px;
-                margin-bottom: 6px;
-                &-title {
-                    max-width: 250px;
-                    width: 250px;
-                    overflow-x: hidden;
-                    color: #808080;
-                    font-size: 16px;
-                    font-family: "Museo Sans Light";
-                    text-transform: capitalize;
-                    &:after {
-                        content: '.........................................................................................................';
-                        margin-left: 6px;
-                    }
-                }
-                &-value {
-                    margin-left: 6px;
-                }
-            }
-        }
-    }
 }
 
