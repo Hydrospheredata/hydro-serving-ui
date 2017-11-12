@@ -166,7 +166,7 @@ export class ApplicationsDialogBase extends DialogBase {
         let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
 
         if (this.isJsonModeEnabled) {
-            stages = JSON.parse(`[${this.pipelineEditorValue}]`);
+            stages = JSON.parse(`[${this.pipelineEditorValue.replace(/[\n( )]/g, '')}]`);
         } else {
             data.value.weights.forEach(self => {
                 weights.push({
