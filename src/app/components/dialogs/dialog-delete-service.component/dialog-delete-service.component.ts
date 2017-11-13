@@ -1,10 +1,9 @@
 import { Component, InjectionToken, Inject } from '@angular/core';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
-import { Router, ActivatedRouteSnapshot } from '@angular/router';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';
-import { ServicesService } from '@shared/services/_index';
 import * as Actions from '@shared/actions/_index';
 import { AppState } from '@shared/models/_index';
 
@@ -19,15 +18,13 @@ export let injectableServiceOptions = new InjectionToken<object>('injectableServ
 })
 export class DialogDeleteServiceComponent extends DialogBase {
     private data;
-    public applicationId;
-    public id: string;
+    private applicationId;
 
     constructor(
         @Inject(injectableServiceOptions) data,
         private store: Store<AppState>,
         public dialogRef: MdlDialogReference,
         private mdlSnackbarService: MdlSnackbarService,
-        private servicesService: ServicesService,
         private router: Router
     ) {
         super(

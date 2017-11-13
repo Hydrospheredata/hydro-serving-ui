@@ -1,11 +1,6 @@
 .hydro-link {
-  &.mdl-color-text--blue-800:hover {
-    opacity: 0.7;
-  }
-  &.mdl-color-text--grey-800:hover {
-    opacity: 0.7;
-  }
-  &.mdl-color-text--red-800:hover {
-    opacity: 0.7;
-  }
+    color: #5b95de;
+    > svg {
+        fill: #5b95de;
+    }
 }

@@ -85,40 +85,15 @@
                             <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{item.weight}}%</div>
                         </td>
                         <td class="hydro-table-body__cell actions">
-                            <div fxLayout="row" fxLayoutAlign="space-between center" class="">
-                                <div class="">
-                                    <a (click)="testApp(item.service)" title='Test' class="hydro-link mdl-color-text--blue-800">
-                                        <span class="action">
-                                            <svg class="icon"><use xlink:href="#icon-start" /></svg>
-                                            <span class="icon-label">TEST</span>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
+                            <a (click)="testApp(item.service)" title='Test' class="hydro-link">
+                                <svg class="icon"><use xlink:href="#icon-start" /></svg>
+                                <span class="icon-label">TEST</span>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <!-- <div *ngFor="let stage of service.stages" class='hydro-table-body__row'>
-            <div class="hydro-table-body__cell cs-flex cs-flex-space-between">
-                <div *ngFor="let item of stage">
-                    <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>
-                        {{item.service.modelRuntime.modelName}}
-                    </div>
-                    <div class='cs-text-overflow-ellipsis'>{{item.service.modelRuntime.modelVersion}}</div>
-                    <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{item.weight}}%</div>
-                </div>
-            </div>
-            <div class="hydro-table-body__cell cs-flex cs-flex-space-between">
-                <div class="cs-flex cs-flex-column">
-                    <hydro-textarea [readonly]="true" [label]="'Input'" [ngModel]="JSON.stringify(stage[0].service.modelRuntime.inputFields, null, '\t')"></hydro-textarea>
-                </div>
-                <div class="cs-flex cs-flex-column">
-                    <hydro-textarea [readonly]="true" [label]="'Output'" [ngModel]="JSON.stringify(stage[0].service.modelRuntime.outputFields, null, '\t')"></hydro-textarea>
-                </div>
-            </div>
-        </div> -->
     </div>
 
 </div>
