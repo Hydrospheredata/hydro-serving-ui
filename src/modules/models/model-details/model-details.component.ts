@@ -186,7 +186,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   stopModel(modelService) {
     const payload = {
       model: modelService.service,
-      hasWeightedServices: modelService.weightedServices.length > 0
+      hasWeightedServices: modelService.weightedServices && modelService.weightedServices.length > 0
     };
     this.dialog.showCustomDialog({
       component: DialogStopModelComponent,

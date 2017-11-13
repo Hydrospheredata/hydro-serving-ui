@@ -99,7 +99,7 @@ export class DialogTestComponent implements OnInit {
     payload = JSON.stringify(this.createTestOptions(form));
 
     if (this.model instanceof Service) {
-      path = `${this.apiUrl}/weightedServices/serveByName/${this.model.serviceName}`;
+      path = `${this.apiUrl}/applications/serve/${this.model.serviceName}`;
     } else {
       path = `${this.apiUrl}/modelService/serve/${this.model.modelRuntime.modelName}`;
     }
