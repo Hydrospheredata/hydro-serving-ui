@@ -101,19 +101,16 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     payload = JSON.stringify(this.createTestOptions(form));
 
     if (this.model instanceof Service) {
-      path = `${this.apiUrl}/weightedServices/serve`;
+      path = `${this.apiUrl}/weightedServices/serveByName/${this.model.serviceName}`;
     } else {
-      path = `${this.apiUrl}/modelService/serve`;
+      path = `${this.apiUrl}/modelService/serve/${this.model.modelRuntime.modelName}`;
     }
-    return `curl -X POST --header 'Content-Type: application/json'
-    -d '${payload}'
-    '${path}'`;
+    return `curl -X POST --header 'Content-Type: application/json' -d '${payload}' '${path}'`;
   }
 
   private createTestForm() {
     this.testForm = this.fb.group({
       data: [JSON.stringify(this.input, null, 2), [Validators.required, this.validateInput]],
-      path: ['/serve', [Validators.required]],
     });
     this.requestBody = this.createCURLString(this.testForm);
     this.testForm.valueChanges.subscribe(form => {
@@ -154,27 +151,26 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     } catch (e) {
       data = '';
     }
-    const testOptions = {
-      id: this.model instanceof Service ? this.model.id : this.model.serviceId,
-      path: controls.path.value,
-      data: data
-    };
+    const testOptions = data;
     return testOptions;
   }
 
   submitTestForm(form) {
     let apiUrl;
-    let snackbarSuccessMsg;
+    let snackbarSuccessMsg: string;
+    let entityName: string;
     const testOptions = this.createTestOptions(form);
     if (this.model instanceof Service) {
       apiUrl = this.servicesService.serveService.bind(this.servicesService);
       snackbarSuccessMsg = 'Service test was successful';
+      entityName = this.model.serviceName;
     } else {
       apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
       snackbarSuccessMsg = 'Model test was successful';
+      entityName = this.model.modelRuntime.modelName;
     }
-
-    apiUrl(JSON.stringify(testOptions))
+    console.log(JSON.stringify(testOptions));
+    apiUrl(testOptions, entityName)
       .subscribe(res => {
         this.output = JSON.stringify(res, undefined, 2);
         this.mdlSnackbarService.showSnackbar({
