@@ -57,7 +57,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private getModelByIdSubscription: Subscription;
   public nestedModelRuntimes: any[]; // TODO: FIX TYPE
   public tableHeader: string[] = [
-    'Created', 'Version', 'Status', 'Actions', 'Services'
+    'Created', 'Version', 'Environment', 'Status', 'Actions', 'Services'
   ];
 
 
@@ -186,7 +186,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   stopModel(modelService) {
     const payload = {
       model: modelService.service,
-      hasWeightedServices: modelService.weightedServices.length > 0
+      hasWeightedServices: modelService.weightedServices && modelService.weightedServices.length > 0
     };
     this.dialog.showCustomDialog({
       component: DialogStopModelComponent,

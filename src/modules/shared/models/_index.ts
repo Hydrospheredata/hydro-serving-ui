@@ -7,3 +7,4 @@ export * from './model-service.model';
 export * from './model-runtime.model';
 export * from './model-build.model';
 export * from './current-services.model';
+export * from './serving-environment.model';

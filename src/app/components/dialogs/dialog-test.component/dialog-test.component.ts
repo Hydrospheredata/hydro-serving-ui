@@ -49,9 +49,11 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     );
     this.model = data;
 
-    this.port = environment.production ? window.location.port : environment.port;
+    this.port = environment.production ?
+    window.location.port ? `:${window.location.port}` : ''
+    : `:${environment.port}`;
     const path = this.location.prepareExternalUrl(environment.apiUrl).replace('/ui' + environment.apiUrl, environment.apiUrl);
-    this.apiUrl = `${window.location.protocol}//${window.location.hostname}:${this.port}${path}`;
+    this.apiUrl = `${window.location.protocol}//${window.location.hostname}${this.port}${path}`;
   }
 
 
@@ -101,7 +103,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     payload = JSON.stringify(this.createTestOptions(form));
 
     if (this.model instanceof Service) {
-      path = `${this.apiUrl}/weightedServices/serveByName/${this.model.serviceName}`;
+      path = `${this.apiUrl}/applications/serve/${this.model.serviceName}`;
     } else {
       path = `${this.apiUrl}/modelService/serve/${this.model.modelRuntime.modelName}`;
     }

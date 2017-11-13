@@ -2,7 +2,7 @@ import { Component, OnInit, InjectionToken, Inject, HostListener } from '@angula
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
-import { HttpModelServiceService, ModelsService } from '@shared/services/_index';
+import { HttpModelServiceService, ModelsService, ServingEnvironmentService } from '@shared/services/_index';
 
 import { Store } from '@ngrx/store';
 import { AppState } from '@shared/models/_index';
@@ -17,9 +17,13 @@ export let injectableModelDeployOptions = new InjectionToken<object>('injectable
   providers: [],
 })
 export class DialogDeployModelComponent implements OnInit {
+  public deployModelForm: FormGroup;
   private data;
   public model;
-
+  public isDeployable = false;
+  public isModelService = false;
+  public currentModelEnvironment: number;
+  public environments: any;
   constructor(
     @Inject(injectableModelDeployOptions) data,
     public dialogRef: MdlDialogReference,
@@ -28,12 +32,19 @@ export class DialogDeployModelComponent implements OnInit {
     private modelServiceService: HttpModelServiceService,
     private store: Store<AppState>,
     private modelsService: ModelsService,
-    private modelBuilder: ModelBuilder
+    private modelBuilder: ModelBuilder,
+    private servingEnvironmentService: ServingEnvironmentService
   ) {
     this.model = data;
   }
 
   ngOnInit() {
+    this.createDeployModelForm();
+    this.servingEnvironmentService.getEnvironments().subscribe(data => {
+      this.environments = data;
+      console.log(this.environments);
+      this.currentModelEnvironment = data[0].id;
+    });
   }
 
   @HostListener('document:keydown.escape')
@@ -41,8 +52,20 @@ export class DialogDeployModelComponent implements OnInit {
     this.dialogRef.hide();
   }
 
+
+
+  createDeployModelForm() {
+   this.deployModelForm = this.fb.group({
+      environment: [this.currentModelEnvironment, [Validators.required]],
+    });
+  }
+
   submitDeployModelForm() {
-    this.modelServiceService.createService(`${this.model.modelName}_${this.model.modelVersion}`, this.model.id)
+    console.log(this.currentModelEnvironment);
+    this.modelServiceService.createService
+    (`${this.model.modelName}_${this.model.modelVersion}`,
+    this.model.id,
+    Number(this.currentModelEnvironment))
       .subscribe(result => {
         this.dialogRef.hide();
         this.mdlSnackbarService.showSnackbar({

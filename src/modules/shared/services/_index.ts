@@ -13,3 +13,4 @@ export * from './model-services.service';
 export * from './models.service';
 export * from './model-runtimes.service';
 export * from './route-resolver.service';
+export * from './serving-environment.service';

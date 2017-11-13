@@ -24,6 +24,9 @@
               <div class='cs-text-overflow-ellipsis new-version'>{{latestVersion}}</div>
             </td>
             <td class="hydro-table-body__cell">
+              <div class='cs-text-overflow-ellipsis'>–</div>
+            </td>
+            <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis undeployed'>
                 <svg class="icon undeployed">
                   <use xlink:href="#icon-arrow" />
@@ -49,6 +52,9 @@
             </td>
             <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis'>{{runtime?.runtime?.modelVersion}}</div>
+            </td>
+            <td class="hydro-table-body__cell">
+              <div class='cs-text-overflow-ellipsis'>{{runtime?.services[0]?.service?.environment?.name}}</div>
             </td>
             <td class="hydro-table-body__cell">
               <div class='cs-text-overflow-ellipsis' [ngClass]="{
