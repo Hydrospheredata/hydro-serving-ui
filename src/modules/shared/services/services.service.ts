@@ -10,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 export class ServicesService {
     baseUiUrl: string;
     baseApiUrl: string;
-    
+
     constructor(
         private http: HttpService
     ) {
@@ -44,7 +44,7 @@ export class ServicesService {
     }
 
     serveService(data, serviceName): Observable<any> {
-        return this.http.post(`${this.baseApiUrl}/serveByName/${serviceName}`, data)
+        return this.http.post(`${this.baseApiUrl}/serve/${serviceName}`, data)
             .map((response: Response) => {
                 return response.json();
             });
