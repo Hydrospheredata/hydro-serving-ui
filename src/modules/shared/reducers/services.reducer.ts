@@ -27,6 +27,8 @@ export function ServicesReducer (state = initialState, action: ServicesActions.S
             });
         case ServicesActions.DELETE_SERVICE_SUCCESS:
             return state.filter(service => service.id !== action.applicationId);
+
+        case ServicesActions.ADD_SERVICE_FAILURE:
         default:
             return state;
     }

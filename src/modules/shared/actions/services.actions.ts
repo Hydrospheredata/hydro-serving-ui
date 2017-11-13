@@ -18,6 +18,7 @@ export class GetServicesSuccessAction implements Action {
 // ADD
 export const ADD_SERVICE = 'ADD_SERVICE';
 export const ADD_SERVICE_SUCCESS = 'ADD_SERVICE_SUCCESS';
+export const ADD_SERVICE_FAILURE = 'ADD_SERVICE_FAILURE';
 
 export class AddServiceAction implements Action {
     readonly type = ADD_SERVICE;
@@ -26,6 +27,10 @@ export class AddServiceAction implements Action {
 export class AddServiceSuccessAction implements Action {
     readonly type = ADD_SERVICE_SUCCESS;
     constructor(public payload: Service) { }
+}
+export class AddServiceFailureAction implements Action {
+    readonly type = ADD_SERVICE_FAILURE;
+    constructor(public error) { }
 }
 
 
@@ -61,6 +66,7 @@ export type ServicesActions
   | GetServicesSuccessAction
   | AddServiceAction
   | AddServiceSuccessAction
+  | AddServiceFailureAction
   | UpdateServiceAction
   | UpdateServiceSuccessAction
   | DeleteServiceAction

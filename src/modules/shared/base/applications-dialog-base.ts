@@ -161,16 +161,17 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public getFormData(data) {
 
-        let weights: {serviceId: number, runtimeId: number, weight: number}[] = [];
+        let weights: {runtimeId: number, weight: number}[] = [];
         let stages: any[] = [];
         let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
 
         if (this.isJsonModeEnabled) {
-            stages = JSON.parse(`[${this.pipelineEditorValue.replace(/[\n( )]/g, '')}]`);
+            let pipelineEditorValue = this.pipelineEditorValue.replace(/[\n( )]/g, '');
+            
+            stages = JSON.parse(`${this.pipelineEditorValue.replace(/[\n( )]/g, '')}`);
         } else {
             data.value.weights.forEach(self => {
                 weights.push({
-                    serviceId: self.model.serviceId,
                     runtimeId: self.model.modelRuntime.id,
                     weight: Number(self.weight)
                 });

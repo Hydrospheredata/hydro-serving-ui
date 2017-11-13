@@ -54,6 +54,7 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         const data = this.getFormData(this.serviceForm);
 
         const serviceInfo = {
+            id: 0,
             serviceName: this.serviceForm.value.serviceName,
             kafkaStreamingSources: this.isKafkaEnabled ? data.kafkaStreamingSources : [],
         };
@@ -65,12 +66,21 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         const service = Object.assign( serviceInfo, { stages: data.stages } );
 
         // TODO: try to add actions after successfully adding in effects (in each file)
-        this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
-        this.dialogRef.hide();
-        this.mdlSnackbarService.showSnackbar({
-            message: 'Service was successfully added',
-            timeout: 5000
-        });
+        this.servicesService.addService(service)
+            .subscribe(response => {
+                this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Service(response) });
+                this.dialogRef.hide();
+                this.mdlSnackbarService.showSnackbar({
+                    message: 'Service was successfully added',
+                    timeout: 5000
+                });
+            })
+        // this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
+        // this.dialogRef.hide();
+        // this.mdlSnackbarService.showSnackbar({
+        //     message: 'Service was successfully added',
+        //     timeout: 5000
+        // });
     }
 
 }

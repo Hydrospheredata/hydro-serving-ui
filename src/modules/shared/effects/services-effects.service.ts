@@ -21,23 +21,26 @@ export class ServicesEffects {
                 })
         });
 
-    @Effect() addService$: Observable<Action> = this.actions.ofType(HydroActions.ADD_SERVICE)
-        .map((action: HydroActions.AddServiceAction) => action.payload)
-        .switchMap(payload => {
-            return this.servicesService.addService(payload)
-                .map((service: Service) => {
-                    return ({ type: HydroActions.ADD_SERVICE_SUCCESS, payload: new Service(service) })
-                })
-        });
+    // @Effect() addService$: Observable<Action> = this.actions.ofType(HydroActions.ADD_SERVICE)
+    //     .map((action: HydroActions.AddServiceAction) => action.payload)
+    //     .switchMap(payload => {
+    //         return this.servicesService.addService(payload)
+    //             .map((service: Service) => {
+    //                 return ({ type: HydroActions.ADD_SERVICE_SUCCESS, payload: new Service(service) });
+    //             })
+    //             // .catch((error) => {
+    //             //     return ({ type: HydroActions.ADD_SERVICE_FAILURE, error: error })
+    //             // })
+    //     });
 
-    @Effect() updateService$: Observable<Action> = this.actions.ofType(HydroActions.UPDATE_SERVICE)
-        .map((action: HydroActions.UpdateServiceAction) => action.payload)
-        .switchMap(payload => {
-            return this.servicesService.updateService(payload)
-                .map((service: Service) => {
-                    return ({ type: HydroActions.UPDATE_SERVICE_SUCCESS, payload: new Service(service) })
-                })
-        });
+    // @Effect() updateService$: Observable<Action> = this.actions.ofType(HydroActions.UPDATE_SERVICE)
+    //     .map((action: HydroActions.UpdateServiceAction) => action.payload)
+    //     .switchMap(payload => {
+    //         return this.servicesService.updateService(payload)
+    //             .map((service: Service) => {
+    //                 return ({ type: HydroActions.UPDATE_SERVICE_SUCCESS, payload: new Service(service) })
+    //             })
+    //     });
 
     @Effect() deleteService$: Observable<Action> = this.actions.ofType(HydroActions.DELETE_SERVICE)
         .map((action: HydroActions.DeleteServiceAction) => action.applicationId)
