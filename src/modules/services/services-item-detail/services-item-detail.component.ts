@@ -99,8 +99,8 @@ export class ServicesItemDetailComponent {
         if (this.services.length) {
             
             this.service = this.services.filter(service => service.id === Number(id)).shift();
-            const port = environment.production ? window.location.port : environment.port;
-            this.path = `${window.location.protocol}//${window.location.hostname}:${port}${environment.uiUrl}/serve${this.service.serviceName}`;
+            const port = environment.production ? window.location.port ? `:${window.location.port}` : '' : `:${environment.port}`;
+            this.path = `${window.location.protocol}//${window.location.hostname}${port}${environment.uiUrl}/applications/serve/${this.service.serviceName}`;
             
             if (this.service && this.service.stages.length === 1) { // Checking for app
                 this.title = this.service.serviceName;
