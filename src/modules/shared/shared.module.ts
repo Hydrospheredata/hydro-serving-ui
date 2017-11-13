@@ -25,7 +25,6 @@ import {
     ModelRuntimesService,
     ModelServicesService,
     ServingEnvironmentService,
-    CheckServiceExistService,
     ServicesRouterResolver
 } from './services/_index';
 
@@ -112,7 +111,6 @@ import {
         ModelsService,
         ModelServicesService,
         ServingEnvironmentService,
-        CheckServiceExistService,
         ServicesRouterResolver,
         // Builders
         ModelBuilder,
