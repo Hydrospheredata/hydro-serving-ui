@@ -134,15 +134,15 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
 
         console.log(service);
 
-        // this.servicesService.updateService(service)
-        //     .subscribe(response => {
-        //         this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Service(response) });
-        //         this.dialogRef.hide();
-        //         this.mdlSnackbarService.showSnackbar({
-        //             message: 'Service was successfully added',
-        //             timeout: 5000
-        //         });
-        //     })
+        this.servicesService.updateService(service)
+            .subscribe(response => {
+                this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Service(response) });
+                this.dialogRef.hide();
+                this.mdlSnackbarService.showSnackbar({
+                    message: 'Service was successfully added',
+                    timeout: 5000
+                });
+            })
 
         // this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
         // this.dialogRef.hide();
