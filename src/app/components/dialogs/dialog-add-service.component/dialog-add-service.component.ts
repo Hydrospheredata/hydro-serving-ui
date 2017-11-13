@@ -13,10 +13,10 @@ import { FormsService, ServicesService } from '@shared/services/_index';
 
 
 @Component({
-  selector: 'hydro-dialog-add-service',
-  templateUrl: './dialog-add-service.component.html',
-  styleUrls: ['./dialog-add-service.component.scss'],
-  providers: [FormsService]
+    selector: 'hydro-dialog-add-service',
+    templateUrl: './dialog-add-service.component.html',
+    styleUrls: ['./dialog-add-service.component.scss'],
+    providers: [FormsService]
 })
 export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 

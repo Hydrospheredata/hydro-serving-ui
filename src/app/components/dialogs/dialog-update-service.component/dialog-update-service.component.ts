@@ -26,8 +26,6 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
     public weightsForSlider: any[] = [];
     public selectedModels: any[] = [];
 
-    public
-
     constructor(
         @Inject(injectableServiceUpdate) data: Service,
         public store: Store<AppState>,
@@ -52,19 +50,18 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
         }
         if (this.selectedService.stages.length > 1) {
             this.isJsonModeEnabled = true;
-            console.log(this.selectedService.stages);
             let stagesArr = [];
             this.selectedService.stages.forEach(stage => {
                 let modelsInStageArr = [];
                 stage.forEach(item => {
                     modelsInStageArr.push({
-                        runtimeId: item.service.modelRuntime.modelId,
+                        runtimeName: item.service.serviceName,
                         weight: item.weight
                     })
                 });
                 stagesArr.push(modelsInStageArr);
             })
-            this.pipelineEditorValue = JSON.stringify(stagesArr);
+            this.pipelineEditorValue = JSON.stringify(stagesArr, null, 2);
         }
     }
 
@@ -137,15 +134,15 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
 
         console.log(service);
 
-        this.servicesService.updateService(service)
-            .subscribe(response => {
-                this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Service(response) });
-                this.dialogRef.hide();
-                this.mdlSnackbarService.showSnackbar({
-                    message: 'Service was successfully added',
-                    timeout: 5000
-                });
-            })
+        // this.servicesService.updateService(service)
+        //     .subscribe(response => {
+        //         this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Service(response) });
+        //         this.dialogRef.hide();
+        //         this.mdlSnackbarService.showSnackbar({
+        //             message: 'Service was successfully added',
+        //             timeout: 5000
+        //         });
+        //     })
 
         // this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
         // this.dialogRef.hide();
