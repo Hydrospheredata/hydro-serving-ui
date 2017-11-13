@@ -57,7 +57,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   private getModelByIdSubscription: Subscription;
   public nestedModelRuntimes: any[]; // TODO: FIX TYPE
   public tableHeader: string[] = [
-    'Created', 'Version', 'Status', 'Actions', 'Services'
+    'Created', 'Version', 'Environment', 'Status', 'Actions', 'Services'
   ];
 
 

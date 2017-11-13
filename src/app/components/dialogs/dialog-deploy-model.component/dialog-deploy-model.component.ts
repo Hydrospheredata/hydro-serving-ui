@@ -65,7 +65,7 @@ export class DialogDeployModelComponent implements OnInit {
     this.modelServiceService.createService
     (`${this.model.modelName}_${this.model.modelVersion}`,
     this.model.id,
-    this.currentModelEnvironment)
+    Number(this.currentModelEnvironment))
       .subscribe(result => {
         this.dialogRef.hide();
         this.mdlSnackbarService.showSnackbar({
