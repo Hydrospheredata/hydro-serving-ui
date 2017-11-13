@@ -9,6 +9,8 @@ import { AppState, Service, ModelService } from '@shared/models/_index';
 import { ModelServicesService } from '@shared/services/_index';
 import { ServiceBuilder } from '@shared/builders/_index';
 
+import { environment } from '../../../environments/environment';
+
 import {
     DialogTestComponent,
     DialogUpdateServiceComponent,
@@ -28,6 +30,9 @@ import {
 })
 
 export class ServicesItemDetailComponent {
+    public JSON = JSON;
+    public title: string = '';
+    public isService: boolean = true;
     public storeSub: Subscription;
     public combineSub: Subscription;
     public activeRouteSub: Subscription;
@@ -36,10 +41,20 @@ export class ServicesItemDetailComponent {
     public serviceModelsFiltered: any[];
     public services: Service[] = [];
     public service: Service;
+    public path: string = '';
 
-    public tableHeader: string[] = [
-        'Model', 'Version', 'Created Date', 'Weight'
-    ];
+    public fullHeight: boolean = false;
+
+    public tableHeader: string[] = ['Model', 'Version', 'Created Date', 'Weight'];
+
+    public codeMirrorOptions: {} = {
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        mode: { name: 'javascript', json: true },
+        lineWrapping: true,
+        readOnly: true,
+        scrollbarStyle: 'null'
+    };
 
     constructor(
         public store: Store<AppState>,
@@ -51,13 +66,14 @@ export class ServicesItemDetailComponent {
     ) {
 
         this.activeRouteSub = this.activatedRoute.params
-            .map((params) => {
+            .map(params => {
                 this.id = params['id'];
                 return this.id;
             })
             .subscribe(id => {
+                this.path = `${environment.host}:${environment.port}${environment.uiUrl}${this.router.url}`;
                 if (this.storeSub) {
-                  this.storeSub.unsubscribe();
+                    this.storeSub.unsubscribe();
                 }
                 this.loadInitialData(id);
             });
@@ -68,7 +84,7 @@ export class ServicesItemDetailComponent {
             .filter(services => services.length > 0)
             .subscribe(services => {
                 if (services.length) {
-                    this.services = services.map(service => this.serviceBuilder.build(service));
+                    this.services = services;
                     this.getServiceData(id);
                 }
             });
@@ -80,22 +96,27 @@ export class ServicesItemDetailComponent {
     }
 
     getServiceData(id: string) {
-        console.log(id);
         this.serviceModels = [];
         if (this.services.length) {
-            const service = this.services
-                .filter(service => service.id === +id);
-            this.service = service.shift();
-            console.log(this.service);
-            if (this.service) {
-                this.service.weights.forEach(weight => {
+            
+            this.service = this.services.filter(service => service.id === Number(id)).shift();
+            
+            if (this.service && this.service.stages.length === 1) { // Checking for app
+                this.title = this.service.serviceName;
+                this.isService = true;
+                this.service.stages[0].forEach(weight => {
                     this.getModelServiceData(weight);
                 });
+            } else {
+                this.title = `Pipeline: ${this.service.serviceName}`;
+                this.isService = false;
             }
         }
     }
 
     getModelServiceData(weight) {
+        // TODO: Add effect to prevent get if exist in store, something like CACHE
+        // this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: null });
         this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
                 this.serviceModels.push({ data: data, weight: weight.weight });
@@ -107,7 +128,7 @@ export class ServicesItemDetailComponent {
             });
     }
 
-    testService(service: Service) {
+    testApp(service: Service) {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
             styles: { 'width': '800px', 'min-height': '350px' },

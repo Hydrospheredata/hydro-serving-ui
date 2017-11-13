@@ -1,16 +1,21 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'modelFilter',
+  name: 'sidebarFilter',
   pure: false
 })
-export class ModelFilterPipe implements PipeTransform {
-
-  transform(models: any, filterStatus: any): any {
-    return models.filter(model => {
+export class SidebarFilterPipe implements PipeTransform {
+  
+  transform(items: any, filterStatus: any): any {
+    return items.filter(item => {
       let result = false;
-      result = result || filterStatus['deployed'] && model.currentServices && model.currentServices.length > 0;
-      result = result || filterStatus['undeployed'] && (!model.currentServices || model.currentServices.length < 1);
+      if (item.stages) {
+        result = result || filterStatus['apps'] && item.stages.length === 1;
+        result = result || filterStatus['pipelines'] && item.stages.length > 1;
+      } else {
+        result = result || filterStatus['deployed'] && item.currentServices && item.currentServices.length > 0;
+        result = result || filterStatus['undeployed'] && (!item.currentServices || item.currentServices.length < 1);
+      }
       return result;
     });
   }

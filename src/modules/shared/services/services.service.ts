@@ -14,11 +14,11 @@ export class ServicesService {
     constructor(
         private http: HttpService
     ) {
-        this.baseUiUrl = `${environment.uiUrl}/weightedServices`;
-        this.baseApiUrl = `${environment.apiUrl}/weightedServices`;
+        this.baseUiUrl = `${environment.uiUrl}/applications`;
+        this.baseApiUrl = `${environment.apiUrl}/applications`;
     }
 
-    getServices() {
+    getServices(): Observable<Service[]> {
         return this.http.get(this.baseUiUrl)
                     .map((res: Response): any => {
                         return res.json();
@@ -26,7 +26,10 @@ export class ServicesService {
     }
 
     updateService(service: Service): Observable<Service> {
-        return this.http.put(this.baseUiUrl, service);
+        return this.http.put(this.baseUiUrl, service)
+                    .map((res: Response): any => {
+                        return res.json();
+                    });
     }
 
     addService(service: Service) {
@@ -36,7 +39,7 @@ export class ServicesService {
                     });
     }
 
-    deleteService(id: string) {
+    deleteService(id: number) {
         return this.http.delete(`${this.baseApiUrl}/${id}`);
     }
 

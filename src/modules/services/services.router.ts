@@ -1,15 +1,18 @@
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 
-import { ServicesRouterResolver, RedirectToServicesGuard } from '@shared/_index';
+import { ServicesGuard } from '@shared/_index';
 
-import { ServicesWrapperComponent, ServicesItemDetailComponent } from "./_index";
+import { 
+    ServicesWrapperComponent, 
+    ServicesItemDetailComponent 
+} from "./_index";
 
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
-                path: 'services',
+                path: 'applications',
                 component: ServicesWrapperComponent,
                 children: [
                     {

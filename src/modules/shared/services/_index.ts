@@ -12,6 +12,5 @@ export * from './services.service';
 export * from './model-services.service';
 export * from './models.service';
 export * from './model-runtimes.service';
-export * from './check-service-exist.service';
 export * from './route-resolver.service';
 export * from './serving-environment.service';

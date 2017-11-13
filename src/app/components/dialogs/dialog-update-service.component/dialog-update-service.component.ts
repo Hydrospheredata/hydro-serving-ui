@@ -1,10 +1,10 @@
-import { Component, OnInit, InjectionToken, Inject, HostListener } from '@angular/core';
+import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
 
-import { DialogBase } from '@shared/base/_index';
+import { ApplicationsDialogBase } from '@shared/base/_index';
 import { ServicesService, FormsService, ModelServicesService } from '@shared/services/_index';
 import * as Actions from '@shared/actions/_index';
 import { AppState, ModelService, Service } from '@shared/models/_index';
@@ -19,14 +19,12 @@ export let injectableServiceUpdate = new InjectionToken<Service>('selectedServic
   styleUrls: ['./dialog-update-service.component.scss'],
   providers: [FormsService]
 })
-export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
+export class DialogUpdateServiceComponent extends ApplicationsDialogBase implements OnInit {
 
     public dialogType = 'Edit';
 
     public weightsForSlider: any[] = [];
     public selectedModels: any[] = [];
-
-    public
 
     constructor(
         @Inject(injectableServiceUpdate) data: Service,
@@ -50,6 +48,21 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
         if (this.selectedService.kafkaStreamingSources.length) {
             this.isKafkaEnabled = true;
         }
+        if (this.selectedService.stages.length > 1) {
+            this.isJsonModeEnabled = true;
+            let stagesArr = [];
+            this.selectedService.stages.forEach(stage => {
+                let modelsInStageArr = [];
+                stage.forEach(item => {
+                    modelsInStageArr.push({
+                        runtimeName: item.service.serviceName,
+                        weight: item.weight
+                    })
+                });
+                stagesArr.push(modelsInStageArr);
+            })
+            this.pipelineEditorValue = JSON.stringify(stagesArr, null, 2);
+        }
     }
 
     ngOnInit() {
@@ -58,51 +71,48 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
         this.updateServiceFormValues(this.selectedService);
     }
 
-    @HostListener('document:keydown.escape')
-    public onEsc(): void {
-      this.dialogRef.hide();
-    }
-
     private updateServiceFormValues(service: Service) {
         console.log(service);
         for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
             this.addKafkaToService();
         }
 
-        for (let i = 0; i < service.weights.length - 1; i++) {
-            this.addModelToService();
-        }
-
-        const weights: any[] = [];
-
-        service.weights.map(self => {
-            let selectedModel;
-            if (self.service) {
-                selectedModel = self.service;
-            } else {
-                selectedModel = this.modelServices.filter(item => item.serviceId === self.serviceId).shift();
+        if (!this.isJsonModeEnabled) {
+            for (let i = 0; i < service.stages[0].length - 1; i++) {
+                this.addModelToService();
             }
+            const weights: any[] = [];
 
-            console.log(selectedModel);
+            service.stages[0].map(self => {
+                let selectedModel;
+                if (self.service) {
+                    selectedModel = self.service;
+                } else {
+                    selectedModel = this.modelServicesFiltered.filter(item => item.serviceId === self.serviceId).shift();
+                }
 
-            weights.push({
-                selectedModel: selectedModel.modelRuntime.modelId,
-                model: self.service ? self.service : selectedModel,
-                weight: self.weight
+                weights.push({
+                    selectedModel: selectedModel.modelRuntime.modelId,
+                    model: self.service ? self.service : selectedModel,
+                    weight: self.weight
+                });
+                this.weightsForSlider.push(self.weight);
+                if (self.service) {
+                    this.onSelectModel(self.service.modelRuntime.modelId);
+                } else {
+                    this.onSelectModel(selectedModel.modelRuntime.modelId);
+                }
             });
-            this.weightsForSlider.push(self.weight);
-            if (self.service) {
-                this.onSelectModel(self.service.modelRuntime.modelId);
-            } else {
-                this.onSelectModel(selectedModel.modelRuntime.modelId);
-            }
-        });
 
-        console.log(weights);
+            console.log(weights);
+
+            this.serviceForm.patchValue({
+                weights: weights
+            });
+        }
 
         this.serviceForm.patchValue({
             serviceName: service.serviceName,
-            weights: weights,
             kafkaStreamingSources: service.kafkaStreamingSources
         });
     }
@@ -120,20 +130,26 @@ export class DialogUpdateServiceComponent extends DialogBase implements OnInit {
             kafkaStreamingSources: data.kafkaStreamingSources,
         };
 
-        const service = new Service(Object.assign( serviceInfo, { weights: data.weights } ));
+        const service = Object.assign( serviceInfo, { stages: data.stages } );
 
         console.log(service);
 
         this.servicesService.updateService(service)
-            .subscribe(res => {
-                console.log(res);
-                this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: new Service(service) });
+            .subscribe(response => {
+                this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Service(response) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
-                    message: 'Service was successfully updated',
+                    message: 'Service was successfully added',
                     timeout: 5000
                 });
-            });
+            })
+
+        // this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
+        // this.dialogRef.hide();
+        // this.mdlSnackbarService.showSnackbar({
+        //     message: 'Service was successfully updated',
+        //     timeout: 5000
+        // });
 
     }
 

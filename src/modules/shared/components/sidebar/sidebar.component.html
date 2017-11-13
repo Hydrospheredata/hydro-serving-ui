@@ -15,42 +15,49 @@
     </div>
 
 
-    <div *ngIf="isModels" class="sidebar-filter">
+    <div class="sidebar-filter">
       <span class="sidebar-filter__label">Filter:</span>
-      <button (click)="toggleModelFilter('deployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !deployedFilter['deployed']}">
+      <button *ngIf="isModels" (click)="toggleSidebarFilter('deployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['deployed']}">
             <svg class="icon sidebar-filter__button--icon deployed">
                     <use xlink:href="#icon-arrow" />
             </svg>
         <span class="sidebar-filter__button--label">Deployed</span>
       </button>
-      <button (click)="toggleModelFilter('undeployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !deployedFilter['undeployed']}" >
+      <button *ngIf="isModels" (click)="toggleSidebarFilter('undeployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['undeployed']}" >
             <svg class="icon sidebar-filter__button--icon undeployed-filter">
                     <use xlink:href="#icon-arrow" />
             </svg>
         <span class="sidebar-filter__button--label">Undeployed</span>
       </button>
+      <button *ngIf="!isModels" (click)="toggleSidebarFilter('apps')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['apps']}" >
+        <span class="sidebar-filter__button--label">Apps</span>
+      </button>
+      <button *ngIf="!isModels" (click)="toggleSidebarFilter('pipelines')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['pipelines']}" >
+        <span class="sidebar-filter__button--label">Pipelines</span>
+      </button>
     </div>
   </div>
 
 
-
-  <div class="sidebar-body">
-    <ul class='sidebar-list'>
-      <li *ngFor="let item of sidebarList | modelFilter:deployedFilter | search : (isModels ? 'name' : 'serviceName') : searchQ | sortBy: 'id'"
-        class='sidebar-list__item' [routerLink]="[item.id]" routerLinkActive='__active'>
-        <span class="sidebar-list__item-name">{{ item.serviceName || item.source }}</span>
-        <span class='sidebar-list__item-status' *ngIf="item.currentServices && item.currentServices.length && this.dataType === 'services'"
-          [mdl-badge]="item.currentServices.length"></span>
-        <div *ngIf="isModels" class="sidebar-list__item-details">
-          <span class="sidebar-list__item--version" [ngClass]="{
-                      'version-new': isDeployable(item),
-                      'version-failed': item.lastModelBuild.status === 'FAILED'
-                    }">{{getLatestVersion(item)}}</span>
-          <svg class="icon sidebar-list__item--deploy" [ngClass]="item?.currentServices?.length > 0 ? 'deployed' : 'undeployed'">
-            <use xlink:href="#icon-arrow" />
-          </svg>
-        </div>
-      </li>
-    </ul>
-  </div>
+    <div class="sidebar-body">
+        <ul class='sidebar-list'>
+            <li *ngFor="let item of sidebarList | sidebarFilter: sidebarFilter | search : (isModels ? 'name' : 'serviceName') : searchQ | sortBy: 'id'" class='sidebar-list__item' [routerLink]="[item.id]" routerLinkActive='__active'>
+                <span class="sidebar-list__item-name">{{ item.serviceName || item.source }}</span>
+                <span class='sidebar-list__item-status' *ngIf="item.currentServices && item.currentServices.length && this.dataType === 'services'" [mdl-badge]="item.currentServices.length"></span>
+                <div *ngIf="isModels || (item.stages && item.stages.length > 1)" class="sidebar-list__item-details">
+                    <svg *ngIf="item.stages && item.stages.length > 1" class="icon icon-pipeline"><use xlink:href="#icon-pipeline"/></svg>
+                    <span class="sidebar-list__item--version"
+                        *ngIf="isModels"
+                        [ngClass]="{
+                          'version-new': isDeployable(item),
+                          'version-failed': item.lastModelBuild.status === 'FAILED'
+                        }"
+                    >{{getLatestVersion(item)}}</span>
+                    <svg *ngIf="isModels" class="icon sidebar-list__item--deploy" [ngClass]="item?.currentServices?.length > 0 ? 'deployed' : 'undeployed'">
+                      <use xlink:href="#icon-arrow" />
+                    </svg>
+                </div>
+            </li>
+        </ul>
+    </div>
 </aside>

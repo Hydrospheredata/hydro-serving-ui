@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject, HostListener } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
-import { DialogBase } from '@shared/base/_index';
+import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
 import { AppState, Service } from '@shared/models/_index';
 import { FormsService, ServicesService } from '@shared/services/_index';
@@ -13,12 +13,12 @@ import { FormsService, ServicesService } from '@shared/services/_index';
 
 
 @Component({
-  selector: 'hydro-dialog-add-service',
-  templateUrl: './dialog-add-service.component.html',
-  styleUrls: ['./dialog-add-service.component.scss'],
-  providers: [FormsService]
+    selector: 'hydro-dialog-add-service',
+    templateUrl: './dialog-add-service.component.html',
+    styleUrls: ['./dialog-add-service.component.scss'],
+    providers: [FormsService]
 })
-export class DialogAddServiceComponent extends DialogBase implements OnInit {
+export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 
     public dialogType: string = 'Add';
 
@@ -46,11 +46,6 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
         this.initFormChangesListener();
     }
 
-    @HostListener('document:keydown.escape')
-    public onEsc(): void {
-      this.dialogRef.hide();
-    }
-
     onSubmit() {
         if (this.serviceForm.invalid) {
             return;
@@ -59,7 +54,7 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
         const data = this.getFormData(this.serviceForm);
 
         const serviceInfo = {
-            id: this.services.length ? this.services[this.services.length - 1].id + 1 : 1,
+            id: 0,
             serviceName: this.serviceForm.value.serviceName,
             kafkaStreamingSources: this.isKafkaEnabled ? data.kafkaStreamingSources : [],
         };
@@ -68,19 +63,24 @@ export class DialogAddServiceComponent extends DialogBase implements OnInit {
             kafka.serviceId = 0;
         });
 
-        const service = new Service(Object.assign( serviceInfo, { weights: data.weights } ));
+        const service = Object.assign( serviceInfo, { stages: data.stages } );
 
+        // TODO: try to add actions after successfully adding in effects (in each file)
         this.servicesService.addService(service)
-            .subscribe(res => {
-                console.log(res);
-                // this.router.navigate(['./services', serviceInfo.id]);
-                this.store.dispatch({ type: Actions.ADD_SERVICE, payload: new Service(service) });
+            .subscribe(response => {
+                this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Service(response) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully added',
                     timeout: 5000
                 });
-            });
+            })
+        // this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
+        // this.dialogRef.hide();
+        // this.mdlSnackbarService.showSnackbar({
+        //     message: 'Service was successfully added',
+        //     timeout: 5000
+        // });
     }
 
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { MdlModule } from '@angular-mdl/core';
+import { MdlSelectModule } from '@angular-mdl/select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'angular2-moment';
@@ -30,7 +31,7 @@ import {
 
 // Pipes
 import {
-    ModelFilterPipe,
+    SidebarFilterPipe,
     ModelStatusPipe,
     PositiveNumbersPipe,
     SearchPipe,
@@ -42,12 +43,14 @@ import {
 
 // Components
 import {
+    // Forms
     InputTextComponent,
     SelectComponent,
+    TextareaComponent,
+
     LoaderComponent,
     NavbarComponent,
-    SidebarComponent,
-    DialogBaseComponent
+    SidebarComponent
 } from './components/_index';
 
 // Builders
@@ -62,11 +65,12 @@ import {
 
 // Guards
 import {
-    RedirectToServicesGuard
+    ServicesGuard
 } from './guards/_index';
 
 @NgModule({
     imports: [
+        MdlSelectModule,
         BrowserModule,
         CommonModule,
         MdlModule,
@@ -78,7 +82,7 @@ import {
     ],
     declarations: [
         // Pipes
-        ModelFilterPipe,
+        SidebarFilterPipe,
         ModelStatusPipe,
         PositiveNumbersPipe,
         SearchPipe,
@@ -88,9 +92,9 @@ import {
         RemoveDublicatesPipe,
         // Components
         InputTextComponent,
+        TextareaComponent,
         SelectComponent,
-        SidebarComponent,
-        DialogBaseComponent
+        SidebarComponent
     ],
     providers: [
         // Services
@@ -118,11 +122,11 @@ import {
         ModelBuildBuilder,
         ServiceBuilder,
         // Guards
-        RedirectToServicesGuard
+        ServicesGuard
     ],
     exports: [
         // Pipes
-        ModelFilterPipe,
+        SidebarFilterPipe,
         ModelStatusPipe,
         PositiveNumbersPipe,
         SearchPipe,
@@ -132,9 +136,9 @@ import {
         RemoveDublicatesPipe,
         // Components
         InputTextComponent,
+        TextareaComponent,
         SelectComponent,
-        SidebarComponent,
-        DialogBaseComponent
+        SidebarComponent
     ]
 })
 export class SharedModule { }

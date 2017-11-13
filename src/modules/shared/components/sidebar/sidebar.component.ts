@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
   private title = '';
   public searchQ: string;
   private needsToGo = false;
-  public deployedFilter = {'deployed': true, 'undeployed': true};
+  public sidebarFilter = {'deployed': true, 'undeployed': true, 'apps': true, 'pipelines': true};
   @Input() isAddBtnEnabled: boolean;
   @Input() isModels: boolean;
   @Input() sidebarTitle: string;
@@ -97,8 +97,8 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
 
   }
 
-  toggleModelFilter(option) {
-    this.deployedFilter[option] = !this.deployedFilter[option];
+  toggleSidebarFilter(option) {
+    this.sidebarFilter[option] = !this.sidebarFilter[option];
   }
 
   public isDeployable(model) {

@@ -7,14 +7,14 @@ const initialState: Service[] = [];
 
 export function ServicesReducer (state = initialState, action: ServicesActions.ServicesActions) {
     switch (action.type) {
-        case ServicesActions.GET_SERVICES:
+        case ServicesActions.GET_SERVICES_SUCCESS:
             return Object.assign([], state, action.payload);
-        case ServicesActions.ADD_SERVICE:
+        case ServicesActions.ADD_SERVICE_SUCCESS:
             return [
                 ...state.slice(0),
                 action.payload
             ];
-        case ServicesActions.UPDATE_SERVICE:
+        case ServicesActions.UPDATE_SERVICE_SUCCESS:
             return state.map(item => {
                 if (item.id !== action.payload.id) {
                     return item;
@@ -25,8 +25,10 @@ export function ServicesReducer (state = initialState, action: ServicesActions.S
                     ...action.payload
                 };
             });
-        case ServicesActions.DELETE_SERVICE:
-            return state.filter(service => service.id !== +action.serviceId);
+        case ServicesActions.DELETE_SERVICE_SUCCESS:
+            return state.filter(service => service.id !== action.applicationId);
+
+        case ServicesActions.ADD_SERVICE_FAILURE:
         default:
             return state;
     }

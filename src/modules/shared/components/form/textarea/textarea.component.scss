@@ -1,0 +1,15 @@
+@import "./src/assets/styles/variables.scss";
+
+.control {
+  display: flex;
+  flex-direction: column;
+  &-textarea {
+    width: 300px;
+    font-size: 12px;
+    min-height: 80px;
+    resize: none;
+    padding: 8px;
+    border: 1px solid #d4d7d9;
+    outline: none;
+  }
+}

@@ -36,8 +36,7 @@ import { ModelEffects } from '@shared/effects/model-effects.service';
           services: ServicesReducer }),
           StoreDevtoolsModule.instrument({
             maxAge: 25
-          }),
-          EffectsModule.forRoot([ModelEffects])
+          })
     ],
     declarations: [
         ModelsWrapperComponent,

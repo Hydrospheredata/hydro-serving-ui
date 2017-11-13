@@ -48,6 +48,11 @@ import * as Dialog from '@components/dialogs/_index';
 
 import { ClipboardModule } from 'ngx-clipboard';
 
+import { EffectsModule } from '@ngrx/effects';
+import { ServicesEffects, ModelEffects } from '@shared/effects/_index';
+
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -77,7 +82,8 @@ import { ClipboardModule } from 'ngx-clipboard';
     ServicesModule,
     ModelsModule,
     SharedModule,
-    ClipboardModule
+    ClipboardModule,
+    EffectsModule.forRoot([ServicesEffects, ModelEffects])
   ],
   entryComponents: [
     Dialog.DialogModelBuildComponent,

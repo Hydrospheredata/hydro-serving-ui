@@ -6,9 +6,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ServicesRoutingModule } from './services.router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { CodemirrorModule } from 'ng2-codemirror';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { ServicesEffects } from '@shared/effects/_index';
 import { ServicesReducer, ModelServiceReducer } from '@shared/reducers/_index';
 
 
@@ -24,12 +27,16 @@ import {
 @NgModule({
     imports: [
         SharedModule,
+        CodemirrorModule,
         FlexLayoutModule,
         CommonModule,
         MdlModule,
         ServicesRoutingModule,
         FormsModule,
-        StoreModule.forRoot({ services: ServicesReducer, modelService: ModelServiceReducer }),
+        StoreModule.forRoot({ 
+            services: ServicesReducer, 
+            modelService: ModelServiceReducer
+        }),
         StoreDevtoolsModule.instrument({
             maxAge: 25
         })

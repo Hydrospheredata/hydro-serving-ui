@@ -7,7 +7,7 @@ const initialState: ModelService[] = [];
 
 export function ModelServiceReducer (state = initialState, action: ModelServiceActions.ModelServiceActions) {
     switch (action.type) {
-        case ModelServiceActions.GET_MODEL_SERVICE:
+        case ModelServiceActions.GET_MODEL_SERVICES_SUCCESS:
             return Object.assign([], state, action.payload);
         default:
             return state;

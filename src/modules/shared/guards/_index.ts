@@ -1,1 +1,1 @@
-export * from './redirect-to-services.guard';
+export * from './services.guard';

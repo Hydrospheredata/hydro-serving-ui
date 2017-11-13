@@ -8,6 +8,7 @@ import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
 import { Model, ModelService, Service } from '@shared/models/_index';
 import { ServicesService, ModelServicesService, ModelRuntimesService } from '@shared/services/_index';
+import { DialogBase } from '@shared/base/_index';
 import { environment } from 'environments/environment';
 import { Location } from '@angular/common';
 
@@ -20,7 +21,7 @@ export let injectableModelBuildOptions = new InjectionToken<object>('injectableM
   styleUrls: ['./dialog-test.component.scss'],
   providers: [MdlSnackbarService, FormBuilder]
 })
-export class DialogTestComponent implements OnInit {
+export class DialogTestComponent extends DialogBase implements OnInit {
   public data;
   public model;
   public testForm: FormGroup;
@@ -43,6 +44,9 @@ export class DialogTestComponent implements OnInit {
     private location: Location,
     private servicesService: ServicesService
   ) {
+    super(
+        dialogRef
+    );
     this.model = data;
 
     this.port = environment.production ?
@@ -104,11 +108,6 @@ export class DialogTestComponent implements OnInit {
       path = `${this.apiUrl}/modelService/serve/${this.model.modelRuntime.modelName}`;
     }
     return `curl -X POST --header 'Content-Type: application/json' -d '${payload}' '${path}'`;
-  }
-
-  @HostListener('document:keydown.escape')
-  public onEsc(): void {
-    this.dialogRef.hide();
   }
 
   private createTestForm() {
