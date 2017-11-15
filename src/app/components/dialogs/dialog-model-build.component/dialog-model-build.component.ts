@@ -26,8 +26,10 @@ export let injectableModelOptions = new InjectionToken<object>('injectableModelO
 export class DialogModelBuildComponent implements OnInit {
   public buildModelForm: FormGroup;
   public currentModelRuntimeType;
+  public currentModelRuntimeTypeVersion;
   public currentModelEnvironment;
   public runtimeTypes;
+  public selectedRuntimeType;
   public data;
   public model;
   public modelType: string;
@@ -84,11 +86,20 @@ export class DialogModelBuildComponent implements OnInit {
     });
   }
 
-  public getRuntimeTypeTags(runtimeTypeId: number) {
-    if (!this.runtimeTypes || this.runtimeTypes.length === 0 || !runtimeTypeId) {
+  public onRuntimeSelect(value) {
+    console.log(value);
+    this.selectedRuntimeType = this.runtimeTypes.filter((runtimeType) => runtimeType.name === value);
+  }
+
+  public getRuntimeTypeTags(runtimeTypeName: number | string) {
+    if (!this.runtimeTypes || this.runtimeTypes.length === 0 || !runtimeTypeName) {
       return [];
     }
-    return this.runtimeTypes.find(runtimeType => runtimeType.id === Number(runtimeTypeId))['tags'];
+    if (typeof runtimeTypeName === 'number') {
+      return this.runtimeTypes.find(runtimeType => runtimeType.id === runtimeTypeName)['tags'];
+    } else {
+    return this.runtimeTypes.find(runtimeType => runtimeType.name === runtimeTypeName)['tags'];
+    }
   }
 
   submitBuildModelForm(buildModelForm) {
