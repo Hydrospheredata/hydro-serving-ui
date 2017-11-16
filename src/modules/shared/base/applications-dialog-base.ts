@@ -190,7 +190,7 @@ export class ApplicationsDialogBase extends DialogBase {
         data.value.kafkaStreamingSources.forEach(kafka => {
             if (this.isKafkaEnabled) {
                 kafkaStreamingSources.push({
-                    serviceId: kafka.serviceId,
+                    serviceId: Number(kafka.serviceId),
                     sourceTopic: kafka.sourceTopic,
                     destinationTopic: kafka.destinationTopic,
                     brokerList: kafka.brokerList instanceof Array ? kafka.brokerList : kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g)
