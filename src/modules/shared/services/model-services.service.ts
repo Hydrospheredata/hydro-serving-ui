@@ -42,9 +42,9 @@ export class ModelServicesService {
     createModelService() {}
     removeModelService() {}
     updateModelService() {}
-    
-    serveModelService(data, modelServiceName): Observable<any> {
-        return this.http.post(`${this.baseAPIUrl}/serve/${modelServiceName}`, data)
+
+    serveModelService(data, modelServiceName, modelServiceVersion): Observable<any> {
+        return this.http.post(`${this.baseAPIUrl}/serve/${modelServiceName}/${modelServiceVersion}`, data)
             .map((response: Response) => {
                 return response.json();
             });

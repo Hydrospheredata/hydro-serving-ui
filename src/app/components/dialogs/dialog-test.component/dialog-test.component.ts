@@ -105,7 +105,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     if (this.model instanceof Service) {
       path = `${this.apiUrl}/applications/serve/${this.model.serviceName}`;
     } else {
-      path = `${this.apiUrl}/modelService/serve/${this.model.modelRuntime.modelName}`;
+      path = `${this.apiUrl}/modelService/serve/${this.model.modelRuntime.modelName}/${this.model.modelRuntime.modelVersion}`;
     }
     return `curl -X POST --header 'Content-Type: application/json' -d '${payload}' '${path}'`;
   }
@@ -161,18 +161,23 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     let apiUrl;
     let snackbarSuccessMsg: string;
     let entityName: string;
+    let entityVersion: string;
     const testOptions = this.createTestOptions(form);
     if (this.model instanceof Service) {
       apiUrl = this.servicesService.serveService.bind(this.servicesService);
       snackbarSuccessMsg = 'Service test was successful';
       entityName = this.model.serviceName;
+      entityVersion = null;
     } else {
       apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
       snackbarSuccessMsg = 'Model test was successful';
       entityName = this.model.modelRuntime.modelName;
+      console.log(this.model.modelRuntime);
+      entityVersion = this.model.modelRuntime.modelVersion;
     }
     console.log(JSON.stringify(testOptions));
-    apiUrl(testOptions, entityName)
+    console.log(entityVersion)
+    apiUrl(testOptions, entityName, entityVersion)
       .subscribe(res => {
         this.output = JSON.stringify(res, undefined, 2);
         this.mdlSnackbarService.showSnackbar({
