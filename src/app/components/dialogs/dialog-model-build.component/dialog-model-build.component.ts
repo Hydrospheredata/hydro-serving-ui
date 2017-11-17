@@ -29,6 +29,7 @@ export class DialogModelBuildComponent implements OnInit {
   public currentModelRuntimeTypeVersion;
   public currentModelEnvironment;
   public runtimeTypes;
+  public runtimeTypeNames;
   public selectedRuntimeType;
   public data;
   public model;
@@ -55,7 +56,10 @@ export class DialogModelBuildComponent implements OnInit {
     this.createBuildModelForm();
     this.httpRuntimeTypesService.getAll().subscribe((runtimeType) => {
       this.runtimeTypes = runtimeType;
-      self.currentModelRuntimeType = self.model.runtimeType.id;
+      this.runtimeTypeNames = new Set(this.runtimeTypes.map((runtimeType) => runtimeType.name));
+      self.currentModelRuntimeType = self.model.runtimeType.name;
+      self.onRuntimeSelect(self.currentModelRuntimeType);
+      self.currentModelRuntimeTypeVersion = self.model.runtimeType.id;
     });
     this.servingEnvironmentService.getEnvironments().subscribe(data => {
       this.environments = data;
@@ -78,6 +82,7 @@ export class DialogModelBuildComponent implements OnInit {
       name: [this.model.name],
       status: [modelStatus],
       runtimeType: [this.model.runtimeType, [Validators.required]],
+      runtimeTypeName: [this.model.runtimeType.name],
       environment: [this.currentModelEnvironment, [Validators.required]],
       modelType: [this.modelType, []],
       source: [this.model.source, []],
@@ -89,6 +94,7 @@ export class DialogModelBuildComponent implements OnInit {
   public onRuntimeSelect(value) {
     console.log(value);
     this.selectedRuntimeType = this.runtimeTypes.filter((runtimeType) => runtimeType.name === value);
+    this.currentModelRuntimeTypeVersion = this.selectedRuntimeType[0].id;
   }
 
   public getRuntimeTypeTags(runtimeTypeName: number | string) {
