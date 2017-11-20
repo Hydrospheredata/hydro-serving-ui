@@ -11,17 +11,21 @@
         <div class="model-details-row">
             <span class="model-details-label">Runtime</span>
             <span class="model-details-label">...............</span>
-            <mdl-select style="margin-left: 0;" class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet runtime-select" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
-              <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}:{{type.version}}</mdl-option>
+            <mdl-select style="margin-left: 0;" class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet runtime-select-name" formControlName="runtimeTypeName" (change)="onRuntimeSelect($event)" [(ngModel)]="currentModelRuntimeType">
+              <mdl-option *ngFor="let name of runtimeTypeNames" value="{{name}}">{{name}}</mdl-option>
+            </mdl-select>
+            <mdl-select style="margin-left: 0;" class="runtime-select-version" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeTypeVersion">
+              <mdl-option *ngFor="let type of selectedRuntimeType" value="{{type.id}}">{{type.version}}</mdl-option>
             </mdl-select>
         </div>
+
         <div class="model-details-row">
           <span class="model-details-label">Environment</span>
           <span class="model-details-label">......</span>
           <mdl-select style="margin-left: 0;" class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet runtime-select" formControlName="environment" [(ngModel)]="currentModelEnvironment">
             <mdl-option *ngFor="let environment of environments" value="{{environment.id}}">{{environment.name}}</mdl-option>
           </mdl-select>
-      </div>
+        </div>
         <div class="model-details-row">
             <span class="model-details-label">Tags</span>
             <span class="model-details-label">......................</span>
