@@ -5,7 +5,7 @@ import { FormGroup, Validators, FormBuilder, FormsModule, ReactiveFormsModule } 
 import { Component, OnInit, InjectionToken, HostListener, Inject } from '@angular/core';
 import { MdlDialogReference, MdlDialogService, MdlModule } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
-import { HttpRuntimeTypesService, BuildModelService, HttpModelsService, ModelsService } from '@shared/services/_index';
+import { HttpRuntimeTypesService, BuildModelService, ModelsService } from '@shared/services/_index';
 import { ModelStatusPipe } from '@shared/pipes/_index';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { HttpService } from '@shared/services/http.service';

@@ -1,7 +1,7 @@
 import { Component, OnInit, InjectionToken, HostListener, Inject } from '@angular/core';
 import { MdlDialogReference, MdlDialogService, MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { HttpRuntimeTypesService, BuildModelService, HttpModelsService, ModelsService } from '@shared/services/_index';
+import { HttpRuntimeTypesService, BuildModelService, ModelsService } from '@shared/services/_index';
 import { ModelStatusPipe } from '@shared/pipes/_index';
 
 import { Store } from '@ngrx/store';
@@ -16,7 +16,7 @@ export let injectableModelOptions = new InjectionToken<object>('injectableModelO
   selector: 'hydro-dialog-model-build',
   templateUrl: './dialog-model-build.component.html',
   styleUrls: ['./dialog-model-build.component.scss'],
-  providers: [MdlSnackbarService, FormBuilder, BuildModelService, HttpModelsService, ModelStatusPipe]
+  providers: [MdlSnackbarService, FormBuilder, BuildModelService, ModelStatusPipe]
 })
 export class DialogModelBuildComponent implements OnInit {
   public buildModelForm: FormGroup;

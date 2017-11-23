@@ -29,7 +29,6 @@ import {
   HttpRuntimeTypesService,
   LoaderStateService,
   HttpService,
-  HttpWeightedServicesService,
   HttpModelServiceService,
   BuildModelService,
   // Builders
@@ -99,7 +98,6 @@ import { ServicesEffects, ModelEffects } from '@shared/effects/_index';
     HttpModelsService,
     BuildModelService,
     HttpRuntimeTypesService,
-    HttpWeightedServicesService,
     HttpModelServiceService,
     // builders
     ModelBuilder,

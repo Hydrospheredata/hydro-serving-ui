@@ -73,7 +73,7 @@
                     </svg>
                     <span class="icon-label">DEPLOY</span>
                   </div>
-                  <a *ngIf="runtime?.services?.length > 0" class="hydro-link mdl-color-text--grey-700" (click)="stopModel(runtime.services[0])"
+                  <a style="color: rgb(97,97,97);" *ngIf="runtime?.services?.length > 0" class="hydro-link" (click)="stopModel(runtime.services[0])"
                     title="Stop">
                     <span class="action">
                       <svg class="icon">
@@ -82,7 +82,7 @@
                       <span class="icon-label">STOP</span>
                     </span>
                   </a>
-                  <a *ngIf="runtime?.services?.length > 0" (click)="testModel(runtime.services[0].service)" title='Test' class="hydro-link mdl-color-text--blue-800">
+                  <a style="color: rgb(21,101,192);" *ngIf="runtime?.services?.length > 0" (click)="testModel(runtime.services[0].service)" title='Test' class="hydro-link">
                     <span class="action">
                       <svg class="icon">
                         <use xlink:href="#icon-start" />

@@ -11,10 +11,8 @@ import { SelectModule } from 'ng2-select';
 
 // Services
 import {
-    HttpWeightedServicesService,
     BuildModelService,
     FormsService,
-    HttpModelRuntimeService,
     HttpModelServiceService,
     HttpModelsService,
     HttpRuntimeTypesService,
@@ -24,7 +22,6 @@ import {
     ModelsService,
     ModelRuntimesService,
     ModelServicesService,
-    ServicesRouterResolver
 } from './services/_index';
 
 // Pipes
@@ -96,10 +93,8 @@ import {
     ],
     providers: [
         // Services
-        HttpWeightedServicesService,
         BuildModelService,
         FormsService,
-        HttpModelRuntimeService,
         HttpModelServiceService,
         HttpModelsService,
         HttpRuntimeTypesService,
@@ -109,7 +104,6 @@ import {
         ModelRuntimesService,
         ModelsService,
         ModelServicesService,
-        ServicesRouterResolver,
         // Builders
         ModelBuilder,
         ModelRuntimeBuilder,

@@ -3,7 +3,7 @@ import { Actions, Effect, toPayload } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { ModelsService, ModelRuntimesService, ModelServicesService, HttpModelsService } from '@shared/services/_index';
+import { ModelsService, ModelRuntimesService, ModelServicesService } from '@shared/services/_index';
 import { AppState, Model, ModelService } from '@shared/models/_index';
 import { ModelBuilder } from '@shared/builders/_index';
 import * as HydroActions from '@shared/actions/_index';
@@ -39,7 +39,6 @@ export class ModelEffects {
         private modelsService: ModelsService,
         private modelServicesService: ModelServicesService,
         private modelRuntimesService: ModelRuntimesService,
-        private actions: Actions,
-        private oldModelsService: HttpModelsService
+        private actions: Actions
     ) {}
 }
