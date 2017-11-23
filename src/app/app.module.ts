@@ -4,7 +4,6 @@ import { CommonModule, Location } from '@angular/common';
 import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'angular2-moment';
@@ -71,7 +70,6 @@ import { ServicesEffects, ModelEffects } from '@shared/effects/_index';
     ReactiveFormsModule,
     MdlModule,
     HttpModule,
-    FlexLayoutModule,
     HydroRouter,
     MdlSelectModule,
     MomentModule,

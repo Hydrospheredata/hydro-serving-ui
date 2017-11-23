@@ -5,7 +5,6 @@ import { CommonModule, Location } from '@angular/common';
 import { MomentModule } from 'angular2-moment';
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 
 import {
@@ -27,7 +26,6 @@ import { ModelEffects } from '@shared/effects/model-effects.service';
         MomentModule,
         MdlModule,
         MdlSelectModule,
-        FlexLayoutModule,
         FormsModule,
         StoreModule.forRoot({
           models: ModelsReducer,

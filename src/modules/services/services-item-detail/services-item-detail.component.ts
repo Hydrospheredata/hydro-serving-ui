@@ -9,7 +9,7 @@ import { AppState, Service, ModelService } from '@shared/models/_index';
 import { ModelServicesService } from '@shared/services/_index';
 import { ServiceBuilder } from '@shared/builders/_index';
 
-import { environment } from '../../../environments/environment';
+import { environment } from '@environments/environment';
 
 import {
     DialogTestComponent,

@@ -12,6 +12,8 @@ $active-color: white;
   padding: 0 30px;
   &__logo {
     height: 50px;
+    cursor: pointer;
+    outline: none;
   }
   &__menu {
     height: 100%;
