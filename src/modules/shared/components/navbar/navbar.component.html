@@ -1,35 +1,13 @@
-<header class='serving-layout__header'>
-  <div class='serving-layout__header-row navigation-row' fxLayout='row'>
-
-    <div fxFlex="36.4">
-      <a [routerLink]="['/']" class='logo'><img src="./assets/images/logo.png"></a>
-      <div class='serving-layout-spacer'></div>
-    </div>
-
-    <nav class='serving-navigation' fxFlex="61.6">
-      <div fxLayout='row' class="" fxLayoutAlign="left center" >
-        <div fxLayout='row' class="" fxLayoutAlign="center center" class="serving-navigation__item" fxFlex="19" fxFlex.sm="33" fxFlex.md="30" fxFlex.lg="20">
-          <a class='serving-navigation__link cs-text-center'
-             [routerLink]="['/models']"
-             routerLinkActive='is-active'>
-             <svg class="models-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><path id="a" d="M792 47a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="b" d="M792 37a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="c" d="M802 47a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="d" d="M802 37a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><clipPath id="e"><use fill="#fff" xlink:href="#a"/></clipPath><clipPath id="f"><use fill="#fff" xlink:href="#b"/></clipPath><clipPath id="g"><use fill="#fff" xlink:href="#c"/></clipPath><clipPath id="h"><use fill="#fff" xlink:href="#d"/></clipPath></defs><g transform="translate(-792 -33)"><use fill="#fff" fill-opacity="0" stroke="#fff" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#e&quot;)" xlink:href="#a"/><use fill="#fff" fill-opacity="0" stroke="#fff" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#f&quot;)" xlink:href="#b"/><g><use fill="#fff" fill-opacity="0" stroke="#fff" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#g&quot;)" xlink:href="#c"/></g><g><use fill="#fff" fill-opacity="0" stroke="#fff" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#h&quot;)" xlink:href="#d"/></g></g></svg>
+<header class='hydro-navbar'>
+    <img class="hydro-navbar__logo" [routerLink]="['/']" src="./assets/images/logo.png">
+    <nav class="hydro-navbar__menu">
+        <a class="hydro-navbar__menu-item" [routerLink]="['/models']" routerLinkActive='__active'>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><defs><path id="a" d="M792 47a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="b" d="M792 37a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="c" d="M802 47a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="d" d="M802 37a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><clipPath id="e"><use xlink:href="#a"/></clipPath><clipPath id="f"><use xlink:href="#b"/></clipPath><clipPath id="g"><use xlink:href="#c"/></clipPath><clipPath id="h"><use xlink:href="#d"/></clipPath></defs><g transform="translate(-792 -33)"><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#e&quot;)" xlink:href="#a"/><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#f&quot;)" xlink:href="#b"/><g><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#g&quot;)" xlink:href="#c"/></g><g><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#h&quot;)" xlink:href="#d"/></g></g></svg>
             <span class="models-link-label">Models</span>
-          </a>
-        </div>
-        <div fxLayout='row' class="" fxLayoutAlign="center center" class="serving-navigation__item" style="margin-left: 17px;" fxFlex="19" fxFlex.sm="33" fxFlex.md="30" fxFlex.lg="20">
-          <a class='serving-navigation__link cs-text-center'
-             [routerLink]="['/applications']"
-             routerLinkActive='is-active'>
-             <svg  class="services-link-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28" viewBox="0 0 28 28"><defs><path id="aa" d="M1034 41a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="bb" d="M1014 41a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="cc" d="M1024 51a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="dd" d="M1024 31a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="ee" d="M1039 45v7h-7"/><path id="ff" d="M1024 52h-7v-7"/><path id="gg" d="M1017 37v-7h7"/><path id="hh" d="M1032 30h7v7"/><clipPath id="ii"><use fill="#fff" xlink:href="#aa"/></clipPath><clipPath id="j"><use fill="#fff" xlink:href="#bb"/></clipPath><clipPath id="k"><use fill="#fff" xlink:href="#cc"/></clipPath><clipPath id="l"><use fill="#fff" xlink:href="#dd"/></clipPath><clipPath id="m"><use fill="#fff" xlink:href="#ee"/></clipPath><clipPath id="n"><use fill="#fff" xlink:href="#ff"/></clipPath><clipPath id="o"><use fill="#fff" xlink:href="#gg"/></clipPath><clipPath id="p"><use fill="#fff" xlink:href="#hh"/></clipPath></defs><g transform="translate(-1014 -27)"><use fill="#fff" fill-opacity="0" stroke="#475f9e" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#ii&quot;)" xlink:href="#aa"/><use fill="#fff" fill-opacity="0" stroke="#475f9e" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#j&quot;)" xlink:href="#bb"/><use fill="#fff" fill-opacity="0" stroke="#475f9e" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#k&quot;)" xlink:href="#cc"/><use fill="#fff" fill-opacity="0" stroke="#475f9e" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#l&quot;)" xlink:href="#dd"/><g><use fill="#fff" fill-opacity="0" stroke="#475f9e" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#m&quot;)" xlink:href="#ee"/></g><g><use fill="#fff" fill-opacity="0" stroke="#475f9e" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#n&quot;)" xlink:href="#ff"/></g><g><use fill="#fff" fill-opacity="0" stroke="#475f9e" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#o&quot;)" xlink:href="#gg"/></g><g><use fill="#fff" fill-opacity="0" stroke="#475f9e" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#p&quot;)" xlink:href="#hh"/></g></g></svg>
-             <span class="services-link-label">Applications</span>
-            </a>
-        </div>
-      </div>
-
+        </a>
+        <a class="hydro-navbar__menu-item" [routerLink]="['/applications']" routerLinkActive='__active'>
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="28" height="28" viewBox="0 0 28 28"><defs><path id="aa" d="M1034 41a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="bb" d="M1014 41a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="cc" d="M1024 51a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="dd" d="M1024 31a4 4 0 1 1 8 0 4 4 0 1 1-8 0z"/><path id="ee" d="M1039 45v7h-7"/><path id="ff" d="M1024 52h-7v-7"/><path id="gg" d="M1017 37v-7h7"/><path id="hh" d="M1032 30h7v7"/><clipPath id="ii"><use xlink:href="#aa"/></clipPath><clipPath id="j"><use xlink:href="#bb"/></clipPath><clipPath id="k"><use xlink:href="#cc"/></clipPath><clipPath id="l"><use xlink:href="#dd"/></clipPath><clipPath id="m"><use xlink:href="#ee"/></clipPath><clipPath id="n"><use xlink:href="#ff"/></clipPath><clipPath id="o"><use xlink:href="#gg"/></clipPath><clipPath id="p"><use xlink:href="#hh"/></clipPath></defs><g transform="translate(-1014 -27)"><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#ii&quot;)" xlink:href="#aa"/><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#j&quot;)" xlink:href="#bb"/><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#k&quot;)" xlink:href="#cc"/><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#l&quot;)" xlink:href="#dd"/><g><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#m&quot;)" xlink:href="#ee"/></g><g><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#n&quot;)" xlink:href="#ff"/></g><g><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#o&quot;)" xlink:href="#gg"/></g><g><use fill-opacity="0" stroke-miterlimit="50" stroke-width="4" clip-path="url(&quot;#p&quot;)" xlink:href="#hh"/></g></g></svg>
+            <span class="services-link-label">Applications</span>
+        </a>
     </nav>
-    <div class='serving-layout-spacer'></div>
-  </div>
 </header>
-<div class="serving-layout__drawer">
-  <span class="serving-layout__title"></span>
-</div>

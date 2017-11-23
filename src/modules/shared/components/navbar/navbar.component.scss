@@ -1,74 +1,49 @@
 $default-line-height: 80px;
+$default-color: #475f9e;
+$active-color: white;
 
-.serving-layout__header {
+.hydro-navbar {
   height: $default-line-height;
-  box-shadow: none;
-}
-
-.serving-layout__header-row {
-  height: $default-line-height;
-  line-height: $default-line-height;
-  padding-left: 28px;
-}
-.models-link-label {
-  margin-left: 13px;
-}
-
-.services-link-label {
-  margin-left: 13px;
-}
-
-.navigation-row {
   background-color: #04143c;
-  justify-content: center;
-  height: $default-line-height;
-  .serving-navigation {
-    height: $default-line-height;
-    &__link {
-    margin-top: 3px;
-    height: $default-line-height;
-    width: 100%;
-    text-decoration: none;
-    font-size: 18px;
-    color: #475f9e;
-    line-height: $default-line-height;
-
-    use {
-      stroke: #475f9e;
-    }
-    &.disabled {
-      pointer-events: none;
-      cursor: default;
-    }
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  &__logo {
+    height: 50px;
   }
-  &__item {
-    height: 81px;
-    .is-active {
-      position: relative;
-      color: #f2f2f2;
-      padding: 0;
-      use {
-        stroke:#f2f2f2;
+  &__menu {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex: auto;
+    justify-content: center;
+    &-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 15px;
+      color: $default-color;
+      text-decoration: none;
+      font-size: 18px;
+      min-width: 170px;
+      &:not(:last-child) {
+        margin-right: 15px;
+      }
+      > svg {
+        margin-right: 15px;
+        fill: $default-color;
+        stroke: $default-color;
+      }
+      &.__active {
+        border-top: 2px solid white;
+        color: $active-color;
+        > svg {
+          fill: $active-color;
+          stroke: $active-color;
+        }
       }
     }
-  }
-}
-}
-
-
-.is-active {
-  border-top: 2px solid white;
-  margin-top: 0px!important;
-}
-
-.mist-logo {
-  display: inline-block;
-}
-
-.logo {
-  img {
-    height: 50px;
-    margin-top: 2px;
-    margin-left: -20px;
   }
 }
