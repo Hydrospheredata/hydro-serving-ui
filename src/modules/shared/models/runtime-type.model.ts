@@ -5,9 +5,9 @@ export class RuntimeType {
   public tags: string[];
 
   constructor(props: object = {}) {
-    this.id = props['id'] || '';
-    this.name = props['name'] || '';
-    this.version = props['version'] || '';
-    this.tags = props['tags'] || [''];
+      this.id = props['id'] || '';
+      this.name = props['name'] || '';
+      this.version = props['version'] || '';
+      this.tags = props['tags'] || [''];
   }
 }

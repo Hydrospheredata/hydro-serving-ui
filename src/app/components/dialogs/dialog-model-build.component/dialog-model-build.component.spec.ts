@@ -20,54 +20,54 @@ import { ServicesService } from '@shared/services/_index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 describe('DialogModelBuildComponent', () => {
-  let component: DialogModelBuildComponent;
-  let fixture: ComponentFixture<DialogModelBuildComponent>;
-  let modelStub = {
-    id: '0'
-  };
-  let store = {};
-  let dialogStub = {};
-  let servicesServiceStub = {};
-  let routerStub = {};
-  const HttpRuntimeTypesServiceStub = {
-    getAll() { return []; }
-  };
+    let component: DialogModelBuildComponent;
+    let fixture: ComponentFixture<DialogModelBuildComponent>;
+    let modelStub = {
+        id: '0'
+    };
+    let store = {};
+    let dialogStub = {};
+    let servicesServiceStub = {};
+    let routerStub = {};
+    const HttpRuntimeTypesServiceStub = {
+        getAll() { return []; }
+    };
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [DialogModelBuildComponent],
-      providers: [
-        { provide: MdlDialogReference, useValue: dialogStub },
-        MdlSnackbarService,
-        { provide: injectableModelOptions, useValue: modelStub },
-        { provide: Store, useValue: store },
-        { provide: ServicesService, useValue: servicesServiceStub },
-        { provide: ModelsService, useValue: servicesServiceStub },
-        { provide: ModelBuilder, useValue: servicesServiceStub },
-        { provide: ModelRuntimeBuilder, useValue: servicesServiceStub },
-        { provide: Router, useValue: routerStub },
-        { provide: HttpService, useValue: {} },
-        { provide: ActivatedRoute, useValue: routerStub },
-        { provide: Location, useValue: store },
-        { provide: HttpModelServiceService, useValue: store },
-        { provide: HttpRuntimeTypesService, useValue: store },
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [DialogModelBuildComponent],
+            providers: [
+                { provide: MdlDialogReference, useValue: dialogStub },
+                MdlSnackbarService,
+                { provide: injectableModelOptions, useValue: modelStub },
+                { provide: Store, useValue: store },
+                { provide: ServicesService, useValue: servicesServiceStub },
+                { provide: ModelsService, useValue: servicesServiceStub },
+                { provide: ModelBuilder, useValue: servicesServiceStub },
+                { provide: ModelRuntimeBuilder, useValue: servicesServiceStub },
+                { provide: Router, useValue: routerStub },
+                { provide: HttpService, useValue: {} },
+                { provide: ActivatedRoute, useValue: routerStub },
+                { provide: Location, useValue: store },
+                { provide: HttpModelServiceService, useValue: store },
+                { provide: HttpRuntimeTypesService, useValue: store },
 
-        FormBuilder,
-        { provide: FormGroup, useValue: store }
+                FormBuilder,
+                { provide: FormGroup, useValue: store }
 
-      ],
-      imports: [MdlModule, FormsModule, ReactiveFormsModule, MdlSelectModule]
-    })
-      .compileComponents();
-  }));
+            ],
+            imports: [MdlModule, FormsModule, ReactiveFormsModule, MdlSelectModule]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DialogModelBuildComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(DialogModelBuildComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  // it('should be created', () => {
-  //   expect(component).toBeTruthy();
-  // });
+    // it('should be created', () => {
+    //   expect(component).toBeTruthy();
+    // });
 });

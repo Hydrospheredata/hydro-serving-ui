@@ -5,17 +5,17 @@ import { RuntimeTypeBuilder } from '@shared/builders/_index';
 import { HttpService } from './http.service';
 
 describe('HttpRuntimeTypesService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        HttpRuntimeTypesService,
-        { provide: HttpService, useValue: {} },
-        { provide: RuntimeTypeBuilder, useValue: {} }
-      ]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                HttpRuntimeTypesService,
+                { provide: HttpService, useValue: {} },
+                { provide: RuntimeTypeBuilder, useValue: {} }
+            ]
+        });
     });
-  });
 
-  it('should be created', inject([HttpRuntimeTypesService], (service: HttpRuntimeTypesService) => {
-    expect(service).toBeTruthy();
-  }));
+    it('should be created', inject([HttpRuntimeTypesService], (service: HttpRuntimeTypesService) => {
+        expect(service).toBeTruthy();
+    }));
 });

@@ -1,4 +1,4 @@
-import { CanActivate, Router, ActivatedRoute, ActivatedRouteSnapshot } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs/Observable';
@@ -6,10 +6,9 @@ import 'rxjs/add/operator/take';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
-import { of } from 'rxjs/observable/of';
 
 import { Store } from '@ngrx/store';
-import { AppState, Service, ModelService } from '@shared/models/_index';
+import { AppState, Service } from '@shared/models/_index';
 import * as HydroActions from '@shared/actions/_index';
 
 

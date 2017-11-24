@@ -21,20 +21,20 @@ export class Model {
   public nextVersionAvailable: boolean;
 
   constructor(props: any = {}) {
-    this.id = props['id'] || '';
-    this.name = props['name'] || '';
-    this.source = props['source'] || '';
-    this.description = props['description'] || '';
-    this.modelId = props['modelId'] || '';
-    this.outputFields = props['outputFields'] || [''];
-    this.inputFields = props['inputFields'] || [''];
-    this.created = props['created'] || '';
-    this.updated = props['updated'] || '';
-    this.runtimeType = props['runtimeType'] || {};
-    this.lastModelRuntime = props['lastModelRuntime'] || {};
-    this.lastModelBuild = props['lastModelBuild'] || {};
-    this.currentServices = props['currentServices'];
-    this.nextVersion = props['nextVersion'] || '';
-    this.nextVersionAvailable = props['nextVersionAvailable'] || false;
+      this.id = props['id'] || '';
+      this.name = props['name'] || '';
+      this.source = props['source'] || '';
+      this.description = props['description'] || '';
+      this.modelId = props['modelId'] || '';
+      this.outputFields = props['outputFields'] || [''];
+      this.inputFields = props['inputFields'] || [''];
+      this.created = props['created'] || '';
+      this.updated = props['updated'] || '';
+      this.runtimeType = props['runtimeType'] || {};
+      this.lastModelRuntime = props['lastModelRuntime'] || {};
+      this.lastModelBuild = props['lastModelBuild'] || {};
+      this.currentServices = props['currentServices'];
+      this.nextVersion = props['nextVersion'] || '';
+      this.nextVersionAvailable = props['nextVersionAvailable'] || false;
   }
 }

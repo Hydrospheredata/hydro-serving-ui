@@ -9,42 +9,42 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 describe('DialogDeleteServiceComponent', () => {
-  let component: DialogDeleteServiceComponent;
-  let fixture: ComponentFixture<DialogDeleteServiceComponent>;
-  let modelStub = {
-    id: '0'
-  };
-  let store = {};
-  let dialogStub = {};
-  let servicesServiceStub = {};
-  let routerStub = {};
+    let component: DialogDeleteServiceComponent;
+    let fixture: ComponentFixture<DialogDeleteServiceComponent>;
+    let modelStub = {
+        id: '0'
+    };
+    let store = {};
+    let dialogStub = {};
+    let servicesServiceStub = {};
+    let routerStub = {};
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ DialogDeleteServiceComponent ],
-      providers: [
-        {provide: MdlDialogReference, useValue: dialogStub},
-        MdlSnackbarService,
-        {provide: injectableServiceOptions, useValue: modelStub },
-        {provide: Store, useValue: store },
-        {provide: ServicesService, useValue: servicesServiceStub},
-        {provide: Router, useValue: routerStub},
-        {provide: ActivatedRoute, useValue: routerStub},
-        {provide: Location, useValue: store}
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            declarations: [ DialogDeleteServiceComponent ],
+            providers: [
+                {provide: MdlDialogReference, useValue: dialogStub},
+                MdlSnackbarService,
+                {provide: injectableServiceOptions, useValue: modelStub },
+                {provide: Store, useValue: store },
+                {provide: ServicesService, useValue: servicesServiceStub},
+                {provide: Router, useValue: routerStub},
+                {provide: ActivatedRoute, useValue: routerStub},
+                {provide: Location, useValue: store}
 
-      ],
-      imports: [MdlModule]
-    })
-    .compileComponents();
-  }));
+            ],
+            imports: [MdlModule]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DialogDeleteServiceComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(DialogDeleteServiceComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+    });
 });

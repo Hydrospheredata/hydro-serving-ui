@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
 
 import { Store } from '@ngrx/store';
-import { AppState, Service, ModelService } from '@shared/models/_index';
-import { ModelServicesService } from '@shared/services/_index';
-import { ServiceBuilder } from '@shared/builders/_index';
+import { 
+    AppState, 
+    Service,
+    ModelServicesService
+} from '@shared/_index';
 
 import { environment } from '@environments/environment';
 
@@ -27,7 +28,7 @@ import {
     selector: 'hydro-services-item-detail',
     templateUrl: './services-item-detail.component.html',
     styleUrls: ['./services-item-detail.component.scss']
-})
+    })
 
 export class ServicesItemDetailComponent {
     public JSON = JSON;
@@ -61,8 +62,7 @@ export class ServicesItemDetailComponent {
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
         private modelServicesService: ModelServicesService,
-        private router: Router,
-        private serviceBuilder: ServiceBuilder
+        private router: Router
     ) {
 
         this.activeRouteSub = this.activatedRoute.params
@@ -122,7 +122,7 @@ export class ServicesItemDetailComponent {
                 this.serviceModels.push({ data: data, weight: weight.weight });
                 if (this.serviceModels.length) {
                     this.serviceModelsFiltered = this.serviceModels.filter((item, index, self) => {
-                        return self.findIndex(t => { return t.data.serviceId === item.data.serviceId}) === index;
+                        return self.findIndex(t => { return t.data.serviceId === item.data.serviceId;}) === index;
                     });
                 }
             });

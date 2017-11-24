@@ -1,31 +1,29 @@
-import { NgModule } from "@angular/core";
-import { RouterModule } from "@angular/router";
-
-import { ServicesGuard } from '@shared/_index';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { 
     ServicesWrapperComponent, 
     ServicesItemDetailComponent 
-} from "./_index";
+} from './_index';
 
 @NgModule({
     imports: [
-        RouterModule.forChild([
-            {
-                path: 'applications',
-                component: ServicesWrapperComponent,
-                children: [
-                    {
-                        path: ':id',
-                        component: ServicesItemDetailComponent
-                    }
-                ]
-            }
+    RouterModule.forChild([
+        {
+        path: 'applications',
+        component: ServicesWrapperComponent,
+        children: [
+        {
+        path: ':id',
+        component: ServicesItemDetailComponent
+        }
+        ]
+        }
         ])
     ],
     exports: [
-        RouterModule
+    RouterModule
     ]
 
-})
+    })
 export class ServicesRoutingModule { }

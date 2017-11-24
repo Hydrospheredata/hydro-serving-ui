@@ -1,24 +1,24 @@
 import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
 
 import { ApplicationsDialogBase } from '@shared/base/_index';
-import { ServicesService, FormsService, ModelServicesService } from '@shared/services/_index';
+import { ServicesService, FormsService } from '@shared/services/_index';
 import * as Actions from '@shared/actions/_index';
-import { AppState, ModelService, Service } from '@shared/models/_index';
+import { AppState, Service } from '@shared/models/_index';
 
 export let injectableServiceUpdate = new InjectionToken<Service>('selectedService');
 
 
 
 @Component({
-  selector: 'hydro-dialog-update-service',
-  templateUrl: './dialog-update-service.component.html',
-  styleUrls: ['./dialog-update-service.component.scss'],
-  providers: [FormsService]
-})
+    selector: 'hydro-dialog-update-service',
+    templateUrl: './dialog-update-service.component.html',
+    styleUrls: ['./dialog-update-service.component.scss'],
+    providers: [FormsService]
+    })
 export class DialogUpdateServiceComponent extends ApplicationsDialogBase implements OnInit {
 
     public dialogType = 'Edit';
@@ -27,7 +27,7 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
     public selectedModels: any[] = [];
 
     constructor(
-        @Inject(injectableServiceUpdate) data: Service,
+    @Inject(injectableServiceUpdate) data: Service,
         public store: Store<AppState>,
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
@@ -57,10 +57,10 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
                     modelsInStageArr.push({
                         runtimeName: item.service.serviceName,
                         weight: item.weight
-                    })
+                    });
                 });
                 stagesArr.push(modelsInStageArr);
-            })
+            });
             this.pipelineEditorValue = JSON.stringify(stagesArr, null, 2);
         }
     }
@@ -72,7 +72,6 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
     }
 
     private updateServiceFormValues(service: Service) {
-        console.log(service);
         for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
             this.addKafkaToService();
         }
@@ -104,8 +103,6 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
                 }
             });
 
-            console.log(weights);
-
             this.serviceForm.patchValue({
                 weights: weights
             });
@@ -132,8 +129,6 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
 
         const service = Object.assign( serviceInfo, { stages: data.stages } );
 
-        console.log(service);
-
         this.servicesService.updateService(service)
             .subscribe(response => {
                 this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Service(response) });
@@ -142,7 +137,7 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
                     message: 'Service was successfully added',
                     timeout: 5000
                 });
-            })
+            });
 
         // this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
         // this.dialogRef.hide();

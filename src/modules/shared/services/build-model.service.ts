@@ -15,30 +15,30 @@ export class BuildModelService {
     private http: HttpService,
     private modelRuntimeBuilder: ModelRuntimeBuilder,
   ) {
-    this.baseAPIUrl = `${environment.apiUrl}/model`;
-    this.baseUIUrl = `${environment.uiUrl}/model`;
+      this.baseAPIUrl = `${environment.apiUrl}/model`;
+      this.baseUIUrl = `${environment.uiUrl}/model`;
   }
 
   public build(options): Observable<ModelRuntime> {
-    return this.http.post(`${this.baseUIUrl}/build`, options).map((res: Response) => {
-      return this.extractModelRuntime(res);
-    });
+      return this.http.post(`${this.baseUIUrl}/build`, options).map((res: Response) => {
+          return this.extractModelRuntime(res);
+      });
   }
 
   public testModel(params) {
-    const url = `${this.baseUIUrl}/serve`;
+      const url = `${this.baseUIUrl}/serve`;
 
-    return this.http.post(url, params)
-      .map((res: Response) => res.json());
+      return this.http.post(url, params)
+          .map((res: Response) => res.json());
   }
 
   public stopModel(id): Observable<any> {
-    const url = `${this.baseUIUrl}/stopService/${id}`;
-    return this.http.delete(url).map((res: Response) => {});
+      const url = `${this.baseUIUrl}/stopService/${id}`;
+      return this.http.delete(url).map(() => {});
   }
 
   private extractModelRuntime(res: Response): ModelRuntime {
-    const props = res.json();
-    return this.modelRuntimeBuilder.build(props);
+      const props = res.json();
+      return this.modelRuntimeBuilder.build(props);
   }
 }

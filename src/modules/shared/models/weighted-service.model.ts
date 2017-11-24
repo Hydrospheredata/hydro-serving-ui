@@ -4,8 +4,8 @@ export class WeightedService {
   public weights: any;
 
   constructor(props: object = {}) {
-    this.id = props['id'];
-    this.serviceName = props['serviceName'];
-    this.weights = props['weights'];
+      this.id = props['id'];
+      this.serviceName = props['serviceName'];
+      this.weights = props['weights'];
   }
 }

@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import { ModelRuntime } from '@shared/models/_index';
 
 export const GET_MODEL_RUNTIME = 'GET_MODEL_RUNTIME';
 

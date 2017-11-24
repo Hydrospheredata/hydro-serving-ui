@@ -17,26 +17,26 @@ export class ModelServicesService {
 
     getModelServices() {
         return this.http.get(this.baseAPIUrl)
-                    .map((res: Response): any => {
-                      return res.json();
-                    });
+            .map((res: Response): any => {
+                return res.json();
+            });
     }
 
     getModelService(id: number) {
         const url = `${this.baseAPIUrl}/${id}`;
         return this.http.get(url)
-                    .map((res: Response): any => {
-                      return res.json();
-                    });
+            .map((res: Response): any => {
+                return res.json();
+            });
     }
 
     getModelRuntimes(id: number): Observable<any> {
         const countRuntimes = 10;
         const url = `${this.baseAPIUrl}/${id}/last?maximum=${countRuntimes}`;
         return this.http.get(url)
-                    .map((res: Response): any => {
-                        return res.json();
-                    });
+            .map((res: Response): any => {
+                return res.json();
+            });
     }
 
     createModelService() {}

@@ -14,6 +14,7 @@ export class LoaderStateService {
   constructor() { }
 
   showLoader() {
+    console.log(this.loaderSubject);
     this.loaderSubject.next(<LoaderState>{show: true});
   }
 

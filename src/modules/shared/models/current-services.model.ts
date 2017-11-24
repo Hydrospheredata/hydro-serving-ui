@@ -5,9 +5,9 @@ export class CurrentServices {
   public modelRuntime: object[];
 
   constructor(props: object = {}) {
-    this.serviceId = props['serviceId'] || '';
-    this.serviceName = props['serviceName'] || '';
-    this.cloudDriverId = props['cloudDriverId'] || '';
-    this.modelRuntime = props['modelRuntime'] || [{}];
+      this.serviceId = props['serviceId'] || '';
+      this.serviceName = props['serviceName'] || '';
+      this.cloudDriverId = props['cloudDriverId'] || '';
+      this.modelRuntime = props['modelRuntime'] || [{}];
   }
 }

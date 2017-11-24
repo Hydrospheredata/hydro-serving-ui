@@ -2,8 +2,8 @@ import { Service } from '@shared/models/_index';
 import * as ServicesActions from '@shared/actions/_index';
 
 
-const initialState: Service[] = [];
 
+const initialState: Service[] = [];
 
 export function ServicesReducer (state = initialState, action: ServicesActions.ServicesActions) {
     switch (action.type) {

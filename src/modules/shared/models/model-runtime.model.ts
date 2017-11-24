@@ -13,16 +13,16 @@ export class ModelRuntime {
   public modelId: string;
 
   constructor(props: any = {}) {
-    this.id = props['id'];
-    this.modelVersion = props['modelVersion'] || '';
-    this.modelName = props['modelName'] || '';
-    this.imageName = props['imageName'] || '';
-    this.imageTag = props['imageTag'] || '';
-    this.imageMD5Tag = props['imageMD5Tag'] || '';
-    this.runtimeType = props['runtimeType'] || {};
-    this.outputFields = props['outputFields'] || '';
-    this.inputFields = props['inputFields'] || '';
-    this.created = props['created'] || '';
-    this.modelId = props['modelId'] || '';
+      this.id = props['id'];
+      this.modelVersion = props['modelVersion'] || '';
+      this.modelName = props['modelName'] || '';
+      this.imageName = props['imageName'] || '';
+      this.imageTag = props['imageTag'] || '';
+      this.imageMD5Tag = props['imageMD5Tag'] || '';
+      this.runtimeType = props['runtimeType'] || {};
+      this.outputFields = props['outputFields'] || '';
+      this.inputFields = props['inputFields'] || '';
+      this.created = props['created'] || '';
+      this.modelId = props['modelId'] || '';
   }
 }

@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { AppState, Service } from '@shared/models/_index';
+import { AppState, Service } from '@shared/_index';
 import * as Actions from '@shared/actions/_index';
 
 
 
 @Component({
-  selector: 'hydro-services-wrapper',
-  templateUrl: './services-wrapper.component.html',
-  styleUrls: ['./services-wrapper.component.scss']
-})
+    selector: 'hydro-services-wrapper',
+    templateUrl: './services-wrapper.component.html',
+    styleUrls: ['./services-wrapper.component.scss']
+    })
 
 export class ServicesWrapperComponent {
-
-    private data: Service[];
     public sidebarTitle = 'Applications';
     public services: Store<Service[]>;
 

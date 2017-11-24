@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
@@ -38,24 +38,20 @@ import {
 
 // Components
 import {
-    // Forms
     InputTextComponent,
     SelectComponent,
     TextareaComponent,
-
-    LoaderComponent,
-    NavbarComponent,
     SidebarComponent
 } from './components/_index';
 
 // Builders
 import {
-  ModelBuilder,
-  ModelRuntimeBuilder,
-  RuntimeTypeBuilder,
-  ModelCurrentServicesBuilder,
-  ModelBuildBuilder,
-  ServiceBuilder,
+    ModelBuilder,
+    ModelRuntimeBuilder,
+    RuntimeTypeBuilder,
+    ModelCurrentServicesBuilder,
+    ModelBuildBuilder,
+    ServiceBuilder,
 } from './builders/_index';
 
 // Guards

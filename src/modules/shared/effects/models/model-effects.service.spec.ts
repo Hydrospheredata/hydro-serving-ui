@@ -8,13 +8,13 @@ import { AppState, Model } from '@shared/models/_index';
 import { ModelBuilder } from '@shared/builders/_index';
 import { ModelsService } from '@shared/services/_index';
 describe('ModelEffectsService', () => {
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [ModelEffects]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [ModelEffects]
+        });
     });
-  });
 
-  // it('should be created', inject([ModelEffects], (service: ModelEffects) => {
-  //   expect(true).toBeTruthy();
-  // }));
+    // it('should be created', inject([ModelEffects], (service: ModelEffects) => {
+    //   expect(true).toBeTruthy();
+    // }));
 });

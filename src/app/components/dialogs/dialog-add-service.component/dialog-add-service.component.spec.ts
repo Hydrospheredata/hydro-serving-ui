@@ -5,25 +5,25 @@ import { FormArray, FormBuilder, FormGroup, Validators, FormControl } from '@ang
 import { AppModule } from '../../../app.module';
 
 describe('DialogAddServiceComponent', () => {
-  let component: DialogAddServiceComponent;
-  let fixture: ComponentFixture<DialogAddServiceComponent>;
+    let component: DialogAddServiceComponent;
+    let fixture: ComponentFixture<DialogAddServiceComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [  ],
-      declarations: [DialogAddServiceComponent],
-      providers: [FormArray, FormBuilder,  FormControl, FormGroup, Validators]
-    })
-      .compileComponents();
-  }));
+    beforeEach(async(() => {
+        TestBed.configureTestingModule({
+            imports: [ ],
+            declarations: [DialogAddServiceComponent],
+            providers: [FormArray, FormBuilder, FormControl, FormGroup, Validators]
+        })
+            .compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(DialogAddServiceComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(DialogAddServiceComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  // it('should be created', () => {
-  //   expect(component).toBeTruthy();
-  // });
+    // it('should be created', () => {
+    //   expect(component).toBeTruthy();
+    // });
 });

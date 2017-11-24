@@ -5,10 +5,10 @@ import { Service } from '@shared/models/_index';
 @Injectable()
 export class ServiceBuilder {
 
-  constructor() { }
+    constructor() { }
 
-  public build(service) {
-    return new Service(service);
-  }
+    public build(service) {
+        return new Service(service);
+    }
 
 }

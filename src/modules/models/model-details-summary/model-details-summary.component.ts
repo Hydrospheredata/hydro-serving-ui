@@ -1,24 +1,26 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Model } from '@shared/models/model.model';
+import { Model } from '@shared/_index';
+
+
+
 @Component({
-  selector: 'hydro-model-details-summary',
-  templateUrl: './model-details-summary.component.html',
-  styleUrls: ['./model-details-summary.component.scss']
-})
+    selector: 'hydro-model-details-summary',
+    templateUrl: './model-details-summary.component.html',
+    styleUrls: ['./model-details-summary.component.scss']
+    })
 export class ModelDetailsSummaryComponent implements OnInit {
 
-@Input() model: Model;
-@Input() isDeployable: boolean;
-@Input() isModelService: boolean;
-@Input() version?: string;
-// @Input() runtimes: any[];
-  constructor() { }
+    @Input() model: Model;
+    @Input() isDeployable: boolean;
+    @Input() isModelService: boolean;
+    @Input() version?: string;
 
-  ngOnInit() {
-  }
+    constructor() { }
 
-  public getLatestVersion() {
-    return '0.0.1';
-  }
+    ngOnInit() {}
+
+    public getLatestVersion() {
+        return '0.0.1';
+    }
 
 }

@@ -9,26 +9,26 @@ import {
 
 @NgModule({
     imports: [
-        RouterModule.forChild([
-            {
-                path: '',
-                redirectTo: 'models',
-                pathMatch: 'full'
-            },
-            {
-                path: 'models',
-                component: ModelsWrapperComponent,
-                children: [{
-                  path: ':modelId',
-                  pathMatch: 'full',
-                  component: ModelDetailsComponent
-                }]
-            }
+    RouterModule.forChild([
+        {
+        path: '',
+        redirectTo: 'models',
+        pathMatch: 'full'
+        },
+        {
+        path: 'models',
+        component: ModelsWrapperComponent,
+        children: [{
+        path: ':modelId',
+        pathMatch: 'full',
+        component: ModelDetailsComponent
+        }]
+        }
         ])
     ],
     exports: [
-        RouterModule
+    RouterModule
     ]
 
-})
+    })
 export class ModelsRoutingModule { }

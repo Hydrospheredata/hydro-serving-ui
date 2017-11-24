@@ -4,16 +4,16 @@ import { RuntimeType } from '@shared/models/_index';
 @Injectable()
 export class RuntimeTypeBuilder {
 
-constructor() { }
+    constructor() { }
 
-  public build(props): RuntimeType {
-    return this.toRuntimeType(props);
-  }
+    public build(props): RuntimeType {
+        return this.toRuntimeType(props);
+    }
 
-  private toRuntimeType(props) {
-    let runtimeType: RuntimeType;
-    runtimeType = new RuntimeType(props);
+    private toRuntimeType(props) {
+        let runtimeType: RuntimeType;
+        runtimeType = new RuntimeType(props);
 
-    return runtimeType;
-  }
+        return runtimeType;
+    }
 }

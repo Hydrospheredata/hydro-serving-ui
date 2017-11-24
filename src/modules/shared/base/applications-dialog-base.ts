@@ -1,12 +1,10 @@
-import { Injectable, InjectionToken, Inject } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
-import * as Actions from '@shared/actions/_index';
 import { AppState, ModelService, Service } from '@shared/models/_index';
 import { FormsService, ServicesService } from '@shared/services/_index';
 
@@ -145,7 +143,7 @@ export class ApplicationsDialogBase extends DialogBase {
     }
 
     public onSelectModel(value) {
-        this.modelVersions = this.modelServicesFiltered.filter((item, index, self) => {
+        this.modelVersions = this.modelServicesFiltered.filter(item => {
             return item.modelRuntime.modelId === value;
         });
     }

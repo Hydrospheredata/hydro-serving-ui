@@ -2,23 +2,22 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 
 import { ServiceBuilder } from '@shared/builders/_index';
 import { ServicesService } from '@shared/services/_index';
-import { AppState, Service } from '@shared/models/_index';
+import { Service } from '@shared/models/_index';
 import * as HydroActions from '@shared/actions/_index';
 
 @Injectable()
 export class ServicesEffects {
 
     @Effect() getServices$: Observable<Action> = this.actions.ofType(HydroActions.GET_SERVICES)
-        .switchMap(action => {
+        .switchMap(() => {
             return this.servicesService.getServices().take(1)
                 .map((services: Service[]) => {
                     let data = services.map(service => this.serviceBuilder.build(service));
-                    return ({ type: HydroActions.GET_SERVICES_SUCCESS, payload: data })
-                })
+                    return ({ type: HydroActions.GET_SERVICES_SUCCESS, payload: data });
+                });
         });
 
     // @Effect() addService$: Observable<Action> = this.actions.ofType(HydroActions.ADD_SERVICE)
@@ -47,8 +46,8 @@ export class ServicesEffects {
         .switchMap(applicationId => {
             return this.servicesService.deleteService(applicationId)
                 .map(() => {
-                    return ({ type: HydroActions.DELETE_SERVICE_SUCCESS, applicationId: applicationId })
-                })
+                    return ({ type: HydroActions.DELETE_SERVICE_SUCCESS, applicationId: applicationId });
+                });
         });
 
     constructor(

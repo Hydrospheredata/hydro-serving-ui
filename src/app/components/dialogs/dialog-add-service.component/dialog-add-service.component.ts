@@ -1,7 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
@@ -17,7 +15,7 @@ import { FormsService, ServicesService } from '@shared/services/_index';
     templateUrl: './dialog-add-service.component.html',
     styleUrls: ['./dialog-add-service.component.scss'],
     providers: [FormsService]
-})
+    })
 export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 
     public dialogType: string = 'Add';
@@ -28,8 +26,7 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
         public store: Store<AppState>,
-        public servicesService: ServicesService,
-        private router: Router
+        public servicesService: ServicesService
     ) {
         super(
             fb,
@@ -74,7 +71,7 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
                     message: 'Service was successfully added',
                     timeout: 5000
                 });
-            })
+            });
         // this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
         // this.dialogRef.hide();
         // this.mdlSnackbarService.showSnackbar({

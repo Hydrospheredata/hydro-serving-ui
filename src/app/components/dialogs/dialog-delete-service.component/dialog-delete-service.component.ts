@@ -15,13 +15,12 @@ export let injectableServiceOptions = new InjectionToken<object>('injectableServ
     selector: 'hydro-dialog-delete-service',
     templateUrl: './dialog-delete-service.component.html',
     styleUrls: ['./dialog-delete-service.component.scss']
-})
+    })
 export class DialogDeleteServiceComponent extends DialogBase {
-    private data;
     private applicationId;
 
     constructor(
-        @Inject(injectableServiceOptions) data,
+    @Inject(injectableServiceOptions) data,
         private store: Store<AppState>,
         public dialogRef: MdlDialogReference,
         private mdlSnackbarService: MdlSnackbarService,
