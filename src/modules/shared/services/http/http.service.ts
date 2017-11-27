@@ -10,7 +10,7 @@ import {
     XHRBackend
 } from '@angular/http';
 import { HydroRequestOptions } from './hydro-request-options';
-// import { LoaderStateService } from './loader-state.service';
+import { LoaderStateService } from '../loader-state.service';
 
 
 
@@ -22,7 +22,7 @@ export class HttpService extends Http {
     constructor(
         backend: XHRBackend,
         defaultOptions: HydroRequestOptions,
-        // private loaderStateService: LoaderStateService,
+        private loaderStateService: LoaderStateService
     ) {
         super(
             backend, 
@@ -38,7 +38,7 @@ export class HttpService extends Http {
 
     get(url: string, options?: RequestOptionsArgs): Observable<any> {
 
-        // this.showLoader();
+        this.showLoader();
 
         return super.get(this.getFullUrl(url), this.requestOptions(options))
             .catch(this.onCatch)
@@ -54,7 +54,7 @@ export class HttpService extends Http {
 
     post(url: string, body, options?: RequestOptionsArgs): Observable<any> {
 
-        // this.showLoader();
+        this.showLoader();
 
         return super.post(this.getFullUrl(url), body, this.requestOptions(options))
             .catch(this.onCatch)
@@ -70,7 +70,7 @@ export class HttpService extends Http {
 
     put(url: string, body, options?: RequestOptionsArgs): Observable<any> {
 
-        // this.showLoader();
+        this.showLoader();
 
         return super.put(this.getFullUrl(url), body, this.requestOptions(options))
             .catch(this.onCatch)
@@ -86,7 +86,7 @@ export class HttpService extends Http {
 
     delete(url: string, options?: RequestOptionsArgs): Observable<any> {
 
-        // this.showLoader();
+        this.showLoader();
 
         return super.delete(this.getFullUrl(url), this.requestOptions(options))
             .catch(this.onCatch)
@@ -135,27 +135,27 @@ export class HttpService extends Http {
         return Observable.throw(errMsg);
     }
 
-    private onSuccess(): void {
+    private onSuccess() {
     }
 
-    private onError(res: Response): void {
+    private onError(res: Response) {
         console.log('Error, status code: ' + res.status);
     }
 
-    private onEnd(): void {
-        // this.hideLoader();
+    private onEnd() {
+        this.hideLoader();
     }
 
-    // private showLoader(): void {
-    //     if (this.requestCount === 0) {
-    //         // this.loaderStateService.showLoader();
-    //     }
-    //     this.requestCount++;
-    // }
+    private showLoader() {
+        if (this.requestCount === 0) {
+            this.loaderStateService.showLoader();
+        }
+        this.requestCount++;
+    }
 
-    // private hideLoader(): void {
-    //     if (--this.requestCount === 0) {
-    //         // this.loaderStateService.hideLoader();
-    //     }
-    // }
+    private hideLoader() {
+        if (--this.requestCount === 0) {
+            this.loaderStateService.hideLoader();
+        }
+    }
 }

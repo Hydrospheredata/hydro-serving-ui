@@ -4,7 +4,7 @@ import { environment } from '@environments/environment';
 import { Response } from '@angular/http';
 import { Model } from '@shared/models/_index';
 import { ModelBuilder } from '@shared/builders/_index';
-import { HttpService } from './http.service';
+import { HttpService } from '@shared/services/http/_index';
 import 'rxjs/add/operator/map';
 
 @Injectable()

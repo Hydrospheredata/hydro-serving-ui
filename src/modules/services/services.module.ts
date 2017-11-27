@@ -23,23 +23,23 @@ import {
 
 @NgModule({
     imports: [
-    SharedModule,
-    CodemirrorModule,
-    CommonModule,
-    MdlModule,
-    ServicesRoutingModule,
-    FormsModule,
-    StoreModule.forRoot({ 
-        services: ServicesReducer, 
-        modelService: ModelServiceReducer
+        SharedModule,
+        CodemirrorModule,
+        CommonModule,
+        MdlModule,
+        ServicesRoutingModule,
+        FormsModule,
+        StoreModule.forRoot({ 
+            services: ServicesReducer, 
+            modelService: ModelServiceReducer
         }),
-    StoreDevtoolsModule.instrument({
-        maxAge: 25
+        StoreDevtoolsModule.instrument({
+            maxAge: 25
         })
     ],
     declarations: [
-    ServicesWrapperComponent,
-    ServicesItemDetailComponent
+        ServicesWrapperComponent,
+        ServicesItemDetailComponent
     ]
-    })
+})
 export class ServicesModule { }

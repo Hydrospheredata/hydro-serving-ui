@@ -8,18 +8,17 @@ export interface LoaderState {
 
 @Injectable()
 export class LoaderStateService {
-  private loaderSubject = new Subject<LoaderState>();
-  loaderState = this.loaderSubject.asObservable();
+    private loaderSubject = new Subject<LoaderState>();
+    loaderState = this.loaderSubject.asObservable();
 
-  constructor() { }
+    constructor() { }
 
-  showLoader() {
-    console.log(this.loaderSubject);
-    this.loaderSubject.next(<LoaderState>{show: true});
-  }
+    showLoader() {
+        this.loaderSubject.next(<LoaderState>{show: true});
+    }
 
-  hideLoader() {
-    this.loaderSubject.next(<LoaderState>{show: false});
-  }
+    hideLoader() {
+        this.loaderSubject.next(<LoaderState>{show: false});
+    }
 
 }

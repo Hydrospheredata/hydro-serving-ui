@@ -107,7 +107,7 @@ import * as Dialog from '@components/dialogs/_index';
         {
             provide: HttpService,
             useFactory: httpServiceFactory,
-            deps: [XHRBackend, RequestOptions]
+            deps: [XHRBackend, RequestOptions, LoaderStateService]
         }
     ],
     bootstrap: [AppComponent]

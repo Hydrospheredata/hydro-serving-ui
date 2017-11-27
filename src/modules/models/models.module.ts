@@ -27,29 +27,30 @@ import {
 
 @NgModule({
     imports: [
-    ModelsRoutingModule,
-    CommonModule,
-    SharedModule,
-    MomentModule,
-    MdlModule,
-    MdlSelectModule,
-    FormsModule,
-    StoreModule.forRoot({
-        models: ModelsReducer,
-        modelService: ModelServiceReducer,
-        modelRuntimes: ModelRuntimeReducer,
-        services: ServicesReducer }),
-    StoreDevtoolsModule.instrument({
-        maxAge: 25
+        ModelsRoutingModule,
+        CommonModule,
+        SharedModule,
+        MomentModule,
+        MdlModule,
+        MdlSelectModule,
+        FormsModule,
+        StoreModule.forRoot({
+            models: ModelsReducer,
+            modelService: ModelServiceReducer,
+            modelRuntimes: ModelRuntimeReducer,
+            services: ServicesReducer 
+        }),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25
         })
     ],
     declarations: [
-    ModelsWrapperComponent,
-    ModelDetailsComponent,
-    ModelDetailsSummaryComponent
+        ModelsWrapperComponent,
+        ModelDetailsComponent,
+        ModelDetailsSummaryComponent
     ],
     exports: [
-    ModelDetailsSummaryComponent
+        ModelDetailsSummaryComponent
     ]
-    })
+})
 export class ModelsModule { }
