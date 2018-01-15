@@ -1,4 +1,4 @@
-import { Model } from '@shared/_index';
+import { Model } from '@shared/models/_index';
 import * as ModelActions from '@shared/actions/_index';
 
 
@@ -16,16 +16,17 @@ export function ModelsReducer(state = initialState, action: ModelActions.ModelAc
         ];
     case ModelActions.UPDATE_MODEL:
         return state.map(item => {
-            if (item.id !== action.payload.id) {
+            if (item.model.id !== action.payload.model.id) {
                 return item;
             }
-            return {
+            console.log('updated model item: ', new Model({...item,...action.payload}));
+            return new Model({
                 ...item,
                 ...action.payload
-            };
+            });
         });
     case ModelActions.DELETE_MODEL:
-        return state.filter(service => service.id !== +action.modelId);
+        return state.filter(service => service.model.id !== Number(action.modelId));
     default:
         return state;
     }

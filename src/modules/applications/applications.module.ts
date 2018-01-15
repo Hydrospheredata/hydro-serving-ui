@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
 import { SharedModule } from '@shared/shared.module';
-import { ServicesRoutingModule } from './services.router';
+import { ApplicationsRoutingModule } from './applications.router';
 import { FormsModule } from '@angular/forms';
 
 import { CodemirrorModule } from 'ng2-codemirror';
@@ -10,16 +10,14 @@ import { CodemirrorModule } from 'ng2-codemirror';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { 
-    ServicesReducer, 
+    ApplicationsReducer, 
     ModelServiceReducer
 } from '@shared/_index';
 
 import {
-    ServicesWrapperComponent,
-    ServicesItemDetailComponent
+    ApplicationsWrapperComponent,
+    ApplicationsItemDetailComponent
 } from './_index';
-
-
 
 @NgModule({
     imports: [
@@ -27,10 +25,10 @@ import {
         CodemirrorModule,
         CommonModule,
         MdlModule,
-        ServicesRoutingModule,
+        ApplicationsRoutingModule,
         FormsModule,
         StoreModule.forRoot({ 
-            services: ServicesReducer, 
+            applications: ApplicationsReducer, 
             modelService: ModelServiceReducer
         }),
         StoreDevtoolsModule.instrument({
@@ -38,8 +36,8 @@ import {
         })
     ],
     declarations: [
-        ServicesWrapperComponent,
-        ServicesItemDetailComponent
+        ApplicationsWrapperComponent,
+        ApplicationsItemDetailComponent
     ]
 })
-export class ServicesModule { }
+export class ApplicationsModule { }

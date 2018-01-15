@@ -1,20 +1,20 @@
 import { Service } from '@shared/models/_index';
-import * as ServicesActions from '@shared/actions/_index';
+import * as Actions from '@shared/actions/_index';
 
 
 
 const initialState: Service[] = [];
 
-export function ServicesReducer (state = initialState, action: ServicesActions.ServicesActions) {
+export function ApplicationsReducer (state = initialState, action: Actions.ApplicationsActions) {
     switch (action.type) {
-        case ServicesActions.GET_SERVICES_SUCCESS:
+        case Actions.GET_SERVICES_SUCCESS:
             return Object.assign([], state, action.payload);
-        case ServicesActions.ADD_SERVICE_SUCCESS:
+        case Actions.ADD_SERVICE_SUCCESS:
             return [
                 ...state.slice(0),
                 action.payload
             ];
-        case ServicesActions.UPDATE_SERVICE_SUCCESS:
+        case Actions.UPDATE_SERVICE_SUCCESS:
             return state.map(item => {
                 if (item.id !== action.payload.id) {
                     return item;
@@ -25,10 +25,10 @@ export function ServicesReducer (state = initialState, action: ServicesActions.S
                     ...action.payload
                 };
             });
-        case ServicesActions.DELETE_SERVICE_SUCCESS:
+        case Actions.DELETE_SERVICE_SUCCESS:
             return state.filter(service => service.id !== action.applicationId);
 
-        case ServicesActions.ADD_SERVICE_FAILURE:
+        case Actions.ADD_SERVICE_FAILURE:
         default:
             return state;
     }

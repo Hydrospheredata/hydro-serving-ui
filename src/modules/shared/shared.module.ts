@@ -9,21 +9,6 @@ import { MomentModule } from 'angular2-moment';
 
 import { SelectModule } from 'ng2-select';
 
-// Services
-import {
-    BuildModelService,
-    FormsService,
-    HttpModelServiceService,
-    HttpModelsService,
-    HttpRuntimeTypesService,
-    HttpService,
-    LoaderStateService,
-    ServicesService,
-    ModelsService,
-    ModelRuntimesService,
-    ModelServicesService,
-} from './services/_index';
-
 // Pipes
 import {
     SidebarFilterPipe,
@@ -44,20 +29,7 @@ import {
     SidebarComponent
 } from './components/_index';
 
-// Builders
-import {
-    ModelBuilder,
-    ModelRuntimeBuilder,
-    RuntimeTypeBuilder,
-    ModelCurrentServicesBuilder,
-    ModelBuildBuilder,
-    ServiceBuilder,
-} from './builders/_index';
 
-// Guards
-import {
-    ServicesGuard
-} from './guards/_index';
 
 @NgModule({
     imports: [
@@ -69,7 +41,7 @@ import {
         ReactiveFormsModule,
         RouterModule,
         MomentModule,
-        SelectModule
+        SelectModule,
     ],
     declarations: [
         // Pipes
@@ -86,29 +58,6 @@ import {
         TextareaComponent,
         SelectComponent,
         SidebarComponent
-    ],
-    providers: [
-        // Services
-        BuildModelService,
-        FormsService,
-        HttpModelServiceService,
-        HttpModelsService,
-        HttpRuntimeTypesService,
-        HttpService,
-        LoaderStateService,
-        ServicesService,
-        ModelRuntimesService,
-        ModelsService,
-        ModelServicesService,
-        // Builders
-        ModelBuilder,
-        ModelRuntimeBuilder,
-        RuntimeTypeBuilder,
-        ModelCurrentServicesBuilder,
-        ModelBuildBuilder,
-        ServiceBuilder,
-        // Guards
-        ServicesGuard
     ],
     exports: [
         // Pipes

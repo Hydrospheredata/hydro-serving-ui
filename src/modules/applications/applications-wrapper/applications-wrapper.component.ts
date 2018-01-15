@@ -7,12 +7,12 @@ import * as Actions from '@shared/actions/_index';
 
 
 @Component({
-    selector: 'hydro-services-wrapper',
-    templateUrl: './services-wrapper.component.html',
-    styleUrls: ['./services-wrapper.component.scss']
-    })
+    selector: 'hydro-applications-wrapper',
+    templateUrl: './applications-wrapper.component.html',
+    styleUrls: ['./applications-wrapper.component.scss']
+})
 
-export class ServicesWrapperComponent {
+export class ApplicationsWrapperComponent {
     public sidebarTitle = 'Applications';
     public services: Store<Service[]>;
 

@@ -1,0 +1,85 @@
+<div class="content">
+    <div class="content-header">
+
+        <div [routerLink]="['../']">
+            <svg class="icon undeployed">
+                <use xlink:href="#icon-arrow-left" />
+            </svg>
+            <span>back</span>
+        </div>
+        
+        <div class="content-header__title">{{model?.runtime?.source}} / v{{model?.runtime?.modelVersion}}</div>
+        <div class="btn-group">
+            <button class="btn">
+                <svg>
+                    <use xlink:href="#icon-start"></use>
+                </svg>
+                Test
+            </button>
+            <!-- <button class="btn btn-flat">
+                <svg>
+                    <use xlink:href="#icon-arrow"></use>
+                </svg>
+                Deploy
+            </button> -->
+            <button class="btn btn-flat">
+                <svg>
+                    <use xlink:href="#icon-stop"></use>
+                </svg>
+                stop
+            </button>
+        </div>
+    </div>
+
+
+    <div class="model-details">
+
+        <div class="hydro-panel" *ngFor="let signature of signatures">
+            <h5 class="hydro-panel__header">Signature: {{signature.signatureName}}</h5>
+            <table class='hydro-table hydro-table-models'>
+                <thead class="hydro-table-head">
+                    <tr>
+                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let output of signature.inputs" class='hydro-table-body__row'>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>{{output.fieldName}}</div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>{{output.dataType}}</div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>
+                                <span *ngFor="let item of output.shape">{{item}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class='hydro-table hydro-table-models'>
+                <thead class="hydro-table-head">
+                    <tr>
+                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let output of signature.outputs" class='hydro-table-body__row'>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>{{output.fieldName}}</div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>{{output.dataType}}</div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>
+                                <span *ngFor="let item of output.shape">{{item}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

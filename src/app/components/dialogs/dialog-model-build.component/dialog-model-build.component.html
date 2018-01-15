@@ -1,6 +1,6 @@
 <div>
-  <h2 class="mdl-dialog__title mat-dialog-title">Deploy model "{{model.name}}"</h2>
-  <form [formGroup]="buildModelForm" (ngSubmit)="submitBuildModelForm(buildModelForm)">
+  <h2 class="mdl-dialog__title mat-dialog-title">Deploy model "{{model.model.name}}"</h2>
+  <form [formGroup]="buildModelForm" (ngSubmit)="onSubmit()">
 
       <div class="model-details-table">
         <div class="model-details-row">
@@ -12,18 +12,16 @@
             <span class="model-details-label">Runtime</span>
             <span class="model-details-label">...............</span>
             <mdl-select style="margin-left: 0;" class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet runtime-select" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
-              <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}:{{type.version}}</mdl-option>
+              <mdl-option *ngFor="let type of runtimeTypes" [value]="type.id">{{type.name}}:{{type.version}}</mdl-option>
             </mdl-select>
         </div>
-        <div class="model-details-row">
-            <span class="model-details-label">Tags</span>
-            <span class="model-details-label">......................</span>
-            <span class="model-details-value">
-     <span *ngFor="let tag of getRuntimeTypeTags(currentModelRuntimeType); last as isLast">
-       <span class="model-details-tag">{{ tag }}</span> {{isLast ? '' : ', '}}
-            </span>
-            </span>
-        </div>
+        <!-- <div class="model-details-row">
+            <span class="model-details-label">Environment</span>
+            <span class="model-details-label">...............</span>
+            <mdl-select style="margin-left: 0;" class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet runtime-select" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
+              <mdl-option *ngFor="let type of runtimeTypes" value="{{type.id}}">{{type.name}}:{{type.version}}</mdl-option>
+            </mdl-select>
+        </div> -->
     </div>
 
       <div class="btn-group form-actions">

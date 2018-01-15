@@ -7,10 +7,8 @@ export const UPDATE_MODEL = 'UPDATE_MODEL';
 export const DELETE_MODEL = 'DELETE_MODEL';
 export const LOAD_MODELS = 'LOAD_MODELS';
 export const SWITCH_MODEL = 'SWITCH_MODEL';
-// export const STOP_MODEL = 'STOP_MODEL';
-// export const DEPLOY_MODEL = 'DEPLOY_MODEL';
-// export const BUILD_MODEL = 'BUILD_MODEL';
-// export const TEST_MODEL = 'TEST_MODEL';
+
+
 
 export class GetModelsAction implements Action {
   readonly type = GET_MODELS;

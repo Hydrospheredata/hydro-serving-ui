@@ -2,16 +2,16 @@
   <div class="model-details-row">
     <span class="model-details-label">Version</span>
     <span class="model-details-label">.................</span>
-    <span class="model-details-value runtime" [ngClass]="{'new-version': isDeployable}">{{ version || model?.lastModelRuntime?.modelVersion || getLatestVersion() }}</span>
-    <span *ngIf="isDeployable" class="new-version-label">New version available</span>
+    <span class="model-details-value runtime" [ngClass]="{'new-version': model?.nextVersionAvailable}">{{ version || model?.lastModelRuntime?.modelVersion || getLatestVersion() }}</span>
+    <span *ngIf="model?.nextVersionAvailable" class="new-version-label">New version available</span>
   </div>
   <div class="model-details-row">
-    <span class="model-details-label">Runtime</span>
+    <span class="model-details-label">Model Type</span>
     <span class="model-details-label">...............</span>
-    <span class="model-details-value runtime model-details-tag" *ngIf="isModelService">{{ model?.modelRuntime?.runtimeType?.name }}</span>
-    <span class="model-details-value runtime" *ngIf="!isModelService" [ngClass]="{'model-details-tag': model?.imageMD5Tag }">{{ model?.runtimeType?.name }}</span>
+    <span class="model-details-value runtime model-details-tag" *ngIf="isModelService">{{ model?.model?.modelType }}</span>
+    <span class="model-details-value runtime" *ngIf="!isModelService" [ngClass]="{'model-details-tag': model?.imageMD5Tag }">{{ model?.model?.modelType }}</span>
   </div>
-  <div class="model-details-row">
+  <!-- <div class="model-details-row">
     <span class="model-details-label">Tags</span>
     <span class="model-details-label">......................</span>
     <span class="model-details-value" *ngIf="isModelService">
@@ -24,5 +24,5 @@
         <span class="model-details-tag">{{ tag }}</span> {{isLast ? '' : ', '}}
       </span>
     </span>
-  </div>
+  </div> -->
 </div>

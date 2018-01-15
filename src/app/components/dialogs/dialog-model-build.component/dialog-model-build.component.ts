@@ -1,110 +1,103 @@
-import { Component, OnInit, InjectionToken, HostListener, Inject } from '@angular/core';
+import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { HttpRuntimeTypesService, BuildModelService, ModelsService } from '@shared/services/_index';
-import { ModelStatusPipe } from '@shared/pipes/_index';
+import { RuntimeTypesService, ModelsService } from '@shared/services/_index';
+import { DialogBase } from '@shared/base/_index';
+
+// import { ModelBuilder } from '@shared/builders/_index';
 
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
+import { AppState, RuntimeType, Model } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 import 'rxjs/add/operator/mergeMap';
 
+import { Subscription } from 'rxjs/Subscription';
+
 export let injectableModelOptions = new InjectionToken<object>('injectableModelOptions');
+
+
 
 @Component({
     selector: 'hydro-dialog-model-build',
     templateUrl: './dialog-model-build.component.html',
     styleUrls: ['./dialog-model-build.component.scss'],
-    providers: [MdlSnackbarService, FormBuilder, BuildModelService, ModelStatusPipe]
-    })
-export class DialogModelBuildComponent implements OnInit {
-  public buildModelForm: FormGroup;
-  public currentModelRuntimeType;
-  public runtimeTypes;
-  public data;
-  public model;
-  public modelType: string;
+    providers: [MdlSnackbarService, FormBuilder]
+})
+export class DialogModelBuildComponent extends DialogBase implements OnInit {
+    public buildModelForm: FormGroup;
+    public currentModelRuntimeType;
+    public runtimeTypes;
+    public data;
+    public model;
+    public modelType: string;
+    private runtimeTypesSub: Subscription;
 
-  constructor(private fb: FormBuilder,
-              public dialogRef: MdlDialogReference,
-              private mdlSnackbarService: MdlSnackbarService,
-              private httpRuntimeTypesService: HttpRuntimeTypesService,
-      @Inject(injectableModelOptions) data,
-              private buildModelService: BuildModelService,
-              private modelStatusPipe: ModelStatusPipe,
-              private store: Store<AppState>,
-              private modelsService: ModelsService
-  ) {
-      this.model = data;
-  }
+    constructor(
+        private fb: FormBuilder,
+        public dialogRef: MdlDialogReference,
+        private mdlSnackbarService: MdlSnackbarService,
+        private runtimeTypesService: RuntimeTypesService,
+        @Inject(injectableModelOptions) data,
+        private store: Store<AppState>,
+        private modelsService: ModelsService,
+        // private modelBuilder: ModelBuilder,
+    ) {
+        super(
+            dialogRef
+        );
+        this.model = data;
+    }
 
-  ngOnInit() {
-      const self = this;
-      this.createBuildModelForm();
-      this.httpRuntimeTypesService.getAll().subscribe((runtimeType) => {
-          this.runtimeTypes = runtimeType;
-          self.currentModelRuntimeType = self.model.runtimeType.id;
-      });
-  }
+    ngOnInit() {
+        this.createBuildModelForm();
+        // this.runtimeTypesService.getRuntimeTypeByModelType(this.model.model.modelType)
+        //     .subscribe((runtimeTypes: RuntimeType[]) => {
+        //         this.runtimeTypes = runtimeTypes;
+        //     });
+        this.runtimeTypesSub = this.runtimeTypesService.getAll()
+            .subscribe((runtimeTypes: RuntimeType[]) => {
+                this.runtimeTypes = runtimeTypes;
+            });
+    }
 
-  @HostListener('document:keydown.escape')
-  public onEsc(): void {
-      this.dialogRef.hide();
-  }
+    ngOnDestroy() {
+        if (this.runtimeTypesSub) {
+            this.runtimeTypesSub.unsubscribe();
+        }
+    }
 
-  private createBuildModelForm() {
-      const modelStatus = this.modelStatusPipe.transform(this.model);
-      this.modelType = this.model.lastModelRuntime.runtimeType ? this.model.lastModelRuntime.runtimeType.tags : '';
-      this.buildModelForm = this.fb.group({
-          modelId: [this.model.id],
-          name: [this.model.name],
-          status: [modelStatus],
-          runtimeType: [this.model.runtimeType, [Validators.required]],
-          modelType: [this.modelType, []],
-          source: [this.model.source, []],
-          inputFields: [this.model.inputFields, []],
-          outputFields: [this.model.outputFields, []],
-      });
-  }
+    private createBuildModelForm() {
+        this.buildModelForm = this.fb.group({
+            modelId: [this.model.id],
+            runtimeType: [this.runtimeTypes, [Validators.required]]
+        });
+    }
 
-  public getRuntimeTypeTags(runtimeTypeId: number) {
-      if (!this.runtimeTypes || this.runtimeTypes.length === 0 || !runtimeTypeId) {
-          return [];
-      }
-      return this.runtimeTypes.find(runtimeType => runtimeType.id === Number(runtimeTypeId))['tags'];
-  }
+    onSubmit() {
+        const controls = this.buildModelForm.controls;
+        const modelOptions = {
+            modelId: this.model.model.id,
+            runtimeTypeId: Number(controls.runtimeType.value)
+        };
 
-  submitBuildModelForm(buildModelForm) {
-      const controls = buildModelForm.controls;
-      const modelOptions = {
-          id: controls.modelId.value,
-          name: controls.name.value,
-          source: controls.source.value,
-          status: controls.status.value,
-          runtimeTypeId: +controls.runtimeType.value,
-          modelType: controls.modelType.value,
-          inputFields: controls.inputFields.value,
-          outputFields: controls.outputFields.value
-      };
-
-
-      this.modelsService.updateModel(modelOptions)
-          .flatMap(() => {
-              return this.buildModelService.build({modelVersion: null, modelId: modelOptions.id, runtimeTypeId: modelOptions.runtimeTypeId});
-          })
-          .subscribe(() => {
-              this.dialogRef.hide();
-              this.mdlSnackbarService.showSnackbar({
-                  message: 'Model was successfully updated',
-                  timeout: 5000
-              });
-              this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: modelOptions.id });
-          }, (error) => {
-              this.mdlSnackbarService.showSnackbar({
-                  message: `Error: ${error}`,
-                  timeout: 5000
-              });
-          });
-
-  }
+        this.modelsService.buildModel(modelOptions)
+            .subscribe(response => {
+                console.log('build model: ', response);
+                this.dialogRef.hide();
+                this.mdlSnackbarService.showSnackbar({
+                    message: 'Model was successfully updated',
+                    timeout: 5000
+                });
+                this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: new Model(response) });
+                this.store.dispatch({ type: Actions.GET_MODEL_RUNTIMES, payload: response.model.id });
+                // this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: this.modelBuilder.build(response.json()) });
+                // this.store({type: HydroActions.UPDATE_MODEL, payload: this.modelBuilder.build(data)})
+                // this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: modelOptions.modelId });
+            }, (error) => {
+                this.mdlSnackbarService.showSnackbar({
+                    message: `Error: ${error}`,
+                    timeout: 5000
+                });
+            });
+    }
 }

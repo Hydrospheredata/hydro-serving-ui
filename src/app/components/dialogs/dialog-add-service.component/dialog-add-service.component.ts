@@ -15,7 +15,7 @@ import { FormsService, ServicesService } from '@shared/services/_index';
     templateUrl: './dialog-add-service.component.html',
     styleUrls: ['./dialog-add-service.component.scss'],
     providers: [FormsService]
-    })
+})
 export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 
     public dialogType: string = 'Add';
@@ -39,8 +39,8 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
     }
 
     ngOnInit() {
-        this.createServiceForm();
-        this.initFormChangesListener();
+        // this.createServiceForm();
+        // this.initFormChangesListener();
     }
 
     onSubmit() {

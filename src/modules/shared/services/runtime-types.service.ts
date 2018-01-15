@@ -9,17 +9,15 @@ import { HttpService } from '@shared/services/http/_index';
 
 
 @Injectable()
-export class HttpRuntimeTypesService {
+export class RuntimeTypesService {
 
     private baseAPIUrl: string;
-    private baseUIUrl: string;
 
     constructor(
         private http: HttpService,
         private runtimeTypeBuilder: RuntimeTypeBuilder
     ) {
         this.baseAPIUrl = `${environment.apiUrl}/runtimeType`;
-        this.baseUIUrl = `${environment.uiUrl}/runtimeType`;
     }
 
     public getAll(): Observable<RuntimeType[]> {
@@ -28,9 +26,16 @@ export class HttpRuntimeTypesService {
         });
     }
 
+    public getRuntimeTypeByModelType(modelType: string): Observable<RuntimeType[]> {
+        return this.http.get(`${this.baseAPIUrl}/modelType/${modelType}`)
+            .map((res: Response) => {
+                return this.extractRuntimeTypes(res);
+            });
+    }
+
     private extractRuntimeTypes(res: Response) {
         let data = res.json();
-        let runtimeTypes :RuntimeType[] = [];
+        let runtimeTypes: RuntimeType[] = [];
         for(let index in data) {
             let runtimeType = this.runtimeTypeBuilder.build(data[index]);
             runtimeTypes.push(runtimeType);

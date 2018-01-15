@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { RuntimeTypeBuilder } from './runtime-type.builder';
-import { ModelRuntimeBuilder } from './model-runtime.builder';
-import { Model, RuntimeType, ModelRuntime, ModelBuild, CurrentServices } from '@shared/models/_index';
-import { ModelBuildBuilder } from './model-build.builder';
+import { ModelBase, Model, CurrentServices, ModelRuntime, ModelBuild } from '@shared/models/_index';
 import { ModelCurrentServicesBuilder } from './model-current-services.builder';
+import { ModelBaseBuilder } from './model-base.builder';
+import { ModelRuntimeBuilder } from './model-runtime.builder';
+import { ModelBuildBuilder } from './model-build.builder';
 
 
 @Injectable()
 export class ModelBuilder {
 
     constructor(
-    private runtimeTypeBuilder: RuntimeTypeBuilder,
-    private modelRuntimeBuilder: ModelRuntimeBuilder,
-    private modelBuildBuilder: ModelBuildBuilder,
-    private modelCurrentServicesBuilder: ModelCurrentServicesBuilder
+        private modelCurrentServicesBuilder: ModelCurrentServicesBuilder,
+        private modelBaseBuilder: ModelBaseBuilder,
+        private modelRuntimeBuilder: ModelRuntimeBuilder,
+        private modelBuildBuilder: ModelBuildBuilder
     ) { }
 
     public build(props): Model {
@@ -21,44 +21,40 @@ export class ModelBuilder {
     }
 
     private toModel(props) {
-        let runtimeType: RuntimeType;
+        console.log('before builder of model: ', props);
         let model: Model;
-        let lastModelRuntime: ModelRuntime;
-        let lastModelBuild: ModelBuild;
+        let modelBase: ModelBase;
+        let modelRuntime: ModelRuntime;
+        let modelBuild: ModelBuild;
         let currentServices: CurrentServices[] = [];
-
-        if (props.model && props.model['runtimeType']) {
-            runtimeType = this.runtimeTypeBuilder.build(props.model['runtimeType']);
-        }
-
-        if (props['lastModelRuntime']) {
-            lastModelRuntime = this.modelRuntimeBuilder.build(props['lastModelRuntime']);
-        }
-
-        if (props['lastModelBuild']) {
-            lastModelBuild = this.modelBuildBuilder.build(props['lastModelBuild']);
-        }
 
         if (props['currentServices'] && props['currentServices'].length) {
             currentServices = this.modelCurrentServicesBuilder.build(props['currentServices']);
         }
 
+        if (props['model']) {          
+            modelBase = this.modelBaseBuilder.build(props['model']);
+        }
+
+        if (props['lastModelRuntime']) {          
+            modelRuntime = this.modelRuntimeBuilder.build(props['lastModelRuntime']);
+        }
+
+        if (props['lastModelBuild']) {          
+            modelBuild = this.modelBuildBuilder.build(props['lastModelBuild']);
+        }
+
         model = new Model({
-            id: props.model['id'],
-            name: props.model['name'],
-            source: props.model['source'],
-            description: props.model['description'],
-            outputFields: props.model['outputFields'],
-            inputFields: props.model['inputFields'],
-            created: props.model['created'],
-            updated: props.model['updated'],
             nextVersion: props['nextVersion'],
             nextVersionAvailable: props['nextVersionAvailable'],
-            runtimeType: runtimeType,
-            lastModelRuntime: lastModelRuntime,
-            lastModelBuild: lastModelBuild,
-            currentServices: currentServices
+            currentServices: currentServices,
+            model: modelBase,
+            lastModelBuild: modelBuild,
+            lastModelRuntime: modelRuntime
         });
+
+        console.log('after builder of model: ', model);
+
         return model;
     }
 }

@@ -61,7 +61,7 @@ export class DeleteServiceSuccessAction implements Action {
     constructor(public applicationId: number) { }
 }
 
-export type ServicesActions
+export type ApplicationsActions
   = GetServicesAction
   | GetServicesSuccessAction
   | AddServiceAction

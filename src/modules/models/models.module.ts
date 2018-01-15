@@ -10,7 +10,8 @@ import { FormsModule } from '@angular/forms';
 import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
-    ModelDetailsSummaryComponent
+    ModelDetailsSummaryComponent,
+    ModelVersionDetailsComponent
 } from './_index';
 
 import { StoreModule } from '@ngrx/store';
@@ -20,7 +21,7 @@ import {
     ModelsReducer, 
     ModelServiceReducer, 
     ModelRuntimeReducer, 
-    ServicesReducer
+    ApplicationsReducer
 } from '@shared/_index';
 
 
@@ -38,7 +39,7 @@ import {
             models: ModelsReducer,
             modelService: ModelServiceReducer,
             modelRuntimes: ModelRuntimeReducer,
-            services: ServicesReducer 
+            services: ApplicationsReducer 
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25
@@ -47,7 +48,8 @@ import {
     declarations: [
         ModelsWrapperComponent,
         ModelDetailsComponent,
-        ModelDetailsSummaryComponent
+        ModelDetailsSummaryComponent,
+        ModelVersionDetailsComponent
     ],
     exports: [
         ModelDetailsSummaryComponent

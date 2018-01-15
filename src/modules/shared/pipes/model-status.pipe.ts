@@ -14,14 +14,15 @@ export class ModelStatusPipe implements PipeTransform {
             failed: 'FAILED'
         };
         let status = modelStatuses['created'];
+        console.log(model);
 
-        if (model.currentServices && model.currentServices.length) {
-            status = modelStatuses['deployed'];
-        } else if (Object.keys(model.lastModelRuntime).length && model.lastModelBuild.status === 'FINISHED') {
-            status = modelStatuses['stopped'];
-        } else if (model.lastModelBuild.status === 'ERROR' || model.lastModelBuild.status === 'FAILED') {
-            status = modelStatuses['failed'];
-        }
+        // if (model.currentServices && model.currentServices.length) {
+        //     status = modelStatuses['deployed'];
+        // } else if (Object.keys(model.lastModelRuntime).length && model.lastModelBuild.status === 'FINISHED') {
+        //     status = modelStatuses['stopped'];
+        // } else if (model.lastModelBuild.status === 'ERROR' || model.lastModelBuild.status === 'FAILED') {
+        //     status = modelStatuses['failed'];
+        // }
 
         return status;
     }

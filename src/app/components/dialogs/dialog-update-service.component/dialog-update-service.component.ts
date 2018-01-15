@@ -66,53 +66,53 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
     }
 
     ngOnInit() {
-        this.createServiceForm();
-        this.initFormChangesListener();
-        this.updateServiceFormValues(this.selectedService);
+        // this.createServiceForm();
+        // this.initFormChangesListener();
+        // this.updateServiceFormValues(this.selectedService);
     }
 
-    private updateServiceFormValues(service: Service) {
-        for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
-            this.addKafkaToService();
-        }
+    // private updateServiceFormValues(service: Service) {
+    //     for (let i = 0; i < service.kafkaStreamingSources.length - 1; i++) {
+    //         this.addKafkaToService();
+    //     }
 
-        if (!this.isJsonModeEnabled) {
-            for (let i = 0; i < service.stages[0].length - 1; i++) {
-                this.addModelToService();
-            }
-            const weights: any[] = [];
+    //     if (!this.isJsonModeEnabled) {
+    //         for (let i = 0; i < service.stages[0].length - 1; i++) {
+    //             this.addModelToService();
+    //         }
+    //         const weights: any[] = [];
 
-            service.stages[0].map(self => {
-                let selectedModel;
-                if (self.service) {
-                    selectedModel = self.service;
-                } else {
-                    selectedModel = this.modelServicesFiltered.filter(item => item.serviceId === self.serviceId).shift();
-                }
+    //         service.stages[0].map(self => {
+    //             let selectedModel;
+    //             if (self.service) {
+    //                 selectedModel = self.service;
+    //             } else {
+    //                 selectedModel = this.modelServicesFiltered.filter(item => item.serviceId === self.serviceId).shift();
+    //             }
 
-                weights.push({
-                    selectedModel: selectedModel.modelRuntime.modelId,
-                    model: self.service ? self.service : selectedModel,
-                    weight: self.weight
-                });
-                this.weightsForSlider.push(self.weight);
-                if (self.service) {
-                    this.onSelectModel(self.service.modelRuntime.modelId);
-                } else {
-                    this.onSelectModel(selectedModel.modelRuntime.modelId);
-                }
-            });
+    //             weights.push({
+    //                 selectedModel: selectedModel.modelRuntime.modelId,
+    //                 model: self.service ? self.service : selectedModel,
+    //                 weight: self.weight
+    //             });
+    //             this.weightsForSlider.push(self.weight);
+    //             if (self.service) {
+    //                 this.onSelectModel(self.service.modelRuntime.modelId);
+    //             } else {
+    //                 this.onSelectModel(selectedModel.modelRuntime.modelId);
+    //             }
+    //         });
 
-            this.serviceForm.patchValue({
-                weights: weights
-            });
-        }
+    //         this.serviceForm.patchValue({
+    //             weights: weights
+    //         });
+    //     }
 
-        this.serviceForm.patchValue({
-            serviceName: service.serviceName,
-            kafkaStreamingSources: service.kafkaStreamingSources
-        });
-    }
+    //     this.serviceForm.patchValue({
+    //         serviceName: service.serviceName,
+    //         kafkaStreamingSources: service.kafkaStreamingSources
+    //     });
+    // }
 
     onSubmit() {
         if (this.serviceForm.invalid) {

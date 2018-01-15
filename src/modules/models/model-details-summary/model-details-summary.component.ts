@@ -7,7 +7,7 @@ import { Model } from '@shared/_index';
     selector: 'hydro-model-details-summary',
     templateUrl: './model-details-summary.component.html',
     styleUrls: ['./model-details-summary.component.scss']
-    })
+})
 export class ModelDetailsSummaryComponent implements OnInit {
 
     @Input() model: Model;

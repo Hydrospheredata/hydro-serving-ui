@@ -6,7 +6,6 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import {
-    HttpModelsService,
     AppState, 
     Model, 
     ModelRuntime,
@@ -30,82 +29,88 @@ import * as Actions from '@shared/actions/_index';
     selector: 'hydro-model-details',
     templateUrl: './model-details.component.html',
     styleUrls: ['./model-details.component.scss']
-    })
+})
 export class ModelDetailsComponent implements OnInit, OnDestroy {
 
-  private activatedRouteSub: any;
-  public id: string;
-  public builds: any; // TODO: FIX TYPE
-  public model: Model;
-  public runtimes: ModelRuntime[];
-  public deployable = true;
-  public latestVersion: string;
-  public isModels = true;
-  private modelsRuntimesSub: Subscription;
-  private modelsStoreSelectionSubscription: Subscription;
-  public nestedModelRuntimes: any[]; // TODO: FIX TYPE
-  public tableHeader: string[] = [
-      'Created', 'Version', 'Status', 'Actions', 'Services'
-  ];
+    private activatedRouteSub: any;
+    public id: string;
+    public builds: any; // TODO: FIX TYPE
+    public model: Model;
+    public runtimes: ModelRuntime[];
+    public deployable = true;
+    public latestVersion: string;
+    public isModels = true;
+    private modelsRuntimesSub: Subscription;
+    private modelsStoreSelectionSubscription: Subscription;
+    public nestedModelRuntimes: any[]; // TODO: FIX TYPE
+    public tableHeader: string[] = [
+        'Created', 'Version', 'Status', 'Actions', 'Services'
+    ];
 
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private modelsService: HttpModelsService,
-    private dialog: MdlDialogService,
-    private store: Store<AppState>
-  ) { }
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private dialog: MdlDialogService,
+        private store: Store<AppState>
+    ) { }
 
-  ngOnInit() {
-      this.activatedRouteSub = this.activatedRoute.params
-          .map((params) => {
-              this.id = params['modelId'];
-              return this.id;
-          })
-          .subscribe((modelId) => {
-              if (this.modelsStoreSelectionSubscription) {
-                  this.modelsStoreSelectionSubscription.unsubscribe();
-              }
-              this.loadInitialData(modelId);
-          });
-  }
+    ngOnInit() {
+        this.activatedRouteSub = this.activatedRoute.params
+            .map(params => {
+                this.id = params['modelId'];
+                return this.id;
+            })
+            .subscribe(modelId => {
+                if (this.modelsStoreSelectionSubscription) {
+                    this.modelsStoreSelectionSubscription.unsubscribe();
+                }
+                if (this.modelsRuntimesSub) {
+                    this.modelsRuntimesSub.unsubscribe();
+                }
+                this.loadInitialData(modelId);
+            });
+    }
 
-  loadInitialData(id: string) {
-      this.modelsService.getBuildsByModel(id).first()
-          .subscribe((data) => {
-              this.builds = data.sort((a, b) => {
-                  return moment(b.started).diff(moment(a.started));
-              });
-          });
+    loadInitialData(modelId: string) {
+        // this.modelsService.getBuildsByModel(id).first()
+        //     .subscribe((data) => {
+        //         this.builds = data.sort((a, b) => {
+        //             return moment(b.started).diff(moment(a.started));
+        //         });
+        //     });
 
-      this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: this.id });
+        // this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: modelId });
+
+        this.store.dispatch({ type: Actions.GET_MODEL_RUNTIMES, payload: modelId });
 
 
-      this.modelsRuntimesSub = this.store.select('modelRuntimes')
-          .subscribe(modelRuntimes => {
-              this.nestedModelRuntimes = modelRuntimes;
-          });
+        this.modelsRuntimesSub = this.store.select('modelRuntimes')
+            .subscribe(modelRuntimes => {
+                this.nestedModelRuntimes = modelRuntimes;
+                console.log(this.nestedModelRuntimes);
+            });
 
-      this.modelsStoreSelectionSubscription = this.store.select('models').filter(models => models.length > 0)
-          .subscribe(models => {
-              this.model = models.find((dataStoreItem) => dataStoreItem.id === Number(this.id));
-              this.deployable = this.isDeployable();
-              this.latestVersion = this.getLatestVersion();
-          });
-  }
+        this.modelsStoreSelectionSubscription = this.store.select('models')
+            .filter(models => models.length > 0)
+            .subscribe(models => {
+                this.model = models.find(modelsStoreItem => modelsStoreItem.model.id === Number(modelId));
+                // this.deployable = this.isDeployable();
+                // this.latestVersion = this.getLatestVersion();
+            });
+    }
 
-  public isDeployable(): boolean {
-      if (!this.model || !this.model.lastModelRuntime.created) {
-          return true;
-      }
-      const modelUpdated = this.model.updated;
-      const runtimeCreated = this.model.lastModelRuntime.created;
-      return moment(modelUpdated).isAfter(moment(runtimeCreated));
-  }
+    public isDeployable(): boolean {
+        if (!this.model || !this.model.model.created) {
+            return true;
+        }
+        const modelUpdated = this.model.model.updated;
+        const runtimeCreated = this.model.model.created;
+        return moment(modelUpdated).isAfter(moment(runtimeCreated));
+    }
 
-  public getPayloadForModelDeploy(runtime) {
-      return { serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id };
-  }
+    public getPayloadForModelDeploy(runtime) {
+        return { serviceName: `${runtime.modelName}_${runtime.modelVersion}`, modelRuntimeId: runtime.id };
+    }
 
   public getLatestVersion(): string {
       if (this.isDeployable()) {
@@ -166,9 +171,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   }
 
   stopModel(modelService) {
+    console.log(modelService);
       const payload = {
           model: modelService.service,
-          hasWeightedServices: modelService.weightedServices.length > 0
+          // hasWeightedServices: modelService.weightedServices.length > 0
       };
       this.dialog.showCustomDialog({
           component: DialogStopModelComponent,

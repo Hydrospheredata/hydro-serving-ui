@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { MdlDialogService } from '@angular-mdl/core';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
-import { SortByPipe } from '@shared/pipes/sort-by.pipe';
+import { Router, NavigationEnd } from '@angular/router';
+// import { SortByPipe } from '@shared/pipes/sort-by.pipe';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Service, Model } from '@shared/models/_index';
@@ -15,9 +15,9 @@ import * as moment from 'moment';
 @Component({
     selector: 'hydro-sidebar',
     templateUrl: './sidebar.component.html',
-    providers: [SortByPipe],
+    // providers: [SortByPipe],
     styleUrls: ['./sidebar.component.scss']
-    })
+})
 export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
 
   public sidebarList: Service[] | Model[] = [];
@@ -32,8 +32,8 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
   private routeSubscription: Subscription;
 
   constructor(
-    private sortByPipe: SortByPipe,
-    private activatedRoute: ActivatedRoute,
+    // private sortByPipe: SortByPipe,
+    // private activatedRoute: ActivatedRoute,
     private router: Router,
     private dialog: MdlDialogService
   ) {
@@ -41,7 +41,7 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
           .subscribe(event => {
               if (event instanceof NavigationEnd && event.url.split('/').length <= 2) {
                   this.needsToGo = true;
-                  this.transitToFirstItem();
+                  // this.transitToFirstItem();
               }
           });
   }
@@ -51,18 +51,19 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges() {
       this.sidebarData.subscribe(items => {
+        console.log(items);
           this.sidebarList = items;
-          this.transitToFirstItem();
+          // this.transitToFirstItem();
       });
   }
 
-  private transitToFirstItem() {
-      if (this.needsToGo && this.sidebarList.length > 0) {
-          this.needsToGo = false;
-          const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
-          this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
-      }
-  }
+  // private transitToFirstItem() {
+  //     if (this.needsToGo && this.sidebarList.length > 0) {
+  //         this.needsToGo = false;
+  //         const sorted = this.sortByPipe.transform(this.sidebarList, 'id');
+  //         this.router.navigate([sorted[0].id], { relativeTo: this.activatedRoute });
+  //     }
+  // }
 
   ngOnDestroy() {
       this.routeSubscription.unsubscribe();
@@ -82,13 +83,16 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public getLatestVersion(item) {
-      if (!item.lastModelRuntime.id) {
+      // console.log(item.lastModelRuntime);
+      if (!item.lastModelRuntime) {
           return '0.0.1';
       }
-      if (this.isDeployable(item)) {
-          return `0.0.${Number(item.lastModelRuntime.modelVersion.split('.')[2]) + 1}`;
-      }
+      // if (item.lastModelRuntime && this.isDeployable(item)) {
+      //     return `0.0.${Number(item.lastModelRuntime.modelVersion.split('.')[2]) + 1}`;
+      // }
       return item.lastModelRuntime.modelVersion;
+
+      // return '0.0.1';
 
   }
 
@@ -96,12 +100,12 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
       this.sidebarFilter[option] = !this.sidebarFilter[option];
   }
 
-  public isDeployable(model) {
-      if (!model || !model.lastModelRuntime.created) {
+  public isDeployable(model: Model) {
+      if (!model || !model.model.created) {
           return true;
       }
-      const modelUpdated = model.updated;
-      const runtimeCreated = model.lastModelRuntime.created;
+      const modelUpdated = model.model.updated;
+      const runtimeCreated = model.model.created;
       return moment(modelUpdated).isAfter(moment(runtimeCreated));
   }
 

@@ -25,12 +25,12 @@ import {
 
 
 @Component({
-    selector: 'hydro-services-item-detail',
-    templateUrl: './services-item-detail.component.html',
-    styleUrls: ['./services-item-detail.component.scss']
-    })
+    selector: 'hydro-applications-item-detail',
+    templateUrl: './applications-item-detail.component.html',
+    styleUrls: ['./applications-item-detail.component.scss']
+})
 
-export class ServicesItemDetailComponent {
+export class ApplicationsItemDetailComponent {
     public JSON = JSON;
     public title: string = '';
     public isService: boolean = true;

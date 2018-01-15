@@ -63,12 +63,12 @@ export class ApplicationsDialogBase extends DialogBase {
         super(
             dialogRef
         );
-        this.store.select('modelService')
-            .subscribe(modelService => {
-                this.modelServicesFiltered = modelService.filter((item, index, self) => {
-                    return item.modelRuntime.runtimeType && item.serviceId > 0 && self.findIndex(t => { return t.modelRuntime.modelId === item.modelRuntime.modelId}) === index;
-                });
-            });
+        // this.store.select('modelService')
+        //     .subscribe(modelService => {
+        //         this.modelServicesFiltered = modelService.filter((item, index, self) => {
+        //             return item.modelRuntime.runtimeType && item.serviceId > 0 && self.findIndex(t => { return t.modelRuntime.modelId === item.modelRuntime.modelId}) === index;
+        //         });
+        //     });
         this.store.select('services')
             .subscribe(services => {
                 this.services = services;
@@ -86,7 +86,7 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public addWeightToModel(model?) {
         return this.fb.group({
-            selectedModel: [model ? this.modelServicesFiltered.find(item => item.modelRuntime.modelId === model).modelRuntime.modelId : ''],
+            // selectedModel: [model ? this.modelServicesFiltered.find(item => item.modelRuntime.modelId === model).modelRuntime.modelId : ''],
             model: [model ? model : ''],
             weight: ['100', [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
         });
@@ -142,20 +142,20 @@ export class ApplicationsDialogBase extends DialogBase {
         control.removeAt(i);
     }
 
-    public onSelectModel(value) {
-        this.modelVersions = this.modelServicesFiltered.filter(item => {
-            return item.modelRuntime.modelId === value;
-        });
-    }
+    // public onSelectModel(value) {
+    //     this.modelVersions = this.modelServicesFiltered.filter(item => {
+    //         return item.modelRuntime.modelId === value;
+    //     });
+    // }
 
-    public onAddingModel(value) {
-        this.addModelToService(value);
-        this.onSelectModel(value);
-        this.weightsForSlider.push(0);
-        this.serviceForm.patchValue({
-            addModelToService: ''
-        });
-    }
+    // public onAddingModel(value) {
+    //     this.addModelToService(value);
+    //     this.onSelectModel(value);
+    //     this.weightsForSlider.push(0);
+    //     this.serviceForm.patchValue({
+    //         addModelToService: ''
+    //     });
+    // }
 
     public getFormData(data) {
 
@@ -167,13 +167,13 @@ export class ApplicationsDialogBase extends DialogBase {
             
             let pipelineEditorValue = JSON.parse(this.pipelineEditorValue.replace(/[\n( )]/g, ''));
 
-            pipelineEditorValue.forEach(stage => {
-                stage.forEach(item => {
-                    let modelService = this.modelServicesFiltered.filter(modelService => modelService.serviceName === item.runtimeName).shift();
-                    item.runtimeId = modelService.modelRuntime.modelId;
-                    delete(item.runtimeName);
-                });
-            });
+            // pipelineEditorValue.forEach(stage => {
+            //     stage.forEach(item => {
+            //         let modelService = this.modelServicesFiltered.filter(modelService => modelService.serviceName === item.runtimeName).shift();
+            //         item.runtimeId = modelService.modelRuntime.modelId;
+            //         delete(item.runtimeName);
+            //     });
+            // });
             stages = pipelineEditorValue;
         } else {
             data.value.weights.forEach(self => {

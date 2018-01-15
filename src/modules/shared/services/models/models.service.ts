@@ -33,8 +33,12 @@ export class ModelsService {
 
     }
 
-    updateModel(model): Observable<Model> {
-        return this.http.put(this.baseAPIUrl, model);
+    buildModel(options): Observable<any> {
+        const updateModelUrl = `${this.baseUIUrl}/build`;
+        return this.http.post(updateModelUrl, options)
+            .map((res: Response): any => {
+                return res.json();
+            });
     }
 
     addModel(model: Model) {

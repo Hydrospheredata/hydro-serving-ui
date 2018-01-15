@@ -16,7 +16,7 @@
       "@app/*": ["app/*"],
       "@components/*": ["app/components/*"],
       "@node_modules/*": ["../node_modules/*"],
-      "@modules/*": ["app/modules/*"],
+      "@modules/*": ["modules/*"],
       "@shared/*": ["modules/shared/*"]
     },
     "typeRoots": [
