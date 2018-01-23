@@ -36,7 +36,7 @@ import * as Dialog from '@components/dialogs/_index';
         MomentModule,
         ApplicationsModule,
         ModelsModule,
-        SharedModule
+        SharedModule,
     ],
     entryComponents: [
         Dialog.DialogModelBuildComponent,

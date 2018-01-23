@@ -20,7 +20,7 @@ import {
     FormsService,
     HttpModelServiceService,
     RuntimeTypesService,
-    ServicesService,
+    ApplicationsService,
     ModelsService,
     ModelRuntimesService,
     ModelServicesService,
@@ -30,14 +30,14 @@ import {
 
 // Effects
 import {
-    ServicesEffects, 
+    ApplicationsEffects, 
     ModelEffects
 } from '@shared/effects/_index';
 
 // Builders
 import {
     ModelBuilder,
-    ModelBaseBuilder,
+    // ModelBaseBuilder,
     ModelRuntimeBuilder,
     RuntimeTypeBuilder,
     ModelCurrentServicesBuilder,
@@ -48,10 +48,15 @@ import {
 // Factories
 import { httpServiceFactory } from '@shared/factories/_index';
 
-// Guards
-import {
-    ServicesGuard
-} from '@shared/guards/_index';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { 
+    ModelsReducer, 
+    ModelServiceReducer, 
+    ModelRuntimeReducer, 
+    ApplicationsReducer
+} from '@shared/reducers/_index';
 
 
 
@@ -65,7 +70,16 @@ import {
         ClipboardModule,
         HydroRouter,
         HttpModule,
-        EffectsModule.forRoot([ServicesEffects, ModelEffects])
+        StoreModule.forRoot({
+            models: ModelsReducer,
+            modelService: ModelServiceReducer,
+            modelBuilds: ModelRuntimeReducer,
+            applications: ApplicationsReducer 
+        }),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25
+        }),
+        EffectsModule.forRoot([ApplicationsEffects, ModelEffects])
     ],
     exports: [
         NavbarComponent, 
@@ -83,19 +97,17 @@ import {
     providers: [
         // Builders
         ModelBuilder,
-        ModelBaseBuilder,
+        // ModelBaseBuilder,
         ModelRuntimeBuilder,
         RuntimeTypeBuilder,
         ModelCurrentServicesBuilder,
         ModelBuildBuilder,
         ServiceBuilder,
-        // Guards
-        ServicesGuard,
         // Services
         FormsService,
         HttpModelServiceService,
         RuntimeTypesService,
-        ServicesService,
+        ApplicationsService,
         ModelRuntimesService,
         ModelsService,
         ModelServicesService,
