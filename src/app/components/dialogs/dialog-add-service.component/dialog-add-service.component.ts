@@ -5,8 +5,8 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
-import { AppState, Service } from '@shared/models/_index';
-import { FormsService, ServicesService } from '@shared/services/_index';
+import { AppState, Application } from '@shared/models/_index';
+import { FormsService, ApplicationsService } from '@shared/services/_index';
 
 
 
@@ -26,15 +26,14 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
         public store: Store<AppState>,
-        public servicesService: ServicesService
+        public applicationsService: ApplicationsService
     ) {
         super(
             fb,
             dialogRef,
             formsService,
             mdlSnackbarService,
-            store,
-            servicesService
+            store
         );
     }
 
@@ -63,9 +62,9 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         const service = Object.assign( serviceInfo, { stages: data.stages } );
 
         // TODO: try to add actions after successfully adding in effects (in each file)
-        this.servicesService.addService(service)
+        this.applicationsService.addService(service)
             .subscribe(response => {
-                this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Service(response) });
+                this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Application(response) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully added',

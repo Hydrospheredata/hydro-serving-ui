@@ -1,13 +1,13 @@
-import { Service } from '@shared/models/_index';
+import { Application } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 
 
 
-const initialState: Service[] = [];
+const initialState: Application[] = [];
 
 export function ApplicationsReducer (state = initialState, action: Actions.ApplicationsActions) {
     switch (action.type) {
-        case Actions.GET_SERVICES_SUCCESS:
+        case Actions.GET_APPLICATIONS_SUCCESS:
             return Object.assign([], state, action.payload);
         case Actions.ADD_SERVICE_SUCCESS:
             return [
@@ -25,7 +25,7 @@ export function ApplicationsReducer (state = initialState, action: Actions.Appli
                     ...action.payload
                 };
             });
-        case Actions.DELETE_SERVICE_SUCCESS:
+        case Actions.DELETE_APPLICATION_SUCCESS:
             return state.filter(service => service.id !== action.applicationId);
 
         case Actions.ADD_SERVICE_FAILURE:

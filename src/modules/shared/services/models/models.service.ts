@@ -8,33 +8,31 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ModelsService {
-    baseAPIUrl: string;
-    baseUIUrl: string;
+    
+    private baseAPIUrl: string;
 
     constructor(
         private http: HttpService
     ) {
         this.baseAPIUrl = `${environment.apiUrl}/model`;
-        this.baseUIUrl = `${environment.uiUrl}/model`;
     }
 
     getModels() {
-        return this.http.get(`${this.baseUIUrl}/withInfo`)
+        return this.http.get(`${this.baseAPIUrl}`)
             .map((res: Response): any => {
                 return res.json();
             });
     }
 
-    getModelWithInfo(id: string) {
-        return this.http.get(`${this.baseUIUrl}/withInfo/${id}`)
+    getModelBuilds(id: string) {
+        return this.http.get(`${this.baseAPIUrl}/builds/${id}`)
             .map((res: Response): any => {
                 return res.json();
             });
-
     }
 
     buildModel(options): Observable<any> {
-        const updateModelUrl = `${this.baseUIUrl}/build`;
+        const updateModelUrl = `${this.baseAPIUrl}/build`;
         return this.http.post(updateModelUrl, options)
             .map((res: Response): any => {
                 return res.json();

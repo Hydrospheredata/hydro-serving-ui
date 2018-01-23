@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { 
     AppState, 
-    Service,
+    Application,
     ModelServicesService
 } from '@shared/_index';
 
@@ -33,15 +33,14 @@ import {
 export class ApplicationsItemDetailComponent {
     public JSON = JSON;
     public title: string = '';
-    public isService: boolean = true;
     public storeSub: Subscription;
     public combineSub: Subscription;
     public activeRouteSub: Subscription;
     public id: string = '';
     public serviceModels: any[] = [];
     public serviceModelsFiltered: any[];
-    public services: Service[] = [];
-    public service: Service;
+    public applications: Application[] = [];
+    public application: Application;
     public path: string = '';
 
     public fullHeight: boolean = false;
@@ -80,12 +79,12 @@ export class ApplicationsItemDetailComponent {
     }
 
     loadInitialData(id) {
-        this.storeSub = this.store.select('services')
-            .filter(services => services.length > 0)
-            .subscribe(services => {
-                if (services.length) {
-                    this.services = services;
-                    this.getServiceData(id);
+        this.storeSub = this.store.select('applications')
+            .filter(applications => applications.length > 0)
+            .subscribe(applications => {
+                if (applications.length) {
+                    this.applications = applications;
+                    this.getApplicationData(id);
                 }
             });
     }
@@ -95,23 +94,23 @@ export class ApplicationsItemDetailComponent {
         this.storeSub.unsubscribe();
     }
 
-    getServiceData(id: string) {
+    getApplicationData(id: string) {
         this.serviceModels = [];
-        if (this.services.length) {
-            
-            this.service = this.services.filter(service => service.id === Number(id)).shift();
-            
-            if (this.service && this.service.stages.length === 1) { // Checking for app
-                this.title = this.service.serviceName;
-                this.isService = true;
-                this.service.stages[0].forEach(weight => {
+        if (this.applications.length) {
+            this.application = this.applications.filter(application => application.id === Number(id)).shift();
+            if (this.isPipeline(this.application)) {
+                this.title = `Pipeline: ${this.application.serviceName}`;
+            } else {
+                this.title = this.application.serviceName;
+                this.application.stages[0].forEach(weight => {
                     this.getModelServiceData(weight);
                 });
-            } else {
-                this.title = `Pipeline: ${this.service.serviceName}`;
-                this.isService = false;
             }
         }
+    }
+
+    public isPipeline(application: Application): boolean {
+        return application && application.stages.length !== 1;
     }
 
     getModelServiceData(weight) {
@@ -119,6 +118,7 @@ export class ApplicationsItemDetailComponent {
         // this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: null });
         this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
+                console.log(data);
                 this.serviceModels.push({ data: data, weight: weight.weight });
                 if (this.serviceModels.length) {
                     this.serviceModelsFiltered = this.serviceModels.filter((item, index, self) => {
@@ -128,7 +128,7 @@ export class ApplicationsItemDetailComponent {
             });
     }
 
-    testApp(service: Service) {
+    testApp(application: Application) {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
             styles: { 'width': '800px', 'min-height': '350px' },
@@ -137,11 +137,11 @@ export class ApplicationsItemDetailComponent {
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{ provide: injectableModelBuildOptions, useValue: service }],
+            providers: [{ provide: injectableModelBuildOptions, useValue: application }],
         });
     }
 
-    editService(service: Service) {
+    editApplication(application: Application) {
         this.dialog.showCustomDialog({
             component: DialogUpdateServiceComponent,
             styles: {'width': '900px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto'},
@@ -150,11 +150,11 @@ export class ApplicationsItemDetailComponent {
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{provide: injectableServiceUpdate, useValue: service}]
+            providers: [{provide: injectableServiceUpdate, useValue: application}]
         });
     }
 
-    removeService(id: number) {
+    removeApplication(id: number) {
         this.dialog.showCustomDialog({
             component: DialogDeleteServiceComponent,
             styles: {'width': '600px', 'min-height': '250px'},

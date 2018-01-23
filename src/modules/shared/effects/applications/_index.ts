@@ -1,1 +1,1 @@
-export * from './services-effects.service';
+export * from './applications-effects.service';

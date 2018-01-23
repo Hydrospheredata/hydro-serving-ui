@@ -7,7 +7,7 @@ import { MdlSnackbarService, MdlModule } from '@angular-mdl/core';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
 import { injectableModelDeployOptions } from '@components/dialogs/_index';
-import { ServicesService } from '@shared/services/_index';
+import { ApplicationsService } from '@shared/services/_index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import {
@@ -38,7 +38,7 @@ describe('DialogDeployModelComponent', () => {
                 MdlSnackbarService,
                 {provide: injectableModelDeployOptions, useValue: modelStub },
                 {provide: Store, useValue: store },
-                {provide: ServicesService, useValue: servicesServiceStub},
+                {provide: ApplicationsService, useValue: servicesServiceStub},
                 {provide: ModelsService, useValue: servicesServiceStub},
                 {provide: ModelBuilder, useValue: servicesServiceStub},
                 {provide: Router, useValue: routerStub},

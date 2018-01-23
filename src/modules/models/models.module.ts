@@ -14,16 +14,6 @@ import {
     ModelVersionDetailsComponent
 } from './_index';
 
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
-import { 
-    ModelsReducer, 
-    ModelServiceReducer, 
-    ModelRuntimeReducer, 
-    ApplicationsReducer
-} from '@shared/_index';
-
 
 
 @NgModule({
@@ -35,15 +25,6 @@ import {
         MdlModule,
         MdlSelectModule,
         FormsModule,
-        StoreModule.forRoot({
-            models: ModelsReducer,
-            modelService: ModelServiceReducer,
-            modelRuntimes: ModelRuntimeReducer,
-            services: ApplicationsReducer 
-        }),
-        StoreDevtoolsModule.instrument({
-            maxAge: 25
-        })
     ],
     declarations: [
         ModelsWrapperComponent,

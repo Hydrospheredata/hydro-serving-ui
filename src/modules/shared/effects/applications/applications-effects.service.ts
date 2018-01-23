@@ -4,26 +4,26 @@ import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { ServiceBuilder } from '@shared/builders/_index';
-import { ServicesService } from '@shared/services/_index';
-import { Service } from '@shared/models/_index';
+import { ApplicationsService } from '@shared/services/_index';
+import { Application } from '@shared/models/_index';
 import * as HydroActions from '@shared/actions/_index';
 
 @Injectable()
-export class ServicesEffects {
+export class ApplicationsEffects {
 
-    @Effect() getServices$: Observable<Action> = this.actions.ofType(HydroActions.GET_SERVICES)
+    @Effect() getServices$: Observable<Action> = this.actions.ofType(HydroActions.GET_APPLICATIONS)
         .switchMap(() => {
-            return this.servicesService.getServices().take(1)
-                .map((services: Service[]) => {
+            return this.applicationsService.getServices().take(1)
+                .map((services: Application[]) => {
                     let data = services.map(service => this.serviceBuilder.build(service));
-                    return ({ type: HydroActions.GET_SERVICES_SUCCESS, payload: data });
+                    return ({ type: HydroActions.GET_APPLICATIONS_SUCCESS, payload: data });
                 });
         });
 
     // @Effect() addService$: Observable<Action> = this.actions.ofType(HydroActions.ADD_SERVICE)
     //     .map((action: HydroActions.AddServiceAction) => action.payload)
     //     .switchMap(payload => {
-    //         return this.servicesService.addService(payload)
+    //         return this.applicationsService.addService(payload)
     //             .map((service: Service) => {
     //                 return ({ type: HydroActions.ADD_SERVICE_SUCCESS, payload: new Service(service) });
     //             })
@@ -35,24 +35,24 @@ export class ServicesEffects {
     // @Effect() updateService$: Observable<Action> = this.actions.ofType(HydroActions.UPDATE_SERVICE)
     //     .map((action: HydroActions.UpdateServiceAction) => action.payload)
     //     .switchMap(payload => {
-    //         return this.servicesService.updateService(payload)
+    //         return this.applicationsService.updateService(payload)
     //             .map((service: Service) => {
     //                 return ({ type: HydroActions.UPDATE_SERVICE_SUCCESS, payload: new Service(service) })
     //             })
     //     });
 
-    @Effect() deleteService$: Observable<Action> = this.actions.ofType(HydroActions.DELETE_SERVICE)
-        .map((action: HydroActions.DeleteServiceAction) => action.applicationId)
+    @Effect() deleteApplication$: Observable<Action> = this.actions.ofType(HydroActions.DELETE_APPLICATION)
+        .map((action: HydroActions.DeleteApplicationAction) => action.applicationId)
         .switchMap(applicationId => {
-            return this.servicesService.deleteService(applicationId)
+            return this.applicationsService.deleteApplication(applicationId)
                 .map(() => {
-                    return ({ type: HydroActions.DELETE_SERVICE_SUCCESS, applicationId: applicationId });
+                    return ({ type: HydroActions.DELETE_APPLICATION_SUCCESS, applicationId: applicationId });
                 });
         });
 
     constructor(
         private actions: Actions,
-        private servicesService: ServicesService,
+        private applicationsService: ApplicationsService,
         private serviceBuilder: ServiceBuilder
     ) {}
 }

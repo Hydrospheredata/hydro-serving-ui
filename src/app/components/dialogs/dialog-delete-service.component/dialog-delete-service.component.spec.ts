@@ -4,7 +4,7 @@ import { DialogDeleteServiceComponent } from './dialog-delete-service.component'
 import { injectableServiceOptions } from '@components/dialogs/_index';
 import { Store } from '@ngrx/store';
 import { MdlDialogReference, MdlSnackbarService, MdlModule } from '@angular-mdl/core';
-import { ServicesService } from '@shared/services/_index';
+import { ApplicationsService } from '@shared/services/_index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -27,7 +27,7 @@ describe('DialogDeleteServiceComponent', () => {
                 MdlSnackbarService,
                 {provide: injectableServiceOptions, useValue: modelStub },
                 {provide: Store, useValue: store },
-                {provide: ServicesService, useValue: servicesServiceStub},
+                {provide: ApplicationsService, useValue: servicesServiceStub},
                 {provide: Router, useValue: routerStub},
                 {provide: ActivatedRoute, useValue: routerStub},
                 {provide: Location, useValue: store}

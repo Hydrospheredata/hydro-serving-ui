@@ -2,19 +2,19 @@
     <div class="content-header">
         <div class="content-header__title">{{title}}</div>
         <div class="btn-group">
-            <button class="btn" *ngIf="isService" (click)="testApp(service)">
+            <button class="btn" *ngIf="isPipeline" (click)="testApp(application)">
                 <svg>
                     <use xlink:href="#icon-start"></use>
                 </svg>
                 Test
             </button>
-            <button class="btn btn-flat" (click)="editService(service)">
+            <button class="btn btn-flat" (click)="editApplication(application)">
                 <svg>
                     <use xlink:href="#icon-edit"></use>
                 </svg>
                 Edit
             </button>
-            <button class="btn btn-flat" (click)="removeService(service.id)">
+            <button class="btn btn-flat" (click)="removeApplication(application.id)">
                 <svg>
                     <use xlink:href="#icon-remove"></use>
                 </svg>
@@ -27,12 +27,12 @@
         <ol class="content-info__sublist">
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">PublicPath</span>
-                <span class="content-info__sublist-item-value">{{path}}</span>
+                <span class="content-info__sublist-item-value"><a [href]="path" target="_blank">{{path}}</a></span>
             </li>
         </ol>
 
-        <ul class="content-info__list" *ngIf="service?.kafkaStreamingSources[0]">
-            <li class="content-info__list-item" *ngFor="let kafka of service.kafkaStreamingSources">
+        <ul class="content-info__list" *ngIf="application?.kafkaStreamingSources[0]">
+            <li class="content-info__list-item" *ngFor="let kafka of application.kafkaStreamingSources">
                 <ol class="content-info__sublist">
                     <li class="content-info__sublist-item" *ngFor="let item of kafka | iterateAsArray | slice: 1">
                         <span class="content-info__sublist-item-title">{{item}}</span>
@@ -43,7 +43,7 @@
         </ul>
     </div>
 
-    <table *ngIf="isService" class='hydro-table hydro-table-services'>
+    <table *ngIf="isPipeline" class='hydro-table hydro-table-services'>
         <thead class="hydro-table-head">
             <tr>
                 <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
@@ -59,8 +59,8 @@
         </tbody>
     </table>
 
-    <div *ngIf="!isService">
-        <div class="hydro-panel" *ngFor="let stage of service.stages; let i = index">
+    <div *ngIf="!isPipeline">
+        <div class="hydro-panel" *ngFor="let stage of application?.stages; let i = index">
             <h5 class="hydro-panel__header">Stage {{i + 1}}</h5>
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">

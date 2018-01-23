@@ -1,18 +1,18 @@
 import { Action } from '@ngrx/store';
-import { Service } from '@shared/models/_index';
+import { Application } from '@shared/models/_index';
 
 
 
 // GET
-export const GET_SERVICES = 'GET_SERVICES';
-export const GET_SERVICES_SUCCESS = 'GET_SERVICES_SUCCESS';
+export const GET_APPLICATIONS = 'GET_APPLICATIONS';
+export const GET_APPLICATIONS_SUCCESS = 'GET_APPLICATIONS_SUCCESS';
 
-export class GetServicesAction implements Action {
-    readonly type = GET_SERVICES;
+export class GetApplicationsAction implements Action {
+    readonly type = GET_APPLICATIONS;
 }
-export class GetServicesSuccessAction implements Action {
-    readonly type = GET_SERVICES_SUCCESS;
-    constructor(public payload: Service[]) { }
+export class GetApplicationsSuccessAction implements Action {
+    readonly type = GET_APPLICATIONS_SUCCESS;
+    constructor(public payload: Application[]) { }
 }
 
 // ADD
@@ -22,11 +22,11 @@ export const ADD_SERVICE_FAILURE = 'ADD_SERVICE_FAILURE';
 
 export class AddServiceAction implements Action {
     readonly type = ADD_SERVICE;
-    constructor(public payload: Service) { }
+    constructor(public payload: Application) { }
 }
 export class AddServiceSuccessAction implements Action {
     readonly type = ADD_SERVICE_SUCCESS;
-    constructor(public payload: Service) { }
+    constructor(public payload: Application) { }
 }
 export class AddServiceFailureAction implements Action {
     readonly type = ADD_SERVICE_FAILURE;
@@ -40,34 +40,34 @@ export const UPDATE_SERVICE_SUCCESS = 'UPDATE_SERVICE_SUCCESS';
 
 export class UpdateServiceAction implements Action {
     readonly type = UPDATE_SERVICE;
-    constructor(public payload: Service) { }
+    constructor(public payload: Application) { }
 }
 export class UpdateServiceSuccessAction implements Action {
     readonly type = UPDATE_SERVICE_SUCCESS;
-    constructor(public payload: Service) { }
+    constructor(public payload: Application) { }
 }
 
 
 // DELETE
-export const DELETE_SERVICE = 'DELETE_SERVICE';
-export const DELETE_SERVICE_SUCCESS = 'DELETE_SERVICE_SUCCESS';
+export const DELETE_APPLICATION = 'DELETE_APPLICATION';
+export const DELETE_APPLICATION_SUCCESS = 'DELETE_APPLICATION_SUCCESS';
 
-export class DeleteServiceAction implements Action {
-    readonly type = DELETE_SERVICE;
+export class DeleteApplicationAction implements Action {
+    readonly type = DELETE_APPLICATION;
     constructor(public applicationId: number) { }
 }
-export class DeleteServiceSuccessAction implements Action {
-    readonly type = DELETE_SERVICE_SUCCESS;
+export class DeleteApplicationSuccessAction implements Action {
+    readonly type = DELETE_APPLICATION_SUCCESS;
     constructor(public applicationId: number) { }
 }
 
 export type ApplicationsActions
-  = GetServicesAction
-  | GetServicesSuccessAction
+  = GetApplicationsAction
+  | GetApplicationsSuccessAction
   | AddServiceAction
   | AddServiceSuccessAction
   | AddServiceFailureAction
   | UpdateServiceAction
   | UpdateServiceSuccessAction
-  | DeleteServiceAction
-  | DeleteServiceSuccessAction;
+  | DeleteApplicationAction
+  | DeleteApplicationSuccessAction;

@@ -1,20 +1,20 @@
 <div>
-  <h2 class="mdl-dialog__title mat-dialog-title">Deploy model "{{model.model.name}}"</h2>
+  <h2 class="mdl-dialog__title mat-dialog-title">Build model "{{model.name}}"</h2>
   <form [formGroup]="buildModelForm" (ngSubmit)="onSubmit()">
 
       <div class="model-details-table">
         <div class="model-details-row">
             <span class="model-details-label">Version</span>
             <span class="model-details-label">.................</span>
-            <span class="model-details-value runtime">{{ model?.lastModelRuntime?.modelVersion || '0.0.1' }}</span>
+            <span class="model-details-value runtime">{{ model?.lastModelRuntime?.modelVersion || '1' }}</span>
         </div>
-        <div class="model-details-row">
+        <!-- <div class="model-details-row">
             <span class="model-details-label">Runtime</span>
             <span class="model-details-label">...............</span>
             <mdl-select style="margin-left: 0;" class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet runtime-select" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
               <mdl-option *ngFor="let type of runtimeTypes" [value]="type.id">{{type.name}}:{{type.version}}</mdl-option>
             </mdl-select>
-        </div>
+        </div> -->
         <!-- <div class="model-details-row">
             <span class="model-details-label">Environment</span>
             <span class="model-details-label">...............</span>
@@ -26,7 +26,7 @@
 
       <div class="btn-group form-actions">
         <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">CANCEL</button>
-        <button class="btn btn-colored btn-large" type="submit" [disabled]="buildModelForm.invalid">Deploy model</button>
+        <button class="btn btn-colored btn-large" type="submit" [disabled]="buildModelForm.invalid">Build model</button>
       </div>
   </form>
 </div>

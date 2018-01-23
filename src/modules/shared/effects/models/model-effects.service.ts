@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { ModelsService, ModelRuntimesService, ModelServicesService } from '@shared/services/_index';
+import { ModelsService, ModelServicesService } from '@shared/services/_index';
 import { ModelService } from '@shared/models/_index';
 import { ModelBuilder } from '@shared/builders/_index';
 import * as HydroActions from '@shared/actions/_index';
@@ -18,13 +18,13 @@ export class ModelEffects {
         );
 
 
-    @Effect() getModelRuntimes$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODEL_RUNTIMES)
-        .map((action: HydroActions.GetModelRuntimesAction) => action.payload)
+    @Effect() getModelRuntimes$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODEL_BUILDS)
+        .map((action: HydroActions.GetModelBuildsAction) => action.payload)
         .switchMap(payload => {
-            console.log(payload);
-            return this.modelRuntimesService.getModelRuntimesWithInfo(payload).take(1)
-                .map((modelRuntime) => {
-                    return ({ type: HydroActions.GET_MODEL_RUNTIMES_SUCCESS, payload: modelRuntime });
+            return this.modelsService.getModelBuilds(payload)
+                .take(1)
+                .map(data => {
+                    return ({ type: HydroActions.GET_MODEL_BUILDS_SUCCESS, payload: data });
                 })
         });
 
@@ -41,7 +41,8 @@ export class ModelEffects {
 
     @Effect() getModelServices: Observable<Action> = this.actions.ofType(HydroActions.GET_MODEL_SERVICES)
         .switchMap(() => {
-            return this.modelServicesService.getModelServices().take(1)
+            return this.modelServicesService.getModelServices()
+                .take(1)
                 .map((modelServices: ModelService[]) => {
                     return ({ type: HydroActions.GET_MODEL_SERVICES_SUCCESS, payload: modelServices });
                 });
@@ -50,10 +51,11 @@ export class ModelEffects {
 
 
     constructor(
+        // private modelBuilder: ModelBuilder,
         private modelBuilder: ModelBuilder,
         private modelsService: ModelsService,
         private modelServicesService: ModelServicesService,
-        private modelRuntimesService: ModelRuntimesService,
+        // private modelRuntimesService: ModelRuntimesService,
         private actions: Actions
     ) {}
 }

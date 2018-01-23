@@ -1,8 +1,12 @@
-import { Service, Model, ModelService } from '@shared/models/_index';
+import { 
+    Application, 
+    Model, 
+    ModelService
+} from '@shared/models/_index';
 
 export interface AppState {
-    services: Service[];
+    applications: Application[];
     models: Model[];
     modelService: ModelService[];
-    modelRuntimes: any;
+    modelBuilds: any;
 }

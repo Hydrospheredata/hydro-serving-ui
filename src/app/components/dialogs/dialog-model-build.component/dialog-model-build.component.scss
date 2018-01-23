@@ -15,14 +15,6 @@
 
 
 
-
-// TEMPORARY WORKAROUND
-// TODO:REMOVE AND USE PROPER COMPONENT
-$default-blue: #539ae9;
-$default-green: #8cc63e;
-$bold: "Museo Sans Bold";
-$light: "Museo Sans Light";
-
 .model-details {
   >p {
       >span {
@@ -43,7 +35,7 @@ $light: "Museo Sans Light";
   }
   &-label {
     color: #808080;
-    font-family: $light;
+    font-family: $font-family-light;
   }
   &-panel {
     background-color: $main-bg-color;
@@ -53,13 +45,13 @@ $light: "Museo Sans Light";
     text-align: center;
     color: #818994;
     font-size: 18px;
-    font-family: $bold;
+    font-family: $font-family-bold;
   }
   &-table {
     margin-bottom: 70px
   }
   &-link {
-    color: $default-blue;
+    color: $color--blue;
     text-decoration: none;
   }
 }
@@ -80,7 +72,7 @@ $light: "Museo Sans Light";
 }
 
 .runtime {
-  font-family: $bold;
+  font-family: $font-family-bold;
 }
 
 .btn-group {

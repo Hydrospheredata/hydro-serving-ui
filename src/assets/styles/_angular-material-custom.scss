@@ -1,6 +1,6 @@
 .mat-select {
-  font-family: $main-font-family !important;
-  color: $main-color;
+  font-family: $font-family-regular !important;
+  color: $color-base;
   display: block !important;
   border-radius: 5px;
   padding: 5px;
@@ -8,13 +8,13 @@
 }
 
 // .mat-dialog-container {
-//   font-family: $main-font-family !important;
-//   color: $main-color;
+//   font-family: $font-family-regular !important;
+//   color: $color-base;
 // }
 
 // .mat-dialog-title {
-//   font-family: $main-font-family !important;
-//   color: $main-color;
+//   font-family: $font-family-regular !important;
+//   color: $color-base;
 //   font-size: 36px;
 //   font-weight: 400;
 //   margin: 0 0 20px;
@@ -34,7 +34,7 @@
 
 .mat-select-value {
   position: absolute;
-  color: $main-color;
+  color: $color-base;
   max-width: calc(100% - 18px);
   flex-grow: 1;
   left: 5px;
@@ -43,7 +43,7 @@
 }
 
 .mat-select-arrow {
-  color: $main-color;
+  color: $color-base;
 }
 
 .mat-select-underline {
@@ -52,7 +52,7 @@
 
 .mat-select:focus:not(.mat-select-disabled).mat-primary .mat-select-arrow,
 .mat-select:focus:not(.mat-select-disabled).mat-primary .mat-select-trigger {
-  color: $main-color;
+  color: $color-base;
 }
 
 // .mat-dialog-actions {
@@ -62,7 +62,7 @@
 // }
 
 .mat-button {
-  font-family: $main-font-family !important;
+  font-family: $font-family-regular !important;
   border-radius: 0px !important;
 
   &.mat-button--big {
@@ -73,7 +73,7 @@
 
   &.mat-button--primary {
     border: 3px solid $color--light-blue;
-    color: $main-color;
+    color: $color-base;
 
     &.mat-ripple-element {
       background-color: $color--light-blue;
@@ -96,7 +96,7 @@
 }
 
 .mat-tab-group {
-  font-family: $main-font-family;
+  font-family: $font-family-regular;
 }
 
 .mat-tab-list {
@@ -114,17 +114,17 @@
   width: 100%;
   &.mat-tab-label-active {
     opacity: 1;
-    color: $main-color;
+    color: $color-base;
   }
   &:focus {
     background: transparent;
-    color: $main-color;
+    color: $color-base;
     opacity: 1;
   }
 }
 
 .mat-ink-bar {
-  background-color: $main-color;
+  background-color: $color-base;
 }
 
 .mdl-progress {

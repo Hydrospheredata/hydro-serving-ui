@@ -6,8 +6,8 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
-import { Service } from '@shared/models/_index';
-import { ServicesService, ModelServicesService, ModelRuntimesService } from '@shared/services/_index';
+import { Application } from '@shared/models/_index';
+import { ApplicationsService, ModelServicesService, ModelRuntimesService } from '@shared/services/_index';
 import { DialogBase } from '@shared/base/_index';
 import { environment } from 'environments/environment';
 import { Location } from '@angular/common';
@@ -42,7 +42,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     private modelServicesService: ModelServicesService,
     private modelRuntimesService: ModelRuntimesService,
     private location: Location,
-    private servicesService: ServicesService
+    private applicationsService: ApplicationsService
     ) {
         super(
             dialogRef
@@ -74,7 +74,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         };
 
 
-        if (this.model instanceof Service) {
+        if (this.model instanceof Application) {
             this.input = [{}];
             this.testTitle = `Test service "${this.model.serviceName}"`;
             this.testBtn = 'Test service';
@@ -100,7 +100,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         let payload = '';
         payload = JSON.stringify(this.createTestOptions(form));
 
-        if (this.model instanceof Service) {
+        if (this.model instanceof Application) {
             path = `${this.apiUrl}/weightedServices/serveByName/${this.model.serviceName}`;
         } else {
             path = `${this.apiUrl}/modelService/serve/${this.model.modelRuntime.modelName}`;
@@ -156,9 +156,9 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         let snackbarSuccessMsg: string;
         let entityName: string;
         const testOptions = this.createTestOptions(form);
-        if (this.model instanceof Service) {
-            apiUrl = this.servicesService.serveService.bind(this.servicesService);
-            snackbarSuccessMsg = 'Service test was successful';
+        if (this.model instanceof Application) {
+            apiUrl = this.applicationsService.serveService.bind(this.applicationsService);
+            snackbarSuccessMsg = 'Application test was successful';
             entityName = this.model.serviceName;
         } else {
             apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);

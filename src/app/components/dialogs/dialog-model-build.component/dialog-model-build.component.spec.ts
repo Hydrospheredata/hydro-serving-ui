@@ -16,7 +16,7 @@ import * as Actions from '@shared/actions/_index';
 import { ModelBuilder, ModelRuntimeBuilder } from '@shared/builders/_index';
 import { HttpModelServiceService } from '@shared/services/http-model-service.service';
 import { injectableModelOptions } from '@components/dialogs/_index';
-import { ServicesService } from '@shared/services/_index';
+import { ApplicationsService } from '@shared/services/_index';
 import { Router, ActivatedRoute } from '@angular/router';
 
 describe('DialogModelBuildComponent', () => {
@@ -41,7 +41,7 @@ describe('DialogModelBuildComponent', () => {
                 MdlSnackbarService,
                 { provide: injectableModelOptions, useValue: modelStub },
                 { provide: Store, useValue: store },
-                { provide: ServicesService, useValue: servicesServiceStub },
+                { provide: ApplicationsService, useValue: servicesServiceStub },
                 { provide: ModelsService, useValue: servicesServiceStub },
                 { provide: ModelBuilder, useValue: servicesServiceStub },
                 { provide: ModelRuntimeBuilder, useValue: servicesServiceStub },

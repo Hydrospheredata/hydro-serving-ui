@@ -5,11 +5,11 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 
 import { ApplicationsDialogBase } from '@shared/base/_index';
-import { ServicesService, FormsService } from '@shared/services/_index';
+import { ApplicationsService, FormsService } from '@shared/services/_index';
 import * as Actions from '@shared/actions/_index';
-import { AppState, Service } from '@shared/models/_index';
+import { AppState, Application } from '@shared/models/_index';
 
-export let injectableServiceUpdate = new InjectionToken<Service>('selectedService');
+export let injectableServiceUpdate = new InjectionToken<Application>('selectedService');
 
 
 
@@ -27,22 +27,20 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
     public selectedModels: any[] = [];
 
     constructor(
-    @Inject(injectableServiceUpdate) data: Service,
+    @Inject(injectableServiceUpdate) data: Application,
         public store: Store<AppState>,
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public servicesService: ServicesService,
+        public applicationsService: ApplicationsService,
     ) {
         super(
             fb,
             dialogRef,
             formsService,
             mdlSnackbarService,
-            store,
-            servicesService,
-
+            store
         );
         this.selectedService = data;
         if (this.selectedService.kafkaStreamingSources.length) {
@@ -129,9 +127,9 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
 
         const service = Object.assign( serviceInfo, { stages: data.stages } );
 
-        this.servicesService.updateService(service)
+        this.applicationsService.updateService(service)
             .subscribe(response => {
-                this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Service(response) });
+                this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Application(response) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully added',

@@ -26,7 +26,7 @@ import {
     InputTextComponent,
     SelectComponent,
     TextareaComponent,
-    SidebarComponent
+    SidebarComponent,
 } from './components/_index';
 
 
@@ -57,7 +57,7 @@ import {
         InputTextComponent,
         TextareaComponent,
         SelectComponent,
-        SidebarComponent
+        SidebarComponent,
     ],
     exports: [
         // Pipes
@@ -73,7 +73,7 @@ import {
         InputTextComponent,
         TextareaComponent,
         SelectComponent,
-        SidebarComponent
+        SidebarComponent,
     ]
 })
 export class SharedModule { }

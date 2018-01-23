@@ -5,8 +5,8 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
-import { AppState, ModelService, Service } from '@shared/models/_index';
-import { FormsService, ServicesService } from '@shared/services/_index';
+import { AppState, ModelService, Application } from '@shared/models/_index';
+import { FormsService } from '@shared/services/_index';
 
 import 'codemirror/mode/yaml/yaml.js';
 import 'codemirror/addon/edit/matchbrackets.js';
@@ -35,7 +35,7 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public pipelineEditorValue: string = '';
 
-    public selectedService: Service;
+    public selectedService: Application;
     public formTitle: string;
     public formErrors = {
         serviceName: '',
@@ -48,7 +48,8 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public modelVersions: any[] = [];
 
-    public services: Service[];
+    public services: Application[];
+    public modelVersionsList: any[];
 
     public weightsForSlider: any[] = [100];
 
@@ -57,8 +58,7 @@ export class ApplicationsDialogBase extends DialogBase {
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public store: Store<AppState>,
-        public servicesService: ServicesService
+        public store: Store<AppState>
     ) {
         super(
             dialogRef
@@ -69,10 +69,16 @@ export class ApplicationsDialogBase extends DialogBase {
         //             return item.modelRuntime.runtimeType && item.serviceId > 0 && self.findIndex(t => { return t.modelRuntime.modelId === item.modelRuntime.modelId}) === index;
         //         });
         //     });
-        this.store.select('services')
-            .subscribe(services => {
-                this.services = services;
-            });
+        // this.store.select('services')
+        //     .subscribe(services => {
+        //         this.services = services;
+        //     });
+
+        this.store.select('modelBuilds')
+            .skip(1)
+            .subscribe(modelVersionsList => {
+                this.modelVersionsList = modelVersionsList;
+            })
     }
 
     public createServiceForm() {

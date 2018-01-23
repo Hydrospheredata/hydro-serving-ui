@@ -1,13 +1,13 @@
 import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
-import { RuntimeTypesService, ModelsService } from '@shared/services/_index';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { ModelsService } from '@shared/services/_index';
 import { DialogBase } from '@shared/base/_index';
 
 // import { ModelBuilder } from '@shared/builders/_index';
 
 import { Store } from '@ngrx/store';
-import { AppState, RuntimeType, Model } from '@shared/models/_index';
+import { AppState, Model } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 import 'rxjs/add/operator/mergeMap';
 
@@ -36,7 +36,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
         private fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         private mdlSnackbarService: MdlSnackbarService,
-        private runtimeTypesService: RuntimeTypesService,
+        // private runtimeTypesService: RuntimeTypesService,
         @Inject(injectableModelOptions) data,
         private store: Store<AppState>,
         private modelsService: ModelsService,
@@ -54,10 +54,10 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
         //     .subscribe((runtimeTypes: RuntimeType[]) => {
         //         this.runtimeTypes = runtimeTypes;
         //     });
-        this.runtimeTypesSub = this.runtimeTypesService.getAll()
-            .subscribe((runtimeTypes: RuntimeType[]) => {
-                this.runtimeTypes = runtimeTypes;
-            });
+        // this.runtimeTypesSub = this.runtimeTypesService.getAll()
+        //     .subscribe((runtimeTypes: RuntimeType[]) => {
+        //         this.runtimeTypes = runtimeTypes;
+        //     });
     }
 
     ngOnDestroy() {
@@ -69,15 +69,15 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
     private createBuildModelForm() {
         this.buildModelForm = this.fb.group({
             modelId: [this.model.id],
-            runtimeType: [this.runtimeTypes, [Validators.required]]
+            // runtimeType: [this.runtimeTypes, [Validators.required]]
         });
     }
 
     onSubmit() {
-        const controls = this.buildModelForm.controls;
+        // const controls = this.buildModelForm.controls;
         const modelOptions = {
-            modelId: this.model.model.id,
-            runtimeTypeId: Number(controls.runtimeType.value)
+            modelId: this.model.id,
+            // runtimeTypeId: Number(controls.runtimeType.value)
         };
 
         this.modelsService.buildModel(modelOptions)
@@ -85,11 +85,11 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
                 console.log('build model: ', response);
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
-                    message: 'Model was successfully updated',
+                    message: 'Model was successfully builded',
                     timeout: 5000
                 });
                 this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: new Model(response) });
-                this.store.dispatch({ type: Actions.GET_MODEL_RUNTIMES, payload: response.model.id });
+                this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: response.model.id });
                 // this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: this.modelBuilder.build(response.json()) });
                 // this.store({type: HydroActions.UPDATE_MODEL, payload: this.modelBuilder.build(data)})
                 // this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: modelOptions.modelId });

@@ -16,7 +16,7 @@ export function ModelsReducer(state = initialState, action: ModelActions.ModelAc
         ];
     case ModelActions.UPDATE_MODEL:
         return state.map(item => {
-            if (item.model.id !== action.payload.model.id) {
+            if (item.id !== action.payload.id) {
                 return item;
             }
             console.log('updated model item: ', new Model({...item,...action.payload}));
@@ -26,7 +26,7 @@ export function ModelsReducer(state = initialState, action: ModelActions.ModelAc
             });
         });
     case ModelActions.DELETE_MODEL:
-        return state.filter(service => service.model.id !== Number(action.modelId));
+        return state.filter(service => service.id !== Number(action.modelId));
     default:
         return state;
     }

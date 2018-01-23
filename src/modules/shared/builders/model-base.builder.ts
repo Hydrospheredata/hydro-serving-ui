@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { ModelBase } from '@shared/models/_index';
+import { Model } from '@shared/models/_index';
+
+
 
 @Injectable()
-export class ModelBaseBuilder {
+export class ModelBuilder {
 
     constructor() { }
 
-    public build(props): ModelBase {
-        return this.toModelBase(props);
+    public build(props): Model {
+        return this.toModel(props);
     }
 
-    private toModelBase(props): ModelBase {
-        console.log('before builder of modelBase: ', props);
-        let modelBase = new ModelBase({
+    private toModel(props): Model {
+        let model = new Model({
             created: props['created'],
             updated: props['updated'],
             id: props['id'],
@@ -21,7 +22,6 @@ export class ModelBaseBuilder {
             name: props['name'],
             source: props['source']
         });
-        console.log('before builder of modelBase: ', modelBase);
-        return modelBase;
+        return model;
     }
 }

@@ -1,4 +1,4 @@
-export class Service {
+export class Application {
     public id: number;
     public serviceName: string;
     public stages: any[];

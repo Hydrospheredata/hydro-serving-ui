@@ -97,13 +97,13 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
       //         // this.latestVersion = this.getLatestVersion();
       //     });
 
-      // this.store.dispatch({ type: Actions.GET_MODEL_RUNTIMES, payload: modelId });
+      // this.store.dispatch({ type: Actions.GET_SERVICES, payload: modelId });
 
-      this.modelsRuntimesSub = this.store.select('modelRuntimes')
-          .subscribe(modelRuntimes => {
-            console.log(modelRuntimes);
+      this.modelsRuntimesSub = this.store.select('modelBuilds')
+          .subscribe(services => {
+            console.log(services);
               // this.nestedModelRuntimes = modelRuntimes;
-              this.model = modelRuntimes.find((dataStoreItem) => dataStoreItem.services[0].service.serviceId === Number(id));
+              this.model = services.find((dataStoreItem) => dataStoreItem.services[0].service.serviceId === Number(id));
               // console.log(this.model);
               // if (this.model) {
               //   console.log(`{${this.model.runtime.modelContract}}`);

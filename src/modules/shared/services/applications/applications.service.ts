@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { HttpService } from '@shared/services/http/_index';
-import { Service } from '@shared/_index';
+import { Application } from '@shared/_index';
 import { Observable } from 'rxjs/Observable';
 
 
 
 @Injectable()
-export class ServicesService {
+export class ApplicationsService {
     baseUiUrl: string;
     baseApiUrl: string;
     
@@ -18,28 +18,28 @@ export class ServicesService {
         this.baseApiUrl = `${environment.apiUrl}/applications`;
     }
 
-    getServices(): Observable<Service[]> {
+    getServices(): Observable<Application[]> {
         return this.http.get(this.baseUiUrl)
             .map((res: Response): any => {
                 return res.json();
             });
     }
 
-    updateService(service: Service): Observable<Service> {
+    updateService(service: Application): Observable<Application> {
         return this.http.put(this.baseUiUrl, service)
             .map((res: Response): any => {
                 return res.json();
             });
     }
 
-    addService(service: Service) {
+    addService(service: Application) {
         return this.http.post(this.baseUiUrl, service)
             .map((res: Response): any => {
                 return res.json();
             });
     }
 
-    deleteService(id: number) {
+    deleteApplication(id: number) {
         return this.http.delete(`${this.baseApiUrl}/${id}`);
     }
 

@@ -7,7 +7,8 @@
 }
 
 .sidebar {
-  height: 100%;
+  background-color: $aside-bg-color;
+  min-height: 100%;
   &-header {
     padding: 45px 32px 26px;
     border-bottom: 2px solid #d4d7d9;
@@ -22,7 +23,7 @@
   }
   &-title {
     font-weight: 700;
-    font-family: $main-font-family;
+    font-family: $font-family-regular;
     font-size: $title-font-size;
     margin: 0;
     line-height: 1;
@@ -56,7 +57,7 @@
       }
       > span {
         font-size: 18px;
-        font-family:'Museo Sans Bold';
+        font-family: $font-family-bold;
         color: #04143c;
       }
       &-status {
@@ -101,7 +102,7 @@
       margin-right: 10px;
       display: inline-flex;
       &--label {
-        font-family: $main-font-family;        
+        font-family: $font-family-regular;        
         color: #818994;
         font-size: 14px;
         font-weight: 400;
@@ -119,10 +120,6 @@
   }
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .icon-pipeline {
   width: 18px;
   height: 20px;
@@ -130,7 +127,7 @@
 }
 
 .deployed use {
-  fill: #8cc63e!important;
+  fill: $color--success !important;
 }
 
 .undeployed {

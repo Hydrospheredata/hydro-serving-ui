@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { AppState, Service } from '@shared/_index';
+import { AppState, Application } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 
 
@@ -14,15 +14,14 @@ import * as Actions from '@shared/actions/_index';
 
 export class ApplicationsWrapperComponent {
     public sidebarTitle = 'Applications';
-    public services: Store<Service[]>;
+    public applications: Store<Application[]>;
 
     constructor(
         private store: Store<AppState>
     ) {
-        
-        this.store.dispatch({ type: Actions.GET_SERVICES, payload: null });
+        this.store.dispatch({ type: Actions.GET_APPLICATIONS, payload: null });
         this.store.dispatch({ type: Actions.GET_MODEL_SERVICES, payload: null });
-        this.services = this.store.select('services');
+        this.applications = this.store.select('applications');
     }
 
 
