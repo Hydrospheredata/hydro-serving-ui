@@ -1,6 +1,14 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{model?.source}}</div>
+        <!-- <div class="btn-group" *ngIf="!isModelBuilded">
+            <button class="btn" (click)="editModelContract(model)">
+                <svg>
+                    <use xlink:href="#icon-edit"></use>
+                </svg>
+                Edit contract
+            </button>
+        </div> -->
     </div>
 
 
@@ -16,13 +24,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="modelVersionsList?.length === 0" class='hydro-table-body__row'>
+                    <tr *ngIf="!isModelBuilded" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{model?.updated | utcToLocal | amTimeAgo}}</div>
                         </td>
-                        <!-- <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{model?.nextVersion}}</div>
-                        </td> -->
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>{{setNextModelVersion()}}</div>
+                        </td>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis undeployed'>
                                 <svg class="icon undeployed">
@@ -32,12 +40,26 @@
                             </div>
                         </td>
                         <td class="hydro-table-body__cell actions" style="justify-content: center; display: flex;">
-                            <div class='cs-text-overflow-ellipsis deploy-btn deploy-btn-new' (click)="$event.stopPropagation(); buildModel(model)">
+                            <div class="btn-group">
+                                <button class="btn" (click)="$event.stopPropagation(); buildModel(model)">
+                                    <svg>
+                                        <use xlink:href="#icon-arrow"></use>
+                                    </svg>
+                                    Build
+                                </button>
+                                <button class="btn" (click)="event.stopPropagation(); editModelContract(model)">
+                                    <svg>
+                                        <use xlink:href="#icon-edit"></use>
+                                    </svg>
+                                    Edit
+                                </button>
+                            </div>
+                            <!-- <div class='cs-text-overflow-ellipsis deploy-btn deploy-btn-new' (click)="$event.stopPropagation(); buildModel(model)">
                                 <svg class="icon">
                                     <use xlink:href="#icon-arrow" />
                                 </svg>
                                 <span class="icon-label">BUILD</span>
-                            </div>
+                            </div> -->
                         </td>
                         <td class="hydro-table-body__cell">
                             –

@@ -1,19 +1,28 @@
 <div>
-  <h2 class="mdl-dialog__title mat-dialog-title">Build model "{{model.name}}"</h2>
+  <h2 class="mdl-dialog__title mat-dialog-title">Build model "{{model.source}}"</h2>
   <form [formGroup]="buildModelForm" (ngSubmit)="onSubmit()">
 
       <div class="model-details-table">
-        <div class="model-details-row">
+        <ol class="content-info__sublist">
+            <li class="content-info__sublist-item">
+                <span class="content-info__sublist-item-title">Version</span>
+                <span class="content-info__sublist-item-value">1</span>
+            </li>
+            <li class="content-info__sublist-item">
+                <span class="content-info__sublist-item-title">Model Type</span>
+                <span class="content-info__sublist-item-value">{{ model.modelType }}</span>
+            </li>
+        </ol>
+
+        <!-- <div class="model-details-row">
             <span class="model-details-label">Version</span>
             <span class="model-details-label">.................</span>
             <span class="model-details-value runtime">{{ model?.lastModelRuntime?.modelVersion || '1' }}</span>
         </div>
-        <!-- <div class="model-details-row">
-            <span class="model-details-label">Runtime</span>
+        <div class="model-details-row">
+            <span class="model-details-label">Type</span>
             <span class="model-details-label">...............</span>
-            <mdl-select style="margin-left: 0;" class="mdl-cell mdl-cell--12-col mdl-cell--4-col-tablet runtime-select" formControlName="runtimeType" [(ngModel)]="currentModelRuntimeType">
-              <mdl-option *ngFor="let type of runtimeTypes" [value]="type.id">{{type.name}}:{{type.version}}</mdl-option>
-            </mdl-select>
+            <span class="model-details-value runtime">{{ model.modelType }}</span>
         </div> -->
         <!-- <div class="model-details-row">
             <span class="model-details-label">Environment</span>

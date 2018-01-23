@@ -48,6 +48,8 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         'Created', 'Version', 'Status', 'Actions', 'Services'
     ];
 
+    public isModelBuilded: boolean = false;
+
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -89,6 +91,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             .skip(1)
             .subscribe(modelVersionsList => {
                 this.modelVersionsList = modelVersionsList;
+                this.modelVersionsList.length ? this.isModelBuilded = true : this.isModelBuilded = false
                 console.log(this.modelVersionsList);
             })
 
@@ -134,6 +137,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
   //     return sortedRuntimes[0].imageTag;
   // }
 
+
+
+
+
     buildModel(model: Model) {
         this.dialog.showCustomDialog({
             component: DialogModelBuildComponent,
@@ -145,6 +152,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             leaveTransitionDuration: 400,
             providers: [{ provide: injectableModelOptions, useValue: model }],
         });
+    }
+
+    public setNextModelVersion() {
+        return this.isModelBuilded ? this.modelVersionsList.length + 1 : 1;
     }
 
   deployModelService(modelOptions) {
