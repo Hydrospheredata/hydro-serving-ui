@@ -40,6 +40,18 @@ export class SwitchModelAction implements Action {
   constructor(public payload: any) { }
 }
 
+// GET
+export const GET_BUILDS = 'GET_BUILDS';
+export const GET_BUILDS_SUCCESS = 'GET_BUILDS_SUCCESS';
+
+export class GetBuildsAction implements Action {
+    readonly type = GET_BUILDS;
+}
+export class GetBuildsSuccessAction implements Action {
+    readonly type = GET_BUILDS_SUCCESS;
+    constructor(public payload: any[]) { }
+}
+
 
 export type ModelActions
   = GetModelsAction
@@ -47,4 +59,6 @@ export type ModelActions
   | UpdateModelAction
   | DeleteModelAction
   | LoadModelsAction
-  | SwitchModelAction;
+  | SwitchModelAction
+  | GetBuildsAction
+  | GetBuildsSuccessAction;

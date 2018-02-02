@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { MdlDialogService } from '@angular-mdl/core';
-import { Router, NavigationEnd } from '@angular/router';
+// import { Router, NavigationEnd } from '@angular/router';
 // import { SortByPipe } from '@shared/pipes/sort-by.pipe';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -9,6 +9,8 @@ import { Observable } from 'rxjs/Observable';
 
 import { DialogAddServiceComponent } from '@components/dialogs/_index';
 // import * as moment from 'moment';
+// import { Store } from '@ngrx/store';
+
 
 
 
@@ -22,40 +24,60 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
 
     public sidebarList: Application[] | Model[] = [];
     public searchQ: string;
-    private needsToGo = false;
+    // private needsToGo = false;
     public sidebarFilter = {'deployed': true, 'undeployed': true, 'apps': true, 'pipelines': true};
     @Input() isAddBtnEnabled: boolean;
     @Input() isModels: boolean;
     @Input() sidebarTitle: string;
 
     @Input() sidebarData: Observable<any>; // ToDo: Fix any type
-    private routeSubscription: Subscription;
+    // private routeSubscription: Subscription;
     private sidebarDataSub: Subscription;
+    // private buildsListSub: Subscription;
+
+    public buildsList: any;
+
+    // private dataStreams: any[] = [];
 
     constructor(
         // private sortByPipe: SortByPipe,
         // private activatedRoute: ActivatedRoute,
-        private router: Router,
-        private dialog: MdlDialogService
+        // private router: Router,
+        private dialog: MdlDialogService,
+        // private store: Store<AppState>,
     ) {
-        this.routeSubscription = this.router.events
-            .subscribe(event => {
-                if (event instanceof NavigationEnd && event.url.split('/').length <= 2) {
-                    this.needsToGo = true;
-                    // this.transitToFirstItem();
-                }
-            });
+        // this.routeSubscription = this.router.events
+        //     .subscribe(event => {
+        //         if (event instanceof NavigationEnd && event.url.split('/').length <= 2) {
+        //             this.needsToGo = true;
+        //             this.transitToFirstItem();
+        //         }
+        //     });
     }
 
-    ngOnInit() {}
-
-    ngOnChanges() {
+    ngOnInit() {
+        // console.log(this.store.select('builds'));
         this.sidebarDataSub = this.sidebarData
-            .skip(1)
             .subscribe(items => {
+                console.log(items);
                 this.sidebarList = items;
                 // this.transitToFirstItem();
             });
+    }
+
+    ngOnChanges() {
+        // this.buildsListSub = this.store.select('builds')
+        //     .skip(1)
+        //     .subscribe(builds => {
+        //         console.log(builds)
+        //         this.buildsList = builds;
+        //     })
+        // this.sidebarDataSub = this.sidebarData
+        //     .skip(1)
+        //     .subscribe(items => {
+        //         this.sidebarList = items;
+        //         // this.transitToFirstItem();
+        //     });
     }
 
     // private transitToFirstItem() {
@@ -70,11 +92,11 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
         if (this.sidebarDataSub) {
             this.sidebarDataSub.unsubscribe();
         }
-        this.routeSubscription.unsubscribe();
+        // this.routeSubscription.unsubscribe();
     }
 
 
-    addService() {
+    public addService() {
         this.dialog.showCustomDialog({
             component: DialogAddServiceComponent,
             styles: { 'width': '850px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },
@@ -86,30 +108,8 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    public getLatestVersion(item) {
-        // console.log(item.lastModelRuntime);
-        if (!item.lastModelRuntime) {
-            return '0.0.1';
-        }
-        // if (item.lastModelRuntime && this.isDeployable(item)) {
-        //     return `0.0.${Number(item.lastModelRuntime.modelVersion.split('.')[2]) + 1}`;
-        // }
-        return item.lastModelRuntime.modelVersion;
-
-        // return '0.0.1';
-    }
-
-    toggleSidebarFilter(option) {
+    public toggleSidebarFilter(option) {
         this.sidebarFilter[option] = !this.sidebarFilter[option];
     }
-
-    // public isDeployable(model: Model) {
-    //     if (!model || !model.model.created) {
-    //         return true;
-    //     }
-    //     const modelUpdated = model.model.updated;
-    //     const runtimeCreated = model.model.created;
-    //     return moment(modelUpdated).isAfter(moment(runtimeCreated));
-    // }
 
 }

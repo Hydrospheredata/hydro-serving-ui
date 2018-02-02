@@ -16,17 +16,15 @@ export function ModelsReducer(state = initialState, action: ModelActions.ModelAc
         ];
     case ModelActions.UPDATE_MODEL:
         return state.map(item => {
+            console.log("UPDATE_MODEL: ", action.payload);
             if (item.id !== action.payload.id) {
                 return item;
             }
-            console.log('updated model item: ', new Model({...item,...action.payload}));
             return new Model({
                 ...item,
                 ...action.payload
             });
         });
-    case ModelActions.DELETE_MODEL:
-        return state.filter(service => service.id !== Number(action.modelId));
     default:
         return state;
     }

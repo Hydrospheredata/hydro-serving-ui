@@ -7,7 +7,7 @@ import { DialogBase } from '@shared/base/_index';
 // import { ModelBuilder } from '@shared/builders/_index';
 
 import { Store } from '@ngrx/store';
-import { AppState, Model } from '@shared/models/_index';
+import { AppState } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 import 'rxjs/add/operator/mergeMap';
 
@@ -88,8 +88,13 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
                     message: 'Model was successfully builded',
                     timeout: 5000
                 });
-                this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: new Model(response) });
+                console.log(Actions, this.store);
+                
+                // this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: response });
                 this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: response.model.id });
+                // this.store.dispatch({ type: Actions.GET_BUILDS, payload: null });
+                
+
                 // this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: this.modelBuilder.build(response.json()) });
                 // this.store({type: HydroActions.UPDATE_MODEL, payload: this.modelBuilder.build(data)})
                 // this.store.dispatch({ type: Actions.SWITCH_MODEL, payload: modelOptions.modelId });

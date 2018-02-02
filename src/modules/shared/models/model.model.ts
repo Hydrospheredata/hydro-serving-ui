@@ -1,7 +1,7 @@
 // import { CurrentServices } from './current-services.model';
 // import { ModelBase } from './model-base.model';
 // import { ModelRuntime } from './model-runtime.model';
-// import { ModelBuild } from './model-build.model';
+import { ModelBuild } from './model-build.model';
 
 // export class Model {
   
@@ -35,6 +35,7 @@ export class Model {
     public modelType: string;
     public name: string;
     public source: string;
+    public lastModelBuild: ModelBuild;
 
     constructor(props: any = {}) {
         this.created = props['created'];
@@ -44,6 +45,9 @@ export class Model {
         this.modelType = props['modelType'];
         this.name = props['name'];
         this.source = props['source'];
+        if (props['lastModelBuild']) {
+            this.lastModelBuild = props['lastModelBuild'];    
+        }
     }
 }
 

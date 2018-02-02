@@ -3,7 +3,6 @@
 // import { ModelCurrentServicesBuilder } from './model-current-services.builder';
 // import { ModelBaseBuilder } from './model-base.builder';
 // import { ModelRuntimeBuilder } from './model-runtime.builder';
-// import { ModelBuildBuilder } from './model-build.builder';
 
 
 
@@ -60,29 +59,40 @@
 
 
 import { Injectable } from '@angular/core';
-import { Model } from '@shared/models/_index';
+import { Model, ModelBuild } from '@shared/models/_index';
+import { ModelBuildBuilder } from './model-build.builder';
 
 
 
 @Injectable()
 export class ModelBuilder {
 
-    constructor() { }
+    constructor(
+        private modelBuildBuilder: ModelBuildBuilder
+    ) { }
 
     public build(props): Model {
         return this.toModel(props);
     }
 
     private toModel(props): Model {
+        let lastModelBuild: ModelBuild;
+
+        if (props['lastModelBuild']) {
+            lastModelBuild = this.modelBuildBuilder.build(props['lastModelBuild']);
+        }
+
         let model = new Model({
-            created: props['created'],
-            updated: props['updated'],
-            id: props['id'],
-            modelContract: props['modelContract'],
-            modelType: props['modelType'],
-            name: props['name'],
-            source: props['source']
+            created: props.model['created'],
+            updated: props.model['updated'],
+            id: props.model['id'],
+            modelContract: props.model['modelContract'],
+            modelType: props.model['modelType'],
+            name: props.model['name'],
+            source: props.model['source'],
+            lastModelBuild: lastModelBuild
         });
+
         return model;
     }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState, Model } from '@shared/_index';
-import * as Actions from '@shared/actions/_index';
+import { AppState, Model } from '@shared/models/_index';
+
+
 
 @Component({
     selector: 'hydro-models-wrapper',
@@ -19,7 +20,6 @@ export class ModelsWrapperComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.store.dispatch({ type: Actions.LOAD_MODELS, payload: null });
         this.models = this.store.select('models');
     }
 

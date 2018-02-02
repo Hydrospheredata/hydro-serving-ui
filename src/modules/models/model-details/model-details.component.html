@@ -12,8 +12,8 @@
     </div>
 
 
-    <div class="model-details">
-        <!-- <hydro-model-details-summary [model]="model" [isDeployable]="isDeployable()" [isModelService]="false" [version]="latestVersion"></hydro-model-details-summary> -->
+    <div class="content-body">
+        <hydro-model-details-summary [model]="model"></hydro-model-details-summary>
 
         <div class="hydro-panel">
             <h5 class="hydro-panel__header">Versions</h5>
@@ -26,10 +26,10 @@
                 <tbody>
                     <tr *ngIf="!isModelBuilded" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{model?.updated | utcToLocal | amTimeAgo}}</div>
+                            <div class='cs-text-overflow-ellipsis'>{{ model?.updated | utcToLocal | amTimeAgo }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{setNextModelVersion()}}</div>
+                            <div class='cs-text-overflow-ellipsis'>{{ setNextModelVersion() }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis undeployed'>
@@ -39,7 +39,7 @@
                                 <span class="icon-label">Unbuilded</span>
                             </div>
                         </td>
-                        <td class="hydro-table-body__cell actions" style="justify-content: center; display: flex;">
+                        <td class="hydro-table-body__cell actions">
                             <div class="btn-group">
                                 <button class="btn" (click)="$event.stopPropagation(); buildModel(model)">
                                     <svg>
@@ -54,20 +54,11 @@
                                     Edit
                                 </button>
                             </div>
-                            <!-- <div class='cs-text-overflow-ellipsis deploy-btn deploy-btn-new' (click)="$event.stopPropagation(); buildModel(model)">
-                                <svg class="icon">
-                                    <use xlink:href="#icon-arrow" />
-                                </svg>
-                                <span class="icon-label">BUILD</span>
-                            </div> -->
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            –
                         </td>
                     </tr>
-                    <tr *ngFor="let item of modelVersionsList" class='hydro-table-body__row' [ngClass]="" [routerLink]="[item.id]">
+                    <tr *ngFor="let item of modelVersionsList | sortBy: 'item.version'" class='hydro-table-body__row' [ngClass]="" [routerLink]="[item.id]">
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ item.created | utcToLocal | amTimeAgo }}</div>
+                            <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ item.version }}</div>
@@ -87,13 +78,21 @@
                             </div>
                         </td>
                         <td class="hydro-table-body__cell actions">
-                            <div *ngIf="service?.services?.length < 1" class='cs-text-overflow-ellipsis deploy-btn' (click)="$event.stopPropagation(); deployModelService(service.runtime)">
+                            <div class="btn-group">
+                                <button class="btn" (click)="$event.stopPropagation(); buildModel(model)">
+                                    <svg>
+                                        <use xlink:href="#icon-arrow"></use>
+                                    </svg>
+                                    Deploy
+                                </button>
+                            </div>
+                            <!-- <div *ngIf="item.length < 1" class='cs-text-overflow-ellipsis deploy-btn' (click)="$event.stopPropagation(); deployModelService(service.runtime)">
                                 <svg class="icon">
                                   <use xlink:href="#icon-arrow" />
                                 </svg>
                                 <span class="icon-label">DEPLOY</span>
-                            </div>
-                            <a style="color: rgb(97,97,97);" *ngIf="service?.services?.length > 0" class="hydro-link" (click)="$event.stopPropagation(); stopModel(service.services[0])"
+                            </div> -->
+                            <!-- <a style="color: rgb(97,97,97);" *ngIf="service?.services?.length > 0" class="hydro-link" (click)="$event.stopPropagation(); stopModel(service.services[0])"
                             title="Stop">
                                 <span class="action">
                                     <svg class="icon">
@@ -101,25 +100,16 @@
                                     </svg>
                                     <span class="icon-label">STOP</span>
                                 </span>
-                            </a>
-                            <a style="color: rgb(21,101,192);" *ngIf="service?.services?.length > 0" (click)="$event.stopPropagation(); testModel(service.services[0].service)" title='Test' class="hydro-link">
+                            </a> -->
+                            <!-- <a style="color: rgb(21,101,192);" *ngIf="service?.services?.length > 0" (click)="$event.stopPropagation(); testModel(service.services[0].service)" title='Test' class="hydro-link">
                                 <span class="action">
                                     <svg class="icon">
                                         <use xlink:href="#icon-start" />
                                     </svg>
                                     <span class="icon-label">TEST</span>
                                 </span>
-                            </a>
+                            </a> -->
                         </td>
-                        <!-- <td class="hydro-table-body__cell">
-                            <div class="cs-text-overflow-ellipsis" (click)="$event.stopPropagation()" *ngIf="service && service.services[0] && service.services[0].applications && service.services[0].applications.length > 0">
-                                <span *ngFor="let application of service.services[0].applications; last as isLast">
-                                    <a class="hydro-table-link model-details-link" [routerLink]="['/applications', application.id]">
-                                        {{ application.name }}
-                                    </a>{{isLast ? '' : ', '}}
-                                </span>
-                            </div>
-                        </td> -->
                     </tr>
                 </tbody>
             </table>

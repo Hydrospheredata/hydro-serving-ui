@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Model } from '@shared/_index';
+import { Model } from '@shared/models/_index';
 
 
 
@@ -11,16 +11,9 @@ import { Model } from '@shared/_index';
 export class ModelDetailsSummaryComponent implements OnInit {
 
     @Input() model: Model;
-    @Input() isDeployable: boolean;
-    @Input() isModelService: boolean;
-    @Input() version?: string;
 
     constructor() { }
 
     ngOnInit() {}
-
-    public getLatestVersion() {
-        return '0.0.1';
-    }
 
 }

@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '@shared/models/_index';
+import * as Actions from '@shared/actions/_index';
 
 
 
@@ -10,5 +13,15 @@ import { Component } from '@angular/core';
 export class AppComponent {
     title = 'HydroServingUi';
 
-    constructor() {}
+    constructor(
+        private store: Store<AppState>,
+    ) {}
+
+    ngOnInit() {
+        this.store.dispatch({ type: Actions.LOAD_MODELS, payload: null });
+        this.store.dispatch({ type: Actions.GET_BUILDS, payload: null });
+        
+        // this.store.dispatch({ type: Actions.GET_APPLICATIONS, payload: null });
+        // this.store.dispatch({ type: Actions.GET_MODEL_SERVICES, payload: null });
+    }
 }

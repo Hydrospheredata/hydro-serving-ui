@@ -1,28 +1,10 @@
-<div class="model-details-table">
-  <div class="model-details-row">
-    <span class="model-details-label">Version</span>
-    <span class="model-details-label">.................</span>
-    <span class="model-details-value runtime" [ngClass]="{'new-version': model?.nextVersionAvailable}">{{ version || model?.lastModelRuntime?.modelVersion || getLatestVersion() }}</span>
-    <span *ngIf="model?.nextVersionAvailable" class="new-version-label">New version available</span>
-  </div>
-  <div class="model-details-row">
-    <span class="model-details-label">Model Type</span>
-    <span class="model-details-label">...............</span>
-    <span class="model-details-value runtime model-details-tag" *ngIf="isModelService">{{ model?.model?.modelType }}</span>
-    <span class="model-details-value runtime" *ngIf="!isModelService" [ngClass]="{'model-details-tag': model?.imageMD5Tag }">{{ model?.model?.modelType }}</span>
-  </div>
-  <!-- <div class="model-details-row">
-    <span class="model-details-label">Tags</span>
-    <span class="model-details-label">......................</span>
-    <span class="model-details-value" *ngIf="isModelService">
-        <span *ngFor="let tag of model?.modelRuntime?.tags; last as isLast">
-          <span class="model-details-tag">{{ tag }}</span> {{isLast ? '' : ', '}}
-        </span>
-      </span>
-    <span class="model-details-value" *ngIf="!isModelService">
-      <span *ngFor="let tag of model?.runtimeType?.tags; last as isLast">
-        <span class="model-details-tag">{{ tag }}</span> {{isLast ? '' : ', '}}
-      </span>
-    </span>
-  </div> -->
-</div>
+<ol class="content-info__sublist">
+    <li class="content-info__sublist-item">
+        <span class="content-info__sublist-item-title">Version</span>
+        <span class="content-info__sublist-item-value">{{ model?.lastModelBuild?.version || 1 }}</span>
+    </li>
+    <li class="content-info__sublist-item">
+        <span class="content-info__sublist-item-title">ModelType</span>
+        <span class="content-info__sublist-item-value">{{ model?.modelType }}</span>
+    </li>
+</ol>

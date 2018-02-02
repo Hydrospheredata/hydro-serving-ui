@@ -45,7 +45,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     private modelsStoreSelectionSubscription: Subscription;
     public modelVersionsList: any[]; // TODO: FIX TYPE
     public tableHeader: string[] = [
-        'Created', 'Version', 'Status', 'Actions', 'Services'
+        'Created', 'Version', 'Status', 'Actions'
     ];
 
     public isModelBuilded: boolean = false;
@@ -90,7 +90,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.modelVersionsListSub = this.store.select('modelBuilds')
             .skip(1)
             .subscribe(modelVersionsList => {
-                this.modelVersionsList = modelVersionsList;
+                this.modelVersionsList = modelVersionsList.reverse();
                 this.modelVersionsList.length ? this.isModelBuilded = true : this.isModelBuilded = false
                 console.log(this.modelVersionsList);
             })

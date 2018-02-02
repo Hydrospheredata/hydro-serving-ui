@@ -13,8 +13,8 @@ export class SidebarFilterPipe implements PipeTransform {
                 result = result || filterStatus['apps'] && item.stages.length === 1;
                 result = result || filterStatus['pipelines'] && item.stages.length > 1;
             } else {
-                result = result || filterStatus['deployed'] && item.currentServices && item.currentServices.length > 0;
-                result = result || filterStatus['undeployed'] && (!item.currentServices || item.currentServices.length < 1);
+                result = result || filterStatus['deployed'] && item.lastModelBuild;
+                result = result || filterStatus['undeployed'] && !item.lastModelBuild;
             }
             return result;
         });

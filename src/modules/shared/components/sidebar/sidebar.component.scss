@@ -55,11 +55,11 @@
       &:focus {
         background-color: $secondary-color;
       }
-      > span {
-        font-size: 18px;
-        font-family: $font-family-bold;
-        color: #04143c;
-      }
+      // > span {
+      //   font-size: 18px;
+      //   font-family: $font-family-bold;
+      //   color: #04143c;
+      // }
       &-status {
         display: flex;
         align-items: center;
@@ -77,6 +77,9 @@
         max-width: 14vw;
         line-break: strict;
         text-overflow: ellipsis;
+        font-size: 18px;
+        font-family: $font-family-bold;
+        color: #04143c;
       }
     }
   }

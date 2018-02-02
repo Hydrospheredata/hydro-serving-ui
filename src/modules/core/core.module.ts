@@ -6,7 +6,6 @@ import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
 
-import { HydroRouter } from '@app/app.router';
 import { NavbarComponent, LoaderComponent } from './_index';
 
 import { CodemirrorModule } from 'ng2-codemirror';
@@ -55,7 +54,8 @@ import {
     ModelsReducer, 
     ModelServiceReducer, 
     ModelRuntimeReducer, 
-    ApplicationsReducer
+    ApplicationsReducer,
+    BuildsReducer
 } from '@shared/reducers/_index';
 
 
@@ -68,13 +68,13 @@ import {
         MdlSelectModule,
         CodemirrorModule,
         ClipboardModule,
-        HydroRouter,
         HttpModule,
         StoreModule.forRoot({
             models: ModelsReducer,
             modelService: ModelServiceReducer,
             modelBuilds: ModelRuntimeReducer,
-            applications: ApplicationsReducer 
+            applications: ApplicationsReducer,
+            builds: BuildsReducer
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25
@@ -88,7 +88,6 @@ import {
         MdlSelectModule,
         CodemirrorModule,
         ClipboardModule,
-        HydroRouter
     ],
     declarations: [
         NavbarComponent, 

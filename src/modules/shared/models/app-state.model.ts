@@ -9,4 +9,5 @@ export interface AppState {
     models: Model[];
     modelService: ModelService[];
     modelBuilds: any;
+    builds: any;
 }
