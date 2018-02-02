@@ -99,9 +99,9 @@ export class ApplicationsItemDetailComponent {
         if (this.applications.length) {
             this.application = this.applications.filter(application => application.id === Number(id)).shift();
             if (this.isPipeline(this.application)) {
-                this.title = `Pipeline: ${this.application.serviceName}`;
+                this.title = `Pipeline: ${this.application.name}`;
             } else {
-                this.title = this.application.serviceName;
+                this.title = this.application.name;
                 this.application.stages[0].forEach(weight => {
                     this.getModelServiceData(weight);
                 });

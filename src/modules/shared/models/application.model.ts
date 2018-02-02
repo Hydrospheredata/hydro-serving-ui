@@ -1,12 +1,12 @@
 export class Application {
     public id: number;
-    public serviceName: string;
+    public name: string;
     public stages: any[];
     public kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[];
 
     constructor(props: any = {}) {
         this.id = props['id'];
-        this.serviceName = props['serviceName'];
+        this.name = props['name'];
         this.stages = props['stages'];
         this.kafkaStreamingSources = props['kafkaStreamingSources'];
     }

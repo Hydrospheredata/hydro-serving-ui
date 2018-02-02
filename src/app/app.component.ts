@@ -21,7 +21,7 @@ export class AppComponent {
         this.store.dispatch({ type: Actions.LOAD_MODELS, payload: null });
         this.store.dispatch({ type: Actions.GET_BUILDS, payload: null });
         
-        // this.store.dispatch({ type: Actions.GET_APPLICATIONS, payload: null });
+        this.store.dispatch({ type: Actions.GET_APPLICATIONS, payload: null });
         // this.store.dispatch({ type: Actions.GET_MODEL_SERVICES, payload: null });
     }
 }

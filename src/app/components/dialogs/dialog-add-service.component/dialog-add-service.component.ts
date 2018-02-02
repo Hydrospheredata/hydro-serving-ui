@@ -51,7 +51,7 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
 
         const serviceInfo = {
             id: 0,
-            serviceName: this.serviceForm.value.serviceName,
+            name: this.serviceForm.value.serviceName,
             kafkaStreamingSources: this.isKafkaEnabled ? data.kafkaStreamingSources : [],
         };
 

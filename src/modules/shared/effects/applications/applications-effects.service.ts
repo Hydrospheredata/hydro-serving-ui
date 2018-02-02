@@ -3,7 +3,7 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { ServiceBuilder } from '@shared/builders/_index';
+import { ApplicationBuilder } from '@shared/builders/_index';
 import { ApplicationsService } from '@shared/services/_index';
 import { Application } from '@shared/models/_index';
 import * as HydroActions from '@shared/actions/_index';
@@ -14,8 +14,8 @@ export class ApplicationsEffects {
     @Effect() getServices$: Observable<Action> = this.actions.ofType(HydroActions.GET_APPLICATIONS)
         .switchMap(() => {
             return this.applicationsService.getServices().take(1)
-                .map((services: Application[]) => {
-                    let data = services.map(service => this.serviceBuilder.build(service));
+                .map((applications: Application[]) => {
+                    let data = applications.map(app => this.applicationBuilder.build(app));
                     return ({ type: HydroActions.GET_APPLICATIONS_SUCCESS, payload: data });
                 });
         });
@@ -53,6 +53,6 @@ export class ApplicationsEffects {
     constructor(
         private actions: Actions,
         private applicationsService: ApplicationsService,
-        private serviceBuilder: ServiceBuilder
+        private applicationBuilder: ApplicationBuilder
     ) {}
 }

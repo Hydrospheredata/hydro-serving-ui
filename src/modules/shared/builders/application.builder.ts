@@ -4,12 +4,12 @@ import { Application } from '@shared/models/_index';
 
 
 @Injectable()
-export class ServiceBuilder {
+export class ApplicationBuilder {
 
     constructor() { }
 
-    public build(service) {
-        return new Application(service);
+    public build(app) {
+        return new Application(app);
     }
 
 }

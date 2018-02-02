@@ -19,8 +19,9 @@ export class ApplicationsService {
     }
 
     getServices(): Observable<Application[]> {
-        return this.http.get(this.baseUiUrl)
+        return this.http.get(this.baseApiUrl)
             .map((res: Response): any => {
+                console.log(res.json());
                 return res.json();
             });
     }

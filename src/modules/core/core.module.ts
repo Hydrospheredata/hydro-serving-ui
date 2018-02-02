@@ -41,7 +41,7 @@ import {
     RuntimeTypeBuilder,
     ModelCurrentServicesBuilder,
     ModelBuildBuilder,
-    ServiceBuilder,
+    ApplicationBuilder,
 } from '@shared/builders/_index';
 
 // Factories
@@ -101,7 +101,7 @@ import {
         RuntimeTypeBuilder,
         ModelCurrentServicesBuilder,
         ModelBuildBuilder,
-        ServiceBuilder,
+        ApplicationBuilder,
         // Services
         FormsService,
         HttpModelServiceService,

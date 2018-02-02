@@ -33,8 +33,8 @@
 
     <div class="sidebar-body">
         <ul class='sidebar-list'>
-            <li *ngFor="let item of sidebarList | sidebarFilter: sidebarFilter | search : (isModels ? 'source' : 'serviceName') : searchQ | sortBy: 'id'" class='sidebar-list__item' [routerLink]="[item.id]" routerLinkActive='__active'>
-                <span class="sidebar-list__item-name">{{ item.serviceName || item.source }}</span>
+            <li *ngFor="let item of sidebarList | sidebarFilter: sidebarFilter | search : (isModels ? 'source' : 'name') : searchQ | sortBy: 'id'" class='sidebar-list__item' [routerLink]="[item.id]" routerLinkActive='__active'>
+                <span class="sidebar-list__item-name">{{ item.name || item.source }}</span>
                 <span class='sidebar-list__item-status' *ngIf="item.currentServices && item.currentServices.length && this.dataType === 'services'" [mdl-badge]="item.currentServices.length"></span>
                 <div *ngIf="isModels || (item.stages && item.stages.length > 1)" class="sidebar-list__item-details">
                     <svg *ngIf="item.stages && item.stages.length > 1" class="icon icon-pipeline"><use xlink:href="#icon-pipeline"/></svg>
