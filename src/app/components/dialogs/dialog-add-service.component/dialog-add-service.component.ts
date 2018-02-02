@@ -62,7 +62,7 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         const service = Object.assign( serviceInfo, { stages: data.stages } );
 
         // TODO: try to add actions after successfully adding in effects (in each file)
-        this.applicationsService.addService(service)
+        this.applicationsService.addApplication(service)
             .subscribe(response => {
                 this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Application(response) });
                 this.dialogRef.hide();

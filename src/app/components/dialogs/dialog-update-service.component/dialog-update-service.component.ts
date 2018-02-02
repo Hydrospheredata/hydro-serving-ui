@@ -121,13 +121,13 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
 
         const serviceInfo = {
             id: this.selectedService.id,
-            serviceName: this.serviceForm.value.serviceName,
+            name: this.serviceForm.value.serviceName,
             kafkaStreamingSources: data.kafkaStreamingSources,
         };
 
         const service = Object.assign( serviceInfo, { stages: data.stages } );
 
-        this.applicationsService.updateService(service)
+        this.applicationsService.updateApplication(service)
             .subscribe(response => {
                 this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Application(response) });
                 this.dialogRef.hide();

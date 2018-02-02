@@ -13,33 +13,12 @@ export class ApplicationsEffects {
 
     @Effect() getServices$: Observable<Action> = this.actions.ofType(HydroActions.GET_APPLICATIONS)
         .switchMap(() => {
-            return this.applicationsService.getServices().take(1)
+            return this.applicationsService.getApplications().take(1)
                 .map((applications: Application[]) => {
                     let data = applications.map(app => this.applicationBuilder.build(app));
                     return ({ type: HydroActions.GET_APPLICATIONS_SUCCESS, payload: data });
                 });
         });
-
-    // @Effect() addService$: Observable<Action> = this.actions.ofType(HydroActions.ADD_SERVICE)
-    //     .map((action: HydroActions.AddServiceAction) => action.payload)
-    //     .switchMap(payload => {
-    //         return this.applicationsService.addService(payload)
-    //             .map((service: Service) => {
-    //                 return ({ type: HydroActions.ADD_SERVICE_SUCCESS, payload: new Service(service) });
-    //             })
-    //             // .catch((error) => {
-    //             //     return ({ type: HydroActions.ADD_SERVICE_FAILURE, error: error })
-    //             // })
-    //     });
-
-    // @Effect() updateService$: Observable<Action> = this.actions.ofType(HydroActions.UPDATE_SERVICE)
-    //     .map((action: HydroActions.UpdateServiceAction) => action.payload)
-    //     .switchMap(payload => {
-    //         return this.applicationsService.updateService(payload)
-    //             .map((service: Service) => {
-    //                 return ({ type: HydroActions.UPDATE_SERVICE_SUCCESS, payload: new Service(service) })
-    //             })
-    //     });
 
     @Effect() deleteApplication$: Observable<Action> = this.actions.ofType(HydroActions.DELETE_APPLICATION)
         .map((action: HydroActions.DeleteApplicationAction) => action.applicationId)

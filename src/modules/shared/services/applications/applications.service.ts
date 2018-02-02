@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
 import { environment } from '@environments/environment';
 import { HttpService } from '@shared/services/http/_index';
-import { Application } from '@shared/_index';
-import { Observable } from 'rxjs/Observable';
+import { Application } from '@shared/models/_index';
 
 
 
 @Injectable()
 export class ApplicationsService {
-    baseUiUrl: string;
+    
     baseApiUrl: string;
     
     constructor(
         private http: HttpService
     ) {
-        this.baseUiUrl = `${environment.uiUrl}/applications`;
         this.baseApiUrl = `${environment.apiUrl}/applications`;
     }
 
-    getServices(): Observable<Application[]> {
+    getApplications(): Observable<Application[]> {
         return this.http.get(this.baseApiUrl)
             .map((res: Response): any => {
                 console.log(res.json());
@@ -26,15 +26,15 @@ export class ApplicationsService {
             });
     }
 
-    updateService(service: Application): Observable<Application> {
-        return this.http.put(this.baseUiUrl, service)
+    updateApplication(application: Application): Observable<Application> {
+        return this.http.put(this.baseApiUrl, application)
             .map((res: Response): any => {
                 return res.json();
             });
     }
 
-    addService(service: Application) {
-        return this.http.post(this.baseUiUrl, service)
+    addApplication(application: Application) {
+        return this.http.post(this.baseApiUrl, application)
             .map((res: Response): any => {
                 return res.json();
             });
