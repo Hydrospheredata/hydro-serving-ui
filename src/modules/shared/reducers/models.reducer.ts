@@ -16,13 +16,14 @@ export function ModelsReducer(state = initialState, action: ModelActions.ModelAc
         ];
     case ModelActions.UPDATE_MODEL:
         return state.map(item => {
-            console.log("UPDATE_MODEL: ", action.payload);
-            if (item.id !== action.payload.id) {
+            if (item.id !== action.payload.model.id) {
                 return item;
             }
             return new Model({
                 ...item,
-                ...action.payload
+                lastModelVersion: {
+                    ...action.payload
+                }
             });
         });
     default:

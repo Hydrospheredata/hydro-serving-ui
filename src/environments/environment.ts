@@ -6,7 +6,7 @@
 export const environment = {
     production: false,
     host: 'http://localhost',
-    port: '9090',
+    port: '8080',
     apiUrl: '/api/v1',
     uiUrl: '/ui/v1'
 };

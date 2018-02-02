@@ -13,7 +13,6 @@ export class ModelEffects {
     @Effect() loadModels$: Observable<Action> = this.actions.ofType(HydroActions.LOAD_MODELS)
         .flatMap(() => this.modelsService.getModels().first()
             .map(data => {
-                console.log(data);
                 return ({ type: HydroActions.GET_MODELS, payload: data.map(this.modelBuilder.build, this.modelBuilder) })
             })
         );

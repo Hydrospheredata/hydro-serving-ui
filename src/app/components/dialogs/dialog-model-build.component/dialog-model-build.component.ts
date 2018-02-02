@@ -82,15 +82,13 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
 
         this.modelsService.buildModel(modelOptions)
             .subscribe(response => {
-                console.log('build model: ', response);
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Model was successfully builded',
                     timeout: 5000
                 });
-                console.log(Actions, this.store);
                 
-                // this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: response });
+                this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: response });
                 this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: response.model.id });
                 // this.store.dispatch({ type: Actions.GET_BUILDS, payload: null });
                 

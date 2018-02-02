@@ -36,7 +36,7 @@ import {
 // Builders
 import {
     ModelBuilder,
-    // ModelBaseBuilder,
+    ModelVersionBuilder,
     ModelRuntimeBuilder,
     RuntimeTypeBuilder,
     ModelCurrentServicesBuilder,
@@ -96,7 +96,7 @@ import {
     providers: [
         // Builders
         ModelBuilder,
-        // ModelBaseBuilder,
+        ModelVersionBuilder,
         ModelRuntimeBuilder,
         RuntimeTypeBuilder,
         ModelCurrentServicesBuilder,

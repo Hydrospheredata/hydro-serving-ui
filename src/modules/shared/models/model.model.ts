@@ -2,6 +2,7 @@
 // import { ModelBase } from './model-base.model';
 // import { ModelRuntime } from './model-runtime.model';
 import { ModelBuild } from './model-build.model';
+import { ModelVersion } from './model-version.model';
 
 // export class Model {
   
@@ -36,6 +37,7 @@ export class Model {
     public name: string;
     public source: string;
     public lastModelBuild: ModelBuild;
+    public lastModelVersion: ModelVersion;
 
     constructor(props: any = {}) {
         this.created = props['created'];
@@ -47,6 +49,9 @@ export class Model {
         this.source = props['source'];
         if (props['lastModelBuild']) {
             this.lastModelBuild = props['lastModelBuild'];    
+        }
+        if (props['lastModelVersion']) {
+            this.lastModelVersion = props['lastModelVersion'];    
         }
     }
 }

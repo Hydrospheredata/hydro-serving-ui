@@ -59,8 +59,9 @@
 
 
 import { Injectable } from '@angular/core';
-import { Model, ModelBuild } from '@shared/models/_index';
+import { Model, ModelBuild, ModelVersion } from '@shared/models/_index';
 import { ModelBuildBuilder } from './model-build.builder';
+import { ModelVersionBuilder } from './model-version.builder';
 
 
 
@@ -68,7 +69,8 @@ import { ModelBuildBuilder } from './model-build.builder';
 export class ModelBuilder {
 
     constructor(
-        private modelBuildBuilder: ModelBuildBuilder
+        private modelBuildBuilder: ModelBuildBuilder,
+        private modelVersionBuilder: ModelVersionBuilder
     ) { }
 
     public build(props): Model {
@@ -77,9 +79,13 @@ export class ModelBuilder {
 
     private toModel(props): Model {
         let lastModelBuild: ModelBuild;
+        let lastModelVersion: ModelVersion;
 
         if (props['lastModelBuild']) {
             lastModelBuild = this.modelBuildBuilder.build(props['lastModelBuild']);
+        }
+        if (props['lastModelVersion']) {
+            lastModelVersion = this.modelVersionBuilder.build(props['lastModelVersion']);
         }
 
         let model = new Model({
@@ -90,7 +96,8 @@ export class ModelBuilder {
             modelType: props.model['modelType'],
             name: props.model['name'],
             source: props.model['source'],
-            lastModelBuild: lastModelBuild
+            lastModelBuild: lastModelBuild,
+            lastModelVersion: lastModelVersion,
         });
 
         return model;

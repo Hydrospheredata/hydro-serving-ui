@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Model } from '@shared/models/_index';
+import { Model, ModelVersion } from '@shared/models/_index';
 
 export const GET_MODELS = 'GET_MODELS';
 export const ADD_MODEL = 'ADD_MODEL';
@@ -22,7 +22,7 @@ export class AddModelAction implements Action {
 
 export class UpdateModelAction implements Action {
   readonly type = UPDATE_MODEL;
-  constructor(public payload: Model) { }
+  constructor(public payload: ModelVersion) { }
 }
 
 export class DeleteModelAction implements Action {

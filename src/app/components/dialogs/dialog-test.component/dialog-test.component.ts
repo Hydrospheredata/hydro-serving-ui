@@ -76,7 +76,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
 
         if (this.model instanceof Application) {
             this.input = [{}];
-            this.testTitle = `Test service "${this.model.serviceName}"`;
+            this.testTitle = `Test service "${this.model.name}"`;
             this.testBtn = 'Test service';
             this.createTestForm();
         } else {
@@ -101,7 +101,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         payload = JSON.stringify(this.createTestOptions(form));
 
         if (this.model instanceof Application) {
-            path = `${this.apiUrl}/weightedServices/serveByName/${this.model.serviceName}`;
+            path = `${this.apiUrl}/weightedServices/serveByName/${this.model.name}`;
         } else {
             path = `${this.apiUrl}/modelService/serve/${this.model.modelRuntime.modelName}`;
         }
@@ -159,7 +159,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         if (this.model instanceof Application) {
             apiUrl = this.applicationsService.serveService.bind(this.applicationsService);
             snackbarSuccessMsg = 'Application test was successful';
-            entityName = this.model.serviceName;
+            entityName = this.model.name;
         } else {
             apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
             snackbarSuccessMsg = 'Model test was successful';
