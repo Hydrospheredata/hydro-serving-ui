@@ -8,21 +8,30 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class EnvironmentsService {
 
-    baseAPIUrl: string;
+    private baseAPIUrl: string;
 
     constructor(
         private http: HttpService
     ) {
-        this.baseAPIUrl = `${environment.apiUrl}/servingEnvironment`;
+        this.baseAPIUrl = `${environment.apiUrl}/environment`;
     }
 
     public getEnvironments(): Observable<any> {
-        console.log("121313");
         return this.http.get(this.baseAPIUrl)
                 .map((res: Response) => {
-                    console.log(res);
                     return res.json();
                 })
+    }
+
+    public addEnvironment(environment): Observable<any> {
+        return this.http.post(this.baseAPIUrl, environment)
+                .map((res: Response) => {
+                    return res.json();
+                })
+    }
+
+    public deleteEnvironment(id: number) {
+        return this.http.delete(`${this.baseAPIUrl}/${id}`);
     }
 
 
