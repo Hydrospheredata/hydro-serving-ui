@@ -10,10 +10,9 @@ import { AppRoutingModule } from './app.router';
 
 // Modules
 import { CoreModule } from '@modules/core/core.module';
+import { SharedModule } from '@modules/shared/shared.module';
 import { ModelsModule } from '@modules/models/models.module';
 import { ApplicationsModule } from '@modules/applications/applications.module';
-
-import { SharedModule } from '@modules/shared/shared.module';
 
 // Dialogs
 import * as Dialog from '@components/dialogs/_index';
@@ -25,8 +24,6 @@ import * as Dialog from '@components/dialogs/_index';
         AppComponent,
         Dialog.DialogModelBuildComponent,
         Dialog.DialogTestComponent,
-        Dialog.DialogStopModelComponent,
-        Dialog.DialogDeployModelComponent,
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddServiceComponent
@@ -46,8 +43,6 @@ import * as Dialog from '@components/dialogs/_index';
     entryComponents: [
         Dialog.DialogModelBuildComponent,
         Dialog.DialogTestComponent,
-        Dialog.DialogStopModelComponent,
-        Dialog.DialogDeployModelComponent,
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddServiceComponent

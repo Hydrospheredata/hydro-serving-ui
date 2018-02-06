@@ -13,8 +13,7 @@ import { FormsService, ApplicationsService } from '@shared/services/_index';
 @Component({
     selector: 'hydro-dialog-add-service',
     templateUrl: './dialog-add-service.component.html',
-    styleUrls: ['./dialog-add-service.component.scss'],
-    providers: [FormsService]
+    styleUrls: ['./dialog-add-service.component.scss']
 })
 export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 
@@ -38,7 +37,7 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
     }
 
     ngOnInit() {
-        // this.createServiceForm();
+        this.createServiceForm();
         // this.initFormChangesListener();
     }
 
@@ -52,17 +51,17 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         const serviceInfo = {
             id: 0,
             name: this.serviceForm.value.serviceName,
-            kafkaStreamingSources: this.isKafkaEnabled ? data.kafkaStreamingSources : [],
+            // kafkaStreamingSources: this.isKafkaEnabled ? data.kafkaStreamingSources : [],
         };
 
-        serviceInfo.kafkaStreamingSources.forEach(kafka => {
-            kafka.serviceId = 0;
-        });
+        // serviceInfo.kafkaStreamingSources.forEach(kafka => {
+        //     kafka.serviceId = 0;
+        // });
 
-        const service = Object.assign( serviceInfo, { stages: data.stages } );
+        const application = Object.assign( serviceInfo, { stages: data.stages } );
 
         // TODO: try to add actions after successfully adding in effects (in each file)
-        this.applicationsService.addApplication(service)
+        this.applicationsService.addApplication(application)
             .subscribe(response => {
                 this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Application(response) });
                 this.dialogRef.hide();

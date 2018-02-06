@@ -1,14 +1,6 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{model?.source}}</div>
-        <!-- <div class="btn-group" *ngIf="!isModelBuilded">
-            <button class="btn" (click)="editModelContract(model)">
-                <svg>
-                    <use xlink:href="#icon-edit"></use>
-                </svg>
-                Edit contract
-            </button>
-        </div> -->
     </div>
 
 
@@ -79,36 +71,13 @@
                         </td>
                         <td class="hydro-table-body__cell actions">
                             <div class="btn-group">
-                                <button class="btn" (click)="$event.stopPropagation(); buildModel(model)">
+                                <button class="btn" (click)="$event.stopPropagation(); deployModel(item)">
                                     <svg>
                                         <use xlink:href="#icon-arrow"></use>
                                     </svg>
                                     Deploy
                                 </button>
                             </div>
-                            <!-- <div *ngIf="item.length < 1" class='cs-text-overflow-ellipsis deploy-btn' (click)="$event.stopPropagation(); deployModelService(service.runtime)">
-                                <svg class="icon">
-                                  <use xlink:href="#icon-arrow" />
-                                </svg>
-                                <span class="icon-label">DEPLOY</span>
-                            </div> -->
-                            <!-- <a style="color: rgb(97,97,97);" *ngIf="service?.services?.length > 0" class="hydro-link" (click)="$event.stopPropagation(); stopModel(service.services[0])"
-                            title="Stop">
-                                <span class="action">
-                                    <svg class="icon">
-                                        <use xlink:href="#icon-stop" />
-                                    </svg>
-                                    <span class="icon-label">STOP</span>
-                                </span>
-                            </a> -->
-                            <!-- <a style="color: rgb(21,101,192);" *ngIf="service?.services?.length > 0" (click)="$event.stopPropagation(); testModel(service.services[0].service)" title='Test' class="hydro-link">
-                                <span class="action">
-                                    <svg class="icon">
-                                        <use xlink:href="#icon-start" />
-                                    </svg>
-                                    <span class="icon-label">TEST</span>
-                                </span>
-                            </a> -->
                         </td>
                     </tr>
                 </tbody>

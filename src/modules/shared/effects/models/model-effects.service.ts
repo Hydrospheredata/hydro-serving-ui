@@ -10,10 +10,11 @@ import * as HydroActions from '@shared/actions/_index';
 
 @Injectable()
 export class ModelEffects {
-    @Effect() loadModels$: Observable<Action> = this.actions.ofType(HydroActions.LOAD_MODELS)
+    @Effect() loadModels$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODELS)
         .flatMap(() => this.modelsService.getModels().first()
             .map(data => {
-                return ({ type: HydroActions.GET_MODELS, payload: data.map(this.modelBuilder.build, this.modelBuilder) })
+                console.log(data);
+                return ({ type: HydroActions.GET_MODELS_SUCCESS, payload: data.map(this.modelBuilder.build, this.modelBuilder) })
             })
         );
 

@@ -1,27 +1,25 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MdlDialogService } from '@angular-mdl/core';
+// import { MdlDialogService } from '@angular-mdl/core';
 import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import {
     AppState, 
-    Model, 
-    ModelRuntime,
+    // Model,
     ModelContractService
 } from '@shared/_index';
 
-import {
-    DialogModelBuildComponent,
-    DialogDeployModelComponent,
-    DialogTestComponent,
-    DialogStopModelComponent,
-    injectableModelOptions,
-    injectableModelDeployOptions,
-    injectableModelStopOptions,
-    injectableModelBuildOptions
-} from '@components/dialogs/_index';
+// import {
+//     DialogModelBuildComponent,
+//     DialogTestComponent,
+//     DialogStopModelComponent,
+//     injectableModelOptions,
+//     injectableModelDeployOptions,
+//     injectableModelStopOptions,
+//     injectableModelBuildOptions
+// } from '@components/dialogs/_index';
 
 // import * as Actions from '@shared/actions/_index';
 
@@ -30,14 +28,13 @@ import {
     selector: 'hydro-model-version-details',
     templateUrl: './model-version-details.component.html',
     styleUrls: ['./model-version-details.component.scss']
-    })
+})
 export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
 
   private activatedRouteSub: any;
   public id: string;
   public builds: any; // TODO: FIX TYPE
   public model: any;
-  public runtimes: ModelRuntime[];
   public deployable = true;
   public latestVersion: string;
   public isModels = true;
@@ -51,7 +48,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private dialog: MdlDialogService,
+    // private dialog: MdlDialogService,
     private store: Store<AppState>,
     private modelContractService: ModelContractService
   ) { }
@@ -149,62 +146,49 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
   //     return sortedRuntimes[0].imageTag;
   // }
 
-  buildModel(modelOptions: Model) {
-      this.dialog.showCustomDialog({
-          component: DialogModelBuildComponent,
-          styles: { 'width': '800px', 'min-height': '350px' },
-          classes: '',
-          isModal: true,
-          clickOutsideToClose: true,
-          enterTransitionDuration: 400,
-          leaveTransitionDuration: 400,
-          providers: [{ provide: injectableModelOptions, useValue: modelOptions }],
-      });
-  }
+  // buildModel(modelOptions: Model) {
+  //     this.dialog.showCustomDialog({
+  //         component: DialogModelBuildComponent,
+  //         styles: { 'width': '800px', 'min-height': '350px' },
+  //         classes: '',
+  //         isModal: true,
+  //         clickOutsideToClose: true,
+  //         enterTransitionDuration: 400,
+  //         leaveTransitionDuration: 400,
+  //         providers: [{ provide: injectableModelOptions, useValue: modelOptions }],
+  //     });
+  // }
 
-  deployModelService(modelOptions) {
-      this.dialog.showCustomDialog({
-          component: DialogDeployModelComponent,
-          styles: { 'width': '800px', 'min-height': '350px' },
-          classes: '',
-          isModal: true,
-          clickOutsideToClose: true,
-          enterTransitionDuration: 400,
-          leaveTransitionDuration: 400,
-          providers: [{ provide: injectableModelDeployOptions, useValue: modelOptions }],
-      });
-  }
+  // testModel(model) {
+  //     this.dialog.showCustomDialog({
+  //         component: DialogTestComponent,
+  //         styles: { 'width': '800px', 'min-height': '350px' },
+  //         classes: '',
+  //         isModal: true,
+  //         clickOutsideToClose: true,
+  //         enterTransitionDuration: 400,
+  //         leaveTransitionDuration: 400,
+  //         providers: [{ provide: injectableModelBuildOptions, useValue: model }],
+  //     });
+  // }
 
-  testModel(model) {
-      this.dialog.showCustomDialog({
-          component: DialogTestComponent,
-          styles: { 'width': '800px', 'min-height': '350px' },
-          classes: '',
-          isModal: true,
-          clickOutsideToClose: true,
-          enterTransitionDuration: 400,
-          leaveTransitionDuration: 400,
-          providers: [{ provide: injectableModelBuildOptions, useValue: model }],
-      });
-  }
+  // stopModel(modelService) {
+  //     const payload = {
+  //         model: modelService.service,
+  //         hasApplication: modelService.weightedServices.length > 0
+  //     };
+  //     this.dialog.showCustomDialog({
+  //         component: DialogStopModelComponent,
+  //         styles: { 'width': '800px', 'min-height': '350px' },
+  //         classes: '',
+  //         isModal: true,
+  //         clickOutsideToClose: true,
+  //         enterTransitionDuration: 400,
+  //         leaveTransitionDuration: 400,
+  //         providers: [{ provide: injectableModelStopOptions, useValue: payload }],
+  //     });
 
-  stopModel(modelService) {
-      const payload = {
-          model: modelService.service,
-          hasWeightedServices: modelService.weightedServices.length > 0
-      };
-      this.dialog.showCustomDialog({
-          component: DialogStopModelComponent,
-          styles: { 'width': '800px', 'min-height': '350px' },
-          classes: '',
-          isModal: true,
-          clickOutsideToClose: true,
-          enterTransitionDuration: 400,
-          leaveTransitionDuration: 400,
-          providers: [{ provide: injectableModelStopOptions, useValue: payload }],
-      });
-
-  }
+  // }
 
   ngOnDestroy() {
       if (this.modelsStoreSelectionSubscription) {

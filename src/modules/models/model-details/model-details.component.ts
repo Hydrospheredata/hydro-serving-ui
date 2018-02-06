@@ -1,25 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
-// import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import {
     AppState, 
-    Model, 
-    ModelRuntime,
+    Model
 } from '@shared/models/_index';
 
 import {
     DialogModelBuildComponent,
-    DialogDeployModelComponent,
-    DialogTestComponent,
-    DialogStopModelComponent,
     injectableModelOptions,
-    injectableModelDeployOptions,
-    injectableModelStopOptions,
-    injectableModelBuildOptions
 } from '@components/dialogs/_index';
 
 import * as Actions from '@shared/actions/_index';
@@ -37,7 +29,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     public builds: any; // TODO: FIX TYPE
     // public model: any;
     public model: Model;
-    public runtimes: ModelRuntime[];
     public deployable = true;
     public latestVersion: string;
     public isModels = true;
@@ -158,58 +149,26 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         return this.isModelBuilded ? this.modelVersionsList.length + 1 : 1;
     }
 
-  deployModelService(modelOptions) {
-      this.dialog.showCustomDialog({
-          component: DialogDeployModelComponent,
-          styles: { 'width': '800px', 'min-height': '350px' },
-          classes: '',
-          isModal: true,
-          clickOutsideToClose: true,
-          enterTransitionDuration: 400,
-          leaveTransitionDuration: 400,
-          providers: [{ provide: injectableModelDeployOptions, useValue: modelOptions }],
-      });
-  }
+    // deployModel(modelOptions) {
+    //     this.dialog.showCustomDialog({
+    //         component: DialogModelDeployComponent,
+    //         styles: { 'width': '800px', 'min-height': '350px' },
+    //         classes: '',
+    //         isModal: true,
+    //         clickOutsideToClose: true,
+    //         enterTransitionDuration: 400,
+    //         leaveTransitionDuration: 400,
+    //         providers: [{ provide: injectableModelDeployOptions, useValue: modelOptions }],
+    //     });
+    // }
 
-  testModel(model) {
-      this.dialog.showCustomDialog({
-          component: DialogTestComponent,
-          styles: { 'width': '800px', 'min-height': '350px' },
-          classes: '',
-          isModal: true,
-          clickOutsideToClose: true,
-          enterTransitionDuration: 400,
-          leaveTransitionDuration: 400,
-          providers: [{ provide: injectableModelBuildOptions, useValue: model }],
-      });
-  }
-
-  stopModel(modelService) {
-    console.log(modelService);
-      const payload = {
-          model: modelService.service,
-          // hasWeightedServices: modelService.weightedServices.length > 0
-      };
-      this.dialog.showCustomDialog({
-          component: DialogStopModelComponent,
-          styles: { 'width': '800px', 'min-height': '350px' },
-          classes: '',
-          isModal: true,
-          clickOutsideToClose: true,
-          enterTransitionDuration: 400,
-          leaveTransitionDuration: 400,
-          providers: [{ provide: injectableModelStopOptions, useValue: payload }],
-      });
-
-  }
-
-  ngOnDestroy() {
-      if (this.modelsStoreSelectionSubscription) {
-          this.modelsStoreSelectionSubscription.unsubscribe();
-      }
-      if (this.modelVersionsListSub) {
-          this.modelVersionsListSub.unsubscribe();
-      }
-  }
+    ngOnDestroy() {
+        if (this.modelsStoreSelectionSubscription) {
+            this.modelsStoreSelectionSubscription.unsubscribe();
+        }
+        if (this.modelVersionsListSub) {
+            this.modelVersionsListSub.unsubscribe();
+        }
+    }
 
 }

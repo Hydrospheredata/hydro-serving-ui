@@ -85,7 +85,7 @@ export class ApplicationsDialogBase extends DialogBase {
         this.serviceForm = this.fb.group({
             serviceName: ['', Validators.required],
             weights: this.fb.array([this.addWeightToModel()]),
-            kafkaStreamingSources: this.fb.array([this.addKafkaSource()]),
+            // kafkaStreamingSources: this.fb.array([this.addKafkaSource()]),
             addModelToService: ''
         });
     }
@@ -98,14 +98,14 @@ export class ApplicationsDialogBase extends DialogBase {
         });
     }
 
-    public addKafkaSource() {
-        return this.fb.group({
-            serviceId: ['0'],
-            sourceTopic: [''],
-            destinationTopic: [''],
-            brokerList: ['']
-        });
-    }
+    // public addKafkaSource() {
+    //     return this.fb.group({
+    //         serviceId: ['0'],
+    //         sourceTopic: [''],
+    //         destinationTopic: [''],
+    //         brokerList: ['']
+    //     });
+    // }
 
     public initFormChangesListener() {
         this.serviceForm.valueChanges.subscribe((form) => {
@@ -133,15 +133,15 @@ export class ApplicationsDialogBase extends DialogBase {
         control.push(this.addWeightToModel(model));
     }
 
-    public addKafkaToService() {
-        const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
-        control.push(this.addKafkaSource());
-    }
+    // public addKafkaToService() {
+    //     const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
+    //     control.push(this.addKafkaSource());
+    // }
 
-    public removeKafkaFromService(i: number) {
-        const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
-        control.removeAt(i);
-    }
+    // public removeKafkaFromService(i: number) {
+    //     const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
+    //     control.removeAt(i);
+    // }
 
     public removeModelFromService(i: number) {
         const control = <FormArray>this.serviceForm.controls['weights'];
@@ -167,7 +167,7 @@ export class ApplicationsDialogBase extends DialogBase {
 
         let weights: {runtimeId: number, weight: number}[] = [];
         let stages: any[] = [];
-        let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
+        // let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
 
         if (this.isJsonModeEnabled) {
             
@@ -191,20 +191,20 @@ export class ApplicationsDialogBase extends DialogBase {
             stages.push(weights);
         }
 
-        data.value.kafkaStreamingSources.forEach(kafka => {
-            if (this.isKafkaEnabled) {
-                kafkaStreamingSources.push({
-                    serviceId: kafka.serviceId,
-                    sourceTopic: kafka.sourceTopic,
-                    destinationTopic: kafka.destinationTopic,
-                    brokerList: kafka.brokerList instanceof Array ? kafka.brokerList : kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g)
-                });
-            }
-        });
+        // data.value.kafkaStreamingSources.forEach(kafka => {
+        //     if (this.isKafkaEnabled) {
+        //         kafkaStreamingSources.push({
+        //             serviceId: kafka.serviceId,
+        //             sourceTopic: kafka.sourceTopic,
+        //             destinationTopic: kafka.destinationTopic,
+        //             brokerList: kafka.brokerList instanceof Array ? kafka.brokerList : kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g)
+        //         });
+        //     }
+        // });
 
         return {
             stages: stages,
-            kafkaStreamingSources: kafkaStreamingSources
+            // kafkaStreamingSources: kafkaStreamingSources
         };
     }
 

@@ -1,31 +1,6 @@
-// import { CurrentServices } from './current-services.model';
-// import { ModelBase } from './model-base.model';
-// import { ModelRuntime } from './model-runtime.model';
 import { ModelBuild } from './model-build.model';
 import { ModelVersion } from './model-version.model';
 
-// export class Model {
-  
-//     public currentServices: CurrentServices[];
-//     public nextVersion: string;
-//     public nextVersionAvailable: boolean;
-//     public model: ModelBase;
-//     public lastModelRuntime: ModelRuntime;
-//     public lastModelBuild: ModelBuild;
-
-//     constructor(props: any = {}) {
-//         this.currentServices = props['currentServices'];
-//         this.nextVersion = props['nextVersion'] || '';
-//         this.nextVersionAvailable = props['nextVersionAvailable'] || false;
-//         this.model = props['model'];
-//         if (props['lastModelRuntime']) {
-//             this.lastModelRuntime = props['lastModelRuntime'];    
-//         }
-//         if (props['lastModelBuild']) {
-//             this.lastModelBuild = props['lastModelBuild'];    
-//         }
-//     }
-// }
 
 
 export class Model {

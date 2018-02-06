@@ -43,9 +43,9 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
             store
         );
         this.selectedService = data;
-        if (this.selectedService.kafkaStreamingSources.length) {
-            this.isKafkaEnabled = true;
-        }
+        // if (this.selectedService.kafkaStreamingSources.length) {
+        //     this.isKafkaEnabled = true;
+        // }
         if (this.selectedService.stages.length > 1) {
             this.isJsonModeEnabled = true;
             let stagesArr = [];
@@ -122,12 +122,12 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
         const serviceInfo = {
             id: this.selectedService.id,
             name: this.serviceForm.value.serviceName,
-            kafkaStreamingSources: data.kafkaStreamingSources,
+            // kafkaStreamingSources: data.kafkaStreamingSources,
         };
 
-        const service = Object.assign( serviceInfo, { stages: data.stages } );
+        const application = Object.assign( serviceInfo, { stages: data.stages } );
 
-        this.applicationsService.updateApplication(service)
+        this.applicationsService.updateApplication(application)
             .subscribe(response => {
                 this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Application(response) });
                 this.dialogRef.hide();

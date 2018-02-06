@@ -7,7 +7,7 @@ const initialState: Model[] = [];
 
 export function ModelsReducer(state = initialState, action: ModelActions.ModelActions) {
     switch (action.type) {
-    case ModelActions.GET_MODELS:
+    case ModelActions.GET_MODELS_SUCCESS:
         return Object.assign([], state, action.payload);
     case ModelActions.ADD_MODEL:
         return [
