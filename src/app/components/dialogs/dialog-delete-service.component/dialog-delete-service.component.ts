@@ -7,7 +7,7 @@ import { DialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
 import { AppState } from '@shared/models/_index';
 
-export let injectableServiceOptions = new InjectionToken<object>('injectableServiceOptions');
+export let injectableApplicationId = new InjectionToken<number>('injectableApplicationId');
 
 
 
@@ -15,14 +15,14 @@ export let injectableServiceOptions = new InjectionToken<object>('injectableServ
     selector: 'hydro-dialog-delete-service',
     templateUrl: './dialog-delete-service.component.html',
     styleUrls: ['./dialog-delete-service.component.scss']
-    })
+})
 export class DialogDeleteServiceComponent extends DialogBase {
     private applicationId;
 
     constructor(
-    @Inject(injectableServiceOptions) data,
-        private store: Store<AppState>,
+        @Inject(injectableApplicationId) data,
         public dialogRef: MdlDialogReference,
+        private store: Store<AppState>,
         private mdlSnackbarService: MdlSnackbarService,
         private router: Router
     ) {
@@ -32,8 +32,7 @@ export class DialogDeleteServiceComponent extends DialogBase {
         this.applicationId = data;
     }
 
-    submitDeleteServiceForm() {
-        
+    public submitDeleteServiceForm() {
         this.router.navigate(['applications']);
         this.store.dispatch({ type: Actions.DELETE_APPLICATION, applicationId: this.applicationId });
         this.dialogRef.hide();

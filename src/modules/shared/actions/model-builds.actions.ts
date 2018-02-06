@@ -12,6 +12,6 @@ export class GetModelBuildsSuccessAction implements Action {
   constructor(public payload: any) { }
 }
 
-export type ModelRuntimeActions
+export type ModelBuildsActions
   = GetModelBuildsAction
   | GetModelBuildsSuccessAction;

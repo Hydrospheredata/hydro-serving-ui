@@ -16,7 +16,7 @@ import {
     DialogTestComponent,
     DialogUpdateServiceComponent,
     DialogDeleteServiceComponent,
-    injectableServiceOptions,
+    injectableApplicationId,
     injectableModelBuildOptions,
     injectableServiceUpdate
 } from '@components/dialogs/_index';
@@ -163,7 +163,7 @@ export class ApplicationsItemDetailComponent {
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{provide: injectableServiceOptions, useValue: id}]
+            providers: [{provide: injectableApplicationId, useValue: id}]
         });
     }
 

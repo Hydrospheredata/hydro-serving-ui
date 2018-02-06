@@ -44,8 +44,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { 
     ModelsReducer, 
-    ModelServiceReducer, 
-    ModelRuntimeReducer, 
+    ModelBuildsReducer, 
     ApplicationsReducer
 } from '@shared/reducers/_index';
 
@@ -63,8 +62,7 @@ import {
         StoreModule.forRoot({
             models: ModelsReducer,
             applications: ApplicationsReducer,
-            modelService: ModelServiceReducer,
-            modelBuilds: ModelRuntimeReducer
+            modelBuilds: ModelBuildsReducer
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25
