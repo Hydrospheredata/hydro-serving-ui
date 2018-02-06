@@ -7,7 +7,7 @@ import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
 import { Application } from '@shared/models/_index';
-import { ApplicationsService, ModelServicesService, ModelRuntimesService } from '@shared/services/_index';
+import { ApplicationsService } from '@shared/services/_index';
 import { DialogBase } from '@shared/base/_index';
 import { environment } from 'environments/environment';
 import { Location } from '@angular/common';
@@ -39,8 +39,8 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     public dialogRef: MdlDialogReference,
     private fb: FormBuilder,
     private mdlSnackbarService: MdlSnackbarService,
-    private modelServicesService: ModelServicesService,
-    private modelRuntimesService: ModelRuntimesService,
+    // private modelServicesService: ModelServicesService,
+    // private modelRuntimesService: ModelRuntimesService,
     private location: Location,
     private applicationsService: ApplicationsService
     ) {
@@ -81,13 +81,13 @@ export class DialogTestComponent extends DialogBase implements OnInit {
             this.createTestForm();
         } else {
             // TODO: come up with better way of sending async data into formbuilder
-            this.modelRuntimesService.generateInputs(this.model.modelRuntime.id).first()
-                .subscribe(data => {
-                    this.input = data;
-                    this.testTitle = `Test model "${this.model.modelRuntime.modelName}"`;
-                    this.testBtn = 'Test model';
-                    this.createTestForm();
-                });
+            // this.modelRuntimesService.generateInputs(this.model.modelRuntime.id).first()
+            //     .subscribe(data => {
+            //         this.input = data;
+            //         this.testTitle = `Test model "${this.model.modelRuntime.modelName}"`;
+            //         this.testBtn = 'Test model';
+            //         this.createTestForm();
+            //     });
         }
 
 
@@ -161,7 +161,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
             snackbarSuccessMsg = 'Application test was successful';
             entityName = this.model.name;
         } else {
-            apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
+            // apiUrl = this.modelServicesService.serveModelService.bind(this.modelServicesService);
             snackbarSuccessMsg = 'Model test was successful';
             entityName = this.model.modelRuntime.modelName;
         }

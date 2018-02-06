@@ -19,10 +19,7 @@ import {
     FormsService,
     ApplicationsService,
     ModelsService,
-    ModelRuntimesService,
-    ModelServicesService,
-    EnvironmentsService,
-    ModelContractService,
+    EnvironmentsService
 } from '@shared/services/_index';
 
 // Effects
@@ -65,9 +62,9 @@ import {
         HttpModule,
         StoreModule.forRoot({
             models: ModelsReducer,
+            applications: ApplicationsReducer,
             modelService: ModelServiceReducer,
-            modelBuilds: ModelRuntimeReducer,
-            applications: ApplicationsReducer
+            modelBuilds: ModelRuntimeReducer
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25
@@ -95,11 +92,8 @@ import {
         // Services
         FormsService,
         ApplicationsService,
-        ModelRuntimesService,
         ModelsService,
-        ModelServicesService,
         EnvironmentsService,
-        ModelContractService,
         LoaderStateService,
         {
             provide: HttpService,

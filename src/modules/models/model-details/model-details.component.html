@@ -48,7 +48,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr *ngFor="let item of modelVersionsList | sortBy: 'item.version'" class='hydro-table-body__row' [ngClass]="" [routerLink]="[item.id]">
+                    <tr *ngFor="let item of modelVersionsList | sortBy: 'item.version'" class='hydro-table-body__row' [ngClass]="" [routerLink]="[item.id]" [routerLink]="['/item.version']">
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
                         </td>

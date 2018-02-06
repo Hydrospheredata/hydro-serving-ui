@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { ModelsService, ModelServicesService } from '@shared/services/_index';
-import { ModelService } from '@shared/models/_index';
+import { ModelsService } from '@shared/services/_index';
 import { ModelBuilder } from '@shared/builders/_index';
 import * as HydroActions from '@shared/actions/_index';
 
@@ -13,7 +12,6 @@ export class ModelEffects {
     @Effect() loadModels$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODELS)
         .flatMap(() => this.modelsService.getModels().first()
             .map(data => {
-                console.log(data);
                 return ({ type: HydroActions.GET_MODELS_SUCCESS, payload: data.map(this.modelBuilder.build, this.modelBuilder) })
             })
         );
@@ -28,23 +26,9 @@ export class ModelEffects {
                 })
         });
 
-    @Effect() getModelServices: Observable<Action> = this.actions.ofType(HydroActions.GET_MODEL_SERVICES)
-        .switchMap(() => {
-            return this.modelServicesService.getModelServices()
-                .take(1)
-                .map((modelServices: ModelService[]) => {
-                    return ({ type: HydroActions.GET_MODEL_SERVICES_SUCCESS, payload: modelServices });
-                });
-        });
-
-
-
     constructor(
-        // private modelBuilder: ModelBuilder,
         private modelBuilder: ModelBuilder,
         private modelsService: ModelsService,
-        private modelServicesService: ModelServicesService,
-        // private modelRuntimesService: ModelRuntimesService,
         private actions: Actions
     ) {}
 }

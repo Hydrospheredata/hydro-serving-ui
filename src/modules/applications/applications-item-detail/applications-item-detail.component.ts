@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { 
     AppState, 
     Application,
-    ModelServicesService
+    // ModelServicesService
 } from '@shared/_index';
 
 import { environment } from '@environments/environment';
@@ -60,7 +60,7 @@ export class ApplicationsItemDetailComponent {
         public store: Store<AppState>,
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
-        private modelServicesService: ModelServicesService,
+        // private modelServicesService: ModelServicesService,
         private router: Router
     ) {
 
@@ -114,17 +114,18 @@ export class ApplicationsItemDetailComponent {
     }
 
     getModelServiceData(weight) {
+        console.log(weight);
         // TODO: Add effect to prevent get if exist in store, something like CACHE
-        this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
-            .subscribe(data => {
-                console.log(data);
-                this.serviceModels.push({ data: data, weight: weight.weight });
-                if (this.serviceModels.length) {
-                    this.serviceModelsFiltered = this.serviceModels.filter((item, index, self) => {
-                        return self.findIndex(t => { return t.data.serviceId === item.data.serviceId;}) === index;
-                    });
-                }
-            });
+        // this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
+        //     .subscribe(data => {
+        //         console.log(data);
+        //         this.serviceModels.push({ data: data, weight: weight.weight });
+        //         if (this.serviceModels.length) {
+        //             this.serviceModelsFiltered = this.serviceModels.filter((item, index, self) => {
+        //                 return self.findIndex(t => { return t.data.serviceId === item.data.serviceId;}) === index;
+        //             });
+        //         }
+        //     });
     }
 
     testApp(application: Application) {
