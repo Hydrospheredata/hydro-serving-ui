@@ -17,21 +17,21 @@ export class ModelsService {
         this.baseAPIUrl = `${environment.apiUrl}/model`;
     }
 
-    getModels() {
+    public getModels() {
         return this.http.get(`${this.baseAPIUrl}`)
             .map((res: Response): any => {
                 return res.json();
             });
     }
 
-    getModelBuilds(id: string) {
+    public getModelBuilds(id: string) {
         return this.http.get(`${this.baseAPIUrl}/builds/${id}`)
             .map((res: Response): any => {
                 return res.json();
             });
     }
 
-    buildModel(options): Observable<any> {
+    public buildModel(options): Observable<any> {
         const updateModelUrl = `${this.baseAPIUrl}/build`;
         return this.http.post(updateModelUrl, options)
             .map((res: Response): any => {
@@ -39,12 +39,8 @@ export class ModelsService {
             });
     }
 
-    addModel(model: Model) {
+    public addModel(model: Model) {
         return this.http.post(this.baseAPIUrl, model);
-    }
-
-    deleteModel(id: string) {
-        return this.http.delete(`${this.baseAPIUrl}/${id}`);
     }
 
 }
