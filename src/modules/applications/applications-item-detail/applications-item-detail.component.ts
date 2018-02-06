@@ -115,7 +115,6 @@ export class ApplicationsItemDetailComponent {
 
     getModelServiceData(weight) {
         // TODO: Add effect to prevent get if exist in store, something like CACHE
-        // this.store.dispatch({ type: Actions.GET_MODEL_SERVICE, payload: null });
         this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
             .subscribe(data => {
                 console.log(data);

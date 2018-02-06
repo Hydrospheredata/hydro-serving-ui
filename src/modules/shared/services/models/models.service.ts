@@ -24,13 +24,6 @@ export class ModelsService {
             });
     }
 
-    getBuilds() {
-        return this.http.get(`${this.baseAPIUrl}/version`)
-            .map((res: Response): any => {
-                return res.json();
-            });
-    }
-
     getModelBuilds(id: string) {
         return this.http.get(`${this.baseAPIUrl}/builds/${id}`)
             .map((res: Response): any => {

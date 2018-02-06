@@ -18,16 +18,6 @@ export class ModelEffects {
             })
         );
 
-    @Effect() getBuilds: Observable<Action> = this.actions.ofType(HydroActions.GET_BUILDS)
-        .switchMap(() => {
-            return this.modelsService.getBuilds()
-                .take(1)
-                .map((modelBuilds) => {
-                    return ({ type: HydroActions.GET_BUILDS_SUCCESS, payload: modelBuilds });
-                });
-        });
-
-
     @Effect() getModelRuntimes$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODEL_BUILDS)
         .map((action: HydroActions.GetModelBuildsAction) => action.payload)
         .switchMap(payload => {
@@ -37,17 +27,6 @@ export class ModelEffects {
                     return ({ type: HydroActions.GET_MODEL_BUILDS_SUCCESS, payload: data });
                 })
         });
-
-    // @Effect() switchModelsRuntime$: Observable<Action> = this.actions.ofType(HydroActions.SWITCH_MODEL)
-    //     .mergeMap((action: HydroActions.SwitchModelAction) => this.modelRuntimesService.getModelRuntimesWithInfo(action.payload).first()
-    //         .map(data => ({ type: HydroActions.GET_MODEL_RUNTIMES, payload: data })));
-
-    // @Effect() switchModelsModel$: Observable<Action> = this.actions.ofType(HydroActions.SWITCH_MODEL)
-    //     .mergeMap((action: HydroActions.SwitchModelAction) => this.modelsService.getModelWithInfo(action.payload).first()
-    //         .map(data => {
-    //             console.log(data);
-    //             return ({ type: HydroActions.UPDATE_MODEL, payload: this.modelBuilder.build(data) })
-    //         }));
 
     @Effect() getModelServices: Observable<Action> = this.actions.ofType(HydroActions.GET_MODEL_SERVICES)
         .switchMap(() => {

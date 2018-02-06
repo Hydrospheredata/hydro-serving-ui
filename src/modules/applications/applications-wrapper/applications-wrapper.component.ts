@@ -19,8 +19,6 @@ export class ApplicationsWrapperComponent {
     constructor(
         private store: Store<AppState>
     ) {
-        // this.store.dispatch({ type: Actions.GET_APPLICATIONS, payload: null });
-        // this.store.dispatch({ type: Actions.GET_MODEL_SERVICES, payload: null });
         this.applications = this.store.select('applications');
     }
 

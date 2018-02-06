@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MdlDialogService } from '@angular-mdl/core';
 // import { Router, NavigationEnd } from '@angular/router';
 // import { SortByPipe } from '@shared/pipes/sort-by.pipe';
@@ -17,10 +17,9 @@ import { DialogAddServiceComponent } from '@components/dialogs/_index';
 @Component({
     selector: 'hydro-sidebar',
     templateUrl: './sidebar.component.html',
-    // providers: [SortByPipe],
     styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
+export class SidebarComponent implements OnInit, OnDestroy {
 
     public sidebarList: Application[] | Model[] = [];
     public searchQ: string;
@@ -56,28 +55,12 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnInit() {
-        // console.log(this.store.select('builds'));
         this.sidebarDataSub = this.sidebarData
             .subscribe(items => {
                 console.log(items);
                 this.sidebarList = items;
                 // this.transitToFirstItem();
             });
-    }
-
-    ngOnChanges() {
-        // this.buildsListSub = this.store.select('builds')
-        //     .skip(1)
-        //     .subscribe(builds => {
-        //         console.log(builds)
-        //         this.buildsList = builds;
-        //     })
-        // this.sidebarDataSub = this.sidebarData
-        //     .skip(1)
-        //     .subscribe(items => {
-        //         this.sidebarList = items;
-        //         // this.transitToFirstItem();
-        //     });
     }
 
     // private transitToFirstItem() {
@@ -96,7 +79,7 @@ export class SidebarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
 
-    public addApp() {
+    public addApplication() {
         this.dialog.showCustomDialog({
             component: DialogAddServiceComponent,
             styles: { 'width': '850px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },

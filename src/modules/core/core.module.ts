@@ -49,8 +49,7 @@ import {
     ModelsReducer, 
     ModelServiceReducer, 
     ModelRuntimeReducer, 
-    ApplicationsReducer,
-    BuildsReducer
+    ApplicationsReducer
 } from '@shared/reducers/_index';
 
 
@@ -68,8 +67,7 @@ import {
             models: ModelsReducer,
             modelService: ModelServiceReducer,
             modelBuilds: ModelRuntimeReducer,
-            applications: ApplicationsReducer,
-            builds: BuildsReducer
+            applications: ApplicationsReducer
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25

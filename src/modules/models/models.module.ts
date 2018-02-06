@@ -10,7 +10,6 @@ import { FormsModule } from '@angular/forms';
 import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
-    ModelDetailsSummaryComponent,
     ModelVersionDetailsComponent
 } from './_index';
 
@@ -29,11 +28,8 @@ import {
     declarations: [
         ModelsWrapperComponent,
         ModelDetailsComponent,
-        ModelDetailsSummaryComponent,
         ModelVersionDetailsComponent
     ],
-    exports: [
-        ModelDetailsSummaryComponent
-    ]
+    exports: []
 })
 export class ModelsModule { }

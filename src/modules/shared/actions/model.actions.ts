@@ -7,50 +7,31 @@ export const ADD_MODEL = 'ADD_MODEL';
 export const UPDATE_MODEL = 'UPDATE_MODEL';
 export const DELETE_MODEL = 'DELETE_MODEL';
 
-export const SWITCH_MODEL = 'SWITCH_MODEL';
-
 
 
 export class GetModelsAction implements Action {
-  readonly type = GET_MODELS;
-  constructor(public payload: Model[]) { }
+    readonly type = GET_MODELS;
 }
 export class GetModelsSuccessAction implements Action {
-  readonly type = GET_MODELS_SUCCESS;
-  constructor(public payload: Model[]) { }
+    readonly type = GET_MODELS_SUCCESS;
+    constructor(public payload: Model[]) { }
 }
 
 export class AddModelAction implements Action {
-  readonly type = ADD_MODEL;
-  constructor(public payload: Model) { }
+    readonly type = ADD_MODEL;
+    constructor(public payload: Model) { }
 }
 
 export class UpdateModelAction implements Action {
-  readonly type = UPDATE_MODEL;
-  constructor(public payload: ModelVersion) { }
+    readonly type = UPDATE_MODEL;
+    constructor(public payload: ModelVersion) { }
 }
 
 export class DeleteModelAction implements Action {
-  readonly type = DELETE_MODEL;
-  constructor(public modelId: string) { }
+    readonly type = DELETE_MODEL;
+    constructor(public modelId: string) { }
 }
 
-export class SwitchModelAction implements Action {
-  readonly type = SWITCH_MODEL;
-  constructor(public payload: any) { }
-}
-
-// GET
-export const GET_BUILDS = 'GET_BUILDS';
-export const GET_BUILDS_SUCCESS = 'GET_BUILDS_SUCCESS';
-
-export class GetBuildsAction implements Action {
-    readonly type = GET_BUILDS;
-}
-export class GetBuildsSuccessAction implements Action {
-    readonly type = GET_BUILDS_SUCCESS;
-    constructor(public payload: any[]) { }
-}
 
 
 export type ModelActions
@@ -58,7 +39,4 @@ export type ModelActions
   | GetModelsSuccessAction
   | AddModelAction
   | UpdateModelAction
-  | DeleteModelAction
-  | SwitchModelAction
-  | GetBuildsAction
-  | GetBuildsSuccessAction;
+  | DeleteModelAction;

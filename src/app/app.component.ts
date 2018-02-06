@@ -23,10 +23,7 @@ export class AppComponent {
     }
 
     ngOnInit() {
-        this.store.dispatch({ type: Actions.GET_MODELS, payload: null });
-        this.store.dispatch({ type: Actions.GET_BUILDS, payload: null });
-        
-        this.store.dispatch({ type: Actions.GET_APPLICATIONS, payload: null });
-        // this.store.dispatch({ type: Actions.GET_MODEL_SERVICES, payload: null });
+        this.store.dispatch({ type: Actions.GET_MODELS });
+        this.store.dispatch({ type: Actions.GET_APPLICATIONS });
     }
 }

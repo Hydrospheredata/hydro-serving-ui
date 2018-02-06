@@ -27,6 +27,7 @@ import {
     SelectComponent,
     TextareaComponent,
     SidebarComponent,
+    ListInfoComponent,
 } from './components/_index';
 
 
@@ -58,6 +59,7 @@ import {
         TextareaComponent,
         SelectComponent,
         SidebarComponent,
+        ListInfoComponent,
     ],
     exports: [
         // Pipes
@@ -74,6 +76,7 @@ import {
         TextareaComponent,
         SelectComponent,
         SidebarComponent,
+        ListInfoComponent,
     ]
 })
 export class SharedModule { }
