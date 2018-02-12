@@ -162,7 +162,7 @@ node("JenkinsOnDemand") {
               docker.image(IMAGE).push()
             }
             if (env.BRANCH_NAME == "master") {
-                sh "docker tag hydrosphere/serving-manager-ui:${curVersion} hydrosphere/serving-manager:latest"
+                sh "docker tag hydrosphere/serving-manager-ui:${curVersion} hydrosphere/serving-manager-ui:latest"
                 sh "docker push hydrosphere/serving-manager-ui:latest"
             }
         }
