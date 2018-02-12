@@ -41,7 +41,7 @@ def checkoutSource(gitCredentialId, organization, repository) {
              git fetch origin +refs/pull/*/head:refs/remotes/origin/pr/*
              git checkout pr/\$(echo ${env.BRANCH_NAME} | cut -d - -f 2)
              git merge origin/${env.CHANGE_TARGET}
-       """     
+       """
     } else {
         sh """
             git checkout ${env.BRANCH_NAME}
@@ -60,14 +60,17 @@ def isReleaseJob() {
     return "release".equalsIgnoreCase(env.BRANCH_NAME)
 }
 
-def generateTagComment(releaseVersion){
-    commitsList=sh(returnStdout: true, script: "git log --pretty=\"%B\n\r (%an)\" -1").trim()
+def generateTagComment(releaseVersion) {
+    commitsList = sh(
+        returnStdout: true,
+        script: "git log `git tag --sort=-taggerdate | head -1`..HEAD --pretty=\"%B\n\r (%an)\""
+    ).trim()
     return "${commitsList}"
 }
 
-def createReleaseInGithub(gitCredentialId, organization, repository, releaseVersion, message){
-   bodyMessage=message.replaceAll("\n","<br />").replace("\r", "")
-   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
+def createReleaseInGithub(gitCredentialId, organization, repository, releaseVersion, message) {
+    bodyMessage = message.replaceAll("\n", "<br />").replace("\r", "")
+    withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
         def request = """
             {
                 "tag_name": "${releaseVersion}",
@@ -157,6 +160,10 @@ node("JenkinsOnDemand") {
             IMAGE = "060183668755.dkr.ecr.eu-central-1.amazonaws.com/serving-manager-ui:${GIT_COMMIT}"
             docker.withRegistry('https://060183668755.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:jenkins_aws') {
               docker.image(IMAGE).push()
+            }
+            if (env.BRANCH_NAME == "master") {
+                sh "docker tag hydrosphere/serving-manager-ui:${curVersion} hydrosphere/serving-manager:latest"
+                sh "docker push hydrosphere/serving-manager-ui:latest"
             }
         }
      }
