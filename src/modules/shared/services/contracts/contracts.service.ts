@@ -15,7 +15,7 @@ export class ContractsService {
         this.baseAPIUrl = `${environment.apiUrl}/model`;
     }
 
-    public getModelContract(id: number) {
+    public getModelContracts(id: number) {
         return this.http.get(`${this.baseAPIUrl}/${id}/flatContract`)
             .map((res: Response): any => {
                 return res.json();

@@ -2,7 +2,8 @@ import {
     Application, 
     Model, 
     ModelService,
-    Runtime
+    Runtime,
+    Signature
 } from '@shared/models/_index';
 
 export interface AppState {
@@ -10,6 +11,7 @@ export interface AppState {
     models: Model[];
     runtimes: Runtime[];
     modelService: ModelService[];
+    contracts: Signature[];
     modelBuilds: any;
     builds: any;
 }

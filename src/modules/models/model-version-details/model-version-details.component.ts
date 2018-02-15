@@ -1,25 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-// import { MdlDialogService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import {
     AppState, 
-    // Model
-} from '@shared/_index';
+    Signature
+} from '@shared/models/_index';
 
-// import {
-//     DialogModelBuildComponent,
-//     DialogTestComponent,
-//     DialogStopModelComponent,
-//     injectableModelOptions,
-//     injectableModelDeployOptions,
-//     injectableModelStopOptions,
-//     injectableModelBuildOptions
-// } from '@components/dialogs/_index';
-
-// import * as Actions from '@shared/actions/_index';
+import * as Actions from '@shared/actions/_index';
 
 
 @Component({
@@ -28,75 +17,89 @@ import {
     styleUrls: ['./model-version-details.component.scss']
 })
 export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
-
-    private activatedRouteSub: any;
-    public id: string;
-    public builds: any; // TODO: FIX TYPE
-    public model: any;
-    public deployable = true;
-    public latestVersion: string;
-    public isModels = true;
-    private modelsBuildsSubscribtion: Subscription;
-    private modelsStoreSelectionSubscription: Subscription;
-    public nestedModelRuntimes: any[]; // TODO: FIX TYPE
+    
     public tableHeader: string[] = [
         'Field name', 'Data type', 'Shape'
     ];
 
+    public contracts: Signature[];
+    public build: any;
+
+    private modelId: string;
+    private activatedRouteSub: Subscription;
+    private modelsBuildsSub: Subscription;
+    private modelsStoreSelectionSub: Subscription;
+    private contractsStoreSub: Subscription;
+
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        // private dialog: MdlDialogService,
         private store: Store<AppState>
     ) { }
 
     ngOnInit() {
         this.activatedRouteSub = this.activatedRoute.params
-            .map((params) => {
+            .map(params => {
+                this.modelId = params['modelId'];
                 const modelVersionId = params['modelVersionId'];
                 return modelVersionId;
             })
-            .subscribe((modelVersionId) => {
-                console.log(modelVersionId);
-                if (this.modelsStoreSelectionSubscription) {
-                    this.modelsStoreSelectionSubscription.unsubscribe();
+            .subscribe(modelVersionId => {
+                if (this.modelsStoreSelectionSub) {
+                    this.modelsStoreSelectionSub.unsubscribe();
                 }
                 this.loadInitialData(modelVersionId);
             });
     }
 
-    public signatures: any;
-
-    loadInitialData(id: string) {
-        // this.store.dispatch({ type: Actions.GET_MODEL_CONTRACTS, payload: id });
+    private loadInitialData(modelVersionId: string) {
+        this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: this.modelId });
         
-        this.modelsBuildsSubscribtion = this.store.select('modelBuilds')
-            .subscribe(services => {
-                console.log(services);
-                this.model = services.find(dataStoreItem => dataStoreItem.version === Number(id));
-                console.log(this.model);
+        this.modelsBuildsSub = this.store.select('modelBuilds')
+            .subscribe(builds => {
+                this.build = builds.find(dataStoreItem => dataStoreItem.version === Number(modelVersionId) && dataStoreItem.model.id === Number(this.modelId));
+                // if (this.build) {
+                //     if (this.build.length) {
+                //         this.loadModelBuildContracts(Number(modelVersionId));
+                //     } else {
+                //         this.loadModelContracts(Number(this.modelId));
+                //     }
+                // }
             });
     }
 
-  // buildModel(modelOptions: Model) {
-  //     this.dialog.showCustomDialog({
-  //         component: DialogModelBuildComponent,
-  //         styles: { 'width': '800px', 'min-height': '350px' },
-  //         classes: '',
-  //         isModal: true,
-  //         clickOutsideToClose: true,
-  //         enterTransitionDuration: 400,
-  //         leaveTransitionDuration: 400,
-  //         providers: [{ provide: injectableModelOptions, useValue: modelOptions }],
-  //     });
-  // }
+    // private loadModelBuildContracts(id: number) {
+    //     this.store.dispatch({ type: Actions.GET_CONTRACTS, payload: id });
+
+    //     this.contractsStoreSub = this.store.select('contracts')
+    //         .subscribe(contracts => {
+    //             console.log(contracts);
+    //             this.contracts = contracts;
+    //         });
+    // }
+
+    // private loadModelContracts(id: number) {
+    //     this.store.dispatch({ type: Actions.GET_CONTRACTS, payload: id });
+
+    //     this.contractsStoreSub = this.store.select('contracts')
+    //         .subscribe(contracts => {
+    //             console.log(contracts);
+    //             this.contracts = contracts;
+    //         });
+    // }
 
     ngOnDestroy() {
-        if (this.modelsStoreSelectionSubscription) {
-            this.modelsStoreSelectionSubscription.unsubscribe();
+        if (this.activatedRouteSub) {
+            this.activatedRouteSub.unsubscribe();
         }
-        if (this.modelsBuildsSubscribtion) {
-            this.modelsBuildsSubscribtion.unsubscribe();
+        if (this.modelsStoreSelectionSub) {
+            this.modelsStoreSelectionSub.unsubscribe();
+        }
+        if (this.modelsBuildsSub) {
+            this.modelsBuildsSub.unsubscribe();
+        }
+        if (this.contractsStoreSub) {
+            this.contractsStoreSub.unsubscribe();
         }
     }
 

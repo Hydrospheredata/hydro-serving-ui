@@ -8,25 +8,11 @@
             <span>back</span>
         </div>
         
-        <div class="content-header__title">{{model?.model?.source}} / v{{model?.version}}</div>
+        <div class="content-header__title">{{ build?.model?.source }} / v{{ build?.version }}</div>
         <div class="btn-group">
             <button class="btn">
-                <svg>
-                    <use xlink:href="#icon-start"></use>
-                </svg>
-                Test
-            </button>
-            <!-- <button class="btn btn-flat">
-                <svg>
-                    <use xlink:href="#icon-arrow"></use>
-                </svg>
-                Deploy
-            </button> -->
-            <button class="btn btn-flat">
-                <svg>
-                    <use xlink:href="#icon-stop"></use>
-                </svg>
-                stop
+                <svg><use xlink:href="#icon-arrow"></use></svg>
+                build
             </button>
         </div>
     </div>
@@ -34,25 +20,25 @@
 
     <div class="model-details">
 
-        <div class="hydro-panel" *ngFor="let signature of signatures">
-            <h5 class="hydro-panel__header">Signature: {{signature.signatureName}}</h5>
+        <div class="hydro-panel" *ngFor="let contract of contracts">
+            <h5 class="hydro-panel__header">Signature: {{ contract.signatureName }}</h5>
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
                     <tr>
-                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
+                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let output of signature.inputs" class='hydro-table-body__row'>
+                    <tr *ngFor="let output of contract.inputs" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{output.fieldName}}</div>
+                            <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{output.dataType}}</div>
+                            <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>
-                                <span *ngFor="let item of output.shape">{{item}}</span>
+                                <span *ngFor="let item of output.shape">{{ item }}</span>
                             </div>
                         </td>
                     </tr>
@@ -61,20 +47,20 @@
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
                     <tr>
-                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
+                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let output of signature.outputs" class='hydro-table-body__row'>
+                    <tr *ngFor="let output of contract.outputs" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{output.fieldName}}</div>
+                            <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{output.dataType}}</div>
+                            <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>
-                                <span *ngFor="let item of output.shape">{{item}}</span>
+                                <span *ngFor="let item of output.shape">{{ item }}</span>
                             </div>
                         </td>
                     </tr>

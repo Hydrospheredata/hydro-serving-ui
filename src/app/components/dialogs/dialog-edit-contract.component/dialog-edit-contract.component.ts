@@ -62,7 +62,7 @@ export class DialogEditContractComponent extends DialogBase implements OnInit {
 
     ngOnInit() {
         this.createContractForm();
-        this.contractsService.getModelContract(this.injectableId)
+        this.contractsService.getModelContracts(this.injectableId)
             .subscribe(data => {
                 console.log(data);
                 this.signatures = data.signatures;
