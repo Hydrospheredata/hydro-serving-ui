@@ -70,7 +70,7 @@
         justify-content: flex-end;
         padding-right: 10px;
         > span {
-          padding-right: 30px;
+          margin-right: 26px;
         }
       }
       &-name {
@@ -139,14 +139,6 @@
 
 .undeployed-filter {
   fill: #d2d5d9;
-}
-
-.version-new {
-  padding-right: 26px!important;
-  color: #f28a03;
-  &::after {
-    content: '˚';
-  }
 }
 
 .version-failed {

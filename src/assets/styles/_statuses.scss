@@ -1,5 +1,14 @@
 .status {
-    color: white;
+    position: relative;
+    &.__new-version {
+      color: #f28a03;
+      &::after {
+        content: '˚';
+        position: absolute;
+        top: 0;
+        right: -5px;
+      }
+    }
     &.__successed {
         color: $color--success;
         .icon {

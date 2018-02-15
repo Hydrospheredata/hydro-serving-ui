@@ -1,12 +1,6 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{model?.source}}</div>
-        <button *ngIf="!isModelBuilded" class="btn" (click)="$event.stopPropagation(); editModelContract(model.id)">
-            <svg>
-                <use xlink:href="#icon-edit"></use>
-            </svg>
-            Edit contract
-        </button>
     </div>
 
 
@@ -27,7 +21,9 @@
                             <div class='cs-text-overflow-ellipsis'>{{ model?.updated | utcToLocal | amTimeAgo }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ setNextModelVersion() }}</div>
+                            <div class='cs-text-overflow-ellipsis'>
+                                <span class='status' [ngClass]="{'__new-version': model?.nextVersion}">{{ model?.nextVersion }}</span>
+                            </div>
                         </td>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis undeployed'>

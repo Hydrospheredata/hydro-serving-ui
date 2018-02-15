@@ -1,7 +1,7 @@
 <ol class="content-info__sublist">
     <li class="content-info__sublist-item">
         <span class="content-info__sublist-item-title">Version</span>
-        <span class="content-info__sublist-item-value" [ngClass]="{
+        <span class="content-info__sublist-item-value status" [ngClass]="{
                                 '__new-version': data?.nextVersion
                                 }">{{ data?.nextVersion || data?.lastModelVersion?.modelVersion || 1 }}</span>
     </li>

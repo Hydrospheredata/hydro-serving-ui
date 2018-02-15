@@ -2,11 +2,3 @@
   display: block;
   margin-bottom: 24px;
 }
-
-.__new-version {
-  padding-right: 26px !important;
-  color: #f28a03;
-  &::after {
-    content: '˚';
-  }
-}

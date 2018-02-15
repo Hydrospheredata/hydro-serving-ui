@@ -38,7 +38,7 @@
                 <span class='sidebar-list__item-status' *ngIf="item.currentServices && item.currentServices.length && this.dataType === 'services'" [mdl-badge]="item.currentServices.length"></span>
                 <div *ngIf="isModels || (item.stages && item.stages.length > 1)" class="sidebar-list__item-details">
                     <svg *ngIf="item.stages && item.stages.length > 1" class="icon icon-pipeline"><use xlink:href="#icon-pipeline"/></svg>
-                    <span *ngIf="isModels" class="sidebar-list__item--version" [ngClass]="{'version-new': item.nextVersion, 'version-failed': item.lastModelBuild?.status === 'FAILED'}">{{ item.nextVersion || item.lastModelVersion.modelVersion || 1 }}</span>
+                    <span *ngIf="isModels" class="sidebar-list__item--version status" [ngClass]="{'__new-version': item.nextVersion, 'version-failed': item.lastModelBuild?.status === 'FAILED'}">{{ item.nextVersion || item.lastModelVersion.modelVersion || 1 }}</span>
                     <svg *ngIf="isModels" class="icon sidebar-list__item--deploy" [ngClass]="item.lastModelVersion ? 'deployed' : 'undeployed'">
                         <use xlink:href="#icon-arrow" />
                     </svg>

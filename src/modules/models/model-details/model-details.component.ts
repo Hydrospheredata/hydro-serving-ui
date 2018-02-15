@@ -29,7 +29,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
     public model: Model;
     public modelVersionsList: any[]; // TODO: FIX TYPE
-    public isModelBuilded: boolean = false;
     public tableHeader: string[] = [
         'Created', 'Version', 'Status', 'Actions'
     ];
@@ -69,8 +68,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             .skip(1)
             .subscribe(modelVersionsList => {
                 this.modelVersionsList = modelVersionsList.reverse();
-                console.log(this.modelVersionsList);
-                this.modelVersionsList.length ? this.isModelBuilded = true : this.isModelBuilded = false
             })
 
         this.modelsStoreSelectionSubscription = this.store.select('models')
@@ -104,10 +101,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             leaveTransitionDuration: 400,
             providers: [{ provide: injectableId, useValue: id }],
         });
-    }
-
-    public setNextModelVersion() {
-        return this.isModelBuilded ? this.modelVersionsList.length + 1 : 1;
     }
 
     public deployModel() {
