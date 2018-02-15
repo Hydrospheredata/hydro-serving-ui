@@ -64,6 +64,7 @@ export class DialogEditContractComponent extends DialogBase implements OnInit {
         this.createContractForm();
         this.contractsService.getModelContract(this.injectableId)
             .subscribe(data => {
+                console.log(data);
                 this.signatures = data.signatures;
                 console.log(this.signatures);
                 this.contractForm.patchValue({

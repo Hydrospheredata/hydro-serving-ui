@@ -15,11 +15,11 @@
             <span class="sidebar-filter__label">Filter:</span>
             <button *ngIf="isModels" (click)="toggleSidebarFilter('deployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['deployed']}">
                 <svg class="icon sidebar-filter__button--icon deployed"><use xlink:href="#icon-arrow"/></svg>
-                <span class="sidebar-filter__button--label">Deployed</span>
+                <span class="sidebar-filter__button--label">Builded</span>
             </button>
             <button *ngIf="isModels" (click)="toggleSidebarFilter('undeployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['undeployed']}" >
                 <svg class="icon sidebar-filter__button--icon undeployed-filter"><use xlink:href="#icon-arrow"/></svg>
-                <span class="sidebar-filter__button--label">Undeployed</span>
+                <span class="sidebar-filter__button--label">Unbuilded</span>
             </button>
             <button *ngIf="!isModels" (click)="toggleSidebarFilter('apps')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['apps']}" >
                 <span class="sidebar-filter__button--label">Apps</span>
