@@ -1,6 +1,12 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{model?.source}}</div>
+        <button *ngIf="!isModelBuilded" class="btn" (click)="$event.stopPropagation(); editModelContract(model.id)">
+            <svg>
+                <use xlink:href="#icon-edit"></use>
+            </svg>
+            Edit contract
+        </button>
     </div>
 
 
@@ -16,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="!isModelBuilded" class='hydro-table-body__row'>
+                    <tr *ngIf="model?.nextVersion" class='hydro-table-body__row' [routerLink]="[ model?.lastModelVersion ? model?.lastModelVersion.modelVersion + 1 : 1 ]">
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ model?.updated | utcToLocal | amTimeAgo }}</div>
                         </td>
@@ -39,7 +45,7 @@
                                     </svg>
                                     Build
                                 </button>
-                                <button class="btn" (click)="$event.stopPropagation(); editModelContract(model)">
+                                <button class="btn" (click)="$event.stopPropagation(); editModelContract(model.id)">
                                     <svg>
                                         <use xlink:href="#icon-edit"></use>
                                     </svg>
@@ -48,7 +54,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr *ngFor="let item of modelVersionsList | sortBy: 'item.version'" class='hydro-table-body__row' [ngClass]="" [routerLink]="[item.id]" [routerLink]="['/item.version']">
+                    <tr *ngFor="let item of modelVersionsList | sortBy: 'item.version'" class='hydro-table-body__row' [routerLink]="[item.version]">
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
                         </td>
@@ -56,14 +62,11 @@
                             <div class='cs-text-overflow-ellipsis'>{{ item.version }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis' [ngClass]="{
+                            <div class='cs-text-overflow-ellipsis status' [ngClass]="{
                                 '__successed': item.status === 'FINISHED',
                                 '__failed': item.status === 'FAILED'
                                 }">
-                                <svg class="icon" [ngClass]="{
-                                    '__successed': item.status === 'FINISHED',
-                                    '__failed': item.status === 'FAILED'
-                                    }">
+                                <svg class="icon">
                                     <use xlink:href="#icon-arrow" />
                                 </svg>
                                 <span class="icon-label">{{item.status === 'FINISHED' ? 'Builded' : 'Unbuilded'}}</span>
@@ -71,7 +74,7 @@
                         </td>
                         <td class="hydro-table-body__cell actions">
                             <div class="btn-group">
-                                <button class="btn" (click)="$event.stopPropagation(); deployModel(item)">
+                                <button class="btn" (click)="$event.stopPropagation(); deployModel()">
                                     <svg>
                                         <use xlink:href="#icon-arrow"></use>
                                     </svg>

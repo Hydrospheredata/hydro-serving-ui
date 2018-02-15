@@ -11,8 +11,9 @@ export class Model {
     public modelType: string;
     public name: string;
     public source: string;
-    public lastModelBuild: ModelBuild;
-    public lastModelVersion: ModelVersion;
+    public lastModelBuild?: ModelBuild;
+    public lastModelVersion?: ModelVersion;
+    public nextVersion?: number;
 
     constructor(props: any = {}) {
         this.created = props['created'];
@@ -22,12 +23,9 @@ export class Model {
         this.modelType = props['modelType'];
         this.name = props['name'];
         this.source = props['source'];
-        if (props['lastModelBuild']) {
-            this.lastModelBuild = props['lastModelBuild'];    
-        }
-        if (props['lastModelVersion']) {
-            this.lastModelVersion = props['lastModelVersion'];    
-        }
+        if (props['lastModelBuild']) { this.lastModelBuild = props['lastModelBuild'] };
+        if (props['lastModelVersion']) { this.lastModelVersion = props['lastModelVersion'] };
+        if (props['nextVersion']) { this.nextVersion = props['nextVersion'] };
     }
 }
 

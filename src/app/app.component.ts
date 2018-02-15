@@ -25,5 +25,6 @@ export class AppComponent {
     ngOnInit() {
         this.store.dispatch({ type: Actions.GET_MODELS });
         this.store.dispatch({ type: Actions.GET_APPLICATIONS });
+        this.store.dispatch({ type: Actions.GET_RUNTIMES });
     }
 }

@@ -47,19 +47,19 @@
     font-family: $font-family-bold;
 }
 
-.__successed {
-    color: $color--success;
-    use {
-        fill: $color--success;
-    }
-}
+// .__successed {
+//     color: $color--success;
+//     use {
+//         fill: $color--success;
+//     }
+// }
 
-.__failed {
-    color: #818994;
-    use {
-        fill: #e1e4eb;
-    }
-}
+// .__failed {
+//     color: #818994;
+//     use {
+//         fill: #e1e4eb;
+//     }
+// }
 
 .action {
     color: #5b95de;

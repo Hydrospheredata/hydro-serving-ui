@@ -27,7 +27,7 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
     public selectedModels: any[] = [];
 
     constructor(
-    @Inject(injectableServiceUpdate) data: Application,
+        @Inject(injectableServiceUpdate) data: Application,
         public store: Store<AppState>,
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
@@ -46,21 +46,21 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
         // if (this.selectedService.kafkaStreamingSources.length) {
         //     this.isKafkaEnabled = true;
         // }
-        if (this.selectedService.stages.length > 1) {
-            this.isJsonModeEnabled = true;
-            let stagesArr = [];
-            this.selectedService.stages.forEach(stage => {
-                let modelsInStageArr = [];
-                stage.forEach(item => {
-                    modelsInStageArr.push({
-                        runtimeName: item.service.serviceName,
-                        weight: item.weight
-                    });
-                });
-                stagesArr.push(modelsInStageArr);
-            });
-            this.pipelineEditorValue = JSON.stringify(stagesArr, null, 2);
-        }
+        // if (this.selectedService.stages.length > 1) {
+        //     this.isJsonModeEnabled = true;
+        //     let stagesArr = [];
+        //     this.selectedService.stages.forEach(stage => {
+        //         let modelsInStageArr = [];
+        //         stage.forEach(item => {
+        //             modelsInStageArr.push({
+        //                 runtimeName: item.service.serviceName,
+        //                 weight: item.weight
+        //             });
+        //         });
+        //         stagesArr.push(modelsInStageArr);
+        //     });
+        //     this.pipelineEditorValue = JSON.stringify(stagesArr, null, 2);
+        // }
     }
 
     ngOnInit() {

@@ -8,8 +8,19 @@ export class ApplicationBuilder {
 
     constructor() { }
 
-    public build(app) {
-        return new Application(app);
+    public build(props): Application {
+        return this.toApplication(props);
+    }
+
+    private toApplication(props): Application {
+        let application = new Application({
+            id: props['id'],
+            name: props['name'],
+            executionGraph: props['executionGraph'],
+            kafkaStreaming: props['kafkaStreaming'],
+        });
+
+        return application;
     }
 
 }

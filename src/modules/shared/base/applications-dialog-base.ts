@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
+import { Subscription } from 'rxjs/Subscription';
 
 import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
-import { AppState, ModelService, Application } from '@shared/models/_index';
+import { AppState, ModelService, Application, ModelVersion } from '@shared/models/_index';
 import { FormsService } from '@shared/services/_index';
 
 import 'codemirror/mode/yaml/yaml.js';
@@ -49,9 +50,11 @@ export class ApplicationsDialogBase extends DialogBase {
     public modelVersions: any[] = [];
 
     public services: Application[];
-    public modelVersionsList: any[];
+    public modelVersionsList: ModelVersion[];
 
     public weightsForSlider: any[] = [100];
+
+    private modelBuildsStoreSub: Subscription;
 
     constructor(
         public fb: FormBuilder,
@@ -74,9 +77,10 @@ export class ApplicationsDialogBase extends DialogBase {
         //         this.services = services;
         //     });
 
-        this.store.select('modelBuilds')
+        this.modelBuildsStoreSub = this.store.select('modelBuilds')
             .skip(1)
             .subscribe(modelVersionsList => {
+                console.log(modelVersionsList);
                 this.modelVersionsList = modelVersionsList;
             })
     }
@@ -96,6 +100,12 @@ export class ApplicationsDialogBase extends DialogBase {
             model: [model ? model : ''],
             weight: ['100', [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
         });
+    }
+
+    public ngOnDestroy() {
+        if (this.modelBuildsStoreSub) {
+            this.modelBuildsStoreSub.unsubscribe();
+        }
     }
 
     // public addKafkaSource() {

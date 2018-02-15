@@ -56,9 +56,9 @@
       <ul class="form-weights__list" formArrayName="weights">
         <li class="form-weights__list-item" *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index" [formGroupName]="i">
           
-         <mdl-select formControlName="selectedModel" label="Choose model" class="cs-text-center" (change)="onSelectModel($event)">
+         <!-- <mdl-select formControlName="selectedModel" label="Choose model" class="cs-text-center" (change)="onSelectModel($event)">
             <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
-          </mdl-select>
+          </mdl-select> -->
 
           <mdl-select class="__versions cs-text-center" formControlName="model">
             <mdl-option *ngFor="let model of modelVersions" [value]="model">{{model.modelRuntime.modelVersion}}</mdl-option>

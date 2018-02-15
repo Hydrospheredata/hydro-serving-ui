@@ -1,13 +1,13 @@
 export class Application {
-    public id: number;
+    public id?: number;
     public name: string;
-    public stages: any[];
-    // public kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[];
+    public executionGraph?: { stages: any[] }[];
+    public kafkaStreaming?: { sourceTopic: string, destinationTopic: string, consumerId?: string, errorTopic?: string }[];
 
     constructor(props: any = {}) {
         this.id = props['id'];
         this.name = props['name'];
-        this.stages = props['stages'];
-        // this.kafkaStreamingSources = props['kafkaStreamingSources'];
+        this.executionGraph = props['executionGraph'];
+        this.kafkaStreaming = props['kafkaStreaming'];
     }
 }

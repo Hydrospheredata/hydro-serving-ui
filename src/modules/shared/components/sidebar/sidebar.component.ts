@@ -78,6 +78,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
         // this.routeSubscription.unsubscribe();
     }
 
+    public addModelSource(event) {
+        console.log(event);
+    }
+
 
     public addApplication() {
         this.dialog.showCustomDialog({

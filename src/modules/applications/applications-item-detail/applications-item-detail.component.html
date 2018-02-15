@@ -1,8 +1,8 @@
 <div class="content">
     <div class="content-header">
-        <div class="content-header__title">{{title}}</div>
+        <div class="content-header__title">{{ title ? title : application?.name }}</div>
         <div class="btn-group">
-            <button class="btn" *ngIf="isPipeline" (click)="testApp(application)">
+            <button class="btn" *ngIf="isPipeline" (click)="testApplication(application)">
                 <svg>
                     <use xlink:href="#icon-start"></use>
                 </svg>
@@ -27,16 +27,19 @@
         <ol class="content-info__sublist">
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">PublicPath</span>
-                <span class="content-info__sublist-item-value"><a [href]="path" target="_blank">{{path}}</a></span>
+                <span class="content-info__sublist-item-value"><a [href]="publicPath" target="_blank">{{ publicPath }}</a></span>
             </li>
         </ol>
 
-        <ul class="content-info__list" *ngIf="application?.kafkaStreamingSources[0]">
-            <li class="content-info__list-item" *ngFor="let kafka of application.kafkaStreamingSources">
+        <ul class="content-info__list" *ngIf="application?.kafkaStreaming.length">
+            <li class="content-info__list-title">
+                Kafka Info
+            </li>
+            <li class="content-info__list-item" *ngFor="let kafka of application.kafkaStreaming">
                 <ol class="content-info__sublist">
-                    <li class="content-info__sublist-item" *ngFor="let item of kafka | iterateAsArray | slice: 1">
-                        <span class="content-info__sublist-item-title">{{item}}</span>
-                        <span class="content-info__sublist-item-value">{{kafka[item]}}</span>
+                    <li class="content-info__sublist-item" *ngFor="let item of kafka | iterateAsArray">
+                        <span class="content-info__sublist-item-title">{{ item }}</span>
+                        <span class="content-info__sublist-item-value">{{ kafka[item] }}</span>
                     </li>
                 </ol>
             </li>
@@ -60,7 +63,7 @@
     </table>
 
     <div *ngIf="!isPipeline">
-        <div class="hydro-panel" *ngFor="let stage of application?.stages; let i = index">
+        <div class="hydro-panel" *ngFor="let stage of application?.executionGraph.stages; let i = index">
             <h5 class="hydro-panel__header">Stage {{i + 1}}</h5>
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
@@ -72,17 +75,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of stage" class='hydro-table-body__row'>
+                    <tr *ngFor="let item of stage.services" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>
-                                {{item.service.modelRuntime.modelName}}
+                                {{ item.serviceDescription.modelVersionId }}
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{item.service.modelRuntime.modelVersion}}</div>
+                            <div class='cs-text-overflow-ellipsis'>
+                                {{ item.serviceDescription.runtimeId }}
+                            </div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{item.weight}}%</div>
+                            <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{ item.weight }}%</div>
                         </td>
                         <td class="hydro-table-body__cell actions">
                             <a (click)="testApp(item.service)" title='Test' class="hydro-link">

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { 
     AppState, 
     Application,
+    Runtime
     // ModelServicesService
 } from '@shared/_index';
 
@@ -27,21 +28,21 @@ import {
 @Component({
     selector: 'hydro-applications-item-detail',
     templateUrl: './applications-item-detail.component.html',
-    styleUrls: ['./applications-item-detail.component.scss']
+    styleUrls: ['./applications-item-detail.component.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class ApplicationsItemDetailComponent {
     public JSON = JSON;
     public title: string = '';
-    public storeSub: Subscription;
-    public combineSub: Subscription;
-    public activeRouteSub: Subscription;
     public id: string = '';
     public serviceModels: any[] = [];
     public serviceModelsFiltered: any[];
     public applications: Application[] = [];
     public application: Application;
-    public path: string = '';
+    public publicPath: string = '';
+
+    public runtimes: Runtime[];
 
     public fullHeight: boolean = false;
 
@@ -55,6 +56,11 @@ export class ApplicationsItemDetailComponent {
         readOnly: true,
         scrollbarStyle: 'null'
     };
+
+
+    private storeSub: Subscription;
+    private activeRouteSub: Subscription;
+    private runtimesStoreSub: Subscription;
 
     constructor(
         public store: Store<AppState>,
@@ -70,7 +76,7 @@ export class ApplicationsItemDetailComponent {
                 return this.id;
             })
             .subscribe(id => {
-                this.path = `${environment.host}:${environment.port}${environment.uiUrl}${this.router.url}`;
+                this.publicPath = `${environment.host}:${environment.port}${environment.apiUrl}${this.router.url}`;
                 if (this.storeSub) {
                     this.storeSub.unsubscribe();
                 }
@@ -79,6 +85,9 @@ export class ApplicationsItemDetailComponent {
     }
 
     loadInitialData(id) {
+        this.runtimesStoreSub = this.store.select('runtimes')
+            .subscribe(runtimes => this.runtimes = runtimes);
+        
         this.storeSub = this.store.select('applications')
             .filter(applications => applications.length > 0)
             .subscribe(applications => {
@@ -92,26 +101,28 @@ export class ApplicationsItemDetailComponent {
     ngOnDestroy() {
         this.activeRouteSub.unsubscribe();
         this.storeSub.unsubscribe();
+        this.runtimesStoreSub.unsubscribe();
     }
 
     getApplicationData(id: string) {
+        console.log(id);
         this.serviceModels = [];
         if (this.applications.length) {
             this.application = this.applications.filter(application => application.id === Number(id)).shift();
-            if (this.isPipeline(this.application)) {
-                this.title = `Pipeline: ${this.application.name}`;
-            } else {
-                this.title = this.application.name;
-                this.application.stages[0].forEach(weight => {
-                    this.getModelServiceData(weight);
-                });
-            }
+            // if (this.isPipeline(this.application)) {
+            //     this.title = `Pipeline: ${this.application.name}`;
+            // } else {
+            //     this.title = this.application.name;
+            //     this.application.executionGraph.stages[0].forEach(weight => {
+            //         this.getModelServiceData(weight);
+            //     });
+            // }
         }
     }
 
-    public isPipeline(application: Application): boolean {
-        return application && application.stages.length !== 1;
-    }
+    // public isPipeline(application: Application): boolean {
+    //     return application && application.executionGraph.stages.length !== 1;
+    // }
 
     getModelServiceData(weight) {
         console.log(weight);
@@ -128,7 +139,13 @@ export class ApplicationsItemDetailComponent {
         //     });
     }
 
-    testApp(application: Application) {
+    public getRuntimeInfo(runtimeId: number) {
+        console.log(this.runtimes.find(runtimes => runtimes.id === runtimeId));
+        const runtime = this.runtimes.find(runtimes => runtimes.id === runtimeId);
+        return runtime.name;
+    }
+
+    public testApplication(application: Application) {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
             styles: { 'width': '800px', 'min-height': '350px' },
@@ -141,7 +158,7 @@ export class ApplicationsItemDetailComponent {
         });
     }
 
-    editApplication(application: Application) {
+    public editApplication(application: Application) {
         this.dialog.showCustomDialog({
             component: DialogUpdateServiceComponent,
             styles: {'width': '900px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto'},
@@ -154,7 +171,7 @@ export class ApplicationsItemDetailComponent {
         });
     }
 
-    removeApplication(id: number) {
+    public removeApplication(id: number) {
         this.dialog.showCustomDialog({
             component: DialogDeleteServiceComponent,
             styles: {'width': '600px', 'min-height': '250px'},

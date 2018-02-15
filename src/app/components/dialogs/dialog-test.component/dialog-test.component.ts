@@ -20,7 +20,7 @@ export let injectableModelBuildOptions = new InjectionToken<object>('injectableM
     templateUrl: './dialog-test.component.html',
     styleUrls: ['./dialog-test.component.scss'],
     providers: [MdlSnackbarService, FormBuilder]
-    })
+})
 export class DialogTestComponent extends DialogBase implements OnInit {
     public data;
     public model;

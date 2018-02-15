@@ -12,6 +12,9 @@ import {
 import {
     DialogModelBuildComponent,
     injectableModelOptions,
+    DialogEditContractComponent,
+    injectableId,
+    DialogAddServiceComponent
 } from '@components/dialogs/_index';
 
 import * as Actions from '@shared/actions/_index';
@@ -66,6 +69,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             .skip(1)
             .subscribe(modelVersionsList => {
                 this.modelVersionsList = modelVersionsList.reverse();
+                console.log(this.modelVersionsList);
                 this.modelVersionsList.length ? this.isModelBuilded = true : this.isModelBuilded = false
             })
 
@@ -89,22 +93,34 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
+    public editModelContract(id: number) {
+        this.dialog.showCustomDialog({
+            component: DialogEditContractComponent,
+            styles: { 'width': '800px', 'min-height': '350px' },
+            classes: '',
+            isModal: true,
+            clickOutsideToClose: true,
+            enterTransitionDuration: 400,
+            leaveTransitionDuration: 400,
+            providers: [{ provide: injectableId, useValue: id }],
+        });
+    }
+
     public setNextModelVersion() {
         return this.isModelBuilded ? this.modelVersionsList.length + 1 : 1;
     }
 
-    // deployModel(modelOptions) {
-    //     this.dialog.showCustomDialog({
-    //         component: DialogModelDeployComponent,
-    //         styles: { 'width': '800px', 'min-height': '350px' },
-    //         classes: '',
-    //         isModal: true,
-    //         clickOutsideToClose: true,
-    //         enterTransitionDuration: 400,
-    //         leaveTransitionDuration: 400,
-    //         providers: [{ provide: injectableModelDeployOptions, useValue: modelOptions }],
-    //     });
-    // }
+    public deployModel() {
+        this.dialog.showCustomDialog({
+            component: DialogAddServiceComponent,
+            styles: { 'width': '850px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },
+            classes: '',
+            isModal: true,
+            clickOutsideToClose: true,
+            enterTransitionDuration: 400,
+            leaveTransitionDuration: 400
+        });
+    }
 
     ngOnDestroy() {
         if (this.modelsStoreSelectionSubscription) {

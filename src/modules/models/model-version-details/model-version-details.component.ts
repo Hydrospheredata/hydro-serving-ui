@@ -54,7 +54,6 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
         this.activatedRouteSub = this.activatedRoute.params
             .map((params) => {
                 const modelVersionId = params['modelVersionId'];
-                
                 return modelVersionId;
             })
             .subscribe((modelVersionId) => {
@@ -69,12 +68,13 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     public signatures: any;
 
     loadInitialData(id: string) {
+        // this.store.dispatch({ type: Actions.GET_MODEL_CONTRACTS, payload: id });
+        
         this.modelsBuildsSubscribtion = this.store.select('modelBuilds')
             .subscribe(services => {
-                this.model = services.find(dataStoreItem => dataStoreItem.id === Number(id));
-                // this.signatures = JSON.parse(JSON.stringify(this.model.modelVersion.modelContract));
-                console.log(typeof JSON.parse(JSON.stringify(`{${this.model.modelVersion.modelContract}}`)));
-                // console.log(JSON.parse(`{${this.model.modelVersion.modelContract}}`));
+                console.log(services);
+                this.model = services.find(dataStoreItem => dataStoreItem.version === Number(id));
+                console.log(this.model);
             });
     }
 

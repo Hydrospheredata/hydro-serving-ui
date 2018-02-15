@@ -1,0 +1,17 @@
+.status {
+    color: white;
+    &.__successed {
+        color: $color--success;
+        .icon {
+            fill: $color--success;
+        }
+    }
+
+    &.__failed {
+        color: #818994;
+        .icon {
+            fill: #e1e4eb;
+        }
+    }
+
+}
