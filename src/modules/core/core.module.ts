@@ -19,13 +19,16 @@ import {
     FormsService,
     ApplicationsService,
     ModelsService,
-    EnvironmentsService
+    EnvironmentsService,
+    ContractsService,
+    RuntimesService
 } from '@shared/services/_index';
 
 // Effects
 import {
     ApplicationsEffects, 
-    ModelEffects
+    ModelEffects,
+    RuntimesEffects
 } from '@shared/effects/_index';
 
 // Builders
@@ -34,6 +37,7 @@ import {
     ModelVersionBuilder,
     ModelBuildBuilder,
     ApplicationBuilder,
+    RuntimeBuilder
 } from '@shared/builders/_index';
 
 // Factories
@@ -45,7 +49,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { 
     ModelsReducer, 
     ModelBuildsReducer, 
-    ApplicationsReducer
+    ApplicationsReducer,
+    RuntimesReducer
 } from '@shared/reducers/_index';
 
 
@@ -62,12 +67,13 @@ import {
         StoreModule.forRoot({
             models: ModelsReducer,
             applications: ApplicationsReducer,
-            modelBuilds: ModelBuildsReducer
+            modelBuilds: ModelBuildsReducer,
+            runtimes: RuntimesReducer
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25
         }),
-        EffectsModule.forRoot([ApplicationsEffects, ModelEffects])
+        EffectsModule.forRoot([ApplicationsEffects, ModelEffects, RuntimesEffects])
     ],
     exports: [
         NavbarComponent, 
@@ -87,11 +93,14 @@ import {
         ModelVersionBuilder,
         ModelBuildBuilder,
         ApplicationBuilder,
+        RuntimeBuilder,
         // Services
         FormsService,
         ApplicationsService,
         ModelsService,
         EnvironmentsService,
+        ContractsService,
+        RuntimesService,
         LoaderStateService,
         {
             provide: HttpService,
