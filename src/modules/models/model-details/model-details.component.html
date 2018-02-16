@@ -16,7 +16,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="model?.nextVersion" class='hydro-table-body__row' [routerLink]="[ model?.lastModelVersion ? model?.lastModelVersion.modelVersion + 1 : 1 ]">
+                    <tr *ngIf="model?.nextVersion" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ model?.updated | utcToLocal | amTimeAgo }}</div>
                         </td>
@@ -50,7 +50,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr *ngFor="let item of modelVersionsList | sortBy: 'item.version'" class='hydro-table-body__row' [routerLink]="[item.version]">
+                    <tr *ngFor="let item of modelVersionsList | sortBy: 'item.version'" class='hydro-table-body__row __link' [routerLink]="[item.version]">
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
                         </td>

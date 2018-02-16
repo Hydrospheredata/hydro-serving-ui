@@ -9,27 +9,29 @@
         </div>
         
         <div class="content-header__title">{{ build?.model?.source }} / v{{ build?.version }}</div>
-        <div class="btn-group">
+        <!-- <div class="btn-group">
             <button class="btn">
                 <svg><use xlink:href="#icon-arrow"></use></svg>
                 build
             </button>
-        </div>
+        </div> -->
     </div>
 
 
     <div class="model-details">
-
-        <div class="hydro-panel" *ngFor="let contract of contracts">
-            <h5 class="hydro-panel__header">Signature: {{ contract.signatureName }}</h5>
+        <div class="hydro-panel" *ngIf="!contracts?.signatures?.length">
+            <div class="no-contracts">There are no contracts for this model build!</div>
+        </div>
+        <div class="hydro-panel" *ngFor="let signature of contracts.signatures">
+            <h5 class="hydro-panel__header">Signature: {{ signature.signatureName }}</h5>
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
                     <tr>
-                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }}</th>
+                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }} (Input)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let output of contract.inputs" class='hydro-table-body__row'>
+                    <tr *ngFor="let output of signature.inputs" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
                         </td>
@@ -47,11 +49,11 @@
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
                     <tr>
-                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }}</th>
+                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }} (Output)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let output of contract.outputs" class='hydro-table-body__row'>
+                    <tr *ngFor="let output of signature.outputs" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
                         </td>

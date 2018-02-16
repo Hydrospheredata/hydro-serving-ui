@@ -21,9 +21,11 @@ $table-padding: 18px;
         background-color: $main-bg-color;
         border-bottom: 2px solid #ffffff;
       }
-      &:hover {
-        background-color: #e6e9ed;
-        cursor: pointer;
+      &.__link {
+        &:hover {
+          background-color: #e6e9ed;
+          cursor: pointer;
+        }
       }
     }
     &__cell {

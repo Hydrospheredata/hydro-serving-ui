@@ -56,37 +56,19 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
         this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: this.modelId });
         
         this.modelsBuildsSub = this.store.select('modelBuilds')
+            .take(1)
             .subscribe(builds => {
                 this.build = builds.find(dataStoreItem => dataStoreItem.version === Number(modelVersionId) && dataStoreItem.model.id === Number(this.modelId));
-                // if (this.build) {
-                //     if (this.build.length) {
-                //         this.loadModelBuildContracts(Number(modelVersionId));
-                //     } else {
-                //         this.loadModelContracts(Number(this.modelId));
-                //     }
-                // }
+                if (this.build) {
+                    this.store.dispatch({ type: Actions.GET_MODEL_BUILD_CONTRACTS, payload: this.build.id });
+                }
+            });
+
+        this.contractsStoreSub = this.store.select('contracts')
+            .subscribe(contracts => {
+                this.contracts = contracts;
             });
     }
-
-    // private loadModelBuildContracts(id: number) {
-    //     this.store.dispatch({ type: Actions.GET_CONTRACTS, payload: id });
-
-    //     this.contractsStoreSub = this.store.select('contracts')
-    //         .subscribe(contracts => {
-    //             console.log(contracts);
-    //             this.contracts = contracts;
-    //         });
-    // }
-
-    // private loadModelContracts(id: number) {
-    //     this.store.dispatch({ type: Actions.GET_CONTRACTS, payload: id });
-
-    //     this.contractsStoreSub = this.store.select('contracts')
-    //         .subscribe(contracts => {
-    //             console.log(contracts);
-    //             this.contracts = contracts;
-    //         });
-    // }
 
     ngOnDestroy() {
         if (this.activatedRouteSub) {
