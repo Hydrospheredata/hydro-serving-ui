@@ -1,16 +1,41 @@
 <h2 class="mdl-dialog__title">Edit Contract</h2>
 
-<form [formGroup]="contractForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="contractsForm" (ngSubmit)="onSubmit()">
+  
   <div class="mdl-dialog__content">
-    
-    <codemirror formControlName="inputs" [config]="inputOptions"></codemirror>
-
-    <codemirror formControlName="outputs" [config]="outputOptions"></codemirror>
+    <div formArrayName="signatures">
+        <div *ngFor="let signature of contractsForm['controls'].signatures['controls']; let i = index;" [formGroupName]="i" class="contracts-list__item">
+            <hydro-input-text formControlName="signatureName" label="Signature name"></hydro-input-text>
+            <div formArrayName="inputs">
+              <label>Inputs</label>
+              <div *ngFor="let input of signature['controls'].inputs['controls']; let i = index;" [formGroupName]="i" class="field-list__item">
+                <hydro-input-text formControlName="fieldName" label="Field name"></hydro-input-text>
+                <hydro-input-text formControlName="dataType" label="Data type"></hydro-input-text>
+                <hydro-input-text formControlName="shape" label="Shape"></hydro-input-text>
+              </div>
+            </div>
+            <div formArrayName="outputs">
+              <label>Outputs</label>
+              <div *ngFor="let output of signature['controls'].outputs['controls']; let i = index;" [formGroupName]="i" class="field-list__item">
+                <hydro-input-text formControlName="fieldName" label="Field name"></hydro-input-text>
+                <hydro-input-text formControlName="dataType" label="Data type"></hydro-input-text>
+                <hydro-input-text formControlName="shape" label="Shape"></hydro-input-text>
+              </div>
+            </div>
+            <svg class="contracts-actions__delete" (click)="removeSignatureFromContract(i)" *ngIf="contractsForm['controls'].signatures['controls'].length > 1">
+              <use xlink:href="#icon-remove"></use>
+            </svg>
+        </div>
+        <button class="btn btn-flat" (click)="addSignatureToContract()">
+          <svg><use xlink:href="#icon-plus"></use></svg>
+          <span>Add Signature</span>
+        </button>
+    </div>
 
   </div>
   <div class="btn-group form-actions __justify-end">
     <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
-    <button class="btn btn-colored btn-large" type="submit" [disabled]="contractForm.invalid">edit contract</button>
+    <button class="btn btn-colored btn-large" type="submit" [disabled]="contractsForm.invalid">edit contract</button>
   </div>
 </form>
 

@@ -7,7 +7,9 @@ const initialState: Signature[] = [];
 
 export function ContractsReducer (state = initialState, action: Actions.ContractsActions) {
     switch (action.type) {
-        case Actions.GET_CONTRACTS_SUCCESS:
+        case Actions.GET_MODEL_CONTRACTS_SUCCESS:
+            return Object.assign([], state, action.payload);
+        case Actions.GET_MODEL_BUILD_CONTRACTS_SUCCESS:
             return Object.assign([], state, action.payload);
         default:
             return state;

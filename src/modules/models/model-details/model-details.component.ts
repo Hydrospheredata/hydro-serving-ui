@@ -13,7 +13,7 @@ import {
     DialogModelBuildComponent,
     injectableModelOptions,
     DialogEditContractComponent,
-    injectableId,
+    injectableModelId,
     DialogAddServiceComponent
 } from '@components/dialogs/_index';
 
@@ -74,6 +74,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             .filter(models => models.length > 0)
             .subscribe(models => {
                 this.model = models.find(modelsStoreItem => modelsStoreItem.id === Number(modelId));
+                console.log(this.model);
             });
     }
 
@@ -90,16 +91,16 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    public editModelContract(id: number) {
+    public editModelContract(modelId: number) {
         this.dialog.showCustomDialog({
             component: DialogEditContractComponent,
-            styles: { 'width': '800px', 'min-height': '350px' },
+            styles: { 'width': '800px', 'min-height': '350px', 'overflow-y': 'scroll', 'height': '100%' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{ provide: injectableId, useValue: id }],
+            providers: [{ provide: injectableModelId, useValue: modelId }],
         });
     }
 

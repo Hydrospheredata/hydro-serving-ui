@@ -1,33 +1,27 @@
-.CodeMirror {
-    background-color: #f2f4f7!important;
-    &:last-of-type {
-      background-color: #f2f4f7;
+.contracts {
+  &-list {
+    &__item {
+      position: relative;
+      padding-right: 40px;
+      margin-bottom: 32px;
     }
-}
-
-.cm-s-output {
-  background-color: #f2f4f7!important;
-}
-
-.btn-group {
-  justify-content: flex-end;
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
-
-.input {
-  &-text {
-    &__input {
-      font-family: monospace;
+  }
+  &-actions {
+    &__delete {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 36px;
+      right: 0; 
     }
   }
 }
 
-
-.mdl-dialog__content {
-  display: flex;
-  justify-content: space-between;
-  > codemirror {
-    flex: auto;
+.field {
+  &-list {
+    &__item {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }

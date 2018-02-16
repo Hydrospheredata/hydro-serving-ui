@@ -22,8 +22,15 @@ export class ContractsService {
             });
     }
 
-    public getModelBuildContract(id: number) {
+    public getModelBuildContracts(id: number) {
         return this.http.get(`${this.baseAPIUrl}/version/${id}/flatContract`)
+            .map((res: Response): any => {
+                return res.json();
+            });
+    }
+
+    public updateModelContract(id: number, contract) {
+        return this.http.post(`${this.baseAPIUrl}/${id}/contract/flat`, contract)
             .map((res: Response): any => {
                 return res.json();
             });
