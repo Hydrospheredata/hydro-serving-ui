@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, InjectionToken } from '@angular/core';
 import { MdlDialogReference } from '@angular-mdl/core';
-// import { MdlSnackbarService } from '@angular-mdl/core';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { MdlSnackbarService } from '@angular-mdl/core';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
@@ -26,17 +26,6 @@ export let injectableModelId = new InjectionToken<object>('injectableModelId');
 })
 export class DialogEditContractComponent extends DialogBase implements OnInit {
     public injectableModelId;
-    public model;
-    
-    
-    public input: {};
-    public output: {};
-    public testBtn: string;
-    public testTitle: string;
-    public requestBody: string;
-    // private port;
-    // private apiUrl;
-
     public signatures: Signature[];
     public contractsForm: FormGroup;
     public inputOptions = {
@@ -60,7 +49,8 @@ export class DialogEditContractComponent extends DialogBase implements OnInit {
         @Inject(injectableModelId) injectableModelId,
         public dialogRef: MdlDialogReference,
         private fb: FormBuilder,
-        private contractsService: ContractsService
+        private contractsService: ContractsService,
+        private mdlSnackbarService: MdlSnackbarService
     ) {
         super(
             dialogRef
@@ -71,12 +61,23 @@ export class DialogEditContractComponent extends DialogBase implements OnInit {
 
     ngOnInit() {
         this.createContractsForm();
-        this.initFormChangesListener();
+        // this.initFormChangesListener();
         this.contractsService.getModelContracts(this.injectableModelId)
             .subscribe(data => {
                 console.log(data.signatures);
                 this.signatures = data.signatures;
                 this.updateContractsFormValues(this.signatures ? this.signatures : null);
+            });
+    }
+
+    public onSubmit() {
+        this.contractsService.updateModelContract(this.injectableModelId, { signatures: this.contractsForm.value.signatures })
+            .subscribe(() => {
+                this.dialogRef.hide();
+                this.mdlSnackbarService.showSnackbar({
+                    message: 'Contracts was successfully updated',
+                    timeout: 5000
+                });
             });
     }
 
@@ -100,12 +101,12 @@ export class DialogEditContractComponent extends DialogBase implements OnInit {
         });
     }
 
-    private initFormChangesListener() {
-        this.contractsForm.valueChanges
-            .subscribe(form => {
-                console.log(form);
-            });
-    }
+    // private initFormChangesListener() {
+    //     this.contractsForm.valueChanges
+    //         .subscribe(form => {
+    //             console.log(form);
+    //         });
+    // }
 
     private createContractsForm() {
         this.contractsForm = this.fb.group({
@@ -115,7 +116,7 @@ export class DialogEditContractComponent extends DialogBase implements OnInit {
 
     private addSignature() {
         return this.fb.group({
-            signatureName: [ '' ],
+            signatureName: [ '', Validators.required ],
             inputs: this.fb.array([this.addSignatureField()]),
             outputs: this.fb.array([this.addSignatureField()]),
         });
@@ -123,21 +124,9 @@ export class DialogEditContractComponent extends DialogBase implements OnInit {
 
     private addSignatureField() {
         return this.fb.group({
-            fieldName: [ '' ], 
-            dataType: [ '' ], 
-            shape: [ '' ]
+            fieldName: [ '/', Validators.required ], 
+            dataType: [ '', Validators.required ], 
+            shape: [ '', Validators.required ]
         });
-    }
-
-    public onSubmit() {
-        this.contractsService.updateModelContract(this.injectableModelId, { signatures: this.contractsForm.value.signatures })
-            .subscribe(response => {
-                console.log(response);
-                this.dialogRef.hide();
-                // this.mdlSnackbarService.showSnackbar({
-                //     message: 'Contracts was successfully updated',
-                //     timeout: 5000
-                // });
-            });
     }
 }
