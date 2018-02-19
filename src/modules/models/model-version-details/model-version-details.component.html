@@ -1,11 +1,9 @@
 <div class="content">
     <div class="content-header">
-        <div [routerLink]="['../']">
-            <svg class="icon undeployed">
-                <use xlink:href="#icon-arrow-left" />
-            </svg>
-            <span>back</span>
-        </div>
+        <button class="btn btn-flat" [routerLink]="['../']">
+            <svg><use xlink:href="#icon-arrow-left" /></svg>
+            return to model
+        </button>
         
         <div class="content-header__title">{{ build?.model?.source }} / v{{ build?.version }}</div>
     </div>

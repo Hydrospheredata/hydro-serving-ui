@@ -37,6 +37,10 @@ $active-color: white;
         margin-right: 15px;
         fill: $default-color;
         stroke: $default-color;
+        &.icon-folder {
+          width: 28px;
+          height: 28px;
+        }
       }
       &.__active {
         border-top: 2px solid white;

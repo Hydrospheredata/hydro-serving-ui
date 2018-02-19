@@ -68,6 +68,9 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             fill: $btn-secondary;
         }
     }
+    &.btn-back {
+        @extend .btn-secondary;
+    }
     &-group {
         display: flex;
         flex-direction: row;

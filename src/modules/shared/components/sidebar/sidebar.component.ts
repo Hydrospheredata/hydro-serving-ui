@@ -3,13 +3,11 @@ import { MdlDialogService } from '@angular-mdl/core';
 // import { Router, NavigationEnd } from '@angular/router';
 // import { SortByPipe } from '@shared/pipes/sort-by.pipe';
 import { Subscription } from 'rxjs/Subscription';
-
-import { Application, Model, Source } from '@shared/models/_index';
 import { Observable } from 'rxjs/Observable';
 
+import { Application, Model, Source } from '@shared/models/_index';
 import { DialogAddServiceComponent } from '@components/dialogs/_index';
 // import * as moment from 'moment';
-// import { Store } from '@ngrx/store';
 
 
 
@@ -33,18 +31,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
     @Input() sidebarData: Observable<any>; // ToDo: Fix any type
     // private routeSubscription: Subscription;
     private sidebarDataSub: Subscription;
-    // private buildsListSub: Subscription;
-
-    public buildsList: any;
-
-    // private dataStreams: any[] = [];
 
     constructor(
         // private sortByPipe: SortByPipe,
         // private activatedRoute: ActivatedRoute,
         // private router: Router,
         private dialog: MdlDialogService,
-        // private store: Store<AppState>,
     ) {
         // this.routeSubscription = this.router.events
         //     .subscribe(event => {
