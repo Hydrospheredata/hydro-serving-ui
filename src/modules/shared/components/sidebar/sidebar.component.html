@@ -2,9 +2,9 @@
     <div class="sidebar-header">
         <div class="sidebar-header__row">
             <h3 class='sidebar-title'>{{ sidebarTitle }}</h3>
-            <button class="btn btn-secondary" (click)="isModels ? addModelSource($event) : addApplication($event)" title="isModels ? 'Add new model source' : 'Add new app'">
+            <button *ngIf="!isModels" class="btn btn-secondary" (click)="addApplication($event)" title="Add new app">
                 <svg><use xlink:href="#icon-plus"></use></svg>
-                {{isModels ? 'source' : 'app'}}
+                app
             </button>
         </div>
         <div class="sidebar-header__row">

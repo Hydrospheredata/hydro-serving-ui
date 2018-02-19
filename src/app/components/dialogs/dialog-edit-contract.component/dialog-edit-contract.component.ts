@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject, InjectionToken } from '@angular/core';
-import { MdlDialogReference } from '@angular-mdl/core';
-import { MdlSnackbarService } from '@angular-mdl/core';
+import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
@@ -13,8 +12,6 @@ import { Signature } from '@shared/models/_index';
 import { ContractsService } from '@shared/services/_index';
 
 import { DialogBase } from '@shared/base/_index';
-// import { environment } from 'environments/environment';
-// import { Location } from '@angular/common';
 
 
 export let injectableModelId = new InjectionToken<object>('injectableModelId');
@@ -60,7 +57,7 @@ export class DialogEditContractComponent extends DialogBase implements OnInit {
 
 
     ngOnInit() {
-        this.createContractsForm();
+        this.createForm();
         // this.initFormChangesListener();
         this.contractsService.getModelContracts(this.injectableModelId)
             .subscribe(data => {
@@ -108,7 +105,7 @@ export class DialogEditContractComponent extends DialogBase implements OnInit {
     //         });
     // }
 
-    private createContractsForm() {
+    private createForm() {
         this.contractsForm = this.fb.group({
             signatures: this.fb.array([this.addSignature()])
         });

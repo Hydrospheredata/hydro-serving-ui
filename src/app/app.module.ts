@@ -13,6 +13,7 @@ import { CoreModule } from '@modules/core/core.module';
 import { SharedModule } from '@modules/shared/shared.module';
 import { ModelsModule } from '@modules/models/models.module';
 import { ApplicationsModule } from '@modules/applications/applications.module';
+import { SourcesModule } from '@modules/sources/sources.module';
 
 // Dialogs
 import * as Dialog from '@components/dialogs/_index';
@@ -27,7 +28,8 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddServiceComponent,
-        Dialog.DialogEditContractComponent
+        Dialog.DialogEditContractComponent,
+        Dialog.DialogAddSourceComponent
     ],
     imports: [
         AppRoutingModule,
@@ -36,6 +38,7 @@ import * as Dialog from '@components/dialogs/_index';
         CoreModule,
         ModelsModule,
         ApplicationsModule,
+        SourcesModule,
         FormsModule,
         ReactiveFormsModule,
         MomentModule,
@@ -47,7 +50,8 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddServiceComponent,
-        Dialog.DialogEditContractComponent
+        Dialog.DialogEditContractComponent,
+        Dialog.DialogAddSourceComponent
     ],
     bootstrap: [AppComponent]
 })
