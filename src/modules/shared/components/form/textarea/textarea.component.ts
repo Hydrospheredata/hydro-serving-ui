@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, forwardRef, Output, EventEmitter} from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
 
 const noop = (_?: any) => {};
@@ -8,14 +8,14 @@ const noop = (_?: any) => {};
     templateUrl: './textarea.component.html',
     styleUrls: ['./textarea.component.scss'],
     providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => TextareaComponent),
-            multi: true
-        }
+    {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => TextareaComponent),
+    multi: true
+    }
     ]
-})
-export class TextareaComponent implements ControlValueAccessor  {
+    })
+export class TextareaComponent implements ControlValueAccessor {
     protected _value: any;
     protected onChange: (_: any) => void = noop;
     protected onTouched: () => void = noop;

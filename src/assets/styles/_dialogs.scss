@@ -1,3 +1,7 @@
+@import "variables.scss";
+
+
+
 .mat-dialog-container {
   position: relative;
   .close {
@@ -9,9 +13,9 @@
 
 .mdl-dialog {
     padding: 54px 64px;
-    color: $main-color;
+    color: $color-base;
     &__title {
-        font-family: 'Museo Sans Bold';
+        font-family: $font-family-bold;
         padding: 0;
         margin-bottom: 36px;
     }

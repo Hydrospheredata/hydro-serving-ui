@@ -1,22 +1,19 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
-import { AppState, Service } from '@shared/models/_index';
-import { FormsService, ServicesService } from '@shared/services/_index';
+import { AppState, Application } from '@shared/models/_index';
+import { FormsService, ApplicationsService } from '@shared/services/_index';
 
 
 
 @Component({
     selector: 'hydro-dialog-add-service',
     templateUrl: './dialog-add-service.component.html',
-    styleUrls: ['./dialog-add-service.component.scss'],
-    providers: [FormsService]
+    styleUrls: ['./dialog-add-service.component.scss']
 })
 export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 
@@ -28,22 +25,20 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
         public store: Store<AppState>,
-        public servicesService: ServicesService,
-        private router: Router
+        public applicationsService: ApplicationsService
     ) {
         super(
             fb,
             dialogRef,
             formsService,
             mdlSnackbarService,
-            store,
-            servicesService
+            store
         );
     }
 
     ngOnInit() {
         this.createServiceForm();
-        this.initFormChangesListener();
+        // this.initFormChangesListener();
     }
 
     onSubmit() {
@@ -54,27 +49,26 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         const data = this.getFormData(this.serviceForm);
 
         const serviceInfo = {
-            id: 0,
-            serviceName: this.serviceForm.value.serviceName,
-            kafkaStreamingSources: this.isKafkaEnabled ? data.kafkaStreamingSources : [],
+            name: this.serviceForm.value.serviceName,
+            // kafkaStreamingSources: this.isKafkaEnabled ? data.kafkaStreamingSources : [],
         };
 
-        serviceInfo.kafkaStreamingSources.forEach(kafka => {
-            kafka.serviceId = 0;
-        });
+        // serviceInfo.kafkaStreamingSources.forEach(kafka => {
+        //     kafka.serviceId = 0;
+        // });
 
-        const service = Object.assign( serviceInfo, { stages: data.stages } );
+        const application = Object.assign( serviceInfo, { stages: data.stages } );
 
         // TODO: try to add actions after successfully adding in effects (in each file)
-        this.servicesService.addService(service)
+        this.applicationsService.addApplication(application)
             .subscribe(response => {
-                this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Service(response) });
+                this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Application(response) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
-                    message: 'Service was successfully added',
+                    message: 'Application was successfully added',
                     timeout: 5000
                 });
-            })
+            });
         // this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
         // this.dialogRef.hide();
         // this.mdlSnackbarService.showSnackbar({

@@ -1,0 +1,149 @@
+@import 'variables.scss';
+
+
+
+.model-details {
+    >p {
+        >span {
+            font-weight: bold;
+        }
+        font-size: 16px;
+        display: flex;
+        flex-direction: row;
+    }
+    &-row {
+      padding-top: 16px;
+      font-size: 16px;
+    }
+    &-tag {
+      padding: 5px 8px;
+      background-color: #e9ecf2;
+      border-radius: 5px;
+    }
+    &-label {
+      color: #808080;
+      font-family: $font-family-light;
+    }
+    &-panel {
+      background-color: $main-bg-color;
+      padding: 32px 26px;
+    }
+    &-grid-header {
+      text-align: center;
+      color: #818994;
+      font-size: 18px;
+      font-family: $font-family-bold;
+    }
+    &-table {
+      margin-bottom: 70px
+    }
+    &-link {
+      color: $color--blue;
+      text-decoration: none;
+    }
+}
+
+.runtime {
+    font-family: $font-family-bold;
+}
+
+.deployed {
+    color: $color--success;
+    use {
+        fill: $color--success;
+    }
+}
+
+.undeployed {
+    color: #818994;
+    use {
+        fill: #e1e4eb;
+    }
+}
+
+.action {
+    color: #5b95de;
+    use {
+        fill: $color--blue;
+    }
+}
+
+.icon {
+    width: 12px;
+    height: 12px;
+    margin-top: -2px;
+    &-label {
+        margin-left: 5px;
+    }
+}
+
+.hydro-link:last-of-type {
+    margin-left: 14px;
+}
+
+.new-version {
+    color: #f28a03;
+    &::after {
+        content: '˚';
+    }
+    &-label {
+      margin-left: 10px;
+      background-color: #f28a03;
+      border-radius: 2px;
+      color: #FFFFFF;
+      font-size: 12px;
+      padding: 5px 7px;
+    }
+}
+
+.deploy-btn {
+    background-color: $color--blue;
+    color: #FFFFFF;
+    font-family: $font-family-bold;
+    font-size: 12px;
+    fill: #FFFFFF;
+    padding: 3px 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.hydro-table {
+    &-head__cell {
+      text-align: center;
+    }
+    &-body__cell {
+      text-align: center;
+    }
+}
+
+.actions {
+    > div {
+    justify-content: center!important;
+    > div {
+        display: inline-flex;
+    }
+  }
+  @media screen and (max-width: 1450px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+
+.no-contracts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.content-header {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+  > .btn {
+    padding: 0;
+    margin-bottom: 16px;
+    line-height: 1;
+    align-items: flex-start;
+  }
+}

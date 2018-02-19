@@ -1,9 +1,6 @@
 @import 'variables.scss';
 
-$default-blue: #539ae9;
-$default-green: #8cc63e;
-$bold: "Museo Sans Bold";
-$light: "Museo Sans Light";
+
 
 .model-details {
     >p {
@@ -25,7 +22,7 @@ $light: "Museo Sans Light";
     }
     &-label {
       color: #808080;
-      font-family: $light;
+      font-family: $font-family-light;
     }
     &-panel {
       background-color: $main-bg-color;
@@ -35,39 +32,39 @@ $light: "Museo Sans Light";
       text-align: center;
       color: #818994;
       font-size: 18px;
-      font-family: $bold;
+      font-family: $font-family-bold;
     }
     &-table {
       margin-bottom: 70px
     }
     &-link {
-      color: $default-blue;
+      color: $color--blue;
       text-decoration: none;
     }
 }
 
 .runtime {
-    font-family: $bold;
+    font-family: $font-family-bold;
 }
 
-.deployed {
-    color: $default-green;
-    use {
-        fill: $default-green;
-    }
-}
+// .__successed {
+//     color: $color--success;
+//     use {
+//         fill: $color--success;
+//     }
+// }
 
-.undeployed {
-    color: #818994;
-    use {
-        fill: #e1e4eb;
-    }
-}
+// .__failed {
+//     color: #818994;
+//     use {
+//         fill: #e1e4eb;
+//     }
+// }
 
 .action {
     color: #5b95de;
     use {
-        fill: $default-blue;
+        fill: $color--blue;
     }
 }
 
@@ -100,9 +97,9 @@ $light: "Museo Sans Light";
 }
 
 .deploy-btn {
-    background-color: $default-blue;
+    background-color: $color--blue;
     color: #FFFFFF;
-    font-family: $bold;
+    font-family: $font-family-bold;
     font-size: 12px;
     fill: #FFFFFF;
     padding: 3px 20px;

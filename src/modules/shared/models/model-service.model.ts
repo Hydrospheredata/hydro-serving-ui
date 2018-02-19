@@ -8,10 +8,10 @@ export class ModelService {
   public statusText: string;
 
   constructor(props: any = {}) {
-    this.cloudDriverId = props['cloudDriverId'];
-    this.modelRuntime = props['modelRuntime'];
-    this.serviceId = props['serviceId'];
-    this.serviceName = props['serviceName'];
-    this.statusText = props['statusText'];
+      this.cloudDriverId = props['cloudDriverId'];
+      this.modelRuntime = props['modelRuntime'];
+      this.serviceId = props['serviceId'];
+      this.serviceName = props['serviceName'];
+      this.statusText = props['statusText'];
   }
 }

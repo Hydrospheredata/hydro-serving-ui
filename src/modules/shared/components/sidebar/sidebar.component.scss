@@ -1,7 +1,14 @@
 @import "variables.scss";
 
-.sidebar {
+:host {
   height: 100%;
+  flex-basis: 25%;
+  overflow-y: scroll;
+}
+
+.sidebar {
+  background-color: $aside-bg-color;
+  min-height: 100%;
   &-header {
     padding: 45px 32px 26px;
     border-bottom: 2px solid #d4d7d9;
@@ -16,7 +23,7 @@
   }
   &-title {
     font-weight: 700;
-    font-family: $main-font-family;
+    font-family: $font-family-regular;
     font-size: $title-font-size;
     margin: 0;
     line-height: 1;
@@ -27,8 +34,6 @@
     margin-bottom: 0;
   }
   &-list {
-    height: 71vh;
-    overflow: scroll;
     display: flex;
     flex-direction: column;
     list-style: none;
@@ -50,11 +55,11 @@
       &:focus {
         background-color: $secondary-color;
       }
-      > span {
-        font-size: 18px;
-        font-family:'Museo Sans Bold';
-        color: #04143c;
-      }
+      // > span {
+      //   font-size: 18px;
+      //   font-family: $font-family-bold;
+      //   color: #04143c;
+      // }
       &-status {
         display: flex;
         align-items: center;
@@ -65,14 +70,16 @@
         justify-content: flex-end;
         padding-right: 10px;
         > span {
-          padding-right: 30px;
+          margin-right: 26px;
         }
       }
       &-name {
         max-width: 14vw;
         line-break: strict;
-        overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 18px;
+        font-family: $font-family-bold;
+        color: #04143c;
       }
     }
   }
@@ -98,7 +105,7 @@
       margin-right: 10px;
       display: inline-flex;
       &--label {
-        font-family: $main-font-family;        
+        font-family: $font-family-regular;        
         color: #818994;
         font-size: 14px;
         font-weight: 400;
@@ -116,10 +123,6 @@
   }
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 .icon-pipeline {
   width: 18px;
   height: 20px;
@@ -127,7 +130,7 @@
 }
 
 .deployed use {
-  fill: #8cc63e!important;
+  fill: $color--success !important;
 }
 
 .undeployed {
@@ -136,14 +139,6 @@
 
 .undeployed-filter {
   fill: #d2d5d9;
-}
-
-.version-new {
-  padding-right: 26px!important;
-  color: #f28a03;
-  &::after {
-    content: '˚';
-  }
 }
 
 .version-failed {

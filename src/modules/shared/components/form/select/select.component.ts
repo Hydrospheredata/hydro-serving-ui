@@ -1,10 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'hydro-select',
-  templateUrl: './select.component.html',
-  styleUrls: ['./select.component.scss'],
-})
+    selector: 'hydro-select',
+    templateUrl: './select.component.html',
+    styleUrls: ['./select.component.scss'],
+    })
 export class SelectComponent {
 
     // @Input() items: any[];
@@ -34,15 +34,15 @@ export class SelectComponent {
     }
 
     public selected(value: any) {
-        console.log('Selected value is: ', value);
+        this.value = value;
     }
 
     public removed(value: any) {
-        console.log('Removed value is: ', value);
+        this.value = value;
     }
 
     public typed(value: any) {
-        console.log('New search input: ', value);
+        this.value = value;
     }
 
     public refreshValue(value: any) {

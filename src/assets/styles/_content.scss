@@ -7,12 +7,17 @@
         display: flex;
         flex-direction: row;
         min-height: 100%;
+        width: 100%;
         > hydro-sidebar {
             flex-basis: 25%;
         }
-        > hydro-services-item-detail,
-          hydro-model-details {
-            flex-basis: 75%;
+        > hydro-applications-item-detail,
+          hydro-model-details,
+          hydro-model-version-details,
+          hydro-sources-item-detail {
+            height: 100%;
+            flex: 1 1 75%;
+            overflow-y: scroll;
         }
     }
     &-header {
@@ -57,6 +62,7 @@
                 }
                 &-value {
                     margin-left: 6px;
+                    display: flex;
                 }
             }
         }

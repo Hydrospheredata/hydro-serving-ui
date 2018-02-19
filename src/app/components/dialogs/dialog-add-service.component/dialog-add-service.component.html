@@ -4,7 +4,7 @@
 
     <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Application Name" formControlName="serviceName"></hydro-input-text>
 
-    <div class="hydro-form-group">
+    <!-- <div class="hydro-form-group">
       <label class="hydro-checkbox">
         <input type="checkbox" [checked]="isKafkaEnabled" (change)="isKafkaEnabled = $event.target.checked">
         <span>Use Kafka source</span>
@@ -43,7 +43,7 @@
           <span>Add More Sources</span>
         </li>
       </ul>
-    </div>
+    </div> -->
 
 
     <label class="hydro-checkbox">
@@ -56,9 +56,9 @@
       <ul class="form-weights__list" formArrayName="weights">
         <li class="form-weights__list-item" *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index" [formGroupName]="i">
           
-         <mdl-select formControlName="selectedModel" label="Choose model" class="cs-text-center" (change)="onSelectModel($event)">
+         <!-- <mdl-select formControlName="selectedModel" label="Choose model" class="cs-text-center" (change)="onSelectModel($event)">
             <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
-          </mdl-select>
+          </mdl-select> -->
 
           <mdl-select class="__versions cs-text-center" formControlName="model">
             <mdl-option *ngFor="let model of modelVersions" [value]="model">{{model.modelRuntime.modelVersion}}</mdl-option>
@@ -94,7 +94,7 @@
       <codemirror [ngModelOptions]="{standalone: true}" [(ngModel)]="pipelineEditorValue" [config]="codeMirrorOptions"></codemirror>
     </div>
     
-    <div class="btn-group form-actions">
+    <div class="btn-group form-actions __justify-end">
       <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
       <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">Add app</button>
     </div>

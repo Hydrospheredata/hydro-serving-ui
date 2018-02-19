@@ -16,9 +16,16 @@ $table-padding: 18px;
   }
   &-body {
     &__row {
+      outline: none;
       [class$="services"] & {
         background-color: $main-bg-color;
         border-bottom: 2px solid #ffffff;
+      }
+      &.__link {
+        &:hover {
+          background-color: #e6e9ed;
+          cursor: pointer;
+        }
       }
     }
     &__cell {

@@ -6,6 +6,5 @@ export * from './actions/_index';
 export * from './reducers/_index';
 export * from './builders/_index';
 export * from './factories/_index';
-export * from './guards/_index';
 export * from './base/_index';
 export * from './effects/_index';

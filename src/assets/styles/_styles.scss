@@ -15,6 +15,7 @@
 @import "mdl-list.scss";
 @import "mdl-select.scss";
 @import "icons.scss";
+@import "statuses.scss";
 
 * {
   -webkit-box-sizing: border-box;
@@ -29,14 +30,14 @@
 }
 
 html, body {
-  font-family: $main-font-family !important;
+  font-family: $font-family-regular !important;
   background-color: $main-bg-color;
-  color: $main-color;
+  color: $color-base;
   height: 100%;
 }
 
 .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
-  font-family: $main-font-family;
+  font-family: $font-family-regular;
   font-weight: 500;
   line-height: 1.1;
   color: inherit
@@ -45,7 +46,7 @@ html, body {
 .h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
   font-weight: 400;
   line-height: 1;
-  color: $main-color;
+  color: $color-base;
 }
 
 .h1, .h2, .h3, h1, h2, h3 {
@@ -101,13 +102,8 @@ button:focus, input:focus {
   outline: 0;
 }
 
-aside {
-  background-color: $aside-bg-color;
-  flex-shrink: 0;
-}
-
 li a {
-  color: $main-color;
+  color: $color-base;
 }
 
 hr {

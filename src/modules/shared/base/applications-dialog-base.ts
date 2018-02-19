@@ -1,14 +1,13 @@
-import { Injectable, InjectionToken, Inject } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
+import { Subscription } from 'rxjs/Subscription';
 
 import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
-import * as Actions from '@shared/actions/_index';
-import { AppState, ModelService, Service } from '@shared/models/_index';
-import { FormsService, ServicesService } from '@shared/services/_index';
+import { AppState, ModelService, Application, ModelVersion, Runtime } from '@shared/models/_index';
+import { FormsService } from '@shared/services/_index';
 
 import 'codemirror/mode/yaml/yaml.js';
 import 'codemirror/addon/edit/matchbrackets.js';
@@ -37,7 +36,7 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public pipelineEditorValue: string = '';
 
-    public selectedService: Service;
+    public selectedService: Application;
     public formTitle: string;
     public formErrors = {
         serviceName: '',
@@ -50,58 +49,80 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public modelVersions: any[] = [];
 
-    public services: Service[];
+    public services: Application[];
+    public modelBuilds: ModelVersion[];
+    public runtimes: Runtime[];
 
     public weightsForSlider: any[] = [100];
+
+    private modelBuildsStoreSub: Subscription;
+    private runtimesStoreSub: Subscription;
 
     constructor(
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public store: Store<AppState>,
-        public servicesService: ServicesService
+        public store: Store<AppState>
     ) {
         super(
             dialogRef
         );
-        this.store.select('modelService')
-            .subscribe(modelService => {
-                this.modelServicesFiltered = modelService.filter((item, index, self) => {
-                    return item.modelRuntime.runtimeType && item.serviceId > 0 && self.findIndex(t => { return t.modelRuntime.modelId === item.modelRuntime.modelId}) === index;
-                });
+        // this.store.select('modelService')
+        //     .subscribe(modelService => {
+        //         this.modelServicesFiltered = modelService.filter((item, index, self) => {
+        //             return item.modelRuntime.runtimeType && item.serviceId > 0 && self.findIndex(t => { return t.modelRuntime.modelId === item.modelRuntime.modelId}) === index;
+        //         });
+        //     });
+        // this.store.select('services')
+        //     .subscribe(services => {
+        //         this.services = services;
+        //     });
+
+        this.modelBuildsStoreSub = this.store.select('modelBuilds')
+            .subscribe(modelBuilds => {
+                console.log(modelBuilds);
+                this.modelBuilds = modelBuilds;
             });
-        this.store.select('services')
-            .subscribe(services => {
-                this.services = services;
-            });
+        
+        this.runtimesStoreSub = this.store.select('runtimes')
+            .subscribe(runtimes => {
+                console.log(runtimes);
+                this.runtimes = runtimes;
+            })
     }
 
     public createServiceForm() {
         this.serviceForm = this.fb.group({
             serviceName: ['', Validators.required],
             weights: this.fb.array([this.addWeightToModel()]),
-            kafkaStreamingSources: this.fb.array([this.addKafkaSource()]),
+            // kafkaStreaming: this.fb.array([this.addKafkaSource()]),
             addModelToService: ''
         });
     }
 
     public addWeightToModel(model?) {
         return this.fb.group({
-            selectedModel: [model ? this.modelServicesFiltered.find(item => item.modelRuntime.modelId === model).modelRuntime.modelId : ''],
+            // selectedModel: [model ? this.modelServicesFiltered.find(item => item.modelRuntime.modelId === model).modelRuntime.modelId : ''],
             model: [model ? model : ''],
             weight: ['100', [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
         });
     }
 
-    public addKafkaSource() {
-        return this.fb.group({
-            serviceId: ['0'],
-            sourceTopic: [''],
-            destinationTopic: [''],
-            brokerList: ['']
-        });
+    public ngOnDestroy() {
+        if (this.modelBuildsStoreSub) {
+            this.modelBuildsStoreSub.unsubscribe();
+        }
     }
+
+    // public addKafkaSource() {
+    //     return this.fb.group({
+    //         serviceId: ['0'],
+    //         sourceTopic: [''],
+    //         destinationTopic: [''],
+    //         brokerList: ['']
+    //     });
+    // }
 
     public initFormChangesListener() {
         this.serviceForm.valueChanges.subscribe((form) => {
@@ -129,53 +150,53 @@ export class ApplicationsDialogBase extends DialogBase {
         control.push(this.addWeightToModel(model));
     }
 
-    public addKafkaToService() {
-        const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
-        control.push(this.addKafkaSource());
-    }
+    // public addKafkaToService() {
+    //     const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
+    //     control.push(this.addKafkaSource());
+    // }
 
-    public removeKafkaFromService(i: number) {
-        const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
-        control.removeAt(i);
-    }
+    // public removeKafkaFromService(i: number) {
+    //     const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
+    //     control.removeAt(i);
+    // }
 
     public removeModelFromService(i: number) {
         const control = <FormArray>this.serviceForm.controls['weights'];
         control.removeAt(i);
     }
 
-    public onSelectModel(value) {
-        this.modelVersions = this.modelServicesFiltered.filter((item, index, self) => {
-            return item.modelRuntime.modelId === value;
-        });
-    }
+    // public onSelectModel(value) {
+    //     this.modelVersions = this.modelServicesFiltered.filter(item => {
+    //         return item.modelRuntime.modelId === value;
+    //     });
+    // }
 
-    public onAddingModel(value) {
-        this.addModelToService(value);
-        this.onSelectModel(value);
-        this.weightsForSlider.push(0);
-        this.serviceForm.patchValue({
-            addModelToService: ''
-        });
-    }
+    // public onAddingModel(value) {
+    //     this.addModelToService(value);
+    //     this.onSelectModel(value);
+    //     this.weightsForSlider.push(0);
+    //     this.serviceForm.patchValue({
+    //         addModelToService: ''
+    //     });
+    // }
 
     public getFormData(data) {
 
         let weights: {runtimeId: number, weight: number}[] = [];
         let stages: any[] = [];
-        let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
+        // let kafkaStreaming: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
 
         if (this.isJsonModeEnabled) {
             
             let pipelineEditorValue = JSON.parse(this.pipelineEditorValue.replace(/[\n( )]/g, ''));
 
-            pipelineEditorValue.forEach(stage => {
-                stage.forEach(item => {
-                    let modelService = this.modelServicesFiltered.filter(modelService => modelService.serviceName === item.runtimeName).shift();
-                    item.runtimeId = modelService.modelRuntime.modelId;
-                    delete(item.runtimeName);
-                });
-            });
+            // pipelineEditorValue.forEach(stage => {
+            //     stage.forEach(item => {
+            //         let modelService = this.modelServicesFiltered.filter(modelService => modelService.serviceName === item.runtimeName).shift();
+            //         item.runtimeId = modelService.modelRuntime.modelId;
+            //         delete(item.runtimeName);
+            //     });
+            // });
             stages = pipelineEditorValue;
         } else {
             data.value.weights.forEach(self => {
@@ -187,20 +208,20 @@ export class ApplicationsDialogBase extends DialogBase {
             stages.push(weights);
         }
 
-        data.value.kafkaStreamingSources.forEach(kafka => {
-            if (this.isKafkaEnabled) {
-                kafkaStreamingSources.push({
-                    serviceId: Number(kafka.serviceId),
-                    sourceTopic: kafka.sourceTopic,
-                    destinationTopic: kafka.destinationTopic,
-                    brokerList: kafka.brokerList instanceof Array ? kafka.brokerList : kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g)
-                });
-            }
-        });
+        // data.value.kafkaStreaming.forEach(kafka => {
+        //     if (this.isKafkaEnabled) {
+        //         kafkaStreaming.push({
+        //             serviceId: kafka.serviceId,
+        //             sourceTopic: kafka.sourceTopic,
+        //             destinationTopic: kafka.destinationTopic,
+        //             brokerList: kafka.brokerList instanceof Array ? kafka.brokerList : kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g)
+        //         });
+        //     }
+        // });
 
         return {
             stages: stages,
-            kafkaStreamingSources: kafkaStreamingSources
+            // kafkaStreaming: kafkaStreaming
         };
     }
 

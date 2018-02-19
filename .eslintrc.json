@@ -1,0 +1,45 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": "eslint:recommended",
+    "parser": "typescript-eslint-parser",
+    "plugins": [
+        "typescript"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
+    "globals": {
+        "angular": true
+    },
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-extra-semi": "error",
+        "no-unused-vars": "off",
+        "no-undef": "off",
+        "no-empty-pattern": "error",
+        "no-multi-spaces": [
+            "error",
+            {
+                "ignoreEOLComments": true
+            }
+        ],
+        "typescript/no-unused-vars": "off"
+    }
+}

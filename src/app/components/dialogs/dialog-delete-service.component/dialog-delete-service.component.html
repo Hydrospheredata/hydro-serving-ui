@@ -1,11 +1,7 @@
-<div>
-  <h2 class="cs-text-center">Are you sure?</h2>
-  <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col cs-text-center">
-      <button (click)="dialogRef.hide()" type="button" mdl-button class='mat-button mat-button--big'>CANCEL</button>
-      <button (click)="submitDeleteServiceForm()" type="submit" mdl-button class='mat-button mat-button--big mat-button--primary'
-              mdl-button-type="raised" mdl-colored="primary" mdl-ripple>Delete app
-      </button>
+<h2 class="mdl-dialog__title cs-text-center">Are you sure?</h2>
+<div class="mdl-dialog__content">
+    <div class="btn-group form-actions __justify-space-around">
+        <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
+        <button class="btn btn-colored btn-large" type="submit" (click)="submitDeleteServiceForm()">Delete app</button>
     </div>
-  </div>
 </div>

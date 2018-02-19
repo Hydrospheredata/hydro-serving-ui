@@ -1,65 +1,50 @@
-import { negativeOf } from '@angular/flex-layout/flexbox/api/show-hide';
 import { Injectable } from '@angular/core';
-import { RuntimeTypeBuilder } from './runtime-type.builder';
-import { ModelRuntimeBuilder } from './model-runtime.builder';
-import { Model, RuntimeType, ModelRuntime, ModelBuild, CurrentServices } from '@shared/models/_index';
+import { Model, ModelBuild, ModelVersion } from '@shared/models/_index';
 import { ModelBuildBuilder } from './model-build.builder';
-import { ModelCurrentServicesBuilder } from './model-current-services.builder';
+import { ModelVersionBuilder } from './model-version.builder';
+
 
 
 @Injectable()
 export class ModelBuilder {
 
-  constructor(
-    private runtimeTypeBuilder: RuntimeTypeBuilder,
-    private modelRuntimeBuilder: ModelRuntimeBuilder,
-    private modelBuildBuilder: ModelBuildBuilder,
-    private modelCurrentServicesBuilder: ModelCurrentServicesBuilder
-  ) { }
+    constructor(
+        private modelBuildBuilder: ModelBuildBuilder,
+        private modelVersionBuilder: ModelVersionBuilder
+    ) { }
 
-  public build(props): Model {
-    return this.toModel(props);
-  }
-
-  private toModel(props) {
-    let runtimeType: RuntimeType;
-    let model: Model;
-    let lastModelRuntime: ModelRuntime;
-    let lastModelBuild: ModelBuild;
-    let currentServices: CurrentServices[] = [];
-
-    if (props.model && props.model['runtimeType']) {
-      runtimeType = this.runtimeTypeBuilder.build(props.model['runtimeType']);
+    public build(props): Model {
+        return this.toModel(props);
     }
 
-    if (props['lastModelRuntime']) {
-      lastModelRuntime = this.modelRuntimeBuilder.build(props['lastModelRuntime']);
-    }
+    private toModel(props): Model {
+        let lastModelBuild: ModelBuild;
+        let lastModelVersion: ModelVersion;
+        let nextVersion: number;
 
-    if (props['lastModelBuild']) {
-      lastModelBuild = this.modelBuildBuilder.build(props['lastModelBuild']);
-    }
+        if (props['lastModelBuild']) {
+            lastModelBuild = this.modelBuildBuilder.build(props['lastModelBuild']);
+        }
+        if (props['lastModelVersion']) {
+            lastModelVersion = this.modelVersionBuilder.build(props['lastModelVersion']);
+        }
+        if (props['nextVersion']) {
+            nextVersion = props['nextVersion'];
+        }
 
-    if (props['currentServices'] && props['currentServices'].length) {
-      currentServices = this.modelCurrentServicesBuilder.build(props['currentServices']);
-    }
+        let model = new Model({
+            created: props.model['created'],
+            updated: props.model['updated'],
+            id: props.model['id'],
+            modelContract: props.model['modelContract'],
+            modelType: props.model['modelType'],
+            name: props.model['name'],
+            source: props.model['source'],
+            lastModelBuild: lastModelBuild,
+            lastModelVersion: lastModelVersion,
+            nextVersion: nextVersion,
+        });
 
-    model = new Model({
-      id: props.model['id'],
-      name: props.model['name'],
-      source: props.model['source'],
-      description: props.model['description'],
-      outputFields: props.model['outputFields'],
-      inputFields: props.model['inputFields'],
-      created: props.model['created'],
-      updated: props.model['updated'],
-      nextVersion: props['nextVersion'],
-      nextVersionAvailable: props['nextVersionAvailable'],
-      runtimeType: runtimeType,
-      lastModelRuntime: lastModelRuntime,
-      lastModelBuild: lastModelBuild,
-      currentServices: currentServices
-    });
-    return model;
-  }
+        return model;
+    }
 }

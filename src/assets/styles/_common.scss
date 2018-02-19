@@ -1,4 +1,7 @@
-/*common styles*/
+@import "variables.scss";
+
+
+
 .cs {
   &-align-center {
     align-items: center;
@@ -8,13 +11,13 @@
       font-style: italic;
     }
     &-light {
-      font-family:'Museo Sans Light';
+      font-family: $font-family-light;
     }
     &-ultrabold {
-      font-family:'Museo Sans UltraBold';
+      font-family: $font-family-ultrabold;
     }
     &-bold {
-      font-family:'Museo Sans Bold';
+      font-family: $font-family-bold;
     }
     &-size-14 {
       font-size: 14px !important;
@@ -117,14 +120,6 @@
     }
     &-space-between {
       justify-content: space-between;
-    }
-  }
-}
-
-.hydro {
-  &__separator {
-    &--horizontal {
-      border: 1px solid $aside-bg-color;
     }
   }
 }

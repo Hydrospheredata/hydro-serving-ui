@@ -1,5 +1,5 @@
 $btn-primary: $color--light-blue;
-$btn-secondary: $main-color;
+$btn-secondary: $color-base;
 $btn-icon-size: 12px;
 $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -9,7 +9,7 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     color: $btn-primary;
     padding: 7px 14px;
     font-size: 14px;
-    font-family: "Museo Sans Regular";
+    font-family: $font-family-regular;
     text-transform: uppercase;
     outline: none;
     display: flex;
@@ -45,7 +45,7 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
     }
     &.btn-large {
-        font-family: 'Museo Sans Bold';
+        font-family: $font-family-bold;
         font-size: 18px;
         padding: 10px 24px;
         letter-spacing: 1px;
@@ -68,11 +68,20 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             fill: $btn-secondary;
         }
     }
+    &.btn-back {
+        @extend .btn-secondary;
+    }
     &-group {
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        &.__justify-end {
+            justify-content: flex-end;
+        }
+        &.__justify-space-around {
+            justify-content: space-around;
+        }
         > .btn {
             margin: 0 8px;
         }
