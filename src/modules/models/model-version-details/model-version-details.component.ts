@@ -56,7 +56,6 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
         this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: this.modelId });
         
         this.modelsBuildsSub = this.store.select('modelBuilds')
-            .take(1)
             .subscribe(builds => {
                 this.build = builds.find(dataStoreItem => dataStoreItem.version === Number(modelVersionId) && dataStoreItem.model.id === Number(this.modelId));
                 if (this.build) {

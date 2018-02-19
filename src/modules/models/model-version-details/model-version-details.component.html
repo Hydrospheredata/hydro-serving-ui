@@ -1,6 +1,5 @@
 <div class="content">
     <div class="content-header">
-
         <div [routerLink]="['../']">
             <svg class="icon undeployed">
                 <use xlink:href="#icon-arrow-left" />
@@ -9,16 +8,10 @@
         </div>
         
         <div class="content-header__title">{{ build?.model?.source }} / v{{ build?.version }}</div>
-        <!-- <div class="btn-group">
-            <button class="btn">
-                <svg><use xlink:href="#icon-arrow"></use></svg>
-                build
-            </button>
-        </div> -->
     </div>
 
 
-    <div class="model-details">
+    <div class="content-body">
         <div class="hydro-panel" *ngIf="!contracts?.signatures?.length">
             <div class="no-contracts">There are no contracts for this model build!</div>
         </div>
