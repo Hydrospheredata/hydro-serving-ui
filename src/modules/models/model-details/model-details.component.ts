@@ -4,10 +4,7 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
-import {
-    AppState, 
-    Model
-} from '@shared/models/_index';
+import { AppState, Model } from '@shared/models/_index';
 
 import {
     DialogModelBuildComponent,
@@ -20,6 +17,7 @@ import {
 import * as Actions from '@shared/actions/_index';
 
 
+
 @Component({
     selector: 'hydro-model-details',
     templateUrl: './model-details.component.html',
@@ -28,12 +26,12 @@ import * as Actions from '@shared/actions/_index';
 export class ModelDetailsComponent implements OnInit, OnDestroy {
 
     public model: Model;
-    public modelVersionsList: any[]; // TODO: FIX TYPE
+    public modelBuilds: any[]; // TODO: FIX TYPE
     public tableHeader: string[] = [
         'Created', 'Version', 'Status', 'Actions'
     ];
     
-    private modelVersionsListSub: Subscription;
+    private modelBuildsSub: Subscription;
     private modelsStoreSelectionSubscription: Subscription;
     private activatedRouteSubscription: Subscription;
 
@@ -44,37 +42,44 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         private store: Store<AppState>
     ) { }
 
-    ngOnInit() {
+    public ngOnInit() {
         this.activatedRouteSubscription = this.activatedRoute.params
             .map(params => {
-                const id = params['modelId'];
-                return id;
+                return params['modelId'];
             })
             .subscribe(modelId => {
                 if (this.modelsStoreSelectionSubscription) {
                     this.modelsStoreSelectionSubscription.unsubscribe();
                 }
-                if (this.modelVersionsListSub) {
-                    this.modelVersionsListSub.unsubscribe();
+                if (this.modelBuildsSub) {
+                    this.modelBuildsSub.unsubscribe();
                 }
                 this.loadInitialData(modelId);
             });
     }
 
+    public ngOnDestroy() {
+        if (this.modelsStoreSelectionSubscription) {
+            this.modelsStoreSelectionSubscription.unsubscribe();
+        }
+        if (this.modelBuildsSub) {
+            this.modelBuildsSub.unsubscribe();
+        }
+    }
+
     private loadInitialData(modelId: string) {
         this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: modelId });
 
-        this.modelVersionsListSub = this.store.select('modelBuilds')
+        this.modelBuildsSub = this.store.select('modelBuilds')
             .skip(1)
-            .subscribe(modelVersionsList => {
-                this.modelVersionsList = modelVersionsList.reverse();
+            .subscribe(modelBuilds => {
+                this.modelBuilds = modelBuilds.reverse();
             })
 
         this.modelsStoreSelectionSubscription = this.store.select('models')
             .filter(models => models.length > 0)
             .subscribe(models => {
                 this.model = models.find(modelsStoreItem => modelsStoreItem.id === Number(modelId));
-                console.log(this.model);
             });
     }
 
@@ -114,15 +119,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400
         });
-    }
-
-    ngOnDestroy() {
-        if (this.modelsStoreSelectionSubscription) {
-            this.modelsStoreSelectionSubscription.unsubscribe();
-        }
-        if (this.modelVersionsListSub) {
-            this.modelVersionsListSub.unsubscribe();
-        }
     }
 
 }

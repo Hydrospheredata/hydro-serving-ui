@@ -4,7 +4,7 @@ import { MdlDialogService } from '@angular-mdl/core';
 // import { SortByPipe } from '@shared/pipes/sort-by.pipe';
 import { Subscription } from 'rxjs/Subscription';
 
-import { Application, Model } from '@shared/models/_index';
+import { Application, Model, Source } from '@shared/models/_index';
 import { Observable } from 'rxjs/Observable';
 
 import { DialogAddServiceComponent } from '@components/dialogs/_index';
@@ -21,11 +21,12 @@ import { DialogAddServiceComponent } from '@components/dialogs/_index';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
 
-    public sidebarList: Application[] | Model[] = [];
+    public sidebarList: Application[] | Model[] | Source[] = [];
     public searchQ: string;
     // private needsToGo = false;
     public sidebarFilter = {'deployed': true, 'undeployed': true, 'apps': true, 'pipelines': true};
-    @Input() isAddBtnEnabled: boolean;
+    @Input() isActionBtnEnabled: boolean = false;
+    @Input() isFilterEnabled: boolean = false;
     @Input() isModels: boolean;
     @Input() sidebarTitle: string;
 

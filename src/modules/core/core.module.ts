@@ -31,6 +31,7 @@ import {
     ModelEffects,
     RuntimesEffects,
     ContractsEffects,
+    SourcesEffects,
 } from '@shared/effects/_index';
 
 // Builders
@@ -54,6 +55,7 @@ import {
     ApplicationsReducer,
     RuntimesReducer,
     ContractsReducer,
+    SourcesReducer,
 } from '@shared/reducers/_index';
 
 
@@ -73,11 +75,12 @@ import {
             modelBuilds: ModelBuildsReducer,
             runtimes: RuntimesReducer,
             contracts: ContractsReducer,
+            sources: SourcesReducer
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25
         }),
-        EffectsModule.forRoot([ApplicationsEffects, ModelEffects, RuntimesEffects, ContractsEffects])
+        EffectsModule.forRoot([ApplicationsEffects, ModelEffects, RuntimesEffects, ContractsEffects, SourcesEffects])
     ],
     exports: [
         NavbarComponent, 

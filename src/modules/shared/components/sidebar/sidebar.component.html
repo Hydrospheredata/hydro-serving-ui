@@ -2,7 +2,7 @@
     <div class="sidebar-header">
         <div class="sidebar-header__row">
             <h3 class='sidebar-title'>{{ sidebarTitle }}</h3>
-            <button *ngIf="!isModels" class="btn btn-secondary" (click)="addApplication($event)" title="Add new app">
+            <button *ngIf="isActionBtnEnabled" class="btn btn-secondary" (click)="addApplication($event)" title="Add new app">
                 <svg><use xlink:href="#icon-plus"></use></svg>
                 app
             </button>
@@ -11,7 +11,7 @@
             <hydro-input-text class="sidebar-search" inputClass="sidebar-search" placeholder="Search" [(ngModel)]="searchQ" iconName="search" iconDirection="left"></hydro-input-text>
         </div>
 
-        <div class="sidebar-filter">
+        <div class="sidebar-filter"  *ngIf="isFilterEnabled">
             <span class="sidebar-filter__label">Filter:</span>
             <button *ngIf="isModels" (click)="toggleSidebarFilter('deployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['deployed']}">
                 <svg class="icon sidebar-filter__button--icon deployed"><use xlink:href="#icon-arrow"/></svg>
