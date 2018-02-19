@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
-import { AppState, ModelService, Application, ModelVersion } from '@shared/models/_index';
+import { AppState, ModelService, Application, ModelVersion, Runtime } from '@shared/models/_index';
 import { FormsService } from '@shared/services/_index';
 
 import 'codemirror/mode/yaml/yaml.js';
@@ -50,11 +50,13 @@ export class ApplicationsDialogBase extends DialogBase {
     public modelVersions: any[] = [];
 
     public services: Application[];
-    public modelVersionsList: ModelVersion[];
+    public modelBuilds: ModelVersion[];
+    public runtimes: Runtime[];
 
     public weightsForSlider: any[] = [100];
 
     private modelBuildsStoreSub: Subscription;
+    private runtimesStoreSub: Subscription;
 
     constructor(
         public fb: FormBuilder,
@@ -78,10 +80,15 @@ export class ApplicationsDialogBase extends DialogBase {
         //     });
 
         this.modelBuildsStoreSub = this.store.select('modelBuilds')
-            .skip(1)
-            .subscribe(modelVersionsList => {
-                console.log(modelVersionsList);
-                this.modelVersionsList = modelVersionsList;
+            .subscribe(modelBuilds => {
+                console.log(modelBuilds);
+                this.modelBuilds = modelBuilds;
+            });
+        
+        this.runtimesStoreSub = this.store.select('runtimes')
+            .subscribe(runtimes => {
+                console.log(runtimes);
+                this.runtimes = runtimes;
             })
     }
 
@@ -89,7 +96,7 @@ export class ApplicationsDialogBase extends DialogBase {
         this.serviceForm = this.fb.group({
             serviceName: ['', Validators.required],
             weights: this.fb.array([this.addWeightToModel()]),
-            // kafkaStreamingSources: this.fb.array([this.addKafkaSource()]),
+            // kafkaStreaming: this.fb.array([this.addKafkaSource()]),
             addModelToService: ''
         });
     }
@@ -144,12 +151,12 @@ export class ApplicationsDialogBase extends DialogBase {
     }
 
     // public addKafkaToService() {
-    //     const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
+    //     const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
     //     control.push(this.addKafkaSource());
     // }
 
     // public removeKafkaFromService(i: number) {
-    //     const control = <FormArray>this.serviceForm.controls['kafkaStreamingSources'];
+    //     const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
     //     control.removeAt(i);
     // }
 
@@ -177,7 +184,7 @@ export class ApplicationsDialogBase extends DialogBase {
 
         let weights: {runtimeId: number, weight: number}[] = [];
         let stages: any[] = [];
-        // let kafkaStreamingSources: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
+        // let kafkaStreaming: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
 
         if (this.isJsonModeEnabled) {
             
@@ -201,9 +208,9 @@ export class ApplicationsDialogBase extends DialogBase {
             stages.push(weights);
         }
 
-        // data.value.kafkaStreamingSources.forEach(kafka => {
+        // data.value.kafkaStreaming.forEach(kafka => {
         //     if (this.isKafkaEnabled) {
-        //         kafkaStreamingSources.push({
+        //         kafkaStreaming.push({
         //             serviceId: kafka.serviceId,
         //             sourceTopic: kafka.sourceTopic,
         //             destinationTopic: kafka.destinationTopic,
@@ -214,7 +221,7 @@ export class ApplicationsDialogBase extends DialogBase {
 
         return {
             stages: stages,
-            // kafkaStreamingSources: kafkaStreamingSources
+            // kafkaStreaming: kafkaStreaming
         };
     }
 
