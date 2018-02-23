@@ -9,7 +9,7 @@ import { MdlSelectModule } from '@angular-mdl/select';
 import { NavbarComponent, LoaderComponent } from './_index';
 
 import { CodemirrorModule } from 'ng2-codemirror';
-import { ClipboardModule } from 'ngx-clipboard';
+// import { ClipboardModule } from 'ngx-clipboard';
 import { EffectsModule } from '@ngrx/effects';
 
 // Services
@@ -70,7 +70,7 @@ import {
         MdlModule,
         MdlSelectModule,
         CodemirrorModule,
-        ClipboardModule,
+        // ClipboardModule,
         HttpModule,
         StoreModule.forRoot({
             models: ModelsReducer,
@@ -100,7 +100,7 @@ import {
         MdlModule,
         MdlSelectModule,
         CodemirrorModule,
-        ClipboardModule,
+        // ClipboardModule,
     ],
     declarations: [
         NavbarComponent, 

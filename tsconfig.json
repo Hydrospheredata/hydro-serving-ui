@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "./dist/out-tsc",
+    "outDir": "hydro-serving-ui",
     "baseUrl": "src",
     "sourceMap": true,
     "declaration": false,
