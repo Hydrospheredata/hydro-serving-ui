@@ -1,13 +1,27 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{model?.source}}</div>
+        <div class="btn-group" *ngIf="model?.nextVersion">
+            <button class="btn" (click)="$event.stopPropagation(); buildModel(model)">
+                <svg>
+                    <use xlink:href="#icon-arrow"></use>
+                </svg>
+                Build
+            </button>
+            <button class="btn" (click)="$event.stopPropagation(); editModelContract(model.id)">
+                <svg>
+                    <use xlink:href="#icon-edit"></use>
+                </svg>
+                Edit
+            </button>
+        </div>
     </div>
 
 
     <div class="content-body">
         <hydro-list-info [data]="model"></hydro-list-info>
 
-        <div class="hydro-panel">
+        <div class="hydro-panel" *ngIf="!model?.nextVersion || model?.lastModelBuild">
             <h5 class="hydro-panel__header">Versions</h5>
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
@@ -16,40 +30,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngIf="model?.nextVersion" class='hydro-table-body__row'>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ model?.updated | utcToLocal | amTimeAgo }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>
-                                <span class='status' [ngClass]="{'__new-version': model?.nextVersion}">{{ model?.nextVersion }}</span>
-                            </div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis status __unbuilded'>
-                                <svg class="icon">
-                                    <use xlink:href="#icon-arrow" />
-                                </svg>
-                                <span class="icon-label">Unbuilded</span>
-                            </div>
-                        </td>
-                        <td class="hydro-table-body__cell actions">
-                            <div class="btn-group">
-                                <button class="btn" (click)="$event.stopPropagation(); buildModel(model)">
-                                    <svg>
-                                        <use xlink:href="#icon-arrow"></use>
-                                    </svg>
-                                    Build
-                                </button>
-                                <button class="btn" (click)="$event.stopPropagation(); editModelContract(model.id)">
-                                    <svg>
-                                        <use xlink:href="#icon-edit"></use>
-                                    </svg>
-                                    Edit
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
                     <tr *ngFor="let item of modelBuilds | sortBy: 'item.version'" class='hydro-table-body__row __link' [routerLink]="[item.version]">
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
@@ -66,16 +46,6 @@
                                     <use xlink:href="#icon-arrow" />
                                 </svg>
                                 <span class="icon-label">{{item.status === 'FINISHED' ? 'Builded' : 'Unbuilded'}}</span>
-                            </div>
-                        </td>
-                        <td class="hydro-table-body__cell actions">
-                            <div class="btn-group">
-                                <button class="btn" (click)="$event.stopPropagation(); deployModel()">
-                                    <svg>
-                                        <use xlink:href="#icon-arrow"></use>
-                                    </svg>
-                                    Deploy
-                                </button>
                             </div>
                         </td>
                     </tr>

@@ -71,29 +71,22 @@
                         <th class="hydro-table-head__cell">Model</th>
                         <th class="hydro-table-head__cell">Version</th>
                         <th class="hydro-table-head__cell">Weight</th>
-                        <th class="hydro-table-head__cell">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of stage.services" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>
+                            <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
                                 {{ item.serviceDescription.modelVersionId }}
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>
+                            <div class='cs-text-overflow-ellipsis cs-text-center'>
                                 {{ item.serviceDescription.runtimeId }}
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{ item.weight }}%</div>
-                        </td>
-                        <td class="hydro-table-body__cell actions">
-                            <a (click)="testApp(item.service)" title='Test' class="hydro-link">
-                                <svg class="icon"><use xlink:href="#icon-start" /></svg>
-                                <span class="icon-label">TEST</span>
-                            </a>
+                            <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>{{ item.weight }}%</div>
                         </td>
                     </tr>
                 </tbody>

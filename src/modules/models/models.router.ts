@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { 
     ModelsWrapperComponent,
     ModelDetailsComponent,
-    ModelVersionDetailsComponent 
+    ModelVersionDetailsComponent
 } from './_index';
 
 

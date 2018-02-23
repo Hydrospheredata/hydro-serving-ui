@@ -31,6 +31,13 @@ export class ModelsService {
             });
     }
 
+    public getAllVersions() {
+        return this.http.get(`${this.baseAPIUrl}/version`)
+            .map((res: Response): any => {
+                return res.json();
+            });
+    }
+
     public buildModel(options): Observable<any> {
         const updateModelUrl = `${this.baseAPIUrl}/build`;
         return this.http.post(updateModelUrl, options)

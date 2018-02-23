@@ -6,7 +6,16 @@ import { Subscription } from 'rxjs/Subscription';
 import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
-import { AppState, ModelService, Application, ModelVersion, Runtime } from '@shared/models/_index';
+import { 
+    AppState, 
+    // ModelService, 
+    Application,
+    Runtime, 
+    Environment,
+    Signature,
+    ModelVersion
+} from '@shared/models/_index';
+
 import { FormsService } from '@shared/services/_index';
 
 import 'codemirror/mode/yaml/yaml.js';
@@ -45,18 +54,23 @@ export class ApplicationsDialogBase extends DialogBase {
         modelVersion: '',
         weight: '',
     };
-    public modelServicesFiltered: ModelService[];
+    // public modelServicesFiltered: ModelService[];
 
-    public modelVersions: any[] = [];
+    // public modelVersions: any[] = [];
 
     public services: Application[];
-    public modelBuilds: ModelVersion[];
     public runtimes: Runtime[];
+    public environments: Environment[];
+    public contracts: Signature[];
+    public modelVersions: ModelVersion[];
 
     public weightsForSlider: any[] = [100];
 
-    private modelBuildsStoreSub: Subscription;
     private runtimesStoreSub: Subscription;
+    private environmentsStoreSub: Subscription;
+    private contractsStoreSub: Subscription;
+    private modelVersionsStoreSub: Subscription;
+    private defaultService: { weight: number, runtime: number, environment: number, modelVersion: number }
 
     constructor(
         public fb: FormBuilder,
@@ -79,89 +93,122 @@ export class ApplicationsDialogBase extends DialogBase {
         //         this.services = services;
         //     });
 
-        this.modelBuildsStoreSub = this.store.select('modelBuilds')
-            .subscribe(modelBuilds => {
-                console.log(modelBuilds);
-                this.modelBuilds = modelBuilds;
-            });
+        // this.modelBuildsStoreSub = this.store.select('modelBuilds')
+        //     .subscribe(modelBuilds => {
+        //         console.log(modelBuilds);
+        //         this.modelBuilds = modelBuilds;
+        //     });
         
+        this.modelVersionsStoreSub = this.store.select('modelVersions')
+            .subscribe(modelVersions => {
+                this.modelVersions = modelVersions;
+            })
+
         this.runtimesStoreSub = this.store.select('runtimes')
             .subscribe(runtimes => {
-                console.log(runtimes);
                 this.runtimes = runtimes;
             })
+
+        this.environmentsStoreSub = this.store.select('environments')
+            .subscribe(environments => {
+                this.environments = environments;
+            })
+
+        this.contractsStoreSub = this.store.select('contracts')
+            .subscribe(contracts => {
+                this.contracts = contracts;
+            })
+
+        this.defaultService = {
+            weight: 100,
+            runtime: this.runtimes[0].id,
+            environment: this.environments[0].id,
+            modelVersion: this.modelVersions[0].id
+        }
+
     }
 
-    public createServiceForm() {
+    public createForm() {
         this.serviceForm = this.fb.group({
-            serviceName: ['', Validators.required],
-            weights: this.fb.array([this.addWeightToModel()]),
-            // kafkaStreaming: this.fb.array([this.addKafkaSource()]),
+            applicationName: [ '', Validators.required ],
+            services: this.fb.array([this.addService(this.defaultService)]),
+            kafkaStreaming: this.fb.array([this.addKafkaSource()]),
             addModelToService: ''
         });
     }
 
-    public addWeightToModel(model?) {
+    public addService(options?) {
         return this.fb.group({
             // selectedModel: [model ? this.modelServicesFiltered.find(item => item.modelRuntime.modelId === model).modelRuntime.modelId : ''],
-            model: [model ? model : ''],
-            weight: ['100', [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]]
+            // model: [ model ? model : '' ],
+            weight: [ this.defaultService.weight, [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)] ],
+            runtime: [ options.runtime ],
+            environment: [ options.environment ],
+            modelVersion: [ options.modelVersion ]
         });
     }
 
     public ngOnDestroy() {
-        if (this.modelBuildsStoreSub) {
-            this.modelBuildsStoreSub.unsubscribe();
+        if (this.contractsStoreSub) {
+            this.contractsStoreSub.unsubscribe();
+        }
+        if (this.modelVersionsStoreSub) {
+            this.modelVersionsStoreSub.unsubscribe();
+        }
+        if (this.runtimesStoreSub) {
+            this.runtimesStoreSub.unsubscribe();
+        }
+        if (this.environmentsStoreSub) {
+            this.environmentsStoreSub.unsubscribe();
         }
     }
 
-    // public addKafkaSource() {
-    //     return this.fb.group({
-    //         serviceId: ['0'],
-    //         sourceTopic: [''],
-    //         destinationTopic: [''],
-    //         brokerList: ['']
-    //     });
-    // }
-
-    public initFormChangesListener() {
-        this.serviceForm.valueChanges.subscribe((form) => {
-
-            let result = 0;
-            // todo fix errors reset
-            this.formErrors.weights = '';
-            this.formErrors.serviceId = '';
-            form.weights.forEach(service => {
-                result += +service.weight;
-            });
-
-            if (result != 100) {
-                this.serviceForm.controls.weights.setErrors({ overflow: true });
-            }
-
-            if (this.serviceForm.invalid) {
-                this.formsService.setErrors(this.serviceForm, this.formErrors, this.formsService.MESSAGES.ERRORS.forms.service);
-            }
+    public addKafkaSource() {
+        return this.fb.group({
+            sourceTopic: [ '' ],
+            destinationTopic: [ '' ]
         });
     }
 
-    public addModelToService(model?) {
-        const control = <FormArray>this.serviceForm.controls['weights'];
-        control.push(this.addWeightToModel(model));
+    public initFormChangesListener() {
+        this.serviceForm.valueChanges
+            .subscribe(form => {
+                console.log(form);
+                // let result = 0;
+                // // todo fix errors reset
+                // this.formErrors.weights = '';
+                // this.formErrors.serviceId = '';
+                // form.weights.forEach(service => {
+                //     result += +service.weight;
+                // });
+
+                // if (result != 100) {
+                //     this.serviceForm.controls.weights.setErrors({ overflow: true });
+                // }
+
+                // if (this.serviceForm.invalid) {
+                //     this.formsService.setErrors(this.serviceForm, this.formErrors, this.formsService.MESSAGES.ERRORS.forms.service);
+                // }
+            });
     }
 
-    // public addKafkaToService() {
-    //     const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
-    //     control.push(this.addKafkaSource());
-    // }
-
-    // public removeKafkaFromService(i: number) {
-    //     const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
-    //     control.removeAt(i);
-    // }
+    public addModelToService(modelVersion?) {
+        const control = <FormArray>this.serviceForm.controls['services'];
+        control.push(this.addService(modelVersion));
+    }
 
     public removeModelFromService(i: number) {
-        const control = <FormArray>this.serviceForm.controls['weights'];
+        const control = <FormArray>this.serviceForm.controls['services'];
+        control.removeAt(i);
+    }
+
+    public addKafkaToService() {
+        const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
+        control.push(this.addKafkaSource());
+    }
+
+    public removeKafkaFromService(i: number) {
+        const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
         control.removeAt(i);
     }
 
@@ -171,42 +218,60 @@ export class ApplicationsDialogBase extends DialogBase {
     //     });
     // }
 
-    // public onAddingModel(value) {
-    //     this.addModelToService(value);
-    //     this.onSelectModel(value);
-    //     this.weightsForSlider.push(0);
-    //     this.serviceForm.patchValue({
-    //         addModelToService: ''
-    //     });
-    // }
+    public onAddingModel(modelVersion) {
+        this.addModelToService(modelVersion);
+        // this.onSelectModel(value);
+        this.weightsForSlider.push(0);
+        // this.serviceForm.patchValue({
+        //     addModelToService: ''
+        // });
+    }
 
-    public getFormData(data) {
+    public prepareFormDataToSubmit() {
 
-        let weights: {runtimeId: number, weight: number}[] = [];
-        let stages: any[] = [];
-        // let kafkaStreaming: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
+        let services = [];
 
-        if (this.isJsonModeEnabled) {
+        this.serviceForm.value.services.forEach(service => {
+            // console.log(service);
+            services.push(
+                {
+                    serviceDescription: {
+                        runtimeId: service.runtime,
+                        modelVersionId: service.modelVersion,
+                        environmentId: service.environment
+                    },
+                    weight: service.weight
+                }
+            );
+        });
+
+        console.log(services);
+
+        // let weights: {runtimeId: number, weight: number}[] = [];
+        // let stages: any[] = [];
+        // // let kafkaStreaming: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
+
+        // if (this.isJsonModeEnabled) {
             
-            let pipelineEditorValue = JSON.parse(this.pipelineEditorValue.replace(/[\n( )]/g, ''));
+        //     let pipelineEditorValue = JSON.parse(this.pipelineEditorValue.replace(/[\n( )]/g, ''));
 
-            // pipelineEditorValue.forEach(stage => {
-            //     stage.forEach(item => {
-            //         let modelService = this.modelServicesFiltered.filter(modelService => modelService.serviceName === item.runtimeName).shift();
-            //         item.runtimeId = modelService.modelRuntime.modelId;
-            //         delete(item.runtimeName);
-            //     });
-            // });
-            stages = pipelineEditorValue;
-        } else {
-            data.value.weights.forEach(self => {
-                weights.push({
-                    runtimeId: self.model.modelRuntime.id,
-                    weight: Number(self.weight)
-                });
-            });
-            stages.push(weights);
-        }
+        //     // pipelineEditorValue.forEach(stage => {
+        //     //     stage.forEach(item => {
+        //     //         let modelService = this.modelServicesFiltered.filter(modelService => modelService.serviceName === item.runtimeName).shift();
+        //     //         item.runtimeId = modelService.modelRuntime.modelId;
+        //     //         delete(item.runtimeName);
+        //     //     });
+        //     // });
+        //     stages = pipelineEditorValue;
+        // } else {
+        //     data.value.weights.forEach(self => {
+        //         weights.push({
+        //             runtimeId: self.model.modelRuntime.id,
+        //             weight: Number(self.weight)
+        //         });
+        //     });
+        //     stages.push(weights);
+        // }
 
         // data.value.kafkaStreaming.forEach(kafka => {
         //     if (this.isKafkaEnabled) {
@@ -220,8 +285,7 @@ export class ApplicationsDialogBase extends DialogBase {
         // });
 
         return {
-            stages: stages,
-            // kafkaStreaming: kafkaStreaming
+            services: services
         };
     }
 

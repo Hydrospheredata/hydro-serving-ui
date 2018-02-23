@@ -32,6 +32,7 @@ import {
     RuntimesEffects,
     ContractsEffects,
     SourcesEffects,
+    EnvironmentsEffects,
 } from '@shared/effects/_index';
 
 // Builders
@@ -56,6 +57,8 @@ import {
     RuntimesReducer,
     ContractsReducer,
     SourcesReducer,
+    EnvironmentsReducer,
+    ModelVersionsReducer
 } from '@shared/reducers/_index';
 
 
@@ -73,14 +76,23 @@ import {
             models: ModelsReducer,
             applications: ApplicationsReducer,
             modelBuilds: ModelBuildsReducer,
+            modelVersions: ModelVersionsReducer,
             runtimes: RuntimesReducer,
             contracts: ContractsReducer,
-            sources: SourcesReducer
+            sources: SourcesReducer,
+            environments: EnvironmentsReducer
         }),
         StoreDevtoolsModule.instrument({
             maxAge: 25
         }),
-        EffectsModule.forRoot([ApplicationsEffects, ModelEffects, RuntimesEffects, ContractsEffects, SourcesEffects])
+        EffectsModule.forRoot([
+            ApplicationsEffects, 
+            ModelEffects, 
+            RuntimesEffects, 
+            ContractsEffects, 
+            SourcesEffects,
+            EnvironmentsEffects
+        ])
     ],
     exports: [
         NavbarComponent, 
@@ -113,7 +125,7 @@ import {
         {
             provide: HttpService,
             useFactory: httpServiceFactory,
-            deps: [XHRBackend, RequestOptions, LoaderStateService]
+            deps: [ XHRBackend, RequestOptions, LoaderStateService ]
         }
     ]
 })

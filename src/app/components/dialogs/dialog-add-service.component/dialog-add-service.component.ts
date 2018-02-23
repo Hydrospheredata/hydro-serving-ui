@@ -5,7 +5,10 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
-import { AppState, Application } from '@shared/models/_index';
+import { 
+    AppState, 
+    Application 
+} from '@shared/models/_index';
 import { FormsService, ApplicationsService } from '@shared/services/_index';
 
 
@@ -37,8 +40,8 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
     }
 
     ngOnInit() {
-        this.createServiceForm();
-        // this.initFormChangesListener();
+        this.createForm();
+        this.initFormChangesListener();
     }
 
     onSubmit() {
@@ -46,18 +49,19 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
             return;
         }
 
-        const data = this.getFormData(this.serviceForm);
+        this.prepareFormDataToSubmit()
 
         const serviceInfo = {
-            name: this.serviceForm.value.serviceName,
-            // kafkaStreamingSources: this.isKafkaEnabled ? data.kafkaStreamingSources : [],
+            name: this.serviceForm.value.applicationName,
+            kafkaStreaming: this.isKafkaEnabled ? this.serviceForm.value.kafkaStreaming : [],
+            executionGraph: {
+                stages: this.prepareFormDataToSubmit()
+            }
         };
 
-        // serviceInfo.kafkaStreamingSources.forEach(kafka => {
-        //     kafka.serviceId = 0;
-        // });
+        const application = new Application(serviceInfo);
 
-        const application = Object.assign( serviceInfo, { stages: data.stages } );
+        console.log(application);
 
         // TODO: try to add actions after successfully adding in effects (in each file)
         this.applicationsService.addApplication(application)

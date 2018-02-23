@@ -4,14 +4,13 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
-import { AppState, Model } from '@shared/models/_index';
+import { AppState, Model, ModelBuild } from '@shared/models/_index';
 
 import {
     DialogModelBuildComponent,
     injectableModelOptions,
     DialogEditContractComponent,
-    injectableModelId,
-    DialogAddServiceComponent
+    injectableModelId
 } from '@components/dialogs/_index';
 
 import * as Actions from '@shared/actions/_index';
@@ -25,9 +24,9 @@ import * as Actions from '@shared/actions/_index';
 })
 export class ModelDetailsComponent implements OnInit, OnDestroy {
     public model: Model;
-    public modelBuilds: any[]; // TODO: FIX TYPE
+    public modelBuilds: ModelBuild[];
     public tableHeader: string[] = [
-        'Created', 'Version', 'Status', 'Actions'
+        'Created', 'Version', 'Status'
     ];
     
     private modelBuildsSub: Subscription;
@@ -72,6 +71,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.modelBuildsSub = this.store.select('modelBuilds')
             .skip(1)
             .subscribe(modelBuilds => {
+                console.log(modelBuilds);
                 this.modelBuilds = modelBuilds.reverse();
             })
 
@@ -105,18 +105,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
             providers: [{ provide: injectableModelId, useValue: modelId }],
-        });
-    }
-
-    public deployModel() {
-        this.dialog.showCustomDialog({
-            component: DialogAddServiceComponent,
-            styles: { 'width': '850px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400
         });
     }
 

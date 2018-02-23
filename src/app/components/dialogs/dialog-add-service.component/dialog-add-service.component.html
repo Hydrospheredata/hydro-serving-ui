@@ -2,15 +2,15 @@
 <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
   <div class="mdl-dialog__content">
 
-    <hydro-input-text name="serviceName" [formErrors]="formErrors.serviceName" label="Application Name" formControlName="serviceName"></hydro-input-text>
+    <hydro-input-text name="applicationName" [formErrors]="formErrors.serviceName" label="Application Name" formControlName="applicationName"></hydro-input-text>
 
-    <!-- <div class="hydro-form-group">
+    <div class="hydro-form-group">
       <label class="hydro-checkbox">
         <input type="checkbox" [checked]="isKafkaEnabled" (change)="isKafkaEnabled = $event.target.checked">
         <span>Use Kafka source</span>
       </label>
-      <ul class="form-kafkaSources__list" *ngIf="isKafkaEnabled" formArrayName="kafkaStreamingSources">
-        <li class="form-kafkaSources__list-item" *ngFor="let kafka of serviceForm['controls'].kafkaStreamingSources['controls']; let i = index" [formGroupName]="i">
+      <ul class="form-kafkaSources__list" *ngIf="isKafkaEnabled" formArrayName="kafkaStreaming">
+        <li class="form-kafkaSources__list-item" *ngFor="let kafka of serviceForm['controls'].kafkaStreaming['controls']; let i = index" [formGroupName]="i">
           <div class="form-kafkaSources__list-item-fields">
             <hydro-input-text class="input-field" [formErrors]="formErrors.weight"
                               [wrapClassName]="'form-group__inline'"
@@ -26,15 +26,8 @@
                               name="outputTopic"
                               formControlName="destinationTopic">
             </hydro-input-text>
-            <hydro-input-text class="bootstrapServers-field" [formErrors]="formErrors.weight"
-                              [wrapClassName]="'form-group__inline'"
-                              [inputClass]="'__kafkaInput'"
-                              [label]="'bootstrapServers = '"
-                              name="bootstrapServers"
-                              formControlName="brokerList">
-            </hydro-input-text>
           </div>
-          <svg class="delete" (click)="removeKafkaFromService(i)" *ngIf="serviceForm['controls'].kafkaStreamingSources['controls'].length > 1">
+          <svg class="delete" (click)="removeKafkaFromService(i)" *ngIf="serviceForm['controls'].kafkaStreaming['controls'].length > 1">
             <use xlink:href="#icon-remove"></use>
           </svg>
         </li>
@@ -43,7 +36,7 @@
           <span>Add More Sources</span>
         </li>
       </ul>
-    </div> -->
+    </div>
 
 
     <label class="hydro-checkbox">
@@ -53,15 +46,23 @@
     <div class="hydro-form-group" *ngIf="!isJsonModeEnabled">
       <label>Models</label>
       <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
-      <ul class="form-weights__list" formArrayName="weights">
-        <li class="form-weights__list-item" *ngFor="let weight of serviceForm['controls'].weights['controls']; let i = index" [formGroupName]="i">
+      <ul class="form-weights__list" formArrayName="services">
+        <li class="form-weights__list-item" *ngFor="let service of serviceForm['controls'].services['controls']; let i = index" [formGroupName]="i">
           
-         <!-- <mdl-select formControlName="selectedModel" label="Choose model" class="cs-text-center" (change)="onSelectModel($event)">
-            <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
-          </mdl-select> -->
+          <mdl-select formControlName="modelVersion" label="Choose model versions" class="cs-text-center">
+            <mdl-option *ngFor="let modelVersion of modelVersions" [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}</mdl-option>
+          </mdl-select>
 
-          <mdl-select class="__versions cs-text-center" formControlName="model">
-            <mdl-option *ngFor="let model of modelVersions" [value]="model">{{model.modelRuntime.modelVersion}}</mdl-option>
+          <mdl-select class="__versions cs-text-center" formControlName="runtime">
+            <mdl-option *ngFor="let runtime of runtimes" [value]="runtime.id">{{ runtime.name + ':' + runtime.version }}</mdl-option>
+          </mdl-select>
+
+          <mdl-select class="__versions cs-text-center" formControlName="environment" *ngIf="environments.length > 0">
+            <mdl-option *ngFor="let environment of environments" [value]="environment.id">{{ environment.name }}</mdl-option>
+          </mdl-select>
+
+          <mdl-select class="__versions cs-text-center" formControlName="contract" *ngIf="contracts.length > 0">
+            <mdl-option *ngFor="let contract of contracts" [value]="contract.id">{{ contract.name }}</mdl-option>
           </mdl-select>
           
           <div class="form-weights__list-item--weight">
@@ -74,9 +75,9 @@
             </hydro-input-text>%
           </div>
 
-          <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight" [(ngModel)]="weightsForSlider[i]"></mdl-slider>
+          <!-- <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight" [(ngModel)]="weightsForSlider[i]"></mdl-slider> -->
 
-          <svg class="delete" (click)="removeModelFromService(i)" *ngIf="serviceForm['controls'].weights['controls'].length > 1">
+          <svg class="delete" (click)="removeModelFromService(i)" *ngIf="serviceForm['controls'].services['controls'].length > 1">
             <use xlink:href="#icon-remove"></use>
           </svg>
           
@@ -84,8 +85,8 @@
       </ul>
       <div class="form-weights__list-item--add">
         <svg><use xlink:href="#icon-plus"></use></svg>
-        <mdl-select formControlName="addModelToService" (change)="onAddingModel($event)" label="add model" class="cs-text-center">
-          <mdl-option *ngFor="let model of modelServicesFiltered" [value]="model.modelRuntime.modelId">{{model.modelRuntime.modelName}}</mdl-option>
+        <mdl-select label="Add model versions" class="cs-text-center" (change)="onAddingModel($event)">
+          <mdl-option *ngFor="let modelVersion of modelVersions" [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}</mdl-option>
         </mdl-select>
       </div>
     </div>

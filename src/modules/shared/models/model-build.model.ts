@@ -1,4 +1,5 @@
 import { Model } from './model.model';
+import { ModelVersion } from './model-version.model';
 
 
 
@@ -10,6 +11,7 @@ export class ModelBuild {
     public statusText: string;
     public status: string;
     public version: number;
+    public modelVersion: ModelVersion;
 
     constructor(props: any = {}) {
         this.id = props['id'] || 0;
@@ -19,5 +21,6 @@ export class ModelBuild {
         this.statusText = props['statusText'] || '';
         this.status = props['status'] || '';
         this.version = props['version'] || 1;
+        this.modelVersion = props['modelVersion'] || new ModelVersion();
     }
 }

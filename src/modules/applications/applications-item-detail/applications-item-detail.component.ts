@@ -14,11 +14,9 @@ import {
 import { environment } from '@environments/environment';
 
 import {
-    DialogTestComponent,
     DialogUpdateServiceComponent,
     DialogDeleteServiceComponent,
     injectableApplicationId,
-    injectableModelBuildOptions,
     injectableServiceUpdate
 } from '@components/dialogs/_index';
 
@@ -99,13 +97,18 @@ export class ApplicationsItemDetailComponent {
     }
 
     ngOnDestroy() {
-        this.activeRouteSub.unsubscribe();
-        this.storeSub.unsubscribe();
-        this.runtimesStoreSub.unsubscribe();
+        if (this.activeRouteSub) {
+            this.activeRouteSub.unsubscribe();
+        }
+        if (this.storeSub) {
+            this.storeSub.unsubscribe();
+        }
+        if (this.runtimesStoreSub) {
+            this.runtimesStoreSub.unsubscribe();   
+        }
     }
 
     getApplicationData(id: string) {
-        console.log(id);
         this.serviceModels = [];
         if (this.applications.length) {
             this.application = this.applications.filter(application => application.id === Number(id)).shift();
@@ -143,19 +146,6 @@ export class ApplicationsItemDetailComponent {
         console.log(this.runtimes.find(runtimes => runtimes.id === runtimeId));
         const runtime = this.runtimes.find(runtimes => runtimes.id === runtimeId);
         return runtime.name;
-    }
-
-    public testApplication(application: Application) {
-        this.dialog.showCustomDialog({
-            component: DialogTestComponent,
-            styles: { 'width': '800px', 'min-height': '350px' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-            providers: [{ provide: injectableModelBuildOptions, useValue: application }],
-        });
     }
 
     public editApplication(application: Application) {

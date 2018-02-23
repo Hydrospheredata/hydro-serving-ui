@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import { ApplicationsService, FormsService } from '@shared/services/_index';
-import * as Actions from '@shared/actions/_index';
+// import * as Actions from '@shared/actions/_index';
 import { AppState, Application } from '@shared/models/_index';
 
 export let injectableServiceUpdate = new InjectionToken<Application>('selectedService');
@@ -117,25 +117,25 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
             return;
         }
 
-        const data = this.getFormData(this.serviceForm);
+        // const data = this.getFormData(this.serviceForm);
 
-        const serviceInfo = {
-            id: this.selectedService.id,
-            name: this.serviceForm.value.serviceName,
-            // kafkaStreamingSources: data.kafkaStreamingSources,
-        };
+        // const serviceInfo = {
+        //     id: this.selectedService.id,
+        //     name: this.serviceForm.value.serviceName,
+        //     // kafkaStreamingSources: data.kafkaStreamingSources,
+        // };
 
-        const application = Object.assign( serviceInfo, { stages: data.stages } );
+        // const application = Object.assign( serviceInfo, { stages: data.stages } );
 
-        this.applicationsService.updateApplication(application)
-            .subscribe(response => {
-                this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Application(response) });
-                this.dialogRef.hide();
-                this.mdlSnackbarService.showSnackbar({
-                    message: 'Service was successfully added',
-                    timeout: 5000
-                });
-            });
+        // this.applicationsService.updateApplication(application)
+        //     .subscribe(response => {
+        //         this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Application(response) });
+        //         this.dialogRef.hide();
+        //         this.mdlSnackbarService.showSnackbar({
+        //             message: 'Service was successfully added',
+        //             timeout: 5000
+        //         });
+        //     });
 
         // this.store.dispatch({ type: Actions.UPDATE_SERVICE, payload: service });
         // this.dialogRef.hide();
