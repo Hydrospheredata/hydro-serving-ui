@@ -7,8 +7,7 @@ import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
 import { 
-    AppState, 
-    // ModelService, 
+    AppState,
     Application,
     Runtime, 
     Environment,
@@ -45,8 +44,6 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public pipelineEditorValue: string = '';
 
-    public selectedService: Application;
-    public formTitle: string;
     public formErrors = {
         serviceName: '',
         weights: '',
@@ -54,9 +51,6 @@ export class ApplicationsDialogBase extends DialogBase {
         modelVersion: '',
         weight: '',
     };
-    // public modelServicesFiltered: ModelService[];
-
-    // public modelVersions: any[] = [];
 
     public services: Application[];
     public runtimes: Runtime[];
@@ -70,7 +64,18 @@ export class ApplicationsDialogBase extends DialogBase {
     private environmentsStoreSub: Subscription;
     private contractsStoreSub: Subscription;
     private modelVersionsStoreSub: Subscription;
-    private defaultService: { weight: number, runtime: number, environment: number, modelVersion: number }
+    private defaultAppOptions: { 
+        services: {
+            weight: number, 
+            runtimeId: number, 
+            environmentId: number, 
+            modelVersionId: number,
+        },
+        kafkaStreaming: {
+            sourceTopic: string,
+            destinationTopic: string
+        }
+    }
 
     constructor(
         public fb: FormBuilder,
@@ -82,22 +87,6 @@ export class ApplicationsDialogBase extends DialogBase {
         super(
             dialogRef
         );
-        // this.store.select('modelService')
-        //     .subscribe(modelService => {
-        //         this.modelServicesFiltered = modelService.filter((item, index, self) => {
-        //             return item.modelRuntime.runtimeType && item.serviceId > 0 && self.findIndex(t => { return t.modelRuntime.modelId === item.modelRuntime.modelId}) === index;
-        //         });
-        //     });
-        // this.store.select('services')
-        //     .subscribe(services => {
-        //         this.services = services;
-        //     });
-
-        // this.modelBuildsStoreSub = this.store.select('modelBuilds')
-        //     .subscribe(modelBuilds => {
-        //         console.log(modelBuilds);
-        //         this.modelBuilds = modelBuilds;
-        //     });
         
         this.modelVersionsStoreSub = this.store.select('modelVersions')
             .subscribe(modelVersions => {
@@ -119,33 +108,41 @@ export class ApplicationsDialogBase extends DialogBase {
                 this.contracts = contracts;
             })
 
-        this.defaultService = {
-            weight: 100,
-            runtime: this.runtimes[0].id,
-            environment: this.environments[0].id,
-            modelVersion: this.modelVersions[0].id
+        this.defaultAppOptions = {
+            services: {
+                weight: 100,
+                runtimeId: this.runtimes[0].id,
+                environmentId: this.environments[0].id,
+                modelVersionId: this.modelVersions[0].id,
+            },
+            kafkaStreaming: {
+                sourceTopic: '',
+                destinationTopic: ''
+            }
         }
-
     }
 
-    public createForm() {
+    public createForm(data?) {
         this.serviceForm = this.fb.group({
-            applicationName: [ '', Validators.required ],
-            services: this.fb.array([this.addService(this.defaultService)]),
-            kafkaStreaming: this.fb.array([this.addKafkaSource()]),
-            addModelToService: ''
+            applicationName: [ data ? data.name : '', Validators.required ],
+            kafkaStreaming: this.fb.array([ ]),
+            stages: this.fb.array([ ]),
         });
-    }
 
-    public addService(options?) {
-        return this.fb.group({
-            // selectedModel: [model ? this.modelServicesFiltered.find(item => item.modelRuntime.modelId === model).modelRuntime.modelId : ''],
-            // model: [ model ? model : '' ],
-            weight: [ this.defaultService.weight, [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)] ],
-            runtime: [ options.runtime ],
-            environment: [ options.environment ],
-            modelVersion: [ options.modelVersion ]
-        });
+        if (data) {
+            if (data.kafkaStreaming.length) {
+                data.kafkaStreaming.forEach(kafkaStreaming => {
+                    this.addKafkaToService(kafkaStreaming);
+                })
+            }
+            if (data.executionGraph.stages.length) {
+                data.executionGraph.stages.forEach(stage => {
+                    this.addStageControl(stage);
+                })
+            }
+        } else {
+            this.addStageControl(this.defaultAppOptions);
+        }
     }
 
     public ngOnDestroy() {
@@ -161,13 +158,6 @@ export class ApplicationsDialogBase extends DialogBase {
         if (this.environmentsStoreSub) {
             this.environmentsStoreSub.unsubscribe();
         }
-    }
-
-    public addKafkaSource() {
-        return this.fb.group({
-            sourceTopic: [ '' ],
-            destinationTopic: [ '' ]
-        });
     }
 
     public initFormChangesListener() {
@@ -192,101 +182,110 @@ export class ApplicationsDialogBase extends DialogBase {
             });
     }
 
-    public addModelToService(modelVersion?) {
-        const control = <FormArray>this.serviceForm.controls['services'];
+    public addStageControl(stage?) {
+        const control = <FormArray>this.serviceForm.get('stages');
+        control.push(this.addStage());
+        if (stage) {
+            if (stage.services instanceof Array) {
+                stage.services.forEach(service => {
+                    this.addServiceControl({ ...service.serviceDescription, weight: service.weight });
+                })
+            } else {
+                this.addServiceControl(stage.services);
+            }
+        } else {
+            this.addServiceControl(this.defaultAppOptions.services);
+        }
+    }
+
+    public addServiceControl(modelVersion?, i?) {
+        if (typeof modelVersion === 'number') {
+            modelVersion = { modelVersionId: modelVersion }
+        }
+        const control = <FormArray>this.serviceForm.get(['stages', i ? i : 0]).get('services');
         control.push(this.addService(modelVersion));
     }
 
-    public removeModelFromService(i: number) {
-        const control = <FormArray>this.serviceForm.controls['services'];
-        control.removeAt(i);
+    public removeModelFromService(i: number, j: number) {
+        const control = <FormArray>this.serviceForm.get(['stages', i ? i : 0]).get('services');
+        control.removeAt(j);
     }
 
-    public addKafkaToService() {
-        const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
-        control.push(this.addKafkaSource());
+    public addKafkaToService(kafkaStreaming?) {
+        if (!this.isKafkaEnabled) {
+            this.isKafkaEnabled = !this.isKafkaEnabled;
+        }
+        const control = <FormArray>this.serviceForm.get('kafkaStreaming');
+        control.push(this.addKafkaSource(kafkaStreaming ? kafkaStreaming : this.defaultAppOptions.kafkaStreaming));
     }
 
     public removeKafkaFromService(i: number) {
-        const control = <FormArray>this.serviceForm.controls['kafkaStreaming'];
+        const control = <FormArray>this.serviceForm.get('kafkaStreaming');
         control.removeAt(i);
     }
 
-    // public onSelectModel(value) {
-    //     this.modelVersions = this.modelServicesFiltered.filter(item => {
-    //         return item.modelRuntime.modelId === value;
-    //     });
-    // }
-
-    public onAddingModel(modelVersion) {
-        this.addModelToService(modelVersion);
-        // this.onSelectModel(value);
+    public onAddingModel(modelVersion, i) {
+        this.addServiceControl(modelVersion, i);
         this.weightsForSlider.push(0);
-        // this.serviceForm.patchValue({
-        //     addModelToService: ''
-        // });
     }
 
     public prepareFormDataToSubmit() {
+        let stages = [];
 
-        let services = [];
-
-        this.serviceForm.value.services.forEach(service => {
-            // console.log(service);
-            services.push(
-                {
-                    serviceDescription: {
-                        runtimeId: service.runtime,
-                        modelVersionId: service.modelVersion,
-                        environmentId: service.environment
-                    },
-                    weight: service.weight
-                }
-            );
+        this.serviceForm.value.stages.forEach(stage => {
+            let services = [];
+            stage.services.forEach(service => {
+                services.push(
+                    {
+                        serviceDescription: {
+                            runtimeId: service.runtime,
+                            modelVersionId: service.modelVersion,
+                            // environmentId: service.environment
+                        },
+                        weight: Number(service.weight)
+                    }
+                );
+            });
+            stages.push({ services: services, signatureName: stage.signatureName });
         });
 
-        console.log(services);
+        return stages;
+    }
 
-        // let weights: {runtimeId: number, weight: number}[] = [];
-        // let stages: any[] = [];
-        // // let kafkaStreaming: {serviceId: number, sourceTopic: string, destinationTopic: string, brokerList: string[]}[] = [];
+    public toggleKafkaStreaming(event) {
+        this.isKafkaEnabled = event.target.checked;
+        if (this.isKafkaEnabled) {
+            this.addKafkaToService(this.defaultAppOptions.kafkaStreaming);
+        } else {
+            this.removeKafkaFromService(0);
+        }
+    }
 
-        // if (this.isJsonModeEnabled) {
-            
-        //     let pipelineEditorValue = JSON.parse(this.pipelineEditorValue.replace(/[\n( )]/g, ''));
+    private addStage() {
+        return this.fb.group({
+            services: this.fb.array([ ]),
+            signatureName: [ '' ]
+        });
+    }
 
-        //     // pipelineEditorValue.forEach(stage => {
-        //     //     stage.forEach(item => {
-        //     //         let modelService = this.modelServicesFiltered.filter(modelService => modelService.serviceName === item.runtimeName).shift();
-        //     //         item.runtimeId = modelService.modelRuntime.modelId;
-        //     //         delete(item.runtimeName);
-        //     //     });
-        //     // });
-        //     stages = pipelineEditorValue;
-        // } else {
-        //     data.value.weights.forEach(self => {
-        //         weights.push({
-        //             runtimeId: self.model.modelRuntime.id,
-        //             weight: Number(self.weight)
-        //         });
-        //     });
-        //     stages.push(weights);
-        // }
+    private addService(options?) {
+        console.log(options);
+        return this.fb.group({
+            weight: [ options.weight ? options.weight : 0 , [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)] ],
+            runtime: [ options.runtimeId ? options.runtimeId : this.defaultAppOptions.services.runtimeId ],
+            environment: [ options.environmentId ? options.environmentId : this.defaultAppOptions.services.environmentId ],
+            modelVersion: [ options.modelVersionId ? options.modelVersionId : this.defaultAppOptions.services.modelVersionId ]
+        });
+    }
 
-        // data.value.kafkaStreaming.forEach(kafka => {
-        //     if (this.isKafkaEnabled) {
-        //         kafkaStreaming.push({
-        //             serviceId: kafka.serviceId,
-        //             sourceTopic: kafka.sourceTopic,
-        //             destinationTopic: kafka.destinationTopic,
-        //             brokerList: kafka.brokerList instanceof Array ? kafka.brokerList : kafka.brokerList.split(/[#;,\/|()[\]{}<>( )]/g)
-        //         });
-        //     }
-        // });
-
-        return {
-            services: services
-        };
+    private addKafkaSource(kafkaStreaming) {
+        if (!this.isKafkaEnabled) {
+            this.isKafkaEnabled = !this.isKafkaEnabled;
+        }
+        return this.fb.group({
+            sourceTopic: [ kafkaStreaming.sourceTopic ],
+            destinationTopic: [ kafkaStreaming.destinationTopic ]
+        });
     }
 
 }

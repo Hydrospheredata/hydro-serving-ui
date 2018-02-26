@@ -13,8 +13,14 @@ export class ApplicationBuilder {
     }
 
     private toApplication(props): Application {
+        let id: number;
+
+        if (props['id']) {
+            id = props['id'];
+        }
+
         let application = new Application({
-            id: props['id'],
+            id: id,
             name: props['name'],
             executionGraph: props['executionGraph'],
             kafkaStreaming: props['kafkaStreaming'],

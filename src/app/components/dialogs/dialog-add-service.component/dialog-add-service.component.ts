@@ -49,8 +49,6 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
             return;
         }
 
-        this.prepareFormDataToSubmit()
-
         const serviceInfo = {
             name: this.serviceForm.value.applicationName,
             kafkaStreaming: this.isKafkaEnabled ? this.serviceForm.value.kafkaStreaming : [],
@@ -61,9 +59,6 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
 
         const application = new Application(serviceInfo);
 
-        console.log(application);
-
-        // TODO: try to add actions after successfully adding in effects (in each file)
         this.applicationsService.addApplication(application)
             .subscribe(response => {
                 this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Application(response) });
@@ -73,12 +68,6 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
                     timeout: 5000
                 });
             });
-        // this.store.dispatch({ type: Actions.ADD_SERVICE, payload: service });
-        // this.dialogRef.hide();
-        // this.mdlSnackbarService.showSnackbar({
-        //     message: 'Service was successfully added',
-        //     timeout: 5000
-        // });
     }
 
 }
