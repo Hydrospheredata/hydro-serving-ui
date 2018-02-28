@@ -1,6 +1,6 @@
 <div class="content">
     <div class="content-header">
-        <div class="content-header__title">{{ title ? title : application?.name }}</div>
+        <div class="content-header__title">{{ application?.name }}</div>
         <div class="btn-group">
             <button class="btn" *ngIf="isPipeline" (click)="testApplication(application)">
                 <svg>

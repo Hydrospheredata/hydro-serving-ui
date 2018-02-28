@@ -17,6 +17,8 @@ import {
 
 import { FormsService } from '@shared/services/_index';
 
+import * as Actions from '@shared/actions/_index';
+
 import 'codemirror/mode/yaml/yaml.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
@@ -70,6 +72,7 @@ export class ApplicationsDialogBase extends DialogBase {
             runtimeId: number, 
             environmentId: number, 
             modelVersionId: number,
+            signatureName: string
         },
         kafkaStreaming: {
             sourceTopic: string,
@@ -106,6 +109,7 @@ export class ApplicationsDialogBase extends DialogBase {
         this.contractsStoreSub = this.store.select('contracts')
             .subscribe(contracts => {
                 this.contracts = contracts;
+                console.log(this.contracts);
             })
 
         this.defaultAppOptions = {
@@ -114,6 +118,7 @@ export class ApplicationsDialogBase extends DialogBase {
                 runtimeId: this.runtimes[0].id,
                 environmentId: this.environments[0].id,
                 modelVersionId: this.modelVersions[0].id,
+                signatureName: ''
             },
             kafkaStreaming: {
                 sourceTopic: '',
@@ -124,24 +129,29 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public createForm(data?) {
         this.serviceForm = this.fb.group({
-            applicationName: [ data ? data.name : '', Validators.required ],
+            applicationName: [ '' , Validators.required ],
             kafkaStreaming: this.fb.array([ ]),
             stages: this.fb.array([ ]),
         });
 
         if (data) {
+            this.serviceForm.patchValue({
+                applicationName: data.name
+            })
+            
             if (data.kafkaStreaming.length) {
                 data.kafkaStreaming.forEach(kafkaStreaming => {
-                    this.addKafkaToService(kafkaStreaming);
+                    this.addKafkaControl(kafkaStreaming);
                 })
             }
             if (data.executionGraph.stages.length) {
-                data.executionGraph.stages.forEach(stage => {
-                    this.addStageControl(stage);
+                data.executionGraph.stages.forEach((stage, i) => {
+                    this.addStageControl(stage, i);
                 })
             }
+
         } else {
-            this.addStageControl(this.defaultAppOptions);
+            this.addStageControl(this.defaultAppOptions, 0);
         }
     }
 
@@ -164,69 +174,58 @@ export class ApplicationsDialogBase extends DialogBase {
         this.serviceForm.valueChanges
             .subscribe(form => {
                 console.log(form);
-                // let result = 0;
-                // // todo fix errors reset
-                // this.formErrors.weights = '';
-                // this.formErrors.serviceId = '';
-                // form.weights.forEach(service => {
-                //     result += +service.weight;
-                // });
-
-                // if (result != 100) {
-                //     this.serviceForm.controls.weights.setErrors({ overflow: true });
-                // }
-
-                // if (this.serviceForm.invalid) {
-                //     this.formsService.setErrors(this.serviceForm, this.formErrors, this.formsService.MESSAGES.ERRORS.forms.service);
-                // }
             });
     }
 
-    public addStageControl(stage?) {
+    public addStageControl(stage, i?: number) {
+        let index: number;
         const control = <FormArray>this.serviceForm.get('stages');
         control.push(this.addStage());
+        if (i !== undefined) {
+            index = i;
+        } else {
+            index = control.length - 1;
+        }
         if (stage) {
             if (stage.services instanceof Array) {
                 stage.services.forEach(service => {
-                    this.addServiceControl({ ...service.serviceDescription, weight: service.weight });
+                    this.addServiceControl({ ...service.serviceDescription, weight: service.weight }, index);
                 })
             } else {
-                this.addServiceControl(stage.services);
+                this.addServiceControl(stage.services, index);
             }
-        } else {
-            this.addServiceControl(this.defaultAppOptions.services);
         }
     }
 
-    public addServiceControl(modelVersion?, i?) {
+    public removeStageControl(i: number) {
+        const control = <FormArray>this.serviceForm.get('stages');
+        control.removeAt(i);
+    }
+
+    public addServiceControl(modelVersion, index: number) { // TODO: Fix ModelVersion Type, now returns like number or object
         if (typeof modelVersion === 'number') {
             modelVersion = { modelVersionId: modelVersion }
         }
-        const control = <FormArray>this.serviceForm.get(['stages', i ? i : 0]).get('services');
+        const control = <FormArray>this.serviceForm.get(['stages', index]).get('services');
         control.push(this.addService(modelVersion));
     }
 
-    public removeModelFromService(i: number, j: number) {
-        const control = <FormArray>this.serviceForm.get(['stages', i ? i : 0]).get('services');
+    public removeServiceControl(i: number, j: number) {
+        const control = <FormArray>this.serviceForm.get(['stages', i]).get('services');
         control.removeAt(j);
     }
 
-    public addKafkaToService(kafkaStreaming?) {
+    public addKafkaControl(kafkaStreaming) {
         if (!this.isKafkaEnabled) {
             this.isKafkaEnabled = !this.isKafkaEnabled;
         }
         const control = <FormArray>this.serviceForm.get('kafkaStreaming');
-        control.push(this.addKafkaSource(kafkaStreaming ? kafkaStreaming : this.defaultAppOptions.kafkaStreaming));
+        control.push(this.addKafkaSource(kafkaStreaming));
     }
 
-    public removeKafkaFromService(i: number) {
+    public removeKafkaControl(i: number) {
         const control = <FormArray>this.serviceForm.get('kafkaStreaming');
         control.removeAt(i);
-    }
-
-    public onAddingModel(modelVersion, i) {
-        this.addServiceControl(modelVersion, i);
-        this.weightsForSlider.push(0);
     }
 
     public prepareFormDataToSubmit() {
@@ -237,16 +236,15 @@ export class ApplicationsDialogBase extends DialogBase {
             stage.services.forEach(service => {
                 services.push(
                     {
-                        serviceDescription: {
-                            runtimeId: service.runtime,
-                            modelVersionId: service.modelVersion,
-                            // environmentId: service.environment
-                        },
-                        weight: Number(service.weight)
+                        runtimeId: service.runtime,
+                        modelVersionId: service.modelVersion,
+                        // environmentId: service.environment,
+                        weight: Number(service.weight),
+                        signatureName: service.signatureName
                     }
                 );
             });
-            stages.push({ services: services, signatureName: stage.signatureName });
+            stages.push({ services: services });
         });
 
         return stages;
@@ -255,26 +253,30 @@ export class ApplicationsDialogBase extends DialogBase {
     public toggleKafkaStreaming(event) {
         this.isKafkaEnabled = event.target.checked;
         if (this.isKafkaEnabled) {
-            this.addKafkaToService(this.defaultAppOptions.kafkaStreaming);
+            this.addKafkaControl(this.defaultAppOptions.kafkaStreaming);
         } else {
-            this.removeKafkaFromService(0);
+            this.removeKafkaControl(0);
         }
+    }
+
+    public onModelVersionSelect(modelVersionId: number) {
+        console.log(modelVersionId);
+        this.store.dispatch({ type: Actions.UPDATE_ALL_VERSIONS, payload: modelVersionId });
     }
 
     private addStage() {
         return this.fb.group({
-            services: this.fb.array([ ]),
-            signatureName: [ '' ]
+            services: this.fb.array([ ])
         });
     }
 
-    private addService(options?) {
-        console.log(options);
+    private addService(options) {
         return this.fb.group({
             weight: [ options.weight ? options.weight : 0 , [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)] ],
             runtime: [ options.runtimeId ? options.runtimeId : this.defaultAppOptions.services.runtimeId ],
             environment: [ options.environmentId ? options.environmentId : this.defaultAppOptions.services.environmentId ],
-            modelVersion: [ options.modelVersionId ? options.modelVersionId : this.defaultAppOptions.services.modelVersionId ]
+            modelVersion: [ options.modelVersionId ? options.modelVersionId : this.defaultAppOptions.services.modelVersionId ],
+            signatureName: [ options.signatureName ? options.signatureName : this.defaultAppOptions.services.signatureName ]
         });
     }
 

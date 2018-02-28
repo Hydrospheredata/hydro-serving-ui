@@ -6,8 +6,9 @@
 
     <div class="hydro-form-group">
       <label class="hydro-checkbox">
+        Use Kafka source
         <input type="checkbox" [checked]="isKafkaEnabled" (change)="isKafkaEnabled = $event.target.checked">
-        <span>Use Kafka source</span>
+        <span></span>
       </label>
       <ul class="form-kafkaSources__list" *ngIf="isKafkaEnabled" formArrayName="kafkaStreaming">
         <li class="form-kafkaSources__list-item" *ngFor="let kafka of serviceForm['controls'].kafkaStreaming['controls']; let i = index" [formGroupName]="i">
@@ -27,11 +28,11 @@
                               formControlName="destinationTopic">
             </hydro-input-text>
           </div>
-          <svg class="delete" (click)="removeKafkaFromService(i)" *ngIf="serviceForm['controls'].kafkaStreaming['controls'].length > 1">
+          <svg class="delete" (click)="removeKafkaControl(i)" *ngIf="serviceForm['controls'].kafkaStreaming['controls'].length > 1">
             <use xlink:href="#icon-remove"></use>
           </svg>
         </li>
-        <li class="form-kafkaSources__list-item--add" *ngIf="isKafkaEnabled" (click)="addKafkaToService()">
+        <li class="form-kafkaSources__list-item--add" *ngIf="isKafkaEnabled" (click)="addKafkaControl()">
           <svg><use xlink:href="#icon-plus"></use></svg>
           <span>Add More Sources</span>
         </li>
@@ -40,8 +41,9 @@
 
 
     <label class="hydro-checkbox">
+      JSON mode
       <input type="checkbox" [checked]="isJsonModeEnabled" (change)="isJsonModeEnabled = $event.target.checked">
-      <span>Create pipeline</span>
+      <span></span>
     </label>
     <div class="hydro-form-group" *ngIf="!isJsonModeEnabled">
       <label>Models</label>
@@ -80,22 +82,28 @@
 
               <!-- <mdl-slider [min]="0" [max]="100" [step]="1" formControlName="weight" [(ngModel)]="weightsForSlider[i]"></mdl-slider> -->
 
-              <svg class="delete" (click)="removeModelFromService(j)" *ngIf="stage['controls'].services['controls'].length > 1">
+              <svg class="delete" (click)="removeServiceControl(j)" *ngIf="stage['controls'].services['controls'].length > 1">
                 <use xlink:href="#icon-remove"></use>
               </svg>
-              
+            </li>
+            <li class="form-weights__list-item--add">
+              <svg><use xlink:href="#icon-plus"></use></svg>
+              <mdl-select label="Add model versions" class="cs-text-center" (change)="addServiceControl($event, i)">
+                <mdl-option *ngFor="let modelVersion of modelVersions" [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}</mdl-option>
+              </mdl-select>
             </li>
           </ul>
-          <div class="form-weights__list-item--add">
-            <svg><use xlink:href="#icon-plus"></use></svg>
-            <mdl-select label="Add model versions" class="cs-text-center" (change)="addServiceControl($event, i)">
-              <mdl-option *ngFor="let modelVersion of modelVersions" [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}</mdl-option>
-            </mdl-select>
-          </div>
+          <svg class="delete" (click)="removeStageControl(i)" *ngIf="serviceForm['controls'].stages['controls'].length > 1">
+            <use xlink:href="#icon-remove"></use>
+          </svg>
         </div>
       </div>
-
     </div>
+
+    <button type="button" class="btn btn-secondary" (click)="addStageControl(this.defaultAppOptions)" title="Add stage">
+        <svg><use xlink:href="#icon-plus"></use></svg>
+        stage
+    </button>
 
     <div class="hydro-form-group" *ngIf="isJsonModeEnabled">
       <codemirror [ngModelOptions]="{standalone: true}" [(ngModel)]="pipelineEditorValue" [config]="codeMirrorOptions"></codemirror>
@@ -103,7 +111,7 @@
     
     <div class="btn-group form-actions __justify-end">
       <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
-      <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">Add app</button>
+      <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">edit app</button>
     </div>
   </div>
 </form>

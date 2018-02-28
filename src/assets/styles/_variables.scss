@@ -1,3 +1,8 @@
+// BASE
+$base-size: 8px;
+
+
+
 // Colors
 $color-base: #04143c;
 $main-bg-color: #f8f9fb;
@@ -16,17 +21,18 @@ $secondary-color: #e6e9ed;
 
 
 
+// FONT
 // Font family
 $font-family-light: 'Museo Sans Light',  sans-serif;
 $font-family-regular: 'Museo Sans Regular',  sans-serif;
 $font-family-bold: 'Museo Sans Bold',  sans-serif;
 $font-family-ultrabold: 'Museo Sans UltraBold',  sans-serif;
 
-
-
-
-$base-font-size: 16px;
+// Font size
+$base-font-size: $base-size * 2;
 $title-font-size: $base-font-size * 1.5;
+
+
 
 // forms section
 $form-border-color-focus: #04143c;
@@ -36,10 +42,3 @@ $label-color: #818994;
 // 18px
 $label-font-size: 1.125rem;
 $input-font-size: 1.125rem;
-
-
-// badges
-$badge-width: 24px;
-$badge-height: 24px;
-
-$header--height: 64px;

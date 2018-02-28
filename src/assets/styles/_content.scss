@@ -24,12 +24,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 76px;
+        margin-bottom: $base-size * 6;
         &__title {
-            font-size: 24px;
+            font-size: $title-font-size;
         }
     }
     &-info {
+        margin-bottom: $base-size * 3;
         &__list,
         &__sublist {
             margin: 0;
@@ -38,7 +39,7 @@
         }
         &__list {
             &-item {
-                margin-bottom: 15px;
+                margin-bottom: $base-size * 2;
             }
         }
         &__sublist {
@@ -46,7 +47,9 @@
                 display: flex;
                 align-items: center;
                 font-size: 16px;
-                margin-bottom: 6px;
+                &:not(:last-child) {
+                    margin-bottom: 6px;
+                }
                 &-title {
                     max-width: 250px;
                     width: 250px;

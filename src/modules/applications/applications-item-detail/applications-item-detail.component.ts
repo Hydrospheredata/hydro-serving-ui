@@ -8,7 +8,6 @@ import {
     AppState, 
     Application,
     Runtime
-    // ModelServicesService
 } from '@shared/_index';
 
 import { environment } from '@environments/environment';
@@ -32,7 +31,6 @@ import {
 
 export class ApplicationsItemDetailComponent {
     public JSON = JSON;
-    public title: string = '';
     public id: string = '';
     public serviceModels: any[] = [];
     public serviceModelsFiltered: any[];

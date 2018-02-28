@@ -59,12 +59,20 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
 
         const application = new Application(serviceInfo);
 
+        console.log(application);
+
         this.applicationsService.addApplication(application)
             .subscribe(response => {
                 this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Application(response) });
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Application was successfully added',
+                    timeout: 5000
+                });
+            },
+            error => {
+                this.mdlSnackbarService.showSnackbar({
+                    message: `Error: ${error}`,
                     timeout: 5000
                 });
             });
