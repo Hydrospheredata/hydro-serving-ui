@@ -151,20 +151,21 @@ node("JenkinsOnDemand") {
         }
     } else {
         stage("Publish_snapshoot"){
-            def curVersion = currentVersion()
-            GIT_COMMIT = sh (
-                     script: 'git rev-parse --short HEAD',
-                     returnStdout: true
-            ).trim()
-            sh "docker tag hydrosphere/serving-manager-ui:${curVersion} 060183668755.dkr.ecr.eu-central-1.amazonaws.com/serving-manager-ui:${GIT_COMMIT}"
-            IMAGE = "060183668755.dkr.ecr.eu-central-1.amazonaws.com/serving-manager-ui:${GIT_COMMIT}"
-            docker.withRegistry('https://060183668755.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:jenkins_aws') {
-              docker.image(IMAGE).push()
-            }
-            if (env.BRANCH_NAME == "master") {
-                sh "docker tag hydrosphere/serving-manager-ui:${curVersion} hydrosphere/serving-manager-ui:latest"
-                sh "docker push hydrosphere/serving-manager-ui:latest"
-            }
+          if (env.BRANCH_NAME == "master") {
+              def curVersion = currentVersion()
+              GIT_COMMIT = sh (
+                       script: 'git rev-parse --short HEAD',
+                       returnStdout: true
+              ).trim()
+              sh "docker tag hydrosphere/serving-manager-ui:${curVersion} 060183668755.dkr.ecr.eu-central-1.amazonaws.com/serving-manager-ui:${GIT_COMMIT}"
+              IMAGE = "060183668755.dkr.ecr.eu-central-1.amazonaws.com/serving-manager-ui:${GIT_COMMIT}"
+              docker.withRegistry('https://060183668755.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:jenkins_aws') {
+                docker.image(IMAGE).push()
+              }
+
+              sh "docker tag hydrosphere/serving-manager-ui:${curVersion} hydrosphere/serving-manager-ui:latest"
+              sh "docker push hydrosphere/serving-manager-ui:latest"
+          }
         }
      }
 }
