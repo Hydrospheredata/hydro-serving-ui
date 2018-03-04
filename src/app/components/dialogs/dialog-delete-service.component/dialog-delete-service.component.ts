@@ -1,6 +1,5 @@
 import { Component, InjectionToken, Inject } from '@angular/core';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';
@@ -23,8 +22,7 @@ export class DialogDeleteServiceComponent extends DialogBase {
         @Inject(injectableApplicationId) data,
         public dialogRef: MdlDialogReference,
         private store: Store<AppState>,
-        private mdlSnackbarService: MdlSnackbarService,
-        private router: Router
+        private mdlSnackbarService: MdlSnackbarService
     ) {
         super(
             dialogRef
@@ -33,7 +31,6 @@ export class DialogDeleteServiceComponent extends DialogBase {
     }
 
     public submitDeleteServiceForm() {
-        this.router.navigate(['applications']);
         this.store.dispatch({ type: Actions.DELETE_APPLICATION, applicationId: this.applicationId });
         this.dialogRef.hide();
         this.mdlSnackbarService.showSnackbar({

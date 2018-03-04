@@ -9,6 +9,8 @@ export function ApplicationsReducer (state = initialState, action: Actions.Appli
     switch (action.type) {
         case Actions.GET_APPLICATIONS_SUCCESS:
             return Object.assign([], state, action.payload);
+        case Actions.GET_APPLICATIONS_FAIL:
+            return { ...state };
         case Actions.ADD_SERVICE_SUCCESS:
             return [
                 ...state.slice(0),

@@ -6,6 +6,7 @@ import { Application } from '@shared/models/_index';
 // GET
 export const GET_APPLICATIONS = 'GET_APPLICATIONS';
 export const GET_APPLICATIONS_SUCCESS = 'GET_APPLICATIONS_SUCCESS';
+export const GET_APPLICATIONS_FAIL = 'GET_APPLICATIONS_FAIL';
 
 export class GetApplicationsAction implements Action {
     readonly type = GET_APPLICATIONS;
@@ -13,6 +14,9 @@ export class GetApplicationsAction implements Action {
 export class GetApplicationsSuccessAction implements Action {
     readonly type = GET_APPLICATIONS_SUCCESS;
     constructor(public payload: Application[]) { }
+}
+export class GetApplicationsFailAction implements Action {
+    readonly type = GET_APPLICATIONS_FAIL;
 }
 
 // ADD
@@ -64,6 +68,7 @@ export class DeleteApplicationSuccessAction implements Action {
 export type ApplicationsActions
   = GetApplicationsAction
   | GetApplicationsSuccessAction
+  | GetApplicationsFailAction
   | AddServiceAction
   | AddServiceSuccessAction
   | AddServiceFailureAction
