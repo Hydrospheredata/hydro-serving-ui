@@ -68,8 +68,9 @@
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
                     <tr>
-                        <th class="hydro-table-head__cell">Model</th>
+                        <th class="hydro-table-head__cell">Model Variant</th>
                         <th class="hydro-table-head__cell">Version</th>
+                        <th class="hydro-table-head__cell">Env</th>
                         <th class="hydro-table-head__cell">Weight</th>
                     </tr>
                 </thead>
@@ -77,12 +78,17 @@
                     <tr *ngFor="let item of stage.services" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                                {{ item.serviceDescription.modelVersionId }}
+                                {{ item.serviceDescription.modelName ? item.serviceDescription.modelName : item.serviceDescription.modelVersionId }}
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis cs-text-center'>
-                                {{ item.serviceDescription.runtimeId }}
+                                {{ item.serviceDescription.runtimeName ? item.serviceDescription.runtimeName : item.serviceDescription.runtimeId }}
+                            </div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis cs-text-center'>
+                                {{ item.serviceDescription.environmentId ? item.serviceDescription.environmentId : '-' }}
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
@@ -93,5 +99,14 @@
             </table>
         </div>
     </div>
+
+    <!-- <canvas baseChart
+        [chartType]="'bar'"
+        [datasets]="chartData"
+        [labels]="chartLabels"
+        [options]="chartOptions"
+        [legend]="true"
+        (chartClick)="onChartClick($event)">
+    </canvas> -->
 
 </div>

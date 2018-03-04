@@ -8,7 +8,7 @@ import {
     AppState, 
     Application,
     Runtime
-} from '@shared/_index';
+} from '@shared/models/_index';
 
 import { environment } from '@environments/environment';
 
@@ -44,13 +44,19 @@ export class ApplicationsItemDetailComponent {
 
     public tableHeader: string[] = ['Model', 'Version', 'Created Date', 'Weight'];
 
-    public codeMirrorOptions: {} = {
-        matchBrackets: true,
-        autoCloseBrackets: true,
-        mode: { name: 'javascript', json: true },
-        lineWrapping: true,
-        readOnly: true,
-        scrollbarStyle: 'null'
+    public chartOptions = {
+        responsive: true,
+        title: {
+            display: true,
+            text: 'Application graph',
+            fontSize: 24,
+            fontFamily: '"Museo Sans Regular"',
+            fontColor: '#04143c'
+        },
+        tooltips: {
+            mode: 'index',
+            intersect: true
+        }
     };
 
 
@@ -78,6 +84,18 @@ export class ApplicationsItemDetailComponent {
                 }
                 this.loadInitialData(id);
             });
+    }
+
+    chartData = [
+        { data: [330, 600, 260, 700, 260, 700], label: 'Account A' },
+        { data: [120, 455, 100, 340, 260, 700], label: 'Account B' },
+        { data: [45, 67, 800, 500, 260, 700], label: 'Account C' }
+    ];
+
+    chartLabels = ['n-5', 'n-4', 'n-3', 'n-2', 'n-1', 'n'];
+
+    public onChartClick(event) {
+        console.log(event);
     }
 
     loadInitialData(id) {
