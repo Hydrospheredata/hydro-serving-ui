@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+
 import { ModelsService } from '@shared/services/_index';
 import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@shared/builders/_index';
 import * as HydroActions from '@shared/actions/_index';
+
 
 
 @Injectable()
@@ -15,7 +17,7 @@ export class ModelEffects {
         private modelVersionBuilder: ModelVersionBuilder,
         private modelBuildBuilder: ModelBuildBuilder,
         private modelsService: ModelsService,
-        private actions: Actions
+        private actions: Actions,
     ) {}
     
     @Effect() loadModels$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODELS)

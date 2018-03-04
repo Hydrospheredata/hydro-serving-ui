@@ -50,7 +50,7 @@
       <div class="input-text__error mdl-color-text--red">{{formErrors.weights}}</div>
       
       <div formArrayName="stages">
-        <div *ngFor="let stage of serviceForm['controls'].stages['controls']; let i = index" [formGroupName]="i">
+        <div class="stages-list" *ngFor="let stage of serviceForm['controls'].stages['controls']; let i = index" [formGroupName]="i">
           <ul class="form-weights__list" formArrayName="services">
             <li class="form-weights__list-item" *ngFor="let service of stage['controls'].services['controls']; let j = index" [formGroupName]="j">
               
@@ -66,9 +66,11 @@
                 <mdl-option *ngFor="let environment of environments" [value]="environment.id">{{ environment.name }}</mdl-option>
               </mdl-select>
 
-              <mdl-select class="__versions cs-text-center" formControlName="contract" *ngIf="contracts.length > 0">
+              <input type="text" formControlName="signatureName">
+
+              <!-- <mdl-select class="__versions cs-text-center" formControlName="contract" *ngIf="contracts.length > 0">
                 <mdl-option *ngFor="let contract of contracts" [value]="contract.id">{{ contract.name }}</mdl-option>
-              </mdl-select>
+              </mdl-select> -->
               
               <div class="form-weights__list-item--weight">
                 <hydro-input-text [formErrors]="formErrors.weight"
@@ -98,12 +100,12 @@
           </svg>
         </div>
       </div>
-    </div>
 
-    <button type="button" class="btn btn-secondary" (click)="addStageControl(this.defaultAppOptions)" title="Add stage">
-        <svg><use xlink:href="#icon-plus"></use></svg>
-        stage
-    </button>
+      <button type="button" class="btn btn-secondary" (click)="addStageControl(this.defaultAppOptions)" title="Add stage">
+          <svg><use xlink:href="#icon-plus"></use></svg>
+          stage
+      </button>
+    </div>
 
     <div class="hydro-form-group" *ngIf="isJsonModeEnabled">
       <codemirror [ngModelOptions]="{standalone: true}" [(ngModel)]="pipelineEditorValue" [config]="codeMirrorOptions"></codemirror>

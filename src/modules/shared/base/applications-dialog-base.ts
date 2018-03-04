@@ -115,9 +115,9 @@ export class ApplicationsDialogBase extends DialogBase {
         this.defaultAppOptions = {
             services: {
                 weight: 100,
-                runtimeId: this.runtimes[0].id,
-                environmentId: this.environments[0].id,
-                modelVersionId: this.modelVersions[0].id,
+                runtimeId: this.runtimes ? this.runtimes[0].id : 0,
+                environmentId: this.environments ? this.environments[0].id : 0,
+                modelVersionId: this.modelVersions ? this.modelVersions[0].id : 0,
                 signatureName: ''
             },
             kafkaStreaming: {
