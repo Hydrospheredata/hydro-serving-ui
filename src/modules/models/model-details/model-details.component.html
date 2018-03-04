@@ -6,7 +6,7 @@
                 <svg>
                     <use xlink:href="#icon-arrow"></use>
                 </svg>
-                Build
+                Release
             </button>
             <button class="btn" (click)="$event.stopPropagation(); editModelContract(model.id)">
                 <svg>
@@ -45,7 +45,7 @@
                                 <svg class="icon">
                                     <use xlink:href="#icon-arrow" />
                                 </svg>
-                                <span class="icon-label">{{item.status === 'FINISHED' ? 'Builded' : 'Unbuilded'}}</span>
+                                <span class="icon-label">{{item.status === 'FINISHED' ? 'Released' : 'Failed'}}</span>
                             </div>
                         </td>
                     </tr>

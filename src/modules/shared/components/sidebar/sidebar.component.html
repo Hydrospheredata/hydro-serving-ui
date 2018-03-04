@@ -11,7 +11,7 @@
             <hydro-input-text class="sidebar-search" inputClass="sidebar-search" placeholder="Search" [(ngModel)]="searchQ" iconName="search" iconDirection="left"></hydro-input-text>
         </div>
 
-        <div class="sidebar-filter"  *ngIf="isFilterEnabled">
+        <!-- <div class="sidebar-filter"  *ngIf="isFilterEnabled">
             <span class="sidebar-filter__label">Filter:</span>
             <button *ngIf="isModels" (click)="toggleSidebarFilter('deployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['deployed']}">
                 <svg class="icon sidebar-filter__button--icon deployed"><use xlink:href="#icon-arrow"/></svg>
@@ -27,7 +27,7 @@
             <button *ngIf="!isModels" (click)="toggleSidebarFilter('pipelines')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['pipelines']}" >
                 <span class="sidebar-filter__button--label">Pipelines</span>
             </button>
-        </div>
+        </div> -->
     </div>
 
 

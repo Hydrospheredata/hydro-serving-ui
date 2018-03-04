@@ -5,6 +5,8 @@ import { SharedModule } from '@shared/shared.module';
 import { ApplicationsRoutingModule } from './applications.router';
 import { FormsModule } from '@angular/forms';
 
+import { ChartsModule } from 'ng2-charts';
+
 // import { CodemirrorModule } from 'ng2-codemirror';
 
 import {
@@ -19,6 +21,7 @@ import {
         MdlModule,
         ApplicationsRoutingModule,
         FormsModule,
+        ChartsModule
     ],
     declarations: [
         ApplicationsWrapperComponent,

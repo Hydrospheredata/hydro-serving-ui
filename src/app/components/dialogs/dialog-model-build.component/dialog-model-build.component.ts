@@ -72,7 +72,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
 
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
-                    message: 'Model was successfully builded',
+                    message: 'Model was successfully released',
                     timeout: 5000
                 });
             }, (error) => {

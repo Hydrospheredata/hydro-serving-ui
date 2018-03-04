@@ -1,12 +1,12 @@
 <div>
-    <h2 class="mdl-dialog__title mat-dialog-title">Build model "{{model.source}}"</h2>
+    <h2 class="mdl-dialog__title mat-dialog-title">Release model "{{model.source}}"</h2>
     <form [formGroup]="buildModelForm" (ngSubmit)="onSubmit()">
         <div class="model-details-table">
             <hydro-list-info [data]="model"></hydro-list-info>
         </div>
         <div class="btn-group form-actions">
             <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">CANCEL</button>
-            <button class="btn btn-colored btn-large" type="submit" [disabled]="buildModelForm.invalid">Build model</button>
+            <button class="btn btn-colored btn-large" type="submit" [disabled]="buildModelForm.invalid">Release model</button>
         </div>
     </form>
 </div>

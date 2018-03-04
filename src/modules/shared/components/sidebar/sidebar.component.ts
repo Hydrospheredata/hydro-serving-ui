@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-// import { SortByPipe } from '@shared/pipes/sort-by.pipe';
+import { SortByPipe } from '@shared/pipes/_index';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
@@ -15,7 +15,8 @@ import { DialogAddServiceComponent } from '@components/dialogs/_index';
 @Component({
     selector: 'hydro-sidebar',
     templateUrl: './sidebar.component.html',
-    styleUrls: ['./sidebar.component.scss']
+    styleUrls: ['./sidebar.component.scss'],
+    providers: [ SortByPipe ]
 })
 export class SidebarComponent implements OnInit, OnDestroy {
 
@@ -36,6 +37,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private dialog: MdlDialogService,
+        private sortBy: SortByPipe,
     ) {
         this.routeSub = this.router.events
             .subscribe(event => {
@@ -50,7 +52,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         this.sidebarDataSub = this.sidebarData
             .subscribe(items => {
                 console.log('Sidebar data: ', items);
-                this.sidebarList = items;
+                this.sidebarList = this.sortBy.transform(items, 'id');
                 if (this.sidebarList.length > 0) {
                     this.redirectToFirst();
                 }
