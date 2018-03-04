@@ -13,7 +13,7 @@ import { CoreModule } from '@modules/core/core.module';
 import { SharedModule } from '@modules/shared/shared.module';
 import { ModelsModule } from '@modules/models/models.module';
 import { ApplicationsModule } from '@modules/applications/applications.module';
-import { SourcesModule } from '@modules/sources/sources.module';
+// import { SourcesModule } from '@modules/sources/sources.module';
 
 // Dialogs
 import * as Dialog from '@components/dialogs/_index';
@@ -38,7 +38,7 @@ import * as Dialog from '@components/dialogs/_index';
         CoreModule,
         ModelsModule,
         ApplicationsModule,
-        SourcesModule,
+        // SourcesModule,
         FormsModule,
         ReactiveFormsModule,
         MomentModule,
