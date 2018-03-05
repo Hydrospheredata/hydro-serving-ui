@@ -69,7 +69,7 @@
                 <thead class="hydro-table-head">
                     <tr>
                         <th class="hydro-table-head__cell">Model Variant</th>
-                        <th class="hydro-table-head__cell">Version</th>
+                        <th class="hydro-table-head__cell">Runtime</th>
                         <th class="hydro-table-head__cell">Env</th>
                         <th class="hydro-table-head__cell">Weight</th>
                     </tr>
@@ -100,13 +100,12 @@
         </div>
     </div>
 
-    <!-- <canvas baseChart
-        [chartType]="'bar'"
-        [datasets]="chartData"
-        [labels]="chartLabels"
-        [options]="chartOptions"
-        [legend]="true"
-        (chartClick)="onChartClick($event)">
-    </canvas> -->
+    <ul class="alerts-list" *ngIf="alerts.length">
+        <li class="alerts-list__item" *ngFor="let item of alerts">
+            {{item}}
+        </li>
+    </ul>
+
+    <!-- <canvas id="chart"></canvas> -->
 
 </div>
