@@ -14,11 +14,9 @@ import {
 import { environment } from '@environments/environment';
 
 import {
-    DialogTestComponent,
     DialogUpdateServiceComponent,
     DialogDeleteServiceComponent,
     injectableApplicationId,
-    injectableModelBuildOptions,
     injectableServiceUpdate
 } from '@components/dialogs/_index';
 
@@ -143,19 +141,6 @@ export class SourcesItemDetailComponent {
         console.log(this.runtimes.find(runtimes => runtimes.id === runtimeId));
         const runtime = this.runtimes.find(runtimes => runtimes.id === runtimeId);
         return runtime.name;
-    }
-
-    public testApplication(application: Application) {
-        this.dialog.showCustomDialog({
-            component: DialogTestComponent,
-            styles: { 'width': '800px', 'min-height': '350px' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-            providers: [{ provide: injectableModelBuildOptions, useValue: application }],
-        });
     }
 
     public editApplication(application: Application) {

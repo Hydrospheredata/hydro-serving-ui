@@ -2,18 +2,16 @@
     <div class="content-header">
         <div class="content-header__title">{{model?.source}}</div>
         <div class="btn-group" *ngIf="model?.nextVersion">
-            <button class="btn" (click)="$event.stopPropagation(); buildModel(model)">
-                <svg>
-                    <use xlink:href="#icon-arrow"></use>
-                </svg>
+            <button class="btn" (click)="buildModel(model)">
+                <svg><use xlink:href="#icon-arrow"></use></svg>
                 Release
             </button>
-            <button class="btn" (click)="$event.stopPropagation(); editModelContract(model.id)">
+            <!-- <button class="btn" (click)="$event.stopPropagation(); editModelContract(model.id)">
                 <svg>
                     <use xlink:href="#icon-edit"></use>
                 </svg>
                 Edit
-            </button>
+            </button> -->
         </div>
     </div>
 

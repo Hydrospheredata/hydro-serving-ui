@@ -80,3 +80,31 @@
   margin-top: 20px;
   margin-bottom: 10px;
 }
+
+.contracts {
+  &-list {
+    &__item {
+      position: relative;
+      padding-right: 40px;
+      margin-bottom: 32px;
+    }
+  }
+  &-actions {
+    &__delete {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      top: 36px;
+      right: 0; 
+    }
+  }
+}
+
+.field {
+  &-list {
+    &__item {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

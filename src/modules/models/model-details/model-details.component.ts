@@ -85,7 +85,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     public buildModel(model: Model) {
         this.dialog.showCustomDialog({
             component: DialogModelBuildComponent,
-            styles: { 'width': '800px', 'min-height': '350px' },
+            styles: { 'width': '850px', 'min-height': '350px', 'max-height': '100vh', 'overflow-y': 'scroll' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

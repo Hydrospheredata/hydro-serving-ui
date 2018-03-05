@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <h1 class="mdl-dialog__title mat-dialog-title">{{testTitle}}</h1>
   <form *ngIf="input" [formGroup]="testForm" (ngSubmit)="submitTestForm(testForm)">
     <div class="mdl-dialog__content">
@@ -36,4 +36,18 @@
       </div>
     </div>
   </form>
-</div>
+</div> -->
+
+
+<h2 class="mdl-dialog__title">Test application "{{application.name}}"</h2>
+<form [formGroup]="testForm" (ngSubmit)="onSubmit()">
+  <div class="mdl-dialog__content">
+
+    <codemirror [config]="inputsOptions"></codemirror>
+    
+    <div class="btn-group form-actions __justify-end">
+      <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
+      <button class="btn btn-colored btn-large" type="submit" [disabled]="testForm.invalid">test app</button>
+    </div>
+  </div>
+</form>

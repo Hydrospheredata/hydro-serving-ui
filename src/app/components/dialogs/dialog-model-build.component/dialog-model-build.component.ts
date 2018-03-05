@@ -1,6 +1,6 @@
 import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ModelsService } from '@shared/services/_index';
 import { DialogBase } from '@shared/base/_index';
 
@@ -10,6 +10,9 @@ import * as Actions from '@shared/actions/_index';
 import 'rxjs/add/operator/mergeMap';
 
 import { Subscription } from 'rxjs/Subscription';
+
+import { Signature } from '@shared/models/_index';
+import { ContractsService } from '@shared/services/_index';
 
 export let injectableModelOptions = new InjectionToken<object>('injectableModelOptions');
 
@@ -27,6 +30,12 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
     public data;
     public model;
     public modelType: string;
+
+    public submitBtnText: string = 'Release';
+    public signatures: Signature[];
+    public contractsForm: FormGroup;
+    public isContractViewEnabled: boolean = false;
+
     private runtimeTypesSub: Subscription;
 
     constructor(
@@ -35,7 +44,8 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
         private mdlSnackbarService: MdlSnackbarService,
         @Inject(injectableModelOptions) data,
         private store: Store<AppState>,
-        private modelsService: ModelsService
+        private modelsService: ModelsService,
+        private contractsService: ContractsService,
     ) {
         super(
             dialogRef
@@ -44,7 +54,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
     }
 
     ngOnInit() {
-        this.createBuildModelForm();
+        // this.createBuildModelForm();
     }
 
     ngOnDestroy() {
@@ -53,17 +63,55 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
         }
     }
 
-    private createBuildModelForm() {
-        this.buildModelForm = this.fb.group({
-            modelId: [this.model.id]
-        });
+    public showContract(event) {
+        this.createContractForm();
+        if (!this.signatures) {
+            this.contractsService.getModelContracts(this.model.id)
+                .subscribe(data => {
+                    console.log(data.signatures);
+                    this.signatures = data.signatures;
+                    this.updateContractsFormValues(this.signatures ? this.signatures : null);
+                });
+        }
+        this.isContractViewEnabled = event.target.checked;
+        this.isContractViewEnabled ? this.submitBtnText = 'Release (+contract)' : this.submitBtnText = 'Release'
     }
 
-    onSubmit() {
+    public addSignatureToContract() {
+        const control = <FormArray>this.contractsForm.controls['signatures'];
+        control.push(this.addSignature());
+    }
+
+    public removeSignatureFromContract(index: number) {
+        const control = <FormArray>this.contractsForm.controls['signatures'];
+        control.removeAt(index);
+    }
+
+    public onSubmit() {
         const modelOptions = {
             modelId: this.model.id
         };
 
+        if (this.isContractViewEnabled) {
+            this.contractsService.updateModelContract(this.model.id, { signatures: this.contractsForm.value.signatures })
+                .subscribe(() => {
+                    this.mdlSnackbarService.showSnackbar({
+                        message: 'Contracts was successfully updated',
+                        timeout: 5000
+                    });
+                    this.buildModel(modelOptions);
+                }, (error) => {
+                    this.mdlSnackbarService.showSnackbar({
+                        message: `Contracts update was failed with error ${error}`,
+                        timeout: 5000
+                    });
+                });
+        } else {
+            this.buildModel(modelOptions);
+        }
+    }
+
+    private buildModel(modelOptions) {
         this.modelsService.buildModel(modelOptions)
             .subscribe(response => {
                 this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: response });
@@ -81,5 +129,37 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
                     timeout: 5000
                 });
             });
+    }
+
+    private updateContractsFormValues(signatures: Signature[]) {
+        for (let i = 0; i < signatures.length - 1; i++) {
+            this.addSignatureToContract();
+        }
+        
+        this.contractsForm.patchValue({
+            signatures: signatures
+        });
+    }
+
+    private createContractForm() {
+        this.contractsForm = this.fb.group({
+            signatures: this.fb.array([this.addSignature()])
+        });
+    }
+
+    private addSignature() {
+        return this.fb.group({
+            signatureName: [ '', Validators.required ],
+            inputs: this.fb.array([this.addSignatureField()]),
+            outputs: this.fb.array([this.addSignatureField()]),
+        });
+    }
+
+    private addSignatureField() {
+        return this.fb.group({
+            fieldName: [ '/', Validators.required ], 
+            dataType: [ '', Validators.required ], 
+            shape: [ '', Validators.required ]
+        });
     }
 }
