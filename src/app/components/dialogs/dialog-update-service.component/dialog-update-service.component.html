@@ -6,10 +6,10 @@
 
     <div class="hydro-form-group">
       <label class="hydro-checkbox">
-        Use Kafka source
-        <input type="checkbox" [checked]="isKafkaEnabled" (change)="isKafkaEnabled = $event.target.checked">
-        <span></span>
-      </label>
+            Use Kafka source
+            <input type="checkbox" [checked]="isKafkaEnabled" (change)="toggleKafkaStreaming($event)">
+            <span></span>
+        </label>
       <ul class="form-kafkaSources__list" *ngIf="isKafkaEnabled" formArrayName="kafkaStreaming">
         <li class="form-kafkaSources__list-item" *ngFor="let kafka of serviceForm['controls'].kafkaStreaming['controls']; let i = index" [formGroupName]="i">
           <div class="form-kafkaSources__list-item-fields">
@@ -32,7 +32,7 @@
             <use xlink:href="#icon-remove"></use>
           </svg>
         </li>
-        <li class="form-kafkaSources__list-item--add" *ngIf="isKafkaEnabled" (click)="addKafkaControl()">
+        <li class="form-kafkaSources__list-item--add" *ngIf="isKafkaEnabled" (click)="addKafkaControl(defaultAppOptions.kafkaStreaming)">
           <svg><use xlink:href="#icon-plus"></use></svg>
           <span>Add More Sources</span>
         </li>
