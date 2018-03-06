@@ -22,3 +22,26 @@
     }
   }
 }
+
+.test-fields {
+  display: flex;
+  &__item {
+    flex: 1;
+    &.__input {
+      margin-right: 8px;
+    }
+    &.__output {
+      margin-left: 8px;
+    }
+  }
+}
+
+input {
+  padding-right: 65px;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

@@ -69,6 +69,8 @@ export class ApplicationsItemDetailComponent {
         datasets: []
     };
 
+    public signatureName: any[];
+
     private eventSourcePath: string;
     private eventSourceAlerts: any;
     private eventSourceMeasures: any;
@@ -286,6 +288,7 @@ export class ApplicationsItemDetailComponent {
         this.serviceModels = [];
         if (this.applications.length) {
             this.application = this.applications.filter(application => application.id === Number(id)).shift();
+            this.signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/)
             // if (this.isPipeline(this.application)) {
             //     this.title = `Pipeline: ${this.application.name}`;
             // } else {
@@ -325,7 +328,7 @@ export class ApplicationsItemDetailComponent {
     public testApplication(application: Application) {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
-            styles: {'width': '600px', 'min-height': '250px'},
+            styles: {'width': '900px', 'min-height': '250px'},
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

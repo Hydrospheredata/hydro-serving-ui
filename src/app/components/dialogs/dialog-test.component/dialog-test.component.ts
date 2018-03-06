@@ -27,13 +27,15 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     // public testForm: FormGroup;
     public inputOptions: {};
     public outputOptions: {};
-    public input: any[];
-    public output: any[];
+    public input: any = '';
+    public output: any = '';
+    public curlPath: string = '';
     public testBtn: string;
     public testTitle: string;
     public requestBody: string;
     private port;
     private apiUrl;
+    private signatureName: string = '';
 
     constructor( 
         @Inject(injectableTestOptions) data,
@@ -50,7 +52,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
 
         this.port = environment.production ? window.location.port : environment.port;
         // const path = this.location.prepareExternalUrl(environment.apiUrl).replace('/ui' + environment.apiUrl, environment.apiUrl);
-        this.apiUrl = `${window.location.protocol}//${window.location.hostname}:${this.port}/api/v1/applications/generateInputs`;
+        this.apiUrl = `${window.location.protocol}//${window.location.hostname}:${this.port}/api/v1/applications`;
     }
 
 
@@ -72,45 +74,29 @@ export class DialogTestComponent extends DialogBase implements OnInit {
             scrollbarStyle: 'null'
         };
 
-        this.input = [{}];
-        this.output = [{}];
+        this.signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/)[1];
         this.testTitle = `Test application "${this.application.name}"`;
         this.testBtn = 'Test application';
-        this.createTestForm();
         this.generateInputs();
+        this.createCURLString();
     }
 
     private generateInputs() {
-        let signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/)[1];
-        this.applicationsService.generateInputs(this.application.id, signatureName).first()
+        this.applicationsService.generateInputs(this.application.id, this.signatureName).first()
             .subscribe(data => {
-                this.input = data;
-                console.log(this.input);
+                console.log(data);
+                this.input = JSON.stringify(data, undefined, 2);
             });
     }
 
-    private createTestForm() {
-        // this.testForm = this.fb.group({
-        //     input: [ {} ],
-        // });
-        // this.requestBody = this.createCURLString(this.testForm);
-        // this.testForm.valueChanges.subscribe(() => {
-        //     this.requestBody = this.createCURLString(this.testForm);
-        // });
+    public createCURLString() {
+        // let path = '';
+        // let payload = '';
+        // payload = JSON.stringify(this.createTestOptions(form));
+        // path = `${this.apiUrl}/serve/${this.application.id}/${this.signatureName}`;
+        
+        this.curlPath = `curl -X POST --header 'Content-Type: application/json' -d '${this.apiUrl}/serve/${this.application.id}/${this.signatureName}'`;
     }
-
-    // private createCURLString(form) {
-    //     let path = '';
-    //     let payload = '';
-    //     payload = JSON.stringify(this.createTestOptions(form));
-
-    //     if (this.model instanceof Application) {
-    //         path = `${this.apiUrl}/weightedServices/serveByName/${this.model.name}`;
-    //     } else {
-    //         path = `${this.apiUrl}/modelService/serve/${this.model.modelRuntime.modelName}`;
-    //     }
-    //     return `curl -X POST --header 'Content-Type: application/json' -d '${payload}' '${path}'`;
-    // }
 
     // private validateInput(input) {
     //     try {
@@ -145,7 +131,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     //     return testOptions;
     // }
 
-    submitTestForm() {
+    onSubmit() {
         // let apiUrl;
         // let snackbarSuccessMsg: string;
         // let entityName: string;
@@ -159,6 +145,21 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         //     snackbarSuccessMsg = 'Model test was successful';
         //     entityName = this.model.modelRuntime.modelName;
         // }
+
+        this.applicationsService.serveService(JSON.parse(this.input), this.application.id, this.signatureName)
+            .subscribe(res => {
+                this.output = JSON.stringify(res, undefined, 2);
+                this.mdlSnackbarService.showSnackbar({
+                    message: 'Application test was successful',
+                    timeout: 5000
+                });
+            },
+            (error) => {
+                this.mdlSnackbarService.showSnackbar({
+                    message: `Error: ${error}`,
+                    timeout: 5000
+                });
+            });
 
         // apiUrl(testOptions, entityName)
         //     .subscribe(res => {

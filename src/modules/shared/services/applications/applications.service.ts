@@ -50,8 +50,8 @@ export class ApplicationsService {
         return this.http.delete(`${this.baseApiUrl}/${id}`);
     }
 
-    public serveService(data, serviceName): Observable<any> {
-        return this.http.post(`${this.baseApiUrl}/serveByName/${serviceName}`, data)
+    public serveService(data, id, signatureName): Observable<any> {
+        return this.http.post(`${this.baseApiUrl}/serve/${id}/${signatureName}`, data)
             .map((response: Response) => {
                 return response.json();
             });
