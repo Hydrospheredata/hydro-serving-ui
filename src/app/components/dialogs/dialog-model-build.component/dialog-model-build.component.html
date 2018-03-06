@@ -2,32 +2,32 @@
 <div class="model-details-table">
     <hydro-list-info [data]="model"></hydro-list-info>
 
-    <label class="hydro-checkbox">
+    <!-- <label class="hydro-checkbox">
       Contract
       <input type="checkbox" [checked]="isContractViewEnabled" (change)="showContract($event)">
       <span></span>
-    </label>
+    </label> -->
 
-    <form [formGroup]="contractsForm" *ngIf="isContractViewEnabled">
+    <form [formGroup]="contractsForm">
         <div formArrayName="signatures">
             <div *ngFor="let signature of contractsForm['controls'].signatures['controls']; let i = index;" [formGroupName]="i" class="contracts-list__item">
-                <hydro-input-text formControlName="signatureName" label="Signature name"></hydro-input-text>
+                <hydro-input-text [inputClass]="'__small'" formControlName="signatureName" label="Signature name"></hydro-input-text>
                 
-                <div class="hydro-panel" formArrayName="inputs">
+                <div class="hydro-panel __small" formArrayName="inputs">
                     <h5 class="hydro-panel__header">Inputs</h5>
                     <div *ngFor="let input of signature['controls'].inputs['controls']; let i = index;" [formGroupName]="i" class="field-list__item">
-                        <hydro-input-text formControlName="fieldName" label="Field name"></hydro-input-text>
-                        <hydro-input-text formControlName="dataType" label="Data type"></hydro-input-text>
-                        <hydro-input-text formControlName="shape" label="Shape"></hydro-input-text>
+                        <hydro-input-text [inputClass]="'__small'" formControlName="fieldName" label="Field name"></hydro-input-text>
+                        <hydro-input-text [inputClass]="'__small'" formControlName="dataType" label="Data type"></hydro-input-text>
+                        <hydro-input-text [inputClass]="'__small'" formControlName="shape" label="Shape"></hydro-input-text>
                     </div>
                 </div>
                 
-                <div class="hydro-panel" formArrayName="outputs">
+                <div class="hydro-panel __small" formArrayName="outputs">
                     <h5 class="hydro-panel__header">Outputs</h5>
                     <div *ngFor="let output of signature['controls'].outputs['controls']; let i = index;" [formGroupName]="i" class="field-list__item">
-                        <hydro-input-text formControlName="fieldName" label="Field name"></hydro-input-text>
-                        <hydro-input-text formControlName="dataType" label="Data type"></hydro-input-text>
-                        <hydro-input-text formControlName="shape" label="Shape"></hydro-input-text>
+                        <hydro-input-text [inputClass]="'__small'" formControlName="fieldName" label="Field name"></hydro-input-text>
+                        <hydro-input-text [inputClass]="'__small'" formControlName="dataType" label="Data type"></hydro-input-text>
+                        <hydro-input-text [inputClass]="'__small'" formControlName="shape" label="Shape"></hydro-input-text>
                     </div>
                 </div>
                 

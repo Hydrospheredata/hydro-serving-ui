@@ -9,6 +9,9 @@ $table-padding: 18px;
       color: #abafb2;
       padding: $table-padding $table-padding * 2;
       text-align: center;
+      .__small & {
+        padding: 8px $table-padding * 2;
+      }
     }
     [class$="models"] & {
       border-bottom: 2px solid $secondary-color;
@@ -30,6 +33,9 @@ $table-padding: 18px;
     }
     &__cell {
       padding: $table-padding * 1.7 $table-padding * 2;
+      .__small & {
+        padding: 12px $table-padding * 2;
+      }
     }
   }
 }

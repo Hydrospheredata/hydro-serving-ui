@@ -55,6 +55,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
 
     ngOnInit() {
         // this.createBuildModelForm();
+        this.showContract();
     }
 
     ngOnDestroy() {
@@ -63,18 +64,17 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
         }
     }
 
-    public showContract(event) {
+    public showContract() {
         this.createContractForm();
         if (!this.signatures) {
             this.contractsService.getModelContracts(this.model.id)
                 .subscribe(data => {
-                    console.log(data.signatures);
                     this.signatures = data.signatures;
                     this.updateContractsFormValues(this.signatures ? this.signatures : null);
                 });
         }
-        this.isContractViewEnabled = event.target.checked;
-        this.isContractViewEnabled ? this.submitBtnText = 'Release (+contract)' : this.submitBtnText = 'Release'
+        // this.isContractViewEnabled = event.target.checked;
+        // this.isContractViewEnabled ? this.submitBtnText = 'Release (+contract)' : this.submitBtnText = 'Release'
     }
 
     public addSignatureToContract() {
@@ -92,23 +92,37 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
             modelId: this.model.id
         };
 
-        if (this.isContractViewEnabled) {
-            this.contractsService.updateModelContract(this.model.id, { signatures: this.contractsForm.value.signatures })
-                .subscribe(() => {
-                    this.mdlSnackbarService.showSnackbar({
-                        message: 'Contracts was successfully updated',
-                        timeout: 5000
-                    });
-                    this.buildModel(modelOptions);
-                }, (error) => {
-                    this.mdlSnackbarService.showSnackbar({
-                        message: `Contracts update was failed with error ${error}`,
-                        timeout: 5000
-                    });
+        this.contractsService.updateModelContract(this.model.id, { signatures: this.contractsForm.value.signatures })
+            .subscribe(() => {
+                this.mdlSnackbarService.showSnackbar({
+                    message: 'Contracts was successfully updated',
+                    timeout: 5000
                 });
-        } else {
-            this.buildModel(modelOptions);
-        }
+                this.buildModel(modelOptions);
+            }, (error) => {
+                this.mdlSnackbarService.showSnackbar({
+                    message: `Contracts update was failed with error ${error}`,
+                    timeout: 5000
+                });
+            });
+
+        // if (this.isContractViewEnabled) {
+        //     this.contractsService.updateModelContract(this.model.id, { signatures: this.contractsForm.value.signatures })
+        //         .subscribe(() => {
+        //             this.mdlSnackbarService.showSnackbar({
+        //                 message: 'Contracts was successfully updated',
+        //                 timeout: 5000
+        //             });
+        //             this.buildModel(modelOptions);
+        //         }, (error) => {
+        //             this.mdlSnackbarService.showSnackbar({
+        //                 message: `Contracts update was failed with error ${error}`,
+        //                 timeout: 5000
+        //             });
+        //         });
+        // } else {
+        //     this.buildModel(modelOptions);
+        // }
     }
 
     private buildModel(modelOptions) {

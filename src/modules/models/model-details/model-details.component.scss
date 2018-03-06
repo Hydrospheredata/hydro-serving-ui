@@ -128,3 +128,24 @@
     padding-right: 0px;
   }
 }
+
+.signatures {
+  &-list {
+    list-style: none;
+    padding: 0;
+    &__item {
+      &-title {
+
+      }
+    }
+  }
+  &-table {
+    &__header,
+    &__body {
+      display: flex;
+    }
+    &__cell {
+      flex: 1 1 50%;
+    }
+  }
+}

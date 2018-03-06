@@ -40,14 +40,41 @@
 
 
 <h2 class="mdl-dialog__title">Test application "{{application.name}}"</h2>
-<form [formGroup]="testForm" (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()">
   <div class="mdl-dialog__content">
 
-    <codemirror [config]="inputsOptions"></codemirror>
+    <div fxLayout="row" fxLayoutAlign="space-around stretch">
+      <div fxFlex="49%">
+          <label>Input</label>
+        <div class="cs-mb-8"><codemirror [(ngModel)]="input" [config]="inputOptions" name="input"></codemirror></div>
+      </div>
+      <div fxFlex="49%">
+        <label class="">Output</label>
+        <codemirror [(ngModel)]="output" [config]="outputOptions" name="output"></codemirror>
+      </div>
+
+    </div>
+
+    <!-- <div class="input-text form-group">
+      <label _ngcontent-c5="" class="control-label">CURL Parameters</label>
+      <div fxLayout="row" fxLayoutAlign="space-around center" class="cs-relative input-text__flex-container">
+        <input fxFlex="90%"
+               readonly
+               [(ngModel)]="requestBody"
+               [ngModelOptions]="{standalone: true}"
+               class="input-text__input form-control input-icon sibling"
+               #inputTarget
+               placeholder="">
+        <mdl-button fxFlex="10%" class=""
+                    (cbOnSuccess)="copiedToClipBoardSuccessfully(inputTarget)"
+                    title="Copy CURL params">
+          <mdl-icon>content_copy</mdl-icon></mdl-button>
+      </div>
+    </div> -->
     
     <div class="btn-group form-actions __justify-end">
       <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
-      <button class="btn btn-colored btn-large" type="submit" [disabled]="testForm.invalid">test app</button>
+      <button class="btn btn-colored btn-large" type="submit">test app</button>
     </div>
   </div>
 </form>

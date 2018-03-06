@@ -6,18 +6,66 @@
                 <svg><use xlink:href="#icon-arrow"></use></svg>
                 Release
             </button>
-            <!-- <button class="btn" (click)="$event.stopPropagation(); editModelContract(model.id)">
-                <svg>
-                    <use xlink:href="#icon-edit"></use>
-                </svg>
-                Edit
-            </button> -->
         </div>
     </div>
 
 
     <div class="content-body">
         <hydro-list-info [data]="model"></hydro-list-info>
+
+        <div *ngIf="model?.nextVersion">
+            <div class="hydro-panel __small" *ngFor="let signature of signatures">
+                <h5 class="hydro-panel__header">Signature: {{ signature.signatureName }}</h5>
+                <table class='hydro-table hydro-table-models'>
+                    <thead class="hydro-table-head">
+                        <tr>
+                            <th class="hydro-table-head__cell">Field name (Input)</th>
+                            <th class="hydro-table-head__cell">Data type (Input)</th>
+                            <th class="hydro-table-head__cell">Shape (Input)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let output of signature.inputs" class='hydro-table-body__row'>
+                            <td class="hydro-table-body__cell">
+                                <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
+                            </td>
+                            <td class="hydro-table-body__cell">
+                                <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
+                            </td>
+                            <td class="hydro-table-body__cell">
+                                <div class='cs-text-overflow-ellipsis'>
+                                    <span *ngFor="let item of output.shape">{{ item }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class='hydro-table hydro-table-models'>
+                    <thead class="hydro-table-head">
+                        <tr>
+                            <th class="hydro-table-head__cell">Field name (Output)</th>
+                            <th class="hydro-table-head__cell">Data type (Output)</th>
+                            <th class="hydro-table-head__cell">Shape (Output)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let output of signature.outputs" class='hydro-table-body__row'>
+                            <td class="hydro-table-body__cell">
+                                <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
+                            </td>
+                            <td class="hydro-table-body__cell">
+                                <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
+                            </td>
+                            <td class="hydro-table-body__cell">
+                                <div class='cs-text-overflow-ellipsis'>
+                                    <span *ngFor="let item of output.shape">{{ item }}</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <div class="hydro-panel" *ngIf="!model?.nextVersion || model?.lastModelBuild">
             <h5 class="hydro-panel__header">Versions</h5>

@@ -39,6 +39,13 @@ export class ApplicationsService {
             });
     }
 
+    public generateInputs(id: number, signatureName: string) {
+        return this.http.get(`${this.baseApiUrl}/generateInputs/${id}/${signatureName}`)
+            .map((res: Response): any => {
+                return res.json();
+            });
+    }
+
     public deleteApplication(id: number) {
         return this.http.delete(`${this.baseApiUrl}/${id}`);
     }

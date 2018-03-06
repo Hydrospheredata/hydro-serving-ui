@@ -1,16 +1,16 @@
 import { Component, OnInit, Inject, InjectionToken } from '@angular/core';
 import { MdlDialogReference } from '@angular-mdl/core';
 import { MdlSnackbarService } from '@angular-mdl/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+// import { FormGroup, FormBuilder } from '@angular/forms';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
 import { Application } from '@shared/models/_index';
-// import { ApplicationsService } from '@shared/services/_index';
+import { ApplicationsService } from '@shared/services/_index';
 import { DialogBase } from '@shared/base/_index';
 import { environment } from 'environments/environment';
-import { Location } from '@angular/common';
+// import { Location } from '@angular/common';
 
 
 export let injectableTestOptions = new InjectionToken<Application>('injectableTestOptions');
@@ -24,11 +24,11 @@ export let injectableTestOptions = new InjectionToken<Application>('injectableTe
 export class DialogTestComponent extends DialogBase implements OnInit {
     public data;
     public application: Application;
-    public testForm: FormGroup;
+    // public testForm: FormGroup;
     public inputOptions: {};
-    public codeMirrorOutputOptions: {};
-    public input: {};
-    public output: {};
+    public outputOptions: {};
+    public input: any[];
+    public output: any[];
     public testBtn: string;
     public testTitle: string;
     public requestBody: string;
@@ -38,10 +38,10 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     constructor( 
         @Inject(injectableTestOptions) data,
         public dialogRef: MdlDialogReference,
-        private fb: FormBuilder,
+        // private fb: FormBuilder,
         private mdlSnackbarService: MdlSnackbarService,
-        private location: Location,
-        // private applicationsService: ApplicationsService
+        // private location: Location,
+        private applicationsService: ApplicationsService
     ) {
         super(
             dialogRef
@@ -49,8 +49,8 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         this.application = data;
 
         this.port = environment.production ? window.location.port : environment.port;
-        const path = this.location.prepareExternalUrl(environment.apiUrl).replace('/ui' + environment.apiUrl, environment.apiUrl);
-        this.apiUrl = `${window.location.protocol}//${window.location.hostname}:${this.port}${path}`;
+        // const path = this.location.prepareExternalUrl(environment.apiUrl).replace('/ui' + environment.apiUrl, environment.apiUrl);
+        this.apiUrl = `${window.location.protocol}//${window.location.hostname}:${this.port}/api/v1/applications/generateInputs`;
     }
 
 
@@ -63,7 +63,7 @@ export class DialogTestComponent extends DialogBase implements OnInit {
             readOnly: false,
             scrollbarStyle: 'null'
         };
-        this.codeMirrorOutputOptions = {
+        this.outputOptions = {
             matchBrackets: true,
             autoCloseBrackets: true,
             mode: { name: 'javascript', json: true },
@@ -72,35 +72,27 @@ export class DialogTestComponent extends DialogBase implements OnInit {
             scrollbarStyle: 'null'
         };
 
-
         this.input = [{}];
+        this.output = [{}];
         this.testTitle = `Test application "${this.application.name}"`;
         this.testBtn = 'Test application';
         this.createTestForm();
+        this.generateInputs();
+    }
 
-        // if (this.model instanceof Application) {
-        //     this.input = [{}];
-        //     this.testTitle = `Test service "${this.model.name}"`;
-        //     this.testBtn = 'Test service';
-        //     this.createTestForm();
-        // } else {
-        //     // TODO: come up with better way of sending async data into formbuilder
-        //     // this.modelRuntimesService.generateInputs(this.model.modelRuntime.id).first()
-        //     //     .subscribe(data => {
-        //     //         this.input = data;
-        //     //         this.testTitle = `Test model "${this.model.modelRuntime.modelName}"`;
-        //     //         this.testBtn = 'Test model';
-        //     //         this.createTestForm();
-        //     //     });
-        // }
-
-
+    private generateInputs() {
+        let signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/)[1];
+        this.applicationsService.generateInputs(this.application.id, signatureName).first()
+            .subscribe(data => {
+                this.input = data;
+                console.log(this.input);
+            });
     }
 
     private createTestForm() {
-        this.testForm = this.fb.group({
-            data: [ '' ],
-        });
+        // this.testForm = this.fb.group({
+        //     input: [ {} ],
+        // });
         // this.requestBody = this.createCURLString(this.testForm);
         // this.testForm.valueChanges.subscribe(() => {
         //     this.requestBody = this.createCURLString(this.testForm);
