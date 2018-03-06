@@ -92,6 +92,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
             modelId: this.model.id
         };
 
+        console.log({ signatures: this.contractsForm.value.signatures });
         this.contractsService.updateModelContract(this.model.id, { signatures: this.contractsForm.value.signatures })
             .subscribe(() => {
                 this.mdlSnackbarService.showSnackbar({
@@ -173,7 +174,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
         return this.fb.group({
             fieldName: [ '/', Validators.required ], 
             dataType: [ '', Validators.required ], 
-            shape: [ '', Validators.required ]
+            shape: [ [''] , Validators.required ]
         });
     }
 }
