@@ -69,7 +69,7 @@ export class ApplicationsItemDetailComponent {
         datasets: []
     };
 
-    private eventSourcePath = "http://localhost:9999/v1/measure/streaming";
+    private eventSourcePath: string;
     private eventSourceAlerts: any;
     private eventSourceMeasures: any;
     private storeSub: Subscription;
@@ -177,7 +177,7 @@ export class ApplicationsItemDetailComponent {
                     this.getApplicationData(id);
                 }
             });
-
+        this.eventSourcePath = environment.production ? `${window.location.protocol}//${window.location.hostname}/v1/measure/streaming` : `${window.location.protocol}//${window.location.hostname}:9999/v1/measure/streaming`;
         this.eventSourceAlerts = new EventSource(`${this.eventSourcePath}/alerts`);
         this.eventSourceMeasures = new EventSource(`${this.eventSourcePath}/measures`);
 
@@ -197,7 +197,6 @@ export class ApplicationsItemDetailComponent {
             if (e.data.length) {
                 let serverResponse = JSON.parse(e.data);
                 let labels: string[] = [];
-                console.log(serverResponse);
 
                 let measureClasses = serverResponse.measures.map(m => m.class);
                 measureClasses.sort();
@@ -248,13 +247,7 @@ export class ApplicationsItemDetailComponent {
                     };
                 });
 
-                // console.log(measuresDatasets)
-                // console.log(confidenceDatasets)
-
                 let datasets = [...measuresDatasets, ...confidenceDatasets];
-
-                console.log(datasets);
-                console.log('_____________');
 
                 this.chart.data.labels = labels.reverse();
                 this.chart.data.datasets = datasets;
