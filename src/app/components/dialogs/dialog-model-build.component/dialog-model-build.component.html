@@ -2,13 +2,13 @@
 <div class="model-details-table">
     <hydro-list-info [data]="model"></hydro-list-info>
 
-    <!-- <label class="hydro-checkbox">
-      Contract
+    <label class="hydro-checkbox">
+      Edit contract
       <input type="checkbox" [checked]="isContractViewEnabled" (change)="showContract($event)">
       <span></span>
-    </label> -->
+    </label>
 
-    <form [formGroup]="contractsForm">
+    <form *ngIf="isContractViewEnabled" [formGroup]="contractsForm">
         <div formArrayName="signatures">
             <div *ngFor="let signature of contractsForm['controls'].signatures['controls']; let i = index;" [formGroupName]="i" class="contracts-list__item">
                 <hydro-input-text [inputClass]="'__small'" formControlName="signatureName" label="Signature name"></hydro-input-text>

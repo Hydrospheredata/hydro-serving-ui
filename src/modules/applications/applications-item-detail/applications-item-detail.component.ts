@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ChangeDetectorRef, ElementRef, Renderer2 } from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectorRef, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -63,7 +63,8 @@ export class ApplicationsItemDetailComponent {
     };
 
     public alerts: any[] = [];
-    public chart: any;
+    public averageChart: any;
+    public confidenceChart: any;
     public chartData = {
         labels: [],
         datasets: []
@@ -86,7 +87,7 @@ export class ApplicationsItemDetailComponent {
         private router: Router,
         private changeDetector: ChangeDetectorRef,
         private elementRef: ElementRef,
-        private renderer: Renderer2,
+        // private renderer: Renderer2,
     ) {
         this.activeRouteSub = this.activatedRoute.params
             .map(params => {
@@ -118,11 +119,12 @@ export class ApplicationsItemDetailComponent {
         Chart.defaults.global.defaultFontColor = '#04143c';
         Chart.defaults.global.defaultFontFamily = '"Museo Sans Regular"';
         
-        let containerRef = this.elementRef.nativeElement.querySelector('.content');
-        let chartRef = this.renderer.createElement('canvas');
-        this.renderer.appendChild(containerRef, chartRef);
+        let averageChartRef = this.elementRef.nativeElement.querySelector('#averageChart');
+        let confidenceChartRef = this.elementRef.nativeElement.querySelector('#confidenceChart');
+        // let chartRef = this.renderer.createElement('canvas');
+        // this.renderer.appendChild(containerRef, chartRef);
         
-        this.chart = new Chart(chartRef, {
+        this.confidenceChart = new Chart(confidenceChartRef, {
                 type: 'bar',
                 data: this.chartData,
                 options: {
@@ -130,29 +132,32 @@ export class ApplicationsItemDetailComponent {
                     responsive: true,
                     title: {
                         display: true,
-                        text: 'Application graph',
+                        text: 'Confidence graph',
                         fontSize: 20,
                     },
                     scales: {
-                        yAxes: [{
-                            id: 'left-y-axis',
-                            type: 'linear',
-                            position: 'left',
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Confidence',
-                                fontSize: 16,
-                            }
-                        }, {
-                            id: 'right-y-axis',
-                            type: 'linear',
-                            position: 'right',
-                            scaleLabel: {
-                                display: true,
-                                labelString: 'Classes\' average values',
-                                fontSize: 16,
-                            }
-                        }],
+                        yAxes: [
+                            {
+                                id: 'left-y-axis',
+                                type: 'linear',
+                                position: 'left',
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Confidence',
+                                    fontSize: 16,
+                                }
+                            }, 
+                            // {
+                            //     id: 'left-y-axis',
+                            //     type: 'linear',
+                            //     position: 'left',
+                            //     scaleLabel: {
+                            //         display: true,
+                            //         labelString: 'Classes\' average values',
+                            //         fontSize: 16,
+                            //     }
+                            // }
+                        ],
                         xAxes: [
                             {
                                 scaleLabel: {
@@ -162,6 +167,43 @@ export class ApplicationsItemDetailComponent {
                                 }
                             }
                         ]
+                    }
+                }
+            });
+
+        this.averageChart = new Chart(averageChartRef, {
+                type: 'bar',
+                data: this.chartData,
+                options: {
+                    animate: false,
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Classes\' average values graph',
+                        fontSize: 20,
+                    },
+                    scales: {
+                        yAxes: [
+                            {
+                                id: 'left-y-axis',
+                                type: 'linear',
+                                position: 'left',
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: 'Classes\' average values',
+                                    fontSize: 16,
+                                }
+                            }
+                        ],
+                        // xAxes: [
+                        //     {
+                        //         scaleLabel: {
+                        //             display: true,
+                        //             labelString: 'Classes',
+                        //             fontSize: 16,
+                        //         }
+                        //     }
+                        // ]
                     }
                 }
             });
@@ -209,20 +251,20 @@ export class ApplicationsItemDetailComponent {
                 measureClasses.forEach((label, i) => {
                     if (-1 === Object.keys(classToData).indexOf(label)) {
                         classToData[label] = {
-                            lineData: [],
-                            barData: []
+                            averageValues: [],
+                            confidenceValues: []
                         }
                     } else {
-                        if (classToData[label].lineData.length > 8) { classToData[label].lineData.shift(); }
-                        if (classToData[label].barData.length > 8) { classToData[label].barData.shift(); }
+                        if (classToData[label].averageValues.length > 8) { classToData[label].averageValues.shift(); }
+                        if (classToData[label].confidenceValues.length > 8) { classToData[label].confidenceValues.shift(); }
 
                         let measureValue = newData[i];
                         let confidenceValue = Object.keys(serverResponse.confidences).indexOf(label) !== -1 ?
                             serverResponse.confidences[label] * 100 : 0;
 
                         i === 0 ? labels.push('n') : labels.push(`n-${i}`);
-                        classToData[label].lineData.push(measureValue);
-                        classToData[label].barData.push(confidenceValue);
+                        classToData[label].averageValues.push(measureValue);
+                        classToData[label].confidenceValues.push(confidenceValue);
 
                     }
                 });
@@ -234,8 +276,8 @@ export class ApplicationsItemDetailComponent {
                         backgroundColor: this.dummyColorPicker(i),
                         borderColor: this.dummyColorPicker(i, 0.9),
                         fill: false,
-                        data: classToData[label].lineData,
-                        yAxisID: 'right-y-axis'
+                        data: classToData[label].averageValues,
+                        yAxisID: 'left-y-axis'
                     };
                 });
 
@@ -244,16 +286,20 @@ export class ApplicationsItemDetailComponent {
                         type: 'bar',
                         label: label,
                         backgroundColor: this.dummyColorPicker(i, 0.5),
-                        data: classToData[label].barData,
+                        data: classToData[label].confidenceValues,
                         yAxisID: 'left-y-axis'
                     };
                 });
 
-                let datasets = [...measuresDatasets, ...confidenceDatasets];
+                // let datasets = [...measuresDatasets, ...confidenceDatasets];
 
-                this.chart.data.labels = labels.reverse();
-                this.chart.data.datasets = datasets;
-                this.chart.update({
+                this.averageChart.data.labels = labels.reverse();
+                this.averageChart.data.datasets = measuresDatasets;
+                this.confidenceChart.data.datasets = confidenceDatasets;
+                this.averageChart.update({
+                    duration: 0
+                });
+                this.confidenceChart.update({
                     duration: 0
                 });
             };

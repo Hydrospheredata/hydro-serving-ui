@@ -9,7 +9,7 @@ export function ModelVersionsReducer (state = initialState, action: ModelVersion
     switch (action.type) {
         case ModelVersionsActions.GET_ALL_VERSIONS_SUCCESS:
             return action.payload;
-        case ModelVersionsActions.UPDATE_ALL_VERSIONS:
+        case ModelVersionsActions.ADD_VERSION_SUCCESS:
             return [
                 ...state.slice(0),
                 action.payload

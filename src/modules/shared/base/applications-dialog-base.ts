@@ -17,7 +17,7 @@ import {
 
 import { FormsService } from '@shared/services/_index';
 
-import * as Actions from '@shared/actions/_index';
+// import * as Actions from '@shared/actions/_index';
 
 import 'codemirror/mode/yaml/yaml.js';
 import 'codemirror/addon/edit/matchbrackets.js';
@@ -261,7 +261,7 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public onModelVersionSelect(modelVersionId: number) {
         console.log(modelVersionId);
-        this.store.dispatch({ type: Actions.UPDATE_ALL_VERSIONS, payload: modelVersionId });
+        // this.store.dispatch({ type: Actions.UPDATE_ALL_VERSIONS, payload: modelVersionId });
     }
 
     private addStage() {

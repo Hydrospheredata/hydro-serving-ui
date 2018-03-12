@@ -2,7 +2,7 @@ import { Action } from '@ngrx/store';
 
 export const GET_ALL_VERSIONS = 'GET_ALL_VERSIONS';
 export const GET_ALL_VERSIONS_SUCCESS = 'GET_ALL_VERSIONS_SUCCESS';
-export const UPDATE_ALL_VERSIONS = 'UPDATE_ALL_VERSIONS';
+export const ADD_VERSION_SUCCESS = 'ADD_VERSION_SUCCESS';
 
 
 
@@ -14,12 +14,12 @@ export class GetAllVersionsSuccessAction implements Action {
   constructor(public payload: any) { }
 }
 
-export class UpdateAllVersionsAction implements Action {
-  readonly type = UPDATE_ALL_VERSIONS;
+export class AddVersionSuccessAction implements Action {
+  readonly type = ADD_VERSION_SUCCESS;
   constructor(public payload: any) { }
 }
 
 export type ModelVersionsActions
   = GetAllVersionsAction
   | GetAllVersionsSuccessAction
-  | UpdateAllVersionsAction;
+  | AddVersionSuccessAction;
