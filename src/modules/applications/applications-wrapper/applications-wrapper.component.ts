@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { AppState, Application } from '@shared/models/_index';
-// import * as Actions from '@shared/actions/_index';
 
 
 

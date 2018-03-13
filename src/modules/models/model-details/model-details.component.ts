@@ -27,9 +27,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     public model: Model;
     public signatures: Signature[];
     public modelBuilds: ModelBuild[];
-    public tableHeader: string[] = [
-        'Created', 'Version', 'Status'
-    ];
+    public tableHeader: string[] = ['Created', 'Version', 'Status'];
     
     private modelBuildsSub: Subscription;
     private modelsStoreSelectionSubscription: Subscription;

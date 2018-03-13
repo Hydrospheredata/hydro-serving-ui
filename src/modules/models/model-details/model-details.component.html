@@ -86,12 +86,13 @@
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis status' [ngClass]="{
                                 '__successed': item.status === 'FINISHED',
-                                '__failed': item.status === 'FAILED'
+                                '__started': item.status === 'STARTED',
+                                '__failed': item.status === 'ERROR'
                                 }">
                                 <svg class="icon">
                                     <use xlink:href="#icon-arrow" />
                                 </svg>
-                                <span class="icon-label">{{item.status === 'FINISHED' ? 'Released' : 'Failed'}}</span>
+                                <span class="icon-label">{{item.status === 'FINISHED' ? 'Released' : 'Started'}}</span>
                             </div>
                         </td>
                     </tr>
