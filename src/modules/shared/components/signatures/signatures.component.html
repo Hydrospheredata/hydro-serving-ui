@@ -1,24 +1,45 @@
-<div class="hydro-panel" *ngFor="let signature of signatures">
-    <h5 class="hydro-panel__header">Signature: {{ signature.signatureName }}</h5>
+<div class="signature" *ngFor="let signature of signatures">
+    <div class="signature-header">
+        <h5 class="signature-name">
+            <span>Signature:</span>
+            {{ signature.signatureName }}
+        </h5>
+        <div class="btn-group">
+            <button class="btn btn-flat">
+                <svg>
+                    <use xlink:href="#icon-edit"></use>
+                </svg>
+                Edit
+            </button>
+            <button class="btn btn-flat" *ngIf="signatures.length > 1">
+                <svg>
+                    <use xlink:href="#icon-remove"></use>
+                </svg>
+                remove
+            </button>
+        </div>
+    </div>
     <table class='hydro-table hydro-table-models'>
         <thead class="hydro-table-head">
             <tr>
-                <th class="hydro-table-head__cell">Field name (Input)</th>
-                <th class="hydro-table-head__cell">Data type (Input)</th>
-                <th class="hydro-table-head__cell">Shape (Input)</th>
+                <th class="hydro-table-head__cell">input_field_name</th>
+                <th class="hydro-table-head__cell">input_data_type</th>
+                <th class="hydro-table-head__cell">input_shape</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let output of signature.inputs" class='hydro-table-body__row'>
+            <tr *ngFor="let input of signature.inputs" class='hydro-table-body__row'>
                 <td class="hydro-table-body__cell">
-                    <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
+                    <input class="input" type="text" [(ngModel)]="input.fieldName" [readonly]="!isReadOnly">
+                    <!-- <div class='cs-text-overflow-ellipsis'>{{ input.fieldName }}</div> -->
                 </td>
                 <td class="hydro-table-body__cell">
-                    <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
+                    <input class="input" type="text" [(ngModel)]="input.dataType" [readonly]="!isReadOnly">
+                    <!-- <div class='cs-text-overflow-ellipsis'>{{ input.dataType }}</div> -->
                 </td>
                 <td class="hydro-table-body__cell">
                     <div class='cs-text-overflow-ellipsis'>
-                        <span *ngFor="let item of output.shape">{{ item }}</span>
+                        <span *ngFor="let item of input.shape">{{ item }}</span>
                     </div>
                 </td>
             </tr>
@@ -27,9 +48,9 @@
     <table class='hydro-table hydro-table-models'>
         <thead class="hydro-table-head">
             <tr>
-                <th class="hydro-table-head__cell">Field name (Output)</th>
-                <th class="hydro-table-head__cell">Data type (Output)</th>
-                <th class="hydro-table-head__cell">Shape (Output)</th>
+                <th class="hydro-table-head__cell">output_field_name</th>
+                <th class="hydro-table-head__cell">output_data_type</th>
+                <th class="hydro-table-head__cell">output_shape</th>
             </tr>
         </thead>
         <tbody>

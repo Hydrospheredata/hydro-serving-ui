@@ -1,18 +1,21 @@
-<h2 class="mdl-dialog__title">Release model "{{model.source}}"</h2>
+<h2 class="mdl-dialog__title">Do you want to release this version?</h2>
 <div class="model-details-table">
+
+    {{ model.source }}
+
     <hydro-list-info [data]="model"></hydro-list-info>
 
-    <label class="hydro-checkbox">
-      Edit contract
-      <input type="checkbox" [checked]="isContractViewEnabled" (change)="showContract($event)">
-      <span></span>
+    <!-- <label class="hydro-checkbox">
+        Edit contract
+        <input type="checkbox" [checked]="isContractViewEnabled" (change)="showContract($event)">
+        <span></span>
     </label>
 
     <form *ngIf="isContractViewEnabled" [formGroup]="contractsForm">
         <div formArrayName="signatures">
             <div *ngFor="let signature of contractsForm['controls'].signatures['controls']; let i = index;" [formGroupName]="i" class="contracts-list__item">
                 <hydro-input-text [inputClass]="'__small'" formControlName="signatureName" label="Signature name"></hydro-input-text>
-                
+
                 <div class="hydro-panel __small" formArrayName="inputs">
                     <h5 class="hydro-panel__header">Inputs</h5>
                     <div *ngFor="let input of signature['controls'].inputs['controls']; let i = index;" [formGroupName]="i" class="field-list__item">
@@ -21,7 +24,7 @@
                         <hydro-input-text [inputClass]="'__small'" formControlName="shape" label="Shape"></hydro-input-text>
                     </div>
                 </div>
-                
+
                 <div class="hydro-panel __small" formArrayName="outputs">
                     <h5 class="hydro-panel__header">Outputs</h5>
                     <div *ngFor="let output of signature['controls'].outputs['controls']; let i = index;" [formGroupName]="i" class="field-list__item">
@@ -30,20 +33,23 @@
                         <hydro-input-text [inputClass]="'__small'" formControlName="shape" label="Shape"></hydro-input-text>
                     </div>
                 </div>
-                
+
                 <svg class="contracts-actions__delete" (click)="removeSignatureFromContract(i)" *ngIf="contractsForm['controls'].signatures['controls'].length > 1">
                     <use xlink:href="#icon-remove"></use>
                 </svg>
             </div>
 
             <button type="button" class="btn btn-flat" (click)="addSignatureToContract()">
-                <svg><use xlink:href="#icon-plus"></use></svg>
+                <svg>
+                    <use xlink:href="#icon-plus"></use>
+                </svg>
                 <span>Add Signature</span>
             </button>
         </div>
-    </form>
+    </form> -->
 </div>
+
 <div class="btn-group form-actions">
     <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">CANCEL</button>
-    <button class="btn btn-colored btn-large" type="submit" (click)="onSubmit()">{{submitBtnText}}</button>
+    <button class="btn btn-colored btn-large" type="submit" (click)="onSubmit()">release</button>
 </div>

@@ -15,7 +15,7 @@ export class ContractsEffects {
                 .take(1)
                 .map(data => {
                     return ({ type: HydroActions.GET_MODEL_CONTRACTS_SUCCESS, payload: data });
-                })
+                });
         });
 
     @Effect() getModelBuildContracts$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODEL_BUILD_CONTRACTS)
@@ -25,11 +25,11 @@ export class ContractsEffects {
                 .take(1)
                 .map(data => {
                     return ({ type: HydroActions.GET_MODEL_BUILD_CONTRACTS_SUCCESS, payload: data });
-                })
+                });
         });
 
     constructor(
         private contractsService: ContractsService,
         private actions: Actions
-    ) {}
+    ) { }
 }

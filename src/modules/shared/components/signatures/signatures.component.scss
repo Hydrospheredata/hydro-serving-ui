@@ -1,146 +1,22 @@
-@import "variables.scss";
-
-:host {
-  height: 100%;
-  flex-basis: 25%;
-  overflow-y: scroll;
-}
-
-.sidebar {
-  background-color: $aside-bg-color;
-  min-height: 100%;
+.signature {
+  border: 2px solid #e6e9ed;
   &-header {
-    padding: 45px 32px 26px;
-    border-bottom: 2px solid #d4d7d9;
-    &__row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      &:not(:last-child) {
-        margin-bottom: 26px;
-      }
-    }
-  }
-  &-title {
-    font-weight: 700;
-    font-family: $font-family-regular;
-    font-size: $title-font-size;
-    margin: 0;
-    line-height: 1;
-    text-transform: capitalize;
-  }
-  &-search {
-    flex-basis: 100%;
-    margin-bottom: 0;
-  }
-  &-list {
     display: flex;
-    flex-direction: column;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    &__item {
-      height: 0px;
-      line-height: 15px;
-      border-bottom: 1px solid $secondary-color;
-      padding: 23px 36px;
-      padding-right: 12px;
-      cursor: pointer;
-      outline: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      &.__active,
-      &:hover,
-      &:focus {
-        background-color: $secondary-color;
-      }
-      // > span {
-      //   font-size: 18px;
-      //   font-family: $font-family-bold;
-      //   color: #04143c;
-      // }
-      &-status {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      &-details {
-        display: inline-flex;
-        justify-content: flex-end;
-        padding-right: 10px;
-        > span {
-          margin-right: 26px;
-        }
-      }
-      &-name {
-        max-width: 14vw;
-        line-break: strict;
-        text-overflow: ellipsis;
-        font-size: 18px;
-        font-family: $font-family-bold;
-        color: #04143c;
-      }
-    }
-  }
-  &-filter {
-    display: flex;
-    flex-direction: row;
     align-items: center;
-    &__label {
-      color: #818994;
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 24px;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      padding-right: 10px;
-    }
-    &__button {
-      height: 33px;
-      border-radius: 5px;
-      background-color: #e6e9ed;
-      border: none;
-      cursor: pointer;
-      margin-right: 10px;
-      display: inline-flex;
-      &--label {
-        font-family: $font-family-regular;        
-        color: #818994;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 24px;
-        letter-spacing: 0.35px;
-      }
-      &--icon {
-        margin-top: 5px;
-        margin-right: 5px;
-      }
-    }
-  &__selected {
-    background: none;
+    justify-content: space-between;
+    padding: 12px 32px;
   }
+  &-name {
+    margin: 0;
   }
 }
 
-.icon-pipeline {
-  width: 18px;
-  height: 20px;
-  fill: #d4d7d9;
-}
-
-.deployed use {
-  fill: $color--success !important;
-}
-
-.undeployed {
-  fill: #e1e4eb;
-}
-
-.undeployed-filter {
-  fill: #d2d5d9;
-}
-
-.version-failed {
-  color:#d24a43;
+.input {
+  border: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 14px;
+  padding: 0;
+  font-family: "Museo Sans Regular", sans-serif !important;
 }

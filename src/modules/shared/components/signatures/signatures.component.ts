@@ -20,6 +20,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() data: Model;
     public signatures: Signature[];
+    public isReadOnly = false;
 
     constructor(
         private contractsService: ContractsService,

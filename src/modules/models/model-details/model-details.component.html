@@ -1,6 +1,6 @@
 <div class="content">
     <div class="content-header">
-        <div class="content-header__title">{{model?.source}}</div>
+        <div class="content-header__title">{{ model?.source }}</div>
         <button class="btn btn-release" (click)="buildModel(model)" *ngIf="model?.nextVersion">
             <svg>
                 <use xlink:href="#icon-arrow"></use>
@@ -44,7 +44,7 @@
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
-
+                            -
                         </td>
                         <td class="hydro-table-body__cell">
                             <button class="btn btn-flat" [routerLink]="[item.version]">...</button>

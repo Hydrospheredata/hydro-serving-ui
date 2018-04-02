@@ -18,19 +18,20 @@ export class ModelEffects {
         private modelBuildBuilder: ModelBuildBuilder,
         private modelsService: ModelsService,
         private actions: Actions,
-    ) {}
-    
+    ) { }
+
     @Effect() loadModels$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODELS)
         .flatMap(() => this.modelsService.getModels().first()
             .map(data => {
-                return ({ type: HydroActions.GET_MODELS_SUCCESS, payload: data.map(this.modelBuilder.build, this.modelBuilder) })
+                return ({ type: HydroActions.GET_MODELS_SUCCESS, payload: data.map(this.modelBuilder.build, this.modelBuilder) });
             })
         );
 
     @Effect() getAllVersions$: Observable<Action> = this.actions.ofType(HydroActions.GET_ALL_VERSIONS)
         .flatMap(() => this.modelsService.getAllVersions().first()
             .map(data => {
-                return ({ type: HydroActions.GET_ALL_VERSIONS_SUCCESS, payload: data.map(this.modelVersionBuilder.build, this.modelVersionBuilder) })
+                const preparedData = data.map(this.modelVersionBuilder.build, this.modelVersionBuilder);
+                return ({ type: HydroActions.GET_ALL_VERSIONS_SUCCESS, payload: preparedData });
             })
         );
 
@@ -40,7 +41,9 @@ export class ModelEffects {
             return this.modelsService.getModelBuilds(payload)
                 .take(1)
                 .map(data => {
-                    return ({ type: HydroActions.GET_MODEL_BUILDS_SUCCESS, payload: data.map(this.modelBuildBuilder.build, this.modelBuildBuilder) });
-                })
+                    const preparedData = data.map(this.modelBuildBuilder.build, this.modelBuildBuilder);
+                    return ({ type: HydroActions.GET_MODEL_BUILDS_SUCCESS, payload: preparedData });
+                });
         });
+
 }

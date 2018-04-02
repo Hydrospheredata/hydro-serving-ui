@@ -7,7 +7,7 @@ export class Source {
     constructor(props: any = {}) {
         this.id = props['id'];
         this.name = props['name'];
-        this.params = props['params'];   
+        this.params = props['params'];
     }
 }
 
