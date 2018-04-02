@@ -28,6 +28,7 @@ import {
     TextareaComponent,
     SidebarComponent,
     ListInfoComponent,
+    SignaturesComponent,
 } from './components/_index';
 
 
@@ -60,6 +61,7 @@ import {
         SelectComponent,
         SidebarComponent,
         ListInfoComponent,
+        SignaturesComponent,
     ],
     exports: [
         // Pipes
@@ -77,6 +79,7 @@ import {
         SelectComponent,
         SidebarComponent,
         ListInfoComponent,
+        SignaturesComponent,
     ]
 })
 export class SharedModule { }

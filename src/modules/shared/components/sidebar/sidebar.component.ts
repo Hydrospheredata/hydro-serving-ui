@@ -16,20 +16,20 @@ import { DialogAddServiceComponent } from '@components/dialogs/_index';
     selector: 'hydro-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
-    providers: [ SortByPipe ]
+    providers: [SortByPipe]
 })
 export class SidebarComponent implements OnInit, OnDestroy {
 
     public sidebarList: Application[] | Model[] | Source[] = [];
     public searchQ: string;
-    public sidebarFilter = {'deployed': true, 'undeployed': true, 'apps': true, 'pipelines': true};
-    @Input() isActionBtnEnabled: boolean = false;
-    @Input() isFilterEnabled: boolean = false;
+    public sidebarFilter = { 'deployed': true, 'undeployed': true, 'apps': true, 'pipelines': true };
+    @Input() isActionBtnEnabled = false;
+    @Input() isFilterEnabled = false;
     @Input() isModels: boolean;
     @Input() sidebarTitle: string;
     @Input() sidebarData: Observable<Application[] | Model[] | Source[]>;
-    
-    private isRedirectable: boolean = false;
+
+    private isRedirectable = false;
     private routeSub: Subscription;
     private sidebarDataSub: Subscription;
 

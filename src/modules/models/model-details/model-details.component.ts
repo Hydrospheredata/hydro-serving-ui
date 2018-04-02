@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AppState, Model, ModelBuild, Signature } from '@shared/models/_index';
-import { ContractsService } from '@shared/services/_index';
 
 import {
     DialogModelBuildComponent,
@@ -27,7 +26,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     public model: Model;
     public signatures: Signature[];
     public modelBuilds: ModelBuild[];
-    public tableHeader: string[] = ['Created', 'Version', 'Status'];
+    public tableHeader: string[] = ['Version', 'Created', 'Status', 'Applications', ''];
     private modelBuildsSub: Subscription;
     private modelsStoreSelectionSubscription: Subscription;
     private activatedRouteSubscription: Subscription;
@@ -37,7 +36,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private dialog: MdlDialogService,
         private store: Store<AppState>,
-        private contractsService: ContractsService,
     ) { }
 
     public ngOnInit() {
@@ -82,12 +80,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             .filter(models => models.length > 0)
             .subscribe(models => {
                 this.model = models.find(modelsStoreItem => modelsStoreItem.id === Number(modelId));
-            });
-
-        this.contractsService.getModelContracts(Number(modelId))
-            .subscribe(data => {
-                console.log(data.signatures);
-                this.signatures = data.signatures;
             });
     }
 

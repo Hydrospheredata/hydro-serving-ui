@@ -12,10 +12,6 @@ export class ListInfoComponent {
 
     @Input() data: Model;
 
-    constructor(
-        
-    ) {
-        
-    }
+    constructor() { }
 
 }

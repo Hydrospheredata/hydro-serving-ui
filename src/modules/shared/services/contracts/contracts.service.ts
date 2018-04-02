@@ -6,7 +6,7 @@ import { HttpService } from '@shared/services/http/_index';
 
 @Injectable()
 export class ContractsService {
-    
+
     private baseAPIUrl: string;
 
     constructor(
