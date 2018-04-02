@@ -19,7 +19,7 @@ export function ModelsReducer(state = initialState, action: ModelActions.ModelAc
                 if (item.id !== action.payload.model.id) {
                     return item;
                 }
-                let { nextVersion, ...model } = item;
+                const { nextVersion, ...model } = item;
                 return new Model({
                     ...model,
                     lastModelVersion: {

@@ -17,7 +17,7 @@ export class ModelsWrapperComponent implements OnInit {
 
     constructor(
         private store: Store<AppState>,
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.models = this.store.select('models');

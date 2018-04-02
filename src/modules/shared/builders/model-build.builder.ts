@@ -22,7 +22,7 @@ export class ModelBuildBuilder {
             modelVersion = this.modelVersionBuilder.build(props['modelVersion']);
         }
 
-        let modelBuild = new ModelBuild({
+        const modelBuild = new ModelBuild({
             id: props['id'],
             model: props['model'],
             finished: props['finished'],

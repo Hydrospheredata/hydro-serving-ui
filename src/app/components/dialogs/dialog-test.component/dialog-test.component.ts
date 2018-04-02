@@ -29,15 +29,15 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     public outputOptions: {};
     public input: any = '';
     public output: any = '';
-    public curlPath: string = '';
+    public curlPath = '';
     public testBtn: string;
     public testTitle: string;
     public requestBody: string;
     private port;
     private apiUrl;
-    private signatureName: string = '';
+    private signatureName = '';
 
-    constructor( 
+    constructor(
         @Inject(injectableTestOptions) data,
         public dialogRef: MdlDialogReference,
         // private fb: FormBuilder,
@@ -94,8 +94,8 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         // let payload = '';
         // payload = JSON.stringify(this.createTestOptions(form));
         // path = `${this.apiUrl}/serve/${this.application.id}/${this.signatureName}`;
-        
-        this.curlPath = `curl -X POST --header 'Content-Type: application/json' -d '${this.apiUrl}/serve/${this.application.id}/${this.signatureName}'`;
+        const url = `${this.apiUrl}/serve/${this.application.id}/${this.signatureName}`;
+        this.curlPath = `curl -X POST --header 'Content-Type: application/json' -d ${url}`;
     }
 
     // private validateInput(input) {
@@ -154,12 +154,12 @@ export class DialogTestComponent extends DialogBase implements OnInit {
                     timeout: 5000
                 });
             },
-            (error) => {
-                this.mdlSnackbarService.showSnackbar({
-                    message: `Error: ${error}`,
-                    timeout: 5000
+                (error) => {
+                    this.mdlSnackbarService.showSnackbar({
+                        message: `Error: ${error}`,
+                        timeout: 5000
+                    });
                 });
-            });
 
         // apiUrl(testOptions, entityName)
         //     .subscribe(res => {

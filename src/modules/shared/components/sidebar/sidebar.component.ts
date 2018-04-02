@@ -7,8 +7,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { Application, Model, Source } from '@shared/models/_index';
 import { DialogAddServiceComponent } from '@components/dialogs/_index';
-// import * as moment from 'moment';
-
 
 
 

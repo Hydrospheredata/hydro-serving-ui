@@ -25,12 +25,12 @@ export class HttpService extends Http {
         private loaderStateService: LoaderStateService
     ) {
         super(
-            backend, 
+            backend,
             defaultOptions
         );
 
-        this.baseUrl = environment.production ? 
-            `http://${window.location.hostname}:${window.location.port}` : 
+        this.baseUrl = environment.production ?
+            `http://${window.location.hostname}:${window.location.port}` :
             `${environment.host}:${environment.port}`;
 
         this.requestCount = 0;

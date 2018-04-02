@@ -32,7 +32,7 @@ export class ModelBuilder {
             nextVersion = props['nextVersion'];
         }
 
-        let model = new Model({
+        const model = new Model({
             created: props.model['created'],
             updated: props.model['updated'],
             id: props.model['id'],

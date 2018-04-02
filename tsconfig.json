@@ -12,12 +12,24 @@
     "noUnusedLocals": true,
     "target": "es5",
     "paths": {
-      "@environments/*": ["environments/*"],
-      "@app/*": ["app/*"],
-      "@components/*": ["app/components/*"],
-      "@node_modules/*": ["../node_modules/*"],
-      "@modules/*": ["modules/*"],
-      "@shared/*": ["modules/shared/*"]
+      "@environments/*": [
+        "environments/*"
+      ],
+      "@app/*": [
+        "app/*"
+      ],
+      "@components/*": [
+        "app/components/*"
+      ],
+      "@node_modules/*": [
+        "../node_modules/*"
+      ],
+      "@modules/*": [
+        "modules/*"
+      ],
+      "@shared/*": [
+        "modules/shared/*"
+      ]
     },
     "typeRoots": [
       "node_modules/@types"

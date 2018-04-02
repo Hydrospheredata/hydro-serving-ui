@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ModelsService {
-    
+
     private baseAPIUrl: string;
 
     constructor(
@@ -18,7 +18,7 @@ export class ModelsService {
     }
 
     public getModels() {
-        return this.http.get(`${this.baseAPIUrl}`)
+        return this.http.get(this.baseAPIUrl)
             .map((res: Response): any => {
                 return res.json();
             });

@@ -24,7 +24,7 @@ export class ApplicationBuilder {
             contract = props['contract'];
         }
 
-        let application = new Application({
+        const application = new Application({
             id: id,
             contract: contract,
             name: props['name'],
