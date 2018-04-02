@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { 
-    ApplicationsWrapperComponent, 
-    ApplicationsItemDetailComponent 
+import {
+    ApplicationsWrapperComponent,
+    ApplicationsItemDetailComponent
 } from './_index';
 
 @NgModule({

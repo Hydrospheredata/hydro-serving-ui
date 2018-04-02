@@ -1,15 +1,15 @@
-import { Component, ViewEncapsulation, 
-    // ChangeDetectorRef, 
+import { Component, ViewEncapsulation, AfterContentInit, OnDestroy,
+    // ChangeDetectorRef,
     ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Chart } from "chart.js";
+import { Chart } from 'chart.js';
 import { chart } from 'highcharts';
 
 import { Store } from '@ngrx/store';
-import { 
-    AppState, 
+import {
+    AppState,
     Application,
     Runtime
 } from '@shared/models/_index';
@@ -25,7 +25,7 @@ import {
     injectableServiceUpdate
 } from '@components/dialogs/_index';
 
-declare var EventSource:any;
+declare var EventSource: any;
 
 
 
@@ -35,18 +35,18 @@ declare var EventSource:any;
     styleUrls: ['./applications-item-detail.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class ApplicationsItemDetailComponent {
+export class ApplicationsItemDetailComponent implements AfterContentInit, OnDestroy {
     public JSON = JSON;
-    public id: string = '';
+    public id = '';
     public serviceModels: any[] = [];
     public serviceModelsFiltered: any[];
     public applications: Application[] = [];
     public application: Application;
-    public publicPath: string = '';
+    public publicPath = '';
 
     public runtimes: Runtime[];
 
-    public fullHeight: boolean = false;
+    public fullHeight = false;
 
     public tableHeader: string[] = ['Model', 'Version', 'Created Date', 'Weight'];
 
@@ -105,7 +105,7 @@ export class ApplicationsItemDetailComponent {
                 //     this.eventSourceAlerts.close();
                 // }
                 if (this.eventSourceMeasures) {
-                    this.eventSourceMeasures.close();   
+                    this.eventSourceMeasures.close();
                 }
                 this.loadInitialData(id);
             });
@@ -118,9 +118,8 @@ export class ApplicationsItemDetailComponent {
     public initChart() {
         Chart.defaults.global.defaultFontColor = '#04143c';
         Chart.defaults.global.defaultFontFamily = '"Museo Sans Regular"';
-        
-        let averageChartRef = this.elementRef.nativeElement.querySelector('#averageChart');
-        let confidenceChartRef = this.elementRef.nativeElement.querySelector('#confidenceChart');
+        const averageChartRef = this.elementRef.nativeElement.querySelector('#averageChart');
+        const confidenceChartRef = this.elementRef.nativeElement.querySelector('#confidenceChart');
 
         this.averageChart = chart(averageChartRef, {
                 credits: {
@@ -201,7 +200,7 @@ export class ApplicationsItemDetailComponent {
             this.storeSub.unsubscribe();
         }
         if (this.runtimesStoreSub) {
-            this.runtimesStoreSub.unsubscribe();   
+            this.runtimesStoreSub.unsubscribe();
         }
     }
 
@@ -253,7 +252,6 @@ export class ApplicationsItemDetailComponent {
     private loadInitialData(id) {
         this.runtimesStoreSub = this.store.select('runtimes')
             .subscribe(runtimes => this.runtimes = runtimes);
-        
         this.storeSub = this.store.select('applications')
             .filter(applications => applications.length > 0)
             .subscribe(applications => {
@@ -266,16 +264,17 @@ export class ApplicationsItemDetailComponent {
     }
 
     private initChartData() {
-        this.eventSourcePath = environment.production ? `${window.location.protocol}//${window.location.hostname}/v1/measure/streaming` : `${window.location.protocol}//${window.location.hostname}:9999/v1/measure/streaming`;
+        const publicUrl = `${window.location.protocol}//${window.location.hostname}/v1/measure/streaming`;
+        const localUrl = `${window.location.protocol}//${window.location.hostname}:9999/v1/measure/streaming`;
+        this.eventSourcePath = environment.production ? publicUrl : localUrl;
         // this.eventSourceAlerts = new EventSource(`${this.eventSourcePath}/alerts`);
         this.eventSourceMeasures = new EventSource(`${this.eventSourcePath}/measures`);
 
         // this.alerts = [];
 
         // this.eventSourceAlerts.onopen = (e) => { console.log(`Connected to ${ e.target.url}`) };
-        this.eventSourceMeasures.onopen = (e) => { console.log(`Connected to ${ e.target.url}`) };
-        
-        // this.eventSourceAlerts.onmessage = (e) => { 
+        this.eventSourceMeasures.onopen = (e) => { console.log(`Connected to ${ e.target.url}`); };
+        // this.eventSourceAlerts.onmessage = (e) => {
         //     if (e.data.length) {
         //         let response = JSON.parse(e.data);
         //         if (response.meta.applicationId === this.application.name) {
@@ -285,22 +284,23 @@ export class ApplicationsItemDetailComponent {
         //     };
         // }
         // let classToData = {};
-        let chartConfidenceData = [];
-        this.eventSourceMeasures.onmessage = (e) => { 
+        const chartConfidenceData = [];
+        // let eventIndex: number = 0;
+        this.eventSourceMeasures.onmessage = (e) => {
             if (e.data.length) {
-                let response = JSON.parse(e.data);
+                const response = JSON.parse(e.data);
                 // let labels: string[] = [];
 
                 console.log(response);
 
                 if (response.applicationId === this.application.name) {
 
-                    let confidences = response.confidences;
-                    let measures = response.measures;
+                    const confidences = response.confidences;
+                    const measures = response.measures;
 
                     console.log(measures);
 
-                    for (let key in confidences) {
+                    for (const key in confidences) {
                         if (confidences.hasOwnProperty(key)) {
                             if (chartConfidenceData.find(item => item.name === key) === undefined) {
                                 chartConfidenceData.push({name: key, data: confidences[key]});
@@ -312,8 +312,8 @@ export class ApplicationsItemDetailComponent {
 
 
 
-                    let labels: string[] = [];
-                    let chartData: number[] = [];
+                    const labels: string[] = [];
+                    const chartData: number[] = [];
 
                     chartConfidenceData.map(item => {
                         labels.push(item.name);
@@ -325,14 +325,14 @@ export class ApplicationsItemDetailComponent {
                     this.confidenceChart.redraw();
 
 
-                    let measureClasses = measures.map(m => m.class);
+                    const measureClasses = measures.map(m => m.class);
                     measureClasses.sort();
-                    
-                    let cumulativeSumData = measureClasses
+
+                    const cumulativeSumData = measureClasses
                         .map(l => measures.filter(m => m.class === l)[0])
                         .map(entry => entry.cumulativeSum);
 
-                    let totalData = measureClasses
+                    const totalData = measureClasses
                         .map(l => measures.filter(m => m.class === l)[0])
                         .map(entry => entry.total);
 
@@ -398,17 +398,17 @@ export class ApplicationsItemDetailComponent {
                     // });
                     // this.confidenceChart.update({
                     //     duration: 0
-                    // });   
+                    // });
                 }
-            };
-        }
+            }
+        };
     }
 
     private getApplicationData(id: string) {
         this.serviceModels = [];
         if (this.applications.length) {
             this.application = this.applications.filter(application => application.id === Number(id)).shift();
-            this.signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/)
+            this.signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/);
         }
     }
 

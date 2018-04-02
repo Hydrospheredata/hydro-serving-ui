@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import {
-    AppState, 
+    AppState,
     Signature
 } from '@shared/models/_index';
 
@@ -17,7 +17,6 @@ import * as Actions from '@shared/actions/_index';
     styleUrls: ['./model-version-details.component.scss']
 })
 export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
-    
     public tableHeader: string[] = [
         'Field name', 'Data type', 'Shape'
     ];
@@ -54,10 +53,11 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
 
     private loadInitialData(modelVersionId: string) {
         this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: this.modelId });
-        
         this.modelsBuildsSub = this.store.select('modelBuilds')
             .subscribe(builds => {
-                this.build = builds.find(dataStoreItem => dataStoreItem.version === Number(modelVersionId) && dataStoreItem.model.id === Number(this.modelId));
+                this.build = builds.find(dataStoreItem => {
+                    return dataStoreItem.version === Number(modelVersionId) && dataStoreItem.model.id === Number(this.modelId);
+                });
                 if (this.build) {
                     this.store.dispatch({ type: Actions.GET_MODEL_BUILD_CONTRACTS, payload: this.build.id });
                 }

@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 
 import { ChartsModule } from 'ng2-charts';
 
-// import { CodemirrorModule } from 'ng2-codemirror';
+
 
 import {
     ApplicationsWrapperComponent,

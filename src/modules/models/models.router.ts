@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { 
+import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
     ModelVersionDetailsComponent

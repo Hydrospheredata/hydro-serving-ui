@@ -28,7 +28,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     public signatures: Signature[];
     public modelBuilds: ModelBuild[];
     public tableHeader: string[] = ['Created', 'Version', 'Status'];
-    
     private modelBuildsSub: Subscription;
     private modelsStoreSelectionSubscription: Subscription;
     private activatedRouteSubscription: Subscription;
@@ -58,6 +57,9 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy() {
+        if (this.activatedRouteSubscription) {
+            this.activatedRouteSubscription.unsubscribe();
+        }
         if (this.modelsStoreSelectionSubscription) {
             this.modelsStoreSelectionSubscription.unsubscribe();
         }
@@ -74,7 +76,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             .subscribe(modelBuilds => {
                 console.log(modelBuilds);
                 this.modelBuilds = modelBuilds.reverse();
-            })
+            });
 
         this.modelsStoreSelectionSubscription = this.store.select('models')
             .filter(models => models.length > 0)
