@@ -12,7 +12,7 @@ import * as HydroActions from '@shared/actions/_index';
 @Injectable()
 export class ApplicationsEffects {
 
-    @Effect() getServices$: Observable<Action> = this.actions
+    @Effect() getServices$: Observable<Action> = this.actions$
         .ofType(HydroActions.GET_APPLICATIONS)
         .withLatestFrom(this.store.select('applications'))
         .switchMap(store => {
@@ -21,15 +21,15 @@ export class ApplicationsEffects {
                 return Observable.of({ type: HydroActions.GET_APPLICATIONS_SUCCESS, payload: [] });
             } else {
                 return this.applicationsService.getApplications().take(1)
-                    .map((applications: Application[]) => {
-                        let data = applications.map(app => this.applicationBuilder.build(app));
+                    .map((apps: Application[]) => {
+                        const data = apps.map(app => this.applicationBuilder.build(app));
                         return ({ type: HydroActions.GET_APPLICATIONS_SUCCESS, payload: data });
                     })
-                    .catch(() => Observable.of({type: HydroActions.GET_APPLICATIONS_FAIL}));
+                    .catch(() => Observable.of({ type: HydroActions.GET_APPLICATIONS_FAIL }));
             }
         });
 
-    @Effect() deleteApplication$: Observable<Action> = this.actions
+    @Effect() deleteApplication$: Observable<Action> = this.actions$
         .ofType(HydroActions.DELETE_APPLICATION)
         .map((action: HydroActions.DeleteApplicationAction) => action.applicationId)
         .switchMap(applicationId => {
@@ -41,10 +41,10 @@ export class ApplicationsEffects {
         });
 
     constructor(
-        private actions: Actions,
+        private actions$: Actions,
         private router: Router,
         private applicationsService: ApplicationsService,
         private applicationBuilder: ApplicationBuilder,
         private store: Store<AppState>,
-    ) {}
+    ) { }
 }
