@@ -8,6 +8,10 @@ server {
   }
   error_page 404 =200 /index.html;
 
+  location /health {
+      return 200 'no content';
+  }
+
   location /v1/measure {
       proxy_pass http://SONAR_HOST;
       proxy_set_header X-Real-IP $remote_addr;
