@@ -5,9 +5,9 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
-import { 
-    AppState, 
-    Application 
+import {
+    AppState,
+    Application
 } from '@shared/models/_index';
 import { FormsService, ApplicationsService } from '@shared/services/_index';
 
@@ -20,7 +20,7 @@ import { FormsService, ApplicationsService } from '@shared/services/_index';
 })
 export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 
-    public dialogType: string = 'Add';
+    public dialogType = 'Add';
 
     constructor(
         public fb: FormBuilder,
@@ -70,12 +70,12 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
                     timeout: 5000
                 });
             },
-            error => {
-                this.mdlSnackbarService.showSnackbar({
-                    message: `Error: ${error}`,
-                    timeout: 5000
+                error => {
+                    this.mdlSnackbarService.showSnackbar({
+                        message: `Error: ${error}`,
+                        timeout: 5000
+                    });
                 });
-            });
     }
 
 }

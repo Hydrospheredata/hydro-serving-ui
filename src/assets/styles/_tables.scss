@@ -12,6 +12,12 @@ $table-padding: 14px;
       .__small & {
         padding: 8px $table-padding * 2;
       }
+      [class$="signature"] & {
+        text-align: left;
+        text-transform: uppercase;
+        padding: 24px 28px 6px;
+        line-height: 1;
+      }
     }
     [class$="models"] & {
       border-bottom: 1px solid $secondary-color;
@@ -36,6 +42,9 @@ $table-padding: 14px;
       padding: $table-padding * 1.3 $table-padding * 2;
       .__small & {
         padding: 12px $table-padding * 2;
+      }
+      [class$="signature"] & {
+        padding: 6px $table-padding * 2;
       }
     }
   }
