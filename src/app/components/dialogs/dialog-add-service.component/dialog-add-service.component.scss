@@ -168,12 +168,25 @@
             &--environment {
                 max-width: 142px;
             }
+            &--signature {
+                display: flex;
+                flex-direction: column;
+            }
             &--weight {
                 display: flex;
-                align-items: center;
-                justify-content: center;
-                > hydro-input-text {
-                    margin-bottom: 0;
+                flex-direction: column;
+                position: relative;
+                &::before {
+                    content: '%';
+                    position: absolute;
+                    width: 14px;
+                    height: 14px;
+                    right: -1.3rem;
+                    bottom: 8px;
+                }
+                > input {
+                    max-width: 58px;
+                    text-align: right;
                 }
             }
         }
@@ -181,11 +194,18 @@
 }
 
 [class^="parameters-list__item"] {
+    line-height: 1;
     > label {
         text-transform: uppercase;
         font-size: 10px;
         line-height: 1;
         margin-bottom: 10px;
+    }
+    > input {
+        height: 32px;
+        border: 2px solid #f2f2f2;
+        font-size: 16px;
+        padding: 3px;
     }
 }
 
