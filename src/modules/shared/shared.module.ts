@@ -24,7 +24,7 @@ import {
 // Components
 import {
     InputTextComponent,
-    SelectComponent,
+    HydroSelectComponent,
     TextareaComponent,
     SidebarComponent,
     ListInfoComponent,
@@ -58,7 +58,7 @@ import {
         // Components
         InputTextComponent,
         TextareaComponent,
-        SelectComponent,
+        HydroSelectComponent,
         SidebarComponent,
         ListInfoComponent,
         SignaturesComponent,
@@ -76,7 +76,7 @@ import {
         // Components
         InputTextComponent,
         TextareaComponent,
-        SelectComponent,
+        HydroSelectComponent,
         SidebarComponent,
         ListInfoComponent,
         SignaturesComponent,

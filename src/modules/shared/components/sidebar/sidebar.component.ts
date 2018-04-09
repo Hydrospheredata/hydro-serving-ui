@@ -69,7 +69,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     public addApplication() {
         this.dialog.showCustomDialog({
             component: DialogAddServiceComponent,
-            styles: { 'width': '850px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },
+            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

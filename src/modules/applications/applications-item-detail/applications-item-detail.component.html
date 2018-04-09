@@ -27,7 +27,9 @@
         <ol class="content-info__sublist">
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">PublicPath</span>
-                <span class="content-info__sublist-item-value"><a [href]="publicPath" target="_blank">{{ publicPath }}</a></span>
+                <span class="content-info__sublist-item-value">
+                    <a [href]="publicPath" target="_blank">{{ publicPath }}</a>
+                </span>
             </li>
         </ol>
 
@@ -54,10 +56,18 @@
         </thead>
         <tbody class="hydro-table-body">
             <tr *ngFor="let item of serviceModelsFiltered" class='hydro-table-body__row'>
-                <td class="hydro-table-body__cell"><div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelName}}</div></td>
-                <td class="hydro-table-body__cell"><div class='cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelVersion}}</div></td>
-                <td class="hydro-table-body__cell"><div class='cs-text-size-12 cs-text-overflow-ellipsis'>{{item.data.modelRuntime.created | utcToLocal | date:'medium'}}</div></td>
-                <td class="hydro-table-body__cell"><div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{item.weight}}%</div></td>
+                <td class="hydro-table-body__cell">
+                    <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelName}}</div>
+                </td>
+                <td class="hydro-table-body__cell">
+                    <div class='cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelVersion}}</div>
+                </td>
+                <td class="hydro-table-body__cell">
+                    <div class='cs-text-size-12 cs-text-overflow-ellipsis'>{{item.data.modelRuntime.created | utcToLocal | date:'medium'}}</div>
+                </td>
+                <td class="hydro-table-body__cell">
+                    <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{item.weight}}%</div>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -100,17 +110,7 @@
         </div>
     </div>
 
-    <!-- <ul class="alerts-list" *ngIf="alerts.length">
-        <li class="alerts-list__item" *ngFor="let item of alerts">
-            {{item}}
-        </li>
-    </ul> -->
-
     <div id="confidenceChart"></div>
     <div id="averageChart"></div>
-
-    <!-- <canvas id="averageChart"></canvas>
-
-    <canvas id="confidenceChart"></canvas> -->
 
 </div>

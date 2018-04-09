@@ -109,7 +109,6 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         this.contractsStoreSub = this.store.select('contracts')
             .subscribe(contracts => {
                 this.contracts = contracts;
-                console.log(this.contracts);
             });
 
         this.defaultAppOptions = {
