@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { AppState, Application } from '@shared/models/_index';
+import { ApplicationState, Application } from '@shared/models/_index';
 
 
 
@@ -16,7 +16,7 @@ export class ApplicationsWrapperComponent {
     public applications: Store<Application[]>;
 
     constructor(
-        private store: Store<AppState>
+        private store: Store<ApplicationState>
     ) {
         this.applications = this.store.select('applications');
     }

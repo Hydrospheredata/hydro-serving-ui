@@ -12,58 +12,6 @@
 
 
     <div class="content-body">
-        <div class="hydro-panel" *ngIf="!contracts?.signatures?.length">
-            <div class="no-contracts">There are no contracts for this model build!</div>
-        </div>
-
         <hydro-signatures [data]="build"></hydro-signatures>
-
-        <!-- <div class="hydro-panel" *ngFor="let signature of contracts.signatures">
-            <h5 class="hydro-panel__header">Signature: {{ signature.signatureName }}</h5>
-            <table class='hydro-table hydro-table-models'>
-                <thead class="hydro-table-head">
-                    <tr>
-                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }} (Input)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let output of signature.inputs" class='hydro-table-body__row'>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>
-                                <span *ngFor="let item of output.shape">{{ item }}</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class='hydro-table hydro-table-models'>
-                <thead class="hydro-table-head">
-                    <tr>
-                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }} (Output)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let output of signature.outputs" class='hydro-table-body__row'>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>
-                                <span *ngFor="let item of output.shape">{{ item }}</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
     </div>
 </div>

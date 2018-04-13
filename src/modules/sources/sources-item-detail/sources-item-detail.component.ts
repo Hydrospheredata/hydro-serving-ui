@@ -1,14 +1,13 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Store } from '@ngrx/store';
-import { 
-    AppState, 
+import {
+    ApplicationState,
     Application,
     Runtime
-    // ModelServicesService
 } from '@shared/_index';
 
 import { environment } from '@environments/environment';
@@ -30,19 +29,19 @@ import {
     encapsulation: ViewEncapsulation.None
 })
 
-export class SourcesItemDetailComponent {
+export class SourcesItemDetailComponent implements OnDestroy {
     public JSON = JSON;
-    public title: string = '';
-    public id: string = '';
+    public title: string;
+    public id: string;
     public serviceModels: any[] = [];
     public serviceModelsFiltered: any[];
     public applications: Application[] = [];
     public application: Application;
-    public publicPath: string = '';
+    public publicPath: string;
 
     public runtimes: Runtime[];
 
-    public fullHeight: boolean = false;
+    public fullHeight: boolean;
 
     public tableHeader: string[] = ['Model', 'Version', 'Created Date', 'Weight'];
 
@@ -61,10 +60,9 @@ export class SourcesItemDetailComponent {
     private runtimesStoreSub: Subscription;
 
     constructor(
-        public store: Store<AppState>,
+        public store: Store<ApplicationState>,
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
-        // private modelServicesService: ModelServicesService,
         private router: Router
     ) {
 
@@ -85,7 +83,7 @@ export class SourcesItemDetailComponent {
     loadInitialData(id) {
         this.runtimesStoreSub = this.store.select('runtimes')
             .subscribe(runtimes => this.runtimes = runtimes);
-        
+
         this.storeSub = this.store.select('applications')
             .filter(applications => applications.length > 0)
             .subscribe(applications => {
@@ -107,34 +105,7 @@ export class SourcesItemDetailComponent {
         this.serviceModels = [];
         if (this.applications.length) {
             this.application = this.applications.filter(application => application.id === Number(id)).shift();
-            // if (this.isPipeline(this.application)) {
-            //     this.title = `Pipeline: ${this.application.name}`;
-            // } else {
-            //     this.title = this.application.name;
-            //     this.application.executionGraph.stages[0].forEach(weight => {
-            //         this.getModelServiceData(weight);
-            //     });
-            // }
         }
-    }
-
-    // public isPipeline(application: Application): boolean {
-    //     return application && application.executionGraph.stages.length !== 1;
-    // }
-
-    getModelServiceData(weight) {
-        console.log(weight);
-        // TODO: Add effect to prevent get if exist in store, something like CACHE
-        // this.modelServicesService.getModelService(weight.service ? weight.service.serviceId : weight.serviceId)
-        //     .subscribe(data => {
-        //         console.log(data);
-        //         this.serviceModels.push({ data: data, weight: weight.weight });
-        //         if (this.serviceModels.length) {
-        //             this.serviceModelsFiltered = this.serviceModels.filter((item, index, self) => {
-        //                 return self.findIndex(t => { return t.data.serviceId === item.data.serviceId;}) === index;
-        //             });
-        //         }
-        //     });
     }
 
     public getRuntimeInfo(runtimeId: number) {
@@ -146,26 +117,26 @@ export class SourcesItemDetailComponent {
     public editApplication(application: Application) {
         this.dialog.showCustomDialog({
             component: DialogUpdateServiceComponent,
-            styles: {'width': '900px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto'},
+            styles: { 'width': '900px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{provide: injectableServiceUpdate, useValue: application}]
+            providers: [{ provide: injectableServiceUpdate, useValue: application }]
         });
     }
 
     public removeApplication(id: number) {
         this.dialog.showCustomDialog({
             component: DialogDeleteServiceComponent,
-            styles: {'width': '600px', 'min-height': '250px'},
+            styles: { 'width': '600px', 'min-height': '250px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{provide: injectableApplicationId, useValue: id}]
+            providers: [{ provide: injectableApplicationId, useValue: id }]
         });
     }
 

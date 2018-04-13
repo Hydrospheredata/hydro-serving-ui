@@ -3,17 +3,17 @@ import {
     ViewEncapsulation,
     AfterContentInit,
     OnDestroy,
-    ElementRef
+    // ElementRef
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Chart } from 'chart.js';
-import { chart } from 'highcharts';
+// import { Chart } from 'chart.js';
+// import { chart } from 'highcharts';
 
 import { Store } from '@ngrx/store';
 import {
-    AppState,
+    ApplicationState,
     Application,
     Runtime
 } from '@shared/models/_index';
@@ -86,11 +86,11 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
     private runtimesStoreSub: Subscription;
 
     constructor(
-        public store: Store<AppState>,
+        public store: Store<ApplicationState>,
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private elementRef: ElementRef,
+        // private elementRef: ElementRef,
     ) {
         this.activeRouteSub = this.activatedRoute.params
             .map(params => {
@@ -110,83 +110,83 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
     }
 
     ngAfterContentInit() {
-        this.initChart();
+        // this.initChart();
     }
 
-    public initChart() {
-        Chart.defaults.global.defaultFontColor = '#04143c';
-        Chart.defaults.global.defaultFontFamily = '"Museo Sans Regular"';
-        const averageChartRef = this.elementRef.nativeElement.querySelector('#averageChart');
-        const confidenceChartRef = this.elementRef.nativeElement.querySelector('#confidenceChart');
+    // public initChart() {
+    //     Chart.defaults.global.defaultFontColor = '#04143c';
+    //     Chart.defaults.global.defaultFontFamily = '"Museo Sans Regular"';
+    //     const averageChartRef = this.elementRef.nativeElement.querySelector('#averageChart');
+    //     const confidenceChartRef = this.elementRef.nativeElement.querySelector('#confidenceChart');
 
-        this.averageChart = chart(averageChartRef, {
-            credits: {
-                enabled: false
-            },
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Classes\' average values'
-            },
-            xAxis: {
-                title: {
-                    text: 'Classes'
-                },
-                categories: []
-            },
-            yAxis: {
-                title: {
-                    text: 'Values'
-                }
-            },
-            tooltip: {
-                shared: true
-            },
-            plotOptions: {
-                column: {
-                    grouping: false,
-                    shadow: false,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'Average',
-                data: []
-            }, {
-                name: 'Total',
-                data: [],
-                pointPadding: 0.2
-            }]
-        });
+    //     this.averageChart = chart(averageChartRef, {
+    //         credits: {
+    //             enabled: false
+    //         },
+    //         chart: {
+    //             type: 'column'
+    //         },
+    //         title: {
+    //             text: 'Classes\' average values'
+    //         },
+    //         xAxis: {
+    //             title: {
+    //                 text: 'Classes'
+    //             },
+    //             categories: []
+    //         },
+    //         yAxis: {
+    //             title: {
+    //                 text: 'Values'
+    //             }
+    //         },
+    //         tooltip: {
+    //             shared: true
+    //         },
+    //         plotOptions: {
+    //             column: {
+    //                 grouping: false,
+    //                 shadow: false,
+    //                 borderWidth: 0
+    //             }
+    //         },
+    //         series: [{
+    //             name: 'Average',
+    //             data: []
+    //         }, {
+    //             name: 'Total',
+    //             data: [],
+    //             pointPadding: 0.2
+    //         }]
+    //     });
 
-        this.confidenceChart = chart(confidenceChartRef, {
-            credits: {
-                enabled: false
-            },
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Confidence'
-            },
-            xAxis: {
-                title: {
-                    text: 'Classes'
-                },
-                categories: []
-            },
-            yAxis: {
-                title: {
-                    text: 'Confidence values'
-                }
-            },
-            series: [{
-                name: 'Classes',
-                data: []
-            }]
-        });
-    }
+    //     this.confidenceChart = chart(confidenceChartRef, {
+    //         credits: {
+    //             enabled: false
+    //         },
+    //         chart: {
+    //             type: 'column'
+    //         },
+    //         title: {
+    //             text: 'Confidence'
+    //         },
+    //         xAxis: {
+    //             title: {
+    //                 text: 'Classes'
+    //             },
+    //             categories: []
+    //         },
+    //         yAxis: {
+    //             title: {
+    //                 text: 'Confidence values'
+    //             }
+    //         },
+    //         series: [{
+    //             name: 'Classes',
+    //             data: []
+    //         }]
+    //     });
+    // }
 
     ngOnDestroy() {
         this.eventSourceMeasures.close();
@@ -222,7 +222,7 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
     public editApplication(application: Application) {
         this.dialog.showCustomDialog({
             component: DialogUpdateServiceComponent,
-            styles: { 'width': '900px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },
+            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

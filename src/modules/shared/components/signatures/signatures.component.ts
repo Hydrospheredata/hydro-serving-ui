@@ -32,12 +32,13 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     ngOnChanges() {
         this.createForm();
         this.initFormChangesListener();
-        this.contractsService.getModelContracts(this.data.id)
-            .subscribe(data => {
-                console.log(data);
-                this.signatures = data.signatures;
-                this.updateSignaturesFormValues(this.signatures ? this.signatures : null);
-            });
+        if (this.data) {
+            this.contractsService.getModelContracts(this.data.id)
+                .subscribe(data => {
+                    this.signatures = data.signatures;
+                    this.updateSignaturesFormValues(this.signatures ? this.signatures : null);
+                });
+        }
     }
 
     ngOnDestroy() { }

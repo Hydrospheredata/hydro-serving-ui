@@ -5,7 +5,7 @@ import { ModelsService } from '@shared/services/_index';
 import { DialogBase } from '@shared/base/_index';
 
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
+import { ApplicationState } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 import 'rxjs/add/operator/mergeMap';
 
@@ -42,7 +42,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit, OnD
         public dialogRef: MdlDialogReference,
         private mdlSnackbarService: MdlSnackbarService,
         @Inject(injectableModelOptions) data,
-        private store: Store<AppState>,
+        private store: Store<ApplicationState>,
         private modelsService: ModelsService,
         private contractsService: ContractsService,
     ) {

@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import {
-    AppState,
+    ApplicationState,
     Signature
 } from '@shared/models/_index';
 
@@ -33,7 +33,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private store: Store<AppState>
+        private store: Store<ApplicationState>
     ) { }
 
     ngOnInit() {

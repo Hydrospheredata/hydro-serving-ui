@@ -1,7 +1,7 @@
 import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { MdlDialogOutletService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
+import { ApplicationState } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 
 
@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
     constructor(
         private dilalogOuletService: MdlDialogOutletService,
         private viewConatinerRef: ViewContainerRef,
-        private store: Store<AppState>,
+        private store: Store<ApplicationState>,
     ) {
         this.dilalogOuletService.setDefaultViewContainerRef(this.viewConatinerRef);
     }

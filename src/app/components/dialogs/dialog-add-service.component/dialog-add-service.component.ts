@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
 import {
-    AppState,
+    ApplicationState,
     Application
 } from '@shared/models/_index';
 import { FormsService, ApplicationsService } from '@shared/services/_index';
@@ -27,7 +27,7 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public store: Store<AppState>,
+        public store: Store<ApplicationState>,
         public applicationsService: ApplicationsService
     ) {
         super(
