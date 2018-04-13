@@ -1,10 +1,12 @@
 <div class="content">
     <div class="content-header">
         <button class="btn btn-flat" [routerLink]="['../']">
-            <svg><use xlink:href="#icon-arrow-left" /></svg>
+            <svg>
+                <use xlink:href="#icon-arrow-left" />
+            </svg>
             return to model
         </button>
-        
+
         <div class="content-header__title">{{ build?.model?.source }} / v{{ build?.version }}</div>
     </div>
 
@@ -13,7 +15,10 @@
         <div class="hydro-panel" *ngIf="!contracts?.signatures?.length">
             <div class="no-contracts">There are no contracts for this model build!</div>
         </div>
-        <div class="hydro-panel" *ngFor="let signature of contracts.signatures">
+
+        <hydro-signatures [data]="build"></hydro-signatures>
+
+        <!-- <div class="hydro-panel" *ngFor="let signature of contracts.signatures">
             <h5 class="hydro-panel__header">Signature: {{ signature.signatureName }}</h5>
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
@@ -59,6 +64,6 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div> -->
     </div>
 </div>

@@ -5,7 +5,7 @@ import * as Actions from '@shared/actions/_index';
 
 const initialState: Application[] = [];
 
-export function ApplicationsReducer (state = initialState, action: Actions.ApplicationsActions) {
+export function ApplicationsReducer(state = initialState, action: Actions.ApplicationsActions) {
     switch (action.type) {
         case Actions.GET_APPLICATIONS_SUCCESS:
             return Object.assign([], state, action.payload);

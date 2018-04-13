@@ -35,8 +35,8 @@ export class DeleteModelAction implements Action {
 
 
 export type ModelActions
-  = GetModelsAction
-  | GetModelsSuccessAction
-  | AddModelAction
-  | UpdateModelAction
-  | DeleteModelAction;
+    = GetModelsAction
+    | GetModelsSuccessAction
+    | AddModelAction
+    | UpdateModelAction
+    | DeleteModelAction;
