@@ -28,7 +28,6 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddServiceComponent,
-        Dialog.DialogEditContractComponent,
         Dialog.DialogAddSourceComponent
     ],
     imports: [
@@ -50,7 +49,6 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddServiceComponent,
-        Dialog.DialogEditContractComponent,
         Dialog.DialogAddSourceComponent
     ],
     bootstrap: [AppComponent]

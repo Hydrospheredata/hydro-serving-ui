@@ -8,9 +8,7 @@ import { ApplicationState, Model, ModelBuild, Signature } from '@shared/models/_
 
 import {
     DialogModelBuildComponent,
-    injectableModelOptions,
-    DialogEditContractComponent,
-    injectableModelId
+    injectableModelOptions
 } from '@components/dialogs/_index';
 
 import * as Actions from '@shared/actions/_index';
@@ -93,19 +91,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
             providers: [{ provide: injectableModelOptions, useValue: model }],
-        });
-    }
-
-    public editModelContract(modelId: number) {
-        this.dialog.showCustomDialog({
-            component: DialogEditContractComponent,
-            styles: { 'width': '800px', 'min-height': '350px', 'overflow-y': 'scroll', 'height': '100%' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-            providers: [{ provide: injectableModelId, useValue: modelId }],
         });
     }
 

@@ -84,7 +84,7 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
 
         this.applicationsService.updateApplication(application)
             .subscribe(response => {
-                this.store.dispatch({ type: Actions.UPDATE_SERVICE_SUCCESS, payload: new Application(response) });
+                this.store.dispatch(new Actions.UpdateApplicationSuccessAction(new Application(response)));
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Service was successfully added',

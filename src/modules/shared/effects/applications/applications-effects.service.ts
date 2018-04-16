@@ -7,39 +7,39 @@ import { Router } from '@angular/router';
 import { ApplicationBuilder } from '@shared/builders/_index';
 import { ApplicationsService } from '@shared/services/_index';
 import { ApplicationState, Application } from '@shared/models/_index';
-import * as HydroActions from '@shared/actions/_index';
+import { ApplicationActionTypes, DeleteApplicationAction } from '@shared/actions/_index';
 import { withLatestFrom, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class ApplicationsEffects {
 
     @Effect() getServices$: Observable<Action> = this.actions$
-        .ofType(HydroActions.GET_APPLICATIONS)
+        .ofType(ApplicationActionTypes.Get)
         .pipe(
             withLatestFrom(this.store.select('applications')),
             switchMap(store => {
                 const applications = store[1];
                 if (applications.length) {
-                    return Observable.of({ type: HydroActions.GET_APPLICATIONS_SUCCESS, payload: [] });
+                    return Observable.of({ type: ApplicationActionTypes.GetSuccess, payload: [] });
                 } else {
                     return this.applicationsService.getApplications().take(1)
                         .map((apps: Application[]) => {
                             const data = apps.map(app => this.applicationBuilder.build(app));
-                            return ({ type: HydroActions.GET_APPLICATIONS_SUCCESS, payload: data });
+                            return ({ type: ApplicationActionTypes.GetSuccess, payload: data });
                         })
-                        .catch(() => Observable.of({ type: HydroActions.GET_APPLICATIONS_FAIL }));
+                        .catch(() => Observable.of({ type: ApplicationActionTypes.GetFail }));
                 }
             })
         );
 
     @Effect() deleteApplication$: Observable<Action> = this.actions$
-        .ofType(HydroActions.DELETE_APPLICATION)
-        .map((action: HydroActions.DeleteApplicationAction) => action.applicationId)
+        .ofType(ApplicationActionTypes.Delete)
+        .map((action: DeleteApplicationAction) => action.applicationId)
         .switchMap(applicationId => {
             return this.applicationsService.deleteApplication(applicationId)
                 .map(() => {
                     this.router.navigate(['applications']);
-                    return ({ type: HydroActions.DELETE_APPLICATION_SUCCESS, applicationId: applicationId });
+                    return ({ type: ApplicationActionTypes.DeleteSuccess, applicationId: applicationId });
                 });
         });
 
