@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { ModelsService } from '@shared/services/_index';
 import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@shared/builders/_index';
 import * as HydroActions from '@shared/actions/_index';
+import { flatMap, map, catchError } from 'rxjs/operators';
 
 
 
@@ -22,18 +23,33 @@ export class ModelEffects {
 
     @Effect() loadModels$: Observable<Action> = this.actions$
         .ofType(HydroActions.ModelActionTypes.Get)
-        .flatMap(() => this.modelsService.getModels().first()
-            .map(data => {
-                return (new HydroActions.GetModelsSuccessAction(data.map(this.modelBuilder.build, this.modelBuilder)));
-            })
+        .pipe(
+            flatMap(() => this.modelsService
+                .getModels()
+                .pipe(
+                    map(data => {
+                        return (new HydroActions.GetModelsSuccessAction(data.map(this.modelBuilder.build, this.modelBuilder)));
+                    }),
+                    catchError(error => {
+                        return Observable.of(new HydroActions.GetModelsFailAction(error));
+                    })
+                )
+            )
         );
 
-    @Effect() getAllVersions$: Observable<Action> = this.actions$.ofType(HydroActions.GET_ALL_VERSIONS)
-        .flatMap(() => this.modelsService.getAllVersions().first()
-            .map(data => {
-                const preparedData = data.map(this.modelVersionBuilder.build, this.modelVersionBuilder);
-                return ({ type: HydroActions.GET_ALL_VERSIONS_SUCCESS, payload: preparedData });
-            })
+    @Effect() getAllVersions$: Observable<Action> = this.actions$
+        .ofType(HydroActions.ModelVersionActionTypes.GetModelVersions)
+        .pipe(
+            flatMap(() => this.modelsService
+                .getAllVersions()
+                .pipe(
+                    map(data => {
+                        const preparedData = data.map(this.modelVersionBuilder.build, this.modelVersionBuilder);
+                        return (new HydroActions.GetModelVersionsSuccessAction(preparedData));
+                    }),
+                    catchError(error => Observable.of(new HydroActions.GetModelVersionsFailAction(error)))
+                )
+            )
         );
 
     @Effect() getModelBuilds$: Observable<Action> = this.actions$.ofType(HydroActions.GET_MODEL_BUILDS)

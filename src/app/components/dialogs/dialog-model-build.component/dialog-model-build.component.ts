@@ -112,7 +112,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit, OnD
         this.modelsService.buildModel(modelOptions)
             .subscribe(response => {
                 this.store.dispatch(new Actions.UpdateModelAction(response));
-                this.store.dispatch({ type: Actions.ADD_VERSION_SUCCESS, payload: response });
+                this.store.dispatch(new Actions.AddModelVersionSuccessAction(response));
                 this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: response.model.id });
 
                 this.dialogRef.hide();

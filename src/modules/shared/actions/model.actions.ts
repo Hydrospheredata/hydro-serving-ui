@@ -14,9 +14,15 @@ export enum ModelActionTypes {
 export class GetModelsAction implements Action {
     readonly type = ModelActionTypes.Get;
 }
+
 export class GetModelsSuccessAction implements Action {
     readonly type = ModelActionTypes.GetSuccess;
     constructor(public payload: Model[]) { }
+}
+
+export class GetModelsFailAction implements Action {
+    readonly type = ModelActionTypes.GetFail;
+    constructor(public error) { }
 }
 
 export class UpdateModelAction implements Action {
@@ -30,4 +36,5 @@ export class UpdateModelAction implements Action {
 export type ModelActions
     = GetModelsAction
     | GetModelsSuccessAction
+    | GetModelsFailAction
     | UpdateModelAction;

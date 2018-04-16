@@ -26,6 +26,6 @@ export class AppComponent implements OnInit {
         this.store.dispatch(new Actions.GetApplicationsAction);
         this.store.dispatch({ type: Actions.GET_RUNTIMES });
         this.store.dispatch({ type: Actions.GET_ENVIRONMENTS });
-        this.store.dispatch({ type: Actions.GET_ALL_VERSIONS });
+        this.store.dispatch(new Actions.GetModelVersionsAction);
     }
 }
