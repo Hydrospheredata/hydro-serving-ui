@@ -66,13 +66,13 @@ export class DeleteApplicationSuccessAction implements Action {
 }
 
 export type ApplicationsActions
-  = GetApplicationsAction
-  | GetApplicationsSuccessAction
-  | GetApplicationsFailAction
-  | AddServiceAction
-  | AddServiceSuccessAction
-  | AddServiceFailureAction
-  | UpdateServiceAction
-  | UpdateServiceSuccessAction
-  | DeleteApplicationAction
-  | DeleteApplicationSuccessAction;
+    = GetApplicationsAction
+    | GetApplicationsSuccessAction
+    | GetApplicationsFailAction
+    | AddServiceAction
+    | AddServiceSuccessAction
+    | AddServiceFailureAction
+    | UpdateServiceAction
+    | UpdateServiceSuccessAction
+    | DeleteApplicationAction
+    | DeleteApplicationSuccessAction;

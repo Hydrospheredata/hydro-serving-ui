@@ -301,8 +301,6 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
                         }
                     }
 
-
-
                     const labels: string[] = [];
                     const chartData: number[] = [];
 
@@ -327,16 +325,10 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
                         .map(l => measures.filter(m => m.class === l)[0])
                         .map(entry => entry.total);
 
-                    console.log(measureClasses);
-                    console.log(cumulativeSumData);
-                    console.log(totalData);
-
                     this.averageChart.xAxis[0].update({ categories: measureClasses });
                     this.averageChart.series[0].setData(cumulativeSumData, false);
                     this.averageChart.series[1].setData(totalData, false);
                     this.averageChart.redraw();
-
-                    console.log(this.averageChart);
 
                     // measureClasses.forEach((label, i) => {
                     //     if (-1 === Object.keys(classToData).indexOf(label)) {

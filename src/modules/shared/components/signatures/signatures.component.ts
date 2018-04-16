@@ -7,7 +7,6 @@ import { ContractsService } from '@shared/services/_index';
 
 
 
-
 @Component({
     selector: 'hydro-signatures',
     templateUrl: './signatures.component.html',
@@ -44,6 +43,18 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     ngOnDestroy() { }
 
     public onSubmit() {
+        this.signaturesForm.value.signatures.forEach(signature => {
+            signature.inputs.forEach(input => {
+                if (typeof input.shape === 'string') { // ToDo: Fix condition
+                    input.shape = input.shape.split(/[ ,.]+/).map(Number);
+                }
+            });
+            signature.outputs.forEach(output => {
+                if (typeof output.shape === 'string') { // ToDo: Fix condition
+                    output.shape = output.shape.split(/[ ,.]+/);
+                }
+            });
+        });
         this.contractsService.updateModelContract(this.data.id, { signatures: this.signaturesForm.value.signatures })
             .subscribe(() => {
                 this.toggleSignaturesMode();
@@ -57,6 +68,16 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
                     timeout: 5000
                 });
             });
+    }
+
+    public addSignatureFields(signatureIndex: number, fieldType: string) {
+        const control = <FormArray>this.signaturesForm.get(['signatures', signatureIndex]).get(fieldType);
+        control.push(this.addSignatureField());
+    }
+
+    public removeSignatureFields(signatureIndex: number, fieldIndex: number, fieldType: string) {
+        const control = <FormArray>this.signaturesForm.get(['signatures', signatureIndex]).get(fieldType);
+        control.removeAt(fieldIndex);
     }
 
     public cancelEdit() {
@@ -101,9 +122,9 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
 
     private addSignatureField() {
         return this.fb.group({
-            fieldName: ['/'],
+            fieldName: [''],
             dataType: [''],
-            shape: [[]]
+            shape: ['']
         });
     }
 

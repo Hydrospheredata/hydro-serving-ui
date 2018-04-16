@@ -53,6 +53,8 @@
     }
   }
   &-delete {
+    padding: 7px 3px;
+    margin-left: 8px;
     > svg {
       margin: 0;
     }
@@ -75,15 +77,24 @@
   }
 }
 
-.hydro-table-body__cell {
-  position: relative;
-  > svg {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 14px;
-    height: 14px;
-    transform: translate3d(0, -50%, 0);
-    fill: #8b939c;
+.hydro-table-body {
+  &__cell {
+    position: relative;
+    > svg {
+      position: absolute;
+      top: 50%;
+      transform: translate3d(0, -50%, 0);
+      width: 12px;
+      height: 12px;
+      cursor: pointer;
+    }
+    > .add {
+      left: 0;
+      fill: #8b939c;
+    }
+    > .delete {
+      right: 0;
+      fill: #4d9bf1;
+    }
   }
 }

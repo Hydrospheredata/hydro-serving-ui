@@ -16,7 +16,7 @@
                     <span>Signature:</span>
                     <input class="input" type="text" formControlName="signatureName" [ngClass]="{ '__isReadOnly': isReadOnly }" [readonly]="isReadOnly">
                 </h5>
-                <button (click)="removeSignatureControl(i)" type="button" class="btn btn-flat signature-delete" *ngIf="signaturesForm['controls'].signatures['controls'].length > 1">
+                <button (click)="removeSignatureControl(i)" type="button" class="btn btn-flat signature-delete" *ngIf="signaturesForm['controls'].signatures['controls'].length > 1 && !isReadOnly">
                     <svg>
                         <use xlink:href="#icon-remove"></use>
                     </svg>
@@ -32,29 +32,24 @@
                         </tr>
                     </thead>
                     <tbody formArrayName="inputs">
-                        <tr *ngFor="let input of signature['controls'].inputs['controls']; let i = index;" [formGroupName]="i" class='hydro-table-body__row'>
+                        <tr *ngFor="let input of signature['controls'].inputs['controls']; let j = index;" [formGroupName]="j" class='hydro-table-body__row'>
                             <td class="hydro-table-body__cell">
-                                <input class="input" type="text" formControlName="fieldName" name="" [ngClass]="{ '__isReadOnly': isReadOnly }" [readonly]="isReadOnly">
-                            </td>
-                            <td class="hydro-table-body__cell">
-                                <input class="input" type="text" formControlName="dataType" name="" [ngClass]="{ '__isReadOnly': isReadOnly }" [readonly]="isReadOnly">
-                            </td>
-                            <td class="hydro-table-body__cell">
-                                <input class="input" type="text" formControlName="shape" name="" [ngClass]="{ '__isReadOnly': isReadOnly }" [readonly]="isReadOnly">
-                            </td>
-                        </tr>
-                        <tr class='hydro-table-body__row' *ngIf="!isReadOnly">
-                            <td class="hydro-table-body__cell">
-                                <svg>
+                                <svg class="add" (click)="addSignatureFields(i, 'inputs')" *ngIf="!isReadOnly">
                                     <use xlink:href="#icon-plus"></use>
                                 </svg>
-                                <input class="input" type="text" placeholder="/fieldname">
+                                <input class="input" type="text" placeholder="/fieldname" formControlName="fieldName" name="" [ngClass]="{ '__isReadOnly': isReadOnly }"
+                                    [readonly]="isReadOnly">
                             </td>
                             <td class="hydro-table-body__cell">
-                                <input class="input" type="text" placeholder="DATA_TYPE_NAME">
+                                <input class="input" type="text" placeholder="DATA_TYPE_NAME" formControlName="dataType" name="" [ngClass]="{ '__isReadOnly': isReadOnly }"
+                                    [readonly]="isReadOnly">
                             </td>
                             <td class="hydro-table-body__cell">
-                                <input class="input" type="text" placeholder="1">
+                                <input class="input" type="text" placeholder="1" formControlName="shape" name="" [ngClass]="{ '__isReadOnly': isReadOnly }"
+                                    [readonly]="isReadOnly">
+                                <svg class="delete" (click)="removeSignatureFields(i, j, 'inputs')" *ngIf="signature['controls'].inputs['controls'].length > 1 && !isReadOnly">
+                                    <use xlink:href="#icon-remove"></use>
+                                </svg>
                             </td>
                         </tr>
                     </tbody>
@@ -68,29 +63,24 @@
                         </tr>
                     </thead>
                     <tbody formArrayName="outputs">
-                        <tr *ngFor="let output of signature['controls'].outputs['controls']; let i = index;" [formGroupName]="i" class='hydro-table-body__row'>
+                        <tr *ngFor="let output of signature['controls'].outputs['controls']; let j = index;" [formGroupName]="j" class='hydro-table-body__row'>
                             <td class="hydro-table-body__cell">
-                                <input class="input" type="text" formControlName="fieldName" name="" [ngClass]="{ '__isReadOnly': isReadOnly }" [readonly]="isReadOnly">
-                            </td>
-                            <td class="hydro-table-body__cell">
-                                <input class="input" type="text" formControlName="dataType" name="" [ngClass]="{ '__isReadOnly': isReadOnly }" [readonly]="isReadOnly">
-                            </td>
-                            <td class="hydro-table-body__cell">
-                                <input class="input" type="text" formControlName="shape" name="" [ngClass]="{ '__isReadOnly': isReadOnly }" [readonly]="isReadOnly">
-                            </td>
-                        </tr>
-                        <tr class='hydro-table-body__row' *ngIf="!isReadOnly">
-                            <td class="hydro-table-body__cell">
-                                <svg>
+                                <svg class="add" (click)="addSignatureFields(i, 'outputs')" *ngIf="!isReadOnly">
                                     <use xlink:href="#icon-plus"></use>
                                 </svg>
-                                <input class="input" type="text" placeholder="/fieldname">
+                                <input class="input" type="text" placeholder="/fieldname" formControlName="fieldName" name="" [ngClass]="{ '__isReadOnly': isReadOnly }"
+                                    [readonly]="isReadOnly">
                             </td>
                             <td class="hydro-table-body__cell">
-                                <input class="input" type="text" placeholder="DATA_TYPE_NAME">
+                                <input class="input" type="text" placeholder="DATA_TYPE_NAME" formControlName="dataType" name="" [ngClass]="{ '__isReadOnly': isReadOnly }"
+                                    [readonly]="isReadOnly">
                             </td>
                             <td class="hydro-table-body__cell">
-                                <input class="input" type="text" placeholder="1">
+                                <input class="input" type="text" placeholder="1" formControlName="shape" name="" [ngClass]="{ '__isReadOnly': isReadOnly }"
+                                    [readonly]="isReadOnly">
+                                <svg class="delete" (click)="removeSignatureFields(i, j, 'outputs')" *ngIf="signature['controls'].outputs['controls'].length > 1 && !isReadOnly">
+                                    <use xlink:href="#icon-remove"></use>
+                                </svg>
                             </td>
                         </tr>
                     </tbody>
