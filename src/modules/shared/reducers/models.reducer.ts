@@ -1,20 +1,15 @@
 import { Model } from '@shared/models/_index';
-import * as ModelActions from '@shared/actions/_index';
+import { ModelActions, ModelActionTypes } from '@shared/actions/_index';
 
 
 
 const initialState: Model[] = [];
 
-export function ModelsReducer(state = initialState, action: ModelActions.ModelActions) {
+export function ModelsReducer(state = initialState, action: ModelActions) {
     switch (action.type) {
-        case ModelActions.GET_MODELS_SUCCESS:
+        case ModelActionTypes.GetSuccess:
             return Object.assign([], state, action.payload);
-        case ModelActions.ADD_MODEL:
-            return [
-                ...state.slice(0),
-                action.payload
-            ];
-        case ModelActions.UPDATE_MODEL:
+        case ModelActionTypes.UpdateSuccess:
             return state.map(item => {
                 if (item.id !== action.payload.model.id) {
                     return item;

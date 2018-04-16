@@ -83,7 +83,6 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
     private eventSourceMeasures: any;
     private storeSub: Subscription;
     private activeRouteSub: Subscription;
-    private runtimesStoreSub: Subscription;
 
     constructor(
         public store: Store<ApplicationState>,
@@ -196,14 +195,6 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
         if (this.storeSub) {
             this.storeSub.unsubscribe();
         }
-        if (this.runtimesStoreSub) {
-            this.runtimesStoreSub.unsubscribe();
-        }
-    }
-
-    public getRuntimeInfo(runtimeId: number) {
-        const runtime = this.runtimes.find(runtimes => runtimes.id === runtimeId);
-        return runtime.name;
     }
 
     public testApplication(application: Application) {
@@ -246,8 +237,6 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
     }
 
     private loadInitialData(id) {
-        this.runtimesStoreSub = this.store.select('runtimes')
-            .subscribe(runtimes => this.runtimes = runtimes);
         this.storeSub = this.store.select('applications')
             .filter(applications => applications.length > 0)
             .subscribe(applications => {
