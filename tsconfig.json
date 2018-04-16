@@ -27,6 +27,9 @@
       "@modules/*": [
         "modules/*"
       ],
+      "@core/*": [
+        "modules/core/*"
+      ],
       "@shared/*": [
         "modules/shared/*"
       ]

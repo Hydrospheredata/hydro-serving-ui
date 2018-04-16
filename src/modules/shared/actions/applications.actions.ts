@@ -27,6 +27,7 @@ export class GetApplicationsSuccessAction implements Action {
 
 export class GetApplicationsFailAction implements Action {
     readonly type = ApplicationActionTypes.GetFail;
+    constructor(public error) { }
 }
 
 export class AddApplicationAction implements Action {
@@ -62,6 +63,11 @@ export class DeleteApplicationSuccessAction implements Action {
     constructor(public applicationId: number) { }
 }
 
+export class DeleteApplicationFailAction implements Action {
+    readonly type = ApplicationActionTypes.DeleteFail;
+    constructor(public error) { }
+}
+
 export type ApplicationActions
     = GetApplicationsAction
     | GetApplicationsSuccessAction
@@ -72,4 +78,5 @@ export type ApplicationActions
     | UpdateApplicationAction
     | UpdateApplicationSuccessAction
     | DeleteApplicationAction
-    | DeleteApplicationSuccessAction;
+    | DeleteApplicationSuccessAction
+    | DeleteApplicationFailAction;
