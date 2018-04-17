@@ -30,7 +30,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnChanges() {
         this.createForm();
-        this.initFormChangesListener();
+        // this.initFormChangesListener();
         if (this.data) {
             this.contractsService.getModelContracts(this.data.id)
                 .subscribe(data => {
@@ -81,7 +81,6 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     public cancelEdit() {
-        this.signaturesForm.reset(this.signaturesFormData);
         this.toggleSignaturesMode();
     }
 

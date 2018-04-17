@@ -103,10 +103,14 @@ input.form-control {
   &__inline {
     flex-direction: row;
     align-items: center;
+    padding: 0 10px;
     > .control-label {
       margin: 0;
       margin-right: 8px;
       font-family: 'Consolas', monospace;
+    }
+    > .cs-relative {
+      flex: 1;
     }
   }
 }

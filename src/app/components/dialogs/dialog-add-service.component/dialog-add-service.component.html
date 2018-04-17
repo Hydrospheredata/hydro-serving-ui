@@ -21,7 +21,7 @@
                             [label]="'output topic = '" name="outputTopic" formControlName="destinationTopic">
                         </hydro-input-text>
                     </div>
-                    <svg class="delete" (click)="removeKafkaControl(i)" *ngIf="serviceForm['controls'].kafkaStreaming['controls'].length > 1">
+                    <svg class="__delete" (click)="removeKafkaControl(i)" *ngIf="serviceForm['controls'].kafkaStreaming['controls'].length > 1">
                         <use xlink:href="#icon-remove"></use>
                     </svg>
                 </li>

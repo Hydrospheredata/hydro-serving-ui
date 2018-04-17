@@ -70,7 +70,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.modelBuildsSub = this.store.select('modelBuilds')
             .skip(1)
             .subscribe(modelBuilds => {
-                console.log(modelBuilds);
                 this.modelBuilds = modelBuilds.reverse();
             });
 
