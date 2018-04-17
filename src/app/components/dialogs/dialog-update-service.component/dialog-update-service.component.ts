@@ -81,9 +81,10 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
         };
 
         const application = new Application(serviceInfo);
-
+        console.log(application);
         this.applicationsService.updateApplication(application)
             .subscribe(response => {
+                console.log(response);
                 this.store.dispatch(new Actions.UpdateApplicationSuccessAction(new Application(response)));
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({

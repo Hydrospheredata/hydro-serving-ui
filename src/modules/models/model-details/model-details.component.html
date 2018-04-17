@@ -47,7 +47,11 @@
                             -
                         </td>
                         <td class="hydro-table-body__cell">
-                            <button class="btn btn-flat" [routerLink]="[item.version]">...</button>
+                            <button class="btn btn-flat" [routerLink]="[item.version]">
+                                <svg class="icon">
+                                    <use xlink:href="#icon-arrow-right" />
+                                </svg>
+                            </button>
                         </td>
                     </tr>
                 </tbody>
