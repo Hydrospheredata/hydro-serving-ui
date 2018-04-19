@@ -1,51 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
     selector: 'hydro-select',
     templateUrl: './select.component.html',
     styleUrls: ['./select.component.scss'],
-    })
-export class SelectComponent {
+})
+export class HydroSelectComponent {
 
-    // @Input() items: any[];
+    @Input() items: any[];
 
-    public items:Array<string> = ['Amsterdam', 'Antwerp', 'Athens', 'Barcelona',
-        'Berlin', 'Birmingham', 'Bradford', 'Bremen', 'Brussels', 'Bucharest',
-        'Budapest', 'Cologne', 'Copenhagen', 'Dortmund', 'Dresden', 'Dublin',
-        'Düsseldorf', 'Essen', 'Frankfurt', 'Genoa', 'Glasgow', 'Gothenburg',
-        'Hamburg', 'Hannover', 'Helsinki', 'Kraków', 'Leeds', 'Leipzig', 'Lisbon',
-        'London', 'Madrid', 'Manchester', 'Marseille', 'Milan', 'Munich', 'Málaga',
-        'Naples', 'Palermo', 'Paris', 'Poznań', 'Prague', 'Riga', 'Rome',
-        'Rotterdam', 'Seville', 'Sheffield', 'Sofia', 'Stockholm', 'Stuttgart',
-        'The Hague', 'Turin', 'Valencia', 'Vienna', 'Vilnius', 'Warsaw', 'Wrocław',
-        'Zagreb', 'Zaragoza', 'Łódź'];
+    @Output() select: EventEmitter<any>;
 
-    private value: any = {};
-    private _disabledV: string = '0';
-    public disabled: boolean = false;
-
-    private get disabledV(): string {
-        return this._disabledV;
+    constructor() {
+        this.select = new EventEmitter();
     }
 
-    private set disabledV(value: string) {
-        this._disabledV = value;
-        this.disabled = this._disabledV === '1';
-    }
-
-    public selected(value: any) {
-        this.value = value;
-    }
-
-    public removed(value: any) {
-        this.value = value;
-    }
-
-    public typed(value: any) {
-        this.value = value;
-    }
-
-    public refreshValue(value: any) {
-        this.value = value;
+    selectItem(value) {
+        this.select.emit(value);
     }
 }

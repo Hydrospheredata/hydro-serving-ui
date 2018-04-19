@@ -1,71 +1,19 @@
 <div class="content">
     <div class="content-header">
-        <div class="content-header__title">{{model?.source}}</div>
-        <div class="btn-group" *ngIf="model?.nextVersion">
-            <button class="btn" (click)="buildModel(model)">
-                <svg><use xlink:href="#icon-arrow"></use></svg>
-                Release
-            </button>
-        </div>
+        <div class="content-header__title">{{ model?.source }}</div>
+        <button class="btn btn-release" (click)="buildModel(model)" *ngIf="model?.nextVersion">
+            <svg>
+                <use xlink:href="#icon-arrow"></use>
+            </svg>
+            Release
+        </button>
     </div>
 
 
     <div class="content-body">
         <hydro-list-info [data]="model"></hydro-list-info>
 
-        <div *ngIf="model?.nextVersion">
-            <div class="hydro-panel __small" *ngFor="let signature of signatures">
-                <h5 class="hydro-panel__header">Signature: {{ signature.signatureName }}</h5>
-                <table class='hydro-table hydro-table-models'>
-                    <thead class="hydro-table-head">
-                        <tr>
-                            <th class="hydro-table-head__cell">Field name (Input)</th>
-                            <th class="hydro-table-head__cell">Data type (Input)</th>
-                            <th class="hydro-table-head__cell">Shape (Input)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let output of signature.inputs" class='hydro-table-body__row'>
-                            <td class="hydro-table-body__cell">
-                                <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
-                            </td>
-                            <td class="hydro-table-body__cell">
-                                <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
-                            </td>
-                            <td class="hydro-table-body__cell">
-                                <div class='cs-text-overflow-ellipsis'>
-                                    <span *ngFor="let item of output.shape">{{ item }}</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class='hydro-table hydro-table-models'>
-                    <thead class="hydro-table-head">
-                        <tr>
-                            <th class="hydro-table-head__cell">Field name (Output)</th>
-                            <th class="hydro-table-head__cell">Data type (Output)</th>
-                            <th class="hydro-table-head__cell">Shape (Output)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let output of signature.outputs" class='hydro-table-body__row'>
-                            <td class="hydro-table-body__cell">
-                                <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
-                            </td>
-                            <td class="hydro-table-body__cell">
-                                <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
-                            </td>
-                            <td class="hydro-table-body__cell">
-                                <div class='cs-text-overflow-ellipsis'>
-                                    <span *ngFor="let item of output.shape">{{ item }}</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <hydro-signatures *ngIf="model?.nextVersion" [data]="model"></hydro-signatures>
 
         <div class="hydro-panel" *ngIf="!model?.nextVersion || model?.lastModelBuild">
             <h5 class="hydro-panel__header">Versions</h5>
@@ -76,12 +24,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of modelBuilds | sortBy: 'item.version'" class='hydro-table-body__row __link' [routerLink]="[item.version]">
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
-                        </td>
+                    <tr *ngFor="let item of modelBuilds | sortBy: 'item.version'" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ item.version }}</div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis status' [ngClass]="{
@@ -94,6 +42,16 @@
                                 </svg>
                                 <span class="icon-label">{{item.status === 'FINISHED' ? 'Released' : 'Started'}}</span>
                             </div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            -
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <button class="btn btn-flat" [routerLink]="[item.version]">
+                                <svg class="icon">
+                                    <use xlink:href="#icon-arrow-right" />
+                                </svg>
+                            </button>
                         </td>
                     </tr>
                 </tbody>

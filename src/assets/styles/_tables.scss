@@ -1,4 +1,4 @@
-$table-padding: 18px;
+$table-padding: 14px;
 
 .hydro-table {
   border-collapse: collapse;
@@ -12,9 +12,16 @@ $table-padding: 18px;
       .__small & {
         padding: 8px $table-padding * 2;
       }
+      [class$="signature"] & {
+        text-align: left;
+        text-transform: uppercase;
+        padding: 24px 28px 6px;
+        line-height: 1;
+      }
     }
     [class$="models"] & {
-      border-bottom: 2px solid $secondary-color;
+      border-bottom: 1px solid $secondary-color;
+      border-top: 2px solid $secondary-color;
     }
   }
   &-body {
@@ -32,9 +39,12 @@ $table-padding: 18px;
       }
     }
     &__cell {
-      padding: $table-padding * 1.7 $table-padding * 2;
+      padding: $table-padding * 1.3 $table-padding * 2;
       .__small & {
         padding: 12px $table-padding * 2;
+      }
+      [class$="signature"] & {
+        padding: 6px $table-padding * 2;
       }
     }
   }

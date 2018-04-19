@@ -1,11 +1,11 @@
-import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
+import { Component, OnInit, InjectionToken, Inject, OnDestroy } from '@angular/core';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { ModelsService } from '@shared/services/_index';
 import { DialogBase } from '@shared/base/_index';
 
 import { Store } from '@ngrx/store';
-import { AppState } from '@shared/models/_index';
+import { ApplicationState } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 import 'rxjs/add/operator/mergeMap';
 
@@ -23,7 +23,7 @@ export let injectableModelOptions = new InjectionToken<object>('injectableModelO
     templateUrl: './dialog-model-build.component.html',
     styleUrls: ['./dialog-model-build.component.scss']
 })
-export class DialogModelBuildComponent extends DialogBase implements OnInit {
+export class DialogModelBuildComponent extends DialogBase implements OnInit, OnDestroy {
     public buildModelForm: FormGroup;
     public currentModelRuntimeType;
     public runtimeTypes;
@@ -31,10 +31,9 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
     public model;
     public modelType: string;
 
-    public submitBtnText: string = 'Release';
     public signatures: Signature[];
     public contractsForm: FormGroup;
-    public isContractViewEnabled: boolean = false;
+    public isContractViewEnabled = false;
 
     private runtimeTypesSub: Subscription;
 
@@ -43,7 +42,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
         public dialogRef: MdlDialogReference,
         private mdlSnackbarService: MdlSnackbarService,
         @Inject(injectableModelOptions) data,
-        private store: Store<AppState>,
+        private store: Store<ApplicationState>,
         private modelsService: ModelsService,
         private contractsService: ContractsService,
     ) {
@@ -73,7 +72,6 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
                 });
         }
         this.isContractViewEnabled = event.target.checked;
-        this.isContractViewEnabled ? this.submitBtnText = 'Release (+contract)' : this.submitBtnText = 'Release';
     }
 
     public addSignatureToContract() {
@@ -90,21 +88,6 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
         const modelOptions = {
             modelId: this.model.id
         };
-
-        // console.log({ signatures: this.contractsForm.value.signatures });
-        // this.contractsService.updateModelContract(this.model.id, { signatures: this.contractsForm.value.signatures })
-        //     .subscribe(() => {
-        //         this.mdlSnackbarService.showSnackbar({
-        //             message: 'Contracts was successfully updated',
-        //             timeout: 5000
-        //         });
-        //         this.buildModel(modelOptions);
-        //     }, (error) => {
-        //         this.mdlSnackbarService.showSnackbar({
-        //             message: `Contracts update was failed with error ${error}`,
-        //             timeout: 5000
-        //         });
-        //     });
 
         if (this.isContractViewEnabled) {
             this.contractsService.updateModelContract(this.model.id, { signatures: this.contractsForm.value.signatures })
@@ -128,8 +111,8 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
     private buildModel(modelOptions) {
         this.modelsService.buildModel(modelOptions)
             .subscribe(response => {
-                this.store.dispatch({ type: Actions.UPDATE_MODEL, payload: response });
-                this.store.dispatch({ type: Actions.ADD_VERSION_SUCCESS, payload: response });
+                this.store.dispatch(new Actions.UpdateModelAction(response));
+                this.store.dispatch(new Actions.AddModelVersionSuccessAction(response));
                 this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: response.model.id });
 
                 this.dialogRef.hide();
@@ -155,7 +138,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
                 this.addSignatureField();
             }
         }
-        
+
         this.contractsForm.patchValue({
             signatures: signatures
         });
@@ -169,7 +152,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
 
     private addSignature() {
         return this.fb.group({
-            signatureName: [ '', Validators.required ],
+            signatureName: ['', Validators.required],
             inputs: this.fb.array([this.addSignatureField()]),
             outputs: this.fb.array([this.addSignatureField()]),
         });
@@ -177,9 +160,9 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit {
 
     private addSignatureField() {
         return this.fb.group({
-            fieldName: [ '/', Validators.required ], 
-            dataType: [ '', Validators.required ], 
-            shape: [ [] , Validators.required ]
+            fieldName: ['/', Validators.required],
+            dataType: ['', Validators.required],
+            shape: [[], Validators.required]
         });
     }
 }

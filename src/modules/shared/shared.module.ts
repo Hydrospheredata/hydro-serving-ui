@@ -24,10 +24,11 @@ import {
 // Components
 import {
     InputTextComponent,
-    SelectComponent,
+    HydroSelectComponent,
     TextareaComponent,
     SidebarComponent,
     ListInfoComponent,
+    SignaturesComponent,
 } from './components/_index';
 
 
@@ -57,9 +58,10 @@ import {
         // Components
         InputTextComponent,
         TextareaComponent,
-        SelectComponent,
+        HydroSelectComponent,
         SidebarComponent,
         ListInfoComponent,
+        SignaturesComponent,
     ],
     exports: [
         // Pipes
@@ -74,9 +76,10 @@ import {
         // Components
         InputTextComponent,
         TextareaComponent,
-        SelectComponent,
+        HydroSelectComponent,
         SidebarComponent,
         ListInfoComponent,
+        SignaturesComponent,
     ]
 })
 export class SharedModule { }

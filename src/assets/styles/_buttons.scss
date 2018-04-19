@@ -20,6 +20,9 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: default;
         color: $secondary-color;
         border-color: $secondary-color;
+        > svg {
+            fill: $secondary-color;
+        }
     }
     &:not([disabled]):hover,
     &:not([disabled]):focus {
@@ -70,6 +73,22 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     &.btn-back {
         @extend .btn-secondary;
+    }
+    &.btn-release {
+        background-color: #85bd3e;
+        color: #ffffff;
+        border-color: #85bd3e;
+        &:hover,
+        &:focus {
+            background-color: transparent;
+            color: #85bd3e;
+            > svg {
+                fill: #85bd3e;
+            } 
+        }
+        > svg {
+            fill: #fff;
+        }
     }
     &-group {
         display: flex;

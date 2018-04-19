@@ -9,9 +9,9 @@ import { Application } from '@shared/models/_index';
 
 @Injectable()
 export class ApplicationsService {
-    
+
     private baseApiUrl: string;
-    
+
     constructor(
         private http: HttpService
     ) {

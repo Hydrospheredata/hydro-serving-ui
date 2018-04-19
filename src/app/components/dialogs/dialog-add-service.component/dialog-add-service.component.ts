@@ -5,9 +5,9 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as Actions from '@shared/actions/_index';
-import { 
-    AppState, 
-    Application 
+import {
+    ApplicationState,
+    Application
 } from '@shared/models/_index';
 import { FormsService, ApplicationsService } from '@shared/services/_index';
 
@@ -20,14 +20,14 @@ import { FormsService, ApplicationsService } from '@shared/services/_index';
 })
 export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 
-    public dialogType: string = 'Add';
+    public dialogType = 'Add';
 
     constructor(
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public store: Store<AppState>,
+        public store: Store<ApplicationState>,
         public applicationsService: ApplicationsService
     ) {
         super(
@@ -63,19 +63,19 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
 
         this.applicationsService.addApplication(application)
             .subscribe(response => {
-                this.store.dispatch({ type: Actions.ADD_SERVICE_SUCCESS, payload: new Application(response) });
+                this.store.dispatch(new Actions.AddApplicationSuccessAction(new Application(response)));
                 this.dialogRef.hide();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Application was successfully added',
                     timeout: 5000
                 });
             },
-            error => {
-                this.mdlSnackbarService.showSnackbar({
-                    message: `Error: ${error}`,
-                    timeout: 5000
+                error => {
+                    this.mdlSnackbarService.showSnackbar({
+                        message: `Error: ${error}`,
+                        timeout: 5000
+                    });
                 });
-            });
     }
 
 }

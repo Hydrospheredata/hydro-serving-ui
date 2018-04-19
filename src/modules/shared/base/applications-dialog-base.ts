@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
@@ -6,10 +6,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
-import { 
-    AppState,
+import {
+    ApplicationState,
     Application,
-    Runtime, 
+    Runtime,
     Environment,
     Signature,
     ModelVersion
@@ -27,24 +27,24 @@ import 'codemirror/addon/display/placeholder.js';
 
 
 @Injectable()
-export class ApplicationsDialogBase extends DialogBase {
+export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
 
     public serviceForm: FormGroup;
-    public isKafkaEnabled: boolean = false;
-    public isJsonModeEnabled: boolean = false;
+    public isKafkaEnabled = false;
+    public isJsonModeEnabled = false;
     public codeMirrorOptions = {
         matchBrackets: true,
         autoCloseBrackets: true,
-        mode: { 
-            name: 'javascript', 
-            json: true 
+        mode: {
+            name: 'javascript',
+            json: true
         },
         lineWrapping: true,
         readOnly: false,
         scrollbarStyle: 'null'
     };
 
-    public pipelineEditorValue: string = '';
+    public pipelineEditorValue = '';
 
     public formErrors = {
         serviceName: '',
@@ -66,11 +66,11 @@ export class ApplicationsDialogBase extends DialogBase {
     private environmentsStoreSub: Subscription;
     private contractsStoreSub: Subscription;
     private modelVersionsStoreSub: Subscription;
-    private defaultAppOptions: { 
+    private defaultAppOptions: {
         services: {
-            weight: number, 
-            runtimeId: number, 
-            environmentId: number, 
+            weight: number,
+            runtimeId: number,
+            environmentId: number,
             modelVersionId: number,
             signatureName: string
         },
@@ -78,39 +78,38 @@ export class ApplicationsDialogBase extends DialogBase {
             sourceTopic: string,
             destinationTopic: string
         }
-    }
+    };
 
     constructor(
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public store: Store<AppState>
+        public store: Store<ApplicationState>
     ) {
         super(
             dialogRef
         );
-        
+
         this.modelVersionsStoreSub = this.store.select('modelVersions')
             .subscribe(modelVersions => {
                 this.modelVersions = modelVersions;
-            })
+            });
 
         this.runtimesStoreSub = this.store.select('runtimes')
             .subscribe(runtimes => {
                 this.runtimes = runtimes;
-            })
+            });
 
         this.environmentsStoreSub = this.store.select('environments')
             .subscribe(environments => {
                 this.environments = environments;
-            })
+            });
 
         this.contractsStoreSub = this.store.select('contracts')
             .subscribe(contracts => {
                 this.contracts = contracts;
-                console.log(this.contracts);
-            })
+            });
 
         this.defaultAppOptions = {
             services: {
@@ -124,30 +123,30 @@ export class ApplicationsDialogBase extends DialogBase {
                 sourceTopic: '',
                 destinationTopic: ''
             }
-        }
+        };
     }
 
     public createForm(data?) {
         this.serviceForm = this.fb.group({
-            applicationName: [ '' , Validators.required ],
-            kafkaStreaming: this.fb.array([ ]),
-            stages: this.fb.array([ ]),
+            applicationName: ['', Validators.required],
+            kafkaStreaming: this.fb.array([]),
+            stages: this.fb.array([]),
         });
 
         if (data) {
             this.serviceForm.patchValue({
                 applicationName: data.name
-            })
-            
+            });
+
             if (data.kafkaStreaming.length) {
                 data.kafkaStreaming.forEach(kafkaStreaming => {
                     this.addKafkaControl(kafkaStreaming);
-                })
+                });
             }
             if (data.executionGraph.stages.length) {
                 data.executionGraph.stages.forEach((stage, i) => {
                     this.addStageControl(stage, i);
-                })
+                });
             }
 
         } else {
@@ -190,7 +189,7 @@ export class ApplicationsDialogBase extends DialogBase {
             if (stage.services instanceof Array) {
                 stage.services.forEach(service => {
                     this.addServiceControl({ ...service.serviceDescription, weight: service.weight }, index);
-                })
+                });
             } else {
                 this.addServiceControl(stage.services, index);
             }
@@ -204,7 +203,7 @@ export class ApplicationsDialogBase extends DialogBase {
 
     public addServiceControl(modelVersion, index: number) { // TODO: Fix ModelVersion Type, now returns like number or object
         if (typeof modelVersion === 'number') {
-            modelVersion = { modelVersionId: modelVersion }
+            modelVersion = { modelVersionId: modelVersion };
         }
         const control = <FormArray>this.serviceForm.get(['stages', index]).get('services');
         control.push(this.addService(modelVersion));
@@ -229,10 +228,10 @@ export class ApplicationsDialogBase extends DialogBase {
     }
 
     public prepareFormDataToSubmit() {
-        let stages = [];
+        const stages = [];
 
         this.serviceForm.value.stages.forEach(stage => {
-            let services = [];
+            const services = [];
             stage.services.forEach(service => {
                 services.push(
                     {
@@ -266,17 +265,17 @@ export class ApplicationsDialogBase extends DialogBase {
 
     private addStage() {
         return this.fb.group({
-            services: this.fb.array([ ])
+            services: this.fb.array([])
         });
     }
 
     private addService(options) {
         return this.fb.group({
-            weight: [ options.weight ? options.weight : 0 , [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)] ],
-            runtime: [ options.runtimeId ? options.runtimeId : this.defaultAppOptions.services.runtimeId ],
-            environment: [ options.environmentId ? options.environmentId : this.defaultAppOptions.services.environmentId ],
-            modelVersion: [ options.modelVersionId ? options.modelVersionId : this.defaultAppOptions.services.modelVersionId ],
-            signatureName: [ options.signatureName ? options.signatureName : this.defaultAppOptions.services.signatureName ]
+            weight: [options.weight ? options.weight : 0, [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
+            runtime: [options.runtimeId ? options.runtimeId : this.defaultAppOptions.services.runtimeId],
+            environment: [options.environmentId ? options.environmentId : this.defaultAppOptions.services.environmentId],
+            modelVersion: [options.modelVersionId ? options.modelVersionId : this.defaultAppOptions.services.modelVersionId],
+            signatureName: [options.signatureName ? options.signatureName : this.defaultAppOptions.services.signatureName]
         });
     }
 
@@ -285,8 +284,8 @@ export class ApplicationsDialogBase extends DialogBase {
             this.isKafkaEnabled = !this.isKafkaEnabled;
         }
         return this.fb.group({
-            sourceTopic: [ kafkaStreaming.sourceTopic ],
-            destinationTopic: [ kafkaStreaming.destinationTopic ]
+            sourceTopic: [kafkaStreaming.sourceTopic],
+            destinationTopic: [kafkaStreaming.destinationTopic]
         });
     }
 

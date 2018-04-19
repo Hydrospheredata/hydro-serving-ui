@@ -23,9 +23,9 @@ export class Model {
         this.modelType = props['modelType'];
         this.name = props['name'];
         this.source = props['source'];
-        if (props['lastModelBuild']) { this.lastModelBuild = props['lastModelBuild'] };
-        if (props['lastModelVersion']) { this.lastModelVersion = props['lastModelVersion'] };
-        if (props['nextVersion']) { this.nextVersion = props['nextVersion'] };
+        if (props['lastModelBuild']) { this.lastModelBuild = props['lastModelBuild']; }
+        if (props['lastModelVersion']) { this.lastModelVersion = props['lastModelVersion']; }
+        if (props['nextVersion']) { this.nextVersion = props['nextVersion']; }
     }
 }
 

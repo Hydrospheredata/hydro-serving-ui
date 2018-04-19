@@ -27,7 +27,7 @@ import {
 
 // Effects
 import {
-    ApplicationsEffects, 
+    ApplicationsEffects,
     ModelEffects,
     RuntimesEffects,
     ContractsEffects,
@@ -50,9 +50,9 @@ import { httpServiceFactory } from '@shared/factories/_index';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { 
-    ModelsReducer, 
-    ModelBuildsReducer, 
+import {
+    ModelsReducer,
+    ModelBuildsReducer,
     ApplicationsReducer,
     RuntimesReducer,
     ContractsReducer,
@@ -86,16 +86,16 @@ import {
             maxAge: 25
         }),
         EffectsModule.forRoot([
-            ApplicationsEffects, 
-            ModelEffects, 
-            RuntimesEffects, 
-            ContractsEffects, 
+            ApplicationsEffects,
+            ModelEffects,
+            RuntimesEffects,
+            ContractsEffects,
             SourcesEffects,
             EnvironmentsEffects
         ])
     ],
     exports: [
-        NavbarComponent, 
+        NavbarComponent,
         LoaderComponent,
         MdlModule,
         MdlSelectModule,
@@ -103,7 +103,7 @@ import {
         // ClipboardModule,
     ],
     declarations: [
-        NavbarComponent, 
+        NavbarComponent,
         LoaderComponent,
     ],
     providers: [
@@ -125,7 +125,7 @@ import {
         {
             provide: HttpService,
             useFactory: httpServiceFactory,
-            deps: [ XHRBackend, RequestOptions, LoaderStateService ]
+            deps: [XHRBackend, RequestOptions, LoaderStateService]
         }
     ]
 })

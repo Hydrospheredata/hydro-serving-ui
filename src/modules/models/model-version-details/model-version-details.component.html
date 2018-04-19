@@ -1,64 +1,38 @@
 <div class="content">
     <div class="content-header">
         <button class="btn btn-flat" [routerLink]="['../']">
-            <svg><use xlink:href="#icon-arrow-left" /></svg>
-            return to model
+            <svg>
+                <use xlink:href="#icon-arrow-left" />
+            </svg>
+            back to model
         </button>
-        
+
         <div class="content-header__title">{{ build?.model?.source }} / v{{ build?.version }}</div>
     </div>
 
 
     <div class="content-body">
-        <div class="hydro-panel" *ngIf="!contracts?.signatures?.length">
-            <div class="no-contracts">There are no contracts for this model build!</div>
-        </div>
-        <div class="hydro-panel" *ngFor="let signature of contracts.signatures">
-            <h5 class="hydro-panel__header">Signature: {{ signature.signatureName }}</h5>
-            <table class='hydro-table hydro-table-models'>
-                <thead class="hydro-table-head">
-                    <tr>
-                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }} (Input)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let output of signature.inputs" class='hydro-table-body__row'>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>
-                                <span *ngFor="let item of output.shape">{{ item }}</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class='hydro-table hydro-table-models'>
-                <thead class="hydro-table-head">
-                    <tr>
-                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{ headCell }} (Output)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let output of signature.outputs" class='hydro-table-body__row'>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ output.fieldName }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ output.dataType }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>
-                                <span *ngFor="let item of output.shape">{{ item }}</span>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <ol class="content-info__sublist">
+            <li class="content-info__sublist-item">
+                <span class="content-info__sublist-item-title">Created</span>
+                <span class="content-info__sublist-item-value">
+                    <div class="status">{{ build?.finished | utcToLocal | amTimeAgo }}</div>
+                </span>
+            </li>
+            <li class="content-info__sublist-item">
+                <span class="content-info__sublist-item-title">Version</span>
+                <span class="content-info__sublist-item-value">
+                    <div class="status">{{ build?.version }}</div>
+                    <div class="status-label" *ngIf="data?.nextVersion">New version available</div>
+                </span>
+            </li>
+            <li class="content-info__sublist-item">
+                <span class="content-info__sublist-item-title">Status</span>
+                <span class="content-info__sublist-item-value">
+                    <div class="status">{{ build?.status }}</div>
+                </span>
+            </li>
+        </ol>
+        <hydro-signatures [data]="build"></hydro-signatures>
     </div>
 </div>

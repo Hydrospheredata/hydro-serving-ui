@@ -7,7 +7,7 @@ export class Signature {
     constructor(props: any = {}) {
         this.signatureName = props['signatureName'];
         this.inputs = props['inputs'];
-        this.outputs = props['outputs'];   
+        this.outputs = props['outputs'];
     }
 }
 

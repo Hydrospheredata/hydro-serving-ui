@@ -13,7 +13,7 @@ export class RuntimeBuilder {
     }
 
     private toRuntime(props): Runtime {
-        let runtime = new Runtime({
+        const runtime = new Runtime({
             id: props['id'],
             name: props['name'],
             version: props['version'],

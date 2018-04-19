@@ -1,9 +1,3 @@
-<ng-select [allowClear]="true"
-              [items]="items"
-              [disabled]="disabled"
-              (data)="refreshValue($event)"
-              (selected)="selected($event)"
-              (removed)="removed($event)"
-              (typed)="typed($event)"
-              placeholder="No city selected">
-</ng-select>
+<select name="" id="">
+    <option *ngFor="let item of items" value="" (click)="selectItem(value)"></option>
+</select>

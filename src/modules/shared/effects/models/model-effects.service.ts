@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { ModelsService } from '@shared/services/_index';
 import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@shared/builders/_index';
 import * as HydroActions from '@shared/actions/_index';
+import { flatMap, map, catchError } from 'rxjs/operators';
 
 
 
@@ -17,30 +18,49 @@ export class ModelEffects {
         private modelVersionBuilder: ModelVersionBuilder,
         private modelBuildBuilder: ModelBuildBuilder,
         private modelsService: ModelsService,
-        private actions: Actions,
-    ) {}
-    
-    @Effect() loadModels$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODELS)
-        .flatMap(() => this.modelsService.getModels().first()
-            .map(data => {
-                return ({ type: HydroActions.GET_MODELS_SUCCESS, payload: data.map(this.modelBuilder.build, this.modelBuilder) })
-            })
+        private actions$: Actions,
+    ) { }
+
+    @Effect() loadModels$: Observable<Action> = this.actions$
+        .ofType(HydroActions.ModelActionTypes.Get)
+        .pipe(
+            flatMap(() => this.modelsService
+                .getModels()
+                .pipe(
+                    map(data => {
+                        return (new HydroActions.GetModelsSuccessAction(data.map(this.modelBuilder.build, this.modelBuilder)));
+                    }),
+                    catchError(error => {
+                        return Observable.of(new HydroActions.GetModelsFailAction(error));
+                    })
+                )
+            )
         );
 
-    @Effect() getAllVersions$: Observable<Action> = this.actions.ofType(HydroActions.GET_ALL_VERSIONS)
-        .flatMap(() => this.modelsService.getAllVersions().first()
-            .map(data => {
-                return ({ type: HydroActions.GET_ALL_VERSIONS_SUCCESS, payload: data.map(this.modelVersionBuilder.build, this.modelVersionBuilder) })
-            })
+    @Effect() getAllVersions$: Observable<Action> = this.actions$
+        .ofType(HydroActions.ModelVersionActionTypes.GetModelVersions)
+        .pipe(
+            flatMap(() => this.modelsService
+                .getAllVersions()
+                .pipe(
+                    map(data => {
+                        const preparedData = data.map(this.modelVersionBuilder.build, this.modelVersionBuilder);
+                        return (new HydroActions.GetModelVersionsSuccessAction(preparedData));
+                    }),
+                    catchError(error => Observable.of(new HydroActions.GetModelVersionsFailAction(error)))
+                )
+            )
         );
 
-    @Effect() getModelBuilds$: Observable<Action> = this.actions.ofType(HydroActions.GET_MODEL_BUILDS)
+    @Effect() getModelBuilds$: Observable<Action> = this.actions$.ofType(HydroActions.GET_MODEL_BUILDS)
         .map((action: HydroActions.GetModelBuildsAction) => action.payload)
         .switchMap(payload => {
             return this.modelsService.getModelBuilds(payload)
                 .take(1)
                 .map(data => {
-                    return ({ type: HydroActions.GET_MODEL_BUILDS_SUCCESS, payload: data.map(this.modelBuildBuilder.build, this.modelBuildBuilder) });
-                })
+                    const preparedData = data.map(this.modelBuildBuilder.build, this.modelBuildBuilder);
+                    return ({ type: HydroActions.GET_MODEL_BUILDS_SUCCESS, payload: preparedData });
+                });
         });
+
 }

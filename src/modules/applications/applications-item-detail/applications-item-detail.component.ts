@@ -1,15 +1,19 @@
-import { Component, ViewEncapsulation, AfterContentInit, OnDestroy,
-    // ChangeDetectorRef,
-    ElementRef } from '@angular/core';
+import {
+    Component,
+    ViewEncapsulation,
+    AfterContentInit,
+    OnDestroy,
+    // ElementRef
+} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
-import { Chart } from 'chart.js';
-import { chart } from 'highcharts';
+// import { Chart } from 'chart.js';
+// import { chart } from 'highcharts';
 
 import { Store } from '@ngrx/store';
 import {
-    AppState,
+    ApplicationState,
     Application,
     Runtime
 } from '@shared/models/_index';
@@ -76,20 +80,16 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
     public signatureName: any[];
 
     private eventSourcePath: string;
-    // private eventSourceAlerts: any;
     private eventSourceMeasures: any;
     private storeSub: Subscription;
     private activeRouteSub: Subscription;
-    private runtimesStoreSub: Subscription;
 
     constructor(
-        public store: Store<AppState>,
+        public store: Store<ApplicationState>,
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
-        // private modelServicesService: ModelServicesService,
         private router: Router,
-        // private changeDetector: ChangeDetectorRef,
-        private elementRef: ElementRef,
+        // private elementRef: ElementRef,
     ) {
         this.activeRouteSub = this.activatedRoute.params
             .map(params => {
@@ -101,9 +101,6 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
                 if (this.storeSub) {
                     this.storeSub.unsubscribe();
                 }
-                // if (this.eventSourceAlerts) {
-                //     this.eventSourceAlerts.close();
-                // }
                 if (this.eventSourceMeasures) {
                     this.eventSourceMeasures.close();
                 }
@@ -112,86 +109,85 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
     }
 
     ngAfterContentInit() {
-        this.initChart();
+        // this.initChart();
     }
 
-    public initChart() {
-        Chart.defaults.global.defaultFontColor = '#04143c';
-        Chart.defaults.global.defaultFontFamily = '"Museo Sans Regular"';
-        const averageChartRef = this.elementRef.nativeElement.querySelector('#averageChart');
-        const confidenceChartRef = this.elementRef.nativeElement.querySelector('#confidenceChart');
+    // public initChart() {
+    //     Chart.defaults.global.defaultFontColor = '#04143c';
+    //     Chart.defaults.global.defaultFontFamily = '"Museo Sans Regular"';
+    //     const averageChartRef = this.elementRef.nativeElement.querySelector('#averageChart');
+    //     const confidenceChartRef = this.elementRef.nativeElement.querySelector('#confidenceChart');
 
-        this.averageChart = chart(averageChartRef, {
-                credits: {
-                    enabled: false
-                },
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: 'Classes\' average values'
-                },
-                xAxis: {
-                    title: {
-                        text: 'Classes'
-                    },
-                    categories: []
-                },
-                yAxis: {
-                    title: {
-                        text: 'Values'
-                    }
-                },
-                tooltip: {
-                    shared: true
-                },
-                plotOptions: {
-                    column: {
-                        grouping: false,
-                        shadow: false,
-                        borderWidth: 0
-                    }
-                },
-                series: [{
-                    name: 'Average',
-                    data: []
-                }, {
-                    name: 'Total',
-                    data: [],
-                    pointPadding: 0.2
-                }]
-            });
+    //     this.averageChart = chart(averageChartRef, {
+    //         credits: {
+    //             enabled: false
+    //         },
+    //         chart: {
+    //             type: 'column'
+    //         },
+    //         title: {
+    //             text: 'Classes\' average values'
+    //         },
+    //         xAxis: {
+    //             title: {
+    //                 text: 'Classes'
+    //             },
+    //             categories: []
+    //         },
+    //         yAxis: {
+    //             title: {
+    //                 text: 'Values'
+    //             }
+    //         },
+    //         tooltip: {
+    //             shared: true
+    //         },
+    //         plotOptions: {
+    //             column: {
+    //                 grouping: false,
+    //                 shadow: false,
+    //                 borderWidth: 0
+    //             }
+    //         },
+    //         series: [{
+    //             name: 'Average',
+    //             data: []
+    //         }, {
+    //             name: 'Total',
+    //             data: [],
+    //             pointPadding: 0.2
+    //         }]
+    //     });
 
-        this.confidenceChart = chart(confidenceChartRef, {
-                credits: {
-                    enabled: false
-                },
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: 'Confidence'
-                },
-                xAxis: {
-                    title: {
-                        text: 'Classes'
-                    },
-                    categories: []
-                },
-                yAxis: {
-                    title: {
-                        text: 'Confidence values'
-                    }
-                },
-                series: [{
-                    name: 'Classes',
-                    data: []
-                }]
-            });
-    }
+    //     this.confidenceChart = chart(confidenceChartRef, {
+    //         credits: {
+    //             enabled: false
+    //         },
+    //         chart: {
+    //             type: 'column'
+    //         },
+    //         title: {
+    //             text: 'Confidence'
+    //         },
+    //         xAxis: {
+    //             title: {
+    //                 text: 'Classes'
+    //             },
+    //             categories: []
+    //         },
+    //         yAxis: {
+    //             title: {
+    //                 text: 'Confidence values'
+    //             }
+    //         },
+    //         series: [{
+    //             name: 'Classes',
+    //             data: []
+    //         }]
+    //     });
+    // }
 
     ngOnDestroy() {
-        // this.eventSourceAlerts.close();
         this.eventSourceMeasures.close();
         if (this.activeRouteSub) {
             this.activeRouteSub.unsubscribe();
@@ -199,21 +195,12 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
         if (this.storeSub) {
             this.storeSub.unsubscribe();
         }
-        if (this.runtimesStoreSub) {
-            this.runtimesStoreSub.unsubscribe();
-        }
-    }
-
-    public getRuntimeInfo(runtimeId: number) {
-        console.log(this.runtimes.find(runtimes => runtimes.id === runtimeId));
-        const runtime = this.runtimes.find(runtimes => runtimes.id === runtimeId);
-        return runtime.name;
     }
 
     public testApplication(application: Application) {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
-            styles: {'width': '900px', 'min-height': '250px'},
+            styles: { 'width': '900px', 'min-height': '250px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
@@ -226,32 +213,30 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
     public editApplication(application: Application) {
         this.dialog.showCustomDialog({
             component: DialogUpdateServiceComponent,
-            styles: {'width': '900px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto'},
+            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{provide: injectableServiceUpdate, useValue: application}]
+            providers: [{ provide: injectableServiceUpdate, useValue: application }]
         });
     }
 
     public removeApplication(id: number) {
         this.dialog.showCustomDialog({
             component: DialogDeleteServiceComponent,
-            styles: {'width': '600px', 'min-height': '250px'},
+            styles: { 'width': '600px', 'min-height': '250px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{provide: injectableApplicationId, useValue: id}]
+            providers: [{ provide: injectableApplicationId, useValue: id }]
         });
     }
 
     private loadInitialData(id) {
-        this.runtimesStoreSub = this.store.select('runtimes')
-            .subscribe(runtimes => this.runtimes = runtimes);
         this.storeSub = this.store.select('applications')
             .filter(applications => applications.length > 0)
             .subscribe(applications => {
@@ -267,13 +252,13 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
         const publicUrl = `${window.location.protocol}//${window.location.hostname}/v1/measure/streaming`;
         const localUrl = `${window.location.protocol}//${window.location.hostname}:9999/v1/measure/streaming`;
         this.eventSourcePath = environment.production ? publicUrl : localUrl;
-        // this.eventSourceAlerts = new EventSource(`${this.eventSourcePath}/alerts`);
+
         this.eventSourceMeasures = new EventSource(`${this.eventSourcePath}/measures`);
 
         // this.alerts = [];
 
         // this.eventSourceAlerts.onopen = (e) => { console.log(`Connected to ${ e.target.url}`) };
-        this.eventSourceMeasures.onopen = (e) => { console.log(`Connected to ${ e.target.url}`); };
+        this.eventSourceMeasures.onopen = (e) => { console.log(`Connected to ${e.target.url}`); };
         // this.eventSourceAlerts.onmessage = (e) => {
         //     if (e.data.length) {
         //         let response = JSON.parse(e.data);
@@ -289,28 +274,21 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
         this.eventSourceMeasures.onmessage = (e) => {
             if (e.data.length) {
                 const response = JSON.parse(e.data);
-                // let labels: string[] = [];
-
-                console.log(response);
 
                 if (response.applicationId === this.application.name) {
 
                     const confidences = response.confidences;
                     const measures = response.measures;
 
-                    console.log(measures);
-
                     for (const key in confidences) {
                         if (confidences.hasOwnProperty(key)) {
                             if (chartConfidenceData.find(item => item.name === key) === undefined) {
-                                chartConfidenceData.push({name: key, data: confidences[key]});
+                                chartConfidenceData.push({ name: key, data: confidences[key] });
                             } else {
                                 chartConfidenceData.find(item => item.name === key).data = confidences[key];
                             }
                         }
                     }
-
-
 
                     const labels: string[] = [];
                     const chartData: number[] = [];
@@ -320,7 +298,7 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
                         chartData.push(item.data);
                     });
 
-                    this.confidenceChart.xAxis[0].update({categories: labels});
+                    this.confidenceChart.xAxis[0].update({ categories: labels });
                     this.confidenceChart.series[0].setData(chartData, false);
                     this.confidenceChart.redraw();
 
@@ -336,16 +314,10 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
                         .map(l => measures.filter(m => m.class === l)[0])
                         .map(entry => entry.total);
 
-                    console.log(measureClasses);
-                    console.log(cumulativeSumData);
-                    console.log(totalData);
-
-                    this.averageChart.xAxis[0].update({categories: measureClasses});
+                    this.averageChart.xAxis[0].update({ categories: measureClasses });
                     this.averageChart.series[0].setData(cumulativeSumData, false);
                     this.averageChart.series[1].setData(totalData, false);
                     this.averageChart.redraw();
-
-                    console.log(this.averageChart);
 
                     // measureClasses.forEach((label, i) => {
                     //     if (-1 === Object.keys(classToData).indexOf(label)) {
@@ -408,19 +380,9 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
         this.serviceModels = [];
         if (this.applications.length) {
             this.application = this.applications.filter(application => application.id === Number(id)).shift();
-            this.signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/);
+            if (this.application) {
+                this.signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/);
+            }
         }
     }
-
-    // private dummyColorPicker(i = 0, opacity = 1) {
-    //     let base = {
-    //         r: 255 - i*20,
-    //         g: 0 + i*20,
-    //         b: 50 + i*10
-    //     };
-
-    //     return `rgba(${base.r}, ${base.g}, ${base.b}, ${opacity})`
-    // }
-
-
 }

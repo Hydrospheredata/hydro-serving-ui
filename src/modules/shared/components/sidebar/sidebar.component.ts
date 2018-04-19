@@ -7,8 +7,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { Application, Model, Source } from '@shared/models/_index';
 import { DialogAddServiceComponent } from '@components/dialogs/_index';
-// import * as moment from 'moment';
-
 
 
 
@@ -16,20 +14,20 @@ import { DialogAddServiceComponent } from '@components/dialogs/_index';
     selector: 'hydro-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
-    providers: [ SortByPipe ]
+    providers: [SortByPipe]
 })
 export class SidebarComponent implements OnInit, OnDestroy {
 
     public sidebarList: Application[] | Model[] | Source[] = [];
     public searchQ: string;
-    public sidebarFilter = {'deployed': true, 'undeployed': true, 'apps': true, 'pipelines': true};
-    @Input() isActionBtnEnabled: boolean = false;
-    @Input() isFilterEnabled: boolean = false;
+    public sidebarFilter = { 'deployed': true, 'undeployed': true, 'apps': true, 'pipelines': true };
+    @Input() isActionBtnEnabled = false;
+    @Input() isFilterEnabled = false;
     @Input() isModels: boolean;
     @Input() sidebarTitle: string;
     @Input() sidebarData: Observable<Application[] | Model[] | Source[]>;
-    
-    private isRedirectable: boolean = false;
+
+    private isRedirectable = false;
     private routeSub: Subscription;
     private sidebarDataSub: Subscription;
 
@@ -71,7 +69,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     public addApplication() {
         this.dialog.showCustomDialog({
             component: DialogAddServiceComponent,
-            styles: { 'width': '850px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto' },
+            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

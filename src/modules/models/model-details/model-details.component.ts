@@ -4,14 +4,11 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
-import { AppState, Model, ModelBuild, Signature } from '@shared/models/_index';
-import { ContractsService } from '@shared/services/_index';
+import { ApplicationState, Model, ModelBuild, Signature } from '@shared/models/_index';
 
 import {
     DialogModelBuildComponent,
-    injectableModelOptions,
-    DialogEditContractComponent,
-    injectableModelId
+    injectableModelOptions
 } from '@components/dialogs/_index';
 
 import * as Actions from '@shared/actions/_index';
@@ -27,7 +24,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     public model: Model;
     public signatures: Signature[];
     public modelBuilds: ModelBuild[];
-    public tableHeader: string[] = ['Created', 'Version', 'Status'];
+    public tableHeader: string[] = ['Version', 'Created', 'Status', 'Applications', ''];
     private modelBuildsSub: Subscription;
     private modelsStoreSelectionSubscription: Subscription;
     private activatedRouteSubscription: Subscription;
@@ -36,8 +33,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     constructor(
         private activatedRoute: ActivatedRoute,
         private dialog: MdlDialogService,
-        private store: Store<AppState>,
-        private contractsService: ContractsService,
+        private store: Store<ApplicationState>,
     ) { }
 
     public ngOnInit() {
@@ -74,7 +70,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.modelBuildsSub = this.store.select('modelBuilds')
             .skip(1)
             .subscribe(modelBuilds => {
-                console.log(modelBuilds);
                 this.modelBuilds = modelBuilds.reverse();
             });
 
@@ -82,12 +77,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             .filter(models => models.length > 0)
             .subscribe(models => {
                 this.model = models.find(modelsStoreItem => modelsStoreItem.id === Number(modelId));
-            });
-
-        this.contractsService.getModelContracts(Number(modelId))
-            .subscribe(data => {
-                console.log(data.signatures);
-                this.signatures = data.signatures;
             });
     }
 
@@ -101,19 +90,6 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
             providers: [{ provide: injectableModelOptions, useValue: model }],
-        });
-    }
-
-    public editModelContract(modelId: number) {
-        this.dialog.showCustomDialog({
-            component: DialogEditContractComponent,
-            styles: { 'width': '800px', 'min-height': '350px', 'overflow-y': 'scroll', 'height': '100%' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-            providers: [{ provide: injectableModelId, useValue: modelId }],
         });
     }
 

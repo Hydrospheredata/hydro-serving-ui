@@ -14,7 +14,7 @@ export class ModelVersionBuilder {
 
     private toModelVersion(props) {
         let lastModelVersion: ModelVersion;
-        
+
         if (props) {
             lastModelVersion = new ModelVersion({
                 id: props['id'],

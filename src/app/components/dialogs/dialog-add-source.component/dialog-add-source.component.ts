@@ -5,7 +5,7 @@ import { FormGroup, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { DialogBase } from '@shared/base/_index';
 // import * as Actions from '@shared/actions/_index';
-import { AppState } from '@shared/models/_index';
+import { ApplicationState } from '@shared/models/_index';
 import { FormsService, ApplicationsService } from '@shared/services/_index';
 
 
@@ -18,14 +18,14 @@ import { FormsService, ApplicationsService } from '@shared/services/_index';
 export class DialogAddSourceComponent extends DialogBase implements OnInit {
 
     public sourceForm: FormGroup;
-    public sourceType: string = 's3';
+    public sourceType: string;
 
     constructor(
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public store: Store<AppState>,
+        public store: Store<ApplicationState>,
         public applicationsService: ApplicationsService
     ) {
         super(
@@ -34,19 +34,14 @@ export class DialogAddSourceComponent extends DialogBase implements OnInit {
     }
 
     ngOnInit() {
+        this.sourceType = 's3';
         this.createForm();
         this.initFormChangesListener();
     }
 
-    public onSubmit() {
-        
-    }
+    public onSubmit() { }
 
-    private createForm() {
-        // this.sourceForm = this.fb.group({
-        //     signatures: this.fb.array([this.addSignature()])
-        // });
-    }
+    private createForm() { }
 
     private initFormChangesListener() {
         this.sourceForm.valueChanges
