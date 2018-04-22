@@ -13,12 +13,20 @@ server {
   }
 
   location /v1/measure {
-      proxy_pass http://SONAR_HOST;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Scheme $scheme;
-      proxy_set_header Upgrade $http_upgrade;
-      proxy_http_version 1.1;
-    }
+    proxy_pass http://SONAR_HOST;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
+
+  location /metrics {
+    proxy_pass http://ELASTIC_HOST;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
 
   location /manager {
     proxy_pass http://MANAGER_HOST;
