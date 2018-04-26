@@ -76,6 +76,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
             .filter(models => models.length > 0)
             .subscribe(models => {
                 this.model = models.find(modelsStoreItem => modelsStoreItem.id === modelId);
+                this.store.dispatch(new Actions.GetSignaturesAction(this.model));
             });
     }
 

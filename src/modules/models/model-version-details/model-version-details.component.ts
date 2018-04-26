@@ -70,6 +70,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
                 this.build = builds.find(dataStoreItem => {
                     return dataStoreItem.version === modelVersionId && dataStoreItem.model.id === this.modelId;
                 });
+                this.store.dispatch(new Actions.GetSignaturesAction(this.build));
             });
     }
 

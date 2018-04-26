@@ -1,6 +1,6 @@
 export * from './form-service.service';
 export * from './loader-state.service';
-export * from './elastic.service';
+export * from './influxdb.service';
 
 export * from './applications/_index';
 export * from './models/_index';
