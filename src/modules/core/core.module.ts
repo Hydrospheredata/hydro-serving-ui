@@ -21,7 +21,7 @@ import {
     SignaturesService,
     RuntimesService,
     SourcesService,
-    ElasticService
+    InfluxDBService
 } from '@shared/services/_index';
 
 // Effects
@@ -115,7 +115,7 @@ import {
         SignaturesService,
         RuntimesService,
         SourcesService,
-        ElasticService,
+        InfluxDBService,
         LoaderStateService,
         {
             provide: HttpService,

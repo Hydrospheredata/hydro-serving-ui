@@ -3,7 +3,7 @@ import { Client } from 'elasticsearch';
 import { environment } from '@environments/environment';
 
 @Injectable()
-export class ElasticService {
+export class InfluxDBService {
 
     private client: Client;
     private elasticUrl: string;
