@@ -8,7 +8,7 @@ describe('ModelsWrapperComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ ModelsWrapperComponent ]
+            declarations: [ModelsWrapperComponent]
         })
             .compileComponents();
     }));
@@ -19,7 +19,7 @@ describe('ModelsWrapperComponent', () => {
         fixture.detectChanges();
     });
 
-    // it('should be created', () => {
-    //   expect(component).toBeTruthy();
-    // });
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+    });
 });

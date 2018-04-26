@@ -1,25 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ServicesWrapperComponent } from './services-wrapper.component';
+import { ApplicationsWrapperComponent } from './applications-wrapper.component';
+import { SidebarComponent } from '@modules/shared/_index';
 
-describe('ServicesWrapperComponent', () => {
-    let component: ServicesWrapperComponent;
-    let fixture: ComponentFixture<ServicesWrapperComponent>;
+describe('ApplicationsWrapperComponent', () => {
+    let component: ApplicationsWrapperComponent;
+    let fixture: ComponentFixture<ApplicationsWrapperComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ ServicesWrapperComponent ]
+            declarations: [
+                ApplicationsWrapperComponent,
+                SidebarComponent
+            ]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ServicesWrapperComponent);
+        fixture = TestBed.createComponent(ApplicationsWrapperComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
 
-    // it('should be created', () => {
-    //   expect(component).toBeTruthy();
-    // });
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+    });
 });

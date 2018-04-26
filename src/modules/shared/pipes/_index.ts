@@ -1,4 +1,4 @@
-export * from './model-filter.pipe';
+export * from './sidebar-filter.pipe';
 export * from './model-status.pipe';
 export * from './positive-numbers.pipe';
 export * from './search.pipe';

@@ -8,7 +8,7 @@ describe('LoaderComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ LoaderComponent ]
+            declarations: [LoaderComponent]
         })
             .compileComponents();
     }));
@@ -19,7 +19,7 @@ describe('LoaderComponent', () => {
         fixture.detectChanges();
     });
 
-    // it('should be created', () => {
-    //   expect(component).toBeTruthy();
-    // });
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+    });
 });

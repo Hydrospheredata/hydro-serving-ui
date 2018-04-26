@@ -8,7 +8,7 @@ describe('NavbarComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ NavbarComponent ]
+            declarations: [NavbarComponent]
         })
             .compileComponents();
     }));
@@ -19,7 +19,7 @@ describe('NavbarComponent', () => {
         fixture.detectChanges();
     });
 
-    // it('should be created', () => {
-    //   expect(component).toBeTruthy();
-    // });
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+    });
 });

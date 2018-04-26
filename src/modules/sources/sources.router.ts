@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { 
-    SourcesWrapperComponent, 
-    SourcesItemDetailComponent 
+import {
+    SourcesWrapperComponent,
+    SourcesItemDetailComponent
 } from './_index';
 
 @NgModule({
     imports: [
-    RouterModule.forChild([
+        RouterModule.forChild([
             {
                 path: 'sources',
                 component: SourcesWrapperComponent,

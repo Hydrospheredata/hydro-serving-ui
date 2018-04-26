@@ -3,7 +3,7 @@ import { ApplicationActions, ApplicationActionTypes } from '@shared/actions/_ind
 
 
 
-const initialState: Application[] = [];
+export const initialState: Application[] = [];
 
 export function ApplicationsReducer(state = initialState, action: ApplicationActions) {
     switch (action.type) {

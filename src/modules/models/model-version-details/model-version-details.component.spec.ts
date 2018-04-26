@@ -1,22 +1,26 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModelDetailsComponent } from './model-details.component';
+import { ModelVersionDetailsComponent } from './model-version-details.component';
 
-describe('ModelDetailsComponent', () => {
-    let component: ModelDetailsComponent;
-    let fixture: ComponentFixture<ModelDetailsComponent>;
+describe('ModelVersionDetailsComponent', () => {
+    let component: ModelVersionDetailsComponent;
+    let fixture: ComponentFixture<ModelVersionDetailsComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ ModelDetailsComponent ]
+            declarations: [ModelVersionDetailsComponent]
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ModelDetailsComponent);
+        fixture = TestBed.createComponent(ModelVersionDetailsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
+    });
+
+    it('it should be created', () => {
+        expect(component).toBeTruthy();
     });
 
 });

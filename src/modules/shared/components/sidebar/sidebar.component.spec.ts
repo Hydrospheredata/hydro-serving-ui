@@ -8,7 +8,7 @@ describe('SidebarComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ SidebarComponent ]
+            declarations: [SidebarComponent]
         })
             .compileComponents();
     }));
@@ -19,7 +19,7 @@ describe('SidebarComponent', () => {
         fixture.detectChanges();
     });
 
-    // it('should be created', () => {
-    //   expect(component).toBeTruthy();
-    // });
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+    });
 });

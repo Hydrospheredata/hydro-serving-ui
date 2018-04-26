@@ -8,7 +8,7 @@ describe('DialogUpdateServiceComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ DialogUpdateServiceComponent ]
+            declarations: [DialogUpdateServiceComponent]
         })
             .compileComponents();
     }));
@@ -19,7 +19,7 @@ describe('DialogUpdateServiceComponent', () => {
         fixture.detectChanges();
     });
 
-    // it('should be created', () => {
-    //   expect(component).toBeTruthy();
-    // });
+    it('should be created', () => {
+        expect(component).toBeTruthy();
+    });
 });

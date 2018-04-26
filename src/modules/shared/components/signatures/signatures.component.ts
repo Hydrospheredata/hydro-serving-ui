@@ -5,7 +5,7 @@ import { MdlSnackbarService } from '@angular-mdl/core';
 import { Model, Signature, ApplicationState } from '@shared/models/_index';
 import { SignaturesService } from '@shared/services/_index';
 import { Store } from '@ngrx/store';
-// import * as Actions from '@shared/actions/_index';
+import * as Actions from '@shared/actions/_index';
 import { Subscription } from 'rxjs/Subscription';
 
 
@@ -37,7 +37,6 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
         }
         this.signaturesSub = this.store.select('signatures')
             .filter(signatures => signatures.length > 0)
-            .skip(1)
             .subscribe(signatures => {
                 console.log(signatures);
                 this.signatures = signatures;
@@ -47,9 +46,9 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnChanges() {
         this.createForm();
-        // if (this.data) {
-        //     this.store.dispatch(new Actions.GetSignaturesAction(this.data));
-        // }
+        if (this.data) {
+            this.store.dispatch(new Actions.GetSignaturesAction(this.data));
+        }
     }
 
     ngOnDestroy() {

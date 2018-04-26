@@ -8,7 +8,7 @@ describe('ModelDetailsComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ ModelDetailsComponent ]
+            declarations: [ModelDetailsComponent]
         })
             .compileComponents();
     }));
@@ -17,6 +17,10 @@ describe('ModelDetailsComponent', () => {
         fixture = TestBed.createComponent(ModelDetailsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
+    });
+
+    it('it should be created', () => {
+        expect(component).toBeTruthy();
     });
 
 });

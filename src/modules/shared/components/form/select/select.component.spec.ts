@@ -8,7 +8,7 @@ describe('InputTextComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ InputTextComponent ]
+            declarations: [InputTextComponent]
         })
             .compileComponents();
     }));
@@ -19,7 +19,7 @@ describe('InputTextComponent', () => {
         fixture.detectChanges();
     });
 
-    // it('should create', () => {
-    //   expect(component).toBeTruthy();
-    // });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

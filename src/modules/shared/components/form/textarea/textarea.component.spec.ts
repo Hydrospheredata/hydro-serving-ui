@@ -8,7 +8,7 @@ describe('TextareaComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ TextareaComponent ]
+            declarations: [TextareaComponent]
         })
             .compileComponents();
     }));
@@ -19,7 +19,7 @@ describe('TextareaComponent', () => {
         fixture.detectChanges();
     });
 
-    // it('should create', () => {
-    //   expect(component).toBeTruthy();
-    // });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

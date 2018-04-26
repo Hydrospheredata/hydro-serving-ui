@@ -22,18 +22,23 @@ import {
                 children: [
                     {
                         path: ':modelId',
-                        children: [
-                            {
-                                path: '',
-                                pathMatch: 'full',
-                                component: ModelDetailsComponent,
-                            },
-                            {
-                                path: ':modelVersionId',
-                                pathMatch: 'full',
-                                component: ModelVersionDetailsComponent
-                            }
-                        ]
+                        component: ModelDetailsComponent,
+                    },
+                    {
+                        path: ':modelId/:modelVersionId',
+                        component: ModelVersionDetailsComponent
+                        // children: [
+                        //     {
+                        //         path: '',
+                        //         pathMatch: 'full',
+                        //         component: ModelDetailsComponent,
+                        //     },
+                        //     {
+                        //         path: ':modelVersionId',
+                        //         pathMatch: 'full',
+                        //         component: ModelVersionDetailsComponent
+                        //     }
+                        // ]
                     }
                 ]
             }

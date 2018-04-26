@@ -3,9 +3,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
     name: 'sidebarFilter',
     pure: false
-    })
+})
 export class SidebarFilterPipe implements PipeTransform {
-  
+
     transform(items: any, filterStatus: any): any {
         return items.filter(item => {
             let result = false;
