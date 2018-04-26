@@ -20,7 +20,7 @@ import {
     ApplicationsService,
     ModelsService,
     EnvironmentsService,
-    ContractsService,
+    SignaturesService,
     RuntimesService,
     SourcesService,
     ElasticService
@@ -31,7 +31,7 @@ import {
     ApplicationsEffects,
     ModelEffects,
     RuntimesEffects,
-    ContractsEffects,
+    SignaturesEffects,
     SourcesEffects,
     EnvironmentsEffects,
 } from '@shared/effects/_index';
@@ -56,7 +56,7 @@ import {
     ModelBuildsReducer,
     ApplicationsReducer,
     RuntimesReducer,
-    ContractsReducer,
+    SignaturesReducer,
     SourcesReducer,
     EnvironmentsReducer,
     ModelVersionsReducer
@@ -79,7 +79,7 @@ import {
             modelBuilds: ModelBuildsReducer,
             modelVersions: ModelVersionsReducer,
             runtimes: RuntimesReducer,
-            contracts: ContractsReducer,
+            signatures: SignaturesReducer,
             sources: SourcesReducer,
             environments: EnvironmentsReducer
         }),
@@ -90,7 +90,7 @@ import {
             ApplicationsEffects,
             ModelEffects,
             RuntimesEffects,
-            ContractsEffects,
+            SignaturesEffects,
             SourcesEffects,
             EnvironmentsEffects
         ])
@@ -119,7 +119,7 @@ import {
         ApplicationsService,
         ModelsService,
         EnvironmentsService,
-        ContractsService,
+        SignaturesService,
         RuntimesService,
         SourcesService,
         ElasticService,

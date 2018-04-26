@@ -5,7 +5,7 @@ import { HttpService } from '@shared/services/http/_index';
 
 
 @Injectable()
-export class ContractsService {
+export class SignaturesService {
 
     private baseAPIUrl: string;
 
@@ -15,21 +15,21 @@ export class ContractsService {
         this.baseAPIUrl = `${environment.apiUrl}/model`;
     }
 
-    public getModelContracts(id: number) {
+    public getModelSignatures(id: number) {
         return this.http.get(`${this.baseAPIUrl}/${id}/flatContract`)
             .map((res: Response): any => {
                 return res.json();
             });
     }
 
-    public getModelBuildContracts(id: number) {
+    public getModelBuildSignatures(id: number) {
         return this.http.get(`${this.baseAPIUrl}/version/${id}/flatContract`)
             .map((res: Response): any => {
                 return res.json();
             });
     }
 
-    public updateModelContract(id: number, contract) {
+    public updateModelSignatures(id: number, contract) {
         return this.http.post(`${this.baseAPIUrl}/${id}/contract/flat`, contract)
             .map((res: Response): any => {
                 return res.json();

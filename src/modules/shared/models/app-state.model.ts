@@ -13,7 +13,7 @@ export interface ApplicationState {
     applications: Application[];
     models: Model[];
     runtimes: Runtime[];
-    contracts: Signature[];
+    signatures: Signature[];
     sources: Source[];
     environments: Environment[];
     modelVersions: ModelVersion[];

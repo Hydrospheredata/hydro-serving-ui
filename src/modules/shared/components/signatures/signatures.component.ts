@@ -2,8 +2,11 @@ import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { MdlSnackbarService } from '@angular-mdl/core';
 
-import { Model, Signature } from '@shared/models/_index';
-import { ContractsService } from '@shared/services/_index';
+import { Model, Signature, ApplicationState } from '@shared/models/_index';
+import { SignaturesService } from '@shared/services/_index';
+import { Store } from '@ngrx/store';
+import * as Actions from '@shared/actions/_index';
+import { Subscription } from 'rxjs/Subscription';
 
 
 
@@ -19,28 +22,40 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     public isReadOnly = true;
     public signaturesForm: FormGroup;
     private signaturesFormData;
+    private signaturesSub: Subscription;
 
     constructor(
         public fb: FormBuilder,
-        private contractsService: ContractsService,
+        private signaturesService: SignaturesService,
         private mdlSnackbarService: MdlSnackbarService,
+        private store: Store<ApplicationState>
     ) { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        if (this.signaturesSub) {
+            this.signaturesSub.unsubscribe();
+        }
+        this.signaturesSub = this.store.select('signatures')
+            .filter(signatures => signatures.length > 0)
+            .subscribe(signatures => {
+                console.log(signatures);
+                this.signatures = signatures;
+                this.updateSignaturesFormValues(this.signatures ? this.signatures : null);
+            });
+    }
 
     ngOnChanges() {
         this.createForm();
-        // this.initFormChangesListener();
         if (this.data) {
-            this.contractsService.getModelContracts(this.data.id)
-                .subscribe(data => {
-                    this.signatures = data.signatures;
-                    this.updateSignaturesFormValues(this.signatures ? this.signatures : null);
-                });
+            this.store.dispatch(new Actions.GetSignaturesAction(this.data));
         }
     }
 
-    ngOnDestroy() { }
+    ngOnDestroy() {
+        if (this.signaturesSub) {
+            this.signaturesSub.unsubscribe();
+        }
+    }
 
     public onSubmit() {
         this.signaturesForm.value.signatures.forEach(signature => {
@@ -55,7 +70,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
                 }
             });
         });
-        this.contractsService.updateModelContract(this.data.id, { signatures: this.signaturesForm.value.signatures })
+        this.signaturesService.updateModelSignatures(this.data.id, { signatures: this.signaturesForm.value.signatures })
             .subscribe(() => {
                 this.toggleSignaturesMode();
                 this.mdlSnackbarService.showSnackbar({

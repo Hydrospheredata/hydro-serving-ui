@@ -57,14 +57,14 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     public services: Application[];
     public runtimes: Runtime[];
     public environments: Environment[];
-    public contracts: Signature[];
+    public signatures: Signature[];
     public modelVersions: ModelVersion[];
 
     public weightsForSlider: any[] = [100];
 
     private runtimesStoreSub: Subscription;
     private environmentsStoreSub: Subscription;
-    private contractsStoreSub: Subscription;
+    private signaturesStoreSub: Subscription;
     private modelVersionsStoreSub: Subscription;
     private defaultAppOptions: {
         services: {
@@ -106,9 +106,9 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
                 this.environments = environments;
             });
 
-        this.contractsStoreSub = this.store.select('contracts')
-            .subscribe(contracts => {
-                this.contracts = contracts;
+        this.signaturesStoreSub = this.store.select('signatures')
+            .subscribe(signatures => {
+                this.signatures = signatures;
             });
 
         this.defaultAppOptions = {
@@ -155,8 +155,8 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     }
 
     public ngOnDestroy() {
-        if (this.contractsStoreSub) {
-            this.contractsStoreSub.unsubscribe();
+        if (this.signaturesStoreSub) {
+            this.signaturesStoreSub.unsubscribe();
         }
         if (this.modelVersionsStoreSub) {
             this.modelVersionsStoreSub.unsubscribe();

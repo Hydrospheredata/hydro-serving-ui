@@ -28,7 +28,6 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     private activatedRouteSub: Subscription;
     private modelsBuildsSub: Subscription;
     private modelsStoreSelectionSub: Subscription;
-    private contractsStoreSub: Subscription;
 
 
     constructor(
@@ -61,9 +60,6 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
         if (this.modelsBuildsSub) {
             this.modelsBuildsSub.unsubscribe();
         }
-        if (this.contractsStoreSub) {
-            this.contractsStoreSub.unsubscribe();
-        }
     }
 
     private loadInitialData(modelVersionId: number) {
@@ -74,14 +70,6 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
                 this.build = builds.find(dataStoreItem => {
                     return dataStoreItem.version === modelVersionId && dataStoreItem.model.id === this.modelId;
                 });
-                if (this.build) {
-                    this.store.dispatch({ type: Actions.GET_MODEL_BUILD_CONTRACTS, payload: this.build.id });
-                }
-            });
-
-        this.contractsStoreSub = this.store.select('contracts')
-            .subscribe(contracts => {
-                this.contracts = contracts;
             });
     }
 
