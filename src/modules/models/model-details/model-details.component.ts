@@ -48,7 +48,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
                 if (this.modelBuildsSub) {
                     this.modelBuildsSub.unsubscribe();
                 }
-                this.loadInitialData(modelId);
+                this.loadInitialData(Number(modelId));
             });
     }
 
@@ -64,11 +64,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    private loadInitialData(modelId: string) {
-        this.store.dispatch({ type: Actions.GET_MODEL_BUILDS, payload: modelId });
+    private loadInitialData(modelId: number) {
+        this.store.dispatch(new Actions.GetModelBuildsAction(modelId));
 
         this.modelBuildsSub = this.store.select('modelBuilds')
-            .skip(1)
             .subscribe(modelBuilds => {
                 this.modelBuilds = modelBuilds.reverse();
             });
@@ -76,7 +75,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         this.modelsStoreSelectionSubscription = this.store.select('models')
             .filter(models => models.length > 0)
             .subscribe(models => {
-                this.model = models.find(modelsStoreItem => modelsStoreItem.id === Number(modelId));
+                this.model = models.find(modelsStoreItem => modelsStoreItem.id === modelId);
             });
     }
 

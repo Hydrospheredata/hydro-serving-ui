@@ -1,13 +1,13 @@
 import { Action } from '@ngrx/store';
-import { Model, ModelVersion } from '@shared/models/_index';
+import { Model } from '@shared/models/_index';
 
 export enum ModelActionTypes {
     Get = '[Model] Get all models',
     GetSuccess = '[Model] Get all models with success',
     GetFail = '[Model] Get all models with fail',
-    Update = '[Model] Update model',
-    UpdateSuccess = '[Model] Update model with success',
-    UpdateFail = '[Model] Update model with fail',
+    Build = '[Model] Build model',
+    BuildSuccess = '[Model] Build model with success',
+    BuildFail = '[Model] Build model with fail',
 }
 
 
@@ -25,11 +25,20 @@ export class GetModelsFailAction implements Action {
     constructor(public error) { }
 }
 
-export class UpdateModelAction implements Action {
-    readonly type = ModelActionTypes.UpdateSuccess;
-    constructor(public payload: ModelVersion) { }
+export class BuildModelAction implements Action {
+    readonly type = ModelActionTypes.Build;
+    constructor(public payload: any) { }
 }
 
+export class BuildModelSuccessAction implements Action {
+    readonly type = ModelActionTypes.BuildSuccess;
+    constructor(public payload: any) { }
+}
+
+export class BuildModelFailAction implements Action {
+    readonly type = ModelActionTypes.BuildFail;
+    constructor(public error) { }
+}
 
 
 
@@ -37,4 +46,6 @@ export type ModelActions
     = GetModelsAction
     | GetModelsSuccessAction
     | GetModelsFailAction
-    | UpdateModelAction;
+    | BuildModelAction
+    | BuildModelSuccessAction
+    | BuildModelFailAction;

@@ -23,6 +23,7 @@ import {
     ContractsService,
     RuntimesService,
     SourcesService,
+    ElasticService
 } from '@shared/services/_index';
 
 // Effects
@@ -121,6 +122,7 @@ import {
         ContractsService,
         RuntimesService,
         SourcesService,
+        ElasticService,
         LoaderStateService,
         {
             provide: HttpService,

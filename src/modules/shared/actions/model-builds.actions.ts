@@ -1,31 +1,32 @@
 import { Action } from '@ngrx/store';
+import { ModelBuild } from '@shared/models/_index';
 
-export const GET_MODEL_BUILDS = 'GET_MODEL_BUILDS';
-export const GET_MODEL_BUILDS_SUCCESS = 'GET_MODEL_BUILDS_SUCCESS';
-export const GET_VERSIONS = 'GET_VERSIONS';
-export const GET_VERSIONS_SUCCESS = 'GET_VERSIONS_SUCCESS';
+export enum ModelBuildsActionTypes {
+    GetBuilds = '[Model\' builds] Get all model\'s builds',
+    GetBuildsSuccess = '[Model\'s builds] Get all model\'s builds with success',
+    GetBuildsFail = '[Model\'s builds] Get all model\'s builds with fail',
+}
 
 
 
 export class GetModelBuildsAction implements Action {
-  readonly type = GET_MODEL_BUILDS;
-  constructor(public payload: any) { }
-}
-export class GetModelBuildsSuccessAction implements Action {
-  readonly type = GET_MODEL_BUILDS_SUCCESS;
-  constructor(public payload: any) { }
+    readonly type = ModelBuildsActionTypes.GetBuilds;
+    constructor(public modelId: number) { }
 }
 
-export class GetVersionsAction implements Action {
-  readonly type = GET_VERSIONS;
+export class GetModelBuildsSuccessAction implements Action {
+    readonly type = ModelBuildsActionTypes.GetBuildsSuccess;
+    constructor(public payload: ModelBuild[]) { }
 }
-export class GetVersionsSuccessAction implements Action {
-  readonly type = GET_VERSIONS_SUCCESS;
-  constructor(public payload: any) { }
+
+export class GetModelBuildsFailAction implements Action {
+    readonly type = ModelBuildsActionTypes.GetBuildsFail;
+    constructor(public error) { }
 }
+
+
 
 export type ModelBuildsActions
-  = GetModelBuildsAction
-  | GetModelBuildsSuccessAction
-  | GetVersionsAction
-  | GetVersionsSuccessAction;
+    = GetModelBuildsAction
+    | GetModelBuildsSuccessAction
+    | GetModelBuildsFailAction;

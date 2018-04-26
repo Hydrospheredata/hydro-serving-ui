@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { HttpService } from '@shared/services/http/_index';
-import { Model } from '@shared/_index';
-import { Observable } from 'rxjs/Observable';
 
 
 
@@ -24,7 +22,7 @@ export class ModelsService {
             });
     }
 
-    public getModelBuilds(id: string) {
+    public getModelBuilds(id: number) {
         return this.http.get(`${this.baseAPIUrl}/builds/${id}`)
             .map((res: Response): any => {
                 return res.json();
@@ -38,16 +36,12 @@ export class ModelsService {
             });
     }
 
-    public buildModel(options): Observable<any> {
+    public buildModel(options) {
         const updateModelUrl = `${this.baseAPIUrl}/build`;
         return this.http.post(updateModelUrl, options)
             .map((res: Response): any => {
                 return res.json();
             });
-    }
-
-    public addModel(model: Model) {
-        return this.http.post(this.baseAPIUrl, model);
     }
 
 }

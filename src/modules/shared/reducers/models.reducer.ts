@@ -9,7 +9,7 @@ export function ModelsReducer(state = initialState, action: ModelActions) {
     switch (action.type) {
         case ModelActionTypes.GetSuccess:
             return Object.assign([], state, action.payload);
-        case ModelActionTypes.UpdateSuccess:
+        case ModelActionTypes.BuildSuccess:
             return state.map(item => {
                 if (item.id !== action.payload.model.id) {
                     return item;
