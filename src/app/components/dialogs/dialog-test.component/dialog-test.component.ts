@@ -1,16 +1,13 @@
 import { Component, OnInit, Inject, InjectionToken } from '@angular/core';
-import { MdlDialogReference } from '@angular-mdl/core';
-import { MdlSnackbarService } from '@angular-mdl/core';
-// import { FormGroup, FormBuilder } from '@angular/forms';
+import { MdlSnackbarService, MdlDialogReference } from '@angular-mdl/core';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
 import { Application } from '@shared/models/_index';
-import { ApplicationsService } from '@shared/services/_index';
+import { ApplicationsService } from '@modules/applications/services/_index';
 import { DialogBase } from '@shared/base/_index';
 import { environment } from 'environments/environment';
-// import { Location } from '@angular/common';
 
 
 export let injectableTestOptions = new InjectionToken<Application>('injectableTestOptions');

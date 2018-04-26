@@ -7,12 +7,10 @@ import { FormsModule } from '@angular/forms';
 
 import { ChartsModule } from 'ng2-charts';
 
-
-
-import {
-    ApplicationsWrapperComponent,
-    ApplicationsItemDetailComponent
-} from './_index';
+import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent } from './_index';
+import { EffectsModule } from '@ngrx/effects';
+import { ApplicationsEffects } from '@modules/applications/effects/_index';
+import { ApplicationsService, ApplicationsBuilderService } from '@modules/applications/services/_index';
 
 @NgModule({
     imports: [
@@ -21,11 +19,13 @@ import {
         MdlModule,
         ApplicationsRoutingModule,
         FormsModule,
-        ChartsModule
+        ChartsModule,
+        EffectsModule.forFeature([ApplicationsEffects])
     ],
     declarations: [
         ApplicationsWrapperComponent,
         ApplicationsItemDetailComponent
-    ]
+    ],
+    providers: [ApplicationsService, ApplicationsBuilderService]
 })
 export class ApplicationsModule { }

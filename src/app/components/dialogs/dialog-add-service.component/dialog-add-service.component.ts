@@ -4,19 +4,16 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
-import * as Actions from '@shared/actions/_index';
-import {
-    ApplicationState,
-    Application
-} from '@shared/models/_index';
-import { FormsService, ApplicationsService } from '@shared/services/_index';
+import * as HydroActions from '@modules/applications/actions/applications.actions';
+import { ApplicationState, Application } from '@shared/models/_index';
+import { FormsService } from '@shared/services/_index';
 
 
 
 @Component({
     selector: 'hydro-dialog-add-service',
     templateUrl: './dialog-add-service.component.html',
-    styleUrls: ['./dialog-add-service.component.scss']
+    styleUrls: ['./dialog-add-service.component.scss'],
 })
 export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
 
@@ -28,7 +25,6 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
         public store: Store<ApplicationState>,
-        public applicationsService: ApplicationsService
     ) {
         super(
             fb,
@@ -59,23 +55,8 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
 
         const application = new Application(serviceInfo);
 
-        console.log(application);
-
-        this.applicationsService.addApplication(application)
-            .subscribe(response => {
-                this.store.dispatch(new Actions.AddApplicationSuccessAction(new Application(response)));
-                this.dialogRef.hide();
-                this.mdlSnackbarService.showSnackbar({
-                    message: 'Application was successfully added',
-                    timeout: 5000
-                });
-            },
-                error => {
-                    this.mdlSnackbarService.showSnackbar({
-                        message: `Error: ${error}`,
-                        timeout: 5000
-                    });
-                });
+        this.store.dispatch(new HydroActions.AddApplicationAction(application));
+        this.dialogRef.hide();
     }
 
 }

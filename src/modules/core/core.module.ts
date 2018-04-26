@@ -9,7 +9,6 @@ import { MdlSelectModule } from '@angular-mdl/select';
 import { NavbarComponent, LoaderComponent } from './_index';
 
 import { CodemirrorModule } from 'ng2-codemirror';
-// import { ClipboardModule } from 'ngx-clipboard';
 import { EffectsModule } from '@ngrx/effects';
 
 // Services
@@ -17,7 +16,6 @@ import {
     HttpService,
     LoaderStateService,
     FormsService,
-    ApplicationsService,
     ModelsService,
     EnvironmentsService,
     SignaturesService,
@@ -28,7 +26,6 @@ import {
 
 // Effects
 import {
-    ApplicationsEffects,
     ModelEffects,
     RuntimesEffects,
     SignaturesEffects,
@@ -36,12 +33,15 @@ import {
     EnvironmentsEffects,
 } from '@shared/effects/_index';
 
+// import {
+//     ApplicationsEffects,
+// } from '@modules/applications/effects/_index';
+
 // Builders
 import {
     ModelBuilder,
     ModelVersionBuilder,
     ModelBuildBuilder,
-    ApplicationBuilder,
     RuntimeBuilder
 } from '@shared/builders/_index';
 
@@ -71,7 +71,6 @@ import {
         MdlModule,
         MdlSelectModule,
         CodemirrorModule,
-        // ClipboardModule,
         HttpModule,
         StoreModule.forRoot({
             models: ModelsReducer,
@@ -87,7 +86,6 @@ import {
             maxAge: 25
         }),
         EffectsModule.forRoot([
-            ApplicationsEffects,
             ModelEffects,
             RuntimesEffects,
             SignaturesEffects,
@@ -101,22 +99,17 @@ import {
         MdlModule,
         MdlSelectModule,
         CodemirrorModule,
-        // ClipboardModule,
     ],
     declarations: [
         NavbarComponent,
         LoaderComponent,
     ],
     providers: [
-        // Builders
         ModelBuilder,
         ModelVersionBuilder,
         ModelBuildBuilder,
-        ApplicationBuilder,
         RuntimeBuilder,
-        // Services
         FormsService,
-        ApplicationsService,
         ModelsService,
         EnvironmentsService,
         SignaturesService,

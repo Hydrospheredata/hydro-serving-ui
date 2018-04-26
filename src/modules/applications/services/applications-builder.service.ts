@@ -4,7 +4,7 @@ import { Application } from '@shared/models/_index';
 
 
 @Injectable()
-export class ApplicationBuilder {
+export class ApplicationsBuilderService {
 
     constructor() { }
 

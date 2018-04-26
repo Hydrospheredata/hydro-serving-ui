@@ -3,7 +3,7 @@ import { MdlDialogReference } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';
-import * as Actions from '@shared/actions/_index';
+import { DeleteApplicationAction } from '@modules/applications/actions/applications.actions';
 import { ApplicationState } from '@shared/models/_index';
 
 export let injectableApplicationId = new InjectionToken<number>('injectableApplicationId');
@@ -30,7 +30,7 @@ export class DialogDeleteServiceComponent extends DialogBase {
     }
 
     public submitDeleteServiceForm() {
-        this.store.dispatch(new Actions.DeleteApplicationAction(this.applicationId));
+        this.store.dispatch(new DeleteApplicationAction(this.applicationId));
         this.dialogRef.hide();
     }
 

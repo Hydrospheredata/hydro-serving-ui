@@ -27,6 +27,12 @@
       "@modules/*": [
         "modules/*"
       ],
+      "@applications/*": [
+        "modules/applications/*"
+      ],
+      "@models/*": [
+        "modules/models/*"
+      ],
       "@core/*": [
         "modules/core/*"
       ],

@@ -32,7 +32,7 @@ export class GetApplicationsFailAction implements Action {
 
 export class AddApplicationAction implements Action {
     readonly type = ApplicationActionTypes.Add;
-    constructor(public payload: Application) { }
+    constructor(public application: Application) { }
 }
 export class AddApplicationSuccessAction implements Action {
     readonly type = ApplicationActionTypes.AddSuccess;
@@ -45,12 +45,17 @@ export class AddApplicationFailAction implements Action {
 
 export class UpdateApplicationAction implements Action {
     readonly type = ApplicationActionTypes.Update;
-    constructor(public payload: Application) { }
+    constructor(public application: Application) { }
 }
 
 export class UpdateApplicationSuccessAction implements Action {
     readonly type = ApplicationActionTypes.UpdateSuccess;
     constructor(public payload: Application) { }
+}
+
+export class UpdateApplicationFailAction implements Action {
+    readonly type = ApplicationActionTypes.UpdateFail;
+    constructor(public error) { }
 }
 
 export class DeleteApplicationAction implements Action {
@@ -77,6 +82,7 @@ export type ApplicationActions
     | AddApplicationFailAction
     | UpdateApplicationAction
     | UpdateApplicationSuccessAction
+    | UpdateApplicationFailAction
     | DeleteApplicationAction
     | DeleteApplicationSuccessAction
     | DeleteApplicationFailAction;

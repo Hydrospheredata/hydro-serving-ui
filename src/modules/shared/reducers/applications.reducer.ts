@@ -1,5 +1,5 @@
 import { Application } from '@shared/models/_index';
-import { ApplicationActions, ApplicationActionTypes } from '@shared/actions/_index';
+import { ApplicationActions, ApplicationActionTypes } from '@modules/applications/actions/applications.actions';
 
 
 
@@ -22,10 +22,12 @@ export function ApplicationsReducer(state = initialState, action: ApplicationAct
                     return item;
                 }
 
-                return {
+                const updatedApplication = {
                     ...item,
                     ...action.payload
                 };
+
+                return new Application(updatedApplication);
             });
         case ApplicationActionTypes.DeleteSuccess:
             return state.filter(service => service.id !== action.applicationId);
