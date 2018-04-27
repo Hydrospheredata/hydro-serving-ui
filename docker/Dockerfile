@@ -9,6 +9,7 @@ ADD nginx/config /etc/nginx/sites-templates
 ENV MANAGER_HOST=localhost
 ENV SONAR_HOST=localhost
 ENV ELASTIC_HOST=localhost
+ENV INFLUX_HOST=localhost
 
 LABEL DEPLOYMENT_TYPE=APP
 LABEL SERVICE_ID=-22
