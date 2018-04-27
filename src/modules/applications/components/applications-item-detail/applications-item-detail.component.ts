@@ -1,16 +1,16 @@
-// import * as moment from 'moment';
+import * as moment from 'moment';
 import {
-    Component, ViewEncapsulation, AfterContentInit, OnDestroy,
-    // ElementRef
+    Component, ViewEncapsulation, OnInit, OnDestroy,
+    ElementRef
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
-// import { chart } from 'highcharts';
+import { chart } from 'highcharts';
 
 import { Store } from '@ngrx/store';
 import { ApplicationState, Application } from '@shared/models/_index';
-// import { ElasticService } from '@shared/services/_index';
+import { InfluxDBService } from '@shared/services/_index';
 import { environment } from '@environments/environment';
 
 import {
@@ -22,8 +22,6 @@ import {
     injectableServiceUpdate
 } from '@components/dialogs/_index';
 
-// declare var EventSource: any;
-
 
 
 @Component({
@@ -32,7 +30,7 @@ import {
     styleUrls: ['./applications-item-detail.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class ApplicationsItemDetailComponent implements AfterContentInit, OnDestroy {
+export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     public JSON = JSON;
     public id = '';
     public applications: Application[] = [];
@@ -55,17 +53,14 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
     };
 
     public alerts: any[] = [];
-    public averageChart: any;
+    public chart: any;
     public confidenceChart: any;
     public chartData = {
         labels: [],
         datasets: []
     };
-
     public signatureName: any[];
 
-    // private eventSourcePath: string;
-    // private eventSourceMeasures: any;
     private storeSub: Subscription;
     private activeRouteSub: Subscription;
 
@@ -74,8 +69,8 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        // private elasticService: ElasticService,
-        // private elementRef: ElementRef,
+        private influxdbService: InfluxDBService,
+        private elementRef: ElementRef,
     ) {
         this.activeRouteSub = this.activatedRoute.params
             .map(params => {
@@ -91,8 +86,9 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
             });
     }
 
-    ngAfterContentInit() {
-        // this.elasticService.connect();
+    ngOnInit() {
+        this.influxdbService.connect();
+        this.initChart();
     }
 
     ngOnDestroy() {
@@ -151,186 +147,87 @@ export class ApplicationsItemDetailComponent implements AfterContentInit, OnDest
                 this.application = application;
                 if (this.application) {
                     this.signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/);
-                    // this.getElasticData(application);
+                    this.getChartData(application);
                 }
-                // this.initChartData();
             });
     }
 
-    // private initChartData() {
-    //     const publicUrl = `${window.location.protocol}//${window.location.hostname}/v1/measure/streaming`;
-    //     const localUrl = `${window.location.protocol}//${window.location.hostname}:9999/v1/measure/streaming`;
-    //     this.eventSourcePath = environment.production ? publicUrl : localUrl;
+    private getChartData(application: Application) {
+        const modelVersionId = application.executionGraph.stages[0].services[0].serviceDescription.modelVersionId;
+        const runtimeId = application.executionGraph.stages[0].services[0].serviceDescription.runtimeId;
+        let environmentId = 0;
+        if (application.executionGraph.stages[0].services[0].serviceDescription.environmentId) {
+            environmentId = application.executionGraph.stages[0].services[0].serviceDescription.environmentId;
+        }
+        const id = `r${runtimeId}m${modelVersionId}e${environmentId}`;
+        const sql_request = 'derivative(sum("value"),10s)';
+        const filter = `("envoy_cluster_name" = '${id}') AND time >= now() - 30m GROUP BY time(1m)`;
+        const rx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_rx_bytes_total" WHERE ${filter}`;
+        const tx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_tx_bytes_total" WHERE ${filter}`;
 
-    //     this.eventSourceMeasures = new EventSource(`${this.eventSourcePath}/measures`);
+        this.influxdbService.search(rx_query)
+            .then(res => {
+                this.updateChart('IN', res);
+            });
+        this.influxdbService.search(tx_query)
+            .then(res => {
+                this.updateChart('OUT', res);
+            });
+    }
 
-    //     this.alerts = [];
+    private initChart() {
+        const chartRef = this.elementRef.nativeElement.querySelector('#chart');
 
-    //     let classToData = {};
-    //     const chartConfidenceData = [];
-    //     let eventIndex: number = 0;
-    //     this.eventSourceMeasures.onmessage = (e) => {
-    //         if (e.data.length) {
-    //             const response = JSON.parse(e.data);
+        this.chart = chart(chartRef, {
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'Rate of bytes (in and out)'
+            },
+            xAxis: {
+                title: {
+                    text: 'Time'
+                },
+                categories: []
+            },
+            yAxis: {
+                title: {
+                    text: 'Rate (b/s)'
+                }
+            },
+            tooltip: {
+                shared: true
+            },
+            plotOptions: {
+                column: {
+                    grouping: false,
+                    shadow: false,
+                    borderWidth: 0
+                }
+            },
+            series: []
+        });
+    }
 
-    //             if (response.applicationId === this.application.name) {
-
-    //                 const confidences = response.confidences;
-    //                 const measures = response.measures;
-
-    //                 for (const key in confidences) {
-    //                     if (confidences.hasOwnProperty(key)) {
-    //                         if (chartConfidenceData.find(item => item.name === key) === undefined) {
-    //                             chartConfidenceData.push({ name: key, data: confidences[key] });
-    //                         } else {
-    //                             chartConfidenceData.find(item => item.name === key).data = confidences[key];
-    //                         }
-    //                     }
-    //                 }
-
-    //                 const labels: string[] = [];
-    //                 const chartData: number[] = [];
-
-    //                 chartConfidenceData.map(item => {
-    //                     labels.push(item.name);
-    //                     chartData.push(item.data);
-    //                 });
-
-    //                 this.confidenceChart.xAxis[0].update({ categories: labels });
-    //                 this.confidenceChart.series[0].setData(chartData, false);
-    //                 this.confidenceChart.redraw();
-
-
-    //                 const measureClasses = measures.map(m => m.class);
-    //                 measureClasses.sort();
-
-    //                 const cumulativeSumData = measureClasses
-    //                     .map(l => measures.filter(m => m.class === l)[0])
-    //                     .map(entry => entry.cumulativeSum);
-
-    //                 const totalData = measureClasses
-    //                     .map(l => measures.filter(m => m.class === l)[0])
-    //                     .map(entry => entry.total);
-
-    //                 this.averageChart.xAxis[0].update({ categories: measureClasses });
-    //                 this.averageChart.series[0].setData(cumulativeSumData, false);
-    //                 this.averageChart.series[1].setData(totalData, false);
-    //                 this.averageChart.redraw();
-
-    //                 // measureClasses.forEach((label, i) => {
-    //                 //     if (-1 === Object.keys(classToData).indexOf(label)) {
-    //                 //         classToData[label] = {
-    //                 //             averageValues: [],
-    //                 //             confidenceValues: []
-    //                 //         }
-    //                 //     } else {
-    //                 //         if (classToData[label].averageValues.length > 8) { classToData[label].averageValues.shift(); }
-    //                 //         if (classToData[label].confidenceValues.length > 8) { classToData[label].confidenceValues.shift(); }
-
-    //                 //         let measureValue = newData[i];
-    //                 //         let confidenceValue = Object.keys(response.confidences).indexOf(label) !== -1 ?
-    //                 //             response.confidences[label] * 100 : 0;
-
-    //                 //         i === 0 ? labels.push('n') : labels.push(`n-${i}`);
-    //                 //         classToData[label].averageValues.push(measureValue);
-    //                 //         classToData[label].confidenceValues.push(confidenceValue);
-
-    //                 //     }
-    //                 // });
-
-    //                 // let measuresDatasets = Object.keys(classToData).map((label, i) => {
-    //                 //     return {
-    //                 //         type: 'line',
-    //                 //         label: `${label} average`,
-    //                 //         backgroundColor: this.dummyColorPicker(i),
-    //                 //         borderColor: this.dummyColorPicker(i, 0.9),
-    //                 //         fill: false,
-    //                 //         data: classToData[label].averageValues,
-    //                 //         yAxisID: 'left-y-axis'
-    //                 //     };
-    //                 // });
-
-    //                 // let confidenceDatasets = Object.keys(classToData).map((label, i) => {
-    //                 //     return {
-    //                 //         type: 'bar',
-    //                 //         label: label,
-    //                 //         backgroundColor: this.dummyColorPicker(i, 0.5),
-    //                 //         data: classToData[label].confidenceValues,
-    //                 //         yAxisID: 'left-y-axis'
-    //                 //     };
-    //                 // });
-
-    //                 // this.averageChart.data.labels = labels.reverse();
-    //                 // this.averageChart.data.datasets = measuresDatasets;
-    //                 // this.confidenceChart.data.datasets = confidenceDatasets;
-    //                 // this.averageChart.update({
-    //                 //     duration: 0
-    //                 // });
-    //                 // this.confidenceChart.update({
-    //                 //     duration: 0
-    //                 // });
-    //             }
-    //         }
-    //     };
-    // }
-
-    // private getElasticData(application: Application) {
-    //     const modelVersionId = application.executionGraph.stages[0].services[0].serviceDescription.modelVersionId;
-    //     const runtimeId = application.executionGraph.stages[0].services[0].serviceDescription.runtimeId;
-    //     let environmentId;
-    //     if (application.executionGraph.stages[0].services[0].serviceDescription.environmentId) {
-    //         environmentId = application.executionGraph.stages[0].services[0].serviceDescription.environmentId;
-    //     }
-    //     this.elasticService.search(`r${runtimeId || 0}m${modelVersionId || 0}e${environmentId || 0}`)
-    //         .then(res => {
-    //             this.initChart(res.hits.hits);
-    //             console.log(res.hits.hits);
-    //         });
-    // }
-
-    // private initChart(elasticData) {
-    //     const categories = [];
-    //     const values = [];
-    //     elasticData.forEach(element => {
-    //         categories.push(moment(element._source['@timestamp']).format('HH:mm'));
-    //         values.push(element._source.value);
-    //     });
-    //     // console.log(values);
-
-    //     const chartRef = this.elementRef.nativeElement.querySelector('#chart');
-
-    //     this.averageChart = chart(chartRef, {
-    //         credits: {
-    //             enabled: false
-    //         },
-    //         chart: {
-    //             type: 'line'
-    //         },
-    //         xAxis: {
-    //             title: {
-    //                 text: 'Time'
-    //             },
-    //             categories: categories
-    //         },
-    //         yAxis: {
-    //             title: {
-    //                 text: 'Values'
-    //             }
-    //         },
-    //         tooltip: {
-    //             shared: true
-    //         },
-    //         plotOptions: {
-    //             column: {
-    //                 grouping: false,
-    //                 shadow: false,
-    //                 borderWidth: 0
-    //             }
-    //         },
-    //         series: [{
-    //             name: 'Values',
-    //             data: values
-    //         }]
-    //     });
-    // }
+    private updateChart(name, data) {
+        const categories = [];
+        const values = [];
+        data.forEach(element => {
+            categories.push(moment(element.time).format('HH:mm'));
+            if (element.derivative < 0) {
+                values.push(0);
+            } else {
+                values.push(element.derivative);
+            }
+        });
+        this.chart.xAxis[0].setCategories(categories);
+        this.chart.addSeries({
+            name: name,
+            data: values
+        });
+    }
 }

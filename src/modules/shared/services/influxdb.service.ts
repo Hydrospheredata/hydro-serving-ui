@@ -1,31 +1,44 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { InfluxDB } from 'influx';
 import { environment } from '@environments/environment';
 
 @Injectable()
-export class InfluxDBService {
+export class InfluxDBService implements OnInit {
 
     private client: InfluxDB;
-    private host: string;
-    private port: string;
 
-    constructor() {
-        if (!this.client) {
-            this.connect();
-        }
-        this.host = environment.production ? `${window.location.hostname}` : `${environment.host}`;
-        this.port = environment.production ? `${window.location.port}` : `${environment.port}`;
-    }
+    constructor() { }
 
-    connect() {
+    ngOnInit() { }
+
+    public connect() {
         this.client = new InfluxDB({
-            host: this.host,
-            port: Number(this.port)
+            host: environment.production ? `${window.location.hostname}` : 'localhost',
+            port: Number(environment.production ? `${window.location.port}` : `${environment.port}`),
+            database: 'metrics'
         });
     }
 
-    search(query: string) {
+    public search(query: string) {
         return this.client.query(query);
+    }
+
+    public getDataBases(): Promise<string[]> {
+        return this.client.getDatabaseNames();
+    }
+
+    public getMeasurements(): Promise<string[]> {
+        return this.client.getMeasurements();
+    }
+
+    public getUsers() {
+        return this.client.getUsers();
+    }
+
+    public getSeries() {
+        return this.client.getSeries({
+            measurement: 'envoy_cluster_name'
+        });
     }
 }
 
