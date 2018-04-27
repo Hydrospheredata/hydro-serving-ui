@@ -7,7 +7,11 @@ export class InfluxDBService implements OnInit {
 
     private client: InfluxDB;
 
-    constructor() { }
+    constructor() {
+        if (!this.client) {
+            this.connect();
+        }
+    }
 
     ngOnInit() { }
 

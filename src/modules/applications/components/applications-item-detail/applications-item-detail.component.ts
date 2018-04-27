@@ -87,7 +87,6 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.influxdbService.connect();
         this.initChart();
     }
 
