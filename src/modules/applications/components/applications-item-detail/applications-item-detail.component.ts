@@ -151,29 +151,6 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getChartData(application: Application) {
-        const modelVersionId = application.executionGraph.stages[0].services[0].serviceDescription.modelVersionId;
-        const runtimeId = application.executionGraph.stages[0].services[0].serviceDescription.runtimeId;
-        let environmentId = 0;
-        if (application.executionGraph.stages[0].services[0].serviceDescription.environmentId) {
-            environmentId = application.executionGraph.stages[0].services[0].serviceDescription.environmentId;
-        }
-        const id = `r${runtimeId}m${modelVersionId}e${environmentId}`;
-        const sql_request = 'derivative(sum("value"),10s)';
-        const filter = `("envoy_cluster_name" = '${id}') AND time >= now() - 30m GROUP BY time(1m)`;
-        const rx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_rx_bytes_total" WHERE ${filter}`;
-        const tx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_tx_bytes_total" WHERE ${filter}`;
-
-        this.influxdbService.search(rx_query)
-            .then(res => {
-                this.updateChart('IN', res);
-            });
-        this.influxdbService.search(tx_query)
-            .then(res => {
-                this.updateChart('OUT', res);
-            });
-    }
-
     private initChart() {
         const chartRef = this.elementRef.nativeElement.querySelector('#chart');
 
@@ -191,7 +168,8 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
                 title: {
                     text: 'Time'
                 },
-                categories: []
+                categories: [],
+                gridLineWidth: 1,
             },
             yAxis: {
                 title: {
@@ -212,7 +190,39 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    private updateChart(name, data) {
+    private getChartData(application: Application) {
+        const modelVersionId = application.executionGraph.stages[0].services[0].serviceDescription.modelVersionId;
+        const runtimeId = application.executionGraph.stages[0].services[0].serviceDescription.runtimeId;
+        let environmentId = 0;
+        if (application.executionGraph.stages[0].services[0].serviceDescription.environmentId) {
+            environmentId = application.executionGraph.stages[0].services[0].serviceDescription.environmentId;
+        }
+        const id = `r${runtimeId}m${modelVersionId}e${environmentId}`;
+        const sql_request = 'derivative(sum("value"),10s)';
+        const filter = `("envoy_cluster_name" = '${id}') AND time >= now() - 30m GROUP BY time(1m)`;
+        const rx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_rx_bytes_total" WHERE ${filter}`;
+        const tx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_tx_bytes_total" WHERE ${filter}`;
+
+        this.influxdbService.search(rx_query)
+            .then(res => {
+                this.chart.addSeries({
+                    name: 'IN',
+                    data: []
+                });
+                this.updateChart(0, res);
+            });
+        this.influxdbService.search(tx_query)
+            .then(res => {
+                this.chart.addSeries({
+                    name: 'OUT',
+                    data: []
+                });
+                this.updateChart(1, res);
+            });
+    }
+
+    private updateChart(seriesId, data) {
+        console.log(seriesId, data);
         const categories = [];
         const values = [];
         data.forEach(element => {
@@ -223,10 +233,9 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
                 values.push(element.derivative);
             }
         });
-        this.chart.xAxis[0].setCategories(categories);
-        this.chart.addSeries({
-            name: name,
-            data: values
-        });
+        if (this.chart.xAxis[0].categories.length === 0) {
+            this.chart.xAxis[0].setCategories(categories);
+        }
+        this.chart.series[seriesId].setData(values);
     }
 }
