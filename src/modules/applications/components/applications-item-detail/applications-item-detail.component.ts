@@ -37,22 +37,6 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     public application: Application;
     public publicPath = '';
 
-    public chartOptions = {
-        responsive: true,
-        title: {
-            display: true,
-            text: 'Application graph',
-            fontSize: 24,
-            fontFamily: '"Museo Sans Regular"',
-            fontColor: '#04143c'
-        },
-        tooltips: {
-            mode: 'index',
-            intersect: true
-        }
-    };
-
-    public alerts: any[] = [];
     public chart: any;
     public confidenceChart: any;
     public chartData = {
@@ -61,6 +45,7 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     };
     public signatureName: any[];
 
+    private chartRef;
     private storeSub: Subscription;
     private activeRouteSub: Subscription;
 
@@ -152,9 +137,10 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     }
 
     private initChart() {
-        const chartRef = this.elementRef.nativeElement.querySelector('#chart');
+        console.log('123');
+        this.chartRef = this.elementRef.nativeElement.querySelector('#chart');
 
-        this.chart = chart(chartRef, {
+        this.chart = chart(this.chartRef, {
             credits: {
                 enabled: false
             },
@@ -202,7 +188,9 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
         const filter = `("envoy_cluster_name" = '${id}') AND time >= now() - 30m GROUP BY time(1m)`;
         const rx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_rx_bytes_total" WHERE ${filter}`;
         const tx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_tx_bytes_total" WHERE ${filter}`;
-
+        if (this.chart) {
+            this.initChart();
+        }
         this.influxdbService.search(rx_query)
             .then(res => {
                 this.chart.addSeries({
@@ -236,6 +224,8 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
         if (this.chart.xAxis[0].categories.length === 0) {
             this.chart.xAxis[0].setCategories(categories);
         }
-        this.chart.series[seriesId].setData(values);
+        if (this.chart.series.length > 0) {
+            this.chart.series[seriesId].setData(values);
+        }
     }
 }
