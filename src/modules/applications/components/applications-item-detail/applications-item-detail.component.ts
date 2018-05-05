@@ -1,12 +1,15 @@
 import * as moment from 'moment';
 import {
     Component, ViewEncapsulation, OnInit, OnDestroy,
-    ElementRef
+    ElementRef,
+    ViewChild,
+    AfterViewInit
 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
 import { chart } from 'highcharts';
+import * as Highcharts from 'highcharts';
 
 import { Store } from '@ngrx/store';
 import { ApplicationState, Application } from '@shared/models/_index';
@@ -30,14 +33,14 @@ import {
     styleUrls: ['./applications-item-detail.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
-    public JSON = JSON;
+export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, OnDestroy {
+    @ViewChild('chart') chartRef: ElementRef;
     public id = '';
     public applications: Application[] = [];
     public application: Application;
     public publicPath = '';
 
-    public chart: any;
+    public chart: Highcharts.ChartObject;
     public confidenceChart: any;
     public chartData = {
         labels: [],
@@ -45,7 +48,7 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     };
     public signatureName: any[];
 
-    private chartRef;
+    private series: { name: string, data: any[] }[] = [];
     private storeSub: Subscription;
     private activeRouteSub: Subscription;
 
@@ -55,7 +58,6 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private influxdbService: InfluxDBService,
-        private elementRef: ElementRef,
     ) {
         this.activeRouteSub = this.activatedRoute.params
             .map(params => {
@@ -71,7 +73,9 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
             });
     }
 
-    ngOnInit() {
+    ngOnInit() { }
+
+    ngAfterViewInit() {
         this.initChart();
     }
 
@@ -129,18 +133,15 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
             .map(applications => applications.filter(application => application.id === Number(id))[0])
             .subscribe(application => {
                 this.application = application;
-                if (this.application) {
-                    this.signatureName = this.application.contract.match(/signature_name: \"(.*)\"\n/);
-                    this.getChartData(application);
-                }
+                this.signatureName = application.contract.match(/signature_name: \"(.*)\"\n/);
+                this.getChartData(application);
             });
     }
 
     private initChart() {
-        console.log('123');
-        this.chartRef = this.elementRef.nativeElement.querySelector('#chart');
+        const chartRef = this.chartRef.nativeElement;
 
-        this.chart = chart(this.chartRef, {
+        this.chart = chart(chartRef, {
             credits: {
                 enabled: false
             },
@@ -172,60 +173,62 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
                     borderWidth: 0
                 }
             },
-            series: []
+            series: [{
+                name: 'Series 1',
+                data: []
+            }, {
+                name: 'Series 2',
+                data: []
+            }]
         });
     }
 
     private getChartData(application: Application) {
-        const modelVersionId = application.executionGraph.stages[0].services[0].serviceDescription.modelVersionId;
-        const runtimeId = application.executionGraph.stages[0].services[0].serviceDescription.runtimeId;
-        let environmentId = 0;
-        if (application.executionGraph.stages[0].services[0].serviceDescription.environmentId) {
-            environmentId = application.executionGraph.stages[0].services[0].serviceDescription.environmentId;
-        }
+        this.series = [];
+        const stage = application.executionGraph.stages[0];
+        const service = stage.services[0];
+        const modelVersionId = service.serviceDescription.modelVersionId;
+        const runtimeId = service.serviceDescription.runtimeId;
+        const environmentId = service.serviceDescription.environmentId ? service.serviceDescription.environmentId : 0;
         const id = `r${runtimeId}m${modelVersionId}e${environmentId}`;
-        const sql_request = 'derivative(sum("value"),10s)';
-        const filter = `("envoy_cluster_name" = '${id}') AND time >= now() - 30m GROUP BY time(1m)`;
-        const rx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_rx_bytes_total" WHERE ${filter}`;
-        const tx_query = `SELECT ${sql_request} FROM "envoy_cluster_upstream_cx_tx_bytes_total" WHERE ${filter}`;
-        if (this.chart) {
-            this.initChart();
-        }
-        this.influxdbService.search(rx_query)
-            .then(res => {
-                this.chart.addSeries({
-                    name: 'IN',
-                    data: []
-                });
-                this.updateChart(0, res);
-            });
-        this.influxdbService.search(tx_query)
-            .then(res => {
-                this.chart.addSeries({
-                    name: 'OUT',
-                    data: []
-                });
-                this.updateChart(1, res);
-            });
+
+        Promise.all([
+            this.getMetric(id, 'envoy_cluster_upstream_cx_rx_bytes_total'),
+            this.getMetric(id, 'envoy_cluster_upstream_cx_tx_bytes_total')]
+        ).then(() => {
+            this.updateChart();
+        });
     }
 
-    private updateChart(seriesId, data) {
-        console.log(seriesId, data);
+    private updateChart() {
         const categories = [];
-        const values = [];
-        data.forEach(element => {
-            categories.push(moment(element.time).format('HH:mm'));
-            if (element.derivative < 0) {
-                values.push(0);
-            } else {
-                values.push(element.derivative);
-            }
+        this.chart.xAxis[0].setCategories(categories);
+        this.series.forEach(series => {
+            series.data.forEach((element, index) => {
+                categories.push(moment(element.time).format('HH:mm'));
+                if (element.derivative < 0) {
+                    series.data[index] = 0;
+                } else {
+                    series.data[index] = element.derivative;
+                }
+            });
         });
-        if (this.chart.xAxis[0].categories.length === 0) {
-            this.chart.xAxis[0].setCategories(categories);
-        }
-        if (this.chart.series.length > 0) {
-            this.chart.series[seriesId].setData(values);
-        }
+        this.chart.xAxis[0].setCategories(categories);
+        this.chart.update({
+            series: this.series
+        });
+    }
+
+    private getMetric(serviceId: string, metricType: string) {
+        const requestType = 'derivative(sum("value"),10s)';
+        const requestFilter = `("envoy_cluster_name" = '${serviceId}') AND time >= now() - 30m GROUP BY time(1m)`;
+        const query = `SELECT ${requestType} FROM "${metricType}" WHERE ${requestFilter}`;
+        return this.influxdbService.search(query)
+            .then(res => {
+                this.series.push({
+                    name: metricType,
+                    data: res
+                });
+            });
     }
 }
