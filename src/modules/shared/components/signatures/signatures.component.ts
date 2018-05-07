@@ -40,7 +40,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
             .subscribe(signatures => {
                 console.log(signatures);
                 this.signatures = signatures;
-                this.updateSignaturesFormValues(this.signatures ? this.signatures : null);
+                this.updateSignaturesFormValues(this.signatures);
             });
     }
 
@@ -70,7 +70,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
                 }
             });
         });
-        this.signaturesService.updateModelSignatures(this.data.id, { signatures: this.signaturesForm.value.signatures })
+        this.signaturesService.updateModelSignatures(1, { signatures: this.signaturesForm.value.signatures })
             .subscribe(() => {
                 this.toggleSignaturesMode();
                 this.mdlSnackbarService.showSnackbar({
