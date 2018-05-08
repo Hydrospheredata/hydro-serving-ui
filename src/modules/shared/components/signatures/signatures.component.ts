@@ -41,7 +41,9 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnChanges() {
         this.createForm();
-        this.store.dispatch(new Actions.GetSignaturesAction(this.data));
+        if (this.data) {
+            this.store.dispatch(new Actions.GetSignaturesAction(this.data));
+        }
     }
 
     ngOnDestroy() {

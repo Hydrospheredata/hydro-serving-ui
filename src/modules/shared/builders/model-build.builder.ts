@@ -30,7 +30,7 @@ export class ModelBuildBuilder {
             statusText: props['statusText'],
             status: props['status'],
             version: props['version'],
-            modelVersion: modelVersion,
+            modelVersion: modelVersion
         });
 
         return modelBuild;

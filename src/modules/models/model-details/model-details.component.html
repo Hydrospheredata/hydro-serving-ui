@@ -44,7 +44,9 @@
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            -
+                            <span *ngFor="let app of (item.modelVersion.applications | slice: item.modelVersion.applications.length - 2)" [routerLink]="['../../applications', app.id]">
+                                {{ app.name }}
+                            </span>
                         </td>
                         <td class="hydro-table-body__cell">
                             <button class="btn btn-flat" [routerLink]="[item.version]" *ngIf="item.status === 'FINISHED'">

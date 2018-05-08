@@ -1,4 +1,5 @@
 import { Model } from './model.model';
+import { Application } from '@modules/shared/models/application.model';
 
 
 
@@ -14,6 +15,7 @@ export class ModelVersion {
     public modelType: string;
     public imageSHA256: string;
     public modelVersion: number;
+    public applications: Application[];
 
     constructor(props: any = {}) {
         this.id = props['id'] || 1;
@@ -27,5 +29,6 @@ export class ModelVersion {
         this.modelType = props['modelType'] || '';
         this.imageSHA256 = props['imageSHA256'] || '';
         this.modelVersion = props['modelVersion'] || 1;
+        this.applications = props['applications'] || [];
     }
 }

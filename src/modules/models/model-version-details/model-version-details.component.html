@@ -32,6 +32,14 @@
                     <div class="status">{{ build?.status }}</div>
                 </span>
             </li>
+            <li class="content-info__sublist-item">
+                <span class="content-info__sublist-item-title">Applications</span>
+                <span class="content-info__sublist-item-value">
+                    <div *ngFor="let app of (build?.modelVersion.applications | slice: build?.modelVersion.applications.length - 2)" [routerLink]="['../../../applications', app.id]">
+                        {{app.name}}
+                    </div>
+                </span>
+            </li>
         </ol>
         <hydro-signatures [data]="build"></hydro-signatures>
     </div>

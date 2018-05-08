@@ -28,6 +28,7 @@ export class ModelVersionBuilder {
                 modelType: props['modelType'],
                 imageSHA256: props['imageSHA256'],
                 modelVersion: props['modelVersion'],
+                applications: props['applications']
             });
 
             return lastModelVersion;
