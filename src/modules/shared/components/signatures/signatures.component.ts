@@ -21,7 +21,6 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     public signatures: Signature[];
     public isReadOnly = true;
     public signaturesForm: FormGroup;
-    private signaturesFormData;
     private signaturesSub: Subscription;
 
     constructor(
@@ -32,13 +31,9 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     ) { }
 
     ngOnInit() {
-        if (this.signaturesSub) {
-            this.signaturesSub.unsubscribe();
-        }
         this.signaturesSub = this.store.select('signatures')
             .filter(signatures => signatures.length > 0)
             .subscribe(signatures => {
-                console.log(signatures);
                 this.signatures = signatures;
                 this.updateSignaturesFormValues(this.signatures);
             });
@@ -46,9 +41,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnChanges() {
         this.createForm();
-        if (this.data) {
-            this.store.dispatch(new Actions.GetSignaturesAction(this.data));
-        }
+        this.store.dispatch(new Actions.GetSignaturesAction(this.data));
     }
 
     ngOnDestroy() {
@@ -70,7 +63,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
                 }
             });
         });
-        this.signaturesService.updateModelSignatures(1, { signatures: this.signaturesForm.value.signatures })
+        this.signaturesService.updateModelSignatures(this.data.id, { signatures: this.signaturesForm.value.signatures })
             .subscribe(() => {
                 this.toggleSignaturesMode();
                 this.mdlSnackbarService.showSnackbar({
@@ -155,11 +148,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
             });
         });
 
-        this.signaturesFormData = {
-            signatures: signatures
-        };
-
-        this.signaturesForm.patchValue(this.signaturesFormData);
+        this.signaturesForm.patchValue({ signatures: signatures });
     }
 
 }

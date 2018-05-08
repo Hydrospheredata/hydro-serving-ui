@@ -15,7 +15,6 @@ export function SignaturesReducer(state = initialState, action: SignaturesAction
             } else {
                 signatures = Object.assign([], state, action.signatures);
             }
-            console.log(signatures);
             return signatures;
         default:
             return state;
