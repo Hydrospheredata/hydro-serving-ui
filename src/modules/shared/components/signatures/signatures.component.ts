@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MdlSnackbarService } from '@angular-mdl/core';
 
 import { Model, Signature, ApplicationState } from '@shared/models/_index';
@@ -121,18 +121,18 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
         });
     }
 
-    private addSignature(event?) {
+    private addSignature(event?): FormGroup {
         return this.fb.group({
-            signatureName: [''],
+            signatureName: ['', Validators.required],
             inputs: this.fb.array(event ? [this.addSignatureField()] : []),
             outputs: this.fb.array(event ? [this.addSignatureField()] : []),
         });
     }
 
-    private addSignatureField() {
+    private addSignatureField(): FormGroup {
         return this.fb.group({
-            fieldName: [''],
-            dataType: [''],
+            fieldName: ['', Validators.required],
+            dataType: ['', Validators.required],
             shape: ['']
         });
     }
