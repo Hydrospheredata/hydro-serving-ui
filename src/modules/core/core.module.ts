@@ -54,7 +54,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {
     ModelsReducer,
     ModelBuildsReducer,
-    ApplicationsReducer,
     RuntimesReducer,
     SignaturesReducer,
     SourcesReducer,
@@ -74,7 +73,6 @@ import {
         HttpModule,
         StoreModule.forRoot({
             models: ModelsReducer,
-            applications: ApplicationsReducer,
             modelBuilds: ModelBuildsReducer,
             modelVersions: ModelVersionsReducer,
             runtimes: RuntimesReducer,

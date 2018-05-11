@@ -11,6 +11,8 @@ import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent } from '.
 import { EffectsModule } from '@ngrx/effects';
 import { ApplicationsEffects } from '@modules/applications/effects/_index';
 import { ApplicationsService, ApplicationsBuilderService } from '@modules/applications/services/_index';
+import { ApplicationsReducer } from '@modules/applications/reducers/_index';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
     imports: [
@@ -20,6 +22,7 @@ import { ApplicationsService, ApplicationsBuilderService } from '@modules/applic
         ApplicationsRoutingModule,
         FormsModule,
         ChartsModule,
+        StoreModule.forFeature('applications', ApplicationsReducer),
         EffectsModule.forFeature([ApplicationsEffects])
     ],
     declarations: [
