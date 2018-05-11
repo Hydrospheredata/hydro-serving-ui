@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -263,19 +263,21 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         // this.store.dispatch({ type: Actions.UPDATE_ALL_VERSIONS, payload: modelVersionId });
     }
 
-    private addStage() {
+    private addStage(): FormGroup {
         return this.fb.group({
             services: this.fb.array([])
         });
     }
 
-    private addService(options) {
+    private addService(options): FormGroup {
         return this.fb.group({
-            weight: [options.weight ? options.weight : 0, [Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)]],
-            runtime: [options.runtimeId ? options.runtimeId : this.defaultAppOptions.services.runtimeId],
+            weight: [options.weight ? options.weight : 0, this.weightControlValidator],
+            runtime: [options.runtimeId ? options.runtimeId : this.defaultAppOptions.services.runtimeId, this.runtimeControlValidator],
             environment: [options.environmentId ? options.environmentId : this.defaultAppOptions.services.environmentId],
             modelVersion: [options.modelVersionId ? options.modelVersionId : this.defaultAppOptions.services.modelVersionId],
-            signatureName: [options.signatureName ? options.signatureName : this.defaultAppOptions.services.signatureName]
+            signatureName: [options.signatureName ? options.signatureName : this.defaultAppOptions.services.signatureName,
+            this.signatureNameControlValidator
+            ]
         });
     }
 
@@ -287,6 +289,23 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
             sourceTopic: [kafkaStreaming.sourceTopic],
             destinationTopic: [kafkaStreaming.destinationTopic]
         });
+    }
+
+    private get weightControlValidator(): ValidatorFn[] {
+        return [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.number)];
+    }
+
+    private get runtimeControlValidator(): ValidatorFn[] {
+        return [Validators.required];
+    }
+
+    private get signatureNameControlValidator(): ValidatorFn[] {
+        const control = <FormArray>this.serviceForm.get('stages');
+        if (control.length > 1) {
+            return [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.text)];
+        } else {
+            return [Validators.pattern(this.formsService.VALIDATION_PATTERNS.text)];
+        }
     }
 
 }
