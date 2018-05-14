@@ -22,7 +22,7 @@ import {
     RuntimesService,
     SourcesService,
     InfluxDBService
-} from '@shared/services/_index';
+} from '@core/services/_index';
 
 // Effects
 import {
@@ -31,11 +31,7 @@ import {
     SignaturesEffects,
     SourcesEffects,
     EnvironmentsEffects,
-} from '@shared/effects/_index';
-
-// import {
-//     ApplicationsEffects,
-// } from '@modules/applications/effects/_index';
+} from '@core/effects/_index';
 
 // Builders
 import {
@@ -43,10 +39,10 @@ import {
     ModelVersionBuilder,
     ModelBuildBuilder,
     RuntimeBuilder
-} from '@shared/builders/_index';
+} from '@core/builders/_index';
 
 // Factories
-import { httpServiceFactory } from '@shared/factories/_index';
+import { httpServiceFactory } from '@core/factories/_index';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';

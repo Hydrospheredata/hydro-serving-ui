@@ -2,7 +2,7 @@ import { Component, OnDestroy, AfterViewChecked } from '@angular/core';
 
 import { Subscription } from 'rxjs/Subscription';
 
-import { LoaderStateService } from '@shared/services/_index';
+import { LoaderStateService } from '@core/services/_index';
 
 import { LoaderState } from './loader';
 

@@ -3,8 +3,8 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { ModelsService } from '@shared/services/_index';
-import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@shared/builders/_index';
+import { ModelsService } from '@core/services/_index';
+import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@core/builders/_index';
 import * as HydroActions from '@shared/actions/_index';
 import { flatMap, map, catchError, mergeMap } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';

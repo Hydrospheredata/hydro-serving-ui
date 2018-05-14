@@ -8,8 +8,8 @@ import { ModelEffects } from './model-effects.service';
 // import { Subscription } from 'rxjs/Subscription';
 // import { Store } from '@ngrx/store';
 // import { ApplicationState, Model } from '@shared/models/_index';
-// import { ModelBuilder } from '@shared/builders/_index';
-// import { ModelsService } from '@shared/services/_index';
+// import { ModelBuilder } from '@core/builders/_index';
+// import { ModelsService } from '@core/services/_index';
 describe('ModelEffectsService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({

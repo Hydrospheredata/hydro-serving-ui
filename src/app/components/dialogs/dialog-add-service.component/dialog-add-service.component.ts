@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as HydroActions from '@modules/applications/actions/applications.actions';
 import { ApplicationState, Application } from '@shared/models/_index';
-import { FormsService } from '@shared/services/_index';
+import { FormsService } from '@core/services/_index';
 
 
 

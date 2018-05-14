@@ -13,7 +13,7 @@ import * as Highcharts from 'highcharts';
 
 import { Store } from '@ngrx/store';
 import { ApplicationState, Application } from '@shared/models/_index';
-import { InfluxDBService } from '@shared/services/_index';
+import { InfluxDBService } from '@core/services/_index';
 import { environment } from '@environments/environment';
 
 import {

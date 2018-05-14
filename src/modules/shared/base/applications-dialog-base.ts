@@ -15,7 +15,7 @@ import {
     ModelVersion
 } from '@shared/models/_index';
 
-import { FormsService } from '@shared/services/_index';
+import { FormsService } from '@core/services/_index';
 
 // import * as Actions from '@shared/actions/_index';
 

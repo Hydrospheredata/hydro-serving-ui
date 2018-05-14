@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MdlSnackbarService } from '@angular-mdl/core';
 
 import { Signature, ApplicationState } from '@shared/models/_index';
-import { SignaturesService } from '@shared/services/_index';
+import { SignaturesService } from '@core/services/_index';
 import { Store } from '@ngrx/store';
 // import * as Actions from '@shared/actions/_index';
 import { Subscription } from 'rxjs/Subscription';

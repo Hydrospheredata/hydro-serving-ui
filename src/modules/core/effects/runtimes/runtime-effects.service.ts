@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { RuntimesService } from '@shared/services/_index';
-import { RuntimeBuilder } from '@shared/builders/_index';
+import { RuntimesService } from '@core/services/_index';
+import { RuntimeBuilder } from '@core/builders/_index';
 import * as HydroActions from '@shared/actions/_index';
 
 
@@ -12,7 +12,7 @@ export class RuntimesEffects {
     @Effect() getRuntimes$: Observable<Action> = this.actions.ofType(HydroActions.GET_RUNTIMES)
         .flatMap(() => this.runtimesService.getRuntimes().first()
             .map(data => {
-                return ({ type: HydroActions.GET_RUNTIMES_SUCCESS, payload: data.map(this.runtimeBuilder.build, this.runtimeBuilder) })
+                return ({ type: HydroActions.GET_RUNTIMES_SUCCESS, payload: data.map(this.runtimeBuilder.build, this.runtimeBuilder) });
             })
         );
 
@@ -20,5 +20,5 @@ export class RuntimesEffects {
         private runtimeBuilder: RuntimeBuilder,
         private runtimesService: RuntimesService,
         private actions: Actions
-    ) {}
+    ) { }
 }

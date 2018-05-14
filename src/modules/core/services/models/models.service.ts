@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
-import { HttpService } from '@shared/services/http/_index';
+import { HttpService } from '@core/services/http/_index';
 
 
 
