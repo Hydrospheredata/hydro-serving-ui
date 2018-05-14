@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs/Subscription';
 export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
 
     @Input() modelId: number;
+    @Input() isEditable: boolean;
     public signatures: Signature[];
     public isReadOnly = true;
     public signaturesForm: FormGroup;
@@ -33,7 +34,6 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     ngOnInit() {
         this.createForm();
         this.signaturesSub = this.store.select('signatures')
-            .filter(signatures => signatures.length > 0)
             .subscribe(signatures => {
                 this.signatures = signatures;
                 this.resetForm();

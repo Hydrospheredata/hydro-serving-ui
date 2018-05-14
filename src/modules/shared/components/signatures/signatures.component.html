@@ -1,7 +1,7 @@
 <form [formGroup]="signaturesForm" (ngSubmit)="onSubmit()">
     <div class="signature-header">
         <h5>signatures</h5>
-        <button type="button" class="btn btn-flat" (click)="toggleSignaturesMode()" [disabled]="!isReadOnly">
+        <button *ngIf="isEditable" type="button" class="btn btn-flat" (click)="toggleSignaturesMode()" [disabled]="!isReadOnly">
             <svg>
                 <use xlink:href="#icon-edit"></use>
             </svg>

@@ -13,7 +13,7 @@
     <div class="content-body">
         <hydro-list-info [data]="model"></hydro-list-info>
 
-        <hydro-signatures *ngIf="model?.nextVersion" [modelId]="model.id"></hydro-signatures>
+        <hydro-signatures [isEditable]="true" *ngIf="model?.nextVersion" [modelId]="model.id"></hydro-signatures>
 
         <div class="hydro-panel" *ngIf="!model?.nextVersion || model?.lastModelBuild">
             <h5 class="hydro-panel__header">Versions</h5>
