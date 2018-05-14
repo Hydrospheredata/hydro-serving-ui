@@ -66,6 +66,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
 
     private loadInitialData(modelId: number) {
         this.store.dispatch(new Actions.GetModelBuildsAction(modelId));
+        this.store.dispatch(new Actions.GetSignaturesAction({ type: 'model', id: modelId }));
 
         this.modelBuildsSub = this.store.select('modelBuilds')
             .subscribe(modelBuilds => {

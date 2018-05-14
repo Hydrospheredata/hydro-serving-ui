@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { SignaturesService } from '@shared/services/_index';
 import * as HydroActions from '@shared/actions/_index';
 import { map, switchMap, catchError, take } from 'rxjs/operators';
-import { Model } from '@shared/models/_index';
+// import { Model } from '@shared/models/_index';
 
 
 
@@ -18,8 +18,7 @@ export class SignaturesEffects {
             map((action: HydroActions.GetSignaturesAction) => action.payload),
             switchMap(payload => {
                 let obs;
-                const isModel = payload instanceof Model;
-                if (isModel) {
+                if (payload.type === 'model') {
                     obs = this.signaturesService.getModelSignatures(payload.id)
                         .pipe(
                             take(1),

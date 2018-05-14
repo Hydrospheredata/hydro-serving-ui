@@ -286,8 +286,8 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
             this.isKafkaEnabled = !this.isKafkaEnabled;
         }
         return this.fb.group({
-            sourceTopic: [kafkaStreaming.sourceTopic],
-            destinationTopic: [kafkaStreaming.destinationTopic]
+            sourceTopic: [kafkaStreaming.sourceTopic, Validators.required],
+            destinationTopic: [kafkaStreaming.destinationTopic, Validators.required]
         });
     }
 
