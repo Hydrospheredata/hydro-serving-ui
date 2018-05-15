@@ -12,7 +12,7 @@ import { chart } from 'highcharts';
 import * as Highcharts from 'highcharts';
 
 import { Store } from '@ngrx/store';
-import { ApplicationState, Application } from '@shared/models/_index';
+import { HydroServingState, Application } from '@shared/models/_index';
 import { InfluxDBService } from '@core/services/_index';
 import { environment } from '@environments/environment';
 
@@ -53,7 +53,7 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
     private activeRouteSub: Subscription;
 
     constructor(
-        public store: Store<ApplicationState>,
+        public store: Store<HydroServingState>,
         public dialog: MdlDialogService,
         private activatedRoute: ActivatedRoute,
         private router: Router,
@@ -65,7 +65,9 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
                 return this.id;
             })
             .subscribe(id => {
-                this.publicPath = `${environment.host}:${environment.port}${environment.apiUrl}${this.router.url}`;
+                this.publicPath = environment.production ?
+                    `http://${window.location.hostname}:${window.location.port}${environment.apiUrl}${this.router.url}` :
+                    `${environment.host}:${environment.port}${environment.apiUrl}${this.router.url}`;
                 if (this.storeSub) {
                     this.storeSub.unsubscribe();
                 }
