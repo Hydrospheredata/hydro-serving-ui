@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MdlSnackbarService } from '@angular-mdl/core';
 
-import { Signature, ApplicationState } from '@shared/models/_index';
+import { Signature, HydroServingState } from '@shared/models/_index';
 import { SignaturesService } from '@core/services/_index';
 import { Store } from '@ngrx/store';
 // import * as Actions from '@shared/actions/_index';
@@ -28,7 +28,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
         public fb: FormBuilder,
         private signaturesService: SignaturesService,
         private mdlSnackbarService: MdlSnackbarService,
-        private store: Store<ApplicationState>
+        private store: Store<HydroServingState>
     ) { }
 
     ngOnInit() {

@@ -7,7 +7,7 @@
     "types": []
   },
   "exclude": [
-    "../node_modules/**/*",
+    "../node_modules/**/*.ts",
     "test.ts",
     "**/*.spec.ts"
   ]

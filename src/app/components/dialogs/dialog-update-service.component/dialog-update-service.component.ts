@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import { FormsService } from '@core/services/_index';
-import * as HydroActions from '@modules/applications/actions/applications.actions';
-import { ApplicationState, Application } from '@shared/models/_index';
+import * as HydroActions from '@applications/actions/applications.actions';
+import { HydroServingState, Application } from '@shared/models/_index';
 
 export let injectableServiceUpdate = new InjectionToken<Application>('selectedService');
 
@@ -26,7 +26,7 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
 
     constructor(
         @Inject(injectableServiceUpdate) data: Application,
-        public store: Store<ApplicationState>,
+        public store: Store<HydroServingState>,
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,

@@ -6,7 +6,7 @@ import { SharedModule } from '../modules/shared/shared.module';
 import { AppRoutingModule } from './app.router';
 import { MdlModule } from '@angular-mdl/core';
 import { APP_BASE_HREF } from '@angular/common';
-import { NavbarComponent, LoaderComponent } from '@modules/core/_index';
+import { NavbarComponent, LoaderComponent } from '@core/_index';
 import { Store } from '@ngrx/store';
 
 describe('AppComponent', () => {

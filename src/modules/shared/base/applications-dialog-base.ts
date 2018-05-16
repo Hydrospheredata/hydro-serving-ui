@@ -7,7 +7,7 @@ import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
 import {
-    ApplicationState,
+    HydroServingState,
     Application,
     Runtime,
     Environment,
@@ -85,7 +85,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public store: Store<ApplicationState>
+        public store: Store<HydroServingState>
     ) {
         super(
             dialogRef

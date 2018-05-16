@@ -1,5 +1,5 @@
 import { Model } from './model.model';
-import { Application } from '@modules/shared/models/application.model';
+import { Application } from '@shared/models/application.model';
 
 
 

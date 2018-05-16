@@ -24,9 +24,6 @@
       "@node_modules/*": [
         "../node_modules/*"
       ],
-      "@modules/*": [
-        "modules/*"
-      ],
       "@applications/*": [
         "modules/applications/*"
       ],

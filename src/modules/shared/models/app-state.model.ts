@@ -9,7 +9,7 @@ import {
     ModelBuild
 } from '@shared/models/_index';
 
-export interface ApplicationState {
+export interface HydroServingState {
     applications: Application[];
     models: Model[];
     runtimes: Runtime[];

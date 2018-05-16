@@ -9,10 +9,10 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.router';
 
 // Modules
-import { CoreModule } from '@modules/core/core.module';
-import { SharedModule } from '@modules/shared/shared.module';
-import { ModelsModule } from '@modules/models/models.module';
-import { ApplicationsModule } from '@modules/applications/applications.module';
+import { CoreModule } from '@core/core.module';
+import { SharedModule } from '@shared/shared.module';
+import { ModelsModule } from '@models/models.module';
+import { ApplicationsModule } from '@applications/applications.module';
 
 // Dialogs
 import * as Dialog from '@components/dialogs/_index';

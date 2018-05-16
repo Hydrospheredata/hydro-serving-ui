@@ -9,9 +9,9 @@ import { ChartsModule } from 'ng2-charts';
 
 import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent } from './_index';
 import { EffectsModule } from '@ngrx/effects';
-import { ApplicationsEffects } from '@modules/applications/effects/_index';
-import { ApplicationsService, ApplicationsBuilderService } from '@modules/applications/services/_index';
-import { ApplicationsReducer } from '@modules/applications/reducers/_index';
+import { ApplicationsEffects } from '@applications/effects/_index';
+import { ApplicationsService, ApplicationsBuilderService } from '@applications/services/_index';
+import { ApplicationsReducer } from '@applications/reducers/_index';
 import { StoreModule } from '@ngrx/store';
 
 @NgModule({

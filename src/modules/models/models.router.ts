@@ -27,18 +27,6 @@ import {
                     {
                         path: ':modelId/:modelVersionId',
                         component: ModelVersionDetailsComponent
-                        // children: [
-                        //     {
-                        //         path: '',
-                        //         pathMatch: 'full',
-                        //         component: ModelDetailsComponent,
-                        //     },
-                        //     {
-                        //         path: ':modelVersionId',
-                        //         pathMatch: 'full',
-                        //         component: ModelVersionDetailsComponent
-                        //     }
-                        // ]
                     }
                 ]
             }

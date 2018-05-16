@@ -3,8 +3,8 @@ import { MdlDialogReference } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';
-import { DeleteApplicationAction } from '@modules/applications/actions/applications.actions';
-import { ApplicationState } from '@shared/models/_index';
+import { DeleteApplicationAction } from '@applications/actions/applications.actions';
+import { HydroServingState } from '@shared/models/_index';
 
 export let injectableApplicationId = new InjectionToken<number>('injectableApplicationId');
 
@@ -21,7 +21,7 @@ export class DialogDeleteServiceComponent extends DialogBase {
     constructor(
         @Inject(injectableApplicationId) data,
         public dialogRef: MdlDialogReference,
-        private store: Store<ApplicationState>
+        private store: Store<HydroServingState>
     ) {
         super(
             dialogRef

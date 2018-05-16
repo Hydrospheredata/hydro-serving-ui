@@ -35,7 +35,7 @@ import {
 })
 export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('chart') chartRef: ElementRef;
-    public id = '';
+    public id: number;
     public applications: Application[] = [];
     public application: Application;
     public publicPath = '';
@@ -61,7 +61,7 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
     ) {
         this.activeRouteSub = this.activatedRoute.params
             .map(params => {
-                this.id = params['id'];
+                this.id = Number(params['id']);
                 return this.id;
             })
             .subscribe(id => {
@@ -132,7 +132,7 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
     private loadInitialData(id) {
         this.storeSub = this.store.select('applications')
             .filter(applications => applications.length > 0)
-            .map(applications => applications.filter(application => application.id === Number(id))[0])
+            .map(applications => applications.find(application => application.id === id))
             .subscribe(application => {
                 this.application = application;
                 this.signatureName = application.contract.match(/signature_name: \"(.*)\"\n/);

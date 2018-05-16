@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { ApplicationState, Application } from '@shared/models/_index';
+import { HydroServingState, Application } from '@shared/models/_index';
+import * as fromApplications from '@applications/reducers/_index';
 
 
 
@@ -16,9 +17,9 @@ export class ApplicationsWrapperComponent {
     public applications: Store<Application[]>;
 
     constructor(
-        private store: Store<ApplicationState>
+        private store: Store<HydroServingState>
     ) {
-        this.applications = this.store.select('applications');
+        this.applications = this.store.select(fromApplications.getApplications);
     }
 
 

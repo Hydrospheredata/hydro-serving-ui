@@ -9,6 +9,7 @@ import { MdlSelectModule } from '@angular-mdl/select';
 import { NavbarComponent, LoaderComponent } from './_index';
 
 import { CodemirrorModule } from 'ng2-codemirror';
+import { ClipboardModule } from 'ngx-clipboard';
 import { EffectsModule } from '@ngrx/effects';
 
 // Services
@@ -47,15 +48,7 @@ import { httpServiceFactory } from '@core/factories/_index';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import {
-    ModelsReducer,
-    ModelBuildsReducer,
-    RuntimesReducer,
-    SignaturesReducer,
-    SourcesReducer,
-    EnvironmentsReducer,
-    ModelVersionsReducer
-} from '@shared/reducers/_index';
+import { reducers } from '@core/reducers';
 
 
 
@@ -67,15 +60,7 @@ import {
         MdlSelectModule,
         CodemirrorModule,
         HttpModule,
-        StoreModule.forRoot({
-            models: ModelsReducer,
-            modelBuilds: ModelBuildsReducer,
-            modelVersions: ModelVersionsReducer,
-            runtimes: RuntimesReducer,
-            signatures: SignaturesReducer,
-            sources: SourcesReducer,
-            environments: EnvironmentsReducer
-        }),
+        StoreModule.forRoot(reducers),
         StoreDevtoolsModule.instrument({
             maxAge: 25
         }),
@@ -93,6 +78,7 @@ import {
         MdlModule,
         MdlSelectModule,
         CodemirrorModule,
+        ClipboardModule,
     ],
     declarations: [
         NavbarComponent,

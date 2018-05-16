@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';
-import { ApplicationState, Signature } from '@shared/models/_index';
+import { HydroServingState, Signature } from '@shared/models/_index';
 import * as Actions from '@shared/actions/_index';
 
 export let injectableModelOptions = new InjectionToken<object>('injectableModelOptions');
@@ -31,7 +31,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit, OnD
     constructor(
         public dialogRef: MdlDialogReference,
         @Inject(injectableModelOptions) data,
-        private store: Store<ApplicationState>,
+        private store: Store<HydroServingState>,
     ) {
         super(
             dialogRef

@@ -1,5 +1,5 @@
-import { Application } from '@shared/models/_index';
-import { ApplicationActions, ApplicationActionTypes } from '@modules/applications/actions/applications.actions';
+import { Application, HydroServingState } from '@shared/models/_index';
+import { ApplicationActions, ApplicationActionTypes } from '@applications/actions/applications.actions';
 
 
 
@@ -35,3 +35,5 @@ export function ApplicationsReducer(state = initialState, action: ApplicationAct
             return state;
     }
 }
+
+export const getApplications = (state: HydroServingState) => state.applications;

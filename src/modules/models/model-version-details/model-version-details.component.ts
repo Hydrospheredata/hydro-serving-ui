@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
 import {
-    ApplicationState,
+    HydroServingState,
     Signature
 } from '@shared/models/_index';
 
@@ -32,7 +32,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
 
     constructor(
         private activatedRoute: ActivatedRoute,
-        private store: Store<ApplicationState>
+        private store: Store<HydroServingState>
     ) { }
 
     ngOnInit() {

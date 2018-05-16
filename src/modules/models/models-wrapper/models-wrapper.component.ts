@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ApplicationState, Model } from '@shared/models/_index';
+import { HydroServingState, Model } from '@shared/models/_index';
 
 
 
@@ -16,7 +16,7 @@ export class ModelsWrapperComponent implements OnInit {
 
 
     constructor(
-        private store: Store<ApplicationState>,
+        private store: Store<HydroServingState>,
     ) { }
 
     ngOnInit() {

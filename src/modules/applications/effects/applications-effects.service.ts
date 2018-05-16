@@ -4,9 +4,9 @@ import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
-import { ApplicationsService, ApplicationsBuilderService } from '@modules/applications/services/_index';
+import { ApplicationsService, ApplicationsBuilderService } from '@applications/services/_index';
 import { Application } from '@shared/models/_index';
-import * as HydroActions from '@modules/applications/actions/applications.actions';
+import * as HydroActions from '@applications/actions/applications.actions';
 import { switchMap, catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';

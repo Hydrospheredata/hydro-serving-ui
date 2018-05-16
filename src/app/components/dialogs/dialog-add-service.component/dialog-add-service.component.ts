@@ -4,8 +4,8 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
 import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
-import * as HydroActions from '@modules/applications/actions/applications.actions';
-import { ApplicationState, Application } from '@shared/models/_index';
+import * as HydroActions from '@applications/actions/applications.actions';
+import { HydroServingState, Application } from '@shared/models/_index';
 import { FormsService } from '@core/services/_index';
 
 
@@ -24,7 +24,7 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
-        public store: Store<ApplicationState>,
+        public store: Store<HydroServingState>,
     ) {
         super(
             fb,

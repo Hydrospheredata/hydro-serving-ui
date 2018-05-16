@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ApplicationsWrapperComponent } from './applications-wrapper.component';
-import { SidebarComponent } from '@modules/shared/_index';
+import { SidebarComponent } from '@shared/_index';
 
 describe('ApplicationsWrapperComponent', () => {
     let component: ApplicationsWrapperComponent;

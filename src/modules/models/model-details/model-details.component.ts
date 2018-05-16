@@ -4,7 +4,7 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
-import { ApplicationState, Model, ModelBuild, Signature } from '@shared/models/_index';
+import { HydroServingState, Model, ModelBuild, Signature } from '@shared/models/_index';
 
 import {
     DialogModelBuildComponent,
@@ -33,7 +33,7 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     constructor(
         private activatedRoute: ActivatedRoute,
         private dialog: MdlDialogService,
-        private store: Store<ApplicationState>,
+        private store: Store<HydroServingState>,
     ) { }
 
     public ngOnInit() {
