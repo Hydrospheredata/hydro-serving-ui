@@ -2,7 +2,8 @@ import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MdlSnackbarService } from '@angular-mdl/core';
 
-import { Signature, HydroServingState } from '@shared/models/_index';
+import { Signature } from '@shared/models/_index';
+import { HydroServingState } from '@core/reducers';
 import { SignaturesService } from '@core/services/_index';
 import { Store } from '@ngrx/store';
 // import * as Actions from '@shared/actions/_index';

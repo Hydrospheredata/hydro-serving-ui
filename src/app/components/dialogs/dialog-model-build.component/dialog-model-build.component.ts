@@ -4,7 +4,8 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';
-import { HydroServingState, Signature } from '@shared/models/_index';
+import { Signature } from '@shared/models/_index';
+import { HydroServingState } from '@core/reducers';
 import * as Actions from '@shared/actions/_index';
 
 export let injectableModelOptions = new InjectionToken<object>('injectableModelOptions');

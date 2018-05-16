@@ -4,7 +4,8 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
-import { HydroServingState, Model, ModelBuild, Signature } from '@shared/models/_index';
+import { Model, ModelBuild, Signature } from '@shared/models/_index';
+import { HydroServingState } from '@core/reducers';
 
 import {
     DialogModelBuildComponent,

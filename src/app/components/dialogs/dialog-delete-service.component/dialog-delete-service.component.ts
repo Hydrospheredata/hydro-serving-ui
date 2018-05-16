@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';
 import { DeleteApplicationAction } from '@applications/actions/applications.actions';
-import { HydroServingState } from '@shared/models/_index';
+import { HydroServingState } from '@core/reducers';
 
 export let injectableApplicationId = new InjectionToken<number>('injectableApplicationId');
 

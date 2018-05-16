@@ -1,7 +1,7 @@
 import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { MdlDialogOutletService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
-import { HydroServingState } from '@shared/models/_index';
+import { HydroServingState } from '@core/reducers';
 import * as Actions from '@shared/actions/_index';
 import { GetApplicationsAction } from '@applications/actions/applications.actions';
 

@@ -1,5 +1,3 @@
-export * from './app-state.model';
-
 export * from './application.model';
 export * from './model.model';
 export * from './model-build.model';

@@ -12,9 +12,12 @@ import { chart } from 'highcharts';
 import * as Highcharts from 'highcharts';
 
 import { Store } from '@ngrx/store';
-import { HydroServingState, Application } from '@shared/models/_index';
+import { Application } from '@shared/models/_index';
+import { HydroServingState } from '@core/reducers';
 import { InfluxDBService } from '@core/services/_index';
 import { environment } from '@environments/environment';
+
+import * as fromApplications from '@applications/reducers/_index';
 
 import {
     DialogUpdateServiceComponent,
@@ -49,7 +52,6 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
     public signatureName: any[];
 
     private series: { name: string, data: any[] }[] = [];
-    private storeSub: Subscription;
     private activeRouteSub: Subscription;
 
     constructor(
@@ -68,9 +70,6 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
                 this.publicPath = environment.production ?
                     `http://${window.location.hostname}:${window.location.port}${environment.apiUrl}${this.router.url}` :
                     `${environment.host}:${environment.port}${environment.apiUrl}${this.router.url}`;
-                if (this.storeSub) {
-                    this.storeSub.unsubscribe();
-                }
                 this.loadInitialData(id);
             });
     }
@@ -84,9 +83,6 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
     ngOnDestroy() {
         if (this.activeRouteSub) {
             this.activeRouteSub.unsubscribe();
-        }
-        if (this.storeSub) {
-            this.storeSub.unsubscribe();
         }
     }
 
@@ -129,14 +125,14 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
         });
     }
 
-    private loadInitialData(id) {
-        this.storeSub = this.store.select('applications')
-            .filter(applications => applications.length > 0)
-            .map(applications => applications.find(application => application.id === id))
+    private loadInitialData(id: number) {
+        this.store.select(fromApplications.getApplicationById(id))
             .subscribe(application => {
                 this.application = application;
-                this.signatureName = application.contract.match(/signature_name: \"(.*)\"\n/);
-                this.getChartData(application);
+                if (this.application) {
+                    this.signatureName = application.contract.match(/signature_name: \"(.*)\"\n/);
+                    this.getChartData(application);
+                }
             });
     }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { HydroServingState, Model } from '@shared/models/_index';
+import { Model } from '@shared/models/_index';
+import { HydroServingState } from '@core/reducers';
 
 
 

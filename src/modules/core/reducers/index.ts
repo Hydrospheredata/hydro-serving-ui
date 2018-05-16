@@ -8,8 +8,28 @@ import {
     SourcesReducer,
     EnvironmentsReducer,
     ModelVersionsReducer
-} from '@shared/reducers/_index';
-import { HydroServingState } from '@shared/_index';
+} from '@core/reducers/_index';
+
+import {
+    Model,
+    Runtime,
+    Signature,
+    Source,
+    Environment,
+    ModelVersion,
+    ModelBuild
+} from '@shared/models/_index';
+
+export interface HydroServingState {
+    applications: fromApplications.ApplicationsState;
+    models: Model[];
+    runtimes: Runtime[];
+    signatures: Signature[];
+    sources: Source[];
+    environments: Environment[];
+    modelVersions: ModelVersion[];
+    modelBuilds: ModelBuild[];
+}
 
 export const reducers: ActionReducerMap<HydroServingState> = {
     applications: fromApplications.ApplicationsReducer,

@@ -119,11 +119,6 @@
   &-list {
     list-style: none;
     padding: 0;
-    &__item {
-      &-title {
-
-      }
-    }
   }
   &-table {
     &__header,
@@ -139,8 +134,16 @@
 .model {
   &-item {
     &__application {
-      cursor: pointer;
-      text-decoration-line: underline;
+      > span {
+        cursor: pointer;
+        text-decoration-line: underline;
+      }
+      &::after {
+        content: ', ';
+      }
+      &:last-child::after {
+        content: '';
+      }
     }
   }
 }

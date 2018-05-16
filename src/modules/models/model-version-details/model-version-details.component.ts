@@ -3,10 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 
-import {
-    HydroServingState,
-    Signature
-} from '@shared/models/_index';
+import { Signature } from '@shared/models/_index';
+import { HydroServingState } from '@core/reducers';
 
 import * as Actions from '@shared/actions/_index';
 

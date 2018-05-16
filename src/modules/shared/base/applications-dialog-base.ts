@@ -7,7 +7,6 @@ import { DialogBase } from './dialog-base';
 
 import { Store } from '@ngrx/store';
 import {
-    HydroServingState,
     Application,
     Runtime,
     Environment,
@@ -15,9 +14,9 @@ import {
     ModelVersion
 } from '@shared/models/_index';
 
-import { FormsService } from '@core/services/_index';
+import { HydroServingState } from '@core/reducers';
 
-// import * as Actions from '@shared/actions/_index';
+import { FormsService } from '@core/services/_index';
 
 import 'codemirror/mode/yaml/yaml.js';
 import 'codemirror/addon/edit/matchbrackets.js';

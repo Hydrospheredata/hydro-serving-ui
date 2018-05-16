@@ -46,7 +46,7 @@
                         <td class="hydro-table-body__cell">
                             <span class="model-item__application" *ngFor="let app of (item.modelVersion.applications | slice: item.modelVersion.applications.length - 2)"
                                 [routerLink]="['../../applications', app.id]">
-                                {{ app.name }}
+                                <span>{{app.name}}</span>
                             </span>
                         </td>
                         <td class="hydro-table-body__cell">

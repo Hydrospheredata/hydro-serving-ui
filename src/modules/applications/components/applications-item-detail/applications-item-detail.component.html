@@ -48,66 +48,40 @@
         </ul>
     </div>
 
-    <table *ngIf="isPipeline" class='hydro-table hydro-table-services'>
-        <thead class="hydro-table-head">
-            <tr>
-                <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
-            </tr>
-        </thead>
-        <tbody class="hydro-table-body">
-            <tr *ngFor="let item of serviceModelsFiltered" class='hydro-table-body__row'>
-                <td class="hydro-table-body__cell">
-                    <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelName}}</div>
-                </td>
-                <td class="hydro-table-body__cell">
-                    <div class='cs-text-overflow-ellipsis'>{{item.data.modelRuntime.modelVersion}}</div>
-                </td>
-                <td class="hydro-table-body__cell">
-                    <div class='cs-text-size-12 cs-text-overflow-ellipsis'>{{item.data.modelRuntime.created | utcToLocal | date:'medium'}}</div>
-                </td>
-                <td class="hydro-table-body__cell">
-                    <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis'>{{item.weight}}%</div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div *ngIf="!isPipeline">
-        <div class="hydro-panel" *ngFor="let stage of application?.executionGraph.stages; let i = index">
-            <h5 class="hydro-panel__header">Stage {{i + 1}}</h5>
-            <table class='hydro-table hydro-table-models'>
-                <thead class="hydro-table-head">
-                    <tr>
-                        <th class="hydro-table-head__cell">Model Variant</th>
-                        <th class="hydro-table-head__cell">Runtime</th>
-                        <th class="hydro-table-head__cell">Env</th>
-                        <th class="hydro-table-head__cell">Weight</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of stage.services" class='hydro-table-body__row'>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                                {{ item.serviceDescription.modelName ? item.serviceDescription.modelName : item.serviceDescription.modelVersionId }}
-                            </div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis cs-text-center'>
-                                {{ item.serviceDescription.runtimeName ? item.serviceDescription.runtimeName : item.serviceDescription.runtimeId }}
-                            </div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis cs-text-center'>
-                                {{ item.serviceDescription.environmentId ? item.serviceDescription.environmentId : '-' }}
-                            </div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>{{ item.weight }}%</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div class="hydro-panel" *ngFor="let stage of application?.executionGraph.stages; let i = index">
+        <h5 class="hydro-panel__header">Stage {{i + 1}}</h5>
+        <table class='hydro-table hydro-table-models'>
+            <thead class="hydro-table-head">
+                <tr>
+                    <th class="hydro-table-head__cell">Model Variant</th>
+                    <th class="hydro-table-head__cell">Runtime</th>
+                    <th class="hydro-table-head__cell">Env</th>
+                    <th class="hydro-table-head__cell">Weight</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of stage.services" class='hydro-table-body__row'>
+                    <td class="hydro-table-body__cell">
+                        <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
+                            {{ item.serviceDescription.modelName ? item.serviceDescription.modelName : item.serviceDescription.modelVersionId }}
+                        </div>
+                    </td>
+                    <td class="hydro-table-body__cell">
+                        <div class='cs-text-overflow-ellipsis cs-text-center'>
+                            {{ item.serviceDescription.runtimeName ? item.serviceDescription.runtimeName : item.serviceDescription.runtimeId }}
+                        </div>
+                    </td>
+                    <td class="hydro-table-body__cell">
+                        <div class='cs-text-overflow-ellipsis cs-text-center'>
+                            {{ item.serviceDescription.environmentId ? item.serviceDescription.environmentId : '-' }}
+                        </div>
+                    </td>
+                    <td class="hydro-table-body__cell">
+                        <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>{{ item.weight }}%</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <div #chart></div>

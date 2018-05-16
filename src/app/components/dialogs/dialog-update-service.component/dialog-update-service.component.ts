@@ -7,7 +7,8 @@ import { Store } from '@ngrx/store';
 import { ApplicationsDialogBase } from '@shared/base/_index';
 import { FormsService } from '@core/services/_index';
 import * as HydroActions from '@applications/actions/applications.actions';
-import { HydroServingState, Application } from '@shared/models/_index';
+import { Application } from '@shared/models/_index';
+import { HydroServingState } from '@core/reducers';
 
 export let injectableServiceUpdate = new InjectionToken<Application>('selectedService');
 
