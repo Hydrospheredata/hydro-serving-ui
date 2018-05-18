@@ -48,7 +48,8 @@ import { httpServiceFactory } from '@core/factories/_index';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { reducers } from '@core/reducers';
+import { reducers, CustomRouterStateSerializer } from '@core/reducers';
+import { RouterStateSerializer } from '@ngrx/router-store';
 
 
 
@@ -61,9 +62,7 @@ import { reducers } from '@core/reducers';
         CodemirrorModule,
         HttpModule,
         StoreModule.forRoot(reducers),
-        StoreDevtoolsModule.instrument({
-            maxAge: 25
-        }),
+        StoreDevtoolsModule.instrument(),
         EffectsModule.forRoot([
             ModelEffects,
             RuntimesEffects,
@@ -101,7 +100,8 @@ import { reducers } from '@core/reducers';
             provide: HttpService,
             useFactory: httpServiceFactory,
             deps: [XHRBackend, RequestOptions, LoaderStateService]
-        }
+        },
+        { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
     ]
 })
 export class CoreModule { }

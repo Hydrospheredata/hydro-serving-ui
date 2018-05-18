@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 import { ApplicationsService, ApplicationsBuilderService } from '@applications/services/_index';
 import { Application } from '@shared/models/_index';
 import * as HydroActions from '@applications/actions/applications.actions';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap, catchError, withLatestFrom } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
+import { getRouterNavigationId, HydroServingState } from '@core/reducers';
 
 
 
@@ -22,6 +23,7 @@ export class ApplicationsEffects {
         private applicationsService: ApplicationsService,
         private applicationBuilder: ApplicationsBuilderService,
         private mdlSnackbarService: MdlSnackbarService,
+        private store: Store<HydroServingState>,
     ) { }
 
     @Effect() getApplications$: Observable<Action> = this.actions$
@@ -37,6 +39,18 @@ export class ApplicationsEffects {
                         }),
                         catchError(error => Observable.of(new HydroActions.GetApplicationsFailAction(error)))
                     );
+            })
+        );
+
+    @Effect() getApplicationById$: Observable<Action> = this.actions$
+        .ofType(HydroActions.ApplicationActionTypes.GetById)
+        .pipe(
+            withLatestFrom(
+                this.store.select(getRouterNavigationId),
+                (state) => console.log(state)
+            ),
+            switchMap(() => {
+                return Observable.of();
             })
         );
 

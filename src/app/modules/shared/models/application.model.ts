@@ -1,4 +1,19 @@
-export class Application {
+export interface IKafkaStreaming {
+    sourceTopic: string;
+    destinationTopic: string;
+    consumerId?: string;
+    errorTopic?: string;
+}
+
+export interface IApplication {
+    id?: number;
+    contract?: string;
+    name: string;
+    executionGraph?: any;
+    kafkaStreaming?: IKafkaStreaming[];
+}
+
+export class Application implements IApplication {
     public id?: number;
     public contract?: string;
     public name: string;

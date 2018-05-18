@@ -5,6 +5,9 @@ export enum ApplicationActionTypes {
     Get = '[Application] Get all applications',
     GetSuccess = '[Application] Get all applications with success',
     GetFail = '[Application] Get all applications with fail',
+    GetById = '[Application] Get application by id',
+    GetByIdSuccess = '[Application] Get application by id with success',
+    GetByIdFail = '[Application] Get application by id with fail',
     Add = '[Application] Add new application',
     AddSuccess = '[Application] Add new application with success',
     AddFail = '[Application] Add new application with fail',
@@ -27,6 +30,20 @@ export class GetApplicationsSuccessAction implements Action {
 
 export class GetApplicationsFailAction implements Action {
     readonly type = ApplicationActionTypes.GetFail;
+    constructor(public error) { }
+}
+
+export class GetApplicationByIdAction implements Action {
+    readonly type = ApplicationActionTypes.GetById;
+}
+
+export class GetApplicationByIdSuccessAction implements Action {
+    readonly type = ApplicationActionTypes.GetByIdSuccess;
+    constructor(public payload: Application) { }
+}
+
+export class GetApplicationByIdFailAction implements Action {
+    readonly type = ApplicationActionTypes.GetByIdFail;
     constructor(public error) { }
 }
 
