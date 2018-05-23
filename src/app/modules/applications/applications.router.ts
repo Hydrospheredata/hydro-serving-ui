@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent } from '@applications/components/_index';
+import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent, ApplicationsStageDetailComponent } from '@applications/components/_index';
 
 @NgModule({
     imports: [
@@ -13,6 +13,10 @@ import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent } from '@
                     {
                         path: ':id',
                         component: ApplicationsItemDetailComponent
+                    },
+                    {
+                        path: ':id/:stageId',
+                        component: ApplicationsStageDetailComponent
                     }
                 ]
             }

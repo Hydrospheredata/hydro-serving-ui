@@ -76,7 +76,7 @@
     "size-limit": "^0.11.4",
     "svg-inline-loader": "^0.8.0",
     "ts-node": "^3.2.2",
-    "tslint": "~5.5.0",
+    "tslint": "^5.10.0",
     "typescript": "^2.6.2",
     "typescript-eslint-parser": "^9.0.0",
     "webpack-bundle-analyzer": "^2.9.0"

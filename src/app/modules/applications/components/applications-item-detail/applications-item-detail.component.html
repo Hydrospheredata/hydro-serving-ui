@@ -48,7 +48,7 @@
         </ul>
     </div>
 
-    <div class="hydro-panel" *ngFor="let stage of application?.executionGraph.stages; let i = index">
+    <div class="hydro-panel" *ngFor="let stage of application?.executionGraph.stages; let i = index" [routerLink]="[i]">
         <h5 class="hydro-panel__header">Stage {{i + 1}}</h5>
         <table class='hydro-table hydro-table-models'>
             <thead class="hydro-table-head">
