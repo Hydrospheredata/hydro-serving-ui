@@ -47,7 +47,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
-import { RouterStateSerializer } from '@ngrx/router-store';
+import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 
 
 
@@ -66,7 +66,10 @@ import { RouterStateSerializer } from '@ngrx/router-store';
             SignaturesEffects,
             SourcesEffects,
             EnvironmentsEffects
-        ])
+        ]),
+        StoreRouterConnectingModule.forRoot({
+            stateKey: 'router',
+        })
     ],
     exports: [
         NavbarComponent,

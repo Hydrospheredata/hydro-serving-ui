@@ -7,6 +7,8 @@ import { Signature } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
 
 import * as Actions from '@shared/actions/_index';
+import { GetModelBuildsAction } from '@models/actions';
+import * as fromModels from '@models/reducers';
 
 
 @Component({
@@ -61,15 +63,15 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     }
 
     private loadInitialData(modelVersionId: number) {
-        this.store.dispatch(new Actions.GetModelBuildsAction(this.modelId));
+        this.store.dispatch(new GetModelBuildsAction(this.modelId));
         this.store.dispatch(new Actions.GetSignaturesAction({ type: 'model-version', id: this.modelId }));
-
-        this.modelsBuildsSub = this.store.select('modelBuilds')
-            .subscribe(builds => {
-                this.build = builds.find(dataStoreItem => {
-                    return dataStoreItem.version === modelVersionId && dataStoreItem.model.id === this.modelId;
-                });
-            });
+        console.log(modelVersionId);
+        this.store.select(fromModels.getModelBuildEntitiesState)
+        // .subscribe(builds => {
+        //     this.build = builds.find(dataStoreItem => {
+        //         return dataStoreItem.version === modelVersionId && dataStoreItem.model.id === this.modelId;
+        //     });
+        // });
     }
 
 }

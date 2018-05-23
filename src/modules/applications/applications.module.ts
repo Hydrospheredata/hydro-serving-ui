@@ -9,7 +9,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { ChartsModule } from 'ng2-charts';
 
 import { ApplicationsRoutingModule } from './applications.router';
-import { ApplicationsReducer } from '@applications/reducers/_index';
+import { reducers } from '@applications/reducers';
 import { ApplicationsEffects } from '@applications/effects/_index';
 import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent, ApplicationsStageDetailComponent } from '@applications/components/_index';
 import { ApplicationsService, ApplicationsBuilderService } from '@applications/services/_index';
@@ -24,7 +24,7 @@ import { ApplicationsService, ApplicationsBuilderService } from '@applications/s
         ApplicationsRoutingModule,
         FormsModule,
         ChartsModule,
-        StoreModule.forFeature('applications', ApplicationsReducer),
+        StoreModule.forFeature('applications', reducers),
         EffectsModule.forFeature([ApplicationsEffects])
     ],
     declarations: [

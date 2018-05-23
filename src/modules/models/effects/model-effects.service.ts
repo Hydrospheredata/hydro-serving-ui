@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ModelsService } from '@models/services';
 import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@core/builders/_index';
-import * as HydroActions from '@shared/actions/_index';
+import * as HydroActions from '@models/actions';
 import { flatMap, map, catchError, mergeMap } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
 

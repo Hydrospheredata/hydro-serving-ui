@@ -15,6 +15,8 @@ import {
 import { EffectsModule } from '@ngrx/effects';
 import { ModelEffects } from '@models/effects';
 import { ModelsService } from '@models/services';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from '@models/reducers';
 
 
 
@@ -27,6 +29,7 @@ import { ModelsService } from '@models/services';
         MdlModule,
         MdlSelectModule,
         FormsModule,
+        StoreModule.forFeature('models', reducers),
         EffectsModule.forFeature([ModelEffects])
     ],
     declarations: [

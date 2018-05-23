@@ -13,6 +13,9 @@ import {
 } from '@components/dialogs/_index';
 
 import * as Actions from '@shared/actions/_index';
+import { GetModelBuildsAction } from '@models/actions';
+import * as fromModels from '@models/reducers';
+import { Observable } from 'rxjs/Observable';
 
 
 
@@ -23,6 +26,8 @@ import * as Actions from '@shared/actions/_index';
 })
 export class ModelDetailsComponent implements OnInit, OnDestroy {
     public model: Model;
+    public model$: Observable<Model>;
+    public modelBuilds$: Observable<ModelBuild[]>;
     public signatures: Signature[];
     public modelBuilds: ModelBuild[];
     public tableHeader: string[] = ['Version', 'Created', 'Status', 'Applications', ''];
@@ -35,7 +40,10 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private dialog: MdlDialogService,
         private store: Store<HydroServingState>,
-    ) { }
+    ) {
+        this.model$ = this.store.select(fromModels.getSelectedModel);
+        this.modelBuilds$ = this.store.select(fromModels.getAllModelBuilds);
+    }
 
     public ngOnInit() {
         this.activatedRouteSubscription = this.activatedRoute.params
@@ -66,19 +74,19 @@ export class ModelDetailsComponent implements OnInit, OnDestroy {
     }
 
     private loadInitialData(modelId: number) {
-        this.store.dispatch(new Actions.GetModelBuildsAction(modelId));
+        this.store.dispatch(new GetModelBuildsAction(modelId));
         this.store.dispatch(new Actions.GetSignaturesAction({ type: 'model', id: modelId }));
 
-        this.modelBuildsSub = this.store.select('modelBuilds')
-            .subscribe(modelBuilds => {
-                this.modelBuilds = modelBuilds.reverse();
-            });
+        // this.model$ = this.store.select(fromModels.getSelectedModel);
+        // .subscribe(modelBuilds => {
+        //     this.modelBuilds = modelBuilds.reverse();
+        // });
 
-        this.modelsStoreSelectionSubscription = this.store.select('models')
-            .filter(models => models.length > 0)
-            .subscribe(models => {
-                this.model = models.find(modelsStoreItem => modelsStoreItem.id === modelId);
-            });
+        // this.store.select(fromModels.getModelEntitiesState)
+        // .filter(models => models.length > 0)
+        // .subscribe(models => {
+        //     this.model = models.find(modelsStoreItem => modelsStoreItem.id === modelId);
+        // });
     }
 
     public buildModel(model: Model) {

@@ -1,6 +1,6 @@
 <div class="content">
     <div class="content-header">
-        <div class="content-header__title">{{ model?.name }}</div>
+        <div class="content-header__title">{{ (model$ | async)?.name }}</div>
         <button class="btn btn-release" (click)="buildModel(model)" *ngIf="model?.nextVersion">
             <svg>
                 <use xlink:href="#icon-arrow"></use>
@@ -11,11 +11,11 @@
 
 
     <div class="content-body">
-        <hydro-list-info [data]="model"></hydro-list-info>
+        <hydro-list-info [data]="(model$ | async)"></hydro-list-info>
 
         <hydro-signatures [isEditable]="true" *ngIf="model?.nextVersion" [modelId]="model.id"></hydro-signatures>
 
-        <div class="hydro-panel" *ngIf="!model?.nextVersion || model?.lastModelBuild">
+        <div class="hydro-panel" *ngIf="!(model$ | async)?.nextVersion || (model$ | async)?.lastModelBuild">
             <h5 class="hydro-panel__header">Versions</h5>
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of modelBuilds | sortBy: 'item.version'" class='hydro-table-body__row'>
+                    <tr *ngFor="let item of (modelBuilds$ | async) | sortBy: 'item.version'" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ item.version }}</div>
                         </td>

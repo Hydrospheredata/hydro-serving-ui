@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Model } from '@shared/models/_index';
-import { HydroServingState } from '@core/reducers';
+import * as fromModels from '@models/reducers';
 
 
 
@@ -13,15 +12,15 @@ import { HydroServingState } from '@core/reducers';
 export class ModelsWrapperComponent implements OnInit {
 
     public sidebarTitle = 'Models';
-    public models: Store<Model[]>;
+    public models: any;
 
 
     constructor(
-        private store: Store<HydroServingState>,
+        private store: Store<fromModels.ModelsState>,
     ) { }
 
     ngOnInit() {
-        this.models = this.store.select('models');
+        this.models = this.store.select(fromModels.getAllModels);
     }
 
 }

@@ -1,10 +1,10 @@
 import * as reducer from './applications.reducer';
 
-describe('ApplicationsReducer', () => {
+describe('reducer', () => {
     describe('undefined action', () => {
         it('should return the default state', () => {
             const { initialState } = reducer;
-            const state = reducer.ApplicationsReducer(undefined, {} as any);
+            const state = reducer.reducer(undefined, {} as any);
             expect(state).toBe(initialState);
         });
     });

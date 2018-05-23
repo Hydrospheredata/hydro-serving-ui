@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { DialogBase } from '@shared/base/_index';
 import { Signature } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-import * as Actions from '@shared/actions/_index';
+import { BuildModelAction } from '@models/actions';
 
 export let injectableModelOptions = new InjectionToken<object>('injectableModelOptions');
 
@@ -57,7 +57,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit, OnD
     }
 
     private buildModel(modelOptions) {
-        this.store.dispatch(new Actions.BuildModelAction(modelOptions));
+        this.store.dispatch(new BuildModelAction(modelOptions));
         this.dialogRef.hide();
     }
 }

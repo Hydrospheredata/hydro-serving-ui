@@ -1,6 +1,6 @@
 <div class="content">
     <div class="content-header">
-        <div class="content-header__title">{{ application?.name }}</div>
+        <div class="content-header__title">{{ (application$ | async)?.name }}</div>
         <div class="btn-group">
             <button class="btn" (click)="testApplication(application)" *ngIf="signatureName?.length">
                 <svg>
@@ -24,20 +24,20 @@
     </div>
 
     <div class="content-info">
-        <ol class="content-info__sublist">
+        <!-- <ol class="content-info__sublist">
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">PublicPath</span>
                 <span class="content-info__sublist-item-value">
                     <a [href]="publicPath" target="_blank">{{ publicPath }}</a>
                 </span>
             </li>
-        </ol>
+        </ol> -->
 
-        <ul class="content-info__list" *ngIf="application?.kafkaStreaming.length">
+        <ul class="content-info__list" *ngIf="(application$ | async)?.kafkaStreaming.length">
             <li class="content-info__list-title">
                 Kafka Info
             </li>
-            <li class="content-info__list-item" *ngFor="let kafka of application.kafkaStreaming">
+            <li class="content-info__list-item" *ngFor="let kafka of (application$ | async).kafkaStreaming">
                 <ol class="content-info__sublist">
                     <li class="content-info__sublist-item" *ngFor="let item of kafka | iterateAsArray">
                         <span class="content-info__sublist-item-title">{{ item }}</span>
@@ -48,7 +48,7 @@
         </ul>
     </div>
 
-    <div class="hydro-panel" *ngFor="let stage of application?.executionGraph.stages; let i = index" [routerLink]="[i]">
+    <div class="hydro-panel" *ngFor="let stage of (application$ | async)?.executionGraph.stages; let i = index" [routerLink]="[i]">
         <h5 class="hydro-panel__header">Stage {{i + 1}}</h5>
         <table class='hydro-table hydro-table-models'>
             <thead class="hydro-table-head">
@@ -84,6 +84,6 @@
         </table>
     </div>
 
-    <div #chart></div>
+    <!-- <div #chart></div> -->
 
 </div>

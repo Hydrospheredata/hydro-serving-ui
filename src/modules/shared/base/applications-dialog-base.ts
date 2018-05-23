@@ -90,10 +90,10 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
             dialogRef
         );
 
-        this.modelVersionsStoreSub = this.store.select('modelVersions')
-            .subscribe(modelVersions => {
-                this.modelVersions = modelVersions;
-            });
+        // this.modelVersionsStoreSub = this.store.select('modelVersions')
+        //     .subscribe(modelVersions => {
+        //         this.modelVersions = modelVersions;
+        //     });
 
         this.runtimesStoreSub = this.store.select('runtimes')
             .subscribe(runtimes => {

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { Application } from '@shared/models/_index';
-import { HydroServingState } from '@core/reducers';
-import * as fromApplications from '@applications/reducers/_index';
+// import { Application } from '@shared/models/_index';
+// import { HydroServingState } from '@core/reducers';
+import * as fromApplications from '@applications/reducers';
 
 
 
@@ -15,10 +15,10 @@ import * as fromApplications from '@applications/reducers/_index';
 
 export class ApplicationsWrapperComponent {
     public sidebarTitle = 'Applications';
-    public applications: Store<Application[]>;
+    public applications: any;
 
     constructor(
-        private store: Store<HydroServingState>
+        private store: Store<fromApplications.State>
     ) {
         this.applications = this.store.select(fromApplications.getAllApplications);
     }

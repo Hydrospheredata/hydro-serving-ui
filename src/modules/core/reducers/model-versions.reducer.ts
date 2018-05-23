@@ -1,5 +1,5 @@
 import { ModelVersion } from '@shared/models/_index';
-import { ModelVersionActionTypes, ModelVersionsActions } from '@shared/actions/_index';
+import { ModelVersionActionTypes, ModelVersionsActions } from '@models/actions';
 
 
 
