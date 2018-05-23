@@ -2,7 +2,6 @@ export * from './form-service.service';
 export * from './loader-state.service';
 export * from './influxdb.service';
 
-export * from './models/_index';
 export * from './signatures/_index';
 export * from './runtimes/_index';
 export * from './sources/_index';

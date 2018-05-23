@@ -3,7 +3,7 @@ import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { ModelsService } from '@core/services/_index';
+import { ModelsService } from '@models/services';
 import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@core/builders/_index';
 import * as HydroActions from '@shared/actions/_index';
 import { flatMap, map, catchError, mergeMap } from 'rxjs/operators';

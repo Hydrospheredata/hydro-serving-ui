@@ -11,7 +11,10 @@ import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
     ModelVersionDetailsComponent
-} from './_index';
+} from '@models/components';
+import { EffectsModule } from '@ngrx/effects';
+import { ModelEffects } from '@models/effects';
+import { ModelsService } from '@models/services';
 
 
 
@@ -24,12 +27,13 @@ import {
         MdlModule,
         MdlSelectModule,
         FormsModule,
+        EffectsModule.forFeature([ModelEffects])
     ],
     declarations: [
         ModelsWrapperComponent,
         ModelDetailsComponent,
         ModelVersionDetailsComponent
     ],
-    exports: []
+    providers: [ModelsService]
 })
 export class ModelsModule { }

@@ -17,7 +17,6 @@ import {
     HttpService,
     LoaderStateService,
     FormsService,
-    ModelsService,
     EnvironmentsService,
     SignaturesService,
     RuntimesService,
@@ -27,7 +26,6 @@ import {
 
 // Effects
 import {
-    ModelEffects,
     RuntimesEffects,
     SignaturesEffects,
     SourcesEffects,
@@ -64,7 +62,6 @@ import { RouterStateSerializer } from '@ngrx/router-store';
         StoreModule.forRoot(reducers),
         StoreDevtoolsModule.instrument(),
         EffectsModule.forRoot([
-            ModelEffects,
             RuntimesEffects,
             SignaturesEffects,
             SourcesEffects,
@@ -89,7 +86,6 @@ import { RouterStateSerializer } from '@ngrx/router-store';
         ModelBuildBuilder,
         RuntimeBuilder,
         FormsService,
-        ModelsService,
         EnvironmentsService,
         SignaturesService,
         RuntimesService,
