@@ -11,8 +11,8 @@ import { ChartsModule } from 'ng2-charts';
 import { ApplicationsRoutingModule } from './applications.router';
 import { reducers } from '@applications/reducers';
 import { ApplicationsEffects } from '@applications/effects/_index';
-import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent, ApplicationsStageDetailComponent } from '@applications/components/_index';
-import { ApplicationsService, ApplicationsBuilderService } from '@applications/services/_index';
+import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent, ApplicationsStageDetailComponent } from '@applications/components';
+import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } from '@applications/services';
 
 
 
@@ -32,6 +32,6 @@ import { ApplicationsService, ApplicationsBuilderService } from '@applications/s
         ApplicationsItemDetailComponent,
         ApplicationsStageDetailComponent
     ],
-    providers: [ApplicationsService, ApplicationsBuilderService]
+    providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard]
 })
 export class ApplicationsModule { }

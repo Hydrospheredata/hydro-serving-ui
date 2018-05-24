@@ -1,12 +1,6 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{ (model$ | async)?.name }}</div>
-        <button class="btn btn-release" (click)="buildModel(model)" *ngIf="model?.nextVersion">
-            <svg>
-                <use xlink:href="#icon-arrow"></use>
-            </svg>
-            Release
-        </button>
     </div>
 
 
@@ -24,7 +18,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let item of (modelBuilds$ | async) | sortBy: 'item.version'" class='hydro-table-body__row'>
+                    <tr *ngFor="let item of (modelBuilds$ | async).reverse() | sortBy: 'item.version'" class='hydro-table-body__row'>
                         <td class="hydro-table-body__cell">
                             <div class='cs-text-overflow-ellipsis'>{{ item.version }}</div>
                         </td>
@@ -48,6 +42,7 @@
                                 [routerLink]="['../../applications', app.id]">
                                 <span>{{app.name}}</span>
                             </span>
+                            <span *ngIf="item.modelVersion.applications.length === 0">-</span>
                         </td>
                         <td class="hydro-table-body__cell">
                             <button class="btn btn-flat" [routerLink]="[item.version]" *ngIf="item.status === 'FINISHED'">

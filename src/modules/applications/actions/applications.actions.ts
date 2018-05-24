@@ -16,7 +16,7 @@ export enum ApplicationActionTypes {
     UpdateFail = '[Application] Update application with fail',
     Delete = '[Application] Delete application',
     DeleteSuccess = '[Application] Delete application with success',
-    DeleteFail = '[Application] Delete application with fail'
+    DeleteFail = '[Application] Delete application with fail',
 }
 
 export class GetApplicationsAction implements Action {

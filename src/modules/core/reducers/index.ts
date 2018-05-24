@@ -1,4 +1,4 @@
-import { ActionReducerMap, createSelector } from '@ngrx/store';
+import { ActionReducerMap } from '@ngrx/store';
 import {
     RuntimesReducer,
     SignaturesReducer,
@@ -56,8 +56,3 @@ export const reducers: ActionReducerMap<HydroServingState> = {
 };
 
 export const getRouterState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>('router');
-
-export const getRouterNavigationId = createSelector(
-    getRouterState,
-    (state) => state
-);

@@ -49,6 +49,12 @@ export const {
     selectTotal: getTotalModelBuilds
 } = fromModelBuild.adapter.getSelectors(getModelBuildEntitiesState);
 
+export const {
+    selectAll: getAllModelVersions,
+    selectEntities: getModelVersionEntities,
+    selectTotal: getTotalModelVersions
+} = fromModelVersion.adapter.getSelectors(getModelVersionEntitiesState);
+
 export const getSelectedModel = createSelector(
     getModelEntities,
     fromRoot.getRouterState,

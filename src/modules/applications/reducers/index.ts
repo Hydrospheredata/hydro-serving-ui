@@ -22,11 +22,6 @@ export const getApplicationEntitiesState = createSelector(
     state => state.applications
 );
 
-export const getSelectedApplicationId = createSelector(
-    getApplicationEntitiesState,
-    fromApplications.getSelectedId
-)
-
 export const {
     selectEntities: getApplicationEntities,
     selectAll: getAllApplications,
@@ -38,3 +33,8 @@ export const getSelectedApplication = createSelector(
     fromRoot.getRouterState,
     (entities, router): Application => router.state && entities[router.state.params.id]
 );
+
+export const getSelectedApplicationId = createSelector(
+    getSelectedApplication,
+    (application: Application): number => application.id
+)

@@ -15,8 +15,10 @@ export const initialState: State = adapter.getInitialState({
 export function reducer(state = initialState, action: ModelVersionsActions) {
     switch (action.type) {
         case ModelVersionActionTypes.GetModelVersionsSuccess:
-            return state;
-        // return action.payload;
+            return adapter.addMany(action.payload, {
+                ...state,
+                selectedModelVersionId: state.selectedModelVersionId
+            });
         case ModelVersionActionTypes.AddModelVersionSuccess:
             return state;
         // return [

@@ -2,7 +2,7 @@
     <div class="content-header">
         <div class="content-header__title">{{ (application$ | async)?.name }}</div>
         <div class="btn-group">
-            <button class="btn" (click)="testApplication(application)" *ngIf="signatureName?.length">
+            <button class="btn" (click)="testApplication(application)">
                 <svg>
                     <use xlink:href="#icon-start"></use>
                 </svg>
@@ -14,7 +14,7 @@
                 </svg>
                 Edit
             </button>
-            <button class="btn btn-flat" (click)="removeApplication(application.id)">
+            <button class="btn btn-flat" (click)="removeApplication()">
                 <svg>
                     <use xlink:href="#icon-remove"></use>
                 </svg>

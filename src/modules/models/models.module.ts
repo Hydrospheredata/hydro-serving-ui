@@ -14,7 +14,7 @@ import {
 } from '@models/components';
 import { EffectsModule } from '@ngrx/effects';
 import { ModelEffects } from '@models/effects';
-import { ModelsService } from '@models/services';
+import { ModelsService, ModelDetailsGuard } from '@models/services';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from '@models/reducers';
 
@@ -37,6 +37,6 @@ import { reducers } from '@models/reducers';
         ModelDetailsComponent,
         ModelVersionDetailsComponent
     ],
-    providers: [ModelsService]
+    providers: [ModelsService, ModelDetailsGuard]
 })
 export class ModelsModule { }

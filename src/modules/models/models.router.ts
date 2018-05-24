@@ -6,6 +6,7 @@ import {
     ModelDetailsComponent,
     ModelVersionDetailsComponent
 } from '@models/components';
+import { ModelDetailsGuard } from '@models/services';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import {
                     {
                         path: ':modelId',
                         component: ModelDetailsComponent,
+                        canActivate: [ModelDetailsGuard]
                     },
                     {
                         path: ':modelId/:modelVersionId',

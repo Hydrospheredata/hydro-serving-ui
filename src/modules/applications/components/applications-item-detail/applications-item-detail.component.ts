@@ -1,13 +1,7 @@
 // import * as moment from 'moment';
-import {
-    Component, ViewEncapsulation, OnInit, OnDestroy,
-    // ElementRef,
-    // ViewChild,
-    AfterViewInit
-} from '@angular/core';
+import { Component, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 // import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
-import { Subscription } from 'rxjs/Subscription';
 // import { chart } from 'highcharts';
 // import * as Highcharts from 'highcharts';
 
@@ -24,7 +18,7 @@ import {
     DialogDeleteServiceComponent,
     DialogTestComponent,
     injectableTestOptions,
-    injectableApplicationId,
+    // injectableApplicationId,
     injectableServiceUpdate
 } from '@components/dialogs/_index';
 import { Observable } from 'rxjs/Observable';
@@ -36,8 +30,9 @@ import { Observable } from 'rxjs/Observable';
     templateUrl: './applications-item-detail.component.html',
     styleUrls: ['./applications-item-detail.component.scss'],
     encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ApplicationsItemDetailComponent {
     // @ViewChild('chart') chartRef: ElementRef;
     public id: number;
     public applications: Application[] = [];
@@ -55,7 +50,6 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
     public signatureName: any[];
 
     // private series: { name: string, data: any[] }[] = [];
-    private activeRouteSub: Subscription;
 
     constructor(
         public store: Store<HydroServingState>,
@@ -65,30 +59,6 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
         // private influxdbService: InfluxDBService,
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
-        // this.activeRouteSub = this.activatedRoute.params
-        //     .map(params => {
-        //         this.id = Number(params['id']);
-        //         return this.id;
-        //     })
-        //     .subscribe(id => {
-        //         console.log(id);
-        //         this.publicPath = environment.production ?
-        //             `http://${window.location.hostname}:${window.location.port}${environment.apiUrl}${this.router.url}` :
-        //             `${environment.host}:${environment.port}${environment.apiUrl}${this.router.url}`;
-        //         // this.loadInitialData(id);
-        //     });
-    }
-
-    ngOnInit() { }
-
-    ngAfterViewInit() {
-        // this.initChart();
-    }
-
-    ngOnDestroy() {
-        if (this.activeRouteSub) {
-            this.activeRouteSub.unsubscribe();
-        }
     }
 
     public testApplication(application: Application) {
@@ -117,7 +87,7 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
         });
     }
 
-    public removeApplication(id: number) {
+    public removeApplication() {
         this.dialog.showCustomDialog({
             component: DialogDeleteServiceComponent,
             styles: { 'width': '600px', 'min-height': '250px' },
@@ -126,7 +96,7 @@ export class ApplicationsItemDetailComponent implements OnInit, AfterViewInit, O
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{ provide: injectableApplicationId, useValue: id }]
+            // providers: [{ provide: injectableApplicationId, useValue: id }]
         });
     }
 

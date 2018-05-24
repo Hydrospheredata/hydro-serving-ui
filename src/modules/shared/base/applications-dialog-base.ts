@@ -23,6 +23,8 @@ import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
 
+import * as fromModel from '@models/reducers';
+
 
 
 @Injectable()
@@ -90,10 +92,10 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
             dialogRef
         );
 
-        // this.modelVersionsStoreSub = this.store.select('modelVersions')
-        //     .subscribe(modelVersions => {
-        //         this.modelVersions = modelVersions;
-        //     });
+        this.modelVersionsStoreSub = this.store.select(fromModel.getAllModelVersions)
+            .subscribe(modelVersions => {
+                this.modelVersions = modelVersions;
+            });
 
         this.runtimesStoreSub = this.store.select('runtimes')
             .subscribe(runtimes => {
