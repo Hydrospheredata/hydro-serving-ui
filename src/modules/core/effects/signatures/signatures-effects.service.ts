@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { SignaturesService } from '@core/services/_index';
-import * as HydroActions from '@shared/actions/_index';
+import { SignaturesService } from '@core/services';
+import * as HydroActions from '@core/actions';
 import { map, switchMap, catchError, take } from 'rxjs/operators';
 // import { Model } from '@shared/models/_index';
 

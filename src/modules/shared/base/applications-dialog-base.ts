@@ -16,7 +16,7 @@ import {
 
 import { HydroServingState } from '@core/reducers';
 
-import { FormsService } from '@core/services/_index';
+import { FormsService } from '@core/services';
 
 import 'codemirror/mode/yaml/yaml.js';
 import 'codemirror/addon/edit/matchbrackets.js';

@@ -2,8 +2,7 @@ import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { MdlDialogOutletService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { HydroServingState } from '@core/reducers';
-import * as Actions from '@shared/actions/_index';
-// import { GetApplicationsAction } from '@applications/actions';
+import * as Actions from '@core/actions';
 import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
 
 
@@ -25,7 +24,6 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.store.dispatch(new GetModelsAction);
-        // this.store.dispatch(new GetApplicationsAction);
         this.store.dispatch({ type: Actions.GET_RUNTIMES });
         this.store.dispatch({ type: Actions.GET_ENVIRONMENTS });
         this.store.dispatch(new GetModelVersionsAction);

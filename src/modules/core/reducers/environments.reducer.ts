@@ -1,5 +1,5 @@
 import { Environment } from '@shared/models/_index';
-import * as ModelActions from '@shared/actions/_index';
+import * as ModelActions from '@core/actions';
 
 
 

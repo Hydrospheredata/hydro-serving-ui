@@ -22,7 +22,7 @@ import {
     RuntimesService,
     SourcesService,
     InfluxDBService
-} from '@core/services/_index';
+} from '@core/services';
 
 // Effects
 import {

@@ -4,9 +4,9 @@ import { MdlSnackbarService } from '@angular-mdl/core';
 
 import { Signature } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-import { SignaturesService } from '@core/services/_index';
+import { SignaturesService } from '@core/services';
 import { Store } from '@ngrx/store';
-// import * as Actions from '@shared/actions/_index';
+// import * as Actions from '@core/actions';
 import { Subscription } from 'rxjs/Subscription';
 
 

@@ -7,7 +7,7 @@ import { ApplicationsDialogBase } from '@shared/base/_index';
 import * as HydroActions from '@applications/actions/applications.actions';
 import { Application } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-import { FormsService } from '@core/services/_index';
+import { FormsService } from '@core/services';
 
 
 

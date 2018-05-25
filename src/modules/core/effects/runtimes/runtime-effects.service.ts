@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { RuntimesService } from '@core/services/_index';
+import { RuntimesService } from '@core/services';
 import { RuntimeBuilder } from '@core/builders/_index';
-import * as HydroActions from '@shared/actions/_index';
+import * as HydroActions from '@core/actions';
 
 
 @Injectable()

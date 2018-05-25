@@ -8,7 +8,7 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { Application } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-// import { InfluxDBService } from '@core/services/_index';
+// import { InfluxDBService } from '@core/services';
 // import { environment } from '@environments/environment';
 
 import * as fromApplications from '@applications/reducers';

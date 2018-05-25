@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Signature } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
 
-import * as Actions from '@shared/actions/_index';
+import * as Actions from '@core/actions';
 import { GetModelBuildsAction } from '@models/actions';
 import * as fromModels from '@models/reducers';
 

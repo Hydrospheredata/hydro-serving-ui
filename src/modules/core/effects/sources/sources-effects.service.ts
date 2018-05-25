@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { SourcesService } from '@core/services/_index';
-import * as HydroActions from '@shared/actions/_index';
+import { SourcesService } from '@core/services';
+import * as HydroActions from '@core/actions';
 
 
 @Injectable()
