@@ -22,6 +22,7 @@ import {
     injectableServiceUpdate
 } from '@components/dialogs/_index';
 import { Observable } from 'rxjs/Observable';
+import { DialogActionTypes } from '@core/actions';
 
 
 
@@ -45,6 +46,7 @@ export class ApplicationsItemDetailComponent {
     }
 
     public testApplication(application: Application) {
+        this.store.dispatch({ type: DialogActionTypes.OpenDialog, dialogType: 'test' });
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
             styles: { 'width': '900px', 'min-height': '250px' },
