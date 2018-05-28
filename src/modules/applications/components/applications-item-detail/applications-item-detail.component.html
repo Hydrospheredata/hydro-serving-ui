@@ -39,8 +39,15 @@
         </ul>
     </div>
 
-    <div class="hydro-panel" *ngFor="let stage of (application$ | async)?.executionGraph.stages; let i = index" [routerLink]="[i]">
-        <h5 class="hydro-panel__header">Stage {{i + 1}}</h5>
+    <div class="hydro-panel" *ngFor="let stage of (application$ | async)?.executionGraph.stages; let i = index">
+        <div class="hydro-panel__header">
+            <h5>Stage {{i + 1}}</h5>
+            <button class="btn btn-flat" [routerLink]="[i]">
+                <svg class="icon">
+                    <use xlink:href="#icon-arrow-right" />
+                </svg>
+            </button>
+        </div>
         <table class='hydro-table hydro-table-models'>
             <thead class="hydro-table-head">
                 <tr>

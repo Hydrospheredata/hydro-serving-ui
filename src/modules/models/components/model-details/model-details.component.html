@@ -10,7 +10,9 @@
         <hydro-signatures [isEditable]="true" *ngIf="model?.nextVersion" [modelId]="model.id"></hydro-signatures>
 
         <div class="hydro-panel" *ngIf="!(model$ | async)?.nextVersion || (model$ | async)?.lastModelBuild">
-            <h5 class="hydro-panel__header">Versions</h5>
+            <div class="hydro-panel__header">
+                <h5>Versions</h5>
+            </div>
             <table class='hydro-table hydro-table-models'>
                 <thead class="hydro-table-head">
                     <tr>
