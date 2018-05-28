@@ -1,56 +1,15 @@
-<!-- <div>
-  <h1 class="mdl-dialog__title mat-dialog-title">{{testTitle}}</h1>
-  <form *ngIf="input" [formGroup]="testForm" (ngSubmit)="submitTestForm(testForm)">
-    <div class="mdl-dialog__content">
-      <div fxLayout="row" fxLayoutAlign="space-around stretch">
-        <div fxFlex="49%">
-            <label>Input</label>
-          <div class="cs-mb-8"><codemirror formControlName="data" [config]="codeMirrorInputOptions"></codemirror></div>
-        </div>
-        <div fxFlex="49%">
-          <label class="">Output</label>
-          <codemirror [ngModelOptions]="{standalone: true}" [(ngModel)]="output" [config]="codeMirrorOutputOptions"></codemirror>
-        </div>
-
-      </div>
-
-      <div class="input-text form-group">
-        <label _ngcontent-c5="" class="control-label">CURL Parameters</label>
-        <div fxLayout="row" fxLayoutAlign="space-around center" class="cs-relative input-text__flex-container">
-          <input fxFlex="90%"
-                 readonly
-                 [(ngModel)]="requestBody"
-                 [ngModelOptions]="{standalone: true}"
-                 class="input-text__input form-control input-icon sibling"
-                 #inputTarget
-                 placeholder="">
-          <mdl-button fxFlex="10%" class=""
-                      (cbOnSuccess)="copiedToClipBoardSuccessfully(inputTarget)"
-                      title="Copy CURL params">
-            <mdl-icon>content_copy</mdl-icon></mdl-button>
-        </div>
-      </div>
-      <div class="btn-group form-actions">
-        <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">CANCEL</button>
-        <button class="btn btn-colored btn-large" type="submit" [disabled]="testForm.invalid">{{testBtn}}</button>
-      </div>
-    </div>
-  </form>
-</div> -->
-
-
-<h2 class="mdl-dialog__title">Test application "{{application.name}}"</h2>
+<h2 class="mdl-dialog__title">Test application "{{applicationName$ | async}}"</h2>
 <form (ngSubmit)="onSubmit()">
   <div class="mdl-dialog__content">
 
     <div class="test-fields">
-      <div class="test-fields__item __input">
+      <div class="test-fields__item __input" *ngIf="input$ | async; let input;">
         <label>Input</label>
-        <codemirror [(ngModel)]="input" [config]="inputOptions" name="input"></codemirror>
+        <codemirror [ngModel]="input" [config]="inputOptions" name="input"></codemirror>
       </div>
-      <div class="test-fields__item __output">
+      <div class="test-fields__item __output" *ngIf="output$ | async; let output;">
         <label>Output</label>
-        <codemirror [(ngModel)]="output" [config]="outputOptions" name="output"></codemirror>
+        <codemirror [ngModel]="output" [config]="outputOptions" name="output"></codemirror>
       </div>
     </div>
 
@@ -70,7 +29,7 @@
         <mdl-icon>content_copy</mdl-icon></mdl-button>
       </div>
     </div> -->
-    
+
     <div class="btn-group form-actions __justify-end">
       <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
       <button class="btn btn-colored btn-large" type="submit">test app</button>

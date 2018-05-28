@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 
 import { ApplicationsService, ApplicationsBuilderService } from '@applications/services';
 import { Application } from '@shared/models/_index';
 import * as HydroActions from '@applications/actions/applications.actions';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap, catchError, withLatestFrom } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
+import { HydroServingState } from '@core/reducers';
+
+import * as fromApplications from '@applications/reducers';
 
 
 @Injectable()
@@ -21,6 +24,7 @@ export class ApplicationsEffects {
         private applicationsService: ApplicationsService,
         private applicationBuilder: ApplicationsBuilderService,
         private mdlSnackbarService: MdlSnackbarService,
+        private store: Store<HydroServingState>,
     ) { }
 
     @Effect() getApplications$: Observable<Action> = this.actions$
@@ -117,4 +121,46 @@ export class ApplicationsEffects {
                     );
             })
         );
+
+    @Effect() generateInputs$: Observable<Action> = this.actions$
+        .ofType(HydroActions.ApplicationActionTypes.GenerateInput)
+        .pipe(
+            withLatestFrom(
+                this.store.select(fromApplications.getSelectedApplicationSignatureName),
+                this.store.select(fromApplications.getSelectedApplicationId)
+            ),
+            switchMap(([action, signatureName, applicationId]) => {
+                console.log(action);
+                return this.applicationsService.generateInputs(applicationId, signatureName)
+                    .pipe(
+                        map(input => {
+                            return new HydroActions.GenerateInputSuccessAction({ id: applicationId, input: JSON.stringify(input, undefined, 2) });
+                        }),
+                        catchError(error => {
+                            return Observable.of(new HydroActions.GenerateInputFailAction(error));
+                        })
+                    )
+            })
+        );
+
+    @Effect() testApplication$: Observable<Action> = this.actions$
+        .ofType(HydroActions.ApplicationActionTypes.Test)
+        .pipe(
+            withLatestFrom(
+                this.store.select(fromApplications.getSelectedApplicationInput),
+                this.store.select(fromApplications.getSelectedApplicationSignatureName),
+                this.store.select(fromApplications.getSelectedApplicationId)
+            ),
+            switchMap(([action, inputs, signatureName, applicationId]) => {
+                console.log(action);
+                return this.applicationsService.serveService(JSON.parse(inputs), applicationId, signatureName)
+                    .pipe(
+                        map(output => {
+                            return new HydroActions.TestApplicationSuccessAction({ id: applicationId, output: JSON.stringify(output, undefined, 2) })
+                        }),
+                        catchError(error => Observable.of(new HydroActions.TestApplicationFailAction(error)))
+                    )
+            })
+        )
+
 }

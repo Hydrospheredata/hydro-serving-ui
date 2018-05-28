@@ -17,6 +17,12 @@ export enum ApplicationActionTypes {
     Delete = '[Application] Delete application',
     DeleteSuccess = '[Application] Delete application with success',
     DeleteFail = '[Application] Delete application with fail',
+    GenerateInput = '[Test application] Generate inputs for application test',
+    GenerateInputSuccess = '[Test application] Generate inputs for application test with success',
+    GenerateInputFail = '[Test application] Generate inputs for application test with fail',
+    Test = '[Test application] Test application',
+    TestSuccess = '[Test application] Test application with success',
+    TestFail = '[Test application] Test application with fail',
 }
 
 export class GetApplicationsAction implements Action {
@@ -90,6 +96,34 @@ export class DeleteApplicationFailAction implements Action {
     constructor(public error) { }
 }
 
+export class GenerateInputAction implements Action {
+    readonly type = ApplicationActionTypes.GenerateInput;
+}
+
+export class GenerateInputSuccessAction implements Action {
+    readonly type = ApplicationActionTypes.GenerateInputSuccess;
+    constructor(public payload) { };
+}
+
+export class GenerateInputFailAction implements Action {
+    readonly type = ApplicationActionTypes.GenerateInputFail;
+    constructor(public error) { };
+}
+
+export class TestApplicationAction implements Action {
+    readonly type = ApplicationActionTypes.Test;
+}
+
+export class TestApplicationSuccessAction implements Action {
+    readonly type = ApplicationActionTypes.TestSuccess;
+    constructor(public payload) { };
+}
+
+export class TestApplicationFailAction implements Action {
+    readonly type = ApplicationActionTypes.TestFail;
+    constructor(public error) { };
+}
+
 export type ApplicationActions
     = GetApplicationsAction
     | GetApplicationsSuccessAction
@@ -102,4 +136,10 @@ export type ApplicationActions
     | UpdateApplicationFailAction
     | DeleteApplicationAction
     | DeleteApplicationSuccessAction
-    | DeleteApplicationFailAction;
+    | DeleteApplicationFailAction
+    | GenerateInputAction
+    | GenerateInputSuccessAction
+    | GenerateInputFailAction
+    | TestApplicationAction
+    | TestApplicationSuccessAction
+    | TestApplicationFailAction;

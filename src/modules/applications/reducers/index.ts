@@ -34,7 +34,27 @@ export const getSelectedApplication = createSelector(
     (entities, router): Application => router.state && entities[router.state.params.id]
 );
 
+export const getSelectedApplicationName = createSelector(
+    getSelectedApplication,
+    (application: Application): string => application && application.name
+);
+
+export const getSelectedApplicationSignatureName = createSelector(
+    getSelectedApplication,
+    (application: Application): string => application && application.contract.match(/signature_name: \"(.*)\"\n/)[1]
+);
+
 export const getSelectedApplicationId = createSelector(
     getSelectedApplication,
-    (application: Application): number => application.id
+    (application: Application): number => application && application.id
+)
+
+export const getSelectedApplicationInput = createSelector(
+    getSelectedApplication,
+    (application: Application): string => application && application.input
+)
+
+export const getSelectedApplicationOutput = createSelector(
+    getSelectedApplication,
+    (application: Application): string => application && application.output
 )

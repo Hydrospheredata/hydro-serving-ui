@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent, ApplicationsStageDetailComponent } from '@applications/components';
-import { ApplicationsGuard } from '@applications/services';
+// import { ApplicationsGuard } from '@applications/services';
 
 @NgModule({
     imports: [
@@ -10,7 +10,7 @@ import { ApplicationsGuard } from '@applications/services';
             {
                 path: 'applications',
                 component: ApplicationsWrapperComponent,
-                canActivate: [ApplicationsGuard],
+                // canActivate: [ApplicationsGuard],
                 children: [
                     {
                         path: ':id',

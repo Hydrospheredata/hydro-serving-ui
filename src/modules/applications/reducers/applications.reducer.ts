@@ -19,17 +19,24 @@ export function reducer(state = initialState, action: ApplicationActions): State
         case ApplicationActionTypes.AddSuccess:
             return adapter.addOne(action.payload, state);
         case ApplicationActionTypes.UpdateSuccess:
-            return state;
-        // return {
-        //     ...state,
-        //     applications: [...state.applications.map(item => {
-        //         if (item.id !== action.payload.id) {
-        //             return item;
-        //         }
-
-        //         return { ...item, ...action.payload };
-        //     })]
-        // };
+            return adapter.updateOne({
+                id: action.payload.id,
+                changes: action.payload
+            }, state);
+        case ApplicationActionTypes.GenerateInputSuccess:
+            return adapter.updateOne({
+                id: action.payload.id,
+                changes: {
+                    input: action.payload.input
+                }
+            }, state);
+        case ApplicationActionTypes.TestSuccess:
+            return adapter.updateOne({
+                id: action.payload.id,
+                changes: {
+                    output: action.payload.output
+                }
+            }, state);
         case ApplicationActionTypes.DeleteSuccess:
             return adapter.removeOne(action.applicationId, state);
         default:

@@ -9,8 +9,9 @@ import { FormsService } from '@core/services';
 import * as HydroActions from '@applications/actions/applications.actions';
 import { Application } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
+import { Observable } from 'rxjs/Observable';
 
-export let injectableServiceUpdate = new InjectionToken<Application>('selectedService');
+export let injectableServiceUpdate = new InjectionToken<Observable<Application>>('selectedService');
 
 
 
@@ -23,10 +24,11 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
 
     public weightsForSlider: any[] = [];
     public selectedModels: any[] = [];
+    public data$: Observable<Application>;
     public data: Application;
 
     constructor(
-        @Inject(injectableServiceUpdate) data: Application,
+        @Inject(injectableServiceUpdate) data: Observable<Application>,
         public store: Store<HydroServingState>,
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
@@ -40,10 +42,12 @@ export class DialogUpdateServiceComponent extends ApplicationsDialogBase impleme
             mdlSnackbarService,
             store
         );
-        this.data = data;
+        this.data$ = data;
+        console.log(this.data);
     }
 
     ngOnInit() {
+        this.data$.subscribe(data => this.data = data);
         this.createForm(this.data);
         this.initFormChangesListener();
     }

@@ -59,7 +59,20 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
         MdlSelectModule,
         CodemirrorModule,
         HttpModule,
-        StoreModule.forRoot(reducers),
+        StoreModule.forRoot(reducers,
+            {
+                initialState: {
+                    router: {
+                        "state": {
+                            "url": "/",
+                            "params": {},
+                            "queryParams": {}
+                        },
+                        "navigationId": 0
+                    }
+                }
+            }
+        ),
         StoreDevtoolsModule.instrument(),
         EffectsModule.forRoot([
             RuntimesEffects,

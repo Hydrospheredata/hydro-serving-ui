@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { HydroServingState } from '@core/reducers';
 import * as Actions from '@core/actions';
 import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
+import { GetApplicationsAction } from '@applications/actions';
 
 
 
@@ -24,6 +25,7 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.store.dispatch(new GetModelsAction);
+        this.store.dispatch(new GetApplicationsAction);
         this.store.dispatch({ type: Actions.GET_RUNTIMES });
         this.store.dispatch({ type: Actions.GET_ENVIRONMENTS });
         this.store.dispatch(new GetModelVersionsAction);

@@ -17,12 +17,9 @@ import {
     DialogUpdateServiceComponent,
     DialogDeleteServiceComponent,
     DialogTestComponent,
-    injectableTestOptions,
-    // injectableApplicationId,
     injectableServiceUpdate
 } from '@components/dialogs/_index';
 import { Observable } from 'rxjs/Observable';
-import { DialogActionTypes } from '@core/actions';
 
 
 
@@ -45,8 +42,7 @@ export class ApplicationsItemDetailComponent {
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
     }
 
-    public testApplication(application: Application) {
-        this.store.dispatch({ type: DialogActionTypes.OpenDialog, dialogType: 'test' });
+    public testApplication() {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
             styles: { 'width': '900px', 'min-height': '250px' },
@@ -55,11 +51,10 @@ export class ApplicationsItemDetailComponent {
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{ provide: injectableTestOptions, useValue: application }]
         });
     }
 
-    public editApplication(application: Application) {
+    public editApplication(application: Observable<Application>) {
         this.dialog.showCustomDialog({
             component: DialogUpdateServiceComponent,
             styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },

@@ -2,13 +2,13 @@
     <div class="content-header">
         <div class="content-header__title">{{ (application$ | async)?.name }}</div>
         <div class="btn-group">
-            <button class="btn" (click)="testApplication(application)">
+            <button class="btn" (click)="testApplication()">
                 <svg>
                     <use xlink:href="#icon-start"></use>
                 </svg>
                 Test
             </button>
-            <button class="btn btn-flat" (click)="editApplication(application)">
+            <button class="btn btn-flat" (click)="editApplication(application$)">
                 <svg>
                     <use xlink:href="#icon-edit"></use>
                 </svg>
@@ -24,15 +24,6 @@
     </div>
 
     <div class="content-info">
-        <!-- <ol class="content-info__sublist">
-            <li class="content-info__sublist-item">
-                <span class="content-info__sublist-item-title">PublicPath</span>
-                <span class="content-info__sublist-item-value">
-                    <a [href]="publicPath" target="_blank">{{ publicPath }}</a>
-                </span>
-            </li>
-        </ol> -->
-
         <ul class="content-info__list" *ngIf="(application$ | async)?.kafkaStreaming.length">
             <li class="content-info__list-title">
                 Kafka Info

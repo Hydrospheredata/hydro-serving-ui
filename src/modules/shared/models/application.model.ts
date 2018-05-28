@@ -11,6 +11,8 @@ export interface IApplication {
     name: string;
     executionGraph?: any;
     kafkaStreaming?: IKafkaStreaming[];
+    input: string;
+    output: string;
 }
 
 export class Application implements IApplication {
@@ -19,6 +21,8 @@ export class Application implements IApplication {
     public name: string;
     public executionGraph?: any;
     public kafkaStreaming?: { sourceTopic: string, destinationTopic: string, consumerId?: string, errorTopic?: string }[];
+    input: string;
+    output: string;
 
     constructor(props: any = {}) {
         if (props['id']) { this.id = props['id']; }
@@ -26,5 +30,7 @@ export class Application implements IApplication {
         this.name = props['name'];
         this.executionGraph = props['executionGraph'];
         this.kafkaStreaming = props['kafkaStreaming'];
+        this.input = props['input'] || null;
+        this.output = props['output'] || null;
     }
 }
