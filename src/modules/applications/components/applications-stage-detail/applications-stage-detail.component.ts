@@ -12,6 +12,9 @@ import { Application } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
 // import { InfluxDBService } from '@core/services';
 
+import * as fromApplications from '@applications/reducers';
+import { Observable } from 'rxjs/Observable';
+
 
 
 @Component({
@@ -25,6 +28,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     public id: number;
     public applications: Application[] = [];
     public application: Application;
+    public application$: Observable<Application>;
     public publicPath = '';
 
     public chart: Highcharts.ChartObject;
@@ -40,7 +44,9 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     constructor(
         public store: Store<HydroServingState>,
         // private influxdbService: InfluxDBService,
-    ) { }
+    ) {
+        this.application$ = this.store.select(fromApplications.getSelectedApplication);
+    }
 
     ngOnInit() { }
 
