@@ -30,6 +30,7 @@ import {
     SignaturesEffects,
     SourcesEffects,
     EnvironmentsEffects,
+    MonitoringEffects,
 } from '@core/effects/_index';
 
 // Builders
@@ -78,7 +79,8 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
             RuntimesEffects,
             SignaturesEffects,
             SourcesEffects,
-            EnvironmentsEffects
+            EnvironmentsEffects,
+            MonitoringEffects
         ]),
         StoreRouterConnectingModule.forRoot({
             stateKey: 'router',

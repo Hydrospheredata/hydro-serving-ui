@@ -14,6 +14,7 @@ import {
 } from '@shared/models/_index';
 
 import * as fromRouter from '@ngrx/router-store';
+import * as fromMonitoring from './monitoring.reducer';
 import { Params, RouterStateSnapshot } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { createFeatureSelector } from '@ngrx/store';
@@ -45,6 +46,7 @@ export interface HydroServingState {
     sources: Source[];
     environments: Environment[];
     router: fromRouter.RouterReducerState<RouterStateUrl>;
+    monitoring: fromMonitoring.State
 }
 
 export const reducers: ActionReducerMap<HydroServingState> = {
@@ -53,6 +55,7 @@ export const reducers: ActionReducerMap<HydroServingState> = {
     sources: SourcesReducer,
     environments: EnvironmentsReducer,
     router: fromRouter.routerReducer,
+    monitoring: fromMonitoring.reducer,
 };
 
 export const getRouterState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>('router');

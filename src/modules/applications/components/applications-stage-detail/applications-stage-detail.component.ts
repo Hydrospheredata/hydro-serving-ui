@@ -4,7 +4,6 @@ import {
     ElementRef,
     ViewChild,
 } from '@angular/core';
-import { chart } from 'highcharts';
 import * as Highcharts from 'highcharts';
 
 import { Store } from '@ngrx/store';
@@ -46,11 +45,22 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         private influxdbService: InfluxDBService,
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
-        this.store.select(fromApplications.getCurrentStage)
-            .filter(stage => stage)
-            .subscribe(stage => {
+
+        this.initInterval()
+            .startWith(0)
+            .withLatestFrom(this.store.select(fromApplications.getCurrentStage))
+            .filter(([x, stage]) => {
+                console.log(x);
+                return stage
+            })
+            .subscribe(([x, stage]) => {
+                console.log(x);
                 this.getChartData(stage);
             });
+    }
+
+    initInterval(): Observable<number> {
+        return Observable.interval(15000);
     }
 
     ngOnInit() {
@@ -64,7 +74,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     private initChart() {
         const chartRef = this.chartRef.nativeElement;
 
-        this.chart = chart(chartRef, {
+        this.chart = new Highcharts.Chart(chartRef, {
             credits: {
                 enabled: false
             },

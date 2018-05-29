@@ -21,8 +21,8 @@ export class Application implements IApplication {
     public name: string;
     public executionGraph?: any;
     public kafkaStreaming?: { sourceTopic: string, destinationTopic: string, consumerId?: string, errorTopic?: string }[];
-    input: string;
-    output: string;
+    public input: string;
+    public output: string;
 
     constructor(props: any = {}) {
         if (props['id']) { this.id = props['id']; }
