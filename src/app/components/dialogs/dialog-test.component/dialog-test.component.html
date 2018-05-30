@@ -5,7 +5,7 @@
     <div class="test-fields">
       <div class="test-fields__item __input" *ngIf="input$ | async; let input;">
         <label>Input</label>
-        <codemirror [ngModel]="input" [config]="inputOptions" name="input"></codemirror>
+        <codemirror [ngModel]="input" [config]="inputOptions" name="input" (change)="onChange($event)"></codemirror>
       </div>
       <div class="test-fields__item __output" *ngIf="output$ | async; let output;">
         <label>Output</label>

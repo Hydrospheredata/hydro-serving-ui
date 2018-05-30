@@ -17,6 +17,8 @@ export enum ApplicationActionTypes {
     Delete = '[Application] Delete application',
     DeleteSuccess = '[Application] Delete application with success',
     DeleteFail = '[Application] Delete application with fail',
+    SetInput = '[Test application] Set inputs for application test',
+    SetInputSuccess = '[Test application] Set inputs for application test with success',
     GenerateInput = '[Test application] Generate inputs for application test',
     GenerateInputSuccess = '[Test application] Generate inputs for application test with success',
     GenerateInputFail = '[Test application] Generate inputs for application test with fail',
@@ -100,6 +102,16 @@ export class GenerateInputAction implements Action {
     readonly type = ApplicationActionTypes.GenerateInput;
 }
 
+export class SetInputAction implements Action {
+    readonly type = ApplicationActionTypes.SetInput;
+    constructor(public payload) { };
+}
+
+export class SetInputSuccessAction implements Action {
+    readonly type = ApplicationActionTypes.SetInputSuccess;
+    constructor(public payload) { };
+}
+
 export class GenerateInputSuccessAction implements Action {
     readonly type = ApplicationActionTypes.GenerateInputSuccess;
     constructor(public payload) { };
@@ -137,6 +149,8 @@ export type ApplicationActions
     | DeleteApplicationAction
     | DeleteApplicationSuccessAction
     | DeleteApplicationFailAction
+    | SetInputAction
+    | SetInputSuccessAction
     | GenerateInputAction
     | GenerateInputSuccessAction
     | GenerateInputFailAction

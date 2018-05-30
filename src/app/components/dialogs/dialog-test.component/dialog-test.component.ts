@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { HydroServingState } from '@core/reducers';
 import * as fromApplications from '@applications/reducers';
-import { GenerateInputAction, TestApplicationAction } from '@applications/actions';
+import { GenerateInputAction, TestApplicationAction, SetInputAction } from '@applications/actions';
 
 
 
@@ -72,7 +72,10 @@ export class DialogTestComponent extends DialogBase implements OnInit {
             mode: { name: 'javascript', json: true },
             lineWrapping: true,
             readOnly: false,
-            scrollbarStyle: 'null'
+            scrollbarStyle: 'null',
+            onChange: (val) => {
+                console.log(val);
+            }
         };
         this.outputOptions = {
             matchBrackets: true,
@@ -86,11 +89,18 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         this.generateInput();
     }
 
+    public onSubmit() {
+        this.store.dispatch(new TestApplicationAction);
+    }
+
+    public onChange(input) {
+        if (!(input instanceof Event)) {
+            this.store.dispatch(new SetInputAction(input));
+        }
+    }
+
     private generateInput() {
         this.store.dispatch(new GenerateInputAction);
     }
 
-    onSubmit() {
-        this.store.dispatch(new TestApplicationAction);
-    }
 }
