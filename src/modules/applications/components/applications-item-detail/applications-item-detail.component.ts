@@ -50,7 +50,7 @@ export class ApplicationsItemDetailComponent {
     // TODO: remove me please
     public getHealthClass() {
         // const stageId = `app${applicationId}stage${stageIndex}`;
-        const query = `select sum("health"), count("health") from /.*/ where time >= now() - 14m group by "stageId", "modelVersionId"`;
+        const query = `select sum("health"), count("health") from /.*/ where time >= now() - 1m group by "stageId", "modelVersionId"`;
         return this.influxdbService.search(query).then((result) => {
             const aggregatedHealthStatus: Object = {};
             console.log(result);
