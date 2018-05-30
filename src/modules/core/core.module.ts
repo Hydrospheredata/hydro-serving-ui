@@ -1,3 +1,4 @@
+import { MetricSettingsService } from './services/metrics/metric-settings.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -9,7 +10,7 @@ import { MdlSelectModule } from '@angular-mdl/select';
 import { NavbarComponent, LoaderComponent } from './_index';
 
 import { CodemirrorModule } from 'ng2-codemirror';
-import { ClipboardModule } from 'ngx-clipboard';
+// import { ClipboardModule } from 'ngx-clipboard';
 import { EffectsModule } from '@ngrx/effects';
 
 // Services
@@ -48,7 +49,6 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
-
 
 
 @NgModule({
@@ -90,7 +90,7 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
         MdlModule,
         MdlSelectModule,
         CodemirrorModule,
-        ClipboardModule,
+        // ClipboardModule,
     ],
     declarations: [
         NavbarComponent,
@@ -107,6 +107,7 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
         RuntimesService,
         SourcesService,
         InfluxDBService,
+        MetricSettingsService,
         LoaderStateService,
         {
             provide: HttpService,

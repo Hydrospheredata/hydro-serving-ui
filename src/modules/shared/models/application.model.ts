@@ -13,6 +13,7 @@ export interface IApplication {
     kafkaStreaming?: IKafkaStreaming[];
     input: string;
     output: string;
+    namespace?: string;
 }
 
 export class Application implements IApplication {
@@ -20,6 +21,7 @@ export class Application implements IApplication {
     public contract?: string;
     public name: string;
     public executionGraph?: any;
+    public namespace?: string;
     public kafkaStreaming?: { sourceTopic: string, destinationTopic: string, consumerId?: string, errorTopic?: string }[];
     input: string;
     output: string;
@@ -32,5 +34,6 @@ export class Application implements IApplication {
         this.kafkaStreaming = props['kafkaStreaming'];
         this.input = props['input'] || null;
         this.output = props['output'] || null;
+        this.namespace = props['namespace'] || null;
     }
 }

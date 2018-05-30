@@ -48,12 +48,12 @@ export class DialogAddServiceComponent extends ApplicationsDialogBase implements
 
         const serviceInfo = {
             name: this.serviceForm.value.applicationName,
+            namespace: this.serviceForm.value.applicationNamespace,
             kafkaStreaming: this.isKafkaEnabled ? this.serviceForm.value.kafkaStreaming : [],
             executionGraph: {
                 stages: this.prepareFormDataToSubmit()
             }
         };
-
         const application = new Application(serviceInfo);
 
         this.store.dispatch(new HydroActions.AddApplicationAction(application));

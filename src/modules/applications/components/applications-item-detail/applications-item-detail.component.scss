@@ -12,3 +12,18 @@
         }
     }
 }
+
+.health-status {
+    width: 15px;
+    height: 15px;
+    background: gray;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.good {
+    background-color: green;
+}
+.bad {
+    background-color: red;
+}

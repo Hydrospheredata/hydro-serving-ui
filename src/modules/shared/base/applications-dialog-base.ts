@@ -130,13 +130,15 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     public createForm(data?) {
         this.serviceForm = this.fb.group({
             applicationName: ['', Validators.required],
+            applicationNamespace: '',
             kafkaStreaming: this.fb.array([]),
             stages: this.fb.array([]),
         });
 
         if (data) {
             this.serviceForm.patchValue({
-                applicationName: data.name
+                applicationName: data.name,
+                applicationNamespace: data.namespace,
             });
 
             if (data.kafkaStreaming.length) {

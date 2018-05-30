@@ -55,6 +55,7 @@
                     <th class="hydro-table-head__cell">Runtime</th>
                     <th class="hydro-table-head__cell">Env</th>
                     <th class="hydro-table-head__cell">Weight</th>
+                    <th class="hydro-table-head__cell">Health</th>
                 </tr>
             </thead>
             <tbody>
@@ -77,6 +78,11 @@
                     <td class="hydro-table-body__cell">
                         <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>{{ item.weight }}%</div>
                     </td>
+                    <td class="hydro-table-body__cell">
+                        <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
+                            <div [ngClass]="healthStatuses['app' + (application$ | async)?.id + 'stage' + i + '_' + item.serviceDescription.modelVersionId]" class="health-status"></div>
+                        </div>
+                    </td>    
                 </tr>
             </tbody>
         </table>

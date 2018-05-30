@@ -114,6 +114,9 @@ export class HttpService extends Http {
     }
 
     private getFullUrl(url: string): string {
+        if (url.startsWith("http")) {
+            return url;
+        }
         return this.baseUrl + url;
     }
 

@@ -12,6 +12,9 @@
 
 
     <div class="content-body">
-        <div #chart></div>
+        <div #chartContainer>
+            <div [attr.data-chart]="chart" *ngFor="let chart of chartNames; let i = index"></div>
+            <!-- <div #chart></div> -->
+        </div>
     </div>
 </div>
