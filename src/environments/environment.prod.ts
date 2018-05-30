@@ -5,6 +5,5 @@ export const environment = {
     apiUrl: '/api/v1',
     uiUrl: '/ui/v1',
 
-    monitoringHost: 'http://localhost',
-    monitotingPort: '8012'
+    monitoringUrl: '/monitoring'
 };
