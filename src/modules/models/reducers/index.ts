@@ -60,3 +60,9 @@ export const getSelectedModel = createSelector(
     fromRoot.getRouterState,
     (entities, router) => router.state && entities[router.state.params.modelId]
 )
+
+export const getSelectedBuild = createSelector(
+    getModelBuildEntities,
+    fromRoot.getRouterState,
+    (entities, router) => router.state && entities[router.state.params.modelVersionId]
+)
