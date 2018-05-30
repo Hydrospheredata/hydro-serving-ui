@@ -7,7 +7,7 @@
             back to model
         </button>
 
-        <div class="content-header__title">{{ build?.model?.source }} / v{{ build?.version }}</div>
+        <div class="content-header__title">{{ (build$ | async)?.model.name }} / v{{ (build$ | async)?.version }}</div>
     </div>
 
 
@@ -16,26 +16,27 @@
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Created</span>
                 <span class="content-info__sublist-item-value">
-                    <div class="status">{{ build?.finished | utcToLocal | amTimeAgo }}</div>
+                    <div class="status">{{ (build$ | async)?.finished | utcToLocal | amTimeAgo }}</div>
                 </span>
             </li>
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Version</span>
                 <span class="content-info__sublist-item-value">
-                    <div class="status">{{ build?.version }}</div>
+                    <div class="status">{{ (build$ | async)?.version }}</div>
                     <div class="status-label" *ngIf="data?.nextVersion">New version available</div>
                 </span>
             </li>
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Status</span>
                 <span class="content-info__sublist-item-value">
-                    <div class="status">{{ build?.status }}</div>
+                    <div class="status">{{ (build$ | async)?.status }}</div>
                 </span>
             </li>
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Applications</span>
                 <span class="content-info__sublist-item-value">
-                    <div *ngFor="let app of (build?.modelVersion.applications | slice: build?.modelVersion.applications.length - 2)" [routerLink]="['../../../applications', app.id]">
+                    <div *ngFor="let app of ((build$ | async)?.modelVersion.applications | slice: (build$ | async)?.modelVersion.applications.length - 2)"
+                        [routerLink]="['../../../applications', app.id]">
                         {{app.name}}
                     </div>
                 </span>
