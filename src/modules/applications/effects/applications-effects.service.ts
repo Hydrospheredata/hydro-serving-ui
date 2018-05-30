@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { ApplicationsService, ApplicationsBuilderService } from '@applications/services';
 import { Application } from '@shared/models/_index';
 import * as HydroActions from '@applications/actions/applications.actions';
-import { switchMap, catchError, withLatestFrom } from 'rxjs/operators';
+import { switchMap, catchError, withLatestFrom, skip } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { HydroServingState } from '@core/reducers';
@@ -130,7 +130,7 @@ export class ApplicationsEffects {
                 this.store.select(fromApplications.getSelectedApplicationId)
             ),
             switchMap(([action, signatureName, applicationId]) => {
-                console.log(action);
+                console.log(action, applicationId);
                 return this.applicationsService.generateInputs(applicationId, signatureName)
                     .pipe(
                         map(input => {
@@ -143,6 +143,19 @@ export class ApplicationsEffects {
             })
         );
 
+    @Effect() setInputs$: Observable<Action> = this.actions$
+        .ofType(HydroActions.ApplicationActionTypes.SetInput)
+        .pipe(
+            skip(1),
+            map((action: HydroActions.SetInputAction) => action.payload),
+            withLatestFrom(
+                this.store.select(fromApplications.getSelectedApplicationId)
+            ),
+            switchMap(([action, applicationId]) => {
+                return Observable.of(new HydroActions.SetInputSuccessAction({ id: applicationId, input: action }));
+            })
+        );
+
     @Effect() testApplication$: Observable<Action> = this.actions$
         .ofType(HydroActions.ApplicationActionTypes.Test)
         .pipe(
@@ -152,7 +165,7 @@ export class ApplicationsEffects {
                 this.store.select(fromApplications.getSelectedApplicationId)
             ),
             switchMap(([action, inputs, signatureName, applicationId]) => {
-                console.log(action);
+                console.log(action, inputs);
                 return this.applicationsService.serveService(JSON.parse(inputs), applicationId, signatureName)
                     .pipe(
                         map(output => {

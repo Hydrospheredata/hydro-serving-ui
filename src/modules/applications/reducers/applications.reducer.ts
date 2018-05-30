@@ -23,7 +23,9 @@ export function reducer(state = initialState, action: ApplicationActions): State
                 id: action.payload.id,
                 changes: action.payload
             }, state);
+        case ApplicationActionTypes.SetInputSuccess:
         case ApplicationActionTypes.GenerateInputSuccess:
+            console.log(action.payload);
             return adapter.updateOne({
                 id: action.payload.id,
                 changes: {

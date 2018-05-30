@@ -5,7 +5,6 @@ import {
     ElementRef,
     ViewChild,
 } from '@angular/core';
-import { chart } from 'highcharts';
 import * as Highcharts from 'highcharts';
 
 import { Store } from '@ngrx/store';
@@ -143,7 +142,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
 
     private initChart(name, metrics) {
         const chartRef = Array.prototype.slice.call(this.chartContainerRef.nativeElement.children).find(_ => _.getAttribute("data-chart") == name)
-        this.charts[name] = chart(chartRef, {
+        this.charts[name] = Highcharts.chart(chartRef, {
             credits: {
                 enabled: false
             },
