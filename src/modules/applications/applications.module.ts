@@ -1,3 +1,4 @@
+import { MdlSelectModule } from '@angular-mdl/select';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
@@ -21,6 +22,7 @@ import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } fr
         SharedModule,
         CommonModule,
         MdlModule,
+        MdlSelectModule,
         ApplicationsRoutingModule,
         FormsModule,
         ChartsModule,

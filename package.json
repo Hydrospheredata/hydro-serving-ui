@@ -44,6 +44,7 @@
     "core-js": "^2.5.0",
     "elasticsearch": "^14.2.2",
     "highcharts": "^6.0.7",
+    "hocon-parser": "^1.0.1",
     "influx": "^5.0.0-alpha.4",
     "ng2-charts": "^1.6.0",
     "ng2-codemirror": "^1.1.3",

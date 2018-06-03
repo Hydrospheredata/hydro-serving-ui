@@ -1,3 +1,4 @@
+import { MetricSettings } from '@shared/models/metric-settings.model';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services';
 import { environment } from '@environments/environment';
@@ -16,6 +17,14 @@ export class MetricSettingsService {
     return this.http.get(this.baseMonitoringSettingsUrl, {params: {stageId}})
       .map((res: Response): any => {
         return res.json()
+      })
+  }
+
+  public addMetricSettings(metricSettings: MetricSettings) {
+    console.log(metricSettings);
+    return this.http.post(this.baseMonitoringSettingsUrl, metricSettings)
+      .map((res: Response): any => {
+        return res.json();
       })
   }
 }

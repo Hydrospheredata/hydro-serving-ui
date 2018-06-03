@@ -12,3 +12,15 @@
         }
     }
 }
+
+.monitoring-controls {
+    float: right;
+
+    mdl-select {
+        display: inline-block;
+    }
+
+    button {
+        display: inline-block;
+    }
+}

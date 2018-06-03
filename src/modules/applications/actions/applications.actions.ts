@@ -1,3 +1,4 @@
+import { MetricSettings } from './../../shared/models/metric-settings.model';
 import { Action } from '@ngrx/store';
 import { Application } from '@shared/models/_index';
 
@@ -25,6 +26,9 @@ export enum ApplicationActionTypes {
     Test = '[Test application] Test application',
     TestSuccess = '[Test application] Test application with success',
     TestFail = '[Test application] Test application with fail',
+    AddMetric = '[Metrics] Add metric',
+    AddMetricSuccess = '[Metrics] Add metric with success',
+    AddMetricFail = '[Metrics] Add metric with fail',
 }
 
 export class GetApplicationsAction implements Action {
@@ -136,6 +140,22 @@ export class TestApplicationFailAction implements Action {
     constructor(public error) { };
 }
 
+export class AddMetricAction implements Action {
+    readonly type = ApplicationActionTypes.AddMetric;
+    constructor(public aggregation: MetricSettings) { }
+}
+
+export class AddMetricSuccessAction implements Action {
+    readonly type = ApplicationActionTypes.AddMetricSuccess;
+    constructor(public payload: MetricSettings) { }
+}
+
+export class AddMetricFailAction implements Action {
+    readonly type = ApplicationActionTypes.AddMetricFail;
+    constructor(public error) { }
+}
+
+
 export type ApplicationActions
     = GetApplicationsAction
     | GetApplicationsSuccessAction
@@ -156,4 +176,7 @@ export type ApplicationActions
     | GenerateInputFailAction
     | TestApplicationAction
     | TestApplicationSuccessAction
-    | TestApplicationFailAction;
+    | TestApplicationFailAction
+    | AddMetricAction
+    | AddMetricSuccessAction
+    | AddMetricFailAction;

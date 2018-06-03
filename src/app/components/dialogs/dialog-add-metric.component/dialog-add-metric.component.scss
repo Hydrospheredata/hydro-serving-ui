@@ -1,0 +1,15 @@
+@import "variables.scss";
+
+
+.mdl-select {
+    width: 100%;
+}
+
+label.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.row {
+    padding: 10px 0 10px 0;
+}

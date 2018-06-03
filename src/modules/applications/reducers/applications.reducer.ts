@@ -41,6 +41,9 @@ export function reducer(state = initialState, action: ApplicationActions): State
             }, state);
         case ApplicationActionTypes.DeleteSuccess:
             return adapter.removeOne(action.applicationId, state);
+        case ApplicationActionTypes.AddMetricSuccess:
+            console.log("updating");
+            return { ...state };
         default:
             return state;
     }

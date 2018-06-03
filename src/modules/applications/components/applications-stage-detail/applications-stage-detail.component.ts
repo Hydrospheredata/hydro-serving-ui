@@ -1,3 +1,4 @@
+import { MdlSelectModule } from '@angular-mdl/select';
 import { Subscription } from 'rxjs/Subscription';
 import * as moment from 'moment';
 import {
@@ -16,6 +17,9 @@ import * as fromApplications from '@applications/reducers';
 import { Observable } from 'rxjs/Observable';
 import { MetricSettingsService } from '@core/services/metrics/metric-settings.service';
 import { ActivatedRoute } from '@angular/router';
+import { MdlDialogService } from '@angular-mdl/core';
+import { DialogAddMetricComponent } from '@app/components/dialogs/_index';
+// import { MdlDialogReference } from '@angular-mdl/core';
 
 
 
@@ -48,6 +52,15 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     public activatedRouteSub: Subscription;
     public applicationSub: Subscription;
 
+    public chartTimeWidth: number = 1800000;
+    public chartTimeWidthParams: {ms: number, text: string}[] = [
+        {ms: 900000, text: "15 minutes"},
+        {ms: 1800000, text: "30 minutes"},
+        {ms: 3600000, text: "1 hour"},
+        {ms: 7200000, text: "2 hours"},
+        {ms: 14400000, text: "4 hours"}
+    ];
+
     private timeoutId: any;
 
     private series: {[s: string]: { name: string, data: any[] }[]} = {};
@@ -56,7 +69,9 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         public store: Store<HydroServingState>,
         private influxdbService: InfluxDBService,
         private repository: MetricSettingsService,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        public selectRef: MdlSelectModule,
+        public dialog: MdlDialogService
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication)
         this.applicationSub = this.application$.filter(_ => _ != undefined).subscribe(app => {
@@ -69,7 +84,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                 .filter(stage => stage)
                 .subscribe(stage => {
                     this.stage = stage;
-                    this.initAggregations(stage, `app${app.id}stage${stageId}`, app.id);
+                    this.initAggregations(stage, `app${app.id}stage${stageId}`);
                 });
             });
         })
@@ -83,45 +98,51 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         this.applicationSub.unsubscribe();
         console.log(this.timeoutId);
         clearInterval(this.timeoutId);
-     }
+    }
 
-    private initAggregations(stage, stageId, appId) {
+    public addMetric() {
+        this.dialog.showCustomDialog({
+            component: DialogAddMetricComponent,
+            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
+            classes: '',
+            isModal: true,
+            clickOutsideToClose: true,
+            enterTransitionDuration: 400,
+            leaveTransitionDuration: 400
+        });
+    }
+
+    private initAggregations(stage, stageId) {
         console.log(stage);
         this.repository.getMetricSettings(stageId)
             .subscribe(aggregations => {
                 const dict = {
                     "metricProviders": [
                         {
-                            "name": "Count",
                             "className": "io.hydrosphere.sonar.core.metrics.providers.Counter",
                             "metrics": ["counter"],
                             "isSystem": true
                         },
                         {
-                            "name": "Latency",
                             "className": "io.hydrosphere.sonar.core.metrics.providers.Average",
                             "metrics": ["avg"],
                             "isSystem": true,
                         },
                         {
-                            "name": "KolmogorovSmirnov",
                             "className": "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov",
                             "metrics": ["kolmogorovsmirnov", "kolmogorovsmirnov_level"],
                             "isSystem": false
                         },
                         {
-                            "name": "Autoencoder",
                             "className": "io.hydrosphere.sonar.core.metrics.providers.Autoencoder",
                             "metrics": ["autoencoder_reconstruction_error"],
                             "isSystem": false
                         }
                     ]
                 };
-                let classes = aggregations.map(_ => _.metricProviderSpecification).reduce((x, y) => x.concat(y)).map(_ => _.metricProviderClass);
-                if (appId == 2) {
-                    classes = classes.filter(_ => _ != "io.hydrosphere.sonar.core.metrics.providers.Autoencoder").filter(_ => _ != "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov");
-                }
-                const metricProviders = classes.map(_ => dict.metricProviders.find(x => x.className === _)).filter(_ => _);
+                // let classes = aggregations.map(_ => _.metricProviderSpecification);
+                const metricProviders = aggregations.map(_ => Object.assign({}, _.metricProviderSpecification, {name: _.name}, dict.metricProviders.find(x => x.className === _.metricProviderSpecification.metricProviderClass))).filter(_ => _.metrics);
+                console.log(metricProviders);
                 metricProviders.forEach(metricProvider => {
                     this.chartNames.push(metricProvider.name);
                     // TODO: whaaat
@@ -135,12 +156,16 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                         this.getMetrics(stageId, metricProvider.metrics).then(_ => this.updateChart(metricProvider.name, metricProvider.metrics));
                     }, 100)
                 });}).bind(this);
+                clearInterval(this.timeoutId);
                 this.timeoutId = setInterval(fn, 1500);
                 fn();
             });
     }
 
     private initChart(name, metrics) {
+        if (this.charts.hasOwnProperty(name)) {
+            return;
+        }
         const chartRef = Array.prototype.slice.call(this.chartContainerRef.nativeElement.children).find(_ => _.getAttribute("data-chart") == name)
         this.charts[name] = Highcharts.chart(chartRef, {
             credits: {
@@ -159,7 +184,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                 type: "datetime",
                 gridLineWidth: 1,
                 max: new Date().getTime(),
-                min: moment().subtract(30, "minutes").valueOf()
+                min: moment().subtract(this.chartTimeWidth / 60000, "minutes").valueOf()
             },
             yAxis: {
                 title: {
@@ -184,7 +209,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         metrics.map(_ => this.series[_]).filter(_ => _).reduce((x, y) => x.concat(y), []).forEach(series => {
             const currentChart = this.charts[name].series.find(_ => _.name == series.name);
             if (currentChart) {
-                this.charts[name].xAxis[0].setExtremes(moment().subtract(30, "minutes").valueOf(), moment().valueOf(), false);
+                this.charts[name].xAxis[0].setExtremes(moment().subtract(this.chartTimeWidth / 60000, "minutes").valueOf(), moment().valueOf(), false);
                 // this.charts[name].update({series: [series]}, true);
                 currentChart.update(series, true);
             } else {
@@ -198,7 +223,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
             return this.stage.services.filter(_ => _.serviceDescription.modelVersionId === ~~modelId).map(_ => _.serviceDescription.modelName)[0];
         }
 
-        const query = `SELECT "value", "modelVersionId"::tag, "columnIndex"::tag FROM ${metrics.map(_ => `"${_}"`).join(",")} WHERE "stageId" = '${stageId}' AND time >= now() - 30m`;
+        const query = `SELECT "value", "modelVersionId"::tag, "columnIndex"::tag FROM ${metrics.map(_ => `"${_}"`).join(",")} WHERE "stageId" = '${stageId}' AND time >= now() - ${this.chartTimeWidth / 60000}m`;
         return this.influxdbService.search(query)
             .then(res => {
                 console.log(res)
