@@ -1,6 +1,6 @@
 export class MetricSpecification {
-  public metricProviderClass: String;
-  public hystoryProviderClass?: String;
+  public metricProviderClass: string;
+  public hystoryProviderClass?: string;
   public config?: Object;
   public withHealth?: boolean;
   public healthConfig?: Object;

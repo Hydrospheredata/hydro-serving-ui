@@ -1,22 +1,44 @@
 import { EntityState, createEntityAdapter, EntityAdapter } from "@ngrx/entity";
-import { MonitoringDictionary } from "@shared/models/monitoring-dictionary.model";
 import { MonitoringActions, MonitoringActionTypes } from "@core/actions/monitoring.actions";
+import { MetricSettings } from "@shared/models/metric-settings.model";
+// import { getRouterState } from '@core/reducers';
+// import { createFeatureSelector, createSelector } from "@ngrx/store";
 
 
-export interface State extends EntityState<MonitoringDictionary> { };
+export interface MState extends EntityState<MetricSettings> { };
 
-export const adapter: EntityAdapter<MonitoringDictionary> = createEntityAdapter<MonitoringDictionary>();
+export const adapter: EntityAdapter<MetricSettings> = createEntityAdapter<MetricSettings>({
+    selectId: (metricSettings: MetricSettings) => metricSettings.id
+});
 
-export const initialState: State = adapter.getInitialState();
+export const initialState: MState = adapter.getInitialState();
 
-export function reducer(state = initialState, action: MonitoringActions): State {
+export function reducer(state = initialState, action: MonitoringActions) {
     switch (action.type) {
-        case MonitoringActionTypes.GetDictionarySuccess: {
-            return adapter.addAll(action.dictionary, state);
-        }
+        case MonitoringActionTypes.AddMetricSuccess:
+            return adapter.addOne(action.payload, state);
+
+        case MonitoringActionTypes.GetMetricsSuccess:
+            return adapter.addAll(action.payload, state);
+
+        case MonitoringActionTypes.GetMetricsSuccess:
+            return { ...state };
 
         default: {
             return state;
         }
     }
 }
+
+// export interface MetricsState {
+//     metrics: MState;
+// }
+
+// export interface State extends fromRoot.HydroServingState {
+//     metrics: MetricsState
+// }
+
+// export const reducers: ActionReducerMap<MetricsState> = {
+//     metrics: reducer
+// }
+

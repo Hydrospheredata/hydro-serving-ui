@@ -1,29 +1,51 @@
 import { Action } from '@ngrx/store';
-import { MonitoringDictionary } from '@shared/models/monitoring-dictionary.model';
+// import { MonitoringDictionary } from '@shared/models/monitoring-dictionary.model';
+import { MetricSettings } from '@shared/models/metric-settings.model';
 
 export enum MonitoringActionTypes {
-    GetDictionary = '[Monitoring] GetDictionary',
-    GetDictionarySuccess = '[Monitoring] GetDictionarySuccess',
-    GetDictionaryFail = '[Monitoring] GetDictionaryFail',
+    AddMetric = '[Metrics] Add metric',
+    AddMetricSuccess = '[Metrics] Add metric with success',
+    AddMetricFail = '[Metrics] Add metric with fail',
+    GetMetrics = '[Metrics] Get metrics',
+    GetMetricsSuccess = '[Metrics] Get metric with success',
+    GetMetricsFail = '[Metrics] Get metric with fail',
 };
 
-export class GetDictionary implements Action {
-    readonly type = MonitoringActionTypes.GetDictionary;
+export class AddMetricAction implements Action {
+    readonly type = MonitoringActionTypes.AddMetric;
+    constructor(public aggregation: MetricSettings) { }
 }
 
-export class GetDictionarySuccess implements Action {
-    readonly type = MonitoringActionTypes.GetDictionarySuccess;
-
-    constructor(public dictionary: MonitoringDictionary[]) { }
+export class AddMetricSuccessAction implements Action {
+    readonly type = MonitoringActionTypes.AddMetricSuccess;
+    constructor(public payload: MetricSettings) { }
 }
 
-export class GetDictionaryFail implements Action {
-    readonly type = MonitoringActionTypes.GetDictionaryFail;
-
+export class AddMetricFailAction implements Action {
+    readonly type = MonitoringActionTypes.AddMetricFail;
     constructor(public error) { }
 }
 
+export class GetMetricsAction implements Action {
+    readonly type = MonitoringActionTypes.GetMetrics;
+    constructor(public stageId: string) {}
+}
+
+export class GetMetricsSuccessAction implements Action {
+    readonly type = MonitoringActionTypes.GetMetricsSuccess;
+    constructor(public payload: MetricSettings[]) {}
+}
+
+export class GetMetricsFailAction implements Action {
+    readonly type = MonitoringActionTypes.GetMetricsFail;
+    constructor(public error) { }
+}
+
+
 export type MonitoringActions
-    = GetDictionary
-    | GetDictionarySuccess
-    | GetDictionaryFail;
+    = GetMetricsAction
+    | GetMetricsSuccessAction
+    | GetMetricsFailAction
+    | AddMetricAction
+    | AddMetricSuccessAction
+    | AddMetricFailAction

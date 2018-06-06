@@ -2,9 +2,9 @@ import { MetricSpecification } from './metric-specification.model';
 
 
 export class MetricSettings {
-  public id: String;
-  public name: String;
-  public filter: Map<String, String>;
+  public id: string;
+  public name: string;
+  public filter: Map<string, string>;
   public metricProviderSpecification: MetricSpecification;
 
   constructor(props: Object = {}) {

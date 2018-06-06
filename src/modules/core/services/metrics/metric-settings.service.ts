@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { MetricSettings } from '@shared/models/metric-settings.model';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services';
@@ -12,7 +13,7 @@ export class MetricSettingsService {
     this.baseMonitoringSettingsUrl = `${environment.monitoringUrl}/aggregations`;
   }
 
-  public getMetricSettings(stageId: string) {
+  public getMetricSettings(stageId: string): Observable<Object[]> {
     console.log(stageId)
     return this.http.get(this.baseMonitoringSettingsUrl, {params: {stageId}})
       .map((res: Response): any => {
@@ -20,7 +21,7 @@ export class MetricSettingsService {
       })
   }
 
-  public addMetricSettings(metricSettings: MetricSettings) {
+  public addMetricSettings(metricSettings: MetricSettings): Observable<Object> {
     console.log(metricSettings);
     return this.http.post(this.baseMonitoringSettingsUrl, metricSettings)
       .map((res: Response): any => {

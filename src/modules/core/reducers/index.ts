@@ -1,4 +1,5 @@
-import { ActionReducerMap } from '@ngrx/store';
+// import { MetricSettings } from '@shared/models/metric-settings.model';
+import { ActionReducerMap, createSelector } from '@ngrx/store';
 import {
     RuntimesReducer,
     SignaturesReducer,
@@ -18,6 +19,7 @@ import * as fromMonitoring from './monitoring.reducer';
 import { Params, RouterStateSnapshot } from '@angular/router';
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { createFeatureSelector } from '@ngrx/store';
+import { MetricSettings } from '@shared/models/metric-settings.model';
 
 export interface RouterStateUrl {
     url: string;
@@ -46,7 +48,7 @@ export interface HydroServingState {
     sources: Source[];
     environments: Environment[];
     router: fromRouter.RouterReducerState<RouterStateUrl>;
-    monitoring: fromMonitoring.State
+    metrics: fromMonitoring.MState
 }
 
 export const reducers: ActionReducerMap<HydroServingState> = {
@@ -55,7 +57,31 @@ export const reducers: ActionReducerMap<HydroServingState> = {
     sources: SourcesReducer,
     environments: EnvironmentsReducer,
     router: fromRouter.routerReducer,
-    monitoring: fromMonitoring.reducer,
+    metrics: fromMonitoring.reducer,
 };
 
 export const getRouterState = createFeatureSelector<fromRouter.RouterReducerState<RouterStateUrl>>('router');
+
+export const getRouterParams = createSelector(
+    getRouterState,
+    (router) => router.state
+);
+
+export const getMetricsState = createFeatureSelector<fromMonitoring.MState>('metrics');
+
+export const getMetricsEntitiesState = createSelector(
+    getMetricsState,
+    state => state
+);
+
+export const {
+    selectEntities: getMetricsEntities,
+    selectAll: getAllMetrics,
+    selectTotal: getTotalMetrics,
+} = fromMonitoring.adapter.getSelectors(getMetricsEntitiesState);
+
+export const getSelectedMetrics = createSelector(
+    getMetricsEntities,
+    getRouterState,
+    (entities, router): MetricSettings[] => router.state ? Object.keys(entities).map(_ => entities[_]).filter(_ => Object.keys(_.filter).length === 0 || _.filter["stageId"] == `app${router.state.params["id"]}stage${router.state.params["stageId"]}`) : []
+);

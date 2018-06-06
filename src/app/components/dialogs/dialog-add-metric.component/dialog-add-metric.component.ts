@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { Application } from '@shared/models/application.model';
 import { Observable } from 'rxjs/Observable';
@@ -11,10 +12,10 @@ import * as fromApplications from '@applications/reducers';
 import { HydroServingState } from '@core/reducers';
 import { FormsService } from '@core/services';
 import * as hocon from 'hocon-parser';
-import * as HydroActions from '@applications/actions/applications.actions';
+import * as HydroActions from '@core/actions/monitoring.actions';
 import { MetricSettings } from '@shared/models/metric-settings.model';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
-
+import * as fromRoot from '@core/reducers';
 
 @Component({
     selector: 'hydro-dialog-add-metric',
@@ -49,11 +50,13 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
         public formsService: FormsService,
         public mdlSnackbarService: MdlSnackbarService,
         public store: Store<HydroServingState>,
+        public router: ActivatedRoute
     ) {
         super(dialogRef);
     }
 
     ngOnInit() {
+        this.store.select(fromRoot.getRouterParams).subscribe(x => {console.log(x)});
         this.createForm();
         this.initFormChangesListener();
         this.applications$ = this.store.select(fromApplications.getAllApplications);

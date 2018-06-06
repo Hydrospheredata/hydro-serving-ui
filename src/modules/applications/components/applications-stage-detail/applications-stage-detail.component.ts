@@ -1,3 +1,4 @@
+import { GetMetricsAction } from './../../../core/actions/monitoring.actions';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { Subscription } from 'rxjs/Subscription';
 import * as moment from 'moment';
@@ -7,6 +8,8 @@ import {
     ViewChild,
 } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import * as HighchartsNoDataToDisplay from 'highcharts/modules/no-data-to-display.src';
+
 
 import { Store } from '@ngrx/store';
 import { Application } from '@shared/models/_index';
@@ -14,8 +17,9 @@ import { HydroServingState } from '@core/reducers';
 import { InfluxDBService } from '@core/services';
 
 import * as fromApplications from '@applications/reducers';
+import * as fromMetrics from '@core/reducers/index';
 import { Observable } from 'rxjs/Observable';
-import { MetricSettingsService } from '@core/services/metrics/metric-settings.service';
+// import { MetricSettingsService } from '@core/services/metrics/metric-settings.service';
 import { ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { DialogAddMetricComponent } from '@app/components/dialogs/_index';
@@ -46,6 +50,8 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         labels: [],
         datasets: []
     };
+    public healthBounds: {[s: string]: Date[]} = {};
+    public chartBands: {[s: string]: {[s: string]: string[]}} = {};
     public signatureName: any[];
 
     public stageSub: Subscription;
@@ -68,11 +74,16 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     constructor(
         public store: Store<HydroServingState>,
         private influxdbService: InfluxDBService,
-        private repository: MetricSettingsService,
+        // private repository: MetricSettingsService,
         private activatedRoute: ActivatedRoute,
         public selectRef: MdlSelectModule,
         public dialog: MdlDialogService
     ) {
+
+    }
+
+    ngOnInit() {
+        // this.store.select(fromMetrics.getAllMetrics).forEach(_ => console.log(_));
         this.application$ = this.store.select(fromApplications.getSelectedApplication)
         this.applicationSub = this.application$.filter(_ => _ != undefined).subscribe(app => {
             this.activatedRouteSub = this.activatedRoute.params.map(params =>  {
@@ -84,13 +95,12 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                 .filter(stage => stage)
                 .subscribe(stage => {
                     this.stage = stage;
+                    this.store.dispatch(new GetMetricsAction(`app${app.id}stage${stageId}`));
                     this.initAggregations(stage, `app${app.id}stage${stageId}`);
                 });
             });
         })
     }
-
-    ngOnInit() {}
 
     ngOnDestroy() {
         this.stageSub.unsubscribe();
@@ -114,7 +124,8 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
 
     private initAggregations(stage, stageId) {
         console.log(stage);
-        this.repository.getMetricSettings(stageId)
+        // this.repository.getMetricSettings(stageId)
+        this.store.select(fromMetrics.getSelectedMetrics)
             .subscribe(aggregations => {
                 const dict = {
                     "metricProviders": [
@@ -147,7 +158,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                     this.chartNames.push(metricProvider.name);
                     // TODO: whaaat
                     setTimeout(() => {
-                        this.initChart(metricProvider.name, metricProvider.metrics);
+                        this.initChart(metricProvider.name, metricProvider.metrics, metricProvider.withHealth, metricProvider.healthConfig);
                     }, 100)
                 });
                 const fn = (() => {metricProviders.forEach(metricProvider => {
@@ -162,7 +173,8 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
             });
     }
 
-    private initChart(name, metrics) {
+    private initChart(name, metrics, withHealth, healthConfig) {
+        HighchartsNoDataToDisplay(Highcharts);
         if (this.charts.hasOwnProperty(name)) {
             return;
         }
@@ -189,7 +201,13 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
             yAxis: {
                 title: {
                     text: metrics.join(",")
-                }
+                },
+                plotLines: withHealth && healthConfig.hasOwnProperty("threshold") ? [{
+                    color: "red",
+                    dashStyle: 'longdashdot',
+                    value: ~~healthConfig["threshold"],
+                    width: 2
+                }] : []
             },
             tooltip: {
                 shared: true
@@ -201,15 +219,55 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                     borderWidth: 0
                 }
             },
+            lang: {
+                noData: "Waiting for data..."
+            },
+            noData: {
+                style: {
+                    fontWeight: 'bold',
+                    fontSize: '15px',
+                    color: '#a0a0a0'
+                }
+            }
         });
     }
 
     private updateChart(name: string, metrics: string[]) {
         console.log(this.series);
+        if (!this.chartBands.hasOwnProperty(name)) {
+            this.chartBands[name] = {};
+        }
+        // this.charts[name].xAxis[0]
+        metrics.forEach(metric => {
+            if (!this.healthBounds[metric]) return;
+            // const bands = [];
+            if (!this.chartBands[name].hasOwnProperty(metric)) {
+                this.chartBands[name][metric] = [];
+            }
+            this.chartBands[name][metric].forEach(_ => this.charts[name].xAxis[0].removePlotBand(_));
+            this.chartBands[name][metric] = [];
+            for (let i = 0; i < this.healthBounds[metric].length; i += 2) {
+                // this.charts[name].xAxis[0].addPlotBand({
+                //     color: 'red',
+                //     from
+                // });
+                if (i < this.healthBounds[metric].length && i + 1 < this.healthBounds[metric].length) {
+                    const id = `${this.healthBounds[metric][i].getTime()}_${this.healthBounds[metric][i + 1].getTime()}`; 
+                    this.chartBands[name][metric].push(id);
+                    this.charts[name].xAxis[0].addPlotBand({
+                        from: this.healthBounds[metric][i].getTime(),
+                        to: this.healthBounds[metric][i + 1].getTime(),
+                        color: 'rgba(176, 0, 32, 0.2)',
+                        id
+                    })
+                }
+            }
+        })
         metrics.map(_ => this.series[_]).filter(_ => _).reduce((x, y) => x.concat(y), []).forEach(series => {
             const currentChart = this.charts[name].series.find(_ => _.name == series.name);
             if (currentChart) {
                 this.charts[name].xAxis[0].setExtremes(moment().subtract(this.chartTimeWidth / 60000, "minutes").valueOf(), moment().valueOf(), false);
+                // this.charts[name].xAxis[0].addPlotBand();
                 // this.charts[name].update({series: [series]}, true);
                 currentChart.update(series, true);
             } else {
@@ -223,7 +281,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
             return this.stage.services.filter(_ => _.serviceDescription.modelVersionId === ~~modelId).map(_ => _.serviceDescription.modelName)[0];
         }
 
-        const query = `SELECT "value", "modelVersionId"::tag, "columnIndex"::tag FROM ${metrics.map(_ => `"${_}"`).join(",")} WHERE "stageId" = '${stageId}' AND time >= now() - ${this.chartTimeWidth / 60000}m`;
+        const query = `SELECT "value", "health", "modelVersionId"::tag, "columnIndex"::tag FROM ${metrics.map(_ => `"${_}"`).join(",")} WHERE "stageId" = '${stageId}' AND time >= now() - ${this.chartTimeWidth / 60000}m`;
         return this.influxdbService.search(query)
             .then(res => {
                 console.log(res)
@@ -239,6 +297,27 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                         }
                         groupedByModelVersionId[_["modelVersionId"]].push([_["time"].getTime(), _["value"]]);
                     });
+                    const rows: Array<object> = groupRows.rows;
+                    if (!this.healthBounds.hasOwnProperty[metric]) {
+                        this.healthBounds[metric] = []
+                    }
+                    // this.healthBounds = <Date[]>[];
+                    for (let i in rows) {
+                        if (rows[i]["health"] === 0) {
+                            if (~~i === 0 || rows[~~i - 1]["health"] === 1 || ~~i === rows.length - 1) {
+                                this.healthBounds[metric].push(rows[i]["time"]);
+                            }
+                        }
+                        if (rows[i]["health"] === 1) {
+                            if (~~i !== 0 && rows[~~i - 1]["health"] === 0) {
+                                this.healthBounds[metric].push(rows[~~i - 1]["time"]);
+                            }
+                        }
+                    }
+                    
+                    // console.log("~~~~~~~~~");
+                    // console.log(healthBounds);
+                    // console.log("~~~~~~~~~");
                     this.series[metric] = [];
                     for (let key in groupedByModelVersionId) {
                         this.series[metric].push({
