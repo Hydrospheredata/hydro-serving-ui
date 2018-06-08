@@ -62,7 +62,7 @@ export const getSelectedModel = createSelector(
 )
 
 export const getSelectedBuild = createSelector(
-    getModelBuildEntities,
+    getAllModelBuilds,
     fromRoot.getRouterState,
-    (entities, router) => router.state && entities[router.state.params.modelVersionId]
+    (builds, router) => router.state && builds.find(build => build.version === Number(router.state.params.modelVersionId))
 )

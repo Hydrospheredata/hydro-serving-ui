@@ -67,14 +67,9 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     }
 
     private loadInitialData(modelVersionId: number) {
+        console.log(modelVersionId);
         this.store.dispatch(new GetModelBuildsAction(this.modelId));
         this.store.dispatch(new Actions.GetSignaturesAction({ type: 'model-version', id: this.modelId }));
-        console.log(modelVersionId);
-        // .subscribe(builds => {
-        //     this.build = builds.find(dataStoreItem => {
-        //         return dataStoreItem.version === modelVersionId && dataStoreItem.model.id === this.modelId;
-        //     });
-        // });
     }
 
 }
