@@ -8,7 +8,8 @@ import { MetricSettings } from "@shared/models/metric-settings.model";
 export interface MState extends EntityState<MetricSettings> { };
 
 export const adapter: EntityAdapter<MetricSettings> = createEntityAdapter<MetricSettings>({
-    selectId: (metricSettings: MetricSettings) => metricSettings.id
+    selectId: (metricSettings: MetricSettings) => metricSettings.id,
+    sortComparer: (a, b) => ~~b.timestamp - ~~a.timestamp
 });
 
 export const initialState: MState = adapter.getInitialState();
@@ -21,8 +22,8 @@ export function reducer(state = initialState, action: MonitoringActions) {
         case MonitoringActionTypes.GetMetricsSuccess:
             return adapter.addAll(action.payload, state);
 
-        case MonitoringActionTypes.GetMetricsSuccess:
-            return { ...state };
+        case MonitoringActionTypes.DeleteMetricSuccess:
+        return adapter.removeOne(action.payload.id, state);
 
         default: {
             return state;

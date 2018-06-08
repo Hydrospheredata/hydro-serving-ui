@@ -28,4 +28,12 @@ export class MetricSettingsService {
         return res.json();
       })
   }
+
+  public deleteMetricSettings(id: string): Observable<Object> {
+    console.log(`calling DELETE method for ${id}`);
+    return this.http.delete(`${this.baseMonitoringSettingsUrl}/${id}`)
+      .map((res: Response): any => {
+        return res.json();
+      })
+  }
 }

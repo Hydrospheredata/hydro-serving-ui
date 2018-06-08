@@ -64,4 +64,23 @@ export class MonitoringEffects {
                     )
             })
         )
+
+    @Effect() deleteMetric$: Observable<Action> = this.actions$
+        .ofType(HydroActions.MonitoringActionTypes.DeleteMetric)
+        .pipe(
+            map((action: HydroActions.DeleteMetricAction) => action.id),
+            switchMap(metricId => {
+                return this.metricService.deleteMetricSettings(metricId)
+                    .pipe(
+                        map(response => new HydroActions.DeleteMetricSuccessAction(new MetricSettings(response))),
+                        catchError(error => {
+                            this.mdlSnackbarService.showSnackbar({
+                                message: `Error: ${error}`,
+                                timeout: 5000
+                            });
+                            return Observable.of(new HydroActions.GetMetricsFailAction(error));
+                        })
+                    )
+            })
+        )
 }

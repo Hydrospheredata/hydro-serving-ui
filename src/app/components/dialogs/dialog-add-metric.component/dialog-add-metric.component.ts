@@ -41,7 +41,10 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
     public aggregations: {name: string, className: string}[] = [
         {name: "Kolmogorov-Smirnov", className: "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov"},
         {name: "Autoencoder", className: "io.hydrosphere.sonar.core.metrics.providers.Autoencoder"},
-        {name: "Average", className: "io.hydrosphere.sonar.core.metrics.providers.Average"}
+        {name: "Random Forest", className: "io.hydrosphere.sonar.core.metrics.providers.RandomForest"},
+        {name: "Average", className: "io.hydrosphere.sonar.core.metrics.providers.Average"},
+        {name: "Min", className: "io.hydrosphere.sonar.core.metrics.providers.Min"},
+        {name: "Max", className: "io.hydrosphere.sonar.core.metrics.providers.Max"},
     ]
 
     constructor(
@@ -118,23 +121,36 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
     public changeConfigForm(aggregation) {
         this.isHealthDisabled = false;
         this.serviceForm.controls["withHealth"].enable();
-        if (aggregation == "io.hydrosphere.sonar.core.metrics.providers.Autoencoder") {
-            (<FormGroup>this.serviceForm.controls["metricConfig"]).addControl("applicationId", this.fb.control("", Validators.required));
+        switch (aggregation) {
+            case "io.hydrosphere.sonar.core.metrics.providers.Autoencoder":
+            case "io.hydrosphere.sonar.core.metrics.providers.RandomForest":
+                (<FormGroup>this.serviceForm.controls["metricConfig"]).addControl("applicationId", this.fb.control("", Validators.required));
+                break;
+            case "io.hydrosphere.sonar.core.metrics.providers.Average":
+            case "io.hydrosphere.sonar.core.metrics.providers.Min":
+            case "io.hydrosphere.sonar.core.metrics.providers.Max":
+            case "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov":
+                this.serviceForm.setControl("metricConfig", this.fb.group({}));
+                break;
         }
-        if (aggregation == "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov") {
-            this.serviceForm.setControl("metricConfig", this.fb.group({}));
-        }
+        this.toggleHealthConfig();
     }
 
     public toggleHealthConfig() {
         this.isHealthChecked = this.serviceForm.get("withHealth").value;
         if (this.isHealthChecked) {
-            if (this.serviceForm.get("metricAggregation").value == "io.hydrosphere.sonar.core.metrics.providers.Autoencoder") {
-                (<FormGroup>this.serviceForm.controls["healthConfig"]).addControl("threshold", this.fb.control({disabled: false, value: ""}, Validators.required));
+            switch (this.serviceForm.get("metricAggregation").value) {
+                case "io.hydrosphere.sonar.core.metrics.providers.Autoencoder":
+                case "io.hydrosphere.sonar.core.metrics.providers.RandomForest":
+                case "io.hydrosphere.sonar.core.metrics.providers.Average":
+                case "io.hydrosphere.sonar.core.metrics.providers.Min":
+                case "io.hydrosphere.sonar.core.metrics.providers.Max":
+                    (<FormGroup>this.serviceForm.controls["healthConfig"]).addControl("threshold", this.fb.control({disabled: false, value: ""}, Validators.required));
+                    break;
+                case "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov":
+                    this.serviceForm.setControl("healthConfig", this.fb.group({}));
+                    break;
             }
-            if (this.serviceForm.get("metricAggregation").value == "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov") {
-                this.serviceForm.setControl("healthConfig", this.fb.group({}));
-            }    
         } else {
             this.serviceForm.setControl("healthConfig", this.fb.group({}));
         }
