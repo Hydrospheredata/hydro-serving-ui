@@ -23,7 +23,7 @@ export function reducer(state = initialState, action: MonitoringActions) {
             return adapter.addAll(action.payload, state);
 
         case MonitoringActionTypes.DeleteMetricSuccess:
-        return adapter.removeOne(action.payload.id, state);
+            return adapter.removeOne(action.payload.id, state);
 
         default: {
             return state;

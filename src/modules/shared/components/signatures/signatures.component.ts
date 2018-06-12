@@ -2,12 +2,15 @@ import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MdlSnackbarService } from '@angular-mdl/core';
 
-import { Signature } from '@shared/models/_index';
+import { Signature, ModelBuild } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
 import { SignaturesService } from '@core/services';
 import { Store } from '@ngrx/store';
 // import * as Actions from '@core/actions';
 import { Subscription } from 'rxjs/Subscription';
+import { GetModelBuildSignaturesAction } from '@core/actions';
+import * as fromModels from '@models/reducers';
+import { Observable } from 'rxjs';
 
 
 
@@ -24,15 +27,22 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     public isReadOnly = true;
     public signaturesForm: FormGroup;
     private signaturesSub: Subscription;
+    private build$: Observable<ModelBuild>;
 
     constructor(
         public fb: FormBuilder,
         private signaturesService: SignaturesService,
         private mdlSnackbarService: MdlSnackbarService,
         private store: Store<HydroServingState>
-    ) { }
+    ) {
+        this.build$ = this.store.select(fromModels.getSelectedBuild);
+    }
 
     ngOnInit() {
+        this.build$.take(1).subscribe(build => {
+            this.store.dispatch(new GetModelBuildSignaturesAction(build.id));
+        });
+        console.log("init signatures");
         this.createForm();
         this.signaturesSub = this.store.select('signatures')
             .subscribe(signatures => {

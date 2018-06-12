@@ -39,6 +39,8 @@ $table-padding: 14px;
       }
     }
     &__cell {
+      position: relative;
+      max-width: 270px;
       padding: $table-padding * 1.3 $table-padding * 2;
       .__small & {
         padding: 12px $table-padding * 2;

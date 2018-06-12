@@ -7,3 +7,5 @@ export * from './dialog-test.component/dialog-test.component';
 
 export * from './dialog-add-metric.component/dialog-add-metric.component';
 export * from './dialog-delete-metric/dialog-delete-metric.component';
+
+export * from './dialog-confirmation.component/dialog-confirmation.component';

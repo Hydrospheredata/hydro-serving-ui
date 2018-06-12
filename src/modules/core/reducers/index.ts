@@ -83,5 +83,5 @@ export const {
 export const getSelectedMetrics = createSelector(
     getMetricsEntities,
     getRouterState,
-    (entities, router): MetricSettings[] => router.state ? Object.keys(entities).map(_ => entities[_]).filter(_ => Object.keys(_.filter).length === 0 || _.filter["stageId"] == `app${router.state.params["id"]}stage${router.state.params["stageId"]}`) : []
+    (entities, router): MetricSettings[] => router.state ? Object.keys(entities).reverse().map(_ => entities[_]).filter(_ => Object.keys(_.filter).length === 0 || _.filter["stageId"] == `app${router.state.params["id"]}stage${router.state.params["stageId"]}`) : []
 );

@@ -45,14 +45,14 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     public publicPath = '';
     public stageId: string;
 
-    public charts: {[s: string]: Highcharts.ChartObject} = {};
+    public charts: { [s: string]: Highcharts.ChartObject } = {};
     public confidenceChart: any;
     public chartData = {
         labels: [],
         datasets: []
     };
-    public healthBounds: {[s: string]: Date[]} = {};
-    public chartBands: {[s: string]: {[s: string]: string[]}} = {};
+    public healthBounds: { [s: string]: Date[] } = {};
+    public chartBands: { [s: string]: { [s: string]: string[] } } = {};
     public signatureName: any[];
 
     public stageSub: Subscription;
@@ -60,20 +60,20 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     public applicationSub: Subscription;
     public metricsSub: Subscription;
 
-    public thresholds: {[s: string]: number} = {};
+    public thresholds: { [s: string]: number } = {};
 
     public chartTimeWidth: number = 1800000;
-    public chartTimeWidthParams: {ms: number, text: string}[] = [
-        {ms: 900000, text: "15 minutes"},
-        {ms: 1800000, text: "30 minutes"},
-        {ms: 3600000, text: "1 hour"},
-        {ms: 7200000, text: "2 hours"},
-        {ms: 14400000, text: "4 hours"}
+    public chartTimeWidthParams: { ms: number, text: string }[] = [
+        { ms: 900000, text: "15 minutes" },
+        { ms: 1800000, text: "30 minutes" },
+        { ms: 3600000, text: "1 hour" },
+        { ms: 7200000, text: "2 hours" },
+        { ms: 14400000, text: "4 hours" }
     ];
 
     private timeoutId: any;
 
-    private series: {[s: string]: { name: string, data: any[] }[]} = {};
+    private series: { [s: string]: { name: string, data: any[] }[] } = {};
 
     constructor(
         public store: Store<HydroServingState>,
@@ -101,26 +101,26 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                     clickOutsideToClose: true,
                     enterTransitionDuration: 400,
                     leaveTransitionDuration: 400,
-                    providers: [{provide: METRIC_ID_VALUE, useValue: event.target.getAttribute("data-metric-id")}]
+                    providers: [{ provide: METRIC_ID_VALUE, useValue: event.target.getAttribute("data-metric-id") }]
                 });
             }
         });
 
         this.application$ = this.store.select(fromApplications.getSelectedApplication)
         this.applicationSub = this.application$.filter(_ => _ != undefined).subscribe(app => {
-            this.activatedRouteSub = this.activatedRoute.params.map(params =>  {
+            this.activatedRouteSub = this.activatedRoute.params.map(params => {
                 this.stageId = Number(params['stageId']).toString();
                 return this.stageId;
             })
-            .subscribe(stageId => {
-                this.stageSub = this.store.select(fromApplications.getCurrentStage)
-                .filter(stage => stage)
-                .subscribe(stage => {
-                    this.stage = stage;
-                    this.store.dispatch(new GetMetricsAction(`app${app.id}stage${stageId}`));
-                    this.initAggregations(stage, `app${app.id}stage${stageId}`);
+                .subscribe(stageId => {
+                    this.stageSub = this.store.select(fromApplications.getCurrentStage)
+                        .filter(stage => stage)
+                        .subscribe(stage => {
+                            this.stage = stage;
+                            this.store.dispatch(new GetMetricsAction(`app${app.id}stage${stageId}`));
+                            this.initAggregations(stage, `app${app.id}stage${stageId}`);
+                        });
                 });
-            });
         })
     }
 
@@ -192,7 +192,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                     ]
                 };
                 // let classes = aggregations.map(_ => _.metricProviderSpecification);
-                const metricProviders = aggregations.map(_ => Object.assign({}, _.metricProviderSpecification, {name: _.name, id: _.id, timestamp: _.timestamp}, dict.metricProviders.find(x => x.className === _.metricProviderSpecification.metricProviderClass))).filter(_ => _.metrics);
+                const metricProviders = aggregations.map(_ => Object.assign({}, _.metricProviderSpecification, { name: _.name, id: _.id, timestamp: _.timestamp }, dict.metricProviders.find(x => x.className === _.metricProviderSpecification.metricProviderClass))).filter(_ => _.metrics);
                 this.chartNames = metricProviders.sort((a, b) => ~~b.timestamp - ~~a.timestamp).map(_ => _.name);
                 console.log(`CHART NAMES: `, metricProviders.sort((a, b) => ~~b.timestamp - ~~a.timestamp).map(_ => `${_.name}_${_.timestamp}`));
                 this.clearCharts(metricProviders);
@@ -210,12 +210,14 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                         this.initChart(metricProvider);
                     }, 100)
                 });
-                const fn = (() => {metricProviders.forEach(metricProvider => {
-                    // TODO: whaaat
-                    setTimeout(_ => {
-                        this.getMetrics(stageId, metricProvider.metrics).then(_ => this.updateChart(metricProvider.name, metricProvider.metrics));
-                    }, 100)
-                });}).bind(this);
+                const fn = (() => {
+                    metricProviders.forEach(metricProvider => {
+                        // TODO: whaaat
+                        setTimeout(_ => {
+                            this.getMetrics(stageId, metricProvider.metrics).then(_ => this.updateChart(metricProvider.name, metricProvider.metrics));
+                        }, 100)
+                    });
+                }).bind(this);
                 clearInterval(this.timeoutId);
                 this.timeoutId = setInterval(fn, 1500);
                 console.log(`SETTING TIMEOUT ID: ${this.timeoutId}`);
@@ -299,7 +301,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
             this.chartBands[name] = {};
         }
         // this.charts[name].xAxis[0]
-        
+
         // console.log("~~~~~~~~~~~~START");
         // console.log(this.thresholds);
         // console.log("~~~~~~~~~~~~END");
@@ -320,7 +322,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                 //     from
                 // });
                 if (i < this.healthBounds[metric].length && i + 1 < this.healthBounds[metric].length) {
-                    const id = `${this.healthBounds[metric][i].getTime()}_${this.healthBounds[metric][i + 1].getTime()}`; 
+                    const id = `${this.healthBounds[metric][i].getTime()}_${this.healthBounds[metric][i + 1].getTime()}`;
                     this.chartBands[name][metric].push(id);
                     this.charts[name].xAxis[0].addPlotBand({
                         from: this.healthBounds[metric][i].getTime(),
@@ -355,9 +357,9 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
             // debugger;
             const currentChart = this.charts[name].series.find(_ => _.name == `${name}_threshold`);
             if (currentChart) {
-                currentChart.update({name: `${name}_threshold`, data: [this.thresholds[name]]}, true);
+                currentChart.update({ name: `${name}_threshold`, data: [this.thresholds[name]] }, true);
             } else {
-                this.charts[name].addSeries({name: `${name}_threshold`, data: [[new Date().getTime(), this.thresholds[name]]], type: 'scatter', showInLegend: false, marker: {enabled: false}, enableMouseTracking: false}, true);
+                this.charts[name].addSeries({ name: `${name}_threshold`, data: [[new Date().getTime(), this.thresholds[name]]], type: 'scatter', showInLegend: false, marker: { enabled: false }, enableMouseTracking: false }, true);
             }
         } else {
             const currentChart = this.charts[name].series.find(_ => _.name == `${name}_threshold`);
@@ -404,7 +406,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                             }
                         }
                     }
-                    
+
                     // console.log("~~~~~~~~~");
                     // console.log(healthBounds);
                     // console.log("~~~~~~~~~");
@@ -414,7 +416,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                             name: `${getModelName(key)}_${metric}`,
                             data: groupedByModelVersionId[key]
                         });
-                    }    
+                    }
                 })
             });
     }

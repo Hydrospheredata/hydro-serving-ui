@@ -4,13 +4,12 @@ import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
 
 import { DialogBase } from './dialog-base';
-
+import * as hocon from 'hocon-parser';
 import { Store } from '@ngrx/store';
 import {
     Application,
     Runtime,
     Environment,
-    Signature,
     ModelVersion
 } from '@shared/models/_index';
 
@@ -58,7 +57,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     public services: Application[];
     public runtimes: Runtime[];
     public environments: Environment[];
-    public signatures: Signature[];
+    public signatures: any;
     public modelVersions: ModelVersion[];
 
     public weightsForSlider: any[] = [100];
@@ -95,6 +94,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         this.modelVersionsStoreSub = this.store.select(fromModel.getAllModelVersions)
             .subscribe(modelVersions => {
                 this.modelVersions = modelVersions;
+                this.signatures = hocon(modelVersions[0].modelContract).signatures;
             });
 
         this.runtimesStoreSub = this.store.select('runtimes')
@@ -107,10 +107,10 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
                 this.environments = environments;
             });
 
-        this.signaturesStoreSub = this.store.select('signatures')
-            .subscribe(signatures => {
-                this.signatures = signatures;
-            });
+        // this.signaturesStoreSub = this.store.select('signatures')
+        //     .subscribe(signatures => {
+        //         this.signatures = signatures;
+        //     });
 
         this.defaultAppOptions = {
             services: {
@@ -118,7 +118,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
                 runtimeId: this.runtimes && this.runtimes.length > 0 ? this.runtimes[0].id : 0,
                 environmentId: this.environments && this.environments.length > 0 ? this.environments[0].id : 0,
                 modelVersionId: this.modelVersions && this.modelVersions.length > 0 ? this.modelVersions[0].id : 0,
-                signatureName: ''
+                signatureName: this.signatures ? this.signatures.signature_name : ''
             },
             kafkaStreaming: {
                 sourceTopic: '',
@@ -261,9 +261,9 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         }
     }
 
-    public onModelVersionSelect(modelVersionId: number) {
-        console.log(modelVersionId);
-        // this.store.dispatch({ type: Actions.UPDATE_ALL_VERSIONS, payload: modelVersionId });
+    public onModelVersionSelect(modelVersionId: number, i, j) {
+        const control = this.serviceForm.get(['stages', i]).get(['services', j]).get('signatureName');
+        control.patchValue(this.getSignature(modelVersionId));
     }
 
     private addStage(): FormGroup {
@@ -272,13 +272,19 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         });
     }
 
+    private getSignature(versionId) {
+        const model = this.modelVersions.find(version => version.id === versionId);
+        return hocon(model.modelContract).signatures.signature_name;
+    }
+
     private addService(options): FormGroup {
+        console.log(options);
         return this.fb.group({
             weight: [options.weight ? options.weight : 0, this.weightControlValidator],
             runtime: [options.runtimeId ? options.runtimeId : this.defaultAppOptions.services.runtimeId, this.runtimeControlValidator],
             environment: [options.environmentId ? options.environmentId : this.defaultAppOptions.services.environmentId],
             modelVersion: [options.modelVersionId ? options.modelVersionId : this.defaultAppOptions.services.modelVersionId],
-            signatureName: [options.signatureName ? options.signatureName : this.defaultAppOptions.services.signatureName,
+            signatureName: [options.signatureName ? options.signatureName : this.getSignature(options.modelVersionId),
             this.signatureNameControlValidator
             ]
         });

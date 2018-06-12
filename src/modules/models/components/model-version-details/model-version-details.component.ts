@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Signature, ModelBuild } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
 
-import * as Actions from '@core/actions';
+// import * as Actions from '@core/actions';
 import { GetModelBuildsAction } from '@models/actions';
 import * as fromModels from '@models/reducers';
 import { Observable } from 'rxjs/Observable';
@@ -69,7 +69,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     private loadInitialData(modelVersionId: number) {
         console.log(modelVersionId);
         this.store.dispatch(new GetModelBuildsAction(this.modelId));
-        this.store.dispatch(new Actions.GetSignaturesAction({ type: 'model-version', id: this.modelId }));
+        // this.store.dispatch(new Actions.GetSignaturesAction({ type: 'model-version', id: this.modelId }));
     }
 
 }

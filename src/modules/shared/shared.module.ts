@@ -18,7 +18,8 @@ import {
     SortByPipe,
     UtcToLocalPipe,
     IterateAsArrayPipe,
-    RemoveDublicatesPipe
+    RemoveDublicatesPipe,
+    ToNumberPipe,
 } from './pipes/_index';
 
 // Components
@@ -55,6 +56,7 @@ import {
         UtcToLocalPipe,
         IterateAsArrayPipe,
         RemoveDublicatesPipe,
+        ToNumberPipe,
         // Components
         InputTextComponent,
         TextareaComponent,
@@ -73,6 +75,7 @@ import {
         UtcToLocalPipe,
         IterateAsArrayPipe,
         RemoveDublicatesPipe,
+        ToNumberPipe,
         // Components
         InputTextComponent,
         TextareaComponent,
