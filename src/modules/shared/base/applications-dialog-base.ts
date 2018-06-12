@@ -102,15 +102,28 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
                 this.runtimes = runtimes;
             });
 
-        this.environmentsStoreSub = this.store.select('environments')
-            .subscribe(environments => {
-                this.environments = environments;
-            });
+        // this.environmentsStoreSub = this.store.select('environments')
+        //     .subscribe(environments => {
+        //         this.environments = environments;
+        //     });
 
         // this.signaturesStoreSub = this.store.select('signatures')
         //     .subscribe(signatures => {
         //         this.signatures = signatures;
         //     });
+
+        this.environments = [
+            {
+                id: 0,
+                name: 'CPU',
+                placeholders: []
+            },
+            {
+                id: 1,
+                name: 'GPU',
+                placeholders: []
+            }
+        ]
 
         this.defaultAppOptions = {
             services: {

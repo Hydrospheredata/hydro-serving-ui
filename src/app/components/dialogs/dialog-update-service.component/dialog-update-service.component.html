@@ -61,12 +61,12 @@
                                             <mdl-option *ngFor="let runtime of runtimes" [value]="runtime.id">{{ runtime.name + ':' + runtime.version }}</mdl-option>
                                         </mdl-select>
                                     </div>
-                                    <!-- <div class="parameters-list__item--environment" *ngIf="environments.length > 0">
+                                    <div class="parameters-list__item--environment">
                                         <label for="environment">environment</label>
                                         <mdl-select formControlName="environment">
                                             <mdl-option *ngFor="let environment of environments" [value]="environment.id">{{ environment.name === 'Without Env' ? 'none' : environment.name }}</mdl-option>
                                         </mdl-select>
-                                    </div> -->
+                                    </div>
                                     <div class="parameters-list__item--signature">
                                         <label for="environment">signature</label>
                                         <input class="parameters-list__item--signature" type="text" formControlName="signatureName">
