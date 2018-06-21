@@ -66,3 +66,8 @@ export const getSelectedBuild = createSelector(
     fromRoot.getRouterState,
     (builds, router) => router.state && builds.find(build => build.version === Number(router.state.params.modelVersionId))
 )
+
+export const getAllModelBuildsReversed = createSelector(
+    getAllModelBuilds,
+    builds => builds.reverse()
+)
