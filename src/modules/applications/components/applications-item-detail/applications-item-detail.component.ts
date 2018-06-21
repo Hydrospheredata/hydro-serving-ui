@@ -94,7 +94,7 @@ export class ApplicationsItemDetailComponent {
         this.application$.take(1).subscribe(app => {
             application = app;
         });
-        const modelData = model.match(/\w+/gm);
+        const modelData = model.split(':');
         const modelName = modelData[0];
         const modelVersion = modelData[1];
         if (this.models) {
