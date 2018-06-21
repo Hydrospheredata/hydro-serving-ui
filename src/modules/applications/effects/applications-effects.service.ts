@@ -134,7 +134,7 @@ export class ApplicationsEffects {
             ),
             switchMap(([action, signatureName, applicationId]) => {
                 console.log(action, applicationId);
-                return this.applicationsService.generateInputs(applicationId, signatureName)
+                return this.applicationsService.generateInputs(applicationId, encodeURIComponent(signatureName))
                     .pipe(
                         map(input => {
                             return new HydroActions.GenerateInputSuccessAction({ id: applicationId, input: JSON.stringify(input, undefined, 2) });
@@ -169,7 +169,7 @@ export class ApplicationsEffects {
             ),
             switchMap(([action, inputs, signatureName, applicationId]) => {
                 console.log(action, inputs);
-                return this.applicationsService.serveService(JSON.parse(inputs), applicationId, signatureName)
+                return this.applicationsService.serveService(JSON.parse(inputs), applicationId, encodeURIComponent(signatureName))
                     .pipe(
                         map(output => {
                             return new HydroActions.TestApplicationSuccessAction({ id: applicationId, output: JSON.stringify(output, undefined, 2) })
