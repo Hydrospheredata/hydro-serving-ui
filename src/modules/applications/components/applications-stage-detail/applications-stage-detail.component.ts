@@ -188,6 +188,11 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                             "className": "io.hydrosphere.sonar.core.metrics.providers.RandomForest",
                             "metrics": ["random_forest_score"],
                             "isSystem": false
+                        },
+                        {
+                            "className": "io.hydrosphere.sonar.core.metrics.providers.GAN",
+                            "metrics": ["gan_outlier", "gan_inlier"],
+                            "isSystem": false
                         }
                     ]
                 };
