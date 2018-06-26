@@ -48,7 +48,7 @@ export interface HydroServingState {
     sources: Source[];
     environments: Environment[];
     router: fromRouter.RouterReducerState<RouterStateUrl>;
-    metrics: fromMonitoring.MState
+    metrics: fromMonitoring.MState | Error
 }
 
 export const reducers: ActionReducerMap<HydroServingState> = {

@@ -45,6 +45,8 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     public publicPath = '';
     public stageId: string;
 
+    public isMonitoringAvailable: Boolean = false;
+
     public charts: { [s: string]: Highcharts.ChartObject } = {};
     public confidenceChart: any;
     public chartData = {
@@ -151,7 +153,9 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         console.log(stage);
         // this.repository.getMetricSettings(stageId)
         this.metricsSub = this.store.select(fromMetrics.getSelectedMetrics)
+            .filter(aggregations => aggregations.length > 0)
             .subscribe(aggregations => {
+                this.isMonitoringAvailable = true;
                 const dict = {
                     "metricProviders": [
                         {
@@ -227,6 +231,9 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                 this.timeoutId = setInterval(fn, 1500);
                 console.log(`SETTING TIMEOUT ID: ${this.timeoutId}`);
                 fn();
+            }, (error) => {
+                console.log("AAAAAAA");
+                console.log(error);
             });
     }
 

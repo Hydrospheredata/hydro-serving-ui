@@ -11,7 +11,7 @@
             <div class="content-header__title">{{ (application$ | async)?.name }} / s{{(stageId | toNumber) + 1}}</div>
         </div>
 
-        <div class="btn-group">
+        <div class="btn-group" *ngIf="isMonitoringAvailable">
             <mdl-select class="parameters-list__item--model" label="Chart time window" [(ngModel)]="chartTimeWidth">
                 <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms">{{ param.text }}</mdl-option>
             </mdl-select>
@@ -26,6 +26,9 @@
 
 
     <div class="content-body">
+        <div *ngIf="!isMonitoringAvailable" class="unavailable-message">
+            Monitoring service is unavailable
+        </div>
         <div #chartContainer>
             <div [attr.data-chart]="chart" *ngFor="let chart of chartNames; let i = index"></div>
         </div>

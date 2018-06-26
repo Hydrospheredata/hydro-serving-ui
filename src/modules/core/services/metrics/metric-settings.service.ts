@@ -19,6 +19,7 @@ export class MetricSettingsService {
       .map((res: Response): any => {
         return res.json()
       })
+      .catch(_ => {throw new Error("Can't fetch data from monitoring service")})
   }
 
   public addMetricSettings(metricSettings: MetricSettings): Observable<Object> {
