@@ -27,6 +27,9 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddServiceComponent,
+        Dialog.DialogAddMetricComponent,
+        Dialog.DialogDeleteMetricComponent,
+        Dialog.DialogConfirmationComponent
     ],
     imports: [
         AppRoutingModule,
@@ -46,6 +49,9 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddServiceComponent,
+        Dialog.DialogAddMetricComponent,
+        Dialog.DialogDeleteMetricComponent,
+        Dialog.DialogConfirmationComponent
     ],
     bootstrap: [AppComponent]
 })

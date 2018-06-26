@@ -25,16 +25,16 @@
         "../node_modules/*"
       ],
       "@applications/*": [
-        "app/modules/applications/*"
+        "modules/applications/*"
       ],
       "@models/*": [
-        "app/modules/models/*"
+        "modules/models/*"
       ],
       "@core/*": [
-        "app/modules/core/*"
+        "modules/core/*"
       ],
       "@shared/*": [
-        "app/modules/shared/*"
+        "modules/shared/*"
       ]
     },
     "typeRoots": [

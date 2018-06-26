@@ -1,0 +1,97 @@
+<div class="content">
+    <div class="content-header">
+        <div class="content-header__title">{{ (application$ | async)?.name }}</div>
+        <div class="btn-group">
+            <button class="btn" (click)="testApplication()">
+                <svg>
+                    <use xlink:href="#icon-start"></use>
+                </svg>
+                Test
+            </button>
+            <button class="btn btn-flat" (click)="editApplication(application$)">
+                <svg>
+                    <use xlink:href="#icon-edit"></use>
+                </svg>
+                Edit
+            </button>
+            <button class="btn btn-flat" (click)="removeApplication()">
+                <svg>
+                    <use xlink:href="#icon-remove"></use>
+                </svg>
+                remove
+            </button>
+        </div>
+    </div>
+
+    <div class="content-info">
+        <ul class="content-info__list" *ngIf="(application$ | async)?.kafkaStreaming.length">
+            <li class="content-info__list-title">
+                Kafka Info
+            </li>
+            <li class="content-info__list-item" *ngFor="let kafka of (application$ | async).kafkaStreaming">
+                <ol class="content-info__sublist">
+                    <li class="content-info__sublist-item" *ngFor="let item of kafka | iterateAsArray">
+                        <span class="content-info__sublist-item-title">{{ item }}</span>
+                        <span class="content-info__sublist-item-value">{{ kafka[item] }}</span>
+                    </li>
+                </ol>
+            </li>
+        </ul>
+    </div>
+
+    <div class="hydro-panel" *ngFor="let stage of (application$ | async)?.executionGraph.stages; let i = index;">
+        <div class="hydro-panel__header">
+            <h5>Stage {{i + 1}}</h5>
+            <button class="btn btn-flat" [routerLink]="[i]">
+                <svg class="icon">
+                    <use xlink:href="#icon-arrow-right" />
+                </svg>
+            </button>
+        </div>
+        <table class='hydro-table hydro-table-models'>
+            <thead class="hydro-table-head">
+                <tr>
+                    <th class="hydro-table-head__cell">Model Variant</th>
+                    <th class="hydro-table-head__cell">Runtime</th>
+                    <!-- <th class="hydro-table-head__cell">Env</th> -->
+                    <th class="hydro-table-head__cell">Weight</th>
+                    <th class="hydro-table-head__cell">Health</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of stage.services; let j = index;" class='hydro-table-body__row'>
+                    <td class="hydro-table-body__cell" [ngClass]="{'isNewVersionAvailable': checkNewVersion(item.serviceDescription.modelName, i)}">
+                        <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
+                            {{ item.serviceDescription.modelName ? item.serviceDescription.modelName : item.serviceDescription.modelVersionId }}
+                            <svg class="icon newVersionButton" (click)="confirmationDialog()">
+                                <use xlink:href="#icon-warning" />
+                            </svg>
+                        </div>
+                    </td>
+                    <td class="hydro-table-body__cell">
+                        <div class='cs-text-overflow-ellipsis cs-text-center' style="max-width: 300px;">
+                            {{ item.serviceDescription.runtimeName ? item.serviceDescription.runtimeName : item.serviceDescription.runtimeId }}
+                        </div>
+                    </td>
+                    <!-- <td class="hydro-table-body__cell">
+                        <div class='cs-text-overflow-ellipsis cs-text-center'>
+                            {{ item.serviceDescription.environmentId ? item.serviceDescription.environmentId : '-' }}
+                        </div>
+                    </td> -->
+                    <td class="hydro-table-body__cell">
+                        <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>{{ item.weight }}%</div>
+                    </td>
+                    <td class="hydro-table-body__cell">
+                        <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
+                            <div [ngClass]="healthStatuses['app' + (application$ | async)?.id + 'stage' + i + '_' + item.serviceDescription.modelVersionId]"
+                                class="health-status"></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- <div #chart></div> -->
+
+</div>

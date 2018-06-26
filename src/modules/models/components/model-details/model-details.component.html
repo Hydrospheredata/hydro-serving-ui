@@ -1,0 +1,61 @@
+<div class="content">
+    <div class="content-header">
+        <div class="content-header__title">{{ (model$ | async)?.name }}</div>
+    </div>
+
+
+    <div class="content-body">
+        <hydro-list-info [data]="(model$ | async)"></hydro-list-info>
+
+        <hydro-signatures [isEditable]="true" *ngIf="model?.nextVersion" [modelId]="model.id"></hydro-signatures>
+
+        <div class="hydro-panel" *ngIf="!(model$ | async)?.nextVersion || (model$ | async)?.lastModelBuild">
+            <div class="hydro-panel__header">
+                <h5>Versions</h5>
+            </div>
+            <table class='hydro-table hydro-table-models'>
+                <thead class="hydro-table-head">
+                    <tr>
+                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of (modelBuilds$ | async)" class='hydro-table-body__row'>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>{{ item.version }}</div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <div class='cs-text-overflow-ellipsis status' [ngClass]="{
+                                '__successed': item.status === 'FINISHED',
+                                '__started': item.status === 'STARTED',
+                                '__failed': item.status === 'ERROR'
+                                }">
+                                <svg class="icon">
+                                    <use xlink:href="#icon-arrow" />
+                                </svg>
+                                <span class="icon-label">{{ item.status === 'FINISHED' ? 'Released' : 'Started' }}</span>
+                            </div>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <span class="model-item__application" *ngFor="let app of (item.modelVersion.applications | slice: item.modelVersion.applications.length - 2)"
+                                [routerLink]="['../../applications', app.id]">
+                                <span>{{app.name}}</span>
+                            </span>
+                            <span *ngIf="item.modelVersion.applications.length === 0">-</span>
+                        </td>
+                        <td class="hydro-table-body__cell">
+                            <button class="btn btn-flat" [routerLink]="[item.version]" *ngIf="item.status === 'FINISHED'">
+                                <svg class="icon">
+                                    <use xlink:href="#icon-arrow-right" />
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

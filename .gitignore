@@ -45,3 +45,6 @@ Thumbs.db
 .vscode/launch.json
 TESTS-*.xml
 src/environments/environment.ts
+
+
+docker/hydro-serving-ui

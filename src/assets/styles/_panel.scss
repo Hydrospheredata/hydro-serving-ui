@@ -2,12 +2,21 @@
     background-color: $main-bg-color;
     margin-bottom: 16px;
     &__header {
-      text-align: center;
+        position: relative;
       color: #818994;
-      font-size: 18px;
-      font-family: "Museo Sans Bold";
-      margin: 0;
       padding: 18px;
+          display: flex;
+        justify-content: center;
+        align-items: center;
+      > h5 {
+        margin: 0;
+        font-size: 18px;
+        font-family: "Museo Sans Bold";
+      }
+      > button {
+          position: absolute;
+          right: 0;
+      }
     }
     &.__small {
         padding: 10px 16px;
