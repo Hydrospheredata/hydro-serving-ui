@@ -35,3 +35,12 @@
     align-items: flex-start;
   }
 }
+
+.unavailable-message {
+    width: 100%;
+    text-align: center;
+    font-size: 28px;
+    line-height: 10;
+    color: #708393;
+    font-weight: bold;
+}

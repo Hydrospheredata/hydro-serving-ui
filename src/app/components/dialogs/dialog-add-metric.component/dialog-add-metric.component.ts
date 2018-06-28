@@ -42,6 +42,7 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
         {name: "Kolmogorov-Smirnov", className: "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov"},
         {name: "Autoencoder", className: "io.hydrosphere.sonar.core.metrics.providers.Autoencoder"},
         {name: "Random Forest", className: "io.hydrosphere.sonar.core.metrics.providers.RandomForest"},
+        {name: "GAN", className: "io.hydrosphere.sonar.core.metrics.providers.GAN"},
         {name: "Average", className: "io.hydrosphere.sonar.core.metrics.providers.Average"},
         {name: "Min", className: "io.hydrosphere.sonar.core.metrics.providers.Min"},
         {name: "Max", className: "io.hydrosphere.sonar.core.metrics.providers.Max"},
@@ -124,6 +125,7 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
         switch (aggregation) {
             case "io.hydrosphere.sonar.core.metrics.providers.Autoencoder":
             case "io.hydrosphere.sonar.core.metrics.providers.RandomForest":
+            case "io.hydrosphere.sonar.core.metrics.providers.GAN":
                 (<FormGroup>this.serviceForm.controls["metricConfig"]).addControl("applicationId", this.fb.control("", Validators.required));
                 break;
             case "io.hydrosphere.sonar.core.metrics.providers.Average":
@@ -148,6 +150,7 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
                     (<FormGroup>this.serviceForm.controls["healthConfig"]).addControl("threshold", this.fb.control({disabled: false, value: ""}, Validators.required));
                     break;
                 case "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov":
+                case "io.hydrosphere.sonar.core.metrics.providers.GAN":
                     this.serviceForm.setControl("healthConfig", this.fb.group({}));
                     break;
             }
