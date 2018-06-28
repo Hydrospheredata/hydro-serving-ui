@@ -44,4 +44,8 @@ export class ModelsService {
             });
     }
 
+    public deleteModel(modelId) {
+        return this.http.delete(`${this.baseAPIUrl}/${modelId}`);
+    }
+
 }

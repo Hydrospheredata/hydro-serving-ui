@@ -1,6 +1,14 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{ (model$ | async)?.name }}</div>
+        <div class="btn-group">
+            <button class="btn" (click)="removeModel()">
+                <svg>
+                    <use xlink:href="#icon-remove"></use>
+                </svg>
+                remove
+            </button>
+        </div>
     </div>
 
 

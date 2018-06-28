@@ -6,8 +6,9 @@ import { Observable } from 'rxjs/Observable';
 import { ModelsService } from '@models/services';
 import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@core/builders/_index';
 import * as HydroActions from '@models/actions';
-import { flatMap, map, catchError, mergeMap } from 'rxjs/operators';
+import { flatMap, map, catchError, mergeMap, switchMap } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
+import { Router } from '@angular/router';
 
 
 
@@ -21,6 +22,7 @@ export class ModelEffects {
         private modelsService: ModelsService,
         private actions$: Actions,
         private mdlSnackbarService: MdlSnackbarService,
+        private router: Router,
     ) { }
 
     @Effect() loadModels$: Observable<Action> = this.actions$
@@ -98,6 +100,33 @@ export class ModelEffects {
                                 timeout: 5000
                             });
                             return Observable.of(new HydroActions.BuildModelFailAction(error));
+                        })
+                    );
+            })
+        );
+
+    @Effect() deleteModel$: Observable<Action> = this.actions$
+        .ofType(HydroActions.ModelActionTypes.Delete)
+        .pipe(
+            map((action: HydroActions.DeleteModelAction) => action.modelId),
+            switchMap(modelId => {
+                return this.modelsService
+                    .deleteModel(modelId)
+                    .pipe(
+                        map(() => {
+                            this.router.navigate(['models']);
+                            this.mdlSnackbarService.showSnackbar({
+                                message: 'Model has been deleted',
+                                timeout: 5000
+                            });
+                            return (new HydroActions.DeleteModelSuccessAction(modelId));
+                        }),
+                        catchError(error => {
+                            this.mdlSnackbarService.showSnackbar({
+                                message: `Error: ${error}`,
+                                timeout: 5000
+                            });
+                            return Observable.of(new HydroActions.DeleteModelFailAction(error));
                         })
                     );
             })

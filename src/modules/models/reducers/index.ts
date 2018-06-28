@@ -3,6 +3,7 @@ import * as fromModelVersion from './model-versions.reducer';
 import * as fromModelBuild from './model-builds.reducer';
 import * as fromRoot from '@core/reducers';
 import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
+import { Model } from '@shared/_index';
 
 export interface ModelsState {
     models: fromModel.State;
@@ -59,6 +60,11 @@ export const getSelectedModel = createSelector(
     getModelEntities,
     fromRoot.getRouterState,
     (entities, router) => router.state && entities[router.state.params.modelId]
+)
+
+export const getSelectedModelId = createSelector(
+    getSelectedModel,
+    (model: Model): number => model && model.id
 )
 
 export const getSelectedBuild = createSelector(
