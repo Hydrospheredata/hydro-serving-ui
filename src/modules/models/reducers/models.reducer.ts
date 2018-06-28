@@ -15,6 +15,8 @@ export function reducer(state = initialState, action: ModelActions) {
             return adapter.addMany(action.payload, state);
         case ModelActionTypes.BuildSuccess:
             return state;
+        case ModelActionTypes.DeleteSuccess:
+            return adapter.removeOne(action.modelId, state);
         default:
             return state;
     }

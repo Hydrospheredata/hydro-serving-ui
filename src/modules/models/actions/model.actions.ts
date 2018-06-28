@@ -5,6 +5,9 @@ export enum ModelActionTypes {
     Get = '[Model] Get all models',
     GetSuccess = '[Model] Get all models with success',
     GetFail = '[Model] Get all models with fail',
+    Delete = '[Model] Delete model',
+    DeleteSuccess = '[Model] Delete model with success',
+    DeleteFail = '[Model] Delete model with fail',
     Build = '[Model] Build model',
     BuildSuccess = '[Model] Build model with success',
     BuildFail = '[Model] Build model with fail',
@@ -22,6 +25,21 @@ export class GetModelsSuccessAction implements Action {
 
 export class GetModelsFailAction implements Action {
     readonly type = ModelActionTypes.GetFail;
+    constructor(public error) { }
+}
+
+export class DeleteModelAction implements Action {
+    readonly type = ModelActionTypes.Delete;
+    constructor(public modelId: number) { }
+}
+
+export class DeleteModelSuccessAction implements Action {
+    readonly type = ModelActionTypes.DeleteSuccess;
+    constructor(public modelId: number) { }
+}
+
+export class DeleteModelFailAction implements Action {
+    readonly type = ModelActionTypes.DeleteFail;
     constructor(public error) { }
 }
 
@@ -46,6 +64,9 @@ export type ModelActions
     = GetModelsAction
     | GetModelsSuccessAction
     | GetModelsFailAction
+    | DeleteModelAction
+    | DeleteModelSuccessAction
+    | DeleteModelFailAction
     | BuildModelAction
     | BuildModelSuccessAction
     | BuildModelFailAction;
