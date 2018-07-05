@@ -1,33 +1,3 @@
-def collectTestResults() {
-    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml', allowEmptyResults: true])
-}
-
-def currentVersion() {
-    return readFile("version").trim()
-}
-
-def changeVersion(version) {
-    writeFile file: 'version', text: version
-}
-
-def calculateReleaseVersion(currentVersion) {
-    def index=currentVersion.lastIndexOf("-SNAPSHOT")
-    def releaseVersion
-    if(index>-1){
-        releaseVersion=currentVersion.substring(0, index)
-    }else{
-        releaseVersion=currentVersion
-    }
-    return releaseVersion
-}
-
-def calculateNextDevVersion(releaseVersion) {
-    int index = releaseVersion.lastIndexOf('.')
-    String minor = releaseVersion.substring(index + 1)
-    int m = minor.toInteger() + 1
-    return releaseVersion.substring(0, index + 1) + m + "-SNAPSHOT"
-}
-
 def checkoutSource(gitCredentialId, organization, repository) {
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
         git url: "https://github.com/${organization}/${repository}.git", credentialsId: gitCredentialId
@@ -57,19 +27,19 @@ def pushSource(gitCredentialId, organization, repository, pushCommand) {
 }
 
 def isReleaseJob() {
-    return "release".equalsIgnoreCase(env.BRANCH_NAME)
+    return "true".equalsIgnoreCase(env.IS_RELEASE_JOB)
 }
 
 def generateTagComment(releaseVersion) {
     commitsList = sh(
         returnStdout: true,
-        script: "git log `git tag --sort=-taggerdate | head -1`..HEAD --pretty=\"%B\n\r (%an)\""
+            script: "git log `git tag --sort=-taggerdate | head -1`..HEAD --pretty=\"@%an %h %B\""
     ).trim()
     return "${commitsList}"
 }
 
 def createReleaseInGithub(gitCredentialId, organization, repository, releaseVersion, message) {
-    bodyMessage = message.replaceAll("\n", "<br />").replace("\r", "")
+    bodyMessage = message.replaceAll("\r", "").replaceAll("\n", "<br/>").replaceAll("<br/><br/>", "<br/>")
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
         def request = """
             {
@@ -86,6 +56,32 @@ def createReleaseInGithub(gitCredentialId, organization, repository, releaseVers
    }
 }
 
+def currentVersion() {
+    return readFile("version").trim()
+}
+
+def changeVersion(version) {
+    writeFile file: 'version', text: version
+}
+
+def calculateReleaseVersion(currentVersion) {
+    def index=currentVersion.lastIndexOf("-SNAPSHOT")
+    def releaseVersion
+    if(index>-1){
+        releaseVersion=currentVersion.substring(0, index)
+    }else{
+        releaseVersion=currentVersion
+    }
+    return releaseVersion
+}
+
+def calculateNextDevVersion(releaseVersion) {
+    int index = releaseVersion.lastIndexOf('.')
+    String minor = releaseVersion.substring(index + 1)
+    int m = minor.toInteger() + 1
+    return releaseVersion.substring(0, index + 1) + m + "-SNAPSHOT"
+}
+
 def uploadRelease(gitCredentialId, organization, repository, releaseVersion, releaseId, releaseFile){
   withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
     sh """curl --data-binary @"${releaseFile}" -H "Authorization: token ${GIT_PASSWORD}" -H "Content-Type: application/zip" https://uploads.github.com/repos/${organization}/${repository}/releases/${releaseId}/assets?name=release-${releaseVersion}.zip"""
@@ -95,19 +91,20 @@ def uploadRelease(gitCredentialId, organization, repository, releaseVersion, rel
 node("JenkinsOnDemand") {
     def repository = 'hydro-serving-ui'
     def organization = 'Hydrospheredata'
-    def gitCredentialId = 'HydrospheredataGithubAccessKey'
-
+    def gitCredentialId = 'HydroRobot_AccessToken'
 
     stage('Checkout') {
         deleteDir()
         checkoutSource(gitCredentialId, organization, repository)
+        echo currentVersion()
     }
 
     if (isReleaseJob()) {
         stage('Set release version') {
             def curVersion = currentVersion()
-            def nextVersion=calculateReleaseVersion(curVersion)
-            changeVersion(nextVersion)
+            def releaseVersion = calculateReleaseVersion(curVersion)
+            sh "git checkout -b release_temp"
+            changeVersion(releaseVersion)
         }
     }
 
@@ -123,26 +120,31 @@ node("JenkinsOnDemand") {
        // sh "./node_modules/.bin/ng test --browsers=\"ChromeNoSandboxHeadless\" --code-coverage --single-run"
     }
     if (isReleaseJob()) {
-        //if (currentBuild.result == 'UNSTABLE') {
-        //    currentBuild.result = 'FAILURE'
-        //    error("Errors in tests")
-        //}
+        if (currentBuild.result == 'UNSTABLE') {
+            currentBuild.result = 'FAILURE'
+            error("Errors in tests")
+        }
+
+        stage('Push docker') {
+            imageVersion = currentVersion()
+            sh "docker push hydrosphere/serving-manager-ui:${imageVersion}"
+        }
 
         stage("Publish"){
             def curVersion = currentVersion()
-            tagComment=generateTagComment(curVersion)
-            sh "git commit -m 'Releasing ${curVersion}' -- version"
+            tagComment = generateTagComment(curVersion)
+            sh "git commit -a -m 'Releasing ${curVersion}'"
             sh "git tag -a ${curVersion} -m '${tagComment}'"
 
-            sh "git checkout master"
+            sh "git checkout ${env.BRANCH_NAME}"
 
-            def nextVersion=calculateNextDevVersion(curVersion)
+            def nextVersion = calculateNextDevVersion(curVersion)
             changeVersion(nextVersion)
-            sh "git commit -m 'Development version increased: ${nextVersion}' -- version"
+
+            sh "git commit -a -m 'Development version increased: ${nextVersion}'"
 
             pushSource(gitCredentialId, organization, repository, "")
             pushSource(gitCredentialId, organization, repository, "refs/tags/${curVersion}")
-            sh "docker push hydrosphere/serving-manager-ui:${curVersion}"
             def releaseInfo=createReleaseInGithub(gitCredentialId, organization, repository,curVersion,tagComment)
             def props = readJSON text: "${releaseInfo}"
             zip archive: true, dir: "${repository}", glob: "", zipFile: "release-${curVersion}.zip"
@@ -153,16 +155,6 @@ node("JenkinsOnDemand") {
         stage("Publish_snapshoot"){
           if (env.BRANCH_NAME == "master") {
               def curVersion = currentVersion()
-              GIT_COMMIT = sh (
-                       script: 'git rev-parse --short HEAD',
-                       returnStdout: true
-              ).trim()
-              sh "docker tag hydrosphere/serving-manager-ui:${curVersion} 060183668755.dkr.ecr.eu-central-1.amazonaws.com/serving-manager-ui:${GIT_COMMIT}"
-              IMAGE = "060183668755.dkr.ecr.eu-central-1.amazonaws.com/serving-manager-ui:${GIT_COMMIT}"
-              docker.withRegistry('https://060183668755.dkr.ecr.eu-central-1.amazonaws.com', 'ecr:eu-central-1:jenkins_aws') {
-                docker.image(IMAGE).push()
-              }
-
               sh "docker tag hydrosphere/serving-manager-ui:${curVersion} hydrosphere/serving-manager-ui:latest"
               sh "docker push hydrosphere/serving-manager-ui:latest"
           }
