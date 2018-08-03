@@ -298,20 +298,20 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     }
 
     private addService(options): FormGroup {
-        let {
+        const {
             weight,
             runtime = {},
             environment = {},
             modelVersion = {}
         } = options;
-
+        const defaultServiceOptions = this.defaultAppOptions.services;
 
         return this.fb.group({
             weight: [weight || 0, this.weightControlValidator],
-            runtime: [runtime.id || this.defaultAppOptions.services.runtimeId, this.runtimeControlValidator],
-            environment: [environment.id || this.defaultAppOptions.services.environmentId],
-            modelVersion: [modelVersion.id || this.defaultAppOptions.services.modelVersionId],
-            signatureName: [options.signatureName || this.getSignature(modelVersion.id),
+            runtime: [runtime.id || defaultServiceOptions.runtimeId, this.runtimeControlValidator],
+            environment: [environment.id || defaultServiceOptions.environmentId],
+            modelVersion: [modelVersion.id || defaultServiceOptions.modelVersionId],
+            signatureName: [options.signatureName || this.getSignature(modelVersion.id || defaultServiceOptions.modelVersionId),
             this.signatureNameControlValidator
             ]
         });
