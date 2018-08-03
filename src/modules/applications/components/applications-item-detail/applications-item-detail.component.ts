@@ -89,22 +89,24 @@ export class ApplicationsItemDetailComponent {
         clearInterval(this.intervalId);
     }
 
-    public checkNewVersion(model, stageId) {
+    public checkNewVersion(modelVersionData, stageId) {
         let application: Application;
         this.application$.take(1).subscribe(app => {
             application = app;
         });
-        const modelData = model.split(':');
-        const modelName = modelData[0];
-        const modelVersion = modelData[1];
+
+        const {modelName, modelVersion} = modelVersionData;
+
         if (this.models) {
             const modell = this.models.find(model => model.name === modelName);
             let aaa = application.executionGraph.stages[stageId].services.find(service => {
-                return service.serviceDescription.modelVersionId === modell.lastModelBuild.version
+                return service.modelVersion.modelVersion === modell.lastModelBuild.version
             });
+
             if (modell.lastModelBuild.version > modelVersion && !aaa) {
                 return true;
             }
+
             return false;
         }
     }

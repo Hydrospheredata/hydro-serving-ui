@@ -204,7 +204,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         if (stage) {
             if (stage.services instanceof Array) {
                 stage.services.forEach(service => {
-                    this.addServiceControl({ ...service.serviceDescription, weight: service.weight }, index);
+                    this.addServiceControl(service, index);
                 });
             } else {
                 this.addServiceControl(stage.services, index);
@@ -217,12 +217,19 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         control.removeAt(i);
     }
 
-    public addServiceControl(modelVersion, index: number) { // TODO: Fix ModelVersion Type, now returns like number or object
-        if (typeof modelVersion === 'number') {
-            modelVersion = { modelVersionId: modelVersion };
+    public addServiceByModelVerId(modelVersionId: number, index: number) {
+        const service = { 
+                modelVersion: { 
+                    id: modelVersionId
+                }
+            };
+
+        this.addServiceControl(service, index);
         }
+
+    public addServiceControl(service: object, index: number) {
         const control = <FormArray>this.serviceForm.get(['stages', index]).get('services');
-        control.push(this.addService(modelVersion));
+        control.push(this.addService(service));
     }
 
     public removeServiceControl(i: number, j: number) {
@@ -291,13 +298,20 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     }
 
     private addService(options): FormGroup {
-        console.log(options);
+        let {
+            weight,
+            runtime = {},
+            environment = {},
+            modelVersion = {}
+        } = options;
+
+
         return this.fb.group({
-            weight: [options.weight ? options.weight : 0, this.weightControlValidator],
-            runtime: [options.runtimeId ? options.runtimeId : this.defaultAppOptions.services.runtimeId, this.runtimeControlValidator],
-            environment: [options.environmentId ? options.environmentId : this.defaultAppOptions.services.environmentId],
-            modelVersion: [options.modelVersionId ? options.modelVersionId : this.defaultAppOptions.services.modelVersionId],
-            signatureName: [options.signatureName ? options.signatureName : this.getSignature(options.modelVersionId),
+            weight: [weight || 0, this.weightControlValidator],
+            runtime: [runtime.id || this.defaultAppOptions.services.runtimeId, this.runtimeControlValidator],
+            environment: [environment.id || this.defaultAppOptions.services.environmentId],
+            modelVersion: [modelVersion.id || this.defaultAppOptions.services.modelVersionId],
+            signatureName: [options.signatureName || this.getSignature(modelVersion.id),
             this.signatureNameControlValidator
             ]
         });
