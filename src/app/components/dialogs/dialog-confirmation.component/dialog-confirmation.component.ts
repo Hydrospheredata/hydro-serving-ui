@@ -47,14 +47,12 @@ export class DialogConfirmationComponent extends DialogBase {
             _.executionGraph.stages.forEach(stage => {
                 const services = [];
                 stage.services.forEach(service => {
-                    const modelData = service.serviceDescription.modelName.match(/\w+/gm);
-                    const modelName = modelData[0];
-                    const modelVersion = modelData[1];
+                    const {modelName, modelVersion} = service.modelVersion;
                     const modell = this.models.find(model => model.name === modelName);
                     services.push(
                         {
-                            runtimeId: service.serviceDescription.runtimeId,
-                            modelVersionId: modell.lastModelBuild.version > modelVersion ? modell.lastModelBuild.id : service.serviceDescription.modelVersionId,
+                            runtimeId: service.runtime.id,
+                            modelVersionId: modell.lastModelBuild.version > modelVersion ? modell.lastModelBuild.id : service.modelVersion.id,
                             weight: Number(service.weight),
                             signatureName: service.signature ? hocon(service.signature).signature_name : ''
                         }

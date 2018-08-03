@@ -383,7 +383,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
 
     private getMetrics(stageId: string, metrics: string[]) {
         const getModelName = (modelId): string => {
-            return this.stage.services.filter(_ => _.serviceDescription.modelVersionId === ~~modelId).map(_ => _.serviceDescription.modelName)[0];
+            return this.stage.services.filter(_ => _.modelVersion.id === ~~modelId).map(_ => _.modelVersion.modelName)[0];
         }
 
         const query = `SELECT "value", "health", "modelVersionId"::tag, "columnIndex"::tag FROM ${metrics.map(_ => `"${_}"`).join(",")} WHERE "stageId" = '${stageId}' AND time >= now() - ${this.chartTimeWidth / 60000}m`;

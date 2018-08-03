@@ -80,7 +80,7 @@
                             </li>
 
                             <li class="parameters-list__item __add">
-                                <mdl-select label="Add model versions" (change)="addServiceControl($event, i)">
+                                <mdl-select label="Add model versions" (change)="addServiceByModelVerId($event, i)">
                                     <mdl-option *ngFor="let modelVersion of modelVersions" [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}</mdl-option>
                                 </mdl-select>
                             </li>

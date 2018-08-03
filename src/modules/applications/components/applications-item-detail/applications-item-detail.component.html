@@ -60,9 +60,9 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of stage.services; let j = index;" class='hydro-table-body__row'>
-                    <td class="hydro-table-body__cell" [ngClass]="{'isNewVersionAvailable': checkNewVersion(item.serviceDescription.modelName, i)}">
+                    <td class="hydro-table-body__cell" [ngClass]="{'isNewVersionAvailable': checkNewVersion(item.modelVersion, i)}">
                         <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                            {{ item.serviceDescription.modelName ? item.serviceDescription.modelName : item.serviceDescription.modelVersionId }}
+                            {{ item.modelVersion.modelName + ':v' + item.modelVersion.modelVersion }}
                             <svg class="icon newVersionButton" (click)="confirmationDialog()">
                                 <use xlink:href="#icon-warning" />
                             </svg>
@@ -70,7 +70,7 @@
                     </td>
                     <td class="hydro-table-body__cell">
                         <div class='cs-text-overflow-ellipsis cs-text-center' style="max-width: 300px;">
-                            {{ item.serviceDescription.runtimeName ? item.serviceDescription.runtimeName : item.serviceDescription.runtimeId }}
+                            {{ item.runtime.name ? item.runtime.name : item.runtime.id }}
                         </div>
                     </td>
                     <!-- <td class="hydro-table-body__cell">
@@ -83,7 +83,7 @@
                     </td>
                     <td class="hydro-table-body__cell">
                         <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                            <div [ngClass]="healthStatuses['app' + (application$ | async)?.id + 'stage' + i + '_' + item.serviceDescription.modelVersionId]"
+                            <div [ngClass]="healthStatuses['app' + (application$ | async)?.id + 'stage' + i + '_' + item.modelVersion.id]"
                                 class="health-status"></div>
                         </div>
                     </td>
