@@ -6,8 +6,6 @@ import * as Actions from '@core/actions';
 import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
 import { GetApplicationsAction } from '@applications/actions';
 
-
-
 @Component({
     selector: 'hydro-root',
     templateUrl: './app.component.html',

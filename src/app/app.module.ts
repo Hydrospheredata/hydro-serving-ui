@@ -17,8 +17,6 @@ import { ApplicationsModule } from '@applications/applications.module';
 // Dialogs
 import * as Dialog from '@components/dialogs/_index';
 
-
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -42,7 +40,7 @@ import * as Dialog from '@components/dialogs/_index';
         FormsModule,
         ReactiveFormsModule,
         MomentModule,
-        SharedModule,
+        SharedModule
     ],
     entryComponents: [
         Dialog.DialogModelBuildComponent,

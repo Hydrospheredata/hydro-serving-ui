@@ -21,15 +21,15 @@
                             [label]="'output topic = '" name="outputTopic" formControlName="destinationTopic">
                         </hydro-input-text>
                     </div>
-                    <svg class="__delete" (click)="removeKafkaControl(i)" *ngIf="serviceForm['controls'].kafkaStreaming['controls'].length > 1">
-                        <use xlink:href="#icon-remove"></use>
-                    </svg>
+                    <hydro-icon [type]='"icon-remove"' 
+                                class="form-kafkaSources__delete-icon" 
+                                (click)="removeKafkaControl(i)" 
+                                *ngIf="serviceForm['controls'].kafkaStreaming['controls'].length > 1">
+                    </hydro-icon>
                 </li>
-                <li class="form-kafkaSources__list-item--add" *ngIf="isKafkaEnabled" (click)="addKafkaControl(defaultAppOptions.kafkaStreaming)">
-                    <svg>
-                        <use xlink:href="#icon-plus"></use>
-                    </svg>
-                    <span>Add More Sources</span>
+                <li *ngIf="isKafkaEnabled" (click)="addKafkaControl(defaultAppOptions.kafkaStreaming)" class="form-kafkaSources__add">
+                    <hydro-icon [type]="'icon-plus'" class="form-kafkaSources__add-icon"></hydro-icon>
+                    <span class="form-kafkaSources__add-label">Add More Sources</span>
                 </li>
             </ul>
         </div>
@@ -78,11 +78,7 @@
                                         </hydro-input-text>% -->
                                     </div>
                                 </div>
-
-                                <svg title="Remove service parameters" class="__delete" (click)="removeServiceControl(i,j)" *ngIf="stage['controls'].services['controls'].length > 1">
-                                    <use xlink:href="#icon-remove"></use>
-                                </svg>
-
+                                <hydro-icon [type]="'icon-remove'" class="parameters__delete-icon" (click)="removeServiceControl(i,j)" *ngIf="stage['controls'].services['controls'].length > 1"></hydro-icon>
                             </li>
 
                             <li class="parameters-list__item __add">
@@ -91,17 +87,12 @@
                                 </mdl-select>
                             </li>
                         </ul>
-
-                        <svg title="Remove stage" class="__delete" (click)="removeStageControl(i)" *ngIf="serviceForm['controls'].stages['controls'].length > 1">
-                            <use xlink:href="#icon-remove"></use>
-                        </svg>
+                        <hydro-icon [type]="'icon-remove'" (click)="removeStageControl(i)" *ngIf="serviceForm['controls'].stages['controls'].length > 1" class="stages__delete-icon"></hydro-icon>
                     </div>
                 </div>
 
                 <button type="button" class="btn btn-flat" (click)="addStageControl(defaultAppOptions)" title="Add stage">
-                    <svg>
-                        <use xlink:href="#icon-plus"></use>
-                    </svg>
+                    <hydro-icon [type]="'icon-plus'"></hydro-icon>
                     add new stage
                 </button>
             </div>

@@ -30,6 +30,7 @@ import {
     SidebarComponent,
     ListInfoComponent,
     SignaturesComponent,
+    IconComponent
 } from './components/_index';
 
 
@@ -64,6 +65,7 @@ import {
         SidebarComponent,
         ListInfoComponent,
         SignaturesComponent,
+        IconComponent
     ],
     exports: [
         // Pipes
@@ -83,6 +85,7 @@ import {
         SidebarComponent,
         ListInfoComponent,
         SignaturesComponent,
+        IconComponent
     ]
 })
 export class SharedModule { }

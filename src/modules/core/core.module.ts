@@ -50,6 +50,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { SharedModule } from '@shared/shared.module';
 
 
 @NgModule({
@@ -60,6 +61,7 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
         MdlSelectModule,
         CodemirrorModule,
         HttpModule,
+        SharedModule,
         StoreModule.forRoot(reducers,
             {
                 initialState: {

@@ -20,25 +20,27 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: default;
         color: $secondary-color;
         border-color: $secondary-color;
-        > svg {
-            fill: $secondary-color;
+        > hydro-icon {
+            color: $secondary-color;
         }
     }
     &:not([disabled]):hover,
     &:not([disabled]):focus {
         background-color: $btn-primary;
         color: $btn-secondary;
-        > svg {
-            fill: $btn-secondary;
+        > hydro-icon {
+            color: $btn-secondary;
         }
     }
-    > svg {
-        transition: fill $transition-type;
+    > hydro-icon {
+        transition: color $transition-type;
         width: $btn-icon-size;
         height: $btn-icon-size;
-        fill: $btn-primary;
+        color: $btn-primary;
         margin-right: $btn-icon-size;
+        line-height: $btn-icon-size;
     }
+
     &.btn-colored {
         background-color: $btn-primary;
         color: white;
@@ -59,16 +61,16 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         &:not([disabled]):focus {
             background-color: transparent;
             color: $btn-secondary;
-            > svg {
-                fill: $btn-secondary;
+            > hydro-icon {
+                color: $btn-secondary;
             }
         }
     }
     &.btn-secondary {
         color: $btn-secondary;
         padding: 10px 18px;
-        > svg {
-            fill: $btn-secondary;
+        > hydro-icon {
+            color: $btn-secondary;
         }
     }
     &.btn-back {
@@ -82,12 +84,12 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         &:focus {
             background-color: transparent;
             color: #85bd3e;
-            > svg {
-                fill: #85bd3e;
+            > hydro-icon {
+                color: #85bd3e;
             } 
         }
-        > svg {
-            fill: #fff;
+        > hydro-icon {
+            color: #fff;
         }
     }
     &-group {

@@ -33,23 +33,23 @@ $active-color: white;
       &:not(:last-child) {
         margin-right: 15px;
       }
-      > svg {
-        margin-right: 15px;
-        fill: $default-color;
-        stroke: $default-color;
-        &.icon-folder {
-          width: 28px;
-          height: 28px;
-        }
-      }
       &.__active {
         border-top: 2px solid white;
         color: $active-color;
-        > svg {
-          fill: $active-color;
-          stroke: $active-color;
-        }
       }
+    }
+  }
+  &__icon {
+    margin-right: 15px;
+    &--models {
+      width: 20px;
+    }
+    &--applications {
+      width: 28px;
+    }
+    &--folder {
+      width: 28px;
+      height: 28px;
     }
   }
 }
