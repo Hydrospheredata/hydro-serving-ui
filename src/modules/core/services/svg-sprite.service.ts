@@ -1,34 +1,24 @@
 import { Injectable } from "@angular/core";
+import { HttpService } from "@core/services/http/_index";
 
 @Injectable()
 export class SvgSpriteService {
+  constructor(
+    private http: HttpService,
+  ) {
+  }
+
   public loadSvgSprite(){
       if (!document.createElementNS || !document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect) {
           return true
       };
+      const fileUrl = '/assets/images/sprites/hydro-sprite.svg';
 
-      let  data;
-      const file = './assets/images/sprites/hydro-sprite.svg';
-      const insertIT = () => { document.body.insertAdjacentHTML('afterbegin', data); };
-      const insert = () => {
-          if (document.body) {
-            insertIT();
-          } else document.addEventListener('DOMContentLoaded', insertIT);
-        };
+      this.http.get(`http://${window.location.hostname}:${window.location.port}/${fileUrl}`)
+          .subscribe(res => {
+            const insert = () => document.body.insertAdjacentHTML('afterbegin', res._body);
 
-  
-      try {
-        const request = new XMLHttpRequest();
-        request.open('GET', file, true);
-        request.onload = function() {
-          if (request.status >= 200 && request.status < 400) {
-            data = request.responseText;
-            insert();
-          }
-        }
-        request.send();
-      } catch (e) {
-          console.error(`${e.name} : ${e.message}`)
-      }
+            document.body ? insert() : document.addEventListener('DOMContentLoaded', insert);
+          });
     };
 }
