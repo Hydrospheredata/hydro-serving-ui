@@ -1,0 +1,14 @@
+<svg viewBox="0 0 28 28" >
+    <g  fill-opacity="0" stroke-width="2" stroke="currentColor">
+        <circle cx="14" cy="4"  r="3" />
+        <circle cx="4"  cy="14" r="3" />
+        <circle cx="14" cy="24" r="3" />
+        <circle cx="24" cy="14" r="3" />
+    </g>
+    <g fill="currentColor">
+        <path d="M3 3 H10 L8 5 H5 V8 L3 10" />
+        <path d="M18 3 H25 V10 L23 8 V5 H20"/>
+        <path d="M25 18 V25 H18 L20 23 H23 V20"/>
+        <path d="M10 25 H3 V18 L5 20 V23 H8"/>
+    </g>         
+</svg>

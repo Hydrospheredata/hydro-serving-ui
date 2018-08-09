@@ -5,6 +5,7 @@ import { HydroServingState } from '@core/reducers';
 import * as Actions from '@core/actions';
 import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
 import { GetApplicationsAction } from '@applications/actions';
+import { SvgSpriteService } from '@core/services';
 
 @Component({
     selector: 'hydro-root',
@@ -17,11 +18,14 @@ export class AppComponent implements OnInit {
         private dialogOutletService: MdlDialogOutletService,
         private viewConatinerRef: ViewContainerRef,
         private store: Store<HydroServingState>,
+        private svgSprite: SvgSpriteService
     ) {
         this.dialogOutletService.setDefaultViewContainerRef(this.viewConatinerRef);
     }
 
     ngOnInit() {
+        this.svgSprite.loadSvgSprite();
+
         this.store.dispatch(new GetModelsAction);
         this.store.dispatch(new GetApplicationsAction);
         this.store.dispatch({ type: Actions.GET_RUNTIMES });

@@ -22,7 +22,8 @@ import {
     SignaturesService,
     RuntimesService,
     SourcesService,
-    InfluxDBService
+    InfluxDBService,
+    SvgSpriteService
 } from '@core/services';
 
 // Effects
@@ -119,6 +120,7 @@ import { SharedModule } from '@shared/shared.module';
             deps: [XHRBackend, RequestOptions, LoaderStateService]
         },
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
+        SvgSpriteService
     ]
 })
 export class CoreModule { }
