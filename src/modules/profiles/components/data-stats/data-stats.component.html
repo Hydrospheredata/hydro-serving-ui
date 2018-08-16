@@ -1,0 +1,139 @@
+<div *ngIf="!profile" class="no-data">
+    No data available
+</div>
+<div *ngIf="profile" class="stats-container">
+    <h5 class="stats-header">Common statistics</h5>
+    <ol class="content-info__sublist">
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Count</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.commonStatistics.count }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Distinct&nbsp;count</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.commonStatistics.distinctCount }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Unique&nbsp;(%)</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.commonStatistics.uniquePerc }}%</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Missing</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.commonStatistics.missing }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Missing&nbsp;(%)</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.commonStatistics.missingPerc }}%</div>
+          </span>
+      </li>
+  </ol>
+  <div class="hr"></div>
+  <h5 class="stats-header">Quantile statistics</h5>
+  <ol class="content-info__sublist">
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Min</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.quantileStatistics.min.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">5th&nbsp;percentile</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.quantileStatistics.percentile5.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Q1</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.quantileStatistics.q1.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Median</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.quantileStatistics.median.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Q3</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.quantileStatistics.q3.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">95th&nbsp;percentile</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.quantileStatistics.percentile95.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Range</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.quantileStatistics.range.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Interquartile&nbsp;range</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.quantileStatistics.interquartileRange.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Max</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.quantileStatistics.max.toFixed(3) }}</div>
+          </span>
+      </li>
+  </ol>
+  <div class="hr"></div>
+  <h5 class="stats-header">Descriptive statistics</h5>
+  <ol class="content-info__sublist">
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Standard&nbsp;deviation</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.descriptiveStatistics.standardDeviation.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Coefficient&nbsp;of&nbsp;variation</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.descriptiveStatistics.variationCoef.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Kurtosis</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.descriptiveStatistics.kurtosis.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Variance</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.descriptiveStatistics.variance.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Mean</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.descriptiveStatistics.mean.toFixed(3) }}</div>
+          </span>
+      </li>
+      <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Skewness</span>
+          <span class="content-info__sublist-item-value">
+              <div class="status">{{ profile.descriptiveStatistics.skewness.toFixed(3) }}</div>
+          </span>
+      </li>
+  </ol>
+  <div class="hr"></div>
+  <h5 class="stats-header">Histogram</h5>
+  <div #chartContainer></div>
+</div>
