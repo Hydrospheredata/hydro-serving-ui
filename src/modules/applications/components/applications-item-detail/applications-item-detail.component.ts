@@ -20,13 +20,12 @@ import {
     DialogDeleteServiceComponent,
     DialogTestComponent,
     injectableServiceUpdate,
-    DialogConfirmationComponent
+    DialogUpdateModelVersionComponent, 
+    CHANGE_IDS
 } from '@components/dialogs/_index';
 import { Observable } from 'rxjs/Observable';
 import { InfluxDBService } from '@core/services';
 // import { UpdateApplicationAction } from '@applications/actions';
-
-
 
 @Component({
     selector: 'hydro-applications-item-detail',
@@ -89,37 +88,25 @@ export class ApplicationsItemDetailComponent {
         clearInterval(this.intervalId);
     }
 
-    public checkNewVersion(modelVersionData, stageId) {
-        let application: Application;
-        this.application$.take(1).subscribe(app => {
-            application = app;
-        });
-
+    public checkNewVersion(modelVersionData) {
         const {modelName, modelVersion} = modelVersionData;
 
         if (this.models) {
             const modell = this.models.find(model => model.name === modelName);
-            let aaa = application.executionGraph.stages[stageId].services.find(service => {
-                return service.modelVersion.modelVersion === modell.lastModelBuild.version
-            });
-
-            if (modell.lastModelBuild.version > modelVersion && !aaa) {
-                return true;
-            }
-
-            return false;
+            return modell.lastModelBuild.version > modelVersion;
         }
     }
 
-    public confirmationDialog() {
+    public updateModelVersionDialog(stageId, serviceId) {
         this.dialog.showCustomDialog({
-            component: DialogConfirmationComponent,
+            component: DialogUpdateModelVersionComponent,
             styles: { 'width': '600px', 'min-height': '250px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
+            providers: [{provide: CHANGE_IDS , useValue: [stageId, serviceId]}]
         });
     }
 
