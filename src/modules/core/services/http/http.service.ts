@@ -36,9 +36,11 @@ export class HttpService extends Http {
         this.requestCount = 0;
     }
 
-    get(url: string, options?: RequestOptionsArgs): Observable<any> {
-
-        this.showLoader();
+    get(url: string, options?: RequestOptionsArgs, showLoader: boolean = true): Observable<any> {
+        
+        if (showLoader) {
+            this.showLoader();
+        }
 
         return super.get(this.getFullUrl(url), this.requestOptions(options))
             .catch(this.onCatch)

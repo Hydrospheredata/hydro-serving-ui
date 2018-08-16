@@ -44,7 +44,7 @@
                                 <svg class="icon">
                                     <use xlink:href="#icon-arrow" />
                                 </svg>
-                                <span class="icon-label">{{ item.status === 'FINISHED' ? 'Released' : 'Started' }}</span>
+                                <span class="icon-label">{{ item.status === 'Finished' ? 'Released' : 'Started' }}</span>
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
@@ -55,7 +55,7 @@
                             <span *ngIf="item.modelVersion.applications.length === 0">-</span>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <button class="btn btn-flat" [routerLink]="[item.version]" *ngIf="item.status === 'FINISHED'">
+                            <button class="btn btn-flat" [routerLink]="[item.version]" *ngIf="item.status === 'Finished'">
                                 <svg class="icon">
                                     <use xlink:href="#icon-arrow-right" />
                                 </svg>

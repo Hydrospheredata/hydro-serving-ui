@@ -70,7 +70,7 @@ export const getSelectedModelId = createSelector(
 export const getSelectedBuild = createSelector(
     getAllModelBuilds,
     fromRoot.getRouterState,
-    (builds, router) => router.state && builds.find(build => build.version === Number(router.state.params.modelVersionId))
+    (builds, router) => {console.log("__", router.state, builds); return router.state && builds.find(build => build.version === Number(router.state.params.modelVersionId))}
 )
 
 export const getAllModelBuildsReversed = createSelector(

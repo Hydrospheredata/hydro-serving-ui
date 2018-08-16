@@ -9,5 +9,6 @@ export const environment = {
     port: '8080',
     apiUrl: '/api/v1',
     uiUrl: '/ui/v1',
-    monitoringUrl: '/monitoring'
+    monitoringUrl: '/monitoring',
+    profilerUrl: '/profiler'
 };

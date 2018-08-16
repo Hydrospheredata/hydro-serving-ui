@@ -5,5 +5,6 @@ export const environment = {
     apiUrl: '/api/v1',
     uiUrl: '/ui/v1',
 
-    monitoringUrl: '/monitoring'
+    monitoringUrl: '/monitoring',
+    profilerUrl: '/profiler'
 };

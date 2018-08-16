@@ -27,6 +27,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     public build$: Observable<ModelBuild>;
 
     private modelId: number;
+    private modelVersionId: number;
     private activatedRouteSub: Subscription;
     private modelsBuildsSub: Subscription;
     private modelsStoreSelectionSub: Subscription;
@@ -43,8 +44,8 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
         this.activatedRouteSub = this.activatedRoute.params
             .map(params => {
                 this.modelId = Number(params['modelId']);
-                const modelVersionId = Number(params['modelVersionId']);
-                return modelVersionId;
+                this.modelVersionId = Number(params['modelVersionId']);
+                return this.modelVersionId;
             })
             .subscribe(modelVersionId => {
                 if (this.modelsStoreSelectionSub) {
