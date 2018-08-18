@@ -3,9 +3,7 @@
         <div class="content-header__title">{{ (model$ | async)?.name }}</div>
         <div class="btn-group">
             <button class="btn" (click)="removeModel()">
-                <svg>
-                    <use xlink:href="#icon-remove"></use>
-                </svg>
+                <hydro-icon [type]="'icon-remove'"></hydro-icon>
                 remove
             </button>
         </div>
@@ -41,9 +39,7 @@
                                 '__started': item.status === 'STARTED',
                                 '__failed': item.status === 'ERROR'
                                 }">
-                                <svg class="icon">
-                                    <use xlink:href="#icon-arrow" />
-                                </svg>
+                                <hydro-icon [type]="'icon-arrow'" class="icon"></hydro-icon>
                                 <span class="icon-label">{{ item.status === 'Finished' ? 'Released' : 'Started' }}</span>
                             </div>
                         </td>
@@ -56,9 +52,7 @@
                         </td>
                         <td class="hydro-table-body__cell">
                             <button class="btn btn-flat" [routerLink]="[item.version]" *ngIf="item.status === 'Finished'">
-                                <svg class="icon">
-                                    <use xlink:href="#icon-arrow-right" />
-                                </svg>
+                                    <hydro-icon [type]="'icon-arrow-right'" class='model-item__detail-icon'></hydro-icon>
                             </button>
                         </td>
                     </tr>

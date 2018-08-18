@@ -121,24 +121,28 @@
     background: none;
   }
   }
+  &__deploy-icon {
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+  }
+  &__pipeline-icon {
+    width: 18px;
+    height: 20px;
+    color: #d4d7d9;
+  }
 }
 
-.icon-pipeline {
-  width: 18px;
-  height: 20px;
-  fill: #d4d7d9;
-}
-
-.deployed use {
-  fill: $color--success !important;
+.deployed {
+  color: $color--success;
 }
 
 .undeployed {
-  fill: #e1e4eb;
+  color: #e1e4eb;
 }
 
 .undeployed-filter {
-  fill: #d2d5d9;
+  color: #d2d5d9;
 }
 
 .version-failed {

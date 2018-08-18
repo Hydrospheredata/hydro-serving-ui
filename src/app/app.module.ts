@@ -18,8 +18,6 @@ import { ProfilesModule } from '@profiles/profiles.module';
 // Dialogs
 import * as Dialog from '@components/dialogs/_index';
 
-
-
 @NgModule({
     declarations: [
         AppComponent,

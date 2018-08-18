@@ -22,7 +22,8 @@ import {
     SignaturesService,
     RuntimesService,
     SourcesService,
-    InfluxDBService
+    InfluxDBService,
+    SvgSpriteService
 } from '@core/services';
 
 // Effects
@@ -50,6 +51,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import { SharedModule } from '@shared/shared.module';
 
 
 @NgModule({
@@ -60,6 +62,7 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
         MdlSelectModule,
         CodemirrorModule,
         HttpModule,
+        SharedModule,
         StoreModule.forRoot(reducers,
             {
                 initialState: {
@@ -117,6 +120,7 @@ import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router
             deps: [XHRBackend, RequestOptions, LoaderStateService]
         },
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
+        SvgSpriteService
     ]
 })
 export class CoreModule { }

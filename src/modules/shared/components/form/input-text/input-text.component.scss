@@ -13,7 +13,7 @@
       height: 30px;
       border-width: 1px;
     }
-    mdl-icon.input-icon {
+    hydro-icon.input-icon {
       top: 20%;
       font-size: 20px;
     }
@@ -43,7 +43,7 @@
     width: 100% !important;
   }
 
-  mdl-icon.input-text__icon {
+  hydro-icon.input-text__icon {
     flex-direction: column;
     display: flex;
     position: static;
@@ -115,7 +115,9 @@ input.form-control {
   }
 }
 
-mdl-icon.input-icon {
+hydro-icon.input-icon {
+  width: 24px;
+  height: 24px;
   &.right {
     right: 1rem;
     position: absolute;

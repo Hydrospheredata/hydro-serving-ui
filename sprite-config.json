@@ -1,0 +1,13 @@
+{
+    "dest": "src/assets/images",
+    "shape": {
+        "transform": []
+    },
+    "mode": {
+        "symbol": {
+            "dest": "sprites",
+            "inline": true,
+            "sprite": "hydro-sprite.svg"
+        }
+    }
+}

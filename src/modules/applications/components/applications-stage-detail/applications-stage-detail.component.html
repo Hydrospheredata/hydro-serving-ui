@@ -2,9 +2,7 @@
     <div class="content-header">
         <div>
             <button class="btn btn-flat" [routerLink]="['../']" style="padding: 0;margin: 12px 0;">
-                <svg>
-                    <use xlink:href="#icon-arrow-left" />
-                </svg>
+                <hydro-icon [type]="'icon-arrow-left'"></hydro-icon>
                 back to application
             </button>
 
@@ -16,9 +14,7 @@
                 <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms">{{ param.text }}</mdl-option>
             </mdl-select>
             <button class="btn" (click)="addMetric($event)" title="Add new app">
-                <svg>
-                    <use xlink:href="#icon-plus"></use>
-                </svg>
+                <hydro-icon [type]="'icon-plus'"></hydro-icon>
                 add metric
             </button>
         </div>

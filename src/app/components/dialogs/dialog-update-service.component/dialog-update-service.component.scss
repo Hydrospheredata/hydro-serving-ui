@@ -26,14 +26,6 @@
                     left: -35px;
                     margin-top: -17px;
                 }
-                .__delete {
-                    cursor: pointer;
-                    width: 14px;
-                    height: 14px;
-                    fill: #969da6;
-                    margin: 0 12px;
-                    margin-top: -14px;
-                }
                 &-fields {
                     flex: 1;
                     display: flex;
@@ -48,21 +40,27 @@
                         flex: 0 0 100%;
                     }
                 }
-                &--add {
-                color: #4d9bf1;
-                outline: none;
-                cursor: pointer;
-                > svg {
-                    fill: #4d9bf1;
-                    width: 10px;
-                    height: 10px; 
-                }
-                > span {
-                    border-bottom: 1px dashed #4d9bf1;
-                    line-height: 1;
-                }
-                }
             }
+        }
+        &__add {
+            color: $color--light-blue;
+            cursor: pointer;
+            &-label {
+                border-bottom: 1px dashed $color--light-blue;
+                line-height: 1;
+            }
+            &-icon {
+                width: 10px;
+                height: 10px;
+            }
+        }
+        &__delete-icon {
+            cursor: pointer;
+            width: 14px;
+            height: 14px;
+            fill: #969da6;
+            margin: 0 12px;
+            margin-top: -24px;
         }
     }
     &-actions {
@@ -92,16 +90,16 @@
                 font-family: $font-family-bold;
                 margin-bottom: 36px;
             }
-            .__delete {
-                cursor: pointer;
-                width: 14px;
-                height: 14px;
-                fill: #969da6;
-                position: absolute;
-                top: 4px;
-                right: 0;
-            }
         }
+    }
+    &__delete-icon {
+        cursor: pointer;
+        width: 14px;
+        height: 14px;
+        color: #969da6;
+        position: absolute;
+        top: 4px;
+        right: 0;
     }
 }
 
@@ -133,9 +131,6 @@
                 &::before {
                     color: #e6e9ed;
                 }
-            }
-            .__delete {
-                top: 8px;
             }
             &--model {
                 margin-bottom: 14px;
@@ -192,6 +187,15 @@
                 }
             }
         }
+    }
+    &__delete-icon {
+        cursor: pointer;
+        width: 14px;
+        height: 14px;
+        color: #969da6;
+        position: absolute;
+        top: 8px;
+        right: 0;
     }
 }
 

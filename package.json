@@ -12,12 +12,13 @@
   "scripts": {
     "size": "size-limit",
     "ng": "ng",
-    "start": "ng serve -ec -sm",
-    "build": "ng build",
+    "start": "npm run sprites && ng serve -ec -sm",
+    "build": "npm run sprites && ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-prod": "ng build --aot=false --prod"
+    "build-prod": "npm run sprites && ng build --aot=false --prod",
+    "sprites": "svg-sprite --config sprite-config.json src/assets/images/*.svg"
   },
   "private": true,
   "dependencies": {
@@ -76,6 +77,7 @@
     "protractor": "~5.1.2",
     "size-limit": "^0.11.4",
     "svg-inline-loader": "^0.8.0",
+    "svg-sprite": "^1.4.0",
     "ts-node": "^3.2.2",
     "tslint": "^5.10.0",
     "typescript": "^2.6.2",
