@@ -2,10 +2,10 @@ server {
   listen 9091 default_server;
 
   client_max_body_size 1G;
-  location / {
-    root /var/www/html/;
-    index index.html;
-  }
+  root   /usr/share/nginx/html;
+  index  index.html index.htm;
+  include /etc/nginx/mime.types;
+
   error_page 404 =200 /index.html;
 
   location /health {
@@ -13,7 +13,7 @@ server {
   }
 
   location /v1/measure {
-    proxy_pass http://SONAR_HOST;
+    proxy_pass http://${SONAR_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
@@ -21,7 +21,7 @@ server {
   }
 
   location /metrics {
-    proxy_pass http://ELASTIC_HOST;
+    proxy_pass http://${ELASTIC_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
@@ -29,7 +29,7 @@ server {
   }
 
   location /query {
-    proxy_pass http://INFLUX_HOST;
+    proxy_pass http://${INFLUX_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
@@ -41,7 +41,7 @@ server {
   }
 
   location /manager {
-    proxy_pass http://MANAGER_HOST;
+    proxy_pass http://${MANAGER_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
@@ -49,7 +49,7 @@ server {
   }
 
   location /v1/prometheus {
-    proxy_pass http://MANAGER_HOST;
+    proxy_pass http://${MANAGER_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
@@ -57,7 +57,7 @@ server {
   }
 
   location /api/v1 {
-    proxy_pass http://MANAGER_HOST;
+    proxy_pass http://${MANAGER_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
@@ -65,7 +65,7 @@ server {
   }
 
   location /ui/v1 {
-    proxy_pass http://MANAGER_HOST;
+    proxy_pass http://${MANAGER_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
@@ -73,7 +73,7 @@ server {
   }
 
   location /api-docs {
-    proxy_pass http://MANAGER_HOST;
+    proxy_pass http://${MANAGER_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
@@ -81,7 +81,7 @@ server {
   }
 
   location /swagger {
-    proxy_pass http://MANAGER_HOST;
+    proxy_pass http://${MANAGER_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;

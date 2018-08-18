@@ -39,7 +39,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnInit() {
-        this.build$.take(1).subscribe(build => {
+        this.build$.filter(_ => _ != null).subscribe(build => {
             this.store.dispatch(new GetModelBuildSignaturesAction(build.id));
         });
         console.log("init signatures");

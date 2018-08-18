@@ -17,6 +17,7 @@ import { ModelEffects } from '@models/effects';
 import { ModelsService, ModelDetailsGuard } from '@models/services';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from '@models/reducers';
+import { ProfilesModule } from '@profiles/profiles.module';
 
 
 
@@ -30,7 +31,8 @@ import { reducers } from '@models/reducers';
         MdlSelectModule,
         FormsModule,
         StoreModule.forFeature('models', reducers),
-        EffectsModule.forFeature([ModelEffects])
+        EffectsModule.forFeature([ModelEffects]),
+        ProfilesModule
     ],
     declarations: [
         ModelsWrapperComponent,

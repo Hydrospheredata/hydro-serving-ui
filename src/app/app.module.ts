@@ -13,6 +13,7 @@ import { CoreModule } from '@core/core.module';
 import { SharedModule } from '@shared/shared.module';
 import { ModelsModule } from '@models/models.module';
 import { ApplicationsModule } from '@applications/applications.module';
+import { ProfilesModule } from '@profiles/profiles.module';
 
 // Dialogs
 import * as Dialog from '@components/dialogs/_index';
@@ -40,7 +41,8 @@ import * as Dialog from '@components/dialogs/_index';
         FormsModule,
         ReactiveFormsModule,
         MomentModule,
-        SharedModule
+        SharedModule,
+        ProfilesModule,
     ],
     entryComponents: [
         Dialog.DialogModelBuildComponent,

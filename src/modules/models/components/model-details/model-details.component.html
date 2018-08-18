@@ -40,7 +40,7 @@
                                 '__failed': item.status === 'ERROR'
                                 }">
                                 <hydro-icon [type]="'icon-arrow'" class="icon"></hydro-icon>
-                                <span class="icon-label">{{ item.status === 'FINISHED' ? 'Released' : 'Started' }}</span>
+                                <span class="icon-label">{{ item.status === 'Finished' ? 'Released' : 'Started' }}</span>
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
@@ -51,7 +51,7 @@
                             <span *ngIf="item.modelVersion.applications.length === 0">-</span>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <button class="btn btn-flat" [routerLink]="[item.version]" *ngIf="true">
+                            <button class="btn btn-flat" [routerLink]="[item.version]" *ngIf="item.status === 'Finished'">
                                     <hydro-icon [type]="'icon-arrow-right'" class='model-item__detail-icon'></hydro-icon>
                             </button>
                         </td>

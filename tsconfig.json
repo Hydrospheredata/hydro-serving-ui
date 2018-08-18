@@ -35,6 +35,9 @@
       ],
       "@shared/*": [
         "modules/shared/*"
+      ],
+      "@profiles/*": [
+        "modules/profiles/*"
       ]
     },
     "typeRoots": [

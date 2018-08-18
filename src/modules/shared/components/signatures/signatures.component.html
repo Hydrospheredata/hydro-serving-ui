@@ -8,7 +8,7 @@
             Edit
         </button>
     </div>
-    <ul class="signature-list" formArrayName="signatures">
+    <ul class="signature-list" formArrayName="signatures" *ngIf="signaturesForm">
         <li *ngIf="signaturesForm['controls'].signatures['controls'].length === 0">No signatures</li>
         <li class="signature-list__item" *ngFor="let signature of signaturesForm['controls'].signatures['controls']; let i = index;"
             [formGroupName]="i">
