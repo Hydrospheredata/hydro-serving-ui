@@ -28,7 +28,7 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogAddServiceComponent,
         Dialog.DialogAddMetricComponent,
         Dialog.DialogDeleteMetricComponent,
-        Dialog.DialogConfirmationComponent,
+        Dialog.DialogUpdateModelVersionComponent,
         Dialog.DialogDeleteModelComponent
     ],
     imports: [
@@ -52,7 +52,7 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogAddServiceComponent,
         Dialog.DialogAddMetricComponent,
         Dialog.DialogDeleteMetricComponent,
-        Dialog.DialogConfirmationComponent,
+        Dialog.DialogUpdateModelVersionComponent,
         Dialog.DialogDeleteModelComponent
     ],
     bootstrap: [AppComponent]
