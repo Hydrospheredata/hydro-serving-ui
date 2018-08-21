@@ -33,7 +33,10 @@ import {
     IconComponent
 } from './components/_index';
 
-
+//Directives
+import {
+    ModelStatusDirective
+} from './directives/_index';
 
 @NgModule({
     imports: [
@@ -65,7 +68,9 @@ import {
         SidebarComponent,
         ListInfoComponent,
         SignaturesComponent,
-        IconComponent
+        IconComponent,
+        // Directives
+        ModelStatusDirective
     ],
     exports: [
         // Pipes
@@ -85,7 +90,9 @@ import {
         SidebarComponent,
         ListInfoComponent,
         SignaturesComponent,
-        IconComponent
+        IconComponent,
+        //Directives
+        ModelStatusDirective
     ]
 })
 export class SharedModule { }

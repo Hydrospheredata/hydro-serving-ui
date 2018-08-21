@@ -55,8 +55,8 @@
 }
 
 .icon {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     margin-top: -2px;
     &-label {
         margin-left: 5px;
@@ -147,6 +147,20 @@
     }
     &__detail-icon {
       padding-top: -2px;
+    }
+  }
+  &-build-status {
+    &--pending {
+      color: $color--pending;
+    }
+    &--finished {
+      color: $color--success;
+    }
+    &--started {
+      color: $color--light-blue; 
+    }
+    &--error {
+      color: $color--failed;
     }
   }
 }
