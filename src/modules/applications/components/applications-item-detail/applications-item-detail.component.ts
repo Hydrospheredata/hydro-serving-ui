@@ -106,7 +106,7 @@ export class ApplicationsItemDetailComponent {
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{provide: CHANGE_IDS , useValue: [stageId, serviceId]}]
+            providers: [{provide: CHANGE_IDS , useValue: {stageId, serviceId}}]
         });
     }
 

@@ -13,7 +13,7 @@ import * as hocon from 'hocon-parser';
 
 import { UpdateApplicationAction } from '@applications/actions';
 
-export const CHANGE_IDS = new InjectionToken<number[]>('stage and serv ids');
+export const CHANGE_IDS = new InjectionToken<object>('stage and serv ids');
 
 @Component({
     selector: 'hydro-dialog-update-model-version',
@@ -21,7 +21,6 @@ export const CHANGE_IDS = new InjectionToken<number[]>('stage and serv ids');
     styleUrls: ['./dialog-update-model-version.component.scss']
 })
 export class DialogUpdateModelVersionComponent extends DialogBase {
-
     public application$: Observable<Application>;
     public models: Model[];
 
@@ -47,7 +46,7 @@ export class DialogUpdateModelVersionComponent extends DialogBase {
         let serviceInfo = {};
         const stages = [];
 
-        let [stageId, serviceId] = this.changeIds;
+        let {stageId, serviceId} = this.changeIds;
 
         this.application$.take(1).subscribe(application => {
             const _ = application;
