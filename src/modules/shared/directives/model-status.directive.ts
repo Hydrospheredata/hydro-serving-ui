@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit, ContentChild, ElementRef,  } from '@angular/core';
+import { Directive, Input, OnInit, ContentChild, ElementRef } from '@angular/core';
 import { IconComponent } from '@shared/_index';
  @Directive({
     selector: '[modelStatus]'
@@ -11,8 +11,13 @@ export class ModelStatusDirective implements OnInit{
     ngOnInit(){
         this.status = this.status.toLowerCase();
 
-        this.statusIcon.type = this.getIconType(this.status);
-        this.statusText.nativeElement.textContent = this.getStatusText(this.status);
+        if(this.statusIcon){
+            this.statusIcon.type = this.getIconType(this.status);
+        };
+
+        if(this.statusText){
+            this.statusText.nativeElement.textContent = this.getStatusText(this.status);
+        }
     }
 
     private getIconType(status: string): string {
