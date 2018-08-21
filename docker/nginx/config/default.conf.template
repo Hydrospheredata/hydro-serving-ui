@@ -12,22 +12,6 @@ server {
       return 200 'no content';
   }
 
-  location /v1/measure {
-    proxy_pass http://${SONAR_HOST};
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_http_version 1.1;
-  }
-
-  location /metrics {
-    proxy_pass http://${ELASTIC_HOST};
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_http_version 1.1;
-  }
-
   location /query {
     proxy_pass http://${INFLUX_HOST};
     proxy_set_header X-Real-IP $remote_addr;
@@ -42,6 +26,22 @@ server {
 
   location /manager {
     proxy_pass http://${MANAGER_HOST};
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
+  
+  location /monitoring {
+    proxy_pass http://${MANAGER_HOST};
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
+  
+  location /influx {
+    proxy_pass http://${INFLUX_HOST};
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
