@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { DialogUpdateModelVersionComponent } from './dialog-confirmation.component';
+import { DialogUpdateModelVersionComponent } from './dialog-update-model-version.component';
 
 describe('DialogUpdateModelVersionComponent', () => {
     let component: DialogUpdateModelVersionComponent;

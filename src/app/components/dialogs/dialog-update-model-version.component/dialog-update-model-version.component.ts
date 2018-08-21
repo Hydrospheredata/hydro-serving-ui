@@ -16,9 +16,9 @@ import { UpdateApplicationAction } from '@applications/actions';
 export const CHANGE_IDS = new InjectionToken<number[]>('stage and serv ids');
 
 @Component({
-    selector: 'hydro-dialog-confirmation',
-    templateUrl: './dialog-confirmation.component.html',
-    styleUrls: ['./dialog-confirmation.component.scss']
+    selector: 'hydro-dialog-update-model-version',
+    templateUrl: './dialog-update-model-version.component.html',
+    styleUrls: ['./dialog-update-model-version.component.scss']
 })
 export class DialogUpdateModelVersionComponent extends DialogBase {
 

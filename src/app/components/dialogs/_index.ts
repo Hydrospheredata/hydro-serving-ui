@@ -8,6 +8,6 @@ export * from './dialog-test.component/dialog-test.component';
 export * from './dialog-add-metric.component/dialog-add-metric.component';
 export * from './dialog-delete-metric/dialog-delete-metric.component';
 
-export * from './dialog-confirmation.component/dialog-confirmation.component';
+export * from './dialog-update-model-version.component/dialog-update-model-version.component';
 
 export * from './dialog-delete-model.component/dialog-delete-model.component';

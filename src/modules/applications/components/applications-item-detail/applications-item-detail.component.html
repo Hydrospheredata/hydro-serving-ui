@@ -52,12 +52,15 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of stage.services; let j = index;" class='hydro-table-body__row'>
-                    <td class="hydro-table-body__cell" [ngClass]="{'isNewVersionAvailable': checkNewVersion(item.modelVersion)}">
+                    <td class="hydro-table-body__cell">
                         <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
                             {{ item.modelVersion.modelName + ':v' + item.modelVersion.modelVersion }}
-                            <svg class="icon newVersionButton" (click)="updateModelVersionDialog(i, j)">
-                                <use xlink:href="#icon-warning" />
-                            </svg>
+                            <hydro-icon [type]="'icon-warning'"
+                                        [title]="'Model has new version'"
+                                        class="icon new-version-icon"
+                                        [ngClass]="{'new-version-icon--available': checkNewVersion(item.modelVersion)}"
+                                        (click)="updateModelVersionDialog(i, j)">
+                            </hydro-icon>
                         </div>
                     </td>
                     <td class="hydro-table-body__cell">
