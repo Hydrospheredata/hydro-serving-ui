@@ -30,7 +30,8 @@ import {
     SidebarComponent,
     ListInfoComponent,
     SignaturesComponent,
-    IconComponent
+    IconComponent,
+    FilterComponent
 } from './components/_index';
 
 
@@ -65,7 +66,8 @@ import {
         SidebarComponent,
         ListInfoComponent,
         SignaturesComponent,
-        IconComponent
+        IconComponent,
+        FilterComponent
     ],
     exports: [
         // Pipes

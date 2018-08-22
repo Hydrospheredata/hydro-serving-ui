@@ -17,15 +17,14 @@ import { DialogAddServiceComponent } from '@components/dialogs/_index';
     providers: [SortByPipe]
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-
-    public sidebarList: Application[] | Model[] | Source[] = [];
-    public searchQ: string;
-    public sidebarFilter = { 'deployed': true, 'undeployed': true, 'apps': true, 'pipelines': true };
     @Input() isActionBtnEnabled = false;
     @Input() isFilterEnabled = false;
     @Input() isModels: boolean;
     @Input() sidebarTitle: string;
     @Input() sidebarData: Observable<Application[] | Model[] | Source[]>;
+
+    public sidebarList: Application[] | Model[] | Source[] = [];
+    public sidebarFiltredList: Application[] | Model[] | Source[] = [];
 
     private isRedirectable = false;
     private routeSub: Subscription;
@@ -50,7 +49,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         this.sidebarDataSub = this.sidebarData
             .subscribe(items => {
                 console.log('Sidebar data: ', items);
-                this.sidebarList = this.sortBy.transform(items, 'id');
+                this.sidebarList = this.sidebarFiltredList = this.sortBy.transform(items, 'id');
                 if (this.sidebarList.length > 0) {
                     this.redirectToFirst();
                 }
@@ -78,10 +77,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
         });
     }
 
-    public toggleSidebarFilter(option) {
-        this.sidebarFilter[option] = !this.sidebarFilter[option];
-    }
-
     private redirectToFirst() {
         if (this.isRedirectable && this.sidebarList.length > 0) {
             this.isRedirectable = false;
@@ -89,4 +84,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
     }
 
+    onFilter(filtredItems: Application[] | Model[]): void {
+        this.sidebarFiltredList = filtredItems;
+    }
 }
