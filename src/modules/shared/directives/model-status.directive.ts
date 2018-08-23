@@ -22,6 +22,7 @@ export class ModelStatusDirective implements OnInit{
 
     private getIconType(status: string): string {
         let iconType: string;
+
         switch(status){
             case 'started':
                 iconType = 'icon-arrow';
@@ -35,6 +36,7 @@ export class ModelStatusDirective implements OnInit{
             default:
                 iconType = 'icon-pending';
         }
+        
         return iconType;
     }
 
