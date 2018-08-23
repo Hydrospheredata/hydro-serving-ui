@@ -151,3 +151,14 @@
 .content-info__sublist {
     margin-bottom: 24px;
 }
+
+.application {
+    &::after {
+        display: inline;
+        content: ', ';
+        white-space: pre;
+    }
+    &--isLast::after{
+        display: none;
+    }
+}

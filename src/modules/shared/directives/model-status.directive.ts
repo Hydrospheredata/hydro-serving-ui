@@ -21,25 +21,40 @@ export class ModelStatusDirective implements OnInit{
     }
 
     private getIconType(status: string): string {
-        let iconType: string = '';
+        let iconType: string;
         switch(status){
-            case 'pending':
-                iconType = 'icon-pending';
+            case 'started':
+                iconType = 'icon-arrow';
                 break;
             case 'finished':
                 iconType = 'icon-done';
                 break;
-            case 'started':
-                iconType = 'icon-arrow';
-                break;
             case 'error':
                 iconType = 'icon-error-outline';
                 break;
+            default:
+                iconType = 'icon-pending';
         }
         return iconType;
     }
 
-    private getStatusText(status: string){
-       return status === 'finished' ? 'Released' : 'Started'
+    private getStatusText(status: string): string {
+        let textStatus: string;
+        
+        switch(status){
+            case 'started':
+                textStatus = 'Started';
+                break;
+            case 'finished':
+                textStatus = 'Released';
+                break;
+            case 'error':
+                textStatus = 'Error';
+                break;
+            default:
+                textStatus = 'Pending';
+        }
+
+       return textStatus;
     }
 } 
