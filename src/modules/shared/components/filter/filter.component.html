@@ -3,7 +3,7 @@
         class="sidebar-search" 
         inputClass="sidebar-search" 
         placeholder="Search" 
-        [(ngModel)]="searchStr" 
+        [formControl] = "filterControl"
         iconName="icon-search"
         iconDirection="left"></hydro-input-text>
 </div>

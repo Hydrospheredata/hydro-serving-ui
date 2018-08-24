@@ -8,7 +8,7 @@
             </button>
         </div>
         <div class="sidebar-header__row" *ngIf="isFilterEnabled">
-            <hydro-filter class='sidebar__filter' [data]="sidebarList" (filter)="onFilter($event)"></hydro-filter>
+            <hydro-filter class='sidebar__filter' [data]="sidebarList" (filterEvent)="onFilter($event)"></hydro-filter>
         </div>
 
         <!-- <div class="sidebar-filter"  *ngIf="isFilterEnabled">
