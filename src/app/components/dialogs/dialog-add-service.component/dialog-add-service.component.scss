@@ -1,7 +1,18 @@
 @import "variables.scss";
 
+
+.title {
+    font-size: 36px;
+    margin-bottom: 36px;
+}
+
+.application-name {
+    height: 72px;
+}
+
 .form {
     &-kafkaSources {
+        margin-bottom: 36px;
         &__list {
             list-style: none;
             margin: 0;
@@ -76,17 +87,17 @@
 
 .stages {
     &-list {
-        margin-bottom: 50px;
+        margin-bottom: 60px;
         &__item {
             position: relative;
             &:not(:last-child) {
-                margin-bottom: 50px;
+                margin-bottom: 60px;
             }
             &--title {
                 color: #04143c;
                 font-size: 18px;
+                margin-bottom: 28px;
                 font-family: $font-family-bold;
-                margin-bottom: 36px;
             }
         }
     }
@@ -106,15 +117,16 @@
         counter-reset: counter;
         margin: 0;
         padding: 0;
+        width: calc(100% - 20px);
         &__item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 24px;
             position: relative;
             flex-direction: column;
             align-items: flex-start;
-            padding: 0 25px;
+            padding: 0 24px;
             &:before {
                 content: counter(counter)".";
                 counter-increment: counter;
@@ -126,13 +138,13 @@
                 top: 4px;
             }
             &--model {
-                margin-bottom: 14px;
+                margin-bottom: 10px;
             }
             &--row {
                 width: 100%;
                 display: flex;
                 flex-wrap: wrap;
-                align-items: center;
+                align-items: flex-end;
                 position: relative;
                 padding-left: 40px;
                 &:before {
@@ -198,7 +210,7 @@
         text-transform: uppercase;
         font-size: 10px;
         line-height: 1;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
     }
     > input {
         height: 32px;
@@ -210,12 +222,12 @@
 
 .fieldset {
     border: 2px solid #e6e9ed;
-    padding: 24px 28px 36px;
+    padding: 32px 32px 32px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 50px;
+    margin-bottom: 36px;
     &-legend {
         display: flex !important;
         flex-direction: row;
