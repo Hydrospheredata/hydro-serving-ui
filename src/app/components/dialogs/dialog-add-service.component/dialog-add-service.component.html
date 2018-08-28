@@ -54,8 +54,8 @@
                                     [autocomplete]="true"
                                     (keydown.enter)="$event.preventDefault()">
                                     <mdl-option 
-                                        *ngFor="let modelVersion of modelVersions | matchSorter:'modelName':autocompleteSelect.searchQuery" 
-                                        [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}
+                                        *ngFor="let modelVersion of modelVersions | matchSorter:'modelFullName':autocompleteSelect.searchQuery" 
+                                        [value]="modelVersion.id">{{ modelVersion.modelFullName }}
                                     </mdl-option>
                                 </mdl-select>
 
@@ -91,8 +91,8 @@
                                     (change)="addServiceByModelVerId($event, i)"
                                     [autocomplete]="true">
                                     <mdl-option 
-                                        *ngFor="let modelVersion of modelVersions | matchSorter:'modelName':autocompleteSelect.searchQuery" 
-                                        [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}</mdl-option>
+                                        *ngFor="let modelVersion of modelVersions | matchSorter:'modelFullName':autocompleteSelect.searchQuery" 
+                                        [value]="modelVersion.id">{{ modelVersion.modelFullName }}</mdl-option>
                                 </mdl-select>
                             </li>
                         </ul>
