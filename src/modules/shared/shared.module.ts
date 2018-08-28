@@ -20,6 +20,7 @@ import {
     IterateAsArrayPipe,
     RemoveDublicatesPipe,
     ToNumberPipe,
+    MatchSorterPipe
 } from './pipes/_index';
 
 // Components
@@ -58,6 +59,7 @@ import {
         IterateAsArrayPipe,
         RemoveDublicatesPipe,
         ToNumberPipe,
+        MatchSorterPipe,
         // Components
         InputTextComponent,
         TextareaComponent,
@@ -78,6 +80,7 @@ import {
         IterateAsArrayPipe,
         RemoveDublicatesPipe,
         ToNumberPipe,
+        MatchSorterPipe,
         // Components
         InputTextComponent,
         TextareaComponent,

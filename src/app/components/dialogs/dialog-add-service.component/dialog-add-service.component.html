@@ -46,13 +46,15 @@
                         <ul class="parameters-list" formArrayName="services">
                             <li class="parameters-list__item" *ngFor="let service of stage['controls'].services['controls']; let j = index" [formGroupName]="j">
                                 <mdl-select 
+                                    #autocompleteSelect
                                     class="parameters-list__item--model" 
                                     formControlName="modelVersion" 
                                     label="Choose model versions" 
                                     (change)="onModelVersionSelect($event, i, j)"
-                                    [autocomplete]="true">
+                                    [autocomplete]="true"
+                                    (keydown.enter)="$event.preventDefault()">
                                     <mdl-option 
-                                        *ngFor="let modelVersion of modelVersions" 
+                                        *ngFor="let modelVersion of modelVersions | matchSorter:'modelName':autocompleteSelect.searchQuery" 
                                         [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}
                                     </mdl-option>
                                 </mdl-select>
@@ -83,8 +85,14 @@
                             </li>
 
                             <li class="parameters-list__item">
-                                <mdl-select label="Add model versions" (change)="addServiceByModelVerId($event, i)">
-                                    <mdl-option *ngFor="let modelVersion of modelVersions" [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}</mdl-option>
+                                <mdl-select
+                                    #autocompleteSelect
+                                    label="Add model versions" 
+                                    (change)="addServiceByModelVerId($event, i)"
+                                    [autocomplete]="true">
+                                    <mdl-option 
+                                        *ngFor="let modelVersion of modelVersions | matchSorter:'modelName':autocompleteSelect.searchQuery" 
+                                        [value]="modelVersion.id">{{ modelVersion.modelName + ':v' + modelVersion.modelVersion }}</mdl-option>
                                 </mdl-select>
                             </li>
                         </ul>
@@ -107,8 +115,5 @@
             <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
             <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">Add Application</button>
         </div>
-    </div>
-    <div>
-        {{serviceForm.value | json}}
     </div>
 </form>
