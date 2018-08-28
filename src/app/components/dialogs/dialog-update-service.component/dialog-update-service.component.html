@@ -1,10 +1,10 @@
-<h2 class="mdl-dialog__title">Edit Application</h2>
+<h2 class="mdl-dialog__title title">Edit Application</h2>
 <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()">
     <div class="mdl-dialog__content">
 
-        <hydro-input-text name="applicationName" [formErrors]="formErrors.serviceName" label="Application Name" formControlName="applicationName"></hydro-input-text>
+        <hydro-input-text class='application-name' name="applicationName" [formErrors]="formErrors.serviceName" label="Application Name" formControlName="applicationName"></hydro-input-text>
 
-        <div class="hydro-form-group">
+        <div class="hydro-form-group form-kafkaSources">
             <label class="hydro-checkbox">
                 Use Kafka source
                 <input type="checkbox" [checked]="isKafkaEnabled" (change)="toggleKafkaStreaming($event)">
@@ -43,7 +43,7 @@
                     <span></span>
                 </label> -->
             </legend>
-            <div *ngIf="!isJsonModeEnabled">
+            <ng-container *ngIf="!isJsonModeEnabled">
                 <div class="stages-list" formArrayName="stages">
                     <div class="stages-list__item" *ngFor="let stage of serviceForm['controls'].stages['controls']; let i = index" [formGroupName]="i">
                         <div class="stages-list__item--title">Stage_{{ i+1 }}</div>
@@ -111,7 +111,7 @@
                     <hydro-icon [type]="'icon-plus'"></hydro-icon>
                     add new stage
                 </button>
-            </div>
+            </ng-container>
 
             <div class="hydro-form-group" *ngIf="isJsonModeEnabled">
                 <codemirror [ngModelOptions]="{standalone: true}" [(ngModel)]="pipelineEditorValue" [config]="codeMirrorOptions"></codemirror>

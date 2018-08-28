@@ -39,7 +39,7 @@
             <legend class="fieldset-legend">
                 Models
             </legend>
-            <div *ngIf="!isJsonModeEnabled">
+            <ng-container *ngIf="!isJsonModeEnabled">
                 <div class="stages-list" formArrayName="stages">
                     <div class="stages-list__item" *ngFor="let stage of serviceForm['controls'].stages['controls']; let i = index" [formGroupName]="i">
                         <div class="stages-list__item--title">Stage_{{ i+1 }}</div>
@@ -104,7 +104,7 @@
                     <hydro-icon [type]="'icon-plus'"></hydro-icon>
                     add new stage
                 </button>
-            </div>
+            </ng-container>
 
             <div class="hydro-form-group" *ngIf="isJsonModeEnabled">
                 <codemirror [ngModelOptions]="{standalone: true}" [(ngModel)]="pipelineEditorValue" [config]="codeMirrorOptions"></codemirror>
