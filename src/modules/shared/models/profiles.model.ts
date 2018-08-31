@@ -53,7 +53,7 @@ class DescriptiveStatistics {
     this.variationCoef = props["variationCoef"];
     this.kurtosis = props["kurtosis"];
     this.mean = props["mean"];
-    this.skewness = props["skewness"];
+    this.skewness = props["skewness"] === null ? 0 : props["skewness"];
     this.variance = props["variance"];
   }
 }
