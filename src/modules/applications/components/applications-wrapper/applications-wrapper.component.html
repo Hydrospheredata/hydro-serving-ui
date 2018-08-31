@@ -1,4 +1,11 @@
+<ng-template #addButton>
+    <button class="btn btn-secondary" (click)="addApplication($event)" title="Add new app">
+        <hydro-icon [type]="'icon-plus'"></hydro-icon>
+        add new
+    </button>
+</ng-template>
+
 <div class="content-wrapper">
-    <hydro-sidebar [sidebarData]="applications" [sidebarTitle]="sidebarTitle" [isActionBtnEnabled]="true" [isFilterEnabled]="true"></hydro-sidebar>
+    <hydro-sidebar [sidebarData]="applications" [sidebarTitle]="sidebarTitle" [actionButton]="addButton" [isFilterEnabled]="true"></hydro-sidebar>
     <router-outlet></router-outlet>
 </div>
