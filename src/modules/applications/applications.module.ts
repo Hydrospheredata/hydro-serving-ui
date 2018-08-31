@@ -3,16 +3,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
 import { SharedModule } from '@shared/shared.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { ChartsModule } from 'ng2-charts';
 
-import { ApplicationsRoutingModule } from './applications.router';
+import { CodemirrorModule } from 'ng2-codemirror' 
+import { ApplicationsRoutingModule } from '@applications/applications.router';
 import { reducers } from '@applications/reducers';
 import { ApplicationsEffects } from '@applications/effects/_index';
-import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent, ApplicationsStageDetailComponent } from '@applications/components';
+import { 
+    ApplicationsWrapperComponent, 
+    ApplicationsItemDetailComponent, 
+    ApplicationsStageDetailComponent, 
+    ApplicationsDialogComponent 
+} from '@applications/components';
 import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } from '@applications/services';
 
 
@@ -27,13 +33,17 @@ import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } fr
         FormsModule,
         ChartsModule,
         StoreModule.forFeature('applications', reducers),
-        EffectsModule.forFeature([ApplicationsEffects])
+        EffectsModule.forFeature([ApplicationsEffects]),
+        ReactiveFormsModule,
+        CodemirrorModule
     ],
     declarations: [
         ApplicationsWrapperComponent,
         ApplicationsItemDetailComponent,
-        ApplicationsStageDetailComponent
+        ApplicationsStageDetailComponent,
+        ApplicationsDialogComponent
     ],
-    providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard]
+    providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard],
+    exports: [ApplicationsDialogComponent]
 })
 export class ApplicationsModule { }

@@ -1,9 +1,11 @@
-import { Injectable, OnDestroy } from '@angular/core';
+
+
+import { Component, OnDestroy, OnInit, Output,EventEmitter, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
+import { MdlDialogReference } from '@angular-mdl/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { DialogBase } from './dialog-base';
+import { DialogBase } from '@shared/base/dialog-base';
 import * as hocon from 'hocon-parser';
 import { Store } from '@ngrx/store';
 import {
@@ -24,12 +26,22 @@ import 'codemirror/addon/display/placeholder.js';
 
 import * as fromModel from '@models/reducers';
 
+@Component({
+    selector: 'hydro-applications-dialog',
+    templateUrl: './applications-dialog.component.html',
+    styleUrls: ['./applications-dialog.component.scss']
+})
+export class ApplicationsDialogComponent extends DialogBase implements OnDestroy, OnInit {
+    @Input()
+    actionName: string = '';
 
+    @Input()
+    applicationData: Application;
 
-@Injectable()
-export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
+    @Output()
+    submitEvent = new EventEmitter();
 
-    public serviceForm: FormGroup;
+    public applicationForm: FormGroup;
     public isKafkaEnabled = false;
     public isJsonModeEnabled = false;
     public codeMirrorOptions = {
@@ -84,7 +96,6 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         public fb: FormBuilder,
         public dialogRef: MdlDialogReference,
         public formsService: FormsService,
-        public mdlSnackbarService: MdlSnackbarService,
         public store: Store<HydroServingState>
     ) {
         super(
@@ -101,16 +112,6 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
             .subscribe(runtimes => {
                 this.runtimes = runtimes;
             });
-
-        // this.environmentsStoreSub = this.store.select('environments')
-        //     .subscribe(environments => {
-        //         this.environments = environments;
-        //     });
-
-        // this.signaturesStoreSub = this.store.select('signatures')
-        //     .subscribe(signatures => {
-        //         this.signatures = signatures;
-        //     });
 
         this.environments = [
             {
@@ -140,8 +141,13 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         };
     }
 
-    public createForm(data?) {
-        this.serviceForm = this.fb.group({
+    ngOnInit(){
+        this.createForm(this.applicationData);
+        this.initFormChangesListener();
+    }
+
+    public createForm(data?: Application) {
+        this.applicationForm = this.fb.group({
             applicationName: ['', Validators.required],
             applicationNamespace: '',
             kafkaStreaming: this.fb.array([]),
@@ -149,7 +155,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         });
 
         if (data) {
-            this.serviceForm.patchValue({
+            this.applicationForm.patchValue({
                 applicationName: data.name,
                 applicationNamespace: data.namespace,
             });
@@ -186,7 +192,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     }
 
     public initFormChangesListener() {
-        this.serviceForm.valueChanges
+        this.applicationForm.valueChanges
             .subscribe(form => {
                 console.log(form);
             });
@@ -194,7 +200,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
 
     public addStageControl(stage, i?: number) {
         let index: number;
-        const control = <FormArray>this.serviceForm.get('stages');
+        const control = <FormArray>this.applicationForm.get('stages');
         control.push(this.addStage());
         if (i !== undefined) {
             index = i;
@@ -213,7 +219,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     }
 
     public removeStageControl(i: number) {
-        const control = <FormArray>this.serviceForm.get('stages');
+        const control = <FormArray>this.applicationForm.get('stages');
         control.removeAt(i);
     }
 
@@ -228,12 +234,12 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         }
 
     public addServiceControl(service: object, index: number) {
-        const control = <FormArray>this.serviceForm.get(['stages', index]).get('services');
+        const control = <FormArray>this.applicationForm.get(['stages', index]).get('services');
         control.push(this.addService(service));
     }
 
     public removeServiceControl(i: number, j: number) {
-        const control = <FormArray>this.serviceForm.get(['stages', i]).get('services');
+        const control = <FormArray>this.applicationForm.get(['stages', i]).get('services');
         control.removeAt(j);
     }
 
@@ -241,19 +247,19 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         if (!this.isKafkaEnabled) {
             this.isKafkaEnabled = !this.isKafkaEnabled;
         }
-        const control = <FormArray>this.serviceForm.get('kafkaStreaming');
+        const control = <FormArray>this.applicationForm.get('kafkaStreaming');
         control.push(this.addKafkaSource(kafkaStreaming));
     }
 
     public removeKafkaControl(i: number) {
-        const control = <FormArray>this.serviceForm.get('kafkaStreaming');
+        const control = <FormArray>this.applicationForm.get('kafkaStreaming');
         control.removeAt(i);
     }
 
     public prepareFormDataToSubmit() {
         const stages = [];
 
-        this.serviceForm.value.stages.forEach(stage => {
+        this.applicationForm.value.stages.forEach(stage => {
             const services = [];
             stage.services.forEach(service => {
                 services.push(
@@ -282,7 +288,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     }
 
     public onModelVersionSelect(modelVersionId: number, i, j) {
-        const control = this.serviceForm.get(['stages', i]).get(['services', j]).get('signatureName');
+        const control = this.applicationForm.get(['stages', i]).get(['services', j]).get('signatureName');
         control.patchValue(this.getSignature(modelVersionId));
     }
 
@@ -336,7 +342,7 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
     }
 
     private get signatureNameControlValidator(): ValidatorFn[] {
-        const control = <FormArray>this.serviceForm.get('stages');
+        const control = <FormArray>this.applicationForm.get('stages');
         if (control.length > 1) {
             return [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.text)];
         } else {
@@ -344,4 +350,19 @@ export class ApplicationsDialogBase extends DialogBase implements OnDestroy {
         }
     }
 
+    public onSubmit(){
+        if (this.applicationForm.invalid) {
+            return;
+        }
+
+        const formData = {
+            name: this.applicationForm.value.applicationName,
+            kafkaStreaming: this.isKafkaEnabled ? this.applicationForm.value.kafkaStreaming : [],
+            executionGraph: {
+                stages: this.prepareFormDataToSubmit()
+            }
+        };
+        
+        this.submitEvent.emit(formData);
+    }
 }

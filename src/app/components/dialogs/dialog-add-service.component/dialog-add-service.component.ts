@@ -1,63 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
-import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
-
-import { Store } from '@ngrx/store';
-import { ApplicationsDialogBase } from '@shared/base/_index';
-import * as HydroActions from '@applications/actions/applications.actions';
-import { Application } from '@shared/models/_index';
+import { Component } from '@angular/core';
+import {
+    Application
+} from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-import { FormsService } from '@core/services';
-
-
+import { Store } from '@ngrx/store';
+import * as HydroActions from '@applications/actions/applications.actions';
+import { MdlDialogReference } from '@angular-mdl/core';
 
 @Component({
     selector: 'hydro-dialog-add-service',
-    templateUrl: './dialog-add-service.component.html',
-    styleUrls: ['./dialog-add-service.component.scss'],
+    templateUrl: './dialog-add-service.component.html'
 })
-export class DialogAddServiceComponent extends ApplicationsDialogBase implements OnInit {
-
-    public dialogType = 'Add';
-
-    constructor(
-        public fb: FormBuilder,
-        public dialogRef: MdlDialogReference,
-        public formsService: FormsService,
-        public mdlSnackbarService: MdlSnackbarService,
-        public store: Store<HydroServingState>,
-    ) {
-        super(
-            fb,
-            dialogRef,
-            formsService,
-            mdlSnackbarService,
-            store
-        );
+export class DialogAddServiceComponent {
+        constructor(
+            private store: Store<HydroServingState>,
+            public dialogRef: MdlDialogReference
+        ){
     }
 
-    ngOnInit() {
-        this.createForm();
-        this.initFormChangesListener();
-    }
-
-    onSubmit() {
-        if (this.serviceForm.invalid) {
-            return;
-        }
-
-        const serviceInfo = {
-            name: this.serviceForm.value.applicationName,
-            // namespace: this.serviceForm.value.applicationNamespace,
-            kafkaStreaming: this.isKafkaEnabled ? this.serviceForm.value.kafkaStreaming : [],
-            executionGraph: {
-                stages: this.prepareFormDataToSubmit()
-            }
-        };
-        const application = new Application(serviceInfo);
+    onSubmit(fromData){
+        const application = new Application(fromData);
 
         this.store.dispatch(new HydroActions.AddApplicationAction(application));
-        this.dialogRef.hide();
+        this.dialogRef.hide()
     }
-
 }
+
