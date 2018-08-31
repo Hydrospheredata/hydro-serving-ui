@@ -8,3 +8,4 @@ export * from './iterate-as-array.pipe';
 export * from './remove-dublicates.pipe';
 export * from './to-number.pipe';
 export * from './match-sorter.pipe';
+export * from './docker-image-split.pipe';

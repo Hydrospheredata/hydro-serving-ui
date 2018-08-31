@@ -27,6 +27,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     public isReadOnly = true;
     public signaturesForm: FormGroup;
     private signaturesSub: Subscription;
+    private buildSub: Subscription;
     private build$: Observable<ModelBuild>;
 
     constructor(
@@ -39,7 +40,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnInit() {
-        this.build$.filter(_ => _ != null).subscribe(build => {
+        this.buildSub = this.build$.filter(_ => _ != null).subscribe(build => {
             this.store.dispatch(new GetModelBuildSignaturesAction(build.id));
         });
         console.log("init signatures");
@@ -57,6 +58,10 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     ngOnDestroy() {
         if (this.signaturesSub) {
             this.signaturesSub.unsubscribe();
+        }
+
+        if (this.buildSub) {
+            this.buildSub.unsubscribe();
         }
     }
 

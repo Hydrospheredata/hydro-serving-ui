@@ -69,7 +69,7 @@
                                         <div class="parameters__field parameters__row-field-runtime">
                                             <label class="parameters__field-label" for="runtime">runtime</label>
                                             <mdl-select formControlName="runtime">
-                                                <mdl-option *ngFor="let runtime of runtimes" [value]="runtime.id">{{ runtime.name + ':' + runtime.version }}</mdl-option>
+                                                <mdl-option *ngFor="let runtime of runtimes" [value]="runtime.id"><span class="docker-image__name">{{ runtime.name | getDockerImage: 'name' }}</span><span class="hidden">:</span><span class="docker-image__version">{{ runtime.version }}</span> <span class="docker-image__repository">{{ runtime.name | getDockerImage: 'repository' }}</span></mdl-option>
                                             </mdl-select>
                                         </div>
                                         <div class="parameters__field parameters__row-field-environment">

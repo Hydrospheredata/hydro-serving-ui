@@ -20,7 +20,8 @@ import {
     IterateAsArrayPipe,
     RemoveDublicatesPipe,
     ToNumberPipe,
-    MatchSorterPipe
+    MatchSorterPipe,
+    DockerImageSplitPipe
 } from './pipes/_index';
 
 // Components
@@ -64,6 +65,7 @@ import {
         RemoveDublicatesPipe,
         ToNumberPipe,
         MatchSorterPipe,
+        DockerImageSplitPipe,
         // Components
         InputTextComponent,
         TextareaComponent,
@@ -88,6 +90,7 @@ import {
         RemoveDublicatesPipe,
         ToNumberPipe,
         MatchSorterPipe,
+        DockerImageSplitPipe,
         // Components
         InputTextComponent,
         TextareaComponent,
