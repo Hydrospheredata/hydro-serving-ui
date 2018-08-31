@@ -26,17 +26,21 @@
             </li>
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Status</span>
-                <span class="content-info__sublist-item-value">
-                    <div class="status">{{ (build$ | async)?.status }}</div>
-                </span>
+                <ng-container *ngIf="build$ | async;let build">
+                    <span class="content-info__sublist-item-value" [status]="build.status"  modelStatus>
+                        <span #statusText class="status"></span>
+                    </span>
+                </ng-container>
             </li>
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Applications</span>
                 <span class="content-info__sublist-item-value">
-                    <div *ngFor="let app of ((build$ | async)?.modelVersion.applications | slice: (build$ | async)?.modelVersion.applications.length - 2)"
-                        [routerLink]="['../../../applications', app.id]">
-                        {{app.name}}
-                    </div>
+                    <span *ngFor="let app of ((build$ | async)?.modelVersion.applications | slice: (build$ | async)?.modelVersion.applications.length - 2);last as isLast"
+                        [routerLink]="['../../../applications', app.id]"
+                        class='application'
+                        [ngClass] = "{'application--isLast': isLast}">
+                        <span>{{app.name}}</span>
+                    </span>
                 </span>
             </li>
         </ol>

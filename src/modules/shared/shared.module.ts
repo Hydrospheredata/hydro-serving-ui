@@ -20,6 +20,7 @@ import {
     IterateAsArrayPipe,
     RemoveDublicatesPipe,
     ToNumberPipe,
+    MatchSorterPipe
 } from './pipes/_index';
 
 // Components
@@ -34,7 +35,10 @@ import {
     FilterComponent
 } from './components/_index';
 
-
+//Directives
+import {
+    ModelStatusDirective
+} from './directives/_index';
 
 @NgModule({
     imports: [
@@ -59,6 +63,7 @@ import {
         IterateAsArrayPipe,
         RemoveDublicatesPipe,
         ToNumberPipe,
+        MatchSorterPipe,
         // Components
         InputTextComponent,
         TextareaComponent,
@@ -67,7 +72,9 @@ import {
         ListInfoComponent,
         SignaturesComponent,
         IconComponent,
-        FilterComponent
+        FilterComponent,
+        // Directives
+        ModelStatusDirective
     ],
     exports: [
         // Pipes
@@ -80,6 +87,7 @@ import {
         IterateAsArrayPipe,
         RemoveDublicatesPipe,
         ToNumberPipe,
+        MatchSorterPipe,
         // Components
         InputTextComponent,
         TextareaComponent,
@@ -87,7 +95,9 @@ import {
         SidebarComponent,
         ListInfoComponent,
         SignaturesComponent,
-        IconComponent
+        IconComponent,
+        //Directives
+        ModelStatusDirective
     ]
 })
 export class SharedModule { }

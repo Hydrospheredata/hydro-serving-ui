@@ -55,10 +55,11 @@
                     <td class="hydro-table-body__cell">
                         <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
                             {{ item.modelVersion.modelName + ':v' + item.modelVersion.modelVersion }}
-                            <hydro-icon [type]="'icon-warning'"  
-                                        (click)="confirmationDialog()" 
-                                        class="new-version-icon" 
-                                        [ngClass]="{'new-version-icon--is-available': checkNewVersion(item.modelVersion, i)}">
+                            <hydro-icon [type]="'icon-warning'"
+                                        [title]="'Model has new version'"
+                                        class="icon new-version-icon"
+                                        [ngClass]="{'new-version-icon--available': checkNewVersion(item.modelVersion)}"
+                                        (click)="updateModelVersionDialog(i, j)">
                             </hydro-icon>
                         </div>
                     </td>

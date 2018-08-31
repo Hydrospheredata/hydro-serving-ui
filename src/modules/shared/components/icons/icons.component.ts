@@ -8,6 +8,6 @@ import { Component, Input } from "@angular/core";
 
 export class IconComponent {
     @Input() type: string;
-
+    @Input() title: string;
     constructor() {}
 }

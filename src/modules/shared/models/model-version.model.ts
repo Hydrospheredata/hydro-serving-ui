@@ -16,6 +16,7 @@ export class ModelVersion {
     public imageSHA256: string;
     public modelVersion: number;
     public applications: Application[];
+    public modelFullName: string;
 
     constructor(props: any = {}) {
         this.id = props['id'] || 1;
@@ -30,5 +31,6 @@ export class ModelVersion {
         this.imageSHA256 = props['imageSHA256'] || '';
         this.modelVersion = props['modelVersion'] || 1;
         this.applications = props['applications'] || [];
+        this.modelFullName = `${this.modelName}:v${this.modelVersion}`
     }
 }

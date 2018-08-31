@@ -2,10 +2,9 @@
     <div class="sidebar-header">
         <div class="sidebar-header__row">
             <h3 class='sidebar-title'>{{ sidebarTitle }}</h3>
-            <button *ngIf="isActionBtnEnabled" class="btn btn-secondary" (click)="addApplication($event)" title="Add new app">
-                <hydro-icon [type]="'icon-plus'"></hydro-icon>
-                add new
-            </button>
+            <ng-container *ngIf='actionButton'>
+                <ng-container *ngTemplateOutlet="actionButton"></ng-container>
+            </ng-container>
         </div>
         <div class="sidebar-header__row" *ngIf="isFilterEnabled">
             <hydro-filter class='sidebar__filter' [data]="sidebarList" (filterEvent)="onFilter($event)"></hydro-filter>

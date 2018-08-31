@@ -1,14 +1,10 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MdlDialogService } from '@angular-mdl/core';
+import { Component, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { SortByPipe } from '@shared/pipes/_index';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 
 import { Application, Model, Source } from '@shared/models/_index';
-import { DialogAddServiceComponent } from '@components/dialogs/_index';
-
-
 
 @Component({
     selector: 'hydro-sidebar',
@@ -17,7 +13,7 @@ import { DialogAddServiceComponent } from '@components/dialogs/_index';
     providers: [SortByPipe]
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-    @Input() isActionBtnEnabled = false;
+    @Input() actionButton: TemplateRef<any>;
     @Input() isFilterEnabled = false;
     @Input() isModels: boolean;
     @Input() sidebarTitle: string;
@@ -33,7 +29,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     constructor(
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private dialog: MdlDialogService,
         private sortBy: SortByPipe,
     ) {
         this.routeSub = this.router.events
@@ -65,17 +60,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
     }
 
-    public addApplication() {
-        this.dialog.showCustomDialog({
-            component: DialogAddServiceComponent,
-            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400
-        });
-    }
 
     private redirectToFirst() {
         if (this.isRedirectable && this.sidebarList.length > 0) {

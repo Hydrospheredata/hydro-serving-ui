@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,InjectionToken,Inject } from '@angular/core';
 import { MdlDialogReference } from '@angular-mdl/core';
 import { DialogBase } from '@shared/base/_index';
 import { Store } from '@ngrx/store';
@@ -13,27 +13,30 @@ import * as hocon from 'hocon-parser';
 
 import { UpdateApplicationAction } from '@applications/actions';
 
-
+export const CHANGE_IDS = new InjectionToken<object>('stage and serv ids');
 
 @Component({
-    selector: 'hydro-dialog-confirmation',
-    templateUrl: './dialog-confirmation.component.html',
-    styleUrls: ['./dialog-confirmation.component.scss']
+    selector: 'hydro-dialog-update-model-version',
+    templateUrl: './dialog-update-model-version.component.html',
+    styleUrls: ['./dialog-update-model-version.component.scss']
 })
-export class DialogConfirmationComponent extends DialogBase {
-
+export class DialogUpdateModelVersionComponent extends DialogBase {
     public application$: Observable<Application>;
     public models: Model[];
 
+    public changeIds;
 
     constructor(
         public dialogRef: MdlDialogReference,
-        private store: Store<HydroServingState>
+        private store: Store<HydroServingState>,
+        @Inject(CHANGE_IDS) changeIds: number[]
     ) {
         super(
             dialogRef
         );
+        this.changeIds = changeIds;
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
+
         this.store.select(fromModels.getAllModels)
             .filter(models => models.length > 0)
             .subscribe(models => this.models = models)
@@ -42,21 +45,29 @@ export class DialogConfirmationComponent extends DialogBase {
     public updateImmediatly() {
         let serviceInfo = {};
         const stages = [];
+
+        let {stageId, serviceId} = this.changeIds;
+
         this.application$.take(1).subscribe(application => {
             const _ = application;
-            _.executionGraph.stages.forEach(stage => {
+            _.executionGraph.stages.forEach((stage, idxStage) => {
                 const services = [];
-                stage.services.forEach(service => {
-                    const {modelName, modelVersion} = service.modelVersion;
-                    const modell = this.models.find(model => model.name === modelName);
-                    services.push(
-                        {
-                            runtimeId: service.runtime.id,
-                            modelVersionId: modell.lastModelBuild.version > modelVersion ? modell.lastModelBuild.id : service.modelVersion.id,
-                            weight: Number(service.weight),
-                            signatureName: service.signature ? hocon(service.signature).signature_name : ''
-                        }
-                    );
+                stage.services.forEach((service, idxService) => {
+                    const newService = {
+                        runtimeId: service.runtime.id,
+                        modelVersionId: service.modelVersion.id,
+                        weight: Number(service.weight),
+                        signatureName: service.signature ? hocon(service.signature).signature_name : ''
+                    };
+
+                    if(stageId === idxStage && serviceId === idxService){
+                        const { modelName } = service.modelVersion;
+                        const modell = this.models.find(model => model.name === modelName);
+                        newService.modelVersionId = modell.lastModelBuild.id
+                    }
+
+                    services.push(newService)
+
                 });
                 stages.push({ services: services });
             });
@@ -77,5 +88,4 @@ export class DialogConfirmationComponent extends DialogBase {
         this.updateImmediatly();
         this.dialogRef.hide();
     }
-
 }
