@@ -34,13 +34,9 @@
                             <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis status' [ngClass]="{
-                                '__successed': item.status === 'FINISHED',
-                                '__started': item.status === 'STARTED',
-                                '__failed': item.status === 'ERROR'
-                                }">
-                                <hydro-icon [type]="'icon-arrow'" class="icon"></hydro-icon>
-                                <span class="icon-label">{{ item.status === 'Finished' ? 'Released' : 'Started' }}</span>
+                            <div class='cs-text-overflow-ellipsis model-build-status model-build-status--{{item.status | lowercase}}' [status]="item.status" modelStatus>
+                                <hydro-icon #statusIcon class="icon"></hydro-icon>
+                                <span #statusText class="icon-label"></span>
                             </div>
                         </td>
                         <td class="hydro-table-body__cell">
