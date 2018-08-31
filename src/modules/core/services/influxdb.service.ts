@@ -17,8 +17,8 @@ export class InfluxDBService implements OnInit {
 
     public connect() {
         this.client = new InfluxDB({
-            host: environment.production ? `${window.location.hostname}/influx` : 'localhost',
-            port: Number(environment.production ? `${window.location.port}` : `${environment.port}`),
+            host: environment.production ? `${window.location.hostname}` : 'localhost',
+            port: 8086, // Number(environment.production ? `${window.location.port}` : `${environment.port}`),
             database: 'appmetrics'
         });
     }
