@@ -21,6 +21,7 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
 
   private fieldsSub: Subscription;
   private profilesSub: Subscription;
+  private buildSub: Subscription;
   public fields: Array<string> = [];
   public isLoading: boolean = true;
   public profiles: Profiles;
@@ -35,7 +36,7 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(`ngOnInit with id: ${this.modelVersionId} and store: ${this.store}`);
-    this.build$.filter(_ => _ != null).subscribe(build => {
+    this.buildSub = this.build$.filter(_ => _ != null).subscribe(build => {
       this.buildId = build.id;
       this.store.dispatch(new GetFieldsAction(build.id));
     });
@@ -67,6 +68,9 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
     }
     if (this.intervalId) {
       clearInterval(this.intervalId);
+    }
+    if (this.buildSub) {
+      this.buildSub.unsubscribe();
     }
   }
 
