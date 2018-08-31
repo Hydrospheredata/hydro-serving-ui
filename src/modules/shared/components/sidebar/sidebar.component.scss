@@ -83,44 +83,6 @@
       }
     }
   }
-  &-filter {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    &__label {
-      color: #818994;
-      font-size: 12px;
-      font-weight: 400;
-      line-height: 24px;
-      text-transform: uppercase;
-      letter-spacing: 1.2px;
-      padding-right: 10px;
-    }
-    &__button {
-      height: 33px;
-      border-radius: 5px;
-      background-color: #e6e9ed;
-      border: none;
-      cursor: pointer;
-      margin-right: 10px;
-      display: inline-flex;
-      &--label {
-        font-family: $font-family-regular;        
-        color: #818994;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 24px;
-        letter-spacing: 0.35px;
-      }
-      &--icon {
-        margin-top: 5px;
-        margin-right: 5px;
-      }
-    }
-  &__selected {
-    background: none;
-  }
-  }
   &__deploy-icon {
     width: 12px;
     height: 12px;
@@ -130,6 +92,9 @@
     width: 18px;
     height: 20px;
     color: #d4d7d9;
+  }
+  &__filter {
+    width: 100%;
   }
 }
 

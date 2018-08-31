@@ -32,7 +32,8 @@ import {
     SidebarComponent,
     ListInfoComponent,
     SignaturesComponent,
-    IconComponent
+    IconComponent,
+    FilterComponent
 } from './components/_index';
 
 //Directives
@@ -73,6 +74,7 @@ import {
         ListInfoComponent,
         SignaturesComponent,
         IconComponent,
+        FilterComponent,
         // Directives
         ModelStatusDirective
     ],
