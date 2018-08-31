@@ -258,7 +258,7 @@ $delete-button: #969da6;
     padding: 2px;
     white-space: nowrap;
     border-radius: 5px;
-    color: #5e5e5e !important;
+    color: #5e5e5e;
 }
 
 .docker-image__repository {
@@ -268,5 +268,15 @@ $delete-button: #969da6;
     padding: 2px;
     white-space: nowrap;
     border-radius: 5px;
-    color: #5e5e5e !important;
+    color: #5e5e5e;
+}
+
+/deep/ .mdl-list__item:hover {
+    .docker-image__version, .docker-image__repository {
+        color: #04143c;
+    }
+}
+
+/deep/ .parameters__field.parameters__row-field-runtime .mdl-select .mdl-popover {
+    min-width: 200% !important;
 }
