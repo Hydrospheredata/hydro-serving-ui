@@ -33,7 +33,6 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogModelsEmptyComponent
     ],
     imports: [
-        AppRoutingModule,
         RouterModule,
         BrowserModule,
         CoreModule,
@@ -44,6 +43,7 @@ import * as Dialog from '@components/dialogs/_index';
         MomentModule,
         SharedModule,
         ProfilesModule,
+        AppRoutingModule
     ],
     entryComponents: [
         Dialog.DialogModelBuildComponent,
