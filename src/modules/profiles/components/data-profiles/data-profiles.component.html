@@ -16,5 +16,12 @@
         <div class="profile_header">Production Data</div>
       <hydro-data-stats [profile]="profiles.productionProfile"></hydro-data-stats>
     </div>
+
+    <div class="comparison_histogram">
+      <hydro-data-comparison-histogram
+        [trainingProfile]="profiles.trainingProfile" 
+        [productionProfile]="profiles.productionProfile">
+      </hydro-data-comparison-histogram>
+    </div>
   </div>
 </div>

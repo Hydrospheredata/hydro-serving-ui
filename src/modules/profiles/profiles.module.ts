@@ -1,4 +1,5 @@
 import { DataStatsComponent } from './components/data-stats/data-stats.component';
+import { DataComparisonHistogramComponent } from './components/data-comparison-histogram/data-comparison-histogram.component';
 import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
 import { DataProfilesComponent } from './components/data-profiles/data-profiles.component';
@@ -20,8 +21,8 @@ import { MdlSelectModule } from '@angular-mdl/select';
     StoreModule.forFeature('profiles', reducers),
     EffectsModule.forFeature([ProfilesEffects]),
   ],
-  declarations: [DataProfilesComponent, DataStatsComponent],
+  declarations: [DataProfilesComponent, DataStatsComponent, DataComparisonHistogramComponent],
   providers: [ProfilerService],
-  exports: [DataProfilesComponent, DataStatsComponent]
+  exports: [DataProfilesComponent, DataStatsComponent, DataComparisonHistogramComponent]
 })
 export class ProfilesModule {}
