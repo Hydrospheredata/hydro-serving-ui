@@ -1,3 +1,4 @@
+import { MetricsService } from './../../../core/services/metrics/metrics.service';
 // import * as moment from 'moment';
 import { Component, ViewEncapsulation } from '@angular/core';
 // import { Router, ActivatedRoute } from '@angular/router';
@@ -9,7 +10,7 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { Application, Model } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-// import { InfluxDBService } from '@core/services';
+import { InfluxDBService } from '@core/services';
 // import { environment } from '@environments/environment';
 
 import * as fromApplications from '@applications/reducers';
@@ -24,7 +25,8 @@ import {
     CHANGE_IDS
 } from '@components/dialogs/_index';
 import { Observable } from 'rxjs/Observable';
-import { InfluxDBService } from '@core/services';
+import { Subscription } from '../../../../../node_modules/rxjs';
+// import { InfluxDBService } from '@core/services';
 // import { UpdateApplicationAction } from '@applications/actions';
 
 @Component({
@@ -42,14 +44,16 @@ export class ApplicationsItemDetailComponent {
 
     public healthStatuses: { [s: string]: string } = {};
     private intervalId: number;
+    private modelSub: Subscription
 
     constructor(
         public store: Store<HydroServingState>,
         public dialog: MdlDialogService,
+        private metricsService: MetricsService,
         private influxdbService: InfluxDBService
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
-        this.store.select(fromModels.getAllModels)
+        this.modelSub = this.store.select(fromModels.getAllModels)
             .filter(models => models.length > 0)
             .subscribe(models => this.models = models)
     }
@@ -57,10 +61,11 @@ export class ApplicationsItemDetailComponent {
     // TODO: remove me please
     public getHealthClass() {
         // const stageId = `app${applicationId}stage${stageIndex}`;
-        const query = `select sum("health"), count("health") from /.*/ where time >= now() - 1m group by "stageId", "modelVersionId"`;
-        return this.influxdbService.search(query).then((result) => {
+        // const query = `select sum("health"), count("health") from /.*/ where time >= now() - 1m group by "stageId", "modelVersionId"`;
+        return this.metricsService.getHealth().then((res) => {
+            const result = this.influxdbService.parse(res);
             const aggregatedHealthStatus: Object = {};
-            console.log(result);
+            // console.log(result);
             // debugger;
             for (let row of result) {
                 const stageAndModelVersion = `${row['stageId']}_${row["modelVersionId"]}`;
@@ -82,6 +87,9 @@ export class ApplicationsItemDetailComponent {
     ngOnInit() {
         this.intervalId = setInterval(this.getHealthClass.bind(this), 1500);
         this.getHealthClass();
+        if (this.modelSub) {
+            this.modelSub.unsubscribe();
+        }
     }
 
     ngOnDestroy() {

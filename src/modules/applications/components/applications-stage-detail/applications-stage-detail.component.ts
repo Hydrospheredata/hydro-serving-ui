@@ -24,6 +24,7 @@ import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { DialogAddMetricComponent } from '@app/components/dialogs/_index';
+import { MetricsService } from '@core/services/metrics/metrics.service';
 // import { MdlDialogReference } from '@angular-mdl/core';
 
 
@@ -81,6 +82,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         public store: Store<HydroServingState>,
         private influxdbService: InfluxDBService,
         // private repository: MetricSettingsService,
+        private metricsService: MetricsService,
         private activatedRoute: ActivatedRoute,
         public selectRef: MdlSelectModule,
         public dialog: MdlDialogService,
@@ -120,7 +122,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                         .subscribe(stage => {
                             this.stage = stage;
                             this.store.dispatch(new GetMetricsAction(`app${app.id}stage${stageId}`));
-                            this.initAggregations(stage, `app${app.id}stage${stageId}`);
+                            this.initAggregations(stage, app.id, stageId);
                         });
                 });
         })
@@ -149,7 +151,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    private initAggregations(stage, stageId) {
+    private initAggregations(stage, applicationId, stageId) {
         console.log(stage);
         // this.repository.getMetricSettings(stageId)
         this.metricsSub = this.store.select(fromMetrics.getSelectedMetrics)
@@ -223,7 +225,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                     metricProviders.forEach(metricProvider => {
                         // TODO: whaaat
                         setTimeout(_ => {
-                            this.getMetrics(stageId, metricProvider.metrics).then(_ => this.updateChart(metricProvider.name, metricProvider.metrics));
+                            this.getMetrics(applicationId, stageId, metricProvider.metrics).then(_ => this.updateChart(metricProvider.name, metricProvider.metrics));
                         }, 100)
                     });
                 }).bind(this);
@@ -381,14 +383,15 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getMetrics(stageId: string, metrics: string[]) {
+    private getMetrics(applicationId: number, stageId: number, metrics: string[]) {
         const getModelName = (modelId): string => {
             return this.stage.services.filter(_ => _.modelVersion.id === ~~modelId).map(_ => _.modelVersion.modelName)[0];
         }
 
-        const query = `SELECT "value", "health", "modelVersionId"::tag, "columnIndex"::tag FROM ${metrics.map(_ => `"${_}"`).join(",")} WHERE "stageId" = '${stageId}' AND time >= now() - ${this.chartTimeWidth / 60000}m`;
-        return this.influxdbService.search(query)
-            .then(res => {
+        // const query = `SELECT "value", "health", "modelVersionId"::tag, "columnIndex"::tag FROM ${metrics.map(_ => `"${_}"`).join(",")} WHERE "stageId" = '${stageId}' AND time >= now() - ${this.chartTimeWidth / 60000}m`;
+        return this.metricsService.getMetrics(applicationId, stageId, this.chartTimeWidth, metrics)
+            .then(result => {
+                const res = this.influxdbService.parse(result);
                 metrics.forEach(metric => {
                     const groupedByModelVersionId: { [s: string]: any[] } = {}
                     const groupRows = (res as any).groupRows.find(_ => _.name === metric);

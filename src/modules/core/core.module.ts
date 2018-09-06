@@ -52,6 +52,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { SharedModule } from '@shared/shared.module';
+import { MetricsService } from '@core/services/metrics/metrics.service';
 
 
 @NgModule({
@@ -113,6 +114,7 @@ import { SharedModule } from '@shared/shared.module';
         SourcesService,
         InfluxDBService,
         MetricSettingsService,
+        MetricsService,
         LoaderStateService,
         {
             provide: HttpService,

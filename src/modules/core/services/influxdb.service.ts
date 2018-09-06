@@ -1,5 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import { InfluxDB } from 'influx';
+import { parse } from 'influx/lib/src/results';
 import { environment } from '@environments/environment';
 
 @Injectable()
@@ -43,6 +44,10 @@ export class InfluxDBService implements OnInit {
         return this.client.getSeries({
             measurement: 'envoy_cluster_name'
         });
+    }
+
+    public parse(response) {
+        return parse(response);
     }
 }
 
