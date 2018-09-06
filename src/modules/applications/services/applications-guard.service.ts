@@ -1,33 +1,47 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, CanActivateChild } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { HydroServingState } from '@core/reducers';
-import { GetApplicationsAction } from '@applications/actions';
 import * as fromApplication from '@applications/reducers';
-import { switchMap } from 'rxjs/operators';
-
+import { MdlSnackbarService } from '@angular-mdl/core';
+import { Application } from '@shared/_index';
 @Injectable()
-export class ApplicationsGuard implements CanActivate {
+export class ApplicationsGuard implements CanActivateChild{
+    private defaultUrl: string = '/applications';
+
     constructor(
-        private store: Store<HydroServingState>
+        private store: Store<fromApplication.State>,
+        private router: Router,
+        public mdlSnackbarService: MdlSnackbarService
     ) { }
 
-    isApplicationsExist(): Observable<boolean> {
-        return this.store.select(fromApplication.getTotalApplications)
-            .map(entities => !!entities)
+    canActivateChild(routerSnapshot: ActivatedRouteSnapshot): Observable<boolean> | boolean {
+        return this.store.select(fromApplication.getApplicationFetchStatus)
+            .filter(this.applicationsIsFetched)
+            .switchMap(_ => {
+                const applicationId = +routerSnapshot.params.id;
+                return this.isApplicationExist(applicationId)
+            })
     }
 
-    canActivate() {
-        return this.isApplicationsExist()
-            .pipe(
-                switchMap(isExist => {
-                    if (isExist) {
-                        return Observable.of(isExist);
-                    }
-                    this.store.dispatch(new GetApplicationsAction);
-                    return Observable.of(true);
-                })
-            )
+    private applicationsIsFetched(fetchStatus): boolean {
+        return fetchStatus.fetchedBefore && !fetchStatus.fetching;
+    }
+
+    private isApplicationExist(applicationId: number): Observable<boolean> {
+        return this.store.select(fromApplication.getAllApplications).map((applications: Application[]) => {
+            const isApplicationExist: boolean = applications.some(app => app.id === applicationId);
+
+            if(isApplicationExist){
+                return true;
+            } else {
+                this.router.navigate([this.defaultUrl]);
+                this.mdlSnackbarService.showSnackbar({
+                    message: `Application with id = ${applicationId} doesn't exist`,
+                    timeout: 3000
+                });
+                return false;
+            }
+        })
     }
 }

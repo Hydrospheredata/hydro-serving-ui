@@ -46,4 +46,21 @@ export function reducer(state = initialState, action: ApplicationActions): State
     }
 }
 
+export interface IApplicationFetchStatus {
+    fetchedBefore: boolean;
+    fetching: boolean;
+}
+
+export function applicationFetchStatusReducer(state = {fetchedBefore: false, fetching: false}, action: ApplicationActions): IApplicationFetchStatus {
+    switch(action.type){
+        case(ApplicationActionTypes.Get):
+            return {...state, fetching: true};
+        case(ApplicationActionTypes.GetSuccess):{
+            return {...state, fetchedBefore: true, fetching: false};
+        }
+        default:
+            return state;
+    }
+};
+
 export const getIds = (state: State) => state.ids;
