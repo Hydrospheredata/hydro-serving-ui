@@ -118,6 +118,8 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
       count = profile.commonStatistics.count - profile.commonStatistics.missing;
     }
     return function(bin: number): number{
+      if(count === 0) return 0;
+      
       const idx = oldBins.indexOf(bin);
       if(idx >= 0) {
         return (oldFreqs[idx]/count)*100;
