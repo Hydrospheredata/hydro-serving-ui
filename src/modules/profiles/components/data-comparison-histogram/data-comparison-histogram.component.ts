@@ -1,7 +1,7 @@
 import { DoubleProfile } from '@shared/models/_index';
 import { Component, Input, ViewChild, ElementRef, AfterViewInit, SimpleChanges, SimpleChange } from "@angular/core";
 import * as Highcharts from 'highcharts';
-
+import { HIGHCHART_COLORS } from '@profiles/highchart-colors';
 @Component({
   selector: 'hydro-data-comparison-histogram',
   templateUrl: './data-comparison-histogram.component.html',
@@ -12,6 +12,8 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
   @Input() productionProfile: DoubleProfile | null;
   @ViewChild('chartContainer') chartContainerRef: ElementRef;
 
+  private trainingDataColor = HIGHCHART_COLORS.profiles.training;
+  private productionDataColor = HIGHCHART_COLORS.profiles.production;
   private chart: Highcharts.ChartObject;
 
   constructor() {}
@@ -20,27 +22,24 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
     const trainingProfile: SimpleChange = changes.trainingProfile;
     const productionProfile: SimpleChange = changes.productionProfile;
 
-    console.log('prev training value: ', trainingProfile.previousValue);
-    console.log('got training profile: ', trainingProfile.currentValue);
-    console.log('prev training value: ', productionProfile.previousValue);
-    console.log('got training profile: ', productionProfile.currentValue);
+    this.trainingProfile = trainingProfile.currentValue;
+    this.productionProfile = productionProfile.currentValue;
 
     if (this.chart) {
       const bins = this.getBins();
-      const trainingFreqs = this.updateFreqs(bins, this.trainingProfile);
-      const productionFreqs = this.updateFreqs(bins, this.productionProfile);
+      const trainingFreqs = this.freqsToPercent(bins, this.trainingProfile);
+      const productionFreqs = this.freqsToPercent(bins, this.productionProfile);
 
       this.chart.xAxis[0].setCategories(bins.map(_ => _.toString()));
-      this.chart.series[0].update({data: trainingFreqs}, true)
-      this.chart.series[1].update({data: productionFreqs}, true)
+      this.chart.series[0].update({data: trainingFreqs}, true);
+      this.chart.series[1].update({data: productionFreqs}, true);
     }
   }
 
   ngAfterViewInit() {
-    if (this.trainingProfile && this.productionProfile) {
       const bins = this.getBins();
-      const trainingFreqs = this.updateFreqs(bins, this.trainingProfile);
-      const productionFreqs = this.updateFreqs(bins, this.productionProfile);
+      const trainingCount = this.freqsToPercent(bins, this.trainingProfile);
+      const productionCount = this.freqsToPercent(bins, this.productionProfile);
 
       this.chart = Highcharts.chart(this.chartContainerRef.nativeElement, {
         chart: {
@@ -56,46 +55,27 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
           categories: bins,
           crosshair: true
         },
-        yAxis: [
+        yAxis: 
+        [
           {
-            labels: {
-              style: {
-                color: Highcharts.getOptions().colors[0],
-                fontWeight: 'bold'
-              }
-            },
             title: {
-              text: 'Training Data',
-              style: {
-                color: Highcharts.getOptions().colors[0],
-                fontWeight: 'bold'
-              }
+              text: ''
             },
-          },
-          {
-            labels: {
-              style: {
-                color: Highcharts.getOptions().colors[1],
-                fontWeight: 'bold'
-              }
-            },
-            title: {
-              text: 'Production Data',
-              style: {
-                color: Highcharts.getOptions().colors[1],
-                fontWeight: 'bold'
-              }
-            },
-            opposite: true
-          },
+            labels:{
+              format: '{value}%'
+            }
+          }
         ],
         tooltip: {
           headerFormat: '<span style="font-size:10px">{point.key:.1f}</span><table>',
           pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y}</b></td></tr>',
+            '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
           footerFormat: '</table>',
           shared: true,
           useHTML: true
+        },
+        legend: {
+          layout: 'horizontal',
         },
         plotOptions: {
           column: {
@@ -103,50 +83,51 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
             borderWidth: 0,
             groupPadding: 0,
             shadow: false
-          }
-        },
-        legend: {
-          enabled: false
+          },
         },
         series: [{
           name: 'Training Data',
-          yAxis: 0,
-          data: trainingFreqs
+          data: trainingCount,
+          color: this.trainingDataColor
         },{
           name: 'Production Data',
-          yAxis: 1,
-          data: productionFreqs
+          data: productionCount,
+          color: this.productionDataColor
         }]
       });
-    }
   }
 
   private getBins(): number[]{
-    const trainingBins = this.trainingProfile.histogram.bins;
-    const productionBins = this.productionProfile.histogram.bins
+    const trainingBins = (this.trainingProfile && this.trainingProfile.histogram.bins) || [];
+    const productionBins = (this.productionProfile && this.productionProfile.histogram.bins) || [];
 
-    const XAxis = trainingBins.slice();
-    
-    return productionBins.reduce((XAxisValues, value) => {
-      if(!XAxisValues.includes(value)){
-        XAxisValues.push(value)
+    return productionBins.reduce((bins, bin) => {
+      if(!bins.includes(bin)){
+        bins.push(bin)
       };
-      
-      return XAxisValues;
-    }, XAxis).sort((a, b) => a - b);
+
+      return bins;
+    }, trainingBins.slice()).sort((a, b) => a - b);
   }
   
   private matchFreqs(profile: DoubleProfile): (number) => number {
-    const oldBins = profile.histogram.bins;
-    const oldFreqs = profile.histogram.frequencies;
-    
-    return function(xAxisValue: number): number{
-      const idx = oldBins.indexOf(xAxisValue);
-      return idx >= 0 ? oldFreqs[idx] : 0;
+    const oldBins: number[] = (profile && profile.histogram.bins) || [];
+    const oldFreqs: number[] = (profile && profile.histogram.frequencies) || [];
+    let count = 0;
+    if(profile){
+      count = profile.commonStatistics.count - profile.commonStatistics.missing;
+    }
+    return function(bin: number): number{
+      const idx = oldBins.indexOf(bin);
+      if(idx >= 0) {
+        return (oldFreqs[idx]/count)*100;
+      } else {
+        return 0;
+      }
     }
   }
 
-  private updateFreqs(XAxisValues: number[], profile: DoubleProfile): number[]{
-    return XAxisValues.map(this.matchFreqs(profile))
+  private freqsToPercent(bins: number[], profile: DoubleProfile): number[]{
+    return bins.map(this.matchFreqs(profile))
   }
 }
