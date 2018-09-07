@@ -17,7 +17,7 @@
       <hydro-data-stats [profile]="profiles.productionProfile"></hydro-data-stats>
     </div>
 
-    <div class="comparison_histogram">
+    <div *ngIf="profiles.trainingProfile || profiles.productionProfile" class="comparison_histogram">
       <hydro-data-comparison-histogram
         [trainingProfile]="profiles.trainingProfile" 
         [productionProfile]="profiles.productionProfile">

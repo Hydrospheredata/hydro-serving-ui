@@ -119,7 +119,7 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
     }
     return function(bin: number): number{
       if(count === 0) return 0;
-      
+
       const idx = oldBins.indexOf(bin);
       if(idx >= 0) {
         return (oldFreqs[idx]/count)*100;
