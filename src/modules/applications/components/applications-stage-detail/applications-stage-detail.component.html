@@ -26,7 +26,24 @@
             Monitoring service is unavailable
         </div>
         <div #chartContainer>
-            <div [attr.data-chart]="chart" *ngFor="let chart of chartNames; let i = index"></div>
+                <div *ngFor="let chart of chartNames; let i = index" class="chart">
+                    <div *ngIf="chart === 'Kolmogorov-Smirnov'" class="chart-filter">
+                            <span>Feature: </span>
+                            <mdl-select
+                                #KolmogorovSelect
+                                label="Choose feature"
+                                [(ngModel)]="KolmogorovSmirnovCurrentFeature"
+                                [autocomplete]="true"
+                                (keydown.enter)="$event.preventDefault()"
+                                >
+                            <mdl-option 
+                                *ngFor="let KolmogorovSmirnovFeature of KolmogorovSmirnovFeatures | matchSorter:'index': KolmogorovSelect.searchQuery" 
+                                [value]="KolmogorovSmirnovFeature.index">{{ KolmogorovSmirnovFeature.index }}
+                            </mdl-option>
+                        </mdl-select>
+                    </div>
+                    <div [attr.data-chart]="chart"></div>
+                </div>
         </div>
     </div>
 </div>

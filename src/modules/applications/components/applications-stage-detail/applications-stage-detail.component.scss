@@ -44,3 +44,10 @@
     color: #708393;
     font-weight: bold;
 }
+
+.chart {
+    margin-bottom: 40px;
+    &-filter {
+        width: 120px
+    }
+}

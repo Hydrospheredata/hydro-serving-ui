@@ -74,6 +74,9 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         { ms: 14400000, text: "4 hours" }
     ];
 
+    public KolmogorovSmirnovFeatures = this.getKolmogorovSmirnovFeatures();
+    public KolmogorovSmirnovCurrentFeature: string = '0';
+
     private timeoutId: any;
 
     private series: { [s: string]: { name: string, data: any[] }[] } = {};
@@ -254,7 +257,9 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         if (this.charts.hasOwnProperty(metricProvider.name)) {
             return;
         }
-        const chartRef = Array.prototype.slice.call(this.chartContainerRef.nativeElement.children).find(_ => _.getAttribute("data-chart") == metricProvider.name)
+
+        const chartRef = this.chartContainerRef.nativeElement.querySelector(`[data-chart="${metricProvider.name}"]`);
+
         this.charts[metricProvider.name] = Highcharts.chart(chartRef, {
             credits: {
                 enabled: false
@@ -383,7 +388,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getMetrics(applicationId: number, stageId: number, metrics: string[]) {
+    private getMetrics(applicationId: number, stageId: number, metrics: string[]): Promise<any> {
         const getModelName = (modelId): string => {
             return this.stage.services.filter(_ => _.modelVersion.id === ~~modelId).map(_ => _.modelVersion.modelName)[0];
         }
@@ -398,7 +403,13 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                     if (!groupRows) {
                         return;
                     }
-                    groupRows.rows.filter(_ => _["columnIndex"] == null || _["columnIndex"] == "0").forEach(_ => {
+
+                    let filteredColumnIndex = '0';
+                    if(['kolmogorovsmirnov_level', 'kolmogorovsmirnov'].includes(metric)){
+                        filteredColumnIndex = this.KolmogorovSmirnovCurrentFeature;
+                    }
+
+                    groupRows.rows.filter(_ => _["columnIndex"] == null || _["columnIndex"] == filteredColumnIndex).forEach(_ => {
                         if (!groupedByModelVersionId.hasOwnProperty(_["modelVersionId"])) {
                             groupedByModelVersionId[_["modelVersionId"]] = [];
                         }
@@ -434,5 +445,15 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                     }
                 })
             });
+    }
+
+    private getKolmogorovSmirnovFeatures(){
+        let features = [];
+        for(let i = 0; i < 112;i++){
+            features.push({
+                index: i
+            });
+        };
+        return features;
     }
 }
