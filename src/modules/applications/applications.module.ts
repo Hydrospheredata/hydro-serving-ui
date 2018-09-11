@@ -17,7 +17,7 @@ import {
     ApplicationsWrapperComponent, 
     ApplicationsItemDetailComponent, 
     ApplicationsStageDetailComponent, 
-    ApplicationsDialogComponent 
+    ApplicationsDialogComponent, ApplicationChartComponent
 } from '@applications/components';
 import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } from '@applications/services';
 
@@ -41,7 +41,7 @@ import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } fr
         ApplicationsWrapperComponent,
         ApplicationsItemDetailComponent,
         ApplicationsStageDetailComponent,
-        ApplicationsDialogComponent
+        ApplicationsDialogComponent, ApplicationChartComponent
     ],
     providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard],
     exports: [ApplicationsDialogComponent]

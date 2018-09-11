@@ -1,0 +1,11 @@
+.chart {
+    margin-bottom: 36px;
+};
+
+.title {
+    text-align: center;
+    font-size: 18px;
+    &__icon {
+        cursor: pointer;
+    }
+}
