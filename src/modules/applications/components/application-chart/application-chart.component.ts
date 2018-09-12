@@ -27,7 +27,6 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
     private chartBands: { [s: string]: string[] } = {};
     private healthBounds: { [s: string]: Date[]} = {};
     private series: { [s: string]: {name: string; data: Array<[number, number]>}} = {};
-
     private dataLength: number = 0;
 
     constructor() { }
@@ -43,10 +42,10 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void{
         if(!this.chart) { return };
+        
         const chartData = (changes.chartData && changes.chartData.currentValue) || this.chartData;
 
         this.fetchChartData(chartData);
-
         this.drawSeries();
         this.drawThreshold(chartData.threshold);
         this.drawBands();
@@ -177,7 +176,11 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
 
     private fetchChartData(chartData): void{
         const getModelName = (modelId): string => {
-            return this.stage.services.filter(_ => _.modelVersion.id === ~~modelId).map(_ => _.modelVersion.modelName)[0];
+            return this.stage.services.reduce((modelNames, service) => {
+                if(service.modelVersion.id === ~~modelId){
+                    return modelNames.push(service.modelVersion.modelName)
+                }
+            }, [])[0];
         }
 
         const metrics = chartData.metricProvider.metrics;
@@ -233,7 +236,7 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
             case "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov":
                 return this.getKolmogorovSmirnovFeatures();
             default:
-                return [];    
+                return [];
         }
     }
 
