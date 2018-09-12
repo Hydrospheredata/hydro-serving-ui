@@ -3,8 +3,7 @@ import * as Highcharts from 'highcharts';
 import * as HighchartsNoDataToDisplay from 'highcharts/modules/no-data-to-display.src';
 import * as moment from 'moment';
 
-import { IChartData, IMetricData, IMetricDataRow } from '@applications/app-interfaces'
-
+import { IChartData, IMetricData, IMetricDataRow } from '@shared/models/application-chart.model'
 @Component({
     selector: 'hydro-application-chart',
     templateUrl: './application-chart.component.html',

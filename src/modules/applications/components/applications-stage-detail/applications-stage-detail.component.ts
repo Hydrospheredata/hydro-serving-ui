@@ -25,7 +25,7 @@ import { MetricSettings } from '@shared/models/metric-settings.model';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 // import { MdlDialogReference } from '@angular-mdl/core';
 
-import { IChartData, IMetricData } from '@applications/app-interfaces'
+import { IChartData, IMetricData } from '@shared/models/application-chart.model'
 
 @Component({
     selector: 'hydro-applications-stage-detail',
