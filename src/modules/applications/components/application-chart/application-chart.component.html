@@ -17,8 +17,8 @@
                 class="filter-input"
             >
                 <mdl-option 
-                    *ngFor="let feature of featureList | matchSorter:'index': featureSelect.searchQuery" 
-                    [value]="feature.index">{{ feature.index }}
+                    *ngFor="let feature of featureList | matchSorter:{}:featureSelect.searchQuery" 
+                    [value]="feature">{{ feature }}
                 </mdl-option>
             </mdl-select>
         </div>

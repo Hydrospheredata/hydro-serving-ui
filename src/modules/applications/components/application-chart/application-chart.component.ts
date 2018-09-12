@@ -5,9 +5,6 @@ import * as moment from 'moment';
 
 import { IChartData, IMetricData, IMetricDataRow } from '@applications/app-interfaces'
 
-interface IFeature {
-    feature: string;
-}
 @Component({
     selector: 'hydro-application-chart',
     templateUrl: './application-chart.component.html',
@@ -23,7 +20,7 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
 
     @ViewChild('chartContainer') chartContainerRef: ElementRef;
 
-    public featureList: IFeature[] = []
+    public featureList: string[] = []
     public selectedFeature: string = '0';
     public showFeatureFilter: boolean = false;
 
@@ -232,7 +229,7 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
         return this.chartData.metricProvider.metricProviderClass === "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov"
     }
 
-    private getFeatureList(): IFeature[]{
+    private getFeatureList(): string[]{
         switch(this.chartData.metricProvider.metricProviderClass){
             case "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov":
                 return this.getKolmogorovSmirnovFeatures();
@@ -241,10 +238,10 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
         }
     }
 
-    private getKolmogorovSmirnovFeatures(): IFeature[]{
-        let features:IFeature[] = [];
+    private getKolmogorovSmirnovFeatures(): string[]{
+        let features:string[] = [];
         for(let i = 0; i < 112;i++){
-            features.push({feature: `${i}`});
+            features.push(`${i}`);
         };
         return features;
     }
