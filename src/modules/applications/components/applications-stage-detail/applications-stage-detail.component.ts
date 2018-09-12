@@ -25,7 +25,7 @@ import { MetricSettings } from '@shared/models/metric-settings.model';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 // import { MdlDialogReference } from '@angular-mdl/core';
 
-
+import { IChartData, IMetricData } from '@applications/app-interfaces'
 
 @Component({
     selector: 'hydro-applications-stage-detail',
@@ -39,7 +39,6 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     public applications: Application[] = [];
     public application: Application;
     public stage: any;
-    public application$: Observable<Application>;
     public publicPath = '';
     public stageId: string;
 
@@ -49,8 +48,9 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     public chartBands: { [s: string]: { [s: string]: string[] } } = {};
     public signatureName: any[];
 
-    public params$;
-    public stage$;
+    public application$: Observable<Application>;
+    public params$: Observable<string>;
+    public stage$: Observable<any>;
 
     public stageSub: Subscription;
     public activatedRouteSub: Subscription;
@@ -69,13 +69,11 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     ];
 
     public metricProviders;
+    public objectKeys = Object.keys;
+    public chartsData: { [s: string]: IChartData } = {};
 
-    private timeoutId: any;
-    
-    private metricData: { [s: string]: { name: string, data: any[] }[] } = {};
-
-    // new values
-    public chartsData = {};
+    private timeoutId: number;
+    private metricData: { [s: string]: IMetricData[] } = {};
 
     constructor(
         public store: Store<HydroServingState>,
@@ -129,7 +127,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    private initAggregations(stage: number, applicationId: number, stageId: number): void {
+    private initAggregations(stage: number, applicationId: number, stageId: string): void {
         console.log(stage);
         // this.repository.getMetricSettings(stageId)
         this.metricsSub = this.store.select(fromMetrics.getSelectedMetrics)
@@ -217,26 +215,20 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
             });
     }
 
-    private updateChart(name: string, metrics: string[]) {
-        if (!this.chartBands.hasOwnProperty(name)) {
-            this.chartBands[name] = {};
-        }
-        
+    private updateChart(name: string, metrics: string[]) {        
         this.chartsData = {
             ...this.chartsData, 
-            [name]:  {...this.chartsData[name], 
-                      metricsData: this.getMetricsData(metrics),
-                      treshold: this.thresholds[name],
-                      chartBands: this.chartBands[name]
+            [name]: {
+                      ...this.chartsData[name], metricsData: this.getMetricsData(metrics), threshold: this.thresholds[name],
                     }
             };
     }
 
-    private getMetricsData(metrics){
-        return metrics.map(metricName => this.metricData[metricName]).filter(_ => _).reduce((x, y) => x.concat(y), []);
+    private getMetricsData(metrics): IMetricData[] {
+        return metrics.map(metricName => this.metricData[metricName]).filter(_ => _).reduce((x, y) => x.concat(y), []) || [];
     }
 
-    private getMetrics(applicationId: number, stageId: number, metrics: string[]): Promise<any> {
+    private getMetrics(applicationId: number, stageId: string, metrics: string[]): Promise<any> {
         // const query = `SELECT "value", "health", "modelVersionId"::tag, "columnIndex"::tag FROM ${metrics.map(_ => `"${_}"`).join(",")} WHERE "stageId" = '${stageId}' AND time >= now() - ${this.chartTimeWidth / 60000}m`;
         return this.metricsService.getMetrics(applicationId, stageId, this.chartTimeWidth, metrics)
             .then(result => {
@@ -244,12 +236,12 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
                 metrics.forEach(metric => {
                     const groupRows = (res as any).groupRows.find(_ => _.name === metric);
                     if (!groupRows) { return; }
+
                     this.metricData[metric] = groupRows;
                 })
             });
     }
 
-    objectKeys = Object.keys;
 
     deleteMetric(id: number){
         this.dialog.showCustomDialog({
