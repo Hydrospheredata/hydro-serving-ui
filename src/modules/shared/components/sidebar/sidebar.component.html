@@ -40,7 +40,7 @@
                     [mdl-badge]="item.currentServices.length"></span>
                 <div *ngIf="isModels || (item.stages && item.stages.length > 1)" class="sidebar-list__item-details">
                     <hydro-icon [type]="'icon-pipeline'" *ngIf="item.stages && item.stages.length > 1" class="sidebar__pipeline-icon"></hydro-icon>
-                    <span *ngIf="isModels" class="sidebar-list__item--version status" [ngClass]="{'__new-version': item.nextVersion, 'version-failed': item.lastModelBuild?.status === 'FAILED'}">{{ item.nextVersion || item.lastModelVersion.modelVersion || 1 }}</span>
+                    <span *ngIf="isModels" class="sidebar-list__item--version status" [ngClass]="{'__new-version': item.nextVersion, 'version-failed': item.lastModelBuild?.status === 'Failed'}">{{ item.nextVersion || item.lastModelVersion.modelVersion || 1 }}</span>
                     <hydro-icon [type]="'icon-arrow'" *ngIf="isModels" class="sidebar__deploy-icon" [ngClass]="item.lastModelVersion ? 'deployed' : 'undeployed'"></hydro-icon>
                 </div>
             </li>
