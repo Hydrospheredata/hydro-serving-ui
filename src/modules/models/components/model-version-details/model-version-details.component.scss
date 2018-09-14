@@ -1,5 +1,5 @@
 @import 'variables.scss';
-
+@import 'statuses.scss';
 
 
 .model-details {
@@ -160,5 +160,9 @@
     }
     &--isLast::after{
         display: none;
+    }
+    &-name {
+        text-decoration: underline;
+        cursor: pointer;
     }
 }

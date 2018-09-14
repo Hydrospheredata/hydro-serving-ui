@@ -8,7 +8,7 @@ import { SignaturesService } from '@core/services';
 import { Store } from '@ngrx/store';
 // import * as Actions from '@core/actions';
 import { Subscription } from 'rxjs/Subscription';
-import { GetModelBuildSignaturesAction } from '@core/actions';
+import { GetModelVersionSignaturesAction } from '@core/actions';
 import * as fromModels from '@models/reducers';
 import { Observable } from 'rxjs';
 
@@ -41,7 +41,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnInit() {
         this.buildSub = this.build$.filter(_ => _ != null).subscribe(build => {
-            this.store.dispatch(new GetModelBuildSignaturesAction(build.id));
+            this.store.dispatch(new GetModelVersionSignaturesAction(build.modelVersion.id));
         });
         console.log("init signatures");
         this.createForm();

@@ -30,7 +30,7 @@ export class ModelStatusDirective implements OnInit{
             case 'finished':
                 iconType = 'icon-done';
                 break;
-            case 'error':
+            case 'failed':
                 iconType = 'icon-error-outline';
                 break;
             default:
@@ -50,8 +50,8 @@ export class ModelStatusDirective implements OnInit{
             case 'finished':
                 textStatus = 'Released';
                 break;
-            case 'error':
-                textStatus = 'Error';
+            case 'failed':
+                textStatus = 'Failed';
                 break;
             default:
                 textStatus = 'Pending';

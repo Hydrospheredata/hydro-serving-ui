@@ -1,5 +1,5 @@
 @import 'variables.scss';
-
+@import 'statuses.scss';
 
 
 .model-details {
@@ -134,10 +134,8 @@
 .model {
   &-item {
     &__application {
-      > span {
-        cursor: pointer;
-        text-decoration-line: underline;
-      }
+      cursor: pointer;
+      text-decoration-line: underline;
       &::after {
         content: ', ';
       }
@@ -147,20 +145,6 @@
     }
     &__detail-icon {
       padding-top: -2px;
-    }
-  }
-  &-build-status {
-    &--pending {
-      color: $color--pending;
-    }
-    &--finished {
-      color: $color--success;
-    }
-    &--started {
-      color: $color--light-blue; 
-    }
-    &--error {
-      color: $color--failed;
     }
   }
 }

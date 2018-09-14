@@ -27,7 +27,7 @@
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Status</span>
                 <ng-container *ngIf="build$ | async;let build">
-                    <span class="content-info__sublist-item-value" [status]="build.status"  modelStatus>
+                    <span class="content-info__sublist-item-value model-build-status--{{build.status | lowercase}}" [status]="build.status"  modelStatus >
                         <span #statusText class="status"></span>
                     </span>
                 </ng-container>
@@ -39,7 +39,7 @@
                         [routerLink]="['../../../applications', app.id]"
                         class='application'
                         [ngClass] = "{'application--isLast': isLast}">
-                        <span>{{app.name}}</span>
+                        <span class="application-name">{{app.name}}</span>
                     </span>
                 </span>
             </li>

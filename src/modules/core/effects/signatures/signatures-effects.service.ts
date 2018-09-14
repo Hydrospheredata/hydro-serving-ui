@@ -28,29 +28,29 @@ export class SignaturesEffects {
                             catchError(error => Observable.of(new HydroActions.GetSignaturesFailAction(error)))
                         );
                 } else {
-                    obs = Observable.of(new HydroActions.GetModelBuildSignaturesAction(payload.id));
+                    obs = Observable.of(new HydroActions.GetModelVersionSignaturesAction(payload.id));
                 }
                 return obs;
             })
         );
-
-    @Effect() getModelBuildSignatures$: Observable<Action> = this.actions$
-        .ofType(HydroActions.SignaturesActionTypes.GetModelBuildSignatures)
+    
+    @Effect() getModelVersionSignatures$: Observable<Action> = this.actions$
+        .ofType(HydroActions.SignaturesActionTypes.GetModelVersionSignatures)
         .pipe(
-            map((action: HydroActions.GetModelBuildSignaturesAction) => action.buildId),
-            switchMap(buildId => {
+            map((action: HydroActions.GetModelVersionSignaturesAction) => action.modelVersionId),
+            switchMap(versionId => {
                 return this.signaturesService
-                    .getModelBuildSignatures(buildId)
+                    .getModelVersionSignatures(versionId)
                     .pipe(
                         take(1),
                         map(data => {
-                            return new HydroActions.GetModelBuildSignaturesSuccessAction(data.signatures);
+                            return new HydroActions.GetModelVersionSignaturesSuccessAction(data.signatures);
                         }),
-                        catchError(error => Observable.of(new HydroActions.GetModelBuildSignaturesFailAction(error)))
+                        catchError(error => Observable.of(new HydroActions.GetModelVersionSignaturesFailAction(error)))
                     );
             })
         );
-
+    
     constructor(
         private signaturesService: SignaturesService,
         private actions$: Actions

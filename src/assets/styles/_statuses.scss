@@ -36,5 +36,19 @@
             fill: #e1e4eb;
         }
     }
+}
 
+.model-build-status {
+    &--pending {
+        color: $color--pending;
+    }
+    &--finished {
+        color: $color--success;
+    }
+    &--started {
+        color: $color--light-blue; 
+    }
+    &--failed {
+        color: $color--failed;
+    }
 }
