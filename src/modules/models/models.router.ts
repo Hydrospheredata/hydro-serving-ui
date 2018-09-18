@@ -20,17 +20,16 @@ import { ModelDetailsGuard } from '@models/services';
             {
                 path: 'models',
                 component: ModelsWrapperComponent,
-                children: [
-                    {
-                        path: ':modelId',
-                        component: ModelDetailsComponent,
-                        canActivate: [ModelDetailsGuard]
-                    },
-                    {
-                        path: ':modelId/:modelVersionId',
-                        component: ModelVersionDetailsComponent
-                    }
-                ]
+                children: [{
+                    path: ':modelId',
+                    component: ModelDetailsComponent,
+                    canActivate: [ModelDetailsGuard]
+                },
+                {
+                    path: ':modelId/:modelVersionId',
+                    component: ModelVersionDetailsComponent,
+                    canActivate: [ModelDetailsGuard]
+                }]
             }
         ])
     ],
