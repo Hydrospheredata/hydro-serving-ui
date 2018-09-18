@@ -1,14 +1,15 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, Router, ActivatedRouteSnapshot } from "@angular/router";
+import { CanActivateChild, Router, ActivatedRouteSnapshot } from "@angular/router";
 import { Observable } from "rxjs/Observable";
 import { Store } from "@ngrx/store";
 import { GetModelBuildsAction } from "@models/actions";
 import * as fromModels from '@models/reducers';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, take } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
+import { forkJoin } from "rxjs/observable/forkJoin";
 
 @Injectable()
-export class ModelDetailsGuard implements CanActivate {
+export class ModelDetailsGuard implements CanActivateChild {
     private defaultUrl: string = 'models';
 
     constructor(
@@ -17,18 +18,25 @@ export class ModelDetailsGuard implements CanActivate {
         private router: Router
     ) { }
 
-    canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+    private modelIsLoaded(): Observable<boolean>{
+        return this.store.select(fromModels.getModelEntitiesLoaded).pipe(filter(_ => _), take(1));
+    }
+
+    private modelBuildIsLoaded(): Observable<boolean>{
+        return this.store.select(fromModels.getModelBuildEntitiesLoaded).pipe(filter(_ => _), take(1));
+    }
+
+    canActivateChild(route: ActivatedRouteSnapshot): Observable<boolean> {
         const modelId = Number(route.params.modelId);
 
         this.store.dispatch(new GetModelBuildsAction(modelId));
 
-        return this.store
-            .select(fromModels.getModelEntitiesLoaded)
-            .pipe(
-                filter(loaded => loaded),
-                switchMap(_ => this.store.select(fromModels.getModelEntities)),
-                switchMap(models => {
-                    if(models[modelId]) {
+        return forkJoin(
+            this.modelIsLoaded(), 
+            this.modelBuildIsLoaded()).pipe(
+                switchMap(_ => this.store.select(fromModels.getAllModels)),
+                switchMap((models) => {
+                    if(models.some(model => model.id === modelId)) {
                         if(route.params.modelVersionId !== undefined){
                             const modelVersion = Number(route.params.modelVersionId);
                             return this.checkVersion(modelId, modelVersion);
@@ -47,11 +55,7 @@ export class ModelDetailsGuard implements CanActivate {
     }
 
     checkVersion(modelId: number, modelVersion: number): Observable<boolean>{
-        return this.store
-            .select(fromModels.getModelBuildEntitiesLoaded)
-            .pipe(
-                filter(loaded => loaded),
-                switchMap(_ => this.store.select(fromModels.getAllModelBuilds)),
+        return this.store.select(fromModels.getAllModelBuilds).pipe(
                 switchMap(modelBuilds => {
                     if(modelBuilds.find(modelBuild => modelBuild.version === modelVersion)){
                         return Observable.of(true);
