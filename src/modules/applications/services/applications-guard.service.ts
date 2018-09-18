@@ -5,6 +5,9 @@ import { Store } from '@ngrx/store';
 import * as fromApplication from '@applications/reducers';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { Application } from '@shared/_index';
+import { of } from 'rxjs/observable/of';
+import { filter, take, switchMap} from 'rxjs/operators'
+
 @Injectable()
 export class ApplicationsGuard implements CanActivateChild{
     private defaultUrl: string = '/applications';
@@ -15,33 +18,49 @@ export class ApplicationsGuard implements CanActivateChild{
         public mdlSnackbarService: MdlSnackbarService
     ) { }
 
-    canActivateChild(routerSnapshot: ActivatedRouteSnapshot): Observable<boolean> | boolean {
-        return this.store.select(fromApplication.getApplicationFetchStatus)
-            .filter(this.applicationsIsFetched)
-            .switchMap(_ => {
-                const applicationId = +routerSnapshot.params.id;
-                return this.isApplicationExist(applicationId)
+    canActivateChild(routerSnapshot: ActivatedRouteSnapshot): Observable<boolean>{
+        return this.applicationsAreLoaded().pipe(
+            switchMap( _ => this.store.select(fromApplication.getAllApplications)),
+            switchMap((applications: Application[]) => {
+                const applicationId = Number(routerSnapshot.params.id);
+                const application: Application = applications.find(app => app.id === applicationId);
+
+                if(application){
+                    if(routerSnapshot.params.stageId !== undefined){
+                        const stageId = Number(routerSnapshot.params.stageId);
+                        return this.checkStage(application, stageId);
+                    }
+                    return Observable.of(true);
+                } else {
+                    this.router.navigate([this.defaultUrl]);
+                    this.mdlSnackbarService.showSnackbar({
+                        message: `Application with id = ${applicationId} doesn't exist`,
+                        timeout: 5000
+                    });
+                    return of(false);
+                }
             })
+        )
     }
 
-    private applicationsIsFetched(fetchStatus): boolean {
-        return fetchStatus.fetchedBefore && !fetchStatus.fetching;
+    private applicationsAreLoaded(): Observable<boolean> {
+        return this.store.select(fromApplication.getApplicationEntitiesLoaded).pipe(
+            filter(loaded => loaded),
+            take(1)
+        );
     }
 
-    private isApplicationExist(applicationId: number): Observable<boolean> {
-        return this.store.select(fromApplication.getAllApplications).map((applications: Application[]) => {
-            const isApplicationExist: boolean = applications.some(app => app.id === applicationId);
-
-            if(isApplicationExist){
-                return true;
-            } else {
-                this.router.navigate([this.defaultUrl]);
-                this.mdlSnackbarService.showSnackbar({
-                    message: `Application with id = ${applicationId} doesn't exist`,
-                    timeout: 3000
-                });
-                return false;
-            }
-        })
+    private checkStage(application: Application, stageId: number){
+        const stage = application.executionGraph.stages[stageId];
+        if(stage){
+            return of(true);
+        } else {
+            this.router.navigate([this.defaultUrl, application.id]);
+            this.mdlSnackbarService.showSnackbar({
+                message: `Stage: ${stageId} doesn't exist for application with id: ${application.id}`,
+                timeout: 5000
+            });
+            return of(false);
+        }
     }
 }

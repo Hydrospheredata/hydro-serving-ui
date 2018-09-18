@@ -2,20 +2,28 @@ import { Application } from '@shared/models/_index';
 import { ApplicationActions, ApplicationActionTypes } from '@applications/actions';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
-export interface State extends EntityState<Application> { }
+export interface State extends EntityState<Application> { 
+    loading: boolean;
+    loaded: boolean;
+}
 
 export const adapter: EntityAdapter<Application> = createEntityAdapter<Application>({
     selectId: (application: Application) => application.id,
 });
 
-export const initialState: State = adapter.getInitialState()
+export const initialState: State = adapter.getInitialState({
+    loading: false,
+    loaded: false,
+})
 
 export function reducer(state = initialState, action: ApplicationActions): State {
     switch (action.type) {
+        case ApplicationActionTypes.Get:
+            return { ...state, loading: true }
         case ApplicationActionTypes.GetSuccess:
-            return adapter.addAll(action.payload, state);
+            return adapter.addAll(action.payload, {...state, loading: false, loaded: true });
         case ApplicationActionTypes.GetFail:
-            return { ...state };
+            return { ...state, loading: false };
         case ApplicationActionTypes.AddSuccess:
             return adapter.addOne(action.payload, state);
         case ApplicationActionTypes.UpdateSuccess:
@@ -45,22 +53,5 @@ export function reducer(state = initialState, action: ApplicationActions): State
             return state;
     }
 }
-
-export interface IApplicationFetchStatus {
-    fetchedBefore: boolean;
-    fetching: boolean;
-}
-
-export function applicationFetchStatusReducer(state = {fetchedBefore: false, fetching: false}, action: ApplicationActions): IApplicationFetchStatus {
-    switch(action.type){
-        case(ApplicationActionTypes.Get):
-            return {...state, fetching: true};
-        case(ApplicationActionTypes.GetSuccess):{
-            return {...state, fetchedBefore: true, fetching: false};
-        }
-        default:
-            return state;
-    }
-};
 
 export const getIds = (state: State) => state.ids;

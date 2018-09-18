@@ -5,7 +5,6 @@ import { Application } from '@shared/models/_index';
 
 export interface ApplicationsState {
     applications: fromApplications.State;
-    fetchStatus: fromApplications.IApplicationFetchStatus;
 }
 
 export interface State extends fromRoot.HydroServingState {
@@ -13,8 +12,7 @@ export interface State extends fromRoot.HydroServingState {
 }
 
 export const reducers: ActionReducerMap<ApplicationsState> = {
-    applications: fromApplications.reducer,
-    fetchStatus: fromApplications.applicationFetchStatusReducer
+    applications: fromApplications.reducer
 }
 
 export const getApplicationState = createFeatureSelector<ApplicationsState>('applications');
@@ -23,6 +21,11 @@ export const getApplicationEntitiesState = createSelector(
     getApplicationState,
     state => state.applications
 );
+
+export const getApplicationEntitiesLoaded = createSelector(
+    getApplicationEntitiesState,
+    state => state.loaded
+)
 
 export const {
     selectEntities: getApplicationEntities,
@@ -71,8 +74,3 @@ export const getCurrentStage = createSelector(
     getSelectedStageId,
     (application: Application, stageId) => application && application.executionGraph.stages[stageId]
 )
-
-export const getApplicationFetchStatus = createSelector(
-    getApplicationState,
-    state => state.fetchStatus
-);
