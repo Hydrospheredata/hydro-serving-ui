@@ -22,8 +22,8 @@ export class SignaturesService {
             });
     }
 
-    public getModelBuildSignatures(id: number) {
-        return this.http.get(`${this.baseAPIUrl}/version/${id}/flatContract`)
+    public getModelVersionSignatures(versionId: number) {
+        return this.http.get(`${this.baseAPIUrl}/version/${versionId}/flatContract`)
             .map((res: Response): any => {
                 return res.json();
             });

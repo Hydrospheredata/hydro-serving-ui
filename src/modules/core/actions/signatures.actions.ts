@@ -5,9 +5,9 @@ export enum SignaturesActionTypes {
     GetSignatures = '[Signatures] Get all signatures',
     GetSignaturesSuccess = '[Signatures] Get all signatures with success',
     GetSignaturesFail = '[Signatures] Get all signaturesl with fail',
-    GetModelBuildSignatures = '[Signature of model\'s build] Get all signatures for current model\'s build',
-    GetModelBuildSignaturesSuccess = '[Signature of model\'s build] Get all signatures for current model\'s build with success',
-    GetModelBuildSignaturesFail = '[Signature of model\'s build] Get all signatures for current model\'s build with fail'
+    GetModelVersionSignatures = '[Signature of model\'s version] Get all signatures for current model\'s version',
+    GetModelVersionSignaturesSuccess = '[Signature of model\'s version] Get all signatures for current model\'s version with success',
+    GetModelVersionSignaturesFail = '[Signature of model\'s version] Get all signatures for current model\'s version with fail'
 }
 
 export class GetSignaturesAction implements Action {
@@ -25,27 +25,26 @@ export class GetSignaturesFailAction implements Action {
     constructor(public error) { }
 }
 
-export class GetModelBuildSignaturesAction implements Action {
-    readonly type = SignaturesActionTypes.GetModelBuildSignatures;
-    constructor(public buildId: number) { }
+export class GetModelVersionSignaturesAction implements Action {
+    readonly type = SignaturesActionTypes.GetModelVersionSignatures;
+    constructor(public modelVersionId: number) { }
 }
 
-export class GetModelBuildSignaturesSuccessAction implements Action {
-    readonly type = SignaturesActionTypes.GetModelBuildSignaturesSuccess;
+export class GetModelVersionSignaturesSuccessAction implements Action {
+    readonly type = SignaturesActionTypes.GetModelVersionSignaturesSuccess;
     constructor(public signatures: Signature[]) { }
 }
 
-export class GetModelBuildSignaturesFailAction implements Action {
-    readonly type = SignaturesActionTypes.GetModelBuildSignaturesFail;
+export class GetModelVersionSignaturesFailAction implements Action {
+    readonly type = SignaturesActionTypes.GetModelVersionSignaturesFail;
     constructor(public error) { }
 }
 
 
-
 export type SignaturesActions
-    = GetModelBuildSignaturesAction
-    | GetModelBuildSignaturesSuccessAction
-    | GetModelBuildSignaturesFailAction
+    = GetModelVersionSignaturesAction
+    | GetModelVersionSignaturesSuccessAction
+    | GetModelVersionSignaturesFailAction
     | GetSignaturesAction
     | GetSignaturesSuccessAction
     | GetSignaturesFailAction;
