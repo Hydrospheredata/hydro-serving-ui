@@ -28,6 +28,16 @@ export const getModelEntitiesState = createSelector(
     state => state.models
 );
 
+export const getModelEntitiesLoading = createSelector(
+    getModelEntitiesState,
+    state => state.loading
+);
+
+export const getModelEntitiesLoaded = createSelector(
+    getModelEntitiesState,
+    state => state.loaded
+);
+
 export const getModelVersionEntitiesState = createSelector(
     getModelState,
     state => state.modelVersion
@@ -36,6 +46,16 @@ export const getModelVersionEntitiesState = createSelector(
 export const getModelBuildEntitiesState = createSelector(
     getModelState,
     state => state.modelBuild
+)
+
+export const getModelBuildEntitiesLoading = createSelector(
+    getModelBuildEntitiesState,
+    state => state.loading
+)
+
+export const getModelBuildEntitiesLoaded = createSelector(
+    getModelBuildEntitiesState,
+    state => state.loaded
 )
 
 export const {

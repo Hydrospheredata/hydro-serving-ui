@@ -1,33 +1,66 @@
 import { Injectable } from '@angular/core';
-import { CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, CanActivateChild } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import { HydroServingState } from '@core/reducers';
-import { GetApplicationsAction } from '@applications/actions';
 import * as fromApplication from '@applications/reducers';
-import { switchMap } from 'rxjs/operators';
+import { MdlSnackbarService } from '@angular-mdl/core';
+import { Application } from '@shared/_index';
+import { of } from 'rxjs/observable/of';
+import { filter, take, switchMap} from 'rxjs/operators'
 
 @Injectable()
-export class ApplicationsGuard implements CanActivate {
+export class ApplicationsGuard implements CanActivateChild{
+    private defaultUrl: string = '/applications';
+
     constructor(
-        private store: Store<HydroServingState>
+        private store: Store<fromApplication.State>,
+        private router: Router,
+        public mdlSnackbarService: MdlSnackbarService
     ) { }
 
-    isApplicationsExist(): Observable<boolean> {
-        return this.store.select(fromApplication.getTotalApplications)
-            .map(entities => !!entities)
+    canActivateChild(routerSnapshot: ActivatedRouteSnapshot): Observable<boolean>{
+        return this.applicationsAreLoaded().pipe(
+            switchMap( _ => this.store.select(fromApplication.getAllApplications)),
+            switchMap((applications: Application[]) => {
+                const applicationId = Number(routerSnapshot.params.id);
+                const application: Application = applications.find(app => app.id === applicationId);
+
+                if(application){
+                    if(routerSnapshot.params.stageId !== undefined){
+                        const stageId = Number(routerSnapshot.params.stageId);
+                        return this.checkStage(application, stageId);
+                    }
+                    return Observable.of(true);
+                } else {
+                    this.router.navigate([this.defaultUrl]);
+                    this.mdlSnackbarService.showSnackbar({
+                        message: `Application with id = ${applicationId} doesn't exist`,
+                        timeout: 5000
+                    });
+                    return of(false);
+                }
+            })
+        )
     }
 
-    canActivate() {
-        return this.isApplicationsExist()
-            .pipe(
-                switchMap(isExist => {
-                    if (isExist) {
-                        return Observable.of(isExist);
-                    }
-                    this.store.dispatch(new GetApplicationsAction);
-                    return Observable.of(true);
-                })
-            )
+    private applicationsAreLoaded(): Observable<boolean> {
+        return this.store.select(fromApplication.getApplicationEntitiesLoaded).pipe(
+            filter(loaded => loaded),
+            take(1)
+        );
+    }
+
+    private checkStage(application: Application, stageId: number){
+        const stage = application.executionGraph.stages[stageId];
+        if(stage){
+            return of(true);
+        } else {
+            this.router.navigate([this.defaultUrl, application.id]);
+            this.mdlSnackbarService.showSnackbar({
+                message: `Stage: ${stageId} doesn't exist for application with id: ${application.id}`,
+                timeout: 5000
+            });
+            return of(false);
+        }
     }
 }

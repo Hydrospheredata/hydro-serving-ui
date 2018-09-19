@@ -22,6 +22,11 @@ export const getApplicationEntitiesState = createSelector(
     state => state.applications
 );
 
+export const getApplicationEntitiesLoaded = createSelector(
+    getApplicationEntitiesState,
+    state => state.loaded
+)
+
 export const {
     selectEntities: getApplicationEntities,
     selectAll: getAllApplications,

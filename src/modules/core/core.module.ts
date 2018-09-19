@@ -6,12 +6,12 @@ import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
-
-import { NavbarComponent, LoaderComponent } from './_index';
-
 import { CodemirrorModule } from 'ng2-codemirror';
 // import { ClipboardModule } from 'ngx-clipboard';
 import { EffectsModule } from '@ngrx/effects';
+
+// Components
+import { NavbarComponent, LoaderComponent, PageNotFoundComnonent } from './_index';
 
 // Services
 import {
@@ -101,6 +101,7 @@ import { MetricsService } from '@core/services/metrics/metrics.service';
     declarations: [
         NavbarComponent,
         LoaderComponent,
+        PageNotFoundComnonent
     ],
     providers: [
         ModelBuilder,

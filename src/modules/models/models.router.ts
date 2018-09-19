@@ -20,11 +20,11 @@ import { ModelDetailsGuard } from '@models/services';
             {
                 path: 'models',
                 component: ModelsWrapperComponent,
+                canActivateChild: [ModelDetailsGuard],
                 children: [
                     {
                         path: ':modelId',
-                        component: ModelDetailsComponent,
-                        canActivate: [ModelDetailsGuard]
+                        component: ModelDetailsComponent
                     },
                     {
                         path: ':modelId/:modelVersionId',

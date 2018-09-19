@@ -58,6 +58,7 @@ export class ApplicationsEffects {
                                 message: 'Application was successfully added',
                                 timeout: 5000
                             });
+                            this.router.navigate(['/applications', response.id]);
                             return new HydroActions.AddApplicationSuccessAction(new Application(response));
                         }),
                         catchError(error => {
