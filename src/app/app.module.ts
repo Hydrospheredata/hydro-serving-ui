@@ -18,6 +18,12 @@ import { ProfilesModule } from '@profiles/profiles.module';
 // Dialogs
 import * as Dialog from '@components/dialogs/_index';
 
+import {ModelSelectorComponent} from './components/dialogs/dialog-add-application.component/model-selector.component'
+import {KafkaStreamingComponent} from '@components/dialogs/dialog-add-application.component/kafka-streaming.component'
+import { ApplicationStageComponent } from '@components/dialogs/dialog-add-application.component/application-stage.component'
+import { ServiceComponent } from '@components/dialogs/dialog-add-application.component/service.component'
+
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -25,12 +31,16 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogTestComponent,
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
-        Dialog.DialogAddServiceComponent,
+        Dialog.DialogAddApplicationComponent,
         Dialog.DialogAddMetricComponent,
         Dialog.DialogDeleteMetricComponent,
         Dialog.DialogUpdateModelVersionComponent,
         Dialog.DialogDeleteModelComponent,
-        Dialog.DialogModelsEmptyComponent
+        Dialog.DialogModelsEmptyComponent,
+        ModelSelectorComponent,
+        KafkaStreamingComponent,
+        ApplicationStageComponent,
+        ServiceComponent
     ],
     imports: [
         RouterModule,
@@ -50,12 +60,13 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogTestComponent,
         Dialog.DialogUpdateServiceComponent,
         Dialog.DialogDeleteServiceComponent,
-        Dialog.DialogAddServiceComponent,
+        Dialog.DialogAddApplicationComponent,
         Dialog.DialogAddMetricComponent,
         Dialog.DialogDeleteMetricComponent,
         Dialog.DialogUpdateModelVersionComponent,
         Dialog.DialogDeleteModelComponent,
-        Dialog.DialogModelsEmptyComponent
+        Dialog.DialogModelsEmptyComponent,
+        ModelSelectorComponent
     ],
     bootstrap: [AppComponent]
 })

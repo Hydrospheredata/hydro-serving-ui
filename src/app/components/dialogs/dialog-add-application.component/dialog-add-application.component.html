@@ -1,0 +1,23 @@
+<!-- <hydro-applications-dialog (submitEvent)="onSubmit($event)" actionName='Add'></hydro-applications-dialog> -->
+
+<form class="applciation-form" [formGroup]="applicationForm">
+    <div>
+        <label for="applicationName">Application name</label>
+        <input type="text" formControlName="applicationName" id="applicationName">
+    </div>
+
+    <kafka-streaming 
+        formArrayName="kafkaStreaming"
+        [kafkaFormArray]="kafkaFormArray">
+    </kafka-streaming>
+
+    Stages:
+    <application-stage
+        formArrayName="stages"
+        [applicationStagesFormArray]="applicationStagesFormArray">
+    </application-stage>
+
+    <div>
+        {{applicationForm.value | json}}
+    </div>
+</form>

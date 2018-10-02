@@ -1,3 +1,5 @@
+@import 'variables.scss';
+
 .mdl-textfield {
     width: 100%;
     padding: 0;
@@ -11,9 +13,13 @@
     &__input {
         border: none;
         padding: 7px 12px;
-        background-color: #e9ecf2;
-        border-radius: 5px;
+        background-color: rgba($color: lightgrey, $alpha: .2);
+        border-radius: 0px;
+        border-bottom: 2px grey solid;
         color: #04143c;
+        &:focus {
+            border-bottom: 2px $color--blue solid;
+        }
     }
 }
 // hack for dialog-model-build

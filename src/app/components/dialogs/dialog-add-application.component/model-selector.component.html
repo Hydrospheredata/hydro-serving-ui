@@ -1,0 +1,24 @@
+
+<div [formGroup]="group" class="model">
+    <div class="model__item">
+        <span class="model__item-label">
+            Model
+        </span>
+        <mdl-select formControlName="modelId" class="model__item">
+            <mdl-option 
+                *ngFor="let model of models$ | async"
+                [value]="model.id">{{model.name}}</mdl-option>
+        </mdl-select>
+    </div>
+
+    <div class="model__item">
+        <span class="model__item-label">
+                Model version
+        </span>
+        <mdl-select formControlName="modelVersionId" class="model__item">
+            <mdl-option 
+                *ngFor="let modelVersion of modelVersions$ | async"
+                [value]="modelVersion.id">{{modelVersion.id}}</mdl-option>
+        </mdl-select>
+    </div>
+</div>

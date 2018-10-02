@@ -1,0 +1,11 @@
+<div *ngFor="let stage of applicationStagesFormArray.controls;index as stageIdx" 
+    [formGroup]="stage"
+    class="stage">
+    <span>Stage_{{stageIdx}}</span>
+    <services
+        formArrayName="services"
+        [servicesFormArray]="stage.get('services')">
+    </services>
+    <span (click)="addServiceToStage(stage)"> add service</span>
+</div>
+<span (click)="addStageControl()">+ add stage</span>

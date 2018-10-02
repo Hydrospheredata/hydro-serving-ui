@@ -7,7 +7,7 @@ import { Application } from '@shared/models/_index';
 // import { HydroServingState } from '@core/reducers';
 import * as fromApplications from '@applications/reducers';
 import * as fromModels from '@models/reducers';
-import { DialogAddServiceComponent, DialogModelsEmptyComponent } from '@components/dialogs/_index';
+import { DialogAddApplicationComponent, DialogModelsEmptyComponent } from '@components/dialogs/_index';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -55,7 +55,7 @@ export class ApplicationsWrapperComponent implements OnDestroy{
 
     private showAddServiceDialog(): void{
         this.dialog.showCustomDialog({
-            component: DialogAddServiceComponent,
+            component: DialogAddApplicationComponent,
             styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
             classes: '',
             isModal: true,
