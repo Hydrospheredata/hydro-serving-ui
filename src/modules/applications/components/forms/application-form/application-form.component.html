@@ -1,0 +1,41 @@
+
+<form class="applciation-form" [formGroup]="applicationForm">
+    <div class="application-name">
+        <label class="application-name__label" for="applicationName">Application name</label>
+        <input class="application-name__input" type="text" formControlName="applicationName" id="applicationName">
+    </div>
+    <ng-container *ngIf="applicationForm.get('applicationName').errors">
+        <div class="error" *ngFor="let error of applicationForm.get('applicationName').errors | iterateAsArray">
+            {{ applicationForm.get('applicationName').errors[error] }}
+        </div>
+    </ng-container>
+    <kafka-form 
+        formArrayName="kafkaStreaming"
+        [kafkaFormArray]="kafkaFormArray">
+    </kafka-form>
+    <div formArrayName="stages">
+        <div *ngFor="let stage of applicationStagesFormArray.controls;index as stageIdx" 
+            [formGroup]="stage"
+            class="stage">
+            <span class="stage__name">Stage_{{stageIdx}}</span>
+            <span class="stage__remove-button">remove</span>
+
+            <div formArrayName="services">
+                <ng-container *ngIf="stage.get('services').errors">
+                    <div class="error" *ngFor="let error of stage.get('services').errors | iterateAsArray">
+                        {{stage.get('services').errors[error]}}
+                    </div>
+                </ng-container>
+                <div *ngFor="let service of stage.get('services').controls;index as i">
+                    <hydro-service-form [group]="service"></hydro-service-form>
+                </div>
+
+            </div>
+            <span (click)="addServiceToStage(stage)"  class="stage__add-service-link"> add service</span>
+        </div>
+    </div>
+    <span (click)="addStageControl()" class="add-stage-link">add stage</span>
+
+    {{applicationForm.value | json}}
+</form>
+

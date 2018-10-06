@@ -17,10 +17,20 @@ import {
     ApplicationsWrapperComponent, 
     ApplicationsItemDetailComponent, 
     ApplicationsStageDetailComponent, 
-    ApplicationsDialogComponent, ApplicationChartComponent
+    ApplicationsDialogComponent, 
+    ApplicationChartComponent,
+    ApplicationFormComponent,
+    ModelSelectorFormComponent,
+    KafkaFormComponent,
+    ServiceFormComponent
+    
 } from '@applications/components';
-import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } from '@applications/services';
-
+import { 
+    ApplicationsService, 
+    ApplicationsBuilderService, 
+    ApplicationsGuard,
+    ApplicationFormService
+} from '@applications/services';
 
 
 @NgModule({
@@ -41,9 +51,14 @@ import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } fr
         ApplicationsWrapperComponent,
         ApplicationsItemDetailComponent,
         ApplicationsStageDetailComponent,
-        ApplicationsDialogComponent, ApplicationChartComponent
+        ApplicationsDialogComponent, 
+        ApplicationChartComponent,
+        ApplicationFormComponent,
+        ModelSelectorFormComponent,
+        KafkaFormComponent,
+        ServiceFormComponent
     ],
-    providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard],
-    exports: [ApplicationsDialogComponent]
+    providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard, ApplicationFormService],
+    exports: [ApplicationsDialogComponent, ApplicationFormComponent]
 })
 export class ApplicationsModule { }

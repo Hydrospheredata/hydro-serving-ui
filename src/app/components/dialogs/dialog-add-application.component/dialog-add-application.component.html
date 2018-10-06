@@ -1,23 +1,23 @@
-<!-- <hydro-applications-dialog (submitEvent)="onSubmit($event)" actionName='Add'></hydro-applications-dialog> -->
 
-<form class="applciation-form" [formGroup]="applicationForm">
-    <div>
-        <label for="applicationName">Application name</label>
-        <input type="text" formControlName="applicationName" id="applicationName">
+<div class="dialog">
+    <div class="dialog__header">
+        <span class="dialog__title">
+            Add application
+        </span>
+        <hydro-icon type="icon-close" class="dialog__close-icon" (click)="close()"></hydro-icon>
     </div>
-
-    <kafka-streaming 
-        formArrayName="kafkaStreaming"
-        [kafkaFormArray]="kafkaFormArray">
-    </kafka-streaming>
-
-    Stages:
-    <application-stage
-        formArrayName="stages"
-        [applicationStagesFormArray]="applicationStagesFormArray">
-    </application-stage>
-
-    <div>
-        {{applicationForm.value | json}}
+    <div class="dialog__content">
+        <hydro-application-form (onSubmit)="onSubmit($event)" #form></hydro-application-form>
     </div>
-</form>
+    <div class="dialog__footer">
+        <div class="buttons">
+            <div class="button button--flat" (click)="close()">cancel</div>
+            <button 
+                class="button button--primary" 
+                [disabled]="!form.applicationForm.valid"
+                (click)="form.submit()">
+                add application
+            </button>
+        </div>
+    </div>
+</div>

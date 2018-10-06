@@ -1,0 +1,23 @@
+
+<div class="dialog">
+        <div class="dialog__header">
+            <span class="dialog__title">
+                  Edit application
+            </span>
+            <hydro-icon type="icon-close" class="dialog__close-icon" (click)="close()"></hydro-icon>
+        </div>
+        <div class="dialog__content">
+            <hydro-application-form (onSubmit)="onSubmit($event)" [data]="data" #form></hydro-application-form>
+        </div>
+        <div class="dialog__footer">
+            <div class="buttons">
+                <div class="button button--flat" (click)="close()">cancel</div>
+                <button 
+                    class="button button--primary" 
+                    [disabled]="!form.applicationForm.valid"
+                    (click)="form.submit()">
+                    edit application
+                </button>
+            </div>
+        </div>
+    </div>

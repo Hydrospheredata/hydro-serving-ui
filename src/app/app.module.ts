@@ -18,18 +18,12 @@ import { ProfilesModule } from '@profiles/profiles.module';
 // Dialogs
 import * as Dialog from '@components/dialogs/_index';
 
-import {ModelSelectorComponent} from './components/dialogs/dialog-add-application.component/model-selector.component'
-import {KafkaStreamingComponent} from '@components/dialogs/dialog-add-application.component/kafka-streaming.component'
-import { ApplicationStageComponent } from '@components/dialogs/dialog-add-application.component/application-stage.component'
-import { ServiceComponent } from '@components/dialogs/dialog-add-application.component/service.component'
-
-
 @NgModule({
     declarations: [
         AppComponent,
         Dialog.DialogModelBuildComponent,
         Dialog.DialogTestComponent,
-        Dialog.DialogUpdateServiceComponent,
+        Dialog.DialogUpdateApplicationComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddApplicationComponent,
         Dialog.DialogAddMetricComponent,
@@ -37,10 +31,6 @@ import { ServiceComponent } from '@components/dialogs/dialog-add-application.com
         Dialog.DialogUpdateModelVersionComponent,
         Dialog.DialogDeleteModelComponent,
         Dialog.DialogModelsEmptyComponent,
-        ModelSelectorComponent,
-        KafkaStreamingComponent,
-        ApplicationStageComponent,
-        ServiceComponent
     ],
     imports: [
         RouterModule,
@@ -58,7 +48,7 @@ import { ServiceComponent } from '@components/dialogs/dialog-add-application.com
     entryComponents: [
         Dialog.DialogModelBuildComponent,
         Dialog.DialogTestComponent,
-        Dialog.DialogUpdateServiceComponent,
+        Dialog.DialogUpdateApplicationComponent,
         Dialog.DialogDeleteServiceComponent,
         Dialog.DialogAddApplicationComponent,
         Dialog.DialogAddMetricComponent,
@@ -66,7 +56,6 @@ import { ServiceComponent } from '@components/dialogs/dialog-add-application.com
         Dialog.DialogUpdateModelVersionComponent,
         Dialog.DialogDeleteModelComponent,
         Dialog.DialogModelsEmptyComponent,
-        ModelSelectorComponent
     ],
     bootstrap: [AppComponent]
 })

@@ -1,0 +1,85 @@
+@import "variables.scss";
+
+.application-name {
+    display: flex;
+    flex-direction: column;
+    margin: 16px 0 9px;
+    &__label {
+        font-size: 18px;
+        line-height: 24px;
+    }
+    &__input {
+        font-size: 16px;
+        padding: 4px;
+        &:focus {
+            border-color: $color--light-blue;
+        }
+    }
+}
+
+.stages {
+    &__label {
+        font-size: 24px;
+        line-height: 36px;
+    } 
+}
+
+.stage {
+    position: relative;
+    border: 2px solid $color--blue;
+    margin-bottom: 36px;
+    padding: 24px 12px 8px;
+    &__name {
+        background-color: white;
+        font-size: 18px;
+        line-height: 24px;
+        padding: 0 8px;
+        position: absolute;
+        top: -12px;
+    }
+
+    &__remove-button {
+        background-color: white;
+        border: 2px tomato solid;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 0px 4px;
+        padding: 2px 12px;
+        position: absolute;
+        right: 24px;
+        top: -15px;
+        &:hover {
+            color: white;
+            background-color: tomato;
+        }
+    }
+
+    &__add-service-link {
+        color: $color--light-blue;
+        cursor: pointer;
+        margin-left: 12px;
+        text-transform: uppercase;
+        &:hover {
+            color: #1c7eff;
+        }
+    }
+}
+
+.add-stage-link {
+    color: $color--light-blue;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 24px;
+    text-transform: uppercase;
+    &:hover {
+        color: #1c7eff;
+    }
+}
+
+.error {
+    background-color: rgba($color: red, $alpha: 0.1);
+    border-radius: 4px;
+    color: red;
+    padding: 4px 8px;
+    margin-bottom: 12px;
+}

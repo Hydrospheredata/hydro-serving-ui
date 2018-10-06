@@ -1,0 +1,59 @@
+@import "variables.scss";
+
+.service {
+    margin-left: 8px;
+    padding: 4px 10px;
+    margin-bottom: 20px;
+    &__row {
+        margin-left: 24px;
+        display: flex;
+    }
+    &__field {
+        display: flex;
+        flex-direction: column;
+        margin-right: 16px;
+        width: 176px;
+        &-label {
+            font-size: 12px;
+            line-height: 12px;
+        }
+        &-input {
+            padding: 4px 8px;
+            font-size: 12px;            
+            border: 2px grey solid;
+            &:focus {
+                border-color: $color--blue;
+            }
+            &.ng-invalid {
+                border-color: tomato;
+            }
+        }
+        &--is-last {
+            margin-right: 0;
+        }
+    }
+}
+
+.form-group {
+    display: flex;
+}
+
+.hydro-select {
+    & .mdl-select .mdl-textfield__input {
+        border-radius: 0; 
+    }
+}
+
+.model {
+    display: flex;
+    margin-bottom: 8px;
+    &__item {
+        width: 200px;
+        margin-right: 12px;
+        &-label {
+            color: #818994;
+            font-size: 12px;
+            line-height: 22px;
+        }
+    }
+}

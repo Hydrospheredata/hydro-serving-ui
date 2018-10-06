@@ -2,11 +2,11 @@ import { Component, Input, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
 
 @Component({
-    selector: 'kafka-streaming',
-    templateUrl: './kafka-streaming.component.html',
-    styleUrls: ['./kafka-streaming.component.scss']
+    selector: 'kafka-form',
+    templateUrl: './kafka-form.component.html',
+    styleUrls: ['./kafka-form.component.scss']
 })
-export class KafkaStreamingComponent implements OnInit{
+export class KafkaFormComponent implements OnInit{
     @Input()
     public kafkaFormArray: FormArray;
 

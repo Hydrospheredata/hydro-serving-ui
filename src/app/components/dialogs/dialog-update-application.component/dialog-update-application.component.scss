@@ -1,0 +1,54 @@
+@import "variables.scss";
+
+.dialog {
+    &__content {
+        padding: 0 24px;
+        max-height: calc(90vh - 144px);
+        overflow: scroll;
+    }
+    &__title {
+
+    }
+    &__header {
+        background-color: $color--blue;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        font-size: 24px;
+        padding: 16px 24px;
+    }
+    &__close-icon {
+        cursor: pointer;
+        color: white;
+        height: 16px;
+        width: 16px;
+    }
+    &__footer {
+        height: 60px;
+        border-top: 2px solid lightgray;
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px;
+    align-items: center;
+    height: 100%;
+}
+
+.button {
+    font-size: 20px;
+    line-height: 24px;
+    text-transform: uppercase;
+    cursor: pointer;
+    &--primary {
+        padding: 8px 24px;
+        background-color: #1c7eff;
+        color: white;
+        border-radius: 4px;
+    }
+    &--flat {
+        color: #1c7eff;
+    }
+}

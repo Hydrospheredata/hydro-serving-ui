@@ -17,7 +17,7 @@ import * as fromApplications from '@applications/reducers';
 import * as fromModels from '@models/reducers';
 
 import {
-    DialogUpdateServiceComponent,
+    DialogUpdateApplicationComponent,
     DialogDeleteServiceComponent,
     DialogTestComponent,
     injectableServiceUpdate,
@@ -132,7 +132,7 @@ export class ApplicationsItemDetailComponent {
 
     public editApplication(application: Observable<Application>) {
         this.dialog.showCustomDialog({
-            component: DialogUpdateServiceComponent,
+            component: DialogUpdateApplicationComponent,
             styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
             classes: '',
             isModal: true,

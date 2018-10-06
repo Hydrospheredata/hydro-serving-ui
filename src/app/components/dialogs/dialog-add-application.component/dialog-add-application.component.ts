@@ -1,42 +1,44 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
-import { FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
+import { 
+    Component, 
+    ViewChild
+} from '@angular/core';
+import { MdlDialogReference } from '@angular-mdl/core';
+import { ApplicationFormComponent } from '@applications/components/forms/application-form/application-form.component';
+import { 
+    DialogBase, 
+    Application
+} from '@shared/_index';
+import { HydroServingState } from '@core/reducers';
+import { Store } from '@ngrx/store';
+import * as HydroActions from '@applications/actions/applications.actions';
 
 
-//Components
-import { ModelSelectorComponent } from '@app/components/dialogs/dialog-add-application.component/model-selector.component'
-import { KafkaStreamingComponent } from '@app/components/dialogs/dialog-add-application.component/kafka-streaming.component'
 
 
 @Component({
     selector: 'hydro-dialog-add-application',
     templateUrl: './dialog-add-application.component.html',
-    entryComponents: [ModelSelectorComponent, KafkaStreamingComponent]
+    styleUrls: ['./dialog-add-application.component.scss']
 })
-export class DialogAddApplicationComponent implements OnChanges, OnInit {
-    public applicationForm: FormGroup;
-
-    get applicationStagesFormArray(){
-        return this.applicationForm.get('stages') as FormArray;
-    }
-
-    get kafkaFormArray(){
-        return this.applicationForm.get('kafkaStreaming') as FormArray;
-    }
-
-    ngOnChanges(){
-        console.log(1)
-    }
-
-    ngOnInit(){
-        this.applicationForm = this.fb.group({
-            applicationName: ['', Validators.required],
-            kafkaStreaming: this.fb.array([]),
-            stages: this.fb.array([])
-        })
-    }
+export class DialogAddApplicationComponent extends DialogBase {
+    @ViewChild('applicationForm') ApplicationFormComponent: ApplicationFormComponent;
 
     constructor(
-        private fb: FormBuilder,
-    ) {}
+        public dialogRef: MdlDialogReference,
+        private store: Store<HydroServingState>,
+    ){
+        super(dialogRef);
+    }
+
+    close(){
+        this.dialogRef.hide()
+    }
+
+    public onSubmit(data){
+        this.store.dispatch(new HydroActions.AddApplicationAction(new Application(data)));
+        this.close();
+    }
 }
+
+
 
