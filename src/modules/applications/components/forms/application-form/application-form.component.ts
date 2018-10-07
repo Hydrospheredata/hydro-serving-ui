@@ -7,7 +7,8 @@ import {
 } from '@angular/core';
 import { 
     FormArray, 
-    FormGroup 
+    FormGroup, 
+    FormControl
 } from '@angular/forms';
 //providers
 import { ApplicationFormService } from '@applications/services/application-form.service'
@@ -75,6 +76,23 @@ export class ApplicationFormComponent implements OnInit {
         };
 
         this.submitEvent.emit(formData);
+    }
+
+    public showRemoveStageButton(): boolean {
+       return  this.applicationStagesFormArray.value.length > 1
+    }
+
+    public removeStage(stageIdx: number) {
+        this.applicationStagesFormArray.removeAt(stageIdx);
+    }
+
+    public showRemoveServiceIcon(stage: FormControl): boolean{
+        return stage.get('services').value.length > 1;
+    }
+
+    public removeService(stage: FormControl, serviceIdx: number): void {
+        const services = stage.get('services') as FormArray;
+        services.removeAt(serviceIdx);
     }
 
     constructor(

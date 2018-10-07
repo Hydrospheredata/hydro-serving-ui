@@ -8,7 +8,7 @@
     </hydro-model-selector-form>
     <div class="service__row">
         <div class="service__field">
-            <label class="service__field-label" [attr.for]="'runtime_'">Runtime</label>
+            <label class="service__field-label" [attr.for]="'runtime_' + index">Runtime</label>
             <mdl-select formControlName="runtime">
                 <mdl-option *ngFor="let runtime of runtimes" [value]="runtime.id">
                     <span class="docker-image__name">{{ runtime.name | getDockerImage: 'name' }}</span>
@@ -19,7 +19,7 @@
             </mdl-select>
         </div>
         <div class="service__field">
-            <label class="service__field-label" [attr.for]="'environment_'">Environment</label>
+            <label class="service__field-label" [attr.for]="'environment_' + index">Environment</label>
             <mdl-select  formControlName="environment">
                 <mdl-option *ngFor="let environment of (environments$ | async)" [value]="environment.id">
                     {{ environment.name === 'Without Env' ? 'none' : environment.name }}
@@ -27,8 +27,8 @@
             </mdl-select>
         </div>
         <div class="service__field">
-            <label class="service__field-label" [attr.for]="'signature_'">Signature name</label>
-            <input class="service__field-input" [attr.id]="'signature_'" type="text" formControlName="signatureName">
+            <label class="service__field-label" [attr.for]="'signature_' + index">Signature name</label>
+            <input class="service__field-input" [attr.id]="'signature_' + index" type="text" formControlName="signatureName">
             <ng-container *ngIf="signatureName.errors">
                 <div class="error" *ngFor="let error of signatureName.errors | iterateAsArray">
                     {{ signatureName.errors[error] }}
@@ -36,8 +36,8 @@
             </ng-container>
         </div>
         <div class="service__field service__field--is-last">
-            <label class="service__field-label" [attr.for]="'weight_'">Weight</label>
-            <input class="service__field-input" [attr.id]="'weight_'" type="text" formControlName="weight">
+            <label class="service__field-label" [attr.for]="'weight_' + index">Weight</label>
+            <input class="service__field-input" [attr.id]="'weight_' + index" type="text" formControlName="weight">
             <ng-container *ngIf="weight.errors">
                 <div class="error" *ngFor="let error of weight.errors | iterateAsArray">
                     {{ weight.errors[error] }}

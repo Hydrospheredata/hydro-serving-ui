@@ -2,7 +2,7 @@ import {
     Component, 
     Input
 } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { FormGroup, FormControl } from "@angular/forms";
 
 import { Runtime } from '@shared/_index';
 import { Store } from '@ngrx/store';
@@ -19,6 +19,7 @@ import { of } from "rxjs/observable/of";
 })
 export class ServiceFormComponent {
     @Input() group: FormGroup;
+    @Input() index;
 
     public runtimes: Runtime[];
     private modelVersions;
@@ -36,27 +37,26 @@ export class ServiceFormComponent {
         }
     ])
 
-    get model(){
-        return this.group.get('model')
+    get model(): FormGroup {
+        return this.group.get('model') as FormGroup
     }
 
-    get signatureName() {
-        return this.group.get('signatureName')
+    get signatureName(): FormControl {
+        return this.group.get('signatureName') as FormControl
     }
 
-    get weight() {
-        return this.group.get('weight')
+    get weight(): FormControl{
+        return this.group.get('weight') as FormControl
     }
 
-    private getSignature(versionId) {
+    private getSignature(versionId): string {
         const model = this.modelVersions.find(version => version.id === versionId);
         return hocon(model.modelContract).signatures.signature_name;
     }
 
-    public onModelVersionChange(modelVersionId){
+    public onModelVersionChange(modelVersionId): void{
         this.signatureName.patchValue(this.getSignature(modelVersionId));
     }
-    
 
     constructor(
         private store: Store<HydroServingState>,
