@@ -83,7 +83,7 @@ export class ApplicationFormService implements OnDestroy {
     }
 
     private buildApplicationNameControl(applicationName: string = ''){
-        return [applicationName, [this.customValidators.required(), this.customValidators.uniqNameValidation()]]
+        return [applicationName, [this.customValidators.required(), this.customValidators.uniqNameValidation(applicationName)]]
     }
 
     private buildStageGroup(stage): FormGroup {

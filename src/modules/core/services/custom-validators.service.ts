@@ -5,11 +5,15 @@ import {
     FormControl
 } from "@angular/forms";
 import { Injectable } from "@angular/core";
-
+import { Store } from "@ngrx/store";
+import { HydroServingState } from "@core/reducers";
+import { getAllApplications } from "@applications/reducers";
 
 
 @Injectable()
 export class CustomValidatorsService {
+    public applicationNames: string[];
+
     public weightValidation(): ValidatorFn {
         return (control: FormArray) : ValidationErrors => {
             const sum = control.controls.reduce((a, c) => a + Number(c.get('weight').value), 0)
@@ -19,9 +23,13 @@ export class CustomValidatorsService {
         }
     }
 
-    public uniqNameValidation(): ValidatorFn {
+    public uniqNameValidation(initialApplicationName): ValidatorFn {
         return (control: FormControl) : ValidationErrors => {
-            if(['1'].includes(control.value)) {
+            const currentApplicationName = control.value;
+
+            if(currentApplicationName === initialApplicationName) { return null}
+
+            if(this.applicationNames.includes(control.value)) {
                 return { 'uniq': 'Application name must be uniq'}
             }
         }
@@ -79,7 +87,15 @@ export class CustomValidatorsService {
         }
     };
 
-    constructor() { }
+    constructor(
+        private store: Store<HydroServingState>
+    ) { 
+        this.store.select(getAllApplications)
+            .subscribe(applications => { 
+                this.applicationNames = applications.map(app => app.name);
+            }
+        );
+    }
 
     get VALIDATION_PATTERNS() {
         return this._VALIDATION_PATTERNS;
