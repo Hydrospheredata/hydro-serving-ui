@@ -8,19 +8,21 @@ import {
     ValidatorFn,
     ValidationErrors,
 } from "@angular/forms";
-import { 
-    Runtime, 
+import {
+    Model,
+    Runtime,
 } from "@shared/_index";
 import { HydroServingState } from "@core/reducers";
 import { Store } from '@ngrx/store';
 import { Subscription } from "rxjs";
+import { getAllModels, getModelVersionsByModelId } from "@models/reducers";
 
 
 interface Service {
     weight: number;
     environment: any;
     runtime: any;
-    modelVersion: any;    
+    modelVersion: any;
 }
 
 interface Stage {
@@ -39,7 +41,8 @@ interface FormData {
 @Injectable()
 export class ApplicationFormService implements OnDestroy {
 
-
+    private models: Model[];
+    private modelsSub: Subscription;
     private runtimes: Runtime[];
     private runtimesSub: Subscription;
 
@@ -57,10 +60,14 @@ export class ApplicationFormService implements OnDestroy {
 
     constructor(
         private fb: FormBuilder,
-        store: Store<HydroServingState>
+        private store: Store<HydroServingState>
     ) {
         this.runtimesSub = store.select('runtimes').subscribe(
             runtimes => this.runtimes = runtimes
+        );
+
+        this.modelsSub = store.select(getAllModels).subscribe(
+            models => this.models = models
         )
     }
 
@@ -99,25 +106,49 @@ export class ApplicationFormService implements OnDestroy {
         return stages.map(stage => this.buildStageGroup(stage)) 
     }
 
-    private defaultStageData(): Stage{
+    private defaultStageData(): Stage {
         return {
             services: [this.defaultService()]
         }
     }
 
-    private defaultService(): Service{
+    private defaultModelId(){
+        if(this.models.length){
+            return this.models[0].id;
+        }
+    }
+
+    private defaultModelVersionId(modelId: number){
+        if(modelId == undefined){ return };
+
+        let modelVersionId;
+
+        this.store.select(getModelVersionsByModelId(modelId)).subscribe(
+            modelVersions => {
+                modelVersionId = modelVersions[0].id;
+            }
+        )
+
+        return modelVersionId;
+    }
+
+    private defaultService(): Service {
+        const runtimeId = this.defaultRuntimeId();
+        const modelId = this.defaultModelId();
+        const modelVersionId = this.defaultModelVersionId(modelId);
+
         return {
             weight: 10,
             environment: {
                 id: 0
             },
             runtime: {
-                id: this.defaultRuntimeId()
+                id: runtimeId
             },
             modelVersion: {
-                id: 1,
+                id: modelVersionId,
                 model: {
-                    id: 1
+                    id: modelId,
                 }
             }
         }
@@ -139,7 +170,6 @@ export class ApplicationFormService implements OnDestroy {
     }
 
     public buildServiceForm(service: Service = this.defaultService()): FormGroup{
-        debugger;
         const environment = new FormControl(service.environment && service.environment.id);
         const weight = new FormControl(service.weight);
         const runtime = new FormControl(service.runtime && service.runtime.id);
@@ -160,6 +190,7 @@ export class ApplicationFormService implements OnDestroy {
 
     ngOnDestroy(){
         this.runtimesSub.unsubscribe();
+        this.modelsSub.unsubscribe();
     }
 }
 

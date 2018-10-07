@@ -36,21 +36,16 @@ export class ModelSelectorFormComponent implements OnInit {
     ngOnInit(){
         if(this.data){
             this.modelIdControl.setValue(this.data.modelId);
+
             this.getModelVersionsByModelId(this.data.modelId);
             this.modelVersionIdControl.setValue(this.data.modelVersionId);
+            this.modelVersionChange.emit(this.data.modelVersionId);
         }
 
-        this.modelIdControl
-            .valueChanges
-            .subscribe(modelId => {
-                this.onModelIdChange(modelId);
-            });
+        this.subscribeToModelIdChange();
+        this.subcribeToModelVersionIdChange();
 
-        this.modelVersionIdControl
-            .valueChanges
-            .subscribe(modelVersionId => {
-                this.onModelVersionIdChange(modelVersionId)
-            });
+
     }
 
     public onModelIdChange(modelId): void {
@@ -75,4 +70,19 @@ export class ModelSelectorFormComponent implements OnInit {
     private get modelVersionIdControl(): AbstractControl {
         return this.group.get('modelVersionId');
     }
+
+    private subscribeToModelIdChange() {
+        this.modelIdControl
+            .valueChanges
+            .subscribe(modelId => {
+                this.onModelIdChange(modelId);
+            });
+    };
+    private subcribeToModelVersionIdChange(){
+        this.modelVersionIdControl
+            .valueChanges
+            .subscribe(modelVersionId => {
+                this.onModelVersionIdChange(modelVersionId)
+            });
+    };
 }

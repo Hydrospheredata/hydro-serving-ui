@@ -30,7 +30,7 @@ export class DialogUpdateApplicationComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.data$.subscribe(data => {
+        this.dataSub = this.data$.subscribe(data => {
             this.data = data;
         });
     }
