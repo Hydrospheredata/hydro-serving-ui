@@ -14,7 +14,8 @@ import * as fromModels from '@models/reducers'
 
 @Component({
     selector: 'hydro-model-selector-form',
-    templateUrl: './model-selector-form.component.html'
+    templateUrl: './model-selector-form.component.html',
+    styleUrls: ['./model-selector-form.component.scss']
 })
 export class ModelSelectorFormComponent implements OnInit {
     @Input() group: FormGroup

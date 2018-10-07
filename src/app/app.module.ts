@@ -57,6 +57,6 @@ import * as Dialog from '@components/dialogs/_index';
         Dialog.DialogDeleteModelComponent,
         Dialog.DialogModelsEmptyComponent,
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule { }

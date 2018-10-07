@@ -1,5 +1,14 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { 
+    Component, 
+    OnInit, 
+    Output, 
+    EventEmitter, 
+    Input 
+} from '@angular/core';
+import { 
+    FormArray, 
+    FormGroup 
+} from '@angular/forms';
 //providers
 import { ApplicationFormService } from '@applications/services/application-form.service'
 
@@ -12,6 +21,7 @@ import { ApplicationFormService } from '@applications/services/application-form.
 export class ApplicationFormComponent implements OnInit {
     @Output('onSubmit') submitEvent: EventEmitter<any> = new EventEmitter()
     @Input('data') data;
+
     public applicationForm: FormGroup;
 
     get applicationStagesFormArray(){

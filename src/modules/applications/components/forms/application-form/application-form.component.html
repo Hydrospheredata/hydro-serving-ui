@@ -2,13 +2,13 @@
 <form class="applciation-form" [formGroup]="applicationForm">
     <div class="application-name">
         <label class="application-name__label" for="applicationName">Application name</label>
-        <input class="application-name__input" type="text" formControlName="applicationName" id="applicationName">
+        <input class="hydro-input application-name__input" type="text" formControlName="applicationName" id="applicationName">
+        <ng-container *ngIf="applicationForm.get('applicationName').errors">
+            <div class="error" *ngFor="let error of applicationForm.get('applicationName').errors | iterateAsArray">
+                {{ applicationForm.get('applicationName').errors[error] }}
+            </div>
+        </ng-container>
     </div>
-    <ng-container *ngIf="applicationForm.get('applicationName').errors">
-        <div class="error" *ngFor="let error of applicationForm.get('applicationName').errors | iterateAsArray">
-            {{ applicationForm.get('applicationName').errors[error] }}
-        </div>
-    </ng-container>
     <kafka-form 
         formArrayName="kafkaStreaming"
         [kafkaFormArray]="kafkaFormArray">
@@ -35,7 +35,5 @@
         </div>
     </div>
     <span (click)="addStageControl()" class="add-stage-link">add stage</span>
-
-    {{applicationForm.value | json}}
 </form>
 

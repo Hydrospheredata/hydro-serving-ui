@@ -44,6 +44,10 @@ export class ServiceFormComponent {
         return this.group.get('signatureName')
     }
 
+    get weight() {
+        return this.group.get('weight')
+    }
+
     private getSignature(versionId) {
         const model = this.modelVersions.find(version => version.id === versionId);
         return hocon(model.modelContract).signatures.signature_name;

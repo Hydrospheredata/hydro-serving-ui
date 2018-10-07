@@ -12,12 +12,15 @@
     }
     &__input {
         border: none;
-        padding: 7px 12px;
+        padding: 4px 8px;
         border-radius: 0px;
         border-bottom: 2px grey solid;
         color: #04143c;
         &:focus {
             border-bottom: 2px $color--blue solid;
+        }
+        &.ng-invalid {
+            border-color: tomato;
         }
     }
 }

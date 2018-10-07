@@ -3,10 +3,7 @@ import {
     FormArray,
     FormBuilder,
     FormGroup,
-    FormControl,
-    Validators,
-    ValidatorFn,
-    ValidationErrors,
+    FormControl
 } from "@angular/forms";
 import {
     Model,
@@ -16,6 +13,7 @@ import { HydroServingState } from "@core/reducers";
 import { Store } from '@ngrx/store';
 import { Subscription } from "rxjs";
 import { getAllModels, getModelVersionsByModelId } from "@models/reducers";
+import { CustomValidatorsService } from "@core/services/custom-validators.service";
 
 
 interface Service {
@@ -40,7 +38,6 @@ interface FormData {
 
 @Injectable()
 export class ApplicationFormService implements OnDestroy {
-
     private models: Model[];
     private modelsSub: Subscription;
     private runtimes: Runtime[];
@@ -60,7 +57,8 @@ export class ApplicationFormService implements OnDestroy {
 
     constructor(
         private fb: FormBuilder,
-        private store: Store<HydroServingState>
+        private store: Store<HydroServingState>,
+        private customValidators: CustomValidatorsService
     ) {
         this.runtimesSub = store.select('runtimes').subscribe(
             runtimes => this.runtimes = runtimes
@@ -85,7 +83,7 @@ export class ApplicationFormService implements OnDestroy {
     }
 
     private buildApplicationNameControl(applicationName: string = ''){
-        return [applicationName, [Validators.required, CustomValidators.uniqNameValidation()]]
+        return [applicationName, [this.customValidators.required(), this.customValidators.uniqNameValidation()]]
     }
 
     private buildStageGroup(stage): FormGroup {
@@ -94,7 +92,7 @@ export class ApplicationFormService implements OnDestroy {
         )
 
         return this.fb.group({
-            services: this.fb.array(services, CustomValidators.weightValidation())
+            services: this.fb.array(services, this.customValidators.weightValidation())
         })
     }
 
@@ -170,13 +168,13 @@ export class ApplicationFormService implements OnDestroy {
     }
 
     public buildServiceForm(service: Service = this.defaultService()): FormGroup{
-        const environment = new FormControl(service.environment && service.environment.id);
-        const weight = new FormControl(service.weight);
-        const runtime = new FormControl(service.runtime && service.runtime.id);
-        const signatureName = new FormControl();
+        const environment = new FormControl(service.environment && service.environment.id, this.customValidators.required());
+        const weight = new FormControl(service.weight, [this.customValidators.required(), this.customValidators.pattern(/^[0-9]+$/)]);
+        const runtime = new FormControl(service.runtime && service.runtime.id, this.customValidators.required());
+        const signatureName = new FormControl('', [this.customValidators.required(), this.customValidators.pattern(/[a-zA-Z0-9]+/)]);
         const model = new FormGroup({
-            modelId: new FormControl(service.modelVersion && service.modelVersion.model.id),
-            modelVersionId: new FormControl(service.modelVersion && service.modelVersion.id)
+            modelId: new FormControl(service.modelVersion && service.modelVersion.model.id, this.customValidators.required()),
+            modelVersionId: new FormControl(service.modelVersion && service.modelVersion.id, this.customValidators.required())
         })
 
         return new FormGroup({
@@ -194,21 +192,3 @@ export class ApplicationFormService implements OnDestroy {
     }
 }
 
-class CustomValidators {
-    static weightValidation(): ValidatorFn {
-        return (control: FormArray) : ValidationErrors => {
-            const sum = control.controls.reduce((a, c) => a + Number(c.get('weight').value), 0)
-            if(sum > 100) {
-                return { 'weight': 'Sum of weights must be lower than 100'}
-            }
-        }
-    }
-
-    static uniqNameValidation(): ValidatorFn {
-        return (control: FormControl) : ValidationErrors => {
-            if(['1'].includes(control.value)) {
-                return { 'uniq': 'Application name must be uniq'}
-            }
-        }
-    }    
-}

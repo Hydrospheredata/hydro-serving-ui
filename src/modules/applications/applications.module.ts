@@ -31,6 +31,7 @@ import {
     ApplicationsGuard,
     ApplicationFormService
 } from '@applications/services';
+import { CustomValidatorsService } from '@core/services/custom-validators.service';
 
 
 @NgModule({
@@ -58,7 +59,7 @@ import {
         KafkaFormComponent,
         ServiceFormComponent
     ],
-    providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard, ApplicationFormService],
+    providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard, ApplicationFormService, CustomValidatorsService],
     exports: [ApplicationsDialogComponent, ApplicationFormComponent]
 })
 export class ApplicationsModule { }
