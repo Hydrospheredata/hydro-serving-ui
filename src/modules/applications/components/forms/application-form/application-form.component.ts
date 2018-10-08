@@ -49,14 +49,14 @@ export class ApplicationFormComponent implements OnInit {
         return this.applicationForm.value.stages.map(stage => {
             return stage = {
                 services: stage.services.map(service => 
-                    (
-                        {
+                    {
+                        return {
                             runtimeId: service.runtime,
                             modelVersionId: service.model.modelVersionId,
                             weight: Number(service.weight),
                             signatureName: service.signatureName
                         }
-                    )
+                    }
                 )
             }
         });
@@ -90,7 +90,7 @@ export class ApplicationFormComponent implements OnInit {
         return stage.get('services').value.length > 1;
     }
 
-    public removeService(stage: FormControl, serviceIdx: number): void {
+    public onServiceDelete(stage: FormControl, serviceIdx: number): void {
         const services = stage.get('services') as FormArray;
         services.removeAt(serviceIdx);
     }

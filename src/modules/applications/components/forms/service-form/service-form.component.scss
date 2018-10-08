@@ -3,9 +3,9 @@
 .service {
     border: 1px grey solid;
     box-shadow: 0px 0px 4px 0px grey;
-    margin-bottom: 20px;
-    margin-left: 8px;
-    padding: 12px 24px;
+    margin-bottom: 16px;
+    padding: 12px 24px 20px;
+    position: relative;
     &__row {
         display: flex;
     }
@@ -50,6 +50,17 @@
                 font-size: 14px;
                 top: 22px;
             }
+        }
+    }
+    &__remove-icon {
+        position: absolute;
+        right: 16px;
+        top: 4px;
+        width: 12px;
+        height: 12px;
+        cursor: pointer;
+        &:hover {
+            color: tomato;
         }
     }
 }

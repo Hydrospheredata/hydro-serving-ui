@@ -1,11 +1,22 @@
 <div [formGroup]="group"
     class="service">
-    <hydro-model-selector-form
-        formGroupName="model"
-        [group]="model"
-        [data]="model.value"
-        (modelVersionChange)="onModelVersionChange($event)">
-    </hydro-model-selector-form>
+    <div class="service__row">
+        <hydro-model-selector-form
+            formGroupName="model"
+            [group]="model"
+            [data]="model.value"
+            (modelVersionChange)="onModelVersionChange($event)">
+        </hydro-model-selector-form>
+        <div class="service__field">
+            <label class="service__field-label" [attr.for]="'signature_' + index">Signature name</label>
+            <input class="service__field-input" [attr.id]="'signature_' + index" type="text" formControlName="signatureName">
+            <ng-container *ngIf="signatureName.errors">
+                <div class="error" *ngFor="let error of signatureName.errors | iterateAsArray">
+                    {{ signatureName.errors[error] }}
+                </div>
+            </ng-container>
+        </div>
+    </div>
     <div class="service__row">
         <div class="service__field">
             <label class="service__field-label" [attr.for]="'runtime_' + index">Runtime</label>
@@ -26,15 +37,7 @@
                 </mdl-option>
             </mdl-select>
         </div>
-        <div class="service__field">
-            <label class="service__field-label" [attr.for]="'signature_' + index">Signature name</label>
-            <input class="service__field-input" [attr.id]="'signature_' + index" type="text" formControlName="signatureName">
-            <ng-container *ngIf="signatureName.errors">
-                <div class="error" *ngFor="let error of signatureName.errors | iterateAsArray">
-                    {{ signatureName.errors[error] }}
-                </div>
-            </ng-container>
-        </div>
+
         <div class="service__field service__field--is-last service__field--weight">
             <label class="service__field-label" [attr.for]="'weight_' + index">Weight</label>
             <input class="service__field-input service__field-input--weight" [attr.id]="'weight_' + index" type="text" formControlName="weight">
@@ -45,4 +48,10 @@
             </ng-container>
         </div>
     </div>
+    <hydro-icon 
+        *ngIf="showRemoveIcon"
+        type="icon-remove"
+        (click)="onDelete(serviceIdx)"
+        class="service__remove-icon">
+    </hydro-icon>
 </div>

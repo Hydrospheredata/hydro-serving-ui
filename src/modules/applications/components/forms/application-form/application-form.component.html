@@ -26,12 +26,11 @@
             <div formArrayName="services" class="services__list">
                 <div *ngFor="let service of stage.get('services').controls;index as serviceIdx">
                     <div class="services__item">
-                        <hydro-service-form [group]="service" [index]="serviceIdx"></hydro-service-form>
-                        <hydro-icon 
-                            *ngIf="showRemoveServiceIcon(stage)"
-                            type="icon-remove"
-                            (click)="removeService(stage, serviceIdx)"
-                            class="services__remove-icon"></hydro-icon>
+                        <hydro-service-form 
+                            [group]="service" 
+                            [index]="serviceIdx"
+                            [showRemoveIcon]="showRemoveServiceIcon(stage)"
+                            (delete)="onServiceDelete(stage, $event)"></hydro-service-form>
                     </div>
                 </div>
                 <ng-container *ngIf="stage.get('services').errors">
@@ -40,7 +39,7 @@
                     </div>
                 </ng-container>
             </div>
-            <span (click)="addServiceToStage(stage)"  class="stage__add-service-link"> add service</span>
+            <span (click)="addServiceToStage(stage)"  class="stage__add-model-variant-link">add model variant</span>
         </div>
     </div>
     <span (click)="addStageControl()" class="add-stage-link">add stage</span>

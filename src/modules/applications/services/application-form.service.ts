@@ -136,7 +136,7 @@ export class ApplicationFormService implements OnDestroy {
         const modelVersionId = this.defaultModelVersionId(modelId);
 
         return {
-            weight: 10,
+            weight: 100,
             environment: {
                 id: 0
             },

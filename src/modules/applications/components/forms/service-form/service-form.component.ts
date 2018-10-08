@@ -1,6 +1,8 @@
 import { 
     Component, 
-    Input
+    Input,
+    Output,
+    EventEmitter
 } from "@angular/core";
 import { FormGroup, FormControl } from "@angular/forms";
 
@@ -19,11 +21,12 @@ import { of } from "rxjs/observable/of";
 })
 export class ServiceFormComponent {
     @Input() group: FormGroup;
-    @Input() index;
+    @Input() index: number;
+    @Input() showRemoveIcon: boolean = false;
 
+    @Output() delete = new EventEmitter();
+ 
     public runtimes: Runtime[];
-    private modelVersions;
-
     public environments$ = of([
         {
             id: 0,
@@ -37,6 +40,8 @@ export class ServiceFormComponent {
         }
     ])
 
+    private modelVersions;
+
     get model(): FormGroup {
         return this.group.get('model') as FormGroup
     }
@@ -49,13 +54,12 @@ export class ServiceFormComponent {
         return this.group.get('weight') as FormControl
     }
 
-    private getSignature(versionId): string {
-        const model = this.modelVersions.find(version => version.id === versionId);
-        return hocon(model.modelContract).signatures.signature_name;
-    }
-
     public onModelVersionChange(modelVersionId): void{
         this.signatureName.patchValue(this.getSignature(modelVersionId));
+    }
+
+    public onDelete(index): void{
+        this.delete.emit(index);
     }
 
     constructor(
@@ -69,5 +73,10 @@ export class ServiceFormComponent {
             .subscribe(runtimes => {
                 this.runtimes = runtimes;
             });
+    }
+
+    private getSignature(versionId): string {
+        const model = this.modelVersions.find(version => version.id === versionId);
+        return hocon(model.modelContract).signatures.signature_name;
     }
 }

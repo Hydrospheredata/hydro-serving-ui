@@ -1,11 +1,5 @@
 
 <div class="dialog">
-    <div class="dialog__header">
-        <span class="dialog__title">
-            Add application
-        </span>
-        <hydro-icon type="icon-close" class="dialog__close-icon" (click)="close()"></hydro-icon>
-    </div>
     <div class="dialog__content">
         <hydro-application-form (onSubmit)="onSubmit($event)" #form></hydro-application-form>
     </div>
