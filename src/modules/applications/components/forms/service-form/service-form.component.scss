@@ -12,7 +12,8 @@
     &__field {
         display: flex;
         flex-direction: column;
-        margin-right: 16px;
+        margin-right: 12px;
+        position: relative;
         width: 160px;
         &-label {
             font-size: 12px;
@@ -20,7 +21,8 @@
         }
         &-input {
             padding: 4px 8px;
-            font-size: 12px;            
+            font-size: 14px;
+            line-height: 16px;           
             border: 2px grey solid;
             &:focus {
                 border-color: $color--blue;
@@ -28,9 +30,26 @@
             &.ng-invalid {
                 border-color: tomato;
             }
+            &--weight {
+                text-align: right;
+            }
         }
         &--is-last {
             margin-right: 0;
+        }
+        &--environment {
+            width: 120px;
+        }
+        &--weight {
+            width: 50px;
+            &::after{
+                content: "%";
+                display: block;
+                position: absolute;
+                left:54px;
+                font-size: 14px;
+                top: 22px;
+            }
         }
     }
 }

@@ -17,7 +17,7 @@
         <mdl-select formControlName="modelVersionId" class="model__item">
             <mdl-option 
                 *ngFor="let modelVersion of modelVersions$ | async"
-                [value]="modelVersion.id">{{modelVersion.id}}</mdl-option>
+                [value]="modelVersion.id">{{modelVersion.modelVersion}}</mdl-option>
         </mdl-select>
     </div>
 </div>

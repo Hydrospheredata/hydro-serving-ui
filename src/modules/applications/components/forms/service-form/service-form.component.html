@@ -18,7 +18,7 @@
                 </mdl-option>
             </mdl-select>
         </div>
-        <div class="service__field">
+        <div class="service__field service__field--environment">
             <label class="service__field-label" [attr.for]="'environment_' + index">Environment</label>
             <mdl-select  formControlName="environment">
                 <mdl-option *ngFor="let environment of (environments$ | async)" [value]="environment.id">
@@ -35,9 +35,9 @@
                 </div>
             </ng-container>
         </div>
-        <div class="service__field service__field--is-last">
+        <div class="service__field service__field--is-last service__field--weight">
             <label class="service__field-label" [attr.for]="'weight_' + index">Weight</label>
-            <input class="service__field-input" [attr.id]="'weight_' + index" type="text" formControlName="weight">
+            <input class="service__field-input service__field-input--weight" [attr.id]="'weight_' + index" type="text" formControlName="weight">
             <ng-container *ngIf="weight.errors">
                 <div class="error" *ngFor="let error of weight.errors | iterateAsArray">
                     {{ weight.errors[error] }}

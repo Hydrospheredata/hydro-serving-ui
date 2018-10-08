@@ -9,7 +9,8 @@
             </div>
         </ng-container>
     </div>
-    <kafka-form 
+    <kafka-form
+        class="application__kafka"
         formArrayName="kafkaStreaming"
         [kafkaFormArray]="kafkaFormArray">
     </kafka-form>
@@ -25,7 +26,7 @@
             <div formArrayName="services" class="services__list">
                 <div *ngFor="let service of stage.get('services').controls;index as serviceIdx">
                     <div class="services__item">
-                        <hydro-service-form [group]="service" [index]="i"></hydro-service-form>
+                        <hydro-service-form [group]="service" [index]="serviceIdx"></hydro-service-form>
                         <hydro-icon 
                             *ngIf="showRemoveServiceIcon(stage)"
                             type="icon-remove"

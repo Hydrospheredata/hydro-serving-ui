@@ -133,7 +133,7 @@ export class ApplicationsItemDetailComponent {
     public editApplication(application: Observable<Application>) {
         this.dialog.showCustomDialog({
             component: DialogUpdateApplicationComponent,
-            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
+            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '800px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
