@@ -20,7 +20,7 @@ export class ApplicationsWrapperComponent implements OnDestroy{
     public sidebarTitle = 'Applications';
     public applications: Store<Application[]>;
     private modelStoreSub: Subscription;
-    private modelsCount: number;
+    private finishedModelBuildsCount: number;
 
     constructor(
         private storeApp: Store<fromApplications.State>,
@@ -28,13 +28,16 @@ export class ApplicationsWrapperComponent implements OnDestroy{
         private dialog: MdlDialogService
     ) {
         this.applications = this.storeApp.select(fromApplications.getAllApplications);
-        this.modelStoreSub = this.storeModels.select(fromModels.getTotalModels).subscribe(
-            count => this.modelsCount = count
-        );
+        this.modelStoreSub = this.storeModels
+                .select(fromModels.getAllModelBuilds)
+                .map(modelBuilds => modelBuilds.filter(modelBuild => modelBuild.status.toLowerCase() === 'finished'))
+                .subscribe(
+                    modelBuilds => this.finishedModelBuildsCount = modelBuilds.length
+                );
     }
 
     public addApplication(): void {
-        this.modelsCount ? this.showAddServiceDialog() : this.showAlert();
+        this.finishedModelBuildsCount ? this.showAddServiceDialog() : this.showAlert();
     }
 
     ngOnDestroy(){
