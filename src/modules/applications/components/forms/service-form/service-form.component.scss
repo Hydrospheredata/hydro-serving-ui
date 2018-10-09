@@ -6,7 +6,7 @@
     margin-bottom: 16px;
     padding: 12px 24px 20px;
     position: relative;
-    width: 720px;
+    min-width: 716px;
     &__row {
         display: flex;
         margin-bottom: 12px;
@@ -89,6 +89,8 @@
 .error {
     font-size: 12px;
     color: red;
+    position: relative;
+    min-width: 120px;
 }
 
 .docker-image__name {

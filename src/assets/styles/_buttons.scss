@@ -124,12 +124,12 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         background-color: #4d9bf1;
         color: white;
         &:not([disabled]):hover {
-        background-color: #468dda;
+            background-color: #468dda;
         }
         &[disabled] {
-        background-color: #d6d8da;
-        color: #a29e9e;
-        cursor: auto;
+            background-color: #d6d8da;
+            color: #a29e9e;
+            cursor: auto;
         }
     }
     &--secondary {

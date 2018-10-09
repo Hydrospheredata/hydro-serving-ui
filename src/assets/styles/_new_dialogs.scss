@@ -39,22 +39,3 @@
     align-items: center;
     height: 100%;
 }
-
-.button {
-    font-size: 20px;
-    line-height: 24px;
-    text-transform: uppercase;
-    cursor: pointer;
-    &--primary {
-        padding: 8px 24px;
-        background-color: #3f9afd;
-        color: white;
-        border: none;
-        &:hover {
-            background-color: #358bea;
-        }
-    }
-    &--flat {
-        color: #1c7eff;
-    }
-}
