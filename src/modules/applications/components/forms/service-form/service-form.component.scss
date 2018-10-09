@@ -6,8 +6,10 @@
     margin-bottom: 16px;
     padding: 12px 24px 20px;
     position: relative;
+    width: 720px;
     &__row {
         display: flex;
+        margin-bottom: 12px;
     }
     &__field {
         display: flex;
@@ -34,11 +36,20 @@
                 text-align: right;
             }
         }
+        &--model-name {
+            width: 368px;
+        }
+        &--model-version {
+            width: 80px;
+        }
+        &--runtime {
+            width: 460px;
+        }
         &--is-last {
             margin-right: 0;
         }
         &--environment {
-            width: 120px;
+            width: 98px;
         }
         &--weight {
             width: 50px;
@@ -75,21 +86,41 @@
     }
 }
 
-.model {
-    display: flex;
-    margin-bottom: 8px;
-    &__item {
-        width: 200px;
-        margin-right: 12px;
-        &-label {
-            color: #818994;
-            font-size: 12px;
-            line-height: 22px;
-        }
-    }
-}
-
 .error {
     font-size: 12px;
     color: red;
+}
+
+.docker-image__name {
+    flex: 1;
+}
+
+.docker-image__version {
+    margin: 0 2px 0 2px;
+    font-size: 12px;
+    background-color: aliceblue;
+    padding: 2px;
+    white-space: nowrap;
+    border-radius: 5px;
+    color: #5e5e5e;
+}
+
+.docker-image__repository {
+    margin: 0 2px 0 2px;
+    font-size: 12px;
+    background-color: aliceblue;
+    padding: 2px;
+    white-space: nowrap;
+    border-radius: 5px;
+    color: #5e5e5e;
+}
+
+/deep/ .mdl-list__item:hover {
+    .docker-image__version, .docker-image__repository {
+        color: #04143c;
+    }
+}
+
+/deep/ .parameters__field.parameters__row-field-runtime .mdl-select .mdl-popover {
+    min-width: 200% !important;
 }

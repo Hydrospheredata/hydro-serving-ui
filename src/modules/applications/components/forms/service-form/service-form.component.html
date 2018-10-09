@@ -1,12 +1,30 @@
 <div [formGroup]="group"
     class="service">
-    <div class="service__row">
-        <hydro-model-selector-form
-            formGroupName="model"
-            [group]="model"
-            [data]="model.value"
-            (modelVersionChange)="onModelVersionChange($event)">
-        </hydro-model-selector-form>
+    <div  class="service__row">
+        <ng-container formGroupName="model">
+            <div class="service__field service__field--model-name">
+                <label class="service__field-label">
+                    Model name
+                </label>
+                <mdl-select formControlName="modelId">
+                    <mdl-option 
+                        *ngFor="let model of models$ | async"
+                        [value]="model.id">{{model.name}}</mdl-option>
+                </mdl-select>
+            </div>
+            
+            <div class="service__field service__field--model-version">
+                <label class="service__field-label">
+                        Model version
+                </label>
+                <mdl-select formControlName="modelVersionId">
+                    <mdl-option 
+                        *ngFor="let modelVersion of modelVersions$ | async"
+                        [value]="modelVersion.id">{{modelVersion.modelVersion}}</mdl-option>
+                </mdl-select>
+            </div>
+        </ng-container>
+
         <div class="service__field">
             <label class="service__field-label" [attr.for]="'signature_' + index">Signature name</label>
             <input class="service__field-input" [attr.id]="'signature_' + index" type="text" formControlName="signatureName">
@@ -18,14 +36,11 @@
         </div>
     </div>
     <div class="service__row">
-        <div class="service__field">
+        <div class="service__field service__field--runtime">
             <label class="service__field-label" [attr.for]="'runtime_' + index">Runtime</label>
             <mdl-select formControlName="runtime">
                 <mdl-option *ngFor="let runtime of runtimes" [value]="runtime.id">
-                    <span class="docker-image__name">{{ runtime.name | getDockerImage: 'name' }}</span>
-                    <span class="hidden">:</span>
-                    <span class="docker-image__version">{{ runtime.version }}</span>
-                    <span class="docker-image__repository">{{ runtime.name | getDockerImage: 'repository' }}</span>
+                    <span class="docker-image__name">{{ runtime.name }}</span> <span class="hidden">:</span> <span class="docker-image__version">{{ runtime.version }}</span> <span class="docker-image__repository">{{ runtime.name | getDockerImage: 'repository' }}</span>
                 </mdl-option>
             </mdl-select>
         </div>

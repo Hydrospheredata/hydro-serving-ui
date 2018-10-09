@@ -20,7 +20,6 @@ import {
     ApplicationsDialogComponent, 
     ApplicationChartComponent,
     ApplicationFormComponent,
-    ModelSelectorFormComponent,
     KafkaFormComponent,
     ServiceFormComponent
     
@@ -55,7 +54,6 @@ import { CustomValidatorsService } from '@core/services/custom-validators.servic
         ApplicationsDialogComponent, 
         ApplicationChartComponent,
         ApplicationFormComponent,
-        ModelSelectorFormComponent,
         KafkaFormComponent,
         ServiceFormComponent
     ],
