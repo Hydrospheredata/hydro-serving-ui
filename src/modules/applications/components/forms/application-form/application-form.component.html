@@ -22,7 +22,7 @@
             <span 
                 *ngIf="showRemoveStageButton()"
                 (click)="removeStage(stageIdx)"
-                class="stage__remove-button">remove</span>
+                class="button stage__remove-button">remove</span>
             <div formArrayName="services" class="services__list">
                 <div *ngFor="let service of stage.get('services').controls;index as serviceIdx">
                     <div class="services__item">
@@ -39,9 +39,9 @@
                     </div>
                 </ng-container>
             </div>
-            <span (click)="addServiceToStage(stage)"  class="stage__add-model-variant-link">add model variant</span>
+            <button (click)="addServiceToStage(stage)"  class="button button--flat stage__add-service-button">add model variant</button>
         </div>
     </div>
-    <span (click)="addStageControl()" class="add-stage-link">add stage</span>
+    <button (click)="addStageControl()" class="button button--secondary add-stage-button">add stage</button>
 </form>
 

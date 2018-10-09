@@ -34,7 +34,7 @@
 .stage {
     position: relative;
     border: 2px solid $color--blue;
-    margin-bottom: 36px;
+    margin-bottom: 24px;
     padding: 24px 16px 8px;
     &__name {
         background-color: white;
@@ -47,41 +47,27 @@
 
     &__remove-button {
         background-color: white;
-        border: 2px tomato solid;
+        border: 1px #ff2d07 solid;
         border-radius: 4px;
         cursor: pointer;
-        margin: 0px 4px;
-        padding: 2px 12px;
+        font-size: 10px;
+        padding: 0px 8px;
         position: absolute;
-        right: 24px;
-        top: -15px;
+        right: 16px;
+        top: -12px;
         &:hover {
             color: white;
-            background-color: tomato;
+            background-color: #ff2d07;
         }
     }
 
-    &__add-model-variant-link {
-        color: $color--light-blue;
-        cursor: pointer;
-        text-transform: uppercase;
-        &:hover {
-            color: #1c7eff;
-        }
+    &__add-serivice-button {
     }
 }
 
-.add-stage-link {
-    color: $color--light-blue;
-    cursor: pointer;
+.add-stage-button {
     display: inline-block;
-    font-size: 14px;
-    line-height: 24px;
-    text-transform: uppercase;
     margin-bottom: 8px;
-    &:hover {
-        color: #1c7eff;
-    }
 }
 
 .error {
