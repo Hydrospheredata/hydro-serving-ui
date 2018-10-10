@@ -13,6 +13,15 @@
     }
 }
 
+.action-buttons {
+    display: flex;
+    .action-button {
+        margin-left: 8px;
+        padding: 8px
+    }
+}
+
+
 .health-status {
     width: 15px;
     height: 15px;

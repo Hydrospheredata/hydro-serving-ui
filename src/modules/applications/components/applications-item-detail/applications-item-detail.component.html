@@ -1,17 +1,17 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{ (application$ | async)?.name }}</div>
-        <div class="btn-group">
-            <button class="btn" (click)="testApplication()">
-                <hydro-icon [type]="'icon-start'"></hydro-icon>
+        <div class="action-buttons">
+            <button class="button button--primary action-button" (click)="testApplication()">
+                <hydro-icon class="button__icon" [type]="'icon-start'"></hydro-icon>
                 Test
             </button>
-            <button class="btn btn-flat" (click)="editApplication(application$)">
-                <hydro-icon [type]="'icon-edit'"></hydro-icon>
+            <button class="button button--secondary action-button" (click)="editApplication(application$)">
+                <hydro-icon class="button__icon" [type]="'icon-edit'"></hydro-icon>
                 Edit
             </button>
-            <button class="btn btn-flat" (click)="removeApplication()">
-                <hydro-icon [type]="'icon-remove'"></hydro-icon>
+            <button class="button button--secondary action-button" (click)="removeApplication()">
+                <hydro-icon class="button__icon" [type]="'icon-remove'"></hydro-icon>
                 remove
             </button>
         </div>

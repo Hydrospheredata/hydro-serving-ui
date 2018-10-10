@@ -34,7 +34,7 @@ $active-color: white;
         margin-right: 15px;
       }
       &.__active {
-        border-top: 2px solid white;
+        box-shadow: inset 0px 2px white;
         color: $active-color;
       }
     }

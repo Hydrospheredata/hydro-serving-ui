@@ -5,9 +5,9 @@
     </div>
     <div class="dialog__footer">
         <div class="buttons">
-            <div class="button button--flat" (click)="close()">cancel</div>
+            <div class="button button--flat button--large" (click)="close()">cancel</div>
             <button 
-                class="button button--primary" 
+                class="button button--primary button--large" 
                 [disabled]="!form.applicationForm.valid"
                 (click)="form.submit()">
                 add application

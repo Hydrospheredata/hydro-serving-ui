@@ -1,25 +1,16 @@
 @import "variables.scss";
 
-
-
-.mat-dialog-container {
-  position: relative;
-  .close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
-}
-
-.mdl-dialog {
-    padding: 0;
-    color: $color-base;
-    &__title {
-        font-family: $font-family-bold;
-        padding: 0;
-        margin-bottom: 36px;
+.dialog {
+    &__buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__button {
+        font-size: 16px;
     }
     &__content {
-        padding: 0;
+        &--center {
+            text-align: center;
+        }
     }
 }

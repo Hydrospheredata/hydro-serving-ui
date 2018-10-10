@@ -123,7 +123,7 @@ export class ApplicationFormService implements OnDestroy {
 
         this.store.select(getModelVersionsByModelId(modelId)).subscribe(
             modelVersions => {
-                modelVersionId = modelVersions[0].id;
+                modelVersionId = modelVersions[modelVersions.length - 1].id;
             }
         )
 

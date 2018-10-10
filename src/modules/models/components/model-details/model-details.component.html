@@ -2,8 +2,8 @@
     <div class="content-header">
         <div class="content-header__title">{{ (model$ | async)?.name }}</div>
         <div class="btn-group">
-            <button class="btn" (click)="removeModel()">
-                <hydro-icon [type]="'icon-remove'"></hydro-icon>
+            <button class="button button--secondary" (click)="removeModel()">
+                <hydro-icon class="button__icon" [type]="'icon-remove'"></hydro-icon>
                 remove
             </button>
         </div>

@@ -121,7 +121,7 @@ export class ApplicationsItemDetailComponent {
     public testApplication() {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
-            styles: { 'width': '900px', 'min-height': '250px' },
+            styles: { 'width': '900px', 'min-height': '250px', 'max-height': 'calc(100% - 100px)', 'overflow':'scroll' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
@@ -133,7 +133,7 @@ export class ApplicationsItemDetailComponent {
     public editApplication(application: Observable<Application>) {
         this.dialog.showCustomDialog({
             component: DialogUpdateApplicationComponent,
-            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '800px' },
+            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '900px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
@@ -146,7 +146,7 @@ export class ApplicationsItemDetailComponent {
     public removeApplication() {
         this.dialog.showCustomDialog({
             component: DialogDeleteServiceComponent,
-            styles: { 'width': '600px', 'min-height': '250px' },
+            styles: { 'width': '400px', 'min-height': '120px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
