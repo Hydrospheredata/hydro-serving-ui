@@ -1,6 +1,30 @@
 @import "variables.scss";
 
 .dialog {
+    &__content {
+        padding: 0 12px;
+        max-height: calc(90vh - 144px);
+        overflow: scroll;
+    }
+    &__header {
+        background-color: $color--blue;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        font-size: 24px;
+        padding: 16px 24px;
+    }
+    &__close-icon {
+        cursor: pointer;
+        color: white;
+        height: 16px;
+        width: 16px;
+    }
+    &__footer {
+        height: 60px;
+        border-top: 2px solid lightgray;
+    }
+
     &__buttons {
         display: flex;
         justify-content: space-between;
