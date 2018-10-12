@@ -34,7 +34,7 @@ export class ModelDetailsComponent {
     public removeModel() {
         this.dialog.showCustomDialog({
             component: DialogDeleteModelComponent,
-            styles: { 'width': '600px', 'min-height': '250px' },
+            styles: { 'min-height': '120px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

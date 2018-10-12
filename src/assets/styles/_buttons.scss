@@ -3,6 +3,9 @@ $btn-secondary: $color-base;
 $btn-icon-size: 12px;
 $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
+$warning: #da4646;
+$warning-hover: #d04e4e;
+
 .btn {
     background-color: transparent;
     border: 2px solid $color--blue;
@@ -109,9 +112,6 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 }
 
-
-
-
 .button {
     border: none;
     border-radius: 4px;
@@ -165,6 +165,25 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         font-size: 16px;
         line-height: 18px;
     }
+
+    &--warning {
+        padding: 9px;
+        background-color: $warning;
+        color: white;
+        &:not([disabled]):hover {
+            background-color: $warning-hover;
+        }
+        &[disabled] {
+            background-color: #d6d8da;
+            color: #a29e9e;
+            cursor: auto;
+        }
+    }
+
+    &--circle {
+        border-radius: 50%;
+    }
+
     &__icon {
         width: 12px;
         height: 12px;
@@ -172,5 +191,9 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         margin-right: 4px;
     }
 }
-      
+
+.buttons-group {
+    display: flex;
+    justify-content: space-between;
+}
       

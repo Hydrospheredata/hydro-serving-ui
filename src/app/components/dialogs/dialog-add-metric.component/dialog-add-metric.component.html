@@ -35,9 +35,9 @@
             </div>
         </div>
 
-        <div class="btn-group form-actions __justify-end">
-            <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
-            <button class="btn btn-colored btn-large" type="submit" [disabled]="serviceForm.invalid">Add Metric</button>
+        <div class="buttons-group form-actions">
+            <button class="button form-actions__button button--flat button--large" (click)="dialogRef.hide()" type="button">cancel</button>
+            <button class="button button--primary button--large" type="submit" [disabled]="serviceForm.invalid">Add Metric</button>
         </div>
     </div>
 </form>

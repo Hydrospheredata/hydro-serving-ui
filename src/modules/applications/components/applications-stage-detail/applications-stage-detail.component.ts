@@ -118,7 +118,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     public addMetric() {
         this.dialog.showCustomDialog({
             component: DialogAddMetricComponent,
-            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
+            styles: { 'width': 'fit-content', 'min-width': '600px', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
@@ -246,7 +246,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     deleteMetric(id: number){
         this.dialog.showCustomDialog({
             component: DialogDeleteMetricComponent,
-            styles: { 'width': '600px', 'min-height': '250px' },
+            styles: { 'width': 'fit-content', 'max-width': '400px', 'min-height': '120px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

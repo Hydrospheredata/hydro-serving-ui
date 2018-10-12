@@ -18,11 +18,11 @@ import * as fromModels from '@models/reducers';
 
 import {
     DialogUpdateApplicationComponent,
-    DialogDeleteServiceComponent,
     DialogTestComponent,
     injectableServiceUpdate,
     DialogUpdateModelVersionComponent, 
-    CHANGE_IDS
+    CHANGE_IDS,
+    DialogDeleteApplicationComponent
 } from '@components/dialogs/_index';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from '../../../../../node_modules/rxjs';
@@ -108,7 +108,7 @@ export class ApplicationsItemDetailComponent {
     public updateModelVersionDialog(stageId, serviceId) {
         this.dialog.showCustomDialog({
             component: DialogUpdateModelVersionComponent,
-            styles: { 'width': '600px', 'min-height': '250px' },
+            styles: { 'width':'fit-content', 'max-width': '400px', 'min-height': '120px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
@@ -145,8 +145,8 @@ export class ApplicationsItemDetailComponent {
 
     public removeApplication() {
         this.dialog.showCustomDialog({
-            component: DialogDeleteServiceComponent,
-            styles: { 'width': '400px', 'min-height': '120px' },
+            component:  DialogDeleteApplicationComponent,
+            styles: {'min-height': '120px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

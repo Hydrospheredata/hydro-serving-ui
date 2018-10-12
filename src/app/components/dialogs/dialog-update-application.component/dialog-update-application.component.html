@@ -4,10 +4,10 @@
             <hydro-application-form (onSubmit)="onSubmit($event)" [data]="data" #form></hydro-application-form>
         </div>
         <div class="dialog__footer">
-            <div class="buttons">
-                <div class="button button--flat" (click)="close()">cancel</div>
+            <div class="buttons-group">
+                <div class="button button--flat button--large" (click)="close()">cancel</div>
                 <button 
-                    class="button button--primary" 
+                    class="button button--primary button--large" 
                     [disabled]="!form.applicationForm.valid"
                     (click)="form.submit()">
                     edit application

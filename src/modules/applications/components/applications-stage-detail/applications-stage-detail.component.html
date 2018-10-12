@@ -1,20 +1,20 @@
 <div class="content">
     <div class="content-header">
         <div>
-            <button class="btn btn-flat" [routerLink]="['../']" style="padding: 0;margin: 12px 0;">
-                <hydro-icon [type]="'icon-arrow-left'"></hydro-icon>
+            <button class="button button--flat" [routerLink]="['../']">
+                <hydro-icon class="button__icon" [type]="'icon-left'"></hydro-icon>
                 back to application
             </button>
 
             <div class="content-header__title">{{ (application$ | async)?.name }} / s{{(stageId | toNumber) + 1}}</div>
         </div>
 
-        <div class="btn-group" *ngIf="isMonitoringAvailable">
-            <mdl-select class="parameters-list__item--model" label="Chart time window" [(ngModel)]="chartTimeWidth">
+        <div class="actions" *ngIf="isMonitoringAvailable">
+            <mdl-select class="parameters-list__item--model actions__time-select" label="Chart time window" [(ngModel)]="chartTimeWidth">
                 <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms">{{ param.text }}</mdl-option>
             </mdl-select>
-            <button class="btn" (click)="addMetric($event)" title="Add new app">
-                <hydro-icon [type]="'icon-plus'"></hydro-icon>
+            <button class="button button--primary" (click)="addMetric($event)" title="Add new app">
+                <hydro-icon class="button__icon" [type]="'icon-plus'"></hydro-icon>
                 add metric
             </button>
         </div>
