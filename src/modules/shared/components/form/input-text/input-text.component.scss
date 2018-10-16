@@ -1,12 +1,8 @@
-@import "./src/assets/styles/variables.scss";
-:host {
-  display: block;
-  margin-bottom: 1rem;
-}
+@import "variables.scss";
 
 .input-text {
   &__error {
-    color: red;
+    color: $error-text-color;
   }
   &--copy-link {
     .input-text__input {
@@ -86,8 +82,8 @@ input.form-control {
   &.__kafkaInput {
     border: none;
     padding: 7px 12px;
-    background-color: #e9ecf2;
-    border-radius: 5px;
+    border-radius: 2px;
+    border: 2px grey solid;
     color: #04143c;
     height: 28px;
   }

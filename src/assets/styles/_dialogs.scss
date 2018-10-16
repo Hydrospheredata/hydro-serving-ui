@@ -40,4 +40,10 @@
             text-align: center;
         }
     }
+    &__question {
+        display: inline-block; 
+        font-size: 24px;
+        line-height: 32px;
+        margin-bottom: 12px;
+    }
 }

@@ -2,6 +2,30 @@
     border: 1px aliceblue solid;
 }
 
+.kafka-sources {
+    &__item {
+        align-items: center;
+        margin-bottom: 4px;
+        display: flex;
+        &-delete-icon {
+            cursor: pointer;
+            height: 14px;
+            line-height: 14px;
+            width: 14px;
+            &:hover {
+                background: #ffcece;
+                border-radius: 50%;
+                color: #f35438;
+            }
+        }
+    }
+    &__add-button {
+        font-size: 12px;
+        margin: 4px 0;
+        padding: 4px;
+    }
+}
+
 .hydro-icon {
     width: 12px;
     height: 12px;
