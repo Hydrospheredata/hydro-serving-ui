@@ -5,6 +5,13 @@ export interface IKafkaStreaming {
     errorTopic?: string;
 }
 
+export enum TestStatus {
+    Failed = 'failed',
+    Pending = 'pending',
+    Success = 'success',
+    Undefined = ''
+} 
+
 export interface IApplication {
     id?: number;
     contract?: string;
@@ -14,6 +21,8 @@ export interface IApplication {
     input: string;
     output: string;
     namespace?: string;
+    testStatus?: TestStatus;
+    error?: string;
 }
 
 export class Application implements IApplication {
@@ -25,6 +34,8 @@ export class Application implements IApplication {
     public kafkaStreaming?: { sourceTopic: string, destinationTopic: string, consumerId?: string, errorTopic?: string }[];
     public input: string;
     public output: string;
+    public testStatus:TestStatus;
+    public error: string;
 
     constructor(props: any = {}) {
         if (props['id']) { this.id = props['id']; }
@@ -35,5 +46,8 @@ export class Application implements IApplication {
         this.input = props['input'] || null;
         this.output = props['output'] || null;
         this.namespace = props['namespace'] || null;
+        this.testStatus = props['testStatus'] || null;
+        this.error = props['error'] || '';
+        this.testStatus = props['testStatus'] || TestStatus.Undefined
     }
 }

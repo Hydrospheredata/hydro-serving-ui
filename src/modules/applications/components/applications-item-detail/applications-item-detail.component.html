@@ -2,7 +2,7 @@
     <div class="content-header">
         <div class="content-header__title">{{ (application$ | async)?.name }}</div>
         <div class="action-buttons">
-            <button class="button button--primary action-button" (click)="testApplication()">
+            <button class="button button--primary button--test action-button" (click)="testApplication()">
                 <hydro-icon class="button__icon" [type]="'icon-start'"></hydro-icon>
                 Test
             </button>

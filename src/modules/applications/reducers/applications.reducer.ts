@@ -1,4 +1,4 @@
-import { Application } from '@shared/models/_index';
+import { TestStatus, Application } from '@shared/models/_index';
 import { ApplicationActions, ApplicationActionTypes } from '@applications/actions';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
@@ -33,18 +33,38 @@ export function reducer(state = initialState, action: ApplicationActions): State
             }, state);
         case ApplicationActionTypes.SetInputSuccess:
         case ApplicationActionTypes.GenerateInputSuccess:
-            console.log(action.payload);
+            console.log(action.payload); 
             return adapter.updateOne({
                 id: action.payload.id,
                 changes: {
                     input: action.payload.input
                 }
             }, state);
+        case ApplicationActionTypes.Test: {
+            return adapter.updateOne({
+                id: action.payload.id,
+                changes: {
+                    testStatus: TestStatus.Pending,
+                    error: ''
+                }
+            }, state)
+        }
         case ApplicationActionTypes.TestSuccess:
             return adapter.updateOne({
                 id: action.payload.id,
                 changes: {
-                    output: action.payload.output
+                    output: action.payload.output,
+                    error: '',
+                    testStatus: TestStatus.Success
+                }
+            }, state);
+        case ApplicationActionTypes.TestFail:
+            return adapter.updateOne({
+                id: action.payload.id,
+                changes: {
+                    testStatus: TestStatus.Failed,
+                    output: '',
+                    error: action.payload.error
                 }
             }, state);
         case ApplicationActionTypes.DeleteSuccess:

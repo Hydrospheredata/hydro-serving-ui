@@ -1,6 +1,7 @@
 @import "variables.scss";
 
 .dialog {
+    position: relative;
     &__content {
         padding: 0 12px;
         max-height: calc(90vh - 144px);
@@ -16,7 +17,10 @@
     }
     &__close-icon {
         cursor: pointer;
-        color: white;
+        color: black;
+        position: absolute;
+        right: 0;
+        top:0;
         height: 16px;
         width: 16px;
     }

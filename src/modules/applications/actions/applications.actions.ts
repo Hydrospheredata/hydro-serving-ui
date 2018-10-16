@@ -124,6 +124,7 @@ export class GenerateInputFailAction implements Action {
 
 export class TestApplicationAction implements Action {
     readonly type = ApplicationActionTypes.Test;
+    constructor(public payload: Application) { };
 }
 
 export class TestApplicationSuccessAction implements Action {
@@ -133,7 +134,7 @@ export class TestApplicationSuccessAction implements Action {
 
 export class TestApplicationFailAction implements Action {
     readonly type = ApplicationActionTypes.TestFail;
-    constructor(public error) { };
+    constructor(public payload) { };
 }
 
 export type ApplicationActions

@@ -1,3 +1,5 @@
+@import "variables.scss";
+
 .CodeMirror {
     background-color: #f2f4f7!important;
     &:last-of-type {
@@ -9,10 +11,14 @@
   background-color: #f2f4f7!important;
 }
 
-.btn-group {
+.buttons {
+  display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
-  margin-bottom: 10px;
+}
+
+.form-button {
+  margin-right: 8px;
+  font-size: 14px;
 }
 
 .input {
@@ -23,25 +29,80 @@
   }
 }
 
+.curl {
+  background: #f9f9f9;
+  border: 1px grey solid;
+  border-radius: 2px;
+  font-family: monospace;
+  padding: 24px 36px 24px 24px;
+  position: relative;
+  &__copy-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
+
 .test-fields {
   display: flex;
+  margin-bottom: 8px;
   &__item {
     flex: 1;
-    &.__input {
-      margin-right: 8px;
+    margin: 0 4px;
+    &-header {
+      display: flex;
+      justify-content: space-between;
     }
-    &.__output {
-      margin-left: 8px;
+  }
+}
+.status {
+  font-size: 12px;
+  width: 90px;
+  &__text {
+    background: $main-bg-color;
+    border-radius: 2px;
+    padding: 0 4px;
+    &--failed {
+      color: $color--failed;
+    } 
+    &--pending {
+      color: $color--pending;
+    }
+    &--success {
+      color: $color--success;
     }
   }
 }
 
-input {
-  padding-right: 65px;
+.copy {
+  border-bottom-left-radius: 2px;
+  border-top-right-radius: 2px;
+  cursor: pointer;
+  height: 28px;
+  padding: 4px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 28px;
+  &:hover {
+    background: rgba(222, 222, 222, .6);
+  }
+  &__button {
+    font-size: 20px;
+    color: black;
+  }
 }
 
-.copy-btn {
-  position: absolute;
-  top: 0;
-  right: 0;
+
+.application-name {
+  font-size: 18px;
+  &__label {
+
+  }
+}
+
+.error-container {
+  border: 1px $error-container-border-color solid;
+  padding: 4px;
+  background: $error-container-background-color;
 }
