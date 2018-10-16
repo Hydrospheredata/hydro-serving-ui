@@ -63,17 +63,23 @@
             }
         }
     }
-    &__remove-icon {
-        position: absolute;
-        right: 16px;
-        top: 4px;
-        width: 12px;
-        height: 12px;
-        cursor: pointer;
-        &:hover {
-            color: tomato;
+    &__remove {
+        &-icon {
+            line-height: 14px;
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+            &:hover {
+                color: #f35438;
+                background: #ffcece;
+                border-radius: 50%;
+            }
         }
     }
+
 }
 
 .form-group {
