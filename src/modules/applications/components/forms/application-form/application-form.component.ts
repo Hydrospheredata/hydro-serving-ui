@@ -39,6 +39,7 @@ export class ApplicationFormComponent implements OnInit {
 
     public addStageControl(){
         this.formService.addStageControl();
+        
     }
 
     public addServiceToStage(stage: FormGroup){

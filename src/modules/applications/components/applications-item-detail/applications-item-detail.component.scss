@@ -51,3 +51,15 @@
         display: block;
     }
 }
+
+.navigation {
+    &-button {
+        margin-right: 8px;
+        &:hover {
+            border-radius: 50px;
+        }
+    }
+    &-icon {
+        margin: 0;
+    }
+}

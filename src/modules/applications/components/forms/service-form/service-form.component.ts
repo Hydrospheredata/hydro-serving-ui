@@ -54,7 +54,8 @@ export class ServiceFormComponent implements OnInit {
             name: 'GPU',
             placeholders: []
         }
-    ])
+    ]);
+
     public models$: Observable<Model[]> = this.store.select(getAllModels);
     public modelVersions$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
     public runtimes: Runtime[];
@@ -73,14 +74,44 @@ export class ServiceFormComponent implements OnInit {
         return this.group.get('weight') as FormControl
     }
 
+    constructor(
+        private store: Store<HydroServingState>,
+    ){
+        this.store.select(getAllModelVersions).subscribe(
+            modelVersions => this.modelVersions = modelVersions
+        );
+
+        this.store.select('runtimes').subscribe(runtimes => {
+            this.runtimes = runtimes;
+        });
+    }
+
+    ngOnInit(){
+        if(this.group.get('model').value){
+            const modelData = this.group.get('model').value;
+            this.getModelVersionsByModelId(modelData.modelId);
+            this.modelIdControl.setValue(modelData.modelId);
+            this.modelVersionIdControl.setValue(modelData.modelVersionId);
+        }
+
+        if(this.group.get('signatureName')){
+            this.signatureNameControl.setValue(this.group.get('signatureName').value)
+        }
+
+        this.subscribeToModelIdChange();
+        this.subcribeToModelVersionIdChange();
+    }
+
     public onModelIdChange(modelId): void {
         this.getModelVersionsByModelId(modelId);
-        if(this.modelVersions$.getValue().length){
-            this.modelVersionIdControl.setValue(this.modelVersions$.getValue()[0].id);
+        const modelVersions = this.modelVersions$.getValue();
+
+        if(modelVersions.length){
+            this.modelVersionIdControl.setValue(modelVersions[modelVersions.length - 1].id);
         }
     }
 
-    public onModelVersionChange(modelVersionId): void{
+    public onModelVersionChange(modelVersionId): void {
         this.signatureName.patchValue(this.getSignature(modelVersionId));
     }
 
@@ -88,30 +119,7 @@ export class ServiceFormComponent implements OnInit {
         this.delete.emit(index);
     }
 
-    constructor(
-        private store: Store<HydroServingState>,
-    ){
-        this.store.select(getAllModelVersions).subscribe(
-            modelVersions => this.modelVersions = modelVersions
-        )
 
-        this.store.select('runtimes')
-            .subscribe(runtimes => {
-                this.runtimes = runtimes;
-            });
-    }
-
-    ngOnInit(){
-        if(this.group.get('model').value){
-            const modelData = this.group.get('model').value;
-            this.getModelVersionsByModelId(modelData.modelId);
-            this.modelVersionIdControl.setValue(modelData.modelVersionId);
-            this.onModelVersionChange(modelData.modelVersionId);
-        }
-
-        this.subscribeToModelIdChange();
-        this.subcribeToModelVersionIdChange();
-    }
 
     private getModelVersionsByModelId(modelId){
         this.store.select(getModelVersionsByModelId(modelId)).take(1).subscribe(
@@ -122,8 +130,12 @@ export class ServiceFormComponent implements OnInit {
     }
 
     private getSignature(versionId): string {
-        const model = this.modelVersions.find(version => version.id === versionId);
-        return hocon(model.modelContract).signatures.signature_name;
+        const modelVersion = this.modelVersions.find(version => version.id === versionId);
+        return hocon(modelVersion.modelContract).signatures.signature_name;
+    }
+
+    private get signatureNameControl(): AbstractControl {
+        return this.group.get('signatureName');
     }
 
     private get modelIdControl(): AbstractControl {
@@ -140,12 +152,13 @@ export class ServiceFormComponent implements OnInit {
             .subscribe(modelId => {
                 this.onModelIdChange(modelId);
             });
-    };
+    }
+
     private subcribeToModelVersionIdChange(){
         this.modelVersionIdControl
             .valueChanges
             .subscribe(modelVersionId => {
                 this.onModelVersionChange(modelVersionId)
             });
-    };
+    }
 }

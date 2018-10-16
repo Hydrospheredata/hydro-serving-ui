@@ -19,6 +19,11 @@
     }
 }
 
+.application-form {
+    height: calc(100% - 80px);
+    overflow: scroll;
+}
+
 .application__kafka{
     display: block;
     margin-bottom: 20px;
@@ -47,7 +52,7 @@
 
     &__remove-button {
         background-color: white;
-        border: 1px #ff2d07 solid;
+        border: 1px #f35438 solid;
         border-radius: 4px;
         cursor: pointer;
         font-size: 10px;
@@ -57,7 +62,7 @@
         top: -12px;
         &:hover {
             color: white;
-            background-color: #ff2d07;
+            background-color: #f35438;
         }
     }
 

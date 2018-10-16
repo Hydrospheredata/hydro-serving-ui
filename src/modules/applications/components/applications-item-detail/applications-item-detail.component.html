@@ -36,8 +36,8 @@
     <div class="hydro-panel" *ngFor="let stage of (application$ | async)?.executionGraph.stages; let i = index;">
         <div class="hydro-panel__header">
             <h5>Stage {{i + 1}}</h5>
-            <button class="button button--flat" [routerLink]="[i]">
-                <hydro-icon class="button__icon" [type]="'icon-right'"></hydro-icon>
+            <button class="button button--flat navigation-button" [routerLink]="[i]">
+                <hydro-icon class="button__icon navigation-icon" [type]="'icon-right'"></hydro-icon>
             </button>
         </div>
         <table class='hydro-table hydro-table-models'>

@@ -175,7 +175,9 @@ export class ApplicationsEffects {
                         map(output => {
                             return new HydroActions.TestApplicationSuccessAction({ id: applicationId, output: JSON.stringify(output, undefined, 2) })
                         }),
-                        catchError(error => Observable.of(new HydroActions.TestApplicationFailAction(error)))
+                        catchError(error => {
+                            return Observable.of(new HydroActions.TestApplicationFailAction({id: applicationId, error}))
+                        })
                     )
             })
         )

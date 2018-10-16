@@ -8,19 +8,21 @@ import {
 import {
     Model,
     Runtime,
+    ModelVersion,
 } from "@shared/_index";
 import { HydroServingState } from "@core/reducers";
 import { Store } from '@ngrx/store';
 import { Subscription } from "rxjs";
 import { getAllModels, getModelVersionsByModelId } from "@models/reducers";
 import { CustomValidatorsService } from "@core/services/custom-validators.service";
-
+import * as hocon from 'hocon-parser';
 
 interface Service {
     weight: number;
     environment: any;
     runtime: any;
     modelVersion: any;
+    signatureName: string;
 }
 
 interface Stage {
@@ -116,25 +118,24 @@ export class ApplicationFormService implements OnDestroy {
         }
     }
 
-    private defaultModelVersionId(modelId: number){
+    private defaultModelVersion(modelId: number): ModelVersion{
         if(modelId == undefined){ return };
 
-        let modelVersionId;
+        let modelVersion;
 
         this.store.select(getModelVersionsByModelId(modelId)).subscribe(
             modelVersions => {
-                modelVersionId = modelVersions[modelVersions.length - 1].id;
+                modelVersion= modelVersions[modelVersions.length - 1];
             }
         )
-
-        return modelVersionId;
+        return modelVersion;
     }
 
     private defaultService(): Service {
         const runtimeId = this.defaultRuntimeId();
         const modelId = this.defaultModelId();
-        const modelVersionId = this.defaultModelVersionId(modelId);
-
+        const modelVersion = this.defaultModelVersion(modelId);
+        const signatureName = this.getSignatureName(modelVersion)
         return {
             weight: 100,
             environment: {
@@ -143,8 +144,9 @@ export class ApplicationFormService implements OnDestroy {
             runtime: {
                 id: runtimeId
             },
+            signatureName,
             modelVersion: {
-                id: modelVersionId,
+                id: modelVersion.id,
                 model: {
                     id: modelId,
                 }
@@ -167,11 +169,15 @@ export class ApplicationFormService implements OnDestroy {
         }
     }
 
-    public buildServiceForm(service: Service = this.defaultService()): FormGroup{
+    private getSignatureName(modelVersion): string{
+        return hocon(modelVersion.modelContract).signatures.signature_name;
+    }
+
+    public buildServiceForm(service: Service = this.defaultService()): FormGroup {
         const environment = new FormControl(service.environment && service.environment.id, this.customValidators.required());
         const weight = new FormControl(service.weight, [this.customValidators.required(), this.customValidators.pattern(/^[0-9]+$/)]);
         const runtime = new FormControl(service.runtime && service.runtime.id, this.customValidators.required());
-        const signatureName = new FormControl('', [this.customValidators.required(), this.customValidators.pattern(/[a-zA-Z0-9]+/)]);
+        const signatureName = new FormControl(service.signatureName || this.getSignatureName(service.modelVersion), [this.customValidators.required(), this.customValidators.pattern(/[a-zA-Z0-9]+/)]);
         const model = new FormGroup({
             modelId: new FormControl(service.modelVersion && service.modelVersion.model.id, this.customValidators.required()),
             modelVersionId: new FormControl(service.modelVersion && service.modelVersion.id, this.customValidators.required())

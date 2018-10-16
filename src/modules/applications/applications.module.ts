@@ -32,7 +32,6 @@ import {
 } from '@applications/services';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 
-
 @NgModule({
     imports: [
         SharedModule,
@@ -57,7 +56,13 @@ import { CustomValidatorsService } from '@core/services/custom-validators.servic
         KafkaFormComponent,
         ServiceFormComponent
     ],
-    providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard, ApplicationFormService, CustomValidatorsService],
+    providers: [
+        ApplicationsService, 
+        ApplicationsBuilderService, 
+        ApplicationsGuard, 
+        ApplicationFormService, 
+        CustomValidatorsService
+    ],
     exports: [ApplicationsDialogComponent, ApplicationFormComponent]
 })
 export class ApplicationsModule { }

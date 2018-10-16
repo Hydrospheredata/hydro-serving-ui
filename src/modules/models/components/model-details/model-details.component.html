@@ -45,8 +45,8 @@
                             <span *ngIf="item.modelVersion.applications.length === 0">-</span>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <button class="button button--flat" [routerLink]="[item.version]" *ngIf="item.status === 'Finished'">
-                                <hydro-icon [type]="'icon-right'" class='button__icon model-item__detail-icon'></hydro-icon>
+                            <button class="button button--flat navigation-button" [routerLink]="[item.version]" *ngIf="item.status === 'Finished'">
+                                <hydro-icon [type]="'icon-right'" class='button__icon navigation-icon'></hydro-icon>
                             </button>
                         </td>
                     </tr>
