@@ -37,21 +37,6 @@
     background-color: red;
 }
 
-.new-version-icon {
-    display: none;
-    width: 22px;
-    height: 22px;
-    color: #ffc107;
-    cursor: pointer;
-    left: 14px;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-54%);
-    &--available {
-        display: block;
-    }
-}
-
 .navigation {
     &-button {
         margin-right: 8px;
@@ -61,5 +46,55 @@
     }
     &-icon {
         margin: 0;
+    }
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 4px 0;
+    position: absolute;
+    z-index: 1;
+    top: 24px;
+    left: 50%;
+    margin-left: -60px;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.model-variant {
+    &__cell {
+        display: flex;
+        align-items: center;
+    }
+    &__version {
+        &-container {
+            cursor: pointer;
+            display: inline-block;
+            height: 18px;
+            line-height: 18px;
+            margin-right: 2px;
+            position: relative;
+            width: 18px;
+        }
+        &-icon {
+            height: 16px;
+            width: 16px;
+            display: none;
+            &--available {
+                display: block;
+            }
+        }
     }
 }

@@ -37,7 +37,8 @@
         <div class="hydro-panel__header">
             <h5>Stage {{i + 1}}</h5>
             <button class="button button--flat navigation-button" [routerLink]="[i]">
-                <hydro-icon class="button__icon navigation-icon" [type]="'icon-right'"></hydro-icon>
+                <hydro-icon class="button__icon navigation-icon" [type]="'icon-right'">
+                </hydro-icon>
             </button>
         </div>
         <table class='hydro-table hydro-table-models'>
@@ -52,16 +53,26 @@
             </thead>
             <tbody>
                 <tr *ngFor="let item of stage.services; let j = index;" class='hydro-table-body__row'>
-                    <td class="hydro-table-body__cell">
-                        <div class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                            {{ item.modelVersion.modelName + ':v' + item.modelVersion.modelVersion }}
-                            <hydro-icon [type]="'icon-warning'"
-                                        [title]="'Model has new version'"
-                                        class="icon new-version-icon"
-                                        [ngClass]="{'new-version-icon--available': checkNewVersion(item.modelVersion)}"
-                                        (click)="updateModelVersionDialog(i, j)">
+                    <td class="hydro-table-body__cell model-variant__cell">
+                        <!-- <span class="tooltip">
+                            <hydro-icon [type]="'icon-upgrade'"
+                                    class="icon new-version-icon"
+                                    [ngClass]="{'new-version-icon--available': checkNewVersion(item.modelVersion)}"
+                                    (click)="updateModelVersionDialog(i, j)">
                             </hydro-icon>
-                        </div>
+                            <span class="tooltiptext">Model has new version</span>
+                        </span> -->
+                        <span class="model-variant__version-container tooltip">
+                            <hydro-icon [type]="'icon-upgrade'"
+                                    class="icon model-variant__version-icon"
+                                    [ngClass]="{'model-variant__version-icon--available': checkNewVersion(item.modelVersion)}"
+                                    (click)="updateModelVersionDialog(i, j)">
+                            </hydro-icon>
+                            <span class="tooltiptext">Model has new version</span>
+                        </span>
+                        <span class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
+                            {{ item.modelVersion.modelName + ':v' + item.modelVersion.modelVersion }}
+                        </span>
                     </td>
                     <td class="hydro-table-body__cell">
                         <div class='cs-text-overflow-ellipsis cs-text-center' style="max-width: 300px;">
