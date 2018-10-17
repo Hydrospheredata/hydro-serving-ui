@@ -1,7 +1,9 @@
-<h2 class="mdl-dialog__title cs-text-center">Are you sure?</h2>
-<div class="mdl-dialog__content">
-    <div class="btn-group form-actions __justify-space-around">
-        <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
-        <button class="btn btn-colored btn-large" type="submit" (click)="submitDeleteServiceForm()">Remove metric</button>
+<div class="dialog">
+    <div class="dialog__content dialog__content--center">
+        <span class="dialog__question">Remove the metric?</span>
+    </div>
+    <div class="dialog__buttons">
+        <button class="button button--flat button--large dialog__button" (click)="dialogRef.hide()" type="button">cancel</button>
+        <button class="button button--warning button--large dialog__button" (click)="onDelete()">Remove</button>
     </div>
 </div>

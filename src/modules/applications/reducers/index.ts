@@ -1,7 +1,7 @@
 import * as fromApplications from './applications.reducer';
 import * as fromRoot from '@core/reducers';
 import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
-import { Application } from '@shared/models/_index';
+import { Application, TestStatus } from '@shared/models/_index';
 
 export interface ApplicationsState {
     applications: fromApplications.State;
@@ -67,6 +67,11 @@ export const getSelectedApplicationInput = createSelector(
 export const getSelectedApplicationOutput = createSelector(
     getSelectedApplication,
     (application: Application): string => application && application.output
+)
+
+export const getSelectedApplicationTestStatus = createSelector(
+    getSelectedApplication,
+    (application: Application): TestStatus => application && application.testStatus
 )
 
 export const getCurrentStage = createSelector(

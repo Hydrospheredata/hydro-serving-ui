@@ -2,7 +2,6 @@
 @import "fonts.scss";
 @import "variables.scss";
 @import "content.scss";
-@import "angular-material-custom.scss";
 @import "inputs.scss";
 @import "dialogs.scss";
 @import "common.scss";
@@ -15,6 +14,8 @@
 @import "mdl-list.scss";
 @import "mdl-select.scss";
 @import "mdl-popover.scss";
+@import "mdl-dialog.scss";
+@import "mdl-tabs.scss";
 @import "icons.scss";
 @import "statuses.scss";
 
@@ -217,21 +218,6 @@ md-dialog-container.mat-dialog-container {
       position: relative;
       vertical-align: text-bottom;
     }
-  }
-}
-
-.font-color {
-
-  &--success {
-    color: $color--success;
-  }
-
-  &--failed {
-    color: $color--failed;
-  }
-
-  &--primary {
-    color: $color--primary;
   }
 }
 

@@ -1,38 +1,73 @@
-<h2 class="mdl-dialog__title">Test application "{{applicationName$ | async}}"</h2>
-<form (ngSubmit)="onSubmit()">
-  <div class="mdl-dialog__content">
+<div class="dialog">
+    <p class="application-name">
+       <label>Application:</label> "{{applicationName$ | async}}"</p>
 
-    <div class="test-fields">
-      <div class="test-fields__item __input" *ngIf="input$ | async; let input;">
-        <label>Input</label>
-        <codemirror [ngModel]="input" [config]="inputOptions" name="input" (change)="onChange($event)"></codemirror>
-      </div>
-      <div class="test-fields__item __output" *ngIf="output$ | async; let output;">
-        <label>Output</label>
-        <codemirror [ngModel]="output" [config]="outputOptions" name="output"></codemirror>
-      </div>
-    </div>
+    <mdl-tabs mdl-ripple mdl-tab-active-index="0">
+        <mdl-tab-panel mdl-tab-panel-title="web">
+            <form (ngSubmit)="onSubmit()">
+                <div>
+                  <div class="test-fields">
+                    <div class="test-fields__item __input" *ngIf="input$ | async; let input;">
+                      <label>Input</label>
+                      <codemirror [ngModel]="input" [config]="inputOptions" name="input" (change)="onChange($event)"></codemirror>
+                    </div>
+                    <div class="test-fields__item __output">
+                      <div class="test-fields__item-header">
+                        <label>Output</label>
+                        <span *ngIf="testStatus$ | async; let testStatus" class="status">
+                          status
+                          <span class="status__text status__text--{{testStatus}}">{{testStatus}}</span>
+                        </span>
+                      </div>
+                      <ng-container *ngIf="output$ | async; let output;">
+                          <codemirror [ngModel]="output" [config]="outputOptions" name="output"></codemirror>
+                      </ng-container>
 
-    <!-- <div class="input-text form-group">
-      <label _ngcontent-c5="" class="control-label">CURL Parameters</label>
-      <div fxLayout="row" fxLayoutAlign="space-around center" class="cs-relative input-text__flex-container">
-        <input fxFlex="90%"
-               readonly
-               [(ngModel)]="curlPath"
-               [ngModelOptions]="{standalone: true}"
-               class="input-text__input form-control input-icon sibling"
-               #inputTarget
-               placeholder="">
-        <mdl-button fxFlex="10%" class="copy-btn"
-                    (cbOnSuccess)="copiedToClipBoardSuccessfully(inputTarget)"
-                    title="Copy CURL params">
-        <mdl-icon>content_copy</mdl-icon></mdl-button>
-      </div>
-    </div> -->
-
-    <div class="btn-group form-actions __justify-end">
-      <button class="btn btn-flat btn-large" (click)="dialogRef.hide()" type="button">cancel</button>
-      <button class="btn btn-colored btn-large" type="submit">test app</button>
-    </div>
-  </div>
-</form>
+                      <ng-container *ngIf="(application$ | async).testStatus === 'failed'">
+                          <div class="error-container">
+                            {{(application$ | async).error}}
+                          </div>
+                      </ng-container>
+                    </div>
+                  </div>
+                  <div class="buttons">
+                    <button class="button button--primary button--test form-button" type="submit" [disabled]="!(isValidInput$ | async)">test app</button>
+                  </div>
+                </div>
+              </form>
+        </mdl-tab-panel>
+        <mdl-tab-panel>
+          <mdl-tab-panel-title>
+            <span>cURL</span>
+          </mdl-tab-panel-title>
+          <mdl-tab-panel-content>
+              <div class="curl">
+                  <code #curl>
+                    {{curl$ | async}}
+                  </code>
+                  <div class="copy" (click)="copyToClipboard(curl)">
+                      <mdl-icon class="copy__button">content_copy</mdl-icon>
+                  </div>
+              </div>
+          </mdl-tab-panel-content>
+        </mdl-tab-panel>
+        <mdl-tab-panel mdl-tab-panel-title="gRPC">
+            <div class="curl">
+              <code #grpc>
+                  import grpc<br/>
+                  import hydro_serving_grpc as hs<br/>
+                  channel = grpc.insecure_channel("localhost:8080")<br/>
+                  stub = hs.PredictionServiceStub(channel)<br/>
+                  model_spec = hs.ModelSpec(name="linear_regression", signature_name="infer")<br/>
+                  tensor_shape = hs.TensorShapeProto(dim=[hs.TensorShapeProto.Dim(size=-1), hs.TensorShapeProto.Dim(size=2)])<br/>
+                  tensor = hs.TensorProto(dtype=hs.DT_DOUBLE, tensor_shape=tensor_shape, double_val=[1,1,1,1])<br/>
+                  result = stub.Predict(request)<br/>
+              </code>
+              <div class="copy" (click)="copyToClipboard(grpc)">
+                  <mdl-icon class="copy__button">content_copy</mdl-icon>
+              </div>
+            </div>
+        </mdl-tab-panel>
+    </mdl-tabs>
+    <hydro-icon type="icon-close" class="dialog__close-icon" (click)="close()"></hydro-icon>
+</div>

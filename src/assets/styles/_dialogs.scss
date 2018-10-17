@@ -1,25 +1,49 @@
 @import "variables.scss";
 
+.dialog {
+    position: relative;
+    &__content {
+        padding: 0 12px;
+        max-height: calc(90vh - 144px);
+        overflow: scroll;
+    }
+    &__header {
+        background-color: $color--blue;
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        font-size: 24px;
+        padding: 16px 24px;
+    }
+    &__close-icon {
+        cursor: pointer;
+        color: black;
+        position: absolute;
+        right: 0;
+        top:0;
+        height: 16px;
+        width: 16px;
+    }
+    &__footer {
+        border-top: 2px solid lightgray;
+    }
 
-
-.mat-dialog-container {
-  position: relative;
-  .close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-  }
-}
-
-.mdl-dialog {
-    padding: 54px 64px;
-    color: $color-base;
-    &__title {
-        font-family: $font-family-bold;
-        padding: 0;
-        margin-bottom: 36px;
+    &__buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__button {
+        font-size: 16px;
     }
     &__content {
-        padding: 0;
+        &--center {
+            text-align: center;
+        }
+    }
+    &__question {
+        display: inline-block; 
+        font-size: 24px;
+        line-height: 32px;
+        margin-bottom: 12px;
     }
 }

@@ -4,3 +4,5 @@ export * from '@applications/components/applications-stage-detail/applications-s
 export * from '@applications/components/applications-dialog/applications-dialog.component'
 
 export * from '@applications/components/application-chart/application-chart.component'
+//forms 
+export * from './forms/index'

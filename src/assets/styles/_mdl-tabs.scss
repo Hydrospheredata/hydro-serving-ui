@@ -1,0 +1,13 @@
+.mdl-tabs {
+    &.is-upgraded {
+        & .mdl-tabs__tab {
+            text-transform: none;
+            &.is-active:after {
+                background: #468dda;
+            }
+        }
+    }
+    &__tab-bar {
+        margin-bottom: 12px;
+    }
+}

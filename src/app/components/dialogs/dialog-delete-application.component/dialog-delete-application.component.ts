@@ -13,11 +13,11 @@ import * as fromApplication from '@applications/reducers';
 
 
 @Component({
-    selector: 'hydro-dialog-delete-service',
-    templateUrl: './dialog-delete-service.component.html',
-    styleUrls: ['./dialog-delete-service.component.scss']
+    selector: 'hydro-dialog-delete-application',
+    templateUrl: './dialog-delete-application.component.html',
+    styleUrls: ['./dialog-delete-application.component.scss']
 })
-export class DialogDeleteServiceComponent extends DialogBase {
+export class DialogDeleteApplicationComponent extends DialogBase {
     private applicationId: number;
 
     constructor(
@@ -33,7 +33,7 @@ export class DialogDeleteServiceComponent extends DialogBase {
             .subscribe(id => this.applicationId = id);
     }
 
-    public submitDeleteServiceForm() {
+    public onDelete() {
         this.store.dispatch(new DeleteApplicationAction(this.applicationId));
         this.dialogRef.hide();
     }

@@ -23,14 +23,14 @@ import * as Dialog from '@components/dialogs/_index';
         AppComponent,
         Dialog.DialogModelBuildComponent,
         Dialog.DialogTestComponent,
-        Dialog.DialogUpdateServiceComponent,
-        Dialog.DialogDeleteServiceComponent,
-        Dialog.DialogAddServiceComponent,
+        Dialog.DialogUpdateApplicationComponent,
+        Dialog.DialogAddApplicationComponent,
+        Dialog.DialogDeleteApplicationComponent,
         Dialog.DialogAddMetricComponent,
         Dialog.DialogDeleteMetricComponent,
         Dialog.DialogUpdateModelVersionComponent,
         Dialog.DialogDeleteModelComponent,
-        Dialog.DialogModelsEmptyComponent
+        Dialog.DialogModelsEmptyComponent,
     ],
     imports: [
         RouterModule,
@@ -48,15 +48,15 @@ import * as Dialog from '@components/dialogs/_index';
     entryComponents: [
         Dialog.DialogModelBuildComponent,
         Dialog.DialogTestComponent,
-        Dialog.DialogUpdateServiceComponent,
-        Dialog.DialogDeleteServiceComponent,
-        Dialog.DialogAddServiceComponent,
+        Dialog.DialogUpdateApplicationComponent,
+        Dialog.DialogDeleteApplicationComponent,
+        Dialog.DialogAddApplicationComponent,
         Dialog.DialogAddMetricComponent,
         Dialog.DialogDeleteMetricComponent,
         Dialog.DialogUpdateModelVersionComponent,
         Dialog.DialogDeleteModelComponent,
-        Dialog.DialogModelsEmptyComponent
+        Dialog.DialogModelsEmptyComponent,
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
 })
 export class AppModule { }

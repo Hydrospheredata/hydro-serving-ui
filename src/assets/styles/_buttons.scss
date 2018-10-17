@@ -3,6 +3,9 @@ $btn-secondary: $color-base;
 $btn-icon-size: 12px;
 $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
+$warning: #da4646;
+$warning-hover: #d04e4e;
+
 .btn {
     background-color: transparent;
     border: 2px solid $color--blue;
@@ -108,3 +111,96 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
     }
 }
+
+.button {
+    border: none;
+    border-radius: 4px;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    padding: 8px;
+    text-transform: uppercase;
+    font-size: 12px;
+    line-height: 12px; 
+    &--primary {
+        padding: 9px;
+        background-color: #4d9bf1;
+        color: white;
+        &:not([disabled]):hover {
+            background-color: #468dda;
+        }
+        &[disabled] {
+            background-color: #d6d8da;
+            color: #a29e9e;
+            cursor: auto;
+        }
+    }
+    &--secondary {
+        color: #4d9bf1;
+        border: 1px solid grey;
+        &:not([disabled]):hover {
+            background-color: #4d9bf1;
+            border-color: #4d9bf1;
+            color: white;
+        }
+        &[disabled]{
+            border-color: #d6d8da;
+            color: #a29e9e;
+            cursor: auto;
+        }
+    }
+    &--flat {
+        padding: 9px;
+        color: #4d9bf1;
+        &:not([disabled]):hover {
+        background-color: rgba(176, 205, 243, .4);
+        }
+        &[disabled] {
+        color: #a29e9e;
+        cursor: auto;
+        }
+    }
+
+    &--large {
+        font-size: 16px;
+        line-height: 18px;
+    }
+
+    &--warning {
+        padding: 9px;
+        background-color: $warning;
+        color: white;
+        &:not([disabled]):hover {
+            background-color: $warning-hover;
+        }
+        &[disabled] {
+            background-color: #d6d8da;
+            color: #a29e9e;
+            cursor: auto;
+        }
+    }
+
+    &--test {
+        background-color: #63bf8c;
+        &:not([disabled]):hover {
+            background-color: #5db383;
+        }
+    }
+
+    &--circle {
+        border-radius: 50%;
+    }
+
+    &__icon {
+        width: 12px;
+        height: 12px;
+        line-height: 10px;
+        margin-right: 4px;
+    }
+}
+
+.buttons-group {
+    display: flex;
+    justify-content: space-between;
+}
+      

@@ -4,17 +4,15 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
-import { Application } from '@shared/models/_index';
-// import { ApplicationsService } from '@applications/services';
+import { TestStatus, Application } from '@shared/models/_index';
 import { DialogBase } from '@shared/base/_index';
-// import { environment } from 'environments/environment';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { HydroServingState } from '@core/reducers';
 import * as fromApplications from '@applications/reducers';
 import { GenerateInputAction, TestApplicationAction, SetInputAction } from '@applications/actions';
-
-
+import { environment } from '@environments/environment.prod';
+import { of } from 'rxjs/observable/of';
 
 @Component({
     selector: 'hydro-dialog-test-model',
@@ -29,41 +27,69 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     public output$: Observable<string>;
     public applicationName$: Observable<string>;
     public applicationId$: Observable<number>;
-    // public testForm: FormGroup;
+    public curl$: Observable<string>;
+    public testStatus$: Observable<TestStatus>;
+    
     public inputOptions: {};
     public outputOptions: {};
     public input: any = '';
+    public isValidInput$: Observable<boolean>;
     public output: any = '';
     public curlPath = '';
-    // public testTitle: string;
     public requestBody: string;
-    // private port;
-    // private apiUrl;
-    // private signatureName = '';
+    public grpc = 'grpc';
 
     constructor(
-        // @Inject(injectableTestOptions) data,
         public dialogRef: MdlDialogReference,
-        // private fb: FormBuilder,
-        // private location: Location,
-        // private applicationsService: ApplicationsService,
         private store: Store<HydroServingState>
     ) {
         super(
             dialogRef
         );
-        // this.application = data;
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
         this.applicationName$ = this.store.select(fromApplications.getSelectedApplicationName);
         this.applicationId$ = this.store.select(fromApplications.getSelectedApplicationId);
         this.input$ = this.store.select(fromApplications.getSelectedApplicationInput);
         this.output$ = this.store.select(fromApplications.getSelectedApplicationOutput);
+        this.testStatus$ = this.store.select(fromApplications.getSelectedApplicationTestStatus);
 
-        // this.port = environment.production ? window.location.port : environment.port;
-        // const path = this.location.prepareExternalUrl(environment.apiUrl).replace('/ui' + environment.apiUrl, environment.apiUrl);
-        // this.apiUrl = `${window.location.protocol}//${window.location.hostname}:${this.port}/api/v1/applications`;
+        this.curl$ = this.application$.switchMap(
+            application => this.createCurl(application)
+        )
+
+        this.isValidInput$ = this.input$.switchMap(input => {
+            try {
+                JSON.parse(input);
+                return of(true)
+            } catch(e) {
+                return of(false)
+            }
+        })
     }
 
+    public copyToClipboard(div) {
+        const el = document.createElement('textarea');
+        el.value = div.innerText;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+    }
+
+    public close(){
+        this.dialogRef.hide();
+    }
+
+    private createCurl(application: Application): Observable<string> {
+        const { host , port, apiUrl } = environment;
+        const headers = `--header 'Content-Type: application/json' --header 'Accept: application/json'`
+        const { input, id, name } = application;
+        const url = `${host}:${port}${apiUrl}/applications/serve/${id}/${name}`;
+        return of(`curl -X POST ${headers} -d '${input}' '${url}'`);
+    }
 
     ngOnInit() {
         this.inputOptions = {
@@ -90,7 +116,9 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     }
 
     public onSubmit() {
-        this.store.dispatch(new TestApplicationAction);
+        this.application$.take(1).subscribe(
+            application => this.store.dispatch(new TestApplicationAction(application))
+        )
     }
 
     public onChange(input) {
@@ -102,5 +130,4 @@ export class DialogTestComponent extends DialogBase implements OnInit {
     private generateInput() {
         this.store.dispatch(new GenerateInputAction);
     }
-
 }

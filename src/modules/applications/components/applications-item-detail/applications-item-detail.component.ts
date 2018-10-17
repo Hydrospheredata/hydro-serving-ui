@@ -1,4 +1,4 @@
-import { MetricsService } from './../../../core/services/metrics/metrics.service';
+// import { MetricsService } from './../../../core/services/metrics/metrics.service';
 // import * as moment from 'moment';
 import { Component, ViewEncapsulation } from '@angular/core';
 // import { Router, ActivatedRoute } from '@angular/router';
@@ -10,19 +10,19 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
 import { Application, Model } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-import { InfluxDBService } from '@core/services';
+// import { InfluxDBService } from '@core/services';
 // import { environment } from '@environments/environment';
 
 import * as fromApplications from '@applications/reducers';
 import * as fromModels from '@models/reducers';
 
 import {
-    DialogUpdateServiceComponent,
-    DialogDeleteServiceComponent,
+    DialogUpdateApplicationComponent,
     DialogTestComponent,
     injectableServiceUpdate,
     DialogUpdateModelVersionComponent, 
-    CHANGE_IDS
+    CHANGE_IDS,
+    DialogDeleteApplicationComponent
 } from '@components/dialogs/_index';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from '../../../../../node_modules/rxjs';
@@ -49,8 +49,8 @@ export class ApplicationsItemDetailComponent {
     constructor(
         public store: Store<HydroServingState>,
         public dialog: MdlDialogService,
-        private metricsService: MetricsService,
-        private influxdbService: InfluxDBService
+        // private metricsService: MetricsService,
+        // private influxdbService: InfluxDBService
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
         this.modelSub = this.store.select(fromModels.getAllModels)
@@ -62,26 +62,26 @@ export class ApplicationsItemDetailComponent {
     public getHealthClass() {
         // const stageId = `app${applicationId}stage${stageIndex}`;
         // const query = `select sum("health"), count("health") from /.*/ where time >= now() - 1m group by "stageId", "modelVersionId"`;
-        return this.metricsService.getHealth().then((res) => {
-            const result = this.influxdbService.parse(res);
-            const aggregatedHealthStatus: Object = {};
-            // console.log(result);
-            // debugger;
-            for (let row of result) {
-                const stageAndModelVersion = `${row['stageId']}_${row["modelVersionId"]}`;
-                if (!aggregatedHealthStatus.hasOwnProperty(stageAndModelVersion)) {
-                    aggregatedHealthStatus[stageAndModelVersion] = true;
-                }
-                aggregatedHealthStatus[stageAndModelVersion] = aggregatedHealthStatus[stageAndModelVersion] && row['sum'] >= row['count'];
-            }
-            // console.log(aggregatedHealthStatus);
-            const newStatuses = {}
-            for (let key in aggregatedHealthStatus) {
-                console.log(`setting ${aggregatedHealthStatus[key] ? "good" : "bad"} to ${key}`);
-                newStatuses[key] = aggregatedHealthStatus[key] ? "good" : "bad";
-            }
-            this.healthStatuses = newStatuses;
-        });
+        // return this.metricsService.getHealth().then((res) => {
+        //     const result = this.influxdbService.parse(res);
+        //     const aggregatedHealthStatus: Object = {};
+        //     // console.log(result);
+        //     // debugger;
+        //     for (let row of result) {
+        //         const stageAndModelVersion = `${row['stageId']}_${row["modelVersionId"]}`;
+        //         if (!aggregatedHealthStatus.hasOwnProperty(stageAndModelVersion)) {
+        //             aggregatedHealthStatus[stageAndModelVersion] = true;
+        //         }
+        //         aggregatedHealthStatus[stageAndModelVersion] = aggregatedHealthStatus[stageAndModelVersion] && row['sum'] >= row['count'];
+        //     }
+        //     // console.log(aggregatedHealthStatus);
+        //     const newStatuses = {}
+        //     for (let key in aggregatedHealthStatus) {
+        //         console.log(`setting ${aggregatedHealthStatus[key] ? "good" : "bad"} to ${key}`);
+        //         newStatuses[key] = aggregatedHealthStatus[key] ? "good" : "bad";
+        //     }
+        //     this.healthStatuses = newStatuses;
+        // });
     }
 
     ngOnInit() {
@@ -108,7 +108,7 @@ export class ApplicationsItemDetailComponent {
     public updateModelVersionDialog(stageId, serviceId) {
         this.dialog.showCustomDialog({
             component: DialogUpdateModelVersionComponent,
-            styles: { 'width': '600px', 'min-height': '250px' },
+            styles: { 'width':'fit-content', 'max-width': '400px', 'min-height': '120px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
@@ -121,7 +121,7 @@ export class ApplicationsItemDetailComponent {
     public testApplication() {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
-            styles: { 'width': '900px', 'min-height': '250px' },
+            styles: { 'width': '900px', 'min-height': '250px', 'max-height': 'calc(100% - 100px)', 'overflow':'scroll' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
@@ -132,8 +132,8 @@ export class ApplicationsItemDetailComponent {
 
     public editApplication(application: Observable<Application>) {
         this.dialog.showCustomDialog({
-            component: DialogUpdateServiceComponent,
-            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '1224px' },
+            component: DialogUpdateApplicationComponent,
+            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '840px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
@@ -145,8 +145,8 @@ export class ApplicationsItemDetailComponent {
 
     public removeApplication() {
         this.dialog.showCustomDialog({
-            component: DialogDeleteServiceComponent,
-            styles: { 'width': '600px', 'min-height': '250px' },
+            component:  DialogDeleteApplicationComponent,
+            styles: {'min-height': '120px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

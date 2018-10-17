@@ -10,6 +10,12 @@ label.disabled {
     cursor: not-allowed;
 }
 
+.form-actions {
+    &__button {
+        margin-right: 24px;
+    }
+}
+
 .row {
     padding: 10px 0 10px 0;
 }

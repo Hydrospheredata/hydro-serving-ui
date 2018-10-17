@@ -13,6 +13,13 @@
     }
 }
 
+.actions {
+    display: flex;
+    &__time-select {
+        margin-right: 8px;
+    }
+}
+
 .monitoring-controls {
     float: right;
 
@@ -26,14 +33,8 @@
 }
 
 .content-header {
-    align-items: center;
-    justify-content: space-between;
-  > .btn {
-    padding: 0;
-    margin-bottom: 16px;
-    line-height: 1;
     align-items: flex-start;
-  }
+    justify-content: space-between;
 }
 
 .unavailable-message {
@@ -50,4 +51,8 @@
     &-filter {
         width: 120px
     }
+}
+
+.navigation-button {
+    margin-bottom: 8px;
 }

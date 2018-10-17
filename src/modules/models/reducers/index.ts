@@ -97,3 +97,8 @@ export const getAllModelBuildsReversed = createSelector(
     getAllModelBuilds,
     builds => builds.reverse()
 )
+
+export const getModelVersionsByModelId = (modelId: number) => createSelector(
+    getAllModelVersions,
+    (state) => state.filter(modelVersion => modelVersion.model.id === modelId)
+)

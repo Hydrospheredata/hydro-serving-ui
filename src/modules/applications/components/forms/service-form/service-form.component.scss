@@ -1,0 +1,134 @@
+@import "variables.scss";
+
+.service {
+    border: 1px grey solid;
+    box-shadow: 0px 0px 4px 0px grey;
+    margin-bottom: 16px;
+    padding: 12px 24px 20px;
+    position: relative;
+    min-width: 716px;
+    &__row {
+        display: flex;
+        margin-bottom: 12px;
+    }
+    &__field {
+        display: flex;
+        flex-direction: column;
+        margin-right: 12px;
+        position: relative;
+        width: 160px;
+        &-label {
+            font-size: 12px;
+            line-height: 12px;
+        }
+        &-input {
+            padding: 4px 8px;
+            font-size: 14px;
+            line-height: 16px;           
+            border: 2px grey solid;
+            &:focus {
+                border-color: $color--blue;
+            }
+            &.ng-invalid {
+                border-color: tomato;
+            }
+            &--weight {
+                text-align: right;
+            }
+        }
+        &--model-name {
+            width: 368px;
+        }
+        &--model-version {
+            width: 80px;
+        }
+        &--runtime {
+            width: 460px;
+        }
+        &--is-last {
+            margin-right: 0;
+        }
+        &--environment {
+            width: 98px;
+        }
+        &--weight {
+            width: 50px;
+            &::after{
+                content: "%";
+                display: block;
+                position: absolute;
+                left:54px;
+                font-size: 14px;
+                top: 22px;
+            }
+        }
+    }
+    &__remove {
+        &-icon {
+            line-height: 14px;
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+            &:hover {
+                color: #f35438;
+                background: #ffcece;
+                border-radius: 50%;
+            }
+        }
+    }
+
+}
+
+.form-group {
+    display: flex;
+}
+
+.hydro-select {
+    & .mdl-select .mdl-textfield__input {
+        border-radius: 0; 
+    }
+}
+
+.error {
+    font-size: 12px;
+    color: red;
+    position: relative;
+    min-width: 120px;
+}
+
+.docker-image__name {
+    flex: 1;
+}
+
+.docker-image__version {
+    margin: 0 2px 0 2px;
+    font-size: 12px;
+    background-color: aliceblue;
+    padding: 2px;
+    white-space: nowrap;
+    border-radius: 5px;
+    color: #5e5e5e;
+}
+
+.docker-image__repository {
+    margin: 0 2px 0 2px;
+    font-size: 12px;
+    background-color: aliceblue;
+    padding: 2px;
+    white-space: nowrap;
+    border-radius: 5px;
+    color: #5e5e5e;
+}
+
+/deep/ .mdl-list__item:hover {
+    .docker-image__version, .docker-image__repository {
+        color: #04143c;
+    }
+}
+
+/deep/ .parameters__field.parameters__row-field-runtime .mdl-select .mdl-popover {
+    min-width: 200% !important;
+}

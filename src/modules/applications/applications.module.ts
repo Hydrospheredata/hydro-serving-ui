@@ -17,11 +17,20 @@ import {
     ApplicationsWrapperComponent, 
     ApplicationsItemDetailComponent, 
     ApplicationsStageDetailComponent, 
-    ApplicationsDialogComponent, ApplicationChartComponent
+    ApplicationsDialogComponent, 
+    ApplicationChartComponent,
+    ApplicationFormComponent,
+    KafkaFormComponent,
+    ServiceFormComponent
+    
 } from '@applications/components';
-import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } from '@applications/services';
-
-
+import { 
+    ApplicationsService, 
+    ApplicationsBuilderService, 
+    ApplicationsGuard,
+    ApplicationFormService
+} from '@applications/services';
+import { CustomValidatorsService } from '@core/services/custom-validators.service';
 
 @NgModule({
     imports: [
@@ -41,9 +50,19 @@ import { ApplicationsService, ApplicationsBuilderService, ApplicationsGuard } fr
         ApplicationsWrapperComponent,
         ApplicationsItemDetailComponent,
         ApplicationsStageDetailComponent,
-        ApplicationsDialogComponent, ApplicationChartComponent
+        ApplicationsDialogComponent, 
+        ApplicationChartComponent,
+        ApplicationFormComponent,
+        KafkaFormComponent,
+        ServiceFormComponent
     ],
-    providers: [ApplicationsService, ApplicationsBuilderService, ApplicationsGuard],
-    exports: [ApplicationsDialogComponent]
+    providers: [
+        ApplicationsService, 
+        ApplicationsBuilderService, 
+        ApplicationsGuard, 
+        ApplicationFormService, 
+        CustomValidatorsService
+    ],
+    exports: [ApplicationsDialogComponent, ApplicationFormComponent]
 })
 export class ApplicationsModule { }

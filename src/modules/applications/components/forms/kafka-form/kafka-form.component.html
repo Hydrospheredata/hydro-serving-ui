@@ -1,0 +1,35 @@
+<div class="kafka-sources">
+    <label class="hydro-checkbox">
+        Use Kafka source
+        <input type="checkbox" [checked]="isKafkaEnabled" (change)="toggleKafkaEnabled($event)">
+        <span></span>
+    </label>
+    <div *ngFor="let kafkaSource of kafkaFormArray.controls;index as i" class="kafka-sources__list">
+        <div [formGroup]="kafkaSource" class="kafka-sources__item">
+            <hydro-input-text 
+                [wrapClassName]="'form-group__inline'" 
+                [inputClass]="'__kafkaInput'"
+                [label]="'input topic = '" 
+                name="inputTopic" 
+                formControlName="sourceTopic">
+            </hydro-input-text>
+            <hydro-input-text 
+                [wrapClassName]="'form-group__inline'" 
+                [inputClass]="'__kafkaInput'"
+                [label]="'output topic = '" 
+                name="outputTopic" 
+                formControlName="destinationTopic">
+            </hydro-input-text>
+            <hydro-icon
+            type="icon-remove"
+            class="icon kafka-sources__item-delete-icon"
+            (click)="removeKafkaControlAtIndex(i)"></hydro-icon>
+        </div>
+    </div>
+
+    <div *ngIf="isKafkaEnabled" (click)='addKafkaControl()'>
+        <button class="button button--flat kafka-sources__add-button">
+           add kafka source 
+        </button> 
+    </div>
+</div>
