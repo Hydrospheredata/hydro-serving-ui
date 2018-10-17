@@ -3,8 +3,8 @@ $btn-secondary: $color-base;
 $btn-icon-size: 12px;
 $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
-$warning: #da4646;
-$warning-hover: #d04e4e;
+$remove: #ff5d5d;
+$remove-hover: #d04e4e;
 
 .btn {
     background-color: transparent;
@@ -166,17 +166,18 @@ $warning-hover: #d04e4e;
         line-height: 18px;
     }
 
-    &--warning {
-        padding: 9px;
-        background-color: $warning;
-        color: white;
+    &--primary-remove {
+        background-color: $remove;
         &:not([disabled]):hover {
-            background-color: $warning-hover;
+            background-color: $remove-hover;
         }
-        &[disabled] {
-            background-color: #d6d8da;
-            color: #a29e9e;
-            cursor: auto;
+    }
+
+    &--secondary-remove {
+        color: $remove;
+        &:not([disabled]):hover {
+            background-color: $remove;
+            border-color: $remove;
         }
     }
 

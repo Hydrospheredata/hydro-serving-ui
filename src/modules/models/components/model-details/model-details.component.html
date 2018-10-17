@@ -1,7 +1,7 @@
 <div class="content">
     <div class="content-header">
         <div class="content-header__title">{{ (model$ | async)?.name }}</div>
-        <button class="button button--secondary" (click)="removeModel()">
+        <button class="button button--secondary button--secondary-remove" (click)="removeModel()">
             <hydro-icon class="button__icon" [type]="'icon-remove'"></hydro-icon>
             remove
         </button>
