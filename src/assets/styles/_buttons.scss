@@ -3,8 +3,8 @@ $btn-secondary: $color-base;
 $btn-icon-size: 12px;
 $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
-$remove: #ff5d5d;
-$remove-hover: #d04e4e;
+$remove: #f35438;
+$remove-hover: #d14931;
 
 .btn {
     background-color: transparent;
@@ -174,7 +174,6 @@ $remove-hover: #d04e4e;
     }
 
     &--secondary-remove {
-        color: $remove;
         &:not([disabled]):hover {
             background-color: $remove;
             border-color: $remove;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MdlSnackbarService, MdlDialogReference } from '@angular-mdl/core';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
@@ -13,6 +13,10 @@ import * as fromApplications from '@applications/reducers';
 import { GenerateInputAction, TestApplicationAction, SetInputAction } from '@applications/actions';
 import { environment } from '@environments/environment.prod';
 import { of } from 'rxjs/observable/of';
+import { Subscription } from 'rxjs';
+
+
+
 
 @Component({
     selector: 'hydro-dialog-test-model',
@@ -20,24 +24,23 @@ import { of } from 'rxjs/observable/of';
     styleUrls: ['./dialog-test.component.scss'],
     providers: [MdlSnackbarService]
 })
-export class DialogTestComponent extends DialogBase implements OnInit {
-    public data;
+export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy {
     public application$: Observable<Application>;
-    public input$: Observable<string>;
-    public output$: Observable<string>;
     public applicationName$: Observable<string>;
     public applicationId$: Observable<number>;
-    public curl$: Observable<string>;
-    public testStatus$: Observable<TestStatus>;
-    
-    public inputOptions: {};
-    public outputOptions: {};
+    public curl: string;
+    public grpc:string = '';
     public input: any = '';
+    public input$: Observable<string>;
+    public inputOptions: {};
     public isValidInput$: Observable<boolean>;
     public output: any = '';
-    public curlPath = '';
+    public output$: Observable<string>;
+    public outputOptions: {};
     public requestBody: string;
-    public grpc = 'grpc';
+    public testStatus$: Observable<TestStatus>;
+
+    private applicationSubscription: Subscription;
 
     constructor(
         public dialogRef: MdlDialogReference,
@@ -53,9 +56,12 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         this.output$ = this.store.select(fromApplications.getSelectedApplicationOutput);
         this.testStatus$ = this.store.select(fromApplications.getSelectedApplicationTestStatus);
 
-        this.curl$ = this.application$.switchMap(
-            application => this.createCurl(application)
-        )
+        
+        this.applicationSubscription = this.application$.subscribe(
+            (application: Application) => { 
+                this.updateCurl(application)
+                this.updateGrpc();
+            })
 
         this.isValidInput$ = this.input$.switchMap(input => {
             try {
@@ -67,28 +73,27 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         })
     }
 
-    public copyToClipboard(div) {
-        const el = document.createElement('textarea');
-        el.value = div.innerText;
-        el.setAttribute('readonly', '');
-        el.style.position = 'absolute';
-        el.style.left = '-9999px';
-        document.body.appendChild(el);
-        el.select();
-        document.execCommand('copy');
-        document.body.removeChild(el);
-    }
-
     public close(){
         this.dialogRef.hide();
     }
 
-    private createCurl(application: Application): Observable<string> {
+    private updateCurl(application: Application): void {
         const { host , port, apiUrl } = environment;
         const headers = `--header 'Content-Type: application/json' --header 'Accept: application/json'`
         const { input, id, name } = application;
         const url = `${host}:${port}${apiUrl}/applications/serve/${id}/${name}`;
-        return of(`curl -X POST ${headers} -d '${input}' '${url}'`);
+        this.curl = `curl -X POST ${headers} -d '${input}' '${url}'`;
+    }
+
+    private updateGrpc(): void {
+        this.grpc = `import grpc \n
+            import hydro_serving_grpc as hs \n
+            channel = grpc.insecure_channel("localhost:8080") \n
+            stub = hs.PredictionServiceStub(channel) \n
+            model_spec = hs.ModelSpec(name="linear_regression", signature_name="infer") \n
+            tensor_shape = hs.TensorShapeProto(dim=[hs.TensorShapeProto.Dim(size=-1), hs.TensorShapeProto.Dim(size=2)]) \n
+            tensor = hs.TensorProto(dtype=hs.DT_DOUBLE, tensor_shape=tensor_shape, double_val=[1,1,1,1]) \n
+            result = stub.Predict(request) \n`;
     }
 
     ngOnInit() {
@@ -113,6 +118,10 @@ export class DialogTestComponent extends DialogBase implements OnInit {
         };
 
         this.generateInput();
+    }
+
+    ngOnDestroy(){
+        this.applicationSubscription.unsubscribe();
     }
 
     public onSubmit() {
