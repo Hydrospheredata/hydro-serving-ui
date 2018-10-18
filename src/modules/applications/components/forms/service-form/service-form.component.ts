@@ -115,11 +115,9 @@ export class ServiceFormComponent implements OnInit {
         this.signatureName.patchValue(this.getSignature(modelVersionId));
     }
 
-    public onDelete(index): void{
-        this.delete.emit(index);
+    public onDelete(): void{
+        this.delete.emit(this.index);
     }
-
-
 
     private getModelVersionsByModelId(modelId){
         this.store.select(getModelVersionsByModelId(modelId)).take(1).subscribe(
