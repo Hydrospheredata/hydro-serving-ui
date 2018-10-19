@@ -12,12 +12,13 @@ import {
 } from '@angular/forms';
 //providers
 import { ApplicationFormService } from '@applications/services/application-form.service'
+import { ServiceFormService } from '@applications/services/service-form.service';
 
 @Component({
     selector: 'hydro-application-form',
     templateUrl: './application-form.component.html',
     styleUrls: ['./application-form.component.scss'],
-    providers: [ ApplicationFormService ]
+    providers: [ ServiceFormService, ApplicationFormService ]
 })
 export class ApplicationFormComponent implements OnInit {
     @Output('onSubmit') submitEvent: EventEmitter<any> = new EventEmitter()
@@ -39,7 +40,6 @@ export class ApplicationFormComponent implements OnInit {
 
     public addStageControl(){
         this.formService.addStageControl();
-        
     }
 
     public addServiceToStage(stage: FormGroup){

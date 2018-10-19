@@ -4,6 +4,7 @@ import {
     Output,
     EventEmitter,
     OnInit,
+    Self,
 } from "@angular/core";
 import {
     AbstractControl,
@@ -18,22 +19,24 @@ import {
 import { Store } from '@ngrx/store';
 import { HydroServingState } from '@core/reducers';
 
-import * as hocon from 'hocon-parser';
 import { 
-    getAllModelVersions, 
     getAllModels,
-    getModelVersionsByModelId
 } from "@models/reducers";
-import { of } from "rxjs/observable/of";
+
+import {
+    EnvironmentsService
+} from '@core/services/environments/_index';
+
 import { 
     Observable, 
-    BehaviorSubject 
 } from "rxjs";
+import { ServiceFormService } from "@applications/services/service-form.service";
 
 @Component({
     selector: 'hydro-service-form',
     templateUrl: './service-form.component.html',
     styleUrls: ['./service-form.component.scss'],
+    providers: [EnvironmentsService, ServiceFormService]
 })
 export class ServiceFormComponent implements OnInit {
     @Input() group: FormGroup;
@@ -43,24 +46,10 @@ export class ServiceFormComponent implements OnInit {
     @Output() delete = new EventEmitter();
     
     public data;
-    public environments$ = of([
-        {
-            id: 0,
-            name: 'CPU',
-            placeholders: []
-        },
-        {
-            id: 1,
-            name: 'GPU',
-            placeholders: []
-        }
-    ]);
-
+    public environments$: Observable<any> = this.envoirmentService.getEnvironments()
     public models$: Observable<Model[]> = this.store.select(getAllModels);
-    public modelVersions$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-    public runtimes: Runtime[];
-
-    private modelVersions;
+    public modelVersions$: Observable<any>;
+    public runtimes$: Observable<Runtime[]>;
 
     get model(): FormGroup {
         return this.group.get('model') as FormGroup
@@ -76,64 +65,32 @@ export class ServiceFormComponent implements OnInit {
 
     constructor(
         private store: Store<HydroServingState>,
+        private envoirmentService: EnvironmentsService,
+        @Self() private serviceFormService: ServiceFormService
     ){
-        this.store.select(getAllModelVersions).subscribe(
-            modelVersions => this.modelVersions = modelVersions
-        );
-
-        this.store.select('runtimes').subscribe(runtimes => {
-            this.runtimes = runtimes;
-        });
+        this.runtimes$ = this.store.select('runtimes');
+        this.modelVersions$ = this.serviceFormService.getModelVersions();
     }
 
     ngOnInit(){
-        if(this.group.get('model').value){
-            const modelData = this.group.get('model').value;
-            this.getModelVersionsByModelId(modelData.modelId);
-            this.modelIdControl.setValue(modelData.modelId);
-            this.modelVersionIdControl.setValue(modelData.modelVersionId);
-        }
-
-        if(this.group.get('signatureName')){
-            this.signatureNameControl.setValue(this.group.get('signatureName').value)
-        }
+        const modelData = this.group.get('model').value;
+        this.serviceFormService.updateModelVersionList(modelData.modelId);
 
         this.subscribeToModelIdChange();
         this.subcribeToModelVersionIdChange();
     }
 
     public onModelIdChange(modelId): void {
-        this.getModelVersionsByModelId(modelId);
-        const modelVersions = this.modelVersions$.getValue();
-
-        if(modelVersions.length){
-            this.modelVersionIdControl.setValue(modelVersions[modelVersions.length - 1].id);
-        }
+        this.serviceFormService.updateModelVersionList(modelId);
+        this.modelVersionIdControl.setValue(this.serviceFormService.getDefaultModelVersion().id);
     }
 
     public onModelVersionChange(modelVersionId): void {
-        this.signatureName.patchValue(this.getSignature(modelVersionId));
+        this.signatureName.patchValue(this.serviceFormService.getSignature(modelVersionId));
     }
 
     public onDelete(): void{
         this.delete.emit(this.index);
-    }
-
-    private getModelVersionsByModelId(modelId){
-        this.store.select(getModelVersionsByModelId(modelId)).take(1).subscribe(
-            modelVersions => {
-                this.modelVersions$.next(modelVersions);
-            }
-        )
-    }
-
-    private getSignature(versionId): string {
-        const modelVersion = this.modelVersions.find(version => version.id === versionId);
-        return hocon(modelVersion.modelContract).signatures.signature_name;
-    }
-
-    private get signatureNameControl(): AbstractControl {
-        return this.group.get('signatureName');
     }
 
     private get modelIdControl(): AbstractControl {
