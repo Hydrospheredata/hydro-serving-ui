@@ -41,30 +41,21 @@
             <span>cURL</span>
           </mdl-tab-panel-title>
           <mdl-tab-panel-content>
-              <div class="curl">
-                  <code #curl>
-                    {{curl$ | async}}
+              <div class="code" *ngIf="curl">
+                  <code>
+                    {{curl}}
                   </code>
-                  <div class="copy" (click)="copyToClipboard(curl)">
-                      <mdl-icon class="copy__button">content_copy</mdl-icon>
+                  <div class="copy" [copyToBuffer]="curl">
                   </div>
               </div>
           </mdl-tab-panel-content>
         </mdl-tab-panel>
         <mdl-tab-panel mdl-tab-panel-title="gRPC">
-            <div class="curl">
-              <code #grpc>
-                  import grpc<br/>
-                  import hydro_serving_grpc as hs<br/>
-                  channel = grpc.insecure_channel("localhost:8080")<br/>
-                  stub = hs.PredictionServiceStub(channel)<br/>
-                  model_spec = hs.ModelSpec(name="linear_regression", signature_name="infer")<br/>
-                  tensor_shape = hs.TensorShapeProto(dim=[hs.TensorShapeProto.Dim(size=-1), hs.TensorShapeProto.Dim(size=2)])<br/>
-                  tensor = hs.TensorProto(dtype=hs.DT_DOUBLE, tensor_shape=tensor_shape, double_val=[1,1,1,1])<br/>
-                  result = stub.Predict(request)<br/>
+            <div class="code code--wrap-space" *ngIf="grpc">
+              <code>
+                {{grpc}}
               </code>
-              <div class="copy" (click)="copyToClipboard(grpc)">
-                  <mdl-icon class="copy__button">content_copy</mdl-icon>
+              <div class="copy" copyToBuffer="grpc">
               </div>
             </div>
         </mdl-tab-panel>

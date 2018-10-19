@@ -29,17 +29,15 @@
   }
 }
 
-.curl {
+.code {
   background: #f9f9f9;
   border: 1px grey solid;
   border-radius: 2px;
   font-family: monospace;
   padding: 24px 36px 24px 24px;
   position: relative;
-  &__copy-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
+  &--wrap-space {
+    white-space: pre-line;
   }
 }
 
@@ -77,15 +75,19 @@
 .copy {
   border-bottom-left-radius: 2px;
   border-top-right-radius: 2px;
+  background: grey;
   cursor: pointer;
+  color: white;
+  font-size: 16px;
   height: 28px;
   padding: 4px;
   position: absolute;
   right: 0;
-  top: 0;
-  width: 28px;
+  text-align: center;
+  top: -1px;
+  width: 64px;
   &:hover {
-    background: rgba(222, 222, 222, .6);
+    background: #04143c;
   }
   &__button {
     font-size: 20px;

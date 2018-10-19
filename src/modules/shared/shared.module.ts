@@ -38,7 +38,8 @@ import {
 
 //Directives
 import {
-    ModelStatusDirective
+    ModelStatusDirective,
+    CopyToBufferDirective
 } from './directives/_index';
 
 @NgModule({
@@ -76,7 +77,8 @@ import {
         IconComponent,
         FilterComponent,
         // Directives
-        ModelStatusDirective
+        ModelStatusDirective,
+        CopyToBufferDirective
     ],
     exports: [
         // Pipes
@@ -100,7 +102,8 @@ import {
         SignaturesComponent,
         IconComponent,
         //Directives
-        ModelStatusDirective
+        ModelStatusDirective,
+        CopyToBufferDirective
     ]
 })
 export class SharedModule { }

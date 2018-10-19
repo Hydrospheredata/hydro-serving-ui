@@ -34,17 +34,12 @@
                 </div>
             </ng-container>
         </div>
-        <!-- <mdl-select formControlName="signatureName">
-            <mdl-option 
-                *ngFor="let signature of signatures$ | async"
-                [value]="signature.signatureName">{{signature.signatureName}}</mdl-option>
-        </mdl-select> -->
     </div>
     <div class="service__row">
         <div class="service__field service__field--runtime">
             <label class="service__field-label" [attr.for]="'runtime_' + index">Runtime</label>
             <mdl-select formControlName="runtime">
-                <mdl-option *ngFor="let runtime of runtimes" [value]="runtime.id">
+                <mdl-option *ngFor="let runtime of (runtimes$ | async)" [value]="runtime.id">
                     <span class="docker-image__name">{{ runtime.name }}</span> <span class="hidden">:</span> <span class="docker-image__version">{{ runtime.version }}</span> <span class="docker-image__repository">{{ runtime.name | getDockerImage: 'repository' }}</span>
                 </mdl-option>
             </mdl-select>
@@ -71,7 +66,7 @@
     <hydro-icon 
         *ngIf="showRemoveIcon"
         type="icon-remove"
-        (click)="onDelete(serviceIdx)"
+        (click)="onDelete()"
         class="service__remove-icon">
     </hydro-icon>
 </div>
