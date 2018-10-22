@@ -34,8 +34,10 @@
   border: 1px grey solid;
   border-radius: 2px;
   font-family: monospace;
+  font-size: 14px;
   padding: 24px 36px 24px 24px;
   position: relative;
+  line-height: 18px;
   &--wrap-space {
     white-space: pre-line;
   }
