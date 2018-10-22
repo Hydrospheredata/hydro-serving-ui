@@ -56,7 +56,7 @@ export class ApplicationsWrapperComponent implements OnDestroy{
     private showAddServiceDialog(): void{
         this.dialog.showCustomDialog({
             component: DialogAddApplicationComponent,
-            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '840px' },
+            styles: { 'width': '100%', 'height':'100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '840px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
