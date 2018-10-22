@@ -121,7 +121,7 @@ export class ApplicationsItemDetailComponent {
     public testApplication() {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
-            styles: { 'width': '900px', 'min-height': '250px', 'max-height': 'calc(100% - 100px)', 'overflow':'scroll' },
+            styles: { 'width': '900px', 'height':'100%', 'min-height': '250px', 'max-height': 'calc(100% - 100px)', 'overflow':'scroll' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
