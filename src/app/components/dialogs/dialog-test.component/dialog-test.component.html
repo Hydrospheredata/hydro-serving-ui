@@ -1,7 +1,7 @@
-<div class="dialog" *ngIf="application$ | async; let appl">
+<div class="dialog" *ngIf="application$ | async; let application">
     <hydro-icon type="icon-close" class="dialog__close-icon" (click)="close()"></hydro-icon>
     <p class="application-name">
-       <label>Application: </label>"{{ appl.name }}"
+       <label>Application: </label>"{{ application.name }}"
     </p>
 
     <div class="dialog__content">
@@ -10,11 +10,11 @@
               <form (ngSubmit)="onSubmit()">
                   <div>
                     <div class="test-fields">
-                      <div class="test-fields__item __input" *ngIf="appl.input; let input;">
+                      <div class="test-fields__item __input" *ngIf="application.input; let input;">
                         <label>Input</label>
                         <codemirror
                           name="input"
-                          [ngModel]="appl.input"
+                          [ngModel]="application.input"
                           [config]="inputOptions" 
                           (change)="onChange($event)"></codemirror>
                       </div>
@@ -22,7 +22,7 @@
                         <div class="test-fields__item-header">
                           <label>Output</label>
                           <span 
-                            *ngIf="appl.testStatus;let testStatus" 
+                            *ngIf="application.testStatus;let testStatus" 
                             class="status">
                             status
                             <span class="status__text status__text--{{testStatus}}">
@@ -30,7 +30,7 @@
                             </span>
                           </span>
                         </div>
-                        <ng-container *ngIf="appl.output;let output;">
+                        <ng-container *ngIf="application.output;let output;">
                             <codemirror 
                               [ngModel]="output" 
                               [config]="outputOptions" 
@@ -38,9 +38,9 @@
                             </codemirror>
                         </ng-container>
 
-                        <ng-container *ngIf="isFailedTest(appl.testStatus)">
+                        <ng-container *ngIf="isFailedTest(application.testStatus)">
                             <div class="error-container">
-                              {{appl.error}}
+                              {{application.error}}
                             </div>
                         </ng-container>
                       </div>
@@ -49,7 +49,7 @@
                       <button 
                         class="button button--primary button--test form-button" 
                         type="submit" 
-                        [disabled]="!isValidInput(appl.input)"
+                        [disabled]="!isValidInput(application.input)"
                         >
                         test app
                       </button>
@@ -58,10 +58,18 @@
                 </form>
           </mdl-tab-panel>
           <mdl-tab-panel mdl-tab-panel-title="cURL">
-              <hydro-command-template type="curl" [application]="appl" [isValidInput]="isValidInput(appl.input)"></hydro-command-template>
+              <hydro-command-template 
+                type="curl" 
+                [application]="application" 
+                [isValidInput]="isValidInput(application.input)">
+              </hydro-command-template>
           </mdl-tab-panel>
           <mdl-tab-panel mdl-tab-panel-title="gRPC">
-              <hydro-command-template type="grpc" [application]="appl" [isValidInput]="isValidInput(appl.input)"></hydro-command-template>
+              <hydro-command-template 
+                type="grpc" 
+                [application]="application" 
+                [isValidInput]="isValidInput(application.input)">
+              </hydro-command-template>
           </mdl-tab-panel>
       </mdl-tabs>
     </div>
