@@ -1,0 +1,8 @@
+@import 'variables.scss';
+
+.error-container {
+    border: 1px $error-container-border-color solid;
+    color: red;
+    background: $error-container-background-color;
+    padding: 4px;
+}

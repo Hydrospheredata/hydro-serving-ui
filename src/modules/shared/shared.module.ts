@@ -33,7 +33,8 @@ import {
     ListInfoComponent,
     SignaturesComponent,
     IconComponent,
-    FilterComponent
+    FilterComponent,
+    CommandTemplateComponent
 } from './components/_index';
 
 //Directives
@@ -76,6 +77,7 @@ import {
         SignaturesComponent,
         IconComponent,
         FilterComponent,
+        CommandTemplateComponent,
         // Directives
         ModelStatusDirective,
         CopyToBufferDirective
@@ -101,6 +103,7 @@ import {
         ListInfoComponent,
         SignaturesComponent,
         IconComponent,
+        CommandTemplateComponent,
         //Directives
         ModelStatusDirective,
         CopyToBufferDirective

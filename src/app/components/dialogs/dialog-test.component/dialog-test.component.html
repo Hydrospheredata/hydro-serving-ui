@@ -1,64 +1,76 @@
-<div class="dialog">
-    <p class="application-name">
-       <label>Application:</label> "{{applicationName$ | async}}"</p>
-
-    <mdl-tabs mdl-ripple mdl-tab-active-index="0">
-        <mdl-tab-panel mdl-tab-panel-title="web">
-            <form (ngSubmit)="onSubmit()">
-                <div>
-                  <div class="test-fields">
-                    <div class="test-fields__item __input" *ngIf="input$ | async; let input;">
-                      <label>Input</label>
-                      <codemirror [ngModel]="input" [config]="inputOptions" name="input" (change)="onChange($event)"></codemirror>
-                    </div>
-                    <div class="test-fields__item __output">
-                      <div class="test-fields__item-header">
-                        <label>Output</label>
-                        <span *ngIf="testStatus$ | async; let testStatus" class="status">
-                          status
-                          <span class="status__text status__text--{{testStatus}}">{{testStatus}}</span>
-                        </span>
-                      </div>
-                      <ng-container *ngIf="output$ | async; let output;">
-                          <codemirror [ngModel]="output" [config]="outputOptions" name="output"></codemirror>
-                      </ng-container>
-
-                      <ng-container *ngIf="(application$ | async).testStatus === 'failed'">
-                          <div class="error-container">
-                            {{(application$ | async).error}}
-                          </div>
-                      </ng-container>
-                    </div>
-                  </div>
-                  <div class="buttons">
-                    <button class="button button--primary button--test form-button" type="submit" [disabled]="!(isValidInput$ | async)">test app</button>
-                  </div>
-                </div>
-              </form>
-        </mdl-tab-panel>
-        <mdl-tab-panel>
-          <mdl-tab-panel-title>
-            <span>cURL</span>
-          </mdl-tab-panel-title>
-          <mdl-tab-panel-content>
-              <div class="code" *ngIf="curl">
-                  <code>
-                    {{curl}}
-                  </code>
-                  <div class="copy" [copyToBuffer]="curl">
-                  </div>
-              </div>
-          </mdl-tab-panel-content>
-        </mdl-tab-panel>
-        <mdl-tab-panel mdl-tab-panel-title="gRPC">
-            <div class="code code--wrap-space" *ngIf="grpc">
-              <code>
-                {{grpc}}
-              </code>
-              <div class="copy" copyToBuffer="grpc">
-              </div>
-            </div>
-        </mdl-tab-panel>
-    </mdl-tabs>
+<div class="dialog" *ngIf="application$ | async; let application">
     <hydro-icon type="icon-close" class="dialog__close-icon" (click)="close()"></hydro-icon>
+    <p class="application-name">
+       <label>Application: </label>"{{ application.name }}"
+    </p>
+
+    <div class="dialog__content">
+      <mdl-tabs mdl-ripple mdl-tab-active-index="0">
+          <mdl-tab-panel mdl-tab-panel-title="web">
+              <form (ngSubmit)="onSubmit()">
+                  <div>
+                    <div class="test-fields">
+                      <div class="test-fields__item __input" *ngIf="application.input; let input;">
+                        <label>Input</label>
+                        <codemirror
+                          name="input"
+                          [ngModel]="application.input"
+                          [config]="inputOptions" 
+                          (change)="onChange($event)"></codemirror>
+                      </div>
+                      <div class="test-fields__item __output">
+                        <div class="test-fields__item-header">
+                          <label>Output</label>
+                          <span 
+                            *ngIf="application.testStatus;let testStatus" 
+                            class="status">
+                            status
+                            <span class="status__text status__text--{{testStatus}}">
+                              {{testStatus}}
+                            </span>
+                          </span>
+                        </div>
+                        <ng-container *ngIf="application.output;let output;">
+                            <codemirror 
+                              [ngModel]="output" 
+                              [config]="outputOptions" 
+                              name="output">
+                            </codemirror>
+                        </ng-container>
+
+                        <ng-container *ngIf="isFailedTest(application.testStatus)">
+                            <div class="error-container">
+                              {{application.error}}
+                            </div>
+                        </ng-container>
+                      </div>
+                    </div>
+                    <div class="buttons">
+                      <button 
+                        class="button button--primary button--test form-button" 
+                        type="submit" 
+                        [disabled]="!isValidInput(application.input)"
+                        >
+                        test app
+                      </button>
+                    </div>
+                  </div>
+                </form>
+          </mdl-tab-panel>
+          <mdl-tab-panel mdl-tab-panel-title="cURL">
+              <hydro-command-template 
+                type="curl" 
+                [application]="application" 
+                [isValidInput]="isValidInput(application.input)">
+              </hydro-command-template>
+          </mdl-tab-panel>
+          <mdl-tab-panel mdl-tab-panel-title="gRPC">
+              <hydro-command-template 
+                type="grpc" 
+                [application]="application" 
+                [isValidInput]="isValidInput(application.input)">
+              </hydro-command-template>
+          </mdl-tab-panel>
+      </mdl-tabs>
+    </div>
 </div>

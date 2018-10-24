@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, InjectionToken, Inject } from '@angular/core';
 import { MdlSnackbarService, MdlDialogReference } from '@angular-mdl/core';
 import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/edit/matchbrackets.js';
@@ -9,15 +9,9 @@ import { DialogBase } from '@shared/base/_index';
 import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { HydroServingState } from '@core/reducers';
-import * as fromApplications from '@applications/reducers';
 import { GenerateInputAction, TestApplicationAction, SetInputAction } from '@applications/actions';
-import { environment } from '@environments/environment.prod';
-import { of } from 'rxjs/observable/of';
-import { Subscription } from 'rxjs';
 
-
-
-
+export const SELECTED_APPLICATION$ = new InjectionToken<Observable<Application>>('selectedApplication')
 @Component({
     selector: 'hydro-dialog-test-model',
     templateUrl: './dialog-test.component.html',
@@ -25,75 +19,25 @@ import { Subscription } from 'rxjs';
     providers: [MdlSnackbarService]
 })
 export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy {
-    public application$: Observable<Application>;
-    public applicationName$: Observable<string>;
-    public applicationId$: Observable<number>;
-    public curl: string;
-    public grpc:string = '';
     public input: any = '';
-    public input$: Observable<string>;
     public inputOptions: {};
-    public isValidInput$: Observable<boolean>;
     public output: any = '';
     public output$: Observable<string>;
     public outputOptions: {};
     public requestBody: string;
-    public testStatus$: Observable<TestStatus>;
-
-    private applicationSubscription: Subscription;
 
     constructor(
         public dialogRef: MdlDialogReference,
-        private store: Store<HydroServingState>
+        private store: Store<HydroServingState>,
+        @Inject(SELECTED_APPLICATION$) public application$: Observable<Application>
     ) {
         super(
             dialogRef
         );
-        this.application$ = this.store.select(fromApplications.getSelectedApplication);
-        this.applicationName$ = this.store.select(fromApplications.getSelectedApplicationName);
-        this.applicationId$ = this.store.select(fromApplications.getSelectedApplicationId);
-        this.input$ = this.store.select(fromApplications.getSelectedApplicationInput);
-        this.output$ = this.store.select(fromApplications.getSelectedApplicationOutput);
-        this.testStatus$ = this.store.select(fromApplications.getSelectedApplicationTestStatus);
-
-        
-        this.applicationSubscription = this.application$.subscribe(
-            (application: Application) => { 
-                this.updateCurl(application)
-                this.updateGrpc();
-            })
-
-        this.isValidInput$ = this.input$.switchMap(input => {
-            try {
-                JSON.parse(input);
-                return of(true)
-            } catch(e) {
-                return of(false)
-            }
-        })
     }
 
     public close(){
         this.dialogRef.hide();
-    }
-
-    private updateCurl(application: Application): void {
-        const { host , port, apiUrl } = environment;
-        const headers = `--header 'Content-Type: application/json' --header 'Accept: application/json'`
-        const { input, id, name } = application;
-        const url = `${host}:${port}${apiUrl}/applications/serve/${id}/${name}`;
-        this.curl = `curl -X POST ${headers} -d '${input}' '${url}'`;
-    }
-
-    private updateGrpc(): void {
-        this.grpc = `import grpc \n
-            import hydro_serving_grpc as hs \n
-            channel = grpc.insecure_channel("localhost:8080") \n
-            stub = hs.PredictionServiceStub(channel) \n
-            model_spec = hs.ModelSpec(name="linear_regression", signature_name="infer") \n
-            tensor_shape = hs.TensorShapeProto(dim=[hs.TensorShapeProto.Dim(size=-1), hs.TensorShapeProto.Dim(size=2)]) \n
-            tensor = hs.TensorProto(dtype=hs.DT_DOUBLE, tensor_shape=tensor_shape, double_val=[1,1,1,1]) \n
-            result = stub.Predict(request) \n`;
     }
 
     ngOnInit() {
@@ -121,7 +65,6 @@ export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy
     }
 
     ngOnDestroy(){
-        this.applicationSubscription.unsubscribe();
     }
 
     public onSubmit() {
@@ -133,6 +76,19 @@ export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy
     public onChange(input) {
         if (!(input instanceof Event)) {
             this.store.dispatch(new SetInputAction(input));
+        }
+    }
+
+    public isFailedTest(status: TestStatus) {
+        return status === TestStatus.Failed;
+    }
+
+    public isValidInput(input){
+        try {
+            JSON.parse(input);
+            return true;
+        } catch(e) {
+            return false;
         }
     }
 

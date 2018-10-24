@@ -19,6 +19,7 @@ import * as fromModels from '@models/reducers';
 import {
     DialogUpdateApplicationComponent,
     DialogTestComponent,
+    SELECTED_APPLICATION$,
     injectableServiceUpdate,
     DialogUpdateModelVersionComponent, 
     CHANGE_IDS,
@@ -118,22 +119,23 @@ export class ApplicationsItemDetailComponent {
         });
     }
 
-    public testApplication() {
+    public testApplication(application: Observable<Application>) {
         this.dialog.showCustomDialog({
             component: DialogTestComponent,
-            styles: { 'width': '900px', 'min-height': '250px', 'max-height': 'calc(100% - 100px)', 'overflow':'scroll' },
+            styles: { 'width': '900px', 'height':'100%', 'min-height': '250px', 'max-height': 'calc(100% - 100px)', 'overflow':'scroll' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
+            providers: [{provide: SELECTED_APPLICATION$, useValue: application}]
         });
     }
 
     public editApplication(application: Observable<Application>) {
         this.dialog.showCustomDialog({
             component: DialogUpdateApplicationComponent,
-            styles: { 'width': '100%', 'min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '840px' },
+            styles: { 'width': '100%', 'height':'100%','min-height': '250px', 'max-height': '90vh', 'overflow': 'auto', 'max-width': '840px' },
             classes: '',
             isModal: true,
             clickOutsideToClose: true,

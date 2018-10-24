@@ -2,10 +2,9 @@
 
 .dialog {
     position: relative;
+    height: 100%;
     &__content {
         padding: 0 12px;
-        max-height: calc(90vh - 144px);
-        overflow: scroll;
     }
     &__header {
         background-color: $color--blue;
@@ -25,6 +24,7 @@
         width: 16px;
     }
     &__footer {
+        height: 48px;
         border-top: 2px solid lightgray;
     }
 
@@ -45,5 +45,8 @@
         font-size: 24px;
         line-height: 32px;
         margin-bottom: 12px;
+    }
+    &__content--withFooter {
+        height: calc(100% - 48px);
     }
 }
