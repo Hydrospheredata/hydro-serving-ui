@@ -1,7 +1,8 @@
-<div class="dialog">
+<div class="dialog" *ngIf="application$ | async; let appl">
     <hydro-icon type="icon-close" class="dialog__close-icon" (click)="close()"></hydro-icon>
     <p class="application-name">
-       <label>Application:</label> "{{applicationName$ | async}}"</p>
+       <label>Application: </label>"{{ appl.name }}"
+    </p>
 
     <div class="dialog__content">
       <mdl-tabs mdl-ripple mdl-tab-active-index="0">
@@ -9,52 +10,58 @@
               <form (ngSubmit)="onSubmit()">
                   <div>
                     <div class="test-fields">
-                      <div class="test-fields__item __input" *ngIf="input$ | async; let input;">
+                      <div class="test-fields__item __input" *ngIf="appl.input; let input;">
                         <label>Input</label>
-                        <codemirror [ngModel]="input" [config]="inputOptions" name="input" (change)="onChange($event)"></codemirror>
+                        <codemirror
+                          name="input"
+                          [ngModel]="appl.input"
+                          [config]="inputOptions" 
+                          (change)="onChange($event)"></codemirror>
                       </div>
                       <div class="test-fields__item __output">
                         <div class="test-fields__item-header">
                           <label>Output</label>
-                          <span *ngIf="testStatus$ | async; let testStatus" class="status">
+                          <span 
+                            *ngIf="appl.testStatus;let testStatus" 
+                            class="status">
                             status
-                            <span class="status__text status__text--{{testStatus}}">{{testStatus}}</span>
+                            <span class="status__text status__text--{{testStatus}}">
+                              {{testStatus}}
+                            </span>
                           </span>
                         </div>
-                        <ng-container *ngIf="output$ | async; let output;">
-                            <codemirror [ngModel]="output" [config]="outputOptions" name="output"></codemirror>
+                        <ng-container *ngIf="appl.output;let output;">
+                            <codemirror 
+                              [ngModel]="output" 
+                              [config]="outputOptions" 
+                              name="output">
+                            </codemirror>
                         </ng-container>
 
-                        <ng-container *ngIf="(application$ | async).testStatus === 'failed'">
+                        <ng-container *ngIf="isFailedTest(appl.testStatus)">
                             <div class="error-container">
-                              {{(application$ | async).error}}
+                              {{appl.error}}
                             </div>
                         </ng-container>
                       </div>
                     </div>
                     <div class="buttons">
-                      <button class="button button--primary button--test form-button" type="submit" [disabled]="!(isValidInput$ | async)">test app</button>
+                      <button 
+                        class="button button--primary button--test form-button" 
+                        type="submit" 
+                        [disabled]="!isValidInput(appl.input)"
+                        >
+                        test app
+                      </button>
                     </div>
                   </div>
                 </form>
           </mdl-tab-panel>
           <mdl-tab-panel mdl-tab-panel-title="cURL">
-              <div class="code" *ngIf="curl">
-                  <code>
-                    {{curl}}
-                  </code>
-                  <div class="copy" [copyToBuffer]="curl">
-                  </div>
-              </div>
+              <hydro-command-template type="curl" [application]="appl" [isValidInput]="isValidInput(appl.input)"></hydro-command-template>
           </mdl-tab-panel>
           <mdl-tab-panel mdl-tab-panel-title="gRPC">
-              <div class="code code--wrap-space" *ngIf="grpc">
-                <code>
-                  {{grpc}}
-                </code>
-                <div class="copy" copyToBuffer="grpc">
-                </div>
-              </div>
+              <hydro-command-template type="grpc" [application]="appl" [isValidInput]="isValidInput(appl.input)"></hydro-command-template>
           </mdl-tab-panel>
       </mdl-tabs>
     </div>

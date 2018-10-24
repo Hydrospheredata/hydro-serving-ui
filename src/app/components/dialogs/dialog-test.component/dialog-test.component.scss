@@ -29,19 +29,7 @@
   }
 }
 
-.code {
-  background: #f9f9f9;
-  border: 1px grey solid;
-  border-radius: 2px;
-  font-family: monospace;
-  font-size: 14px;
-  padding: 24px 36px 24px 24px;
-  position: relative;
-  line-height: 18px;
-  &--wrap-space {
-    white-space: pre-line;
-  }
-}
+
 
 .test-fields {
   display: flex;
@@ -74,28 +62,7 @@
   }
 }
 
-.copy {
-  border-bottom-left-radius: 2px;
-  border-top-right-radius: 2px;
-  background: grey;
-  cursor: pointer;
-  color: white;
-  font-size: 16px;
-  height: 28px;
-  padding: 4px;
-  position: absolute;
-  right: 0;
-  text-align: center;
-  top: -1px;
-  width: 64px;
-  &:hover {
-    background: #04143c;
-  }
-  &__button {
-    font-size: 20px;
-    color: black;
-  }
-}
+
 
 
 .application-name {
