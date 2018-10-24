@@ -24,5 +24,9 @@ pipelineCommon(
   buildFunction,
   buildFunction,
   buildFunction,
-  postReleaseActionFunction
+  postReleaseActionFunction,
+  "",
+  "",
+  {},
+  commitToCD("ui", "dev")
 )
