@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MdlDialogService } from '@angular-mdl/core';
-import { Application, Model } from '@shared/models/_index';
+import { Application } from '@shared/models/_index';
 
 // import { Application } from '@shared/models/_index';
 // import { HydroServingState } from '@core/reducers';
@@ -22,8 +22,8 @@ import { Subscription } from 'rxjs';
 export class ApplicationsWrapperComponent implements OnDestroy{
     public sidebarTitle = 'Applications';
     public applications: Store<Application[]>;
-    private someModelFinished: boolean = false;
-    private someModelFinishedSub: Subscription;
+    private someModelIsFinished: boolean = false;
+    private modelsSub: Subscription;
 
     constructor(
         private storeApp: Store<fromApplications.State>,
@@ -31,25 +31,21 @@ export class ApplicationsWrapperComponent implements OnDestroy{
         private dialog: MdlDialogService
     ) {
         this.applications = this.storeApp.select(fromApplications.getAllApplications);
-        this.someModelFinishedSub = this.storeModels.select(fromModels.getAllModels).subscribe(
+        this.modelsSub = this.storeModels.select(fromModels.getAllModels).subscribe(
             models => {
-                this.someModelFinished = this.someModelIsFinished(models)
+                this.someModelIsFinished = models.some(model => 
+                    model.lastModelBuild.status.toLocaleLowerCase() === 'finished'
+                );
             }
         )
     }
 
     public addApplication(): void {
-        this.someModelFinished ? this.showAddServiceDialog() : this.showAlert();
+        this.someModelIsFinished ? this.showAddServiceDialog() : this.showAlert();
     }
 
     ngOnDestroy(){
-        this.someModelFinishedSub.unsubscribe();
-    }
-
-    private someModelIsFinished(models: Model[]): boolean {
-        return models.some(model => 
-            model.lastModelBuild.status.toLocaleLowerCase() === 'finished'
-        );
+        this.modelsSub.unsubscribe();
     }
 
     private showAlert(): void{
