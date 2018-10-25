@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MdlDialogService } from '@angular-mdl/core';
-import { Application } from '@shared/models/_index';
+import { Application, Model } from '@shared/models/_index';
 
 // import { Application } from '@shared/models/_index';
 // import { HydroServingState } from '@core/reducers';
@@ -9,6 +9,9 @@ import * as fromApplications from '@applications/reducers';
 import * as fromModels from '@models/reducers';
 import { DialogAddApplicationComponent, DialogModelsEmptyComponent } from '@components/dialogs/_index';
 import { Subscription } from 'rxjs';
+
+
+
 
 @Component({
     selector: 'hydro-applications-wrapper',
@@ -19,8 +22,8 @@ import { Subscription } from 'rxjs';
 export class ApplicationsWrapperComponent implements OnDestroy{
     public sidebarTitle = 'Applications';
     public applications: Store<Application[]>;
-    private modelStoreSub: Subscription;
-    private finishedModelBuildsCount: number;
+    private someModelFinished: boolean = false;
+    private someModelFinishedSub: Subscription;
 
     constructor(
         private storeApp: Store<fromApplications.State>,
@@ -28,20 +31,25 @@ export class ApplicationsWrapperComponent implements OnDestroy{
         private dialog: MdlDialogService
     ) {
         this.applications = this.storeApp.select(fromApplications.getAllApplications);
-        this.modelStoreSub = this.storeModels
-                .select(fromModels.getAllModelBuilds)
-                .map(modelBuilds => modelBuilds.filter(modelBuild => modelBuild.status.toLowerCase() === 'finished'))
-                .subscribe(
-                    modelBuilds => this.finishedModelBuildsCount = modelBuilds.length
-                );
+        this.someModelFinishedSub = this.storeModels.select(fromModels.getAllModels).subscribe(
+            models => {
+                this.someModelFinished = this.someModelIsFinished(models)
+            }
+        )
     }
 
     public addApplication(): void {
-        this.finishedModelBuildsCount ? this.showAddServiceDialog() : this.showAlert();
+        this.someModelFinished ? this.showAddServiceDialog() : this.showAlert();
     }
 
     ngOnDestroy(){
-        this.modelStoreSub.unsubscribe();
+        this.someModelFinishedSub.unsubscribe();
+    }
+
+    private someModelIsFinished(models: Model[]): boolean {
+        return models.some(model => 
+            model.lastModelBuild.status.toLocaleLowerCase() === 'finished'
+        );
     }
 
     private showAlert(): void{
