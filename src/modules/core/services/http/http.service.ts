@@ -28,10 +28,14 @@ export class HttpService extends Http {
             backend,
             defaultOptions
         );
+        
+        if(environment.production){
+            const { protocol, hostname, port } = window.location;
 
-        this.baseUrl = environment.production ?
-            `http://${window.location.hostname}:${window.location.port}` :
-            `${environment.host}:${environment.port}`;
+            this.baseUrl = `${protocol}//${hostname}:${port}`
+        } else {
+            this.baseUrl = `${environment.host}:${environment.port}`
+        }
 
         this.requestCount = 0;
     }
