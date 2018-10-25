@@ -28,6 +28,11 @@ export class GrpcCommandCreator implements CommandCreator {
         const { inputs } = contr.signatures;
         const type_val = valueAttributes[inputs.dtype];
 
+        let dim= '';
+        if(inputs.shape.dim){
+          dim = `hs.TensorShapeProto.Dim(size=${inputs.shape.dim.size})`
+        }
+
         let inputKey;
         let inputValue;
 
@@ -37,7 +42,7 @@ export class GrpcCommandCreator implements CommandCreator {
             inputValue = JSON.stringify(parsedObj[inputKey]).replace(/,/g, ', ');
         } catch {
             inputKey = " %your input key% ";
-            inputValue = "%yout input value% ";
+            inputValue = "%your input value% ";
         }
 
         return `import grpc \n
@@ -45,7 +50,7 @@ export class GrpcCommandCreator implements CommandCreator {
             channel = grpc.insecure_channel("localhost:8080") \n
             stub = hs.PredictionServiceStub(channel) \n
             model_spec = hs.ModelSpec(name="${appName}", signature_name="${contr.signatures.signature_name}")\n
-            tensor_shape = hs.TensorShapeProto(dim=[hs.TensorShapeProto.Dim(size=${contr.signatures.inputs.shape.dim.size})])\n
+            tensor_shape = hs.TensorShapeProto(dim=[${dim}])\n
             tensor = hs.TensorProto(dtype=hs.${inputs.dtype}, tensor_shape=tensor_shape, ${type_val}="${inputValue}")\n
             request = hs.PredictRequest(model_spec=model_spec, inputs={"${inputKey}": tensor}) \n
             result = stub.Predict(request) \n`.trim();
