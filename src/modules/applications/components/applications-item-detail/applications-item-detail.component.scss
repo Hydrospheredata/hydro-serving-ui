@@ -75,26 +75,27 @@
 
 .model-variant {
     &__cell {
-        display: flex;
-        align-items: center;
+        height: 18px;
+        line-height: 18px;
+        margin-right: 2px;
+        width: 18px;
     }
     &__version {
-        &-container {
-            cursor: pointer;
-            display: inline-block;
-            height: 18px;
-            line-height: 18px;
-            margin-right: 2px;
-            position: relative;
-            width: 18px;
-        }
-        &-icon {
-            height: 16px;
-            width: 16px;
+        &-new {
             display: none;
-            &--available {
-                display: block;
+            &--visible {
+                cursor: pointer;
+                display: block
             }
+            &-icon {
+                position: absolute;
+                height: 16px;
+                width: 16px;
+            }
+        }
+
+        &-text {
+            margin-left: 24px
         }
     }
 }

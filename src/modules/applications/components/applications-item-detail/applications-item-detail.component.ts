@@ -26,7 +26,8 @@ import {
     DialogDeleteApplicationComponent
 } from '@components/dialogs/_index';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from '../../../../../node_modules/rxjs';
+import { Subscription } from 'rxjs';
+import { tap, filter } from 'rxjs/operators'
 // import { InfluxDBService } from '@core/services';
 // import { UpdateApplicationAction } from '@applications/actions';
 
@@ -54,9 +55,10 @@ export class ApplicationsItemDetailComponent {
         // private influxdbService: InfluxDBService
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
-        this.modelSub = this.store.select(fromModels.getAllModels)
-            .filter(models => models.length > 0)
-            .subscribe(models => this.models = models)
+        this.modelSub = this.store.select(fromModels.getAllModels).pipe(
+            filter(models => models.length > 0),
+            tap(models => this.models = models),
+        ).subscribe();
     }
 
     // TODO: remove me please
@@ -88,17 +90,18 @@ export class ApplicationsItemDetailComponent {
     ngOnInit() {
         this.intervalId = setInterval(this.getHealthClass.bind(this), 1500);
         this.getHealthClass();
+
+    }
+
+    ngOnDestroy() {
+        clearInterval(this.intervalId);
         if (this.modelSub) {
             this.modelSub.unsubscribe();
         }
     }
 
-    ngOnDestroy() {
-        clearInterval(this.intervalId);
-    }
-
-    public checkNewVersion(modelVersionData) {
-        const {modelName, modelVersion} = modelVersionData;
+    public checkNewVersion(modelVersionData): boolean {
+        const { modelName, modelVersion } = modelVersionData;
 
         if (this.models) {
             const modell = this.models.find(model => model.name === modelName);
