@@ -29,9 +29,7 @@ export class HttpService extends Http {
             defaultOptions
         );
 
-        this.baseUrl = environment.production ?
-            `http://${window.location.hostname}:${window.location.port}` :
-            `${environment.host}:${environment.port}`;
+        this.baseUrl = `${environment.host}:${environment.port}`;
 
         this.requestCount = 0;
     }
