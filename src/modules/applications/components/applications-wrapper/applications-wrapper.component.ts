@@ -10,6 +10,9 @@ import * as fromModels from '@models/reducers';
 import { DialogAddApplicationComponent, DialogModelsEmptyComponent } from '@components/dialogs/_index';
 import { Subscription } from 'rxjs';
 
+
+
+
 @Component({
     selector: 'hydro-applications-wrapper',
     templateUrl: './applications-wrapper.component.html',
@@ -19,8 +22,8 @@ import { Subscription } from 'rxjs';
 export class ApplicationsWrapperComponent implements OnDestroy{
     public sidebarTitle = 'Applications';
     public applications: Store<Application[]>;
-    private modelStoreSub: Subscription;
-    private finishedModelBuildsCount: number;
+    private someModelIsFinished: boolean = false;
+    private modelsSub: Subscription;
 
     constructor(
         private storeApp: Store<fromApplications.State>,
@@ -28,20 +31,21 @@ export class ApplicationsWrapperComponent implements OnDestroy{
         private dialog: MdlDialogService
     ) {
         this.applications = this.storeApp.select(fromApplications.getAllApplications);
-        this.modelStoreSub = this.storeModels
-                .select(fromModels.getAllModelBuilds)
-                .map(modelBuilds => modelBuilds.filter(modelBuild => modelBuild.status.toLowerCase() === 'finished'))
-                .subscribe(
-                    modelBuilds => this.finishedModelBuildsCount = modelBuilds.length
+        this.modelsSub = this.storeModels.select(fromModels.getAllModels).subscribe(
+            models => {
+                this.someModelIsFinished = models.some(model => 
+                    model.lastModelBuild.status.toLocaleLowerCase() === 'finished'
                 );
+            }
+        )
     }
 
     public addApplication(): void {
-        this.finishedModelBuildsCount ? this.showAddServiceDialog() : this.showAlert();
+        this.someModelIsFinished ? this.showAddServiceDialog() : this.showAlert();
     }
 
     ngOnDestroy(){
-        this.modelStoreSub.unsubscribe();
+        this.modelsSub.unsubscribe();
     }
 
     private showAlert(): void{

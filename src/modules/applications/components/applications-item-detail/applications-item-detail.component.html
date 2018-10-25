@@ -3,15 +3,15 @@
         <div class="content-header__title">{{ (application$ | async)?.name }}</div>
         <div class="action-buttons">
             <button class="button button--primary button--test action-button" (click)="testApplication(application$)">
-                <hydro-icon class="button__icon" [type]="'icon-start'"></hydro-icon>
+                <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
                 Test
             </button>
             <button class="button button--secondary action-button" (click)="editApplication(application$)">
-                <hydro-icon class="button__icon" [type]="'icon-edit'"></hydro-icon>
+                <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
                 Edit
             </button>
             <button class="button button--secondary button--secondary-remove action-button" (click)="removeApplication()">
-                <hydro-icon class="button__icon" [type]="'icon-remove'"></hydro-icon>
+                <hydro-icon class="button__icon" type="icon-remove"></hydro-icon>
                 remove
             </button>
         </div>
@@ -46,7 +46,6 @@
                 <tr>
                     <th class="hydro-table-head__cell">Model Variant</th>
                     <th class="hydro-table-head__cell">Runtime</th>
-                    <!-- <th class="hydro-table-head__cell">Env</th> -->
                     <th class="hydro-table-head__cell">Weight</th>
                     <th class="hydro-table-head__cell">Health</th>
                 </tr>
@@ -54,23 +53,17 @@
             <tbody>
                 <tr *ngFor="let item of stage.services; let j = index;" class='hydro-table-body__row'>
                     <td class="hydro-table-body__cell model-variant__cell">
-                        <!-- <span class="tooltip">
-                            <hydro-icon [type]="'icon-upgrade'"
-                                    class="icon new-version-icon"
-                                    [ngClass]="{'new-version-icon--available': checkNewVersion(item.modelVersion)}"
-                                    (click)="updateModelVersionDialog(i, j)">
-                            </hydro-icon>
-                            <span class="tooltiptext">Model has new version</span>
-                        </span> -->
-                        <span class="model-variant__version-container tooltip">
-                            <hydro-icon [type]="'icon-upgrade'"
-                                    class="icon model-variant__version-icon"
-                                    [ngClass]="{'model-variant__version-icon--available': checkNewVersion(item.modelVersion)}"
-                                    (click)="updateModelVersionDialog(i, j)">
+                        <span
+                            class="model-variant__version-new tooltip"
+                            [ngClass]="{'model-variant__version-new--visible': checkNewVersion(item.modelVersion)}">
+                            <hydro-icon 
+                                type='icon-upgrade'
+                                class="icon model-variant__version-new-icon"
+                                (click)="updateModelVersionDialog(i, j)">
                             </hydro-icon>
                             <span class="tooltiptext">Model has new version</span>
                         </span>
-                        <span class='cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
+                        <span class='model-variant__version-text cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
                             {{ item.modelVersion.modelName + ':v' + item.modelVersion.modelVersion }}
                         </span>
                     </td>
@@ -79,11 +72,7 @@
                             {{ item.runtime.name ? item.runtime.name : item.runtime.id }}
                         </div>
                     </td>
-                    <!-- <td class="hydro-table-body__cell">
-                        <div class='cs-text-overflow-ellipsis cs-text-center'>
-                            {{ item.serviceDescription.environmentId ? item.serviceDescription.environmentId : '-' }}
-                        </div>
-                    </td> -->
+
                     <td class="hydro-table-body__cell">
                         <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>{{ item.weight }}%</div>
                     </td>
