@@ -9,9 +9,9 @@ export class CurlCommandCreator implements CommandCreator {
         if(environment.production){
             const { protocol, hostname, port } = window.location;
 
-            return `${protocol}//${hostname}:${port}${apiUrl}`
+            return `${protocol}//${hostname}${port ? ':' + port : ''}${apiUrl}`
         } else {
-            return `${environment.host}:${environment.port}${apiUrl}`
+            return `${environment.host}${environment.port ? ':' + environment.port : ''}${apiUrl}`
         }
     }
 
