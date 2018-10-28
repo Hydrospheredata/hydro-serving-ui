@@ -3,4 +3,7 @@
         margin-top: -1.95rem;
         margin-right: 0.3rem;
     }
+    & .mdl-textfield.is-focused .mdl-select__toggle {
+        color: #539ae9;
+    } 
 }

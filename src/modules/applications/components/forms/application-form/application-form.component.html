@@ -1,12 +1,21 @@
 
 <form class="application-form" [formGroup]="applicationForm" #formElement>
     <div class="application-name">
-        <label class="application-name__label" for="applicationName">Application name</label>
-        <input class="hydro-input application-name__input" type="text" formControlName="applicationName" id="applicationName">
-        <ng-container *ngIf="applicationForm.get('applicationName').errors">
-            <div class="error" *ngFor="let error of applicationForm.get('applicationName').errors | iterateAsArray">
-                {{ applicationForm.get('applicationName').errors[error] }}
-            </div>
+        <label 
+            class="application-name__label" 
+            for="applicationName">Application name</label>
+        <input 
+            class="hydro-input application-name__input" 
+            type="text" 
+            formControlName="applicationName" 
+            id="applicationName">
+        <ng-container *ngIf="applicationForm.get('applicationName').errors; let errors">
+            <ul class="error__list">
+                <li class="error__item"
+                    *ngFor="let error of errors | iterateAsArray">
+                    {{ errors[error] }}
+                </li>
+            </ul>
         </ng-container>
     </div>
     <kafka-form
@@ -18,28 +27,47 @@
         <div *ngFor="let stage of applicationStagesFormArray.controls;index as stageIdx" 
             [formGroup]="stage"
             class="stage">
-            <span class="stage__name">Stage_{{stageIdx}}</span>
-            <span 
-                *ngIf="showRemoveStageButton()"
-                (click)="removeStage(stageIdx)"
-                class="button stage__remove-button">remove</span>
-            <div formArrayName="services" class="services__list">
-                <div *ngFor="let service of stage.get('services').controls;index as serviceIdx">
-                    <div class="services__item">
-                        <hydro-service-form 
-                            [group]="service" 
-                            [index]="serviceIdx"
-                            [showRemoveIcon]="showRemoveServiceIcon(stage)"
-                            (delete)="onServiceDelete(stage, $event)"></hydro-service-form>
+            <div class="stage__header">
+                <span class="stage__name">Stage_{{stageIdx}}</span>
+                <span
+                    class="stage__remove"
+                    (click)="removeStage(stageIdx)"
+                    *ngIf="showRemoveStageButton()">
+                    <hydro-icon
+                        type="icon-remove"
+                        class="icon"
+                        (click)="removeStage(stageIdx)">
+                        remove
+                    </hydro-icon>
+                </span>
+            </div>
+            <ng-container *ngIf="stage.get('services'); let services">
+                <div formArrayName="services" class="services__list">
+                    <div *ngFor="let service of services.controls;index as serviceIdx;last as isLast">
+                        <div 
+                            class="services__item"
+                            [ngClass]="{'services__item--isLast': isLast}">
+                            <hydro-service-form
+                                [group]="service" 
+                                [index]="serviceIdx"
+                                [showRemoveIcon]="showRemoveServiceIcon(stage)"
+                                (delete)="onServiceDelete(stage, $event)"></hydro-service-form>
+                        </div>
                     </div>
                 </div>
-                <ng-container *ngIf="stage.get('services').errors">
-                    <div class="error" *ngFor="let error of stage.get('services').errors | iterateAsArray">
-                        {{stage.get('services').errors[error]}}
+                <button
+                    *ngIf="!stage.get('services').errors"
+                    (click)="addServiceToStage(stage)"
+                    class="button button--flat stage__add-service-button">
+                    add model variant
+                </button>
+                <ng-container *ngIf="stage.get('services').errors; let errors">
+                    <div class="error-container" 
+                        *ngFor="let error of errors | iterateAsArray">
+                        {{errors[error]}}
                     </div>
                 </ng-container>
-            </div>
-            <button (click)="addServiceToStage(stage)"  class="button button--flat stage__add-service-button">add model variant</button>
+            </ng-container>
         </div>
     </div>
     <button (click)="addStageControl()" class="button button--secondary add-stage-button">add stage</button>
