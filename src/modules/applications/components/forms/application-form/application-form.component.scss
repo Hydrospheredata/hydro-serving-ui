@@ -48,8 +48,8 @@
         text-align: center
     }
     &__name {
-        font-size: 18px;
-        line-height: 40px;
+        font-size: 20px;
+        line-height: 44px;
         padding: 0 8px;
     }
     &__remove {
@@ -62,7 +62,6 @@
         border-radius: 0;
         background-color: #7abbf3;
         color: white;
-        font-weight: bold;
         justify-content: center;
         width: 100%;
         &:hover {
@@ -86,6 +85,7 @@
 
 .add-stage-button {
     display: inline-block;
+    font-size: 14px;
     margin-bottom: 8px;
 }
 

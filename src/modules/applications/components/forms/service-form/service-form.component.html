@@ -46,7 +46,7 @@
                 <label class="service__field-label" [attr.for]="'runtime_' + index">Runtime</label>
                 <mdl-select formControlName="runtime">
                     <mdl-option *ngFor="let runtime of (runtimes$ | async)" [value]="runtime.id">
-                        <span class="docker-image__name">{{ runtime.name }}</span> <span class="hidden">:</span> <span class="docker-image__version">{{ runtime.version }}</span> <span class="docker-image__repository">{{ runtime.name | getDockerImage: 'repository' }}</span>
+                        <span class="docker-image__name">{{ runtime.name | getDockerImage: 'name' }}</span><span class="hidden">:</span> <span class="docker-image__version">{{ runtime.version }}</span> <span class="docker-image__repository">{{ runtime.name | getDockerImage: 'repository' }}</span>
                     </mdl-option>
                 </mdl-select>
             </div>
