@@ -8,8 +8,8 @@ def buildFunction = {
   sh "cd docker && docker build -t hydrosphere/serving-manager-ui:${curVersion} ."
 }
 
-def postReleaseActionFunction = { releaseInfo ->
-  def props = readJSON text: "${releaseInfo}"
+def postReleaseActionFunction = { props ->
+  // def props = readJSON text: "${releaseInfo}"
   zip archive: true, dir: "${repository}", glob: "", zipFile: "release-${props.name}.zip"
   def releaseFile = "release-${props.name}.zip"
 
