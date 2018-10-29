@@ -28,5 +28,5 @@ pipelineCommon(
   "",
   "",
   {},
-  commitToCD("ui", "dev")
+  commitToCD("ui")
 )
