@@ -13,7 +13,7 @@ def postReleaseActionFunction = { props ->
   zip archive: true, dir: "${repository}", glob: "", zipFile: "release-${props.name}.zip"
   def releaseFile = "release-${props.name}.zip"
 
-  uploadFilesToGithub(props.id, releaseFile, releaseFile, repository)
+  uploadFilesToGithub(props.id.toString(), releaseFile, releaseFile, repository)
 }
 
 pipelineCommon(
