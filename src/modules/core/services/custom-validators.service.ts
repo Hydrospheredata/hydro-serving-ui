@@ -17,8 +17,8 @@ export class CustomValidatorsService {
     public weightValidation(): ValidatorFn {
         return (control: FormArray) : ValidationErrors => {
             const sum = control.controls.reduce((a, c) => a + Number(c.get('weight').value), 0)
-            if(sum > 100) {
-                return { 'weight': 'Sum of weights must be lower than 100'}
+            if(sum !== 100) {
+                return { 'weight': 'Sum of weights must be equal 100'}
             }
         }
     }

@@ -1,8 +1,33 @@
 @import 'variables.scss';
 
 .error-container {
-    border: 1px $error-container-border-color solid;
-    color: red;
-    background: $error-container-background-color;
+    color: white;
+    background: #da3d3d;
     padding: 4px;
+}
+
+.error__list {
+    color: white;
+    background: #da3d3d;
+    border-radius: 2px;
+    font-size: 12px;
+    list-style: none;
+    line-height: 14px;
+    margin-top: 2px;
+    padding: 4px;
+    position: absolute;
+    top: calc(100% + 4px);
+    width: 120px;
+    z-index: 2;
+    &::after {
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent #da3d3d transparent;
+        content: " ";
+        color: white;
+        display: block;
+        top: calc(0% - 8px);
+        left: 16px;
+        position: absolute;
+    }
 }

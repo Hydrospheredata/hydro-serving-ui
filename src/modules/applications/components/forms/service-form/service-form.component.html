@@ -1,72 +1,82 @@
 <div [formGroup]="group"
     class="service">
-    <div  class="service__row">
-        <ng-container formGroupName="model">
-            <div class="service__field service__field--model-name">
-                <label class="service__field-label">
-                    Model name
-                </label>
-                <mdl-select formControlName="modelId">
-                    <mdl-option 
-                        *ngFor="let model of models$ | async"
-                        [value]="model.id">{{model.name}}</mdl-option>
-                </mdl-select>
-            </div>
-            
-            <div class="service__field service__field--model-version">
-                <label class="service__field-label">
-                        Model version
-                </label>
-                <mdl-select formControlName="modelVersionId">
-                    <mdl-option 
-                        *ngFor="let modelVersion of modelVersions$ | async"
-                        [value]="modelVersion.id">{{modelVersion.modelVersion}}</mdl-option>
-                </mdl-select>
-            </div>
-        </ng-container>
-
-        <div class="service__field">
-            <label class="service__field-label" [attr.for]="'signature_' + index">Signature name</label>
-            <input class="service__field-input" [attr.id]="'signature_' + index" type="text" formControlName="signatureName">
-            <ng-container *ngIf="signatureName.errors">
-                <div class="error" *ngFor="let error of signatureName.errors | iterateAsArray">
-                    {{ signatureName.errors[error] }}
+    <div class="service__index">
+        <span class="test">
+            {{index + 1}}.
+        </span>
+    </div>
+    <div class="service__inputs">
+        <div  class="service__row">
+            <ng-container formGroupName="model">
+                <div class="service__field service__field--model-name">
+                    <label class="service__field-label">
+                        Model name
+                    </label>
+                    <mdl-select formControlName="modelId">
+                        <mdl-option 
+                            *ngFor="let model of models$ | async"
+                            [value]="model.id">{{model.name}}</mdl-option>
+                    </mdl-select>
+                </div>
+                
+                <div class="service__field service__field--model-version">
+                    <label class="service__field-label">
+                            Model version
+                    </label>
+                    <mdl-select formControlName="modelVersionId">
+                        <mdl-option 
+                            *ngFor="let modelVersion of modelVersions$ | async"
+                            [value]="modelVersion.id">{{modelVersion.modelVersion}}</mdl-option>
+                    </mdl-select>
                 </div>
             </ng-container>
+    
+            <div class="service__field">
+                <label class="service__field-label" [attr.for]="'signature_' + index">Signature name</label>
+                <input class="service__field-input" [attr.id]="'signature_' + index" type="text" formControlName="signatureName">
+                <ul class="error__list" *ngIf="signatureName.errors">
+                    <li class="error" *ngFor="let error of signatureName.errors | iterateAsArray">
+                       * {{ signatureName.errors[error] }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="service__row">
+            <div class="service__field service__field--runtime">
+                <label class="service__field-label" [attr.for]="'runtime_' + index">Runtime</label>
+                <mdl-select formControlName="runtime">
+                    <mdl-option *ngFor="let runtime of (runtimes$ | async)" [value]="runtime.id">
+                        <span class="docker-image__name">{{ runtime.name | getDockerImage: 'name' }}</span><span class="hidden">:</span> <span class="docker-image__version">{{ runtime.version }}</span> <span class="docker-image__repository">{{ runtime.name | getDockerImage: 'repository' }}</span>
+                    </mdl-option>
+                </mdl-select>
+            </div>
+            <div class="service__field service__field--environment">
+                <label class="service__field-label" [attr.for]="'environment_' + index">Environment</label>
+                <mdl-select  formControlName="environment">
+                    <mdl-option *ngFor="let environment of (environments$ | async)" [value]="environment.id">
+                        {{ environment.name === 'Without Env' ? 'none' : environment.name }}
+                    </mdl-option>
+                </mdl-select>
+            </div>
+    
+            <div class="service__field service__field--is-last service__field--weight">
+                <label class="service__field-label" [attr.for]="'weight_' + index">Weight</label>
+                <input class="service__field-input service__field-input--weight" [attr.id]="'weight_' + index" type="text" formControlName="weight">
+                <ul class="error__list" *ngIf="weight.errors">
+                    <li class="error" *ngFor="let error of weight.errors | iterateAsArray">
+                        * {{ weight.errors[error] }}
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="service__row">
-        <div class="service__field service__field--runtime">
-            <label class="service__field-label" [attr.for]="'runtime_' + index">Runtime</label>
-            <mdl-select formControlName="runtime">
-                <mdl-option *ngFor="let runtime of (runtimes$ | async)" [value]="runtime.id">
-                    <span class="docker-image__name">{{ runtime.name }}</span> <span class="hidden">:</span> <span class="docker-image__version">{{ runtime.version }}</span> <span class="docker-image__repository">{{ runtime.name | getDockerImage: 'repository' }}</span>
-                </mdl-option>
-            </mdl-select>
-        </div>
-        <div class="service__field service__field--environment">
-            <label class="service__field-label" [attr.for]="'environment_' + index">Environment</label>
-            <mdl-select  formControlName="environment">
-                <mdl-option *ngFor="let environment of (environments$ | async)" [value]="environment.id">
-                    {{ environment.name === 'Without Env' ? 'none' : environment.name }}
-                </mdl-option>
-            </mdl-select>
-        </div>
-
-        <div class="service__field service__field--is-last service__field--weight">
-            <label class="service__field-label" [attr.for]="'weight_' + index">Weight</label>
-            <input class="service__field-input service__field-input--weight" [attr.id]="'weight_' + index" type="text" formControlName="weight">
-            <ng-container *ngIf="weight.errors">
-                <div class="error" *ngFor="let error of weight.errors | iterateAsArray">
-                    {{ weight.errors[error] }}
-                </div>
-            </ng-container>
-        </div>
+    <div
+        *ngIf="showRemoveIcon" 
+        class="service__remove-container"
+        (click)="onDelete()">
+        <hydro-icon 
+            type="icon-remove"
+            class="service__remove-icon">
+        </hydro-icon>
     </div>
-    <hydro-icon 
-        *ngIf="showRemoveIcon"
-        type="icon-remove"
-        (click)="onDelete()"
-        class="service__remove-icon">
-    </hydro-icon>
 </div>

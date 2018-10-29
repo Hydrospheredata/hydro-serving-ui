@@ -2,7 +2,6 @@
 
 .dialog {
     position: relative;
-    height: 100%;
     &__content {
         padding: 0 12px;
     }
@@ -44,7 +43,7 @@
         display: inline-block; 
         font-size: 24px;
         line-height: 32px;
-        margin-bottom: 12px;
+        margin-bottom: 46px;
     }
     &__content--withFooter {
         height: calc(100% - 48px);
