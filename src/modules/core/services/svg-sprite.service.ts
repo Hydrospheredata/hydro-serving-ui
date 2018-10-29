@@ -12,9 +12,10 @@ export class SvgSpriteService {
       if (!document.createElementNS || !document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect) {
           return true
       };
-      const fileUrl = '/assets/images/sprites/hydro-sprite.svg';
+      const fileUrl = 'assets/images/sprites/hydro-sprite.svg';
+      const { protocol, port, hostname } = window.location;
 
-      this.http.get(`http://${window.location.hostname}:${window.location.port}/${fileUrl}`)
+      this.http.get(`${protocol}//${hostname}:${port}/${fileUrl}`)
           .subscribe(res => {
             const insert = () => document.body.insertAdjacentHTML('afterbegin', res._body);
 
