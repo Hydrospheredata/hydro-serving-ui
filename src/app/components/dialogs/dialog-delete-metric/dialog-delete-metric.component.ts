@@ -33,7 +33,7 @@ export class DialogDeleteMetricComponent extends DialogBase {
             // .subscribe(id => this.applicationId = id);
     }
 
-    public submitDeleteServiceForm() {
+    public onDelete() {
         // console.log(this.store);
         console.log(`deleting ${this.metricId}`);
         this.store.dispatch(new DeleteMetricAction(this.metricId));

@@ -29,7 +29,7 @@ export class DialogDeleteModelComponent extends DialogBase {
             .subscribe(id => this.modelId = id);
     }
 
-    public submitDeleteModelForm() {
+    public onDelete() {
         this.store.dispatch(new DeleteModelAction(this.modelId));
         this.dialogRef.hide();
     }
