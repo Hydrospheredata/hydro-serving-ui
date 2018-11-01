@@ -39,7 +39,6 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
     }
 
     protected getRequestPromise(): Promise<any> {
-        debugger;
         return this.metricsService.getMetrics(this.applicationId, this.stageId, this.chartTimeWidth, this.metrics, this.selectedFeature)
     }
 }
