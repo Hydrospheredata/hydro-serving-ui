@@ -43,12 +43,11 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private metricData: any = {};
     private metricsData: any = [];
     private threshold : any = {};
-    protected  metrics;
-
-    protected REQUEST_DELAY_MS = 1500;
-
-    protected updateChartObservable$: Observable<any>;
     private updateChartSub: Subscription;
+
+    protected metrics: string[] = [];
+    protected REQUEST_DELAY_MS: number = 1500;
+    protected updateChartObservable$: Observable<any>;
     protected timeSubject: Subject<any> = new Subject<any>();
 
     constructor(
@@ -61,9 +60,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         );
     }
 
-    ngOnDestroy(){
-        this.updateChartSub.unsubscribe()
-    }
     ngOnInit(): void {
         this.initThreshold(this.chartData.metricProvider);
         this.initChart();
@@ -72,7 +68,11 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         this.metrics = this.chartData.metricProvider.metrics || [];
     }
 
-    private initThreshold(metricProvider){
+    ngOnDestroy() : void {
+        this.updateChartSub.unsubscribe()
+    }
+
+    private initThreshold(metricProvider) : void {
         if (metricProvider.healthConfig && metricProvider.healthConfig.hasOwnProperty("threshold")) {
             this.threshold = parseFloat(metricProvider.healthConfig["threshold"]);
         } else {
@@ -82,13 +82,13 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    ngOnChanges(changes: SimpleChanges): void{
+    ngOnChanges(changes: SimpleChanges): void {
         if(changes.chartTimeWidth && !changes.chartTimeWidth.firstChange){
             this.timeSubject.next();
         }
     }
 
-    private initChart(): void{
+    private initChart(): void {
         HighchartsNoDataToDisplay(Highcharts);
         const metricProvider = this.chartData.metricProvider;
         this.chart = Highcharts.chart(this.chartContainerRef.nativeElement, {
@@ -148,11 +148,19 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         return this.chartData.metricProvider.name;
     }
 
-    public onDelete(): void{
+    public onDelete(): void {
         this.delete.emit(this.chartData.metricProvider.id);
     }
 
-    private drawSeries(): void{
+    protected filterFunction(_){
+        return _["columnIndex"] == null
+    }
+
+    protected getRequestPromise(): Promise<any> {
+        return this.metricsService.getMetrics(this.applicationId, this.stageId, this.chartTimeWidth, this.metrics, '')
+    }
+
+    private drawSeries(): void {
         this.dataLength = 0;
 
         if(this.series){
@@ -161,6 +169,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
                 const series = this.series[seriesName];
                 const currentSeries = this.chart.series.find(chartSeries => chartSeries.name == series.name);
+
                 if (currentSeries) {
                     this.chart.xAxis[0].setExtremes(moment().subtract(this.chartTimeWidth / 60000, "minutes").valueOf(), moment().valueOf(), false);
                     currentSeries.update(series, true);
@@ -175,11 +184,13 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private drawBands(): void {
         this.chartData.metricProvider.metrics.forEach(metricName => {
             if (!this.healthBounds[metricName]) { return };
+
             if (!this.chartBands.hasOwnProperty(metricName)) {
                 this.chartBands[metricName] = [];
             }
+
             this.chartBands[metricName].forEach(_ => this.chart.xAxis[0].removePlotBand(_));
-            this.chartBands[metricName] = [];
+
             for (let i = 0; i < this.healthBounds[metricName].length; i += 2) {
                 if (i < this.healthBounds[metricName].length && i + 1 < this.healthBounds[metricName].length) {
                     const id = `${this.healthBounds[metricName][i].getTime()}_${this.healthBounds[metricName][i + 1].getTime()}`;
@@ -219,7 +230,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    private fetchChartData(): void{
+    private fetchChartData(): void {
         const getModelName = (modelId): string => {
             return this.stage.services.reduce((modelNames, service) => {
                 if(service.modelVersion.id === ~~modelId){
@@ -272,10 +283,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
-    public filterFunction(_){
-        return _["columnIndex"] == null
-    }
-
     private selfUpdate(){
         this.updateChartSub = this.updateChartObservable$.pipe(
             switchMap(_ => {
@@ -292,7 +299,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         this.drawBands();
     }
 
-
     private getMetrics(): Promise<any> {
         return this.getRequestPromise().then(result => {
             const res = this.influxdbService.parse(result) as any;
@@ -306,10 +312,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
             this.metricsData = this.getMetricsData();
         });
-    }
-
-    public getRequestPromise(): Promise<any> {
-        return this.metricsService.getMetrics(this.applicationId, this.stageId, this.chartTimeWidth, this.metrics, '')
     }
 
     private getMetricsData(): IMetricData[] {
