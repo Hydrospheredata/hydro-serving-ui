@@ -11,7 +11,6 @@ import {
 import { Store } from '@ngrx/store';
 import { Application } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-import { InfluxDBService } from '@core/services';
 
 import * as fromApplications from '@applications/reducers';
 import * as fromMetrics from '@core/reducers/index';
@@ -21,7 +20,6 @@ import { MdlDialogService } from '@angular-mdl/core';
 import { DialogAddMetricComponent } from '@app/components/dialogs/_index';
 
 import { MetricSettings } from '@shared/models/metric-settings.model';
-import { MetricsService } from '@core/services/metrics/metrics.service';
 
 import { IChartData } from '@shared/models/application-chart.model'
 
@@ -83,14 +81,10 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
 
     constructor(
         public store: Store<HydroServingState>,
-        private influxdbService: InfluxDBService,
-        private metricsService: MetricsService,
         private activatedRoute: ActivatedRoute,
         public selectRef: MdlSelectModule,
         public dialog: MdlDialogService
     ) {
-        this.influxdbService;
-        this.metricsService;
     }
 
 
