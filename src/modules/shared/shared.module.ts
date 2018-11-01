@@ -34,7 +34,9 @@ import {
     SignaturesComponent,
     IconComponent,
     FilterComponent,
-    CommandTemplateComponent
+    CommandTemplateComponent,
+    BaseMetricChartComponent,
+    KolmogorovSmirnovChartComponent
 } from './components/_index';
 
 //Directives
@@ -78,6 +80,8 @@ import {
         IconComponent,
         FilterComponent,
         CommandTemplateComponent,
+        BaseMetricChartComponent,
+        KolmogorovSmirnovChartComponent,
         // Directives
         ModelStatusDirective,
         CopyToBufferDirective
@@ -104,6 +108,8 @@ import {
         SignaturesComponent,
         IconComponent,
         CommandTemplateComponent,
+        BaseMetricChartComponent,
+        KolmogorovSmirnovChartComponent,
         //Directives
         ModelStatusDirective,
         CopyToBufferDirective

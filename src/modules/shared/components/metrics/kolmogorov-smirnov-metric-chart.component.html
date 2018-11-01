@@ -6,7 +6,7 @@
         <hydro-icon class="icon chart__title-icon" type="icon-remove" (click)="onDelete()" *ngIf="!chartData.metricProvider.isSystem" ></hydro-icon>
     </div>
     <div class="chart__filter-list">
-        <div *ngIf="showFeatureFilter" class="chart__filter-item">
+        <div class="chart__filter-item">
             <span class="filter-name">Feature: </span>
             <mdl-select
                 #featureSelect
@@ -14,8 +14,7 @@
                 [(ngModel)]="selectedFeature"
                 [autocomplete]="true"
                 (keydown.enter)="$event.preventDefault()"
-                class="filter-input"
-            >
+                class="filter-input">
                 <mdl-option 
                     *ngFor="let feature of featureList | matchSorter:{}:featureSelect.searchQuery" 
                     [value]="feature">{{ feature }}

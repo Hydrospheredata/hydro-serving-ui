@@ -18,11 +18,9 @@ import {
     ApplicationsItemDetailComponent, 
     ApplicationsStageDetailComponent, 
     ApplicationsDialogComponent, 
-    ApplicationChartComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
     ServiceFormComponent
-    
 } from '@applications/components';
 import { 
     ApplicationsService, 
@@ -51,7 +49,6 @@ import { CustomValidatorsService } from '@core/services/custom-validators.servic
         ApplicationsItemDetailComponent,
         ApplicationsStageDetailComponent,
         ApplicationsDialogComponent, 
-        ApplicationChartComponent,
         ApplicationFormComponent,
         KafkaFormComponent,
         ServiceFormComponent

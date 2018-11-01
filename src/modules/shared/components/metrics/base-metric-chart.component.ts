@@ -1,54 +1,91 @@
-import { Component, OnInit,Output,EventEmitter, Input, ElementRef, ViewChild, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit,Output,EventEmitter, Input, ElementRef, ViewChild, OnChanges, SimpleChanges, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import * as HighchartsNoDataToDisplay from 'highcharts/modules/no-data-to-display.src';
 import * as moment from 'moment';
 
 import { IChartData, IMetricData, IMetricDataRow } from '@shared/models/application-chart.model'
+
+import { interval } from 'rxjs/observable/interval';
+import {
+    switchMap,
+    tap
+} from 'rxjs/operators';
+import { MetricsService } from '@core/services/metrics/metrics.service';
+import { InfluxDBService } from '@core/services';
+import { Subscription, Subject, Observable } from 'rxjs';
+import { merge } from 'rxjs/observable/merge';
+
+
 @Component({
-    selector: 'hydro-application-chart',
-    templateUrl: './application-chart.component.html',
-    styleUrls: ['./application-chart.component.scss'],
+    selector: 'hydro-base-metric-chart',
+    templateUrl: './base-metric-chart.component.html',
+    styleUrls: ['./base-metric-chart.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ApplicationChartComponent implements OnInit, OnChanges {
+export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     @Input() chartData: IChartData;
     @Input() chartTimeWidth: number;
     @Input() stage;
+    @Input() applicationId;
+    @Input() stageId;
 
     @Output() delete: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('chartContainer') chartContainerRef: ElementRef;
 
-    public featureList: string[] = []
-    public selectedFeature: string = '0';
-    public showFeatureFilter: boolean = false;
-
+    //chart
     private chart: Highcharts.ChartObject;
     private chartBands: { [s: string]: string[] } = {};
     private healthBounds: { [s: string]: Date[]} = {};
     private series: { [s: string]: {name: string; data: Array<[number, number]>}} = {};
     private dataLength: number = 0;
+    //common data
+    private metricData: any = {};
+    private metricsData: any = [];
+    private threshold : any = {};
+    protected  metrics;
 
-    constructor() { }
+    protected REQUEST_DELAY_MS = 1500;
 
+    protected updateChartObservable$: Observable<any>;
+    private updateChartSub: Subscription;
+    protected timeSubject: Subject<any> = new Subject<any>();
+
+    constructor(
+        public metricsService: MetricsService,
+        public influxdbService: InfluxDBService
+    ) { 
+        this.updateChartObservable$ = merge(
+            interval(this.REQUEST_DELAY_MS), 
+            this.timeSubject.asObservable()
+        );
+    }
+
+    ngOnDestroy(){
+        this.updateChartSub.unsubscribe()
+    }
     ngOnInit(): void {
-        if(this.isMetricProviderWithFilter()){
-            this.showFeatureFilter = true;
-            this.featureList = this.getFeatureList();
-        }
-
+        this.initThreshold(this.chartData.metricProvider);
         this.initChart();
+        this.selfUpdate();
+
+        this.metrics = this.chartData.metricProvider.metrics || [];
+    }
+
+    private initThreshold(metricProvider){
+        if (metricProvider.healthConfig && metricProvider.healthConfig.hasOwnProperty("threshold")) {
+            this.threshold = parseFloat(metricProvider.healthConfig["threshold"]);
+        } else {
+            if (this.threshold) {
+                this.threshold = null;
+            }
+        }
     }
 
     ngOnChanges(changes: SimpleChanges): void{
-        if(!this.chart) { return };
-        
-        const chartData = (changes.chartData && changes.chartData.currentValue) || this.chartData;
-
-        this.fetchChartData(chartData);
-        this.drawSeries();
-        this.drawThreshold(chartData.threshold);
-        this.drawBands();
+        if(changes.chartTimeWidth && !changes.chartTimeWidth.firstChange){
+            this.timeSubject.next();
+        }
     }
 
     private initChart(): void{
@@ -158,14 +195,22 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
         })
     }
 
-    private drawThreshold(threshold: number): void {
+    private drawThreshold(): void {
+        const threshold = this.threshold;
         const currentThresholdSeries = this.chart.series.find(_ => _.name == `${name}_threshold`);
                 
         if (this.dataLength != 0) {
             if (currentThresholdSeries) {
                 currentThresholdSeries.update({ name: `${name}_threshold`, data: [threshold] }, true);
             } else {
-                this.chart.addSeries({ name: `${name}_threshold`, data: [[new Date().getTime(), threshold]], type: 'scatter', showInLegend: false, marker: { enabled: false }, enableMouseTracking: false }, true);
+                this.chart.addSeries({
+                    name: `${name}_threshold`, 
+                    data: [[new Date().getTime(), threshold]], 
+                    type: 'scatter', 
+                    showInLegend: false, 
+                    marker: { enabled: false }, 
+                    enableMouseTracking: false
+                }, true);
             }
         } else {
             if (currentThresholdSeries) {
@@ -174,7 +219,7 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
         }
     }
 
-    private fetchChartData(chartData): void{
+    private fetchChartData(): void{
         const getModelName = (modelId): string => {
             return this.stage.services.reduce((modelNames, service) => {
                 if(service.modelVersion.id === ~~modelId){
@@ -183,8 +228,8 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
             }, [])[0];
         }
 
-        const metrics = chartData.metricProvider.metrics;
-        const metricsData = chartData.metricsData;
+        const metrics = this.metrics;
+        const metricsData = this.metricsData;
 
         metrics.forEach(metricName => {
             const groupedByModelVersionId: { [s: string]: any[] } = {}; 
@@ -192,7 +237,7 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
 
             if(metricData){
                 const rows: Array<IMetricDataRow> = metricData.rows;
-                rows.filter(_ => _["columnIndex"] == null || _["columnIndex"] == this.selectedFeature).forEach(_ => {
+                rows.filter((row) => this.filterFunction(row)).forEach(_ => {
                     if (!groupedByModelVersionId.hasOwnProperty(_["modelVersionId"])) {
                         groupedByModelVersionId[_["modelVersionId"]] = [];
                     }
@@ -227,24 +272,53 @@ export class ApplicationChartComponent implements OnInit, OnChanges {
         });
     }
 
-    private isMetricProviderWithFilter(): boolean{
-        return this.chartData.metricProvider.metricProviderClass === "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov"
+    public filterFunction(_){
+        return _["columnIndex"] == null
     }
 
-    private getFeatureList(): string[]{
-        switch(this.chartData.metricProvider.metricProviderClass){
-            case "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov":
-                return this.getKolmogorovSmirnovFeatures();
-            default:
-                return [];
-        }
+    private selfUpdate(){
+        this.updateChartSub = this.updateChartObservable$.pipe(
+            switchMap(_ => {
+                return this.getMetrics()
+            }),
+            tap(_ => this.redrawChart())
+        ).subscribe();
     }
 
-    private getKolmogorovSmirnovFeatures(): string[]{
-        let features:string[] = [];
-        for(let i = 0; i < 112;i++){
-            features.push(`${i}`);
-        };
-        return features;
+    private redrawChart(){
+        this.fetchChartData();
+        this.drawSeries();
+        this.drawThreshold();
+        this.drawBands();
+    }
+
+
+    private getMetrics(): Promise<any> {
+        return this.getRequestPromise().then(result => {
+            const res = this.influxdbService.parse(result) as any;
+            
+            this.metrics.forEach(metric => {
+                const groupRow = res.groupRows.find(_ => _.name === metric);
+                if (!groupRow) { return; }
+
+                this.metricData[metric] = groupRow;
+            })
+
+            this.metricsData = this.getMetricsData();
+        });
+    }
+
+    public getRequestPromise(): Promise<any> {
+        return this.metricsService.getMetrics(this.applicationId, this.stageId, this.chartTimeWidth, this.metrics, '')
+    }
+
+    private getMetricsData(): IMetricData[] {
+        return this.metrics.reduce((metricsData, metricName) => {
+            if(this.metricData[metricName]){
+                return metricsData.concat(this.metricData[metricName]);
+            } else {
+                return metricsData;
+            }
+        }, []);
     }
 }

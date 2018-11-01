@@ -1,0 +1,9 @@
+<div class="chart">
+    <div class="chart__title">
+        <span>
+            {{title}}
+        </span>
+        <hydro-icon class="icon chart__title-icon" type="icon-remove" (click)="onDelete()" *ngIf="!chartData.metricProvider.isSystem" ></hydro-icon>
+    </div>
+   <div #chartContainer></div>
+</div>
