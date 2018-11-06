@@ -21,7 +21,8 @@ import {
     RemoveDublicatesPipe,
     ToNumberPipe,
     MatchSorterPipe,
-    DockerImageSplitPipe
+    DockerImageSplitPipe,
+    ReverseArrayPipe
 } from './pipes/_index';
 
 // Components
@@ -70,6 +71,7 @@ import {
         ToNumberPipe,
         MatchSorterPipe,
         DockerImageSplitPipe,
+        ReverseArrayPipe,
         // Components
         InputTextComponent,
         TextareaComponent,
@@ -99,6 +101,7 @@ import {
         ToNumberPipe,
         MatchSorterPipe,
         DockerImageSplitPipe,
+        ReverseArrayPipe,
         // Components
         InputTextComponent,
         TextareaComponent,
