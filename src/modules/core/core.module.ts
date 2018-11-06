@@ -11,7 +11,7 @@ import { CodemirrorModule } from 'ng2-codemirror';
 import { EffectsModule } from '@ngrx/effects';
 
 // Components
-import { NavbarComponent, LoaderComponent, PageNotFoundComnonent } from './_index';
+import { NavbarComponent, LoaderComponent, PageNotFoundComponent } from './_index';
 
 // Services
 import {
@@ -101,7 +101,7 @@ import { MetricsService } from '@core/services/metrics/metrics.service';
     declarations: [
         NavbarComponent,
         LoaderComponent,
-        PageNotFoundComnonent
+        PageNotFoundComponent
     ],
     providers: [
         ModelBuilder,
