@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MdlDialogService } from '@angular-mdl/core';
-import { Application } from '@shared/models/_index';
+import { Application, Model } from '@shared/models/_index';
 
 // import { Application } from '@shared/models/_index';
 // import { HydroServingState } from '@core/reducers';
@@ -33,13 +33,15 @@ export class ApplicationsWrapperComponent implements OnDestroy{
         this.applications = this.storeApp.select(fromApplications.getAllApplications);
         this.modelsSub = this.storeModels.select(fromModels.getAllModels).subscribe(
             models => {
-                this.someModelIsFinished = models.some(model => 
-                    model.lastModelBuild.status.toLocaleLowerCase() === 'finished'
-                );
+                this.someModelIsFinished = models.some(this.lastModelBuildIsFinished);
             }
         )
     }
 
+    private lastModelBuildIsFinished({ lastModelBuild } : Model): boolean {
+        return lastModelBuild && lastModelBuild.status.toLocaleLowerCase() === 'finished';
+    }
+ 
     public addApplication(): void {
         this.someModelIsFinished ? this.showAddServiceDialog() : this.showAlert();
     }
