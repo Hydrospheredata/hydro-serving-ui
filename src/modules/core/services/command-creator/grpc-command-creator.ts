@@ -23,11 +23,11 @@ export class GrpcCommandCreator extends CommandCreator {
             DT_VARIANT : "variant_val"
     }
 
-    private getDim(): string {
+    private getDimSize(): string {
         try {
-            return `hs.TensorShapeProto.Dim(size=${this.contract.signatures.inputs.shape.dim.size})`;
+            return `${this.contract.signatures.inputs.shape.dim.size}`;
         } catch {
-            return ``;
+            return ` %dim size% `;
         }
     }
 
@@ -43,7 +43,7 @@ export class GrpcCommandCreator extends CommandCreator {
 
             return { inputKey, inputValue };
         } catch {
-            return {inputKey: " %your input key% ", inputValue: "%your input value% "}
+            return {inputKey: " %input key% ", inputValue: "%input value% "}
         }
     }
 
@@ -77,7 +77,7 @@ export class GrpcCommandCreator extends CommandCreator {
             channel = grpc.insecure_channel("localhost") \n
             stub = hs.PredictionServiceStub(channel) \n
             model_spec = hs.ModelSpec(name="${appName}", signature_name="${this.getSignatureName()}")\n
-            tensor_shape = hs.TensorShapeProto(dim=[${this.getDim()}])\n
+            tensor_shape = hs.TensorShapeProto(dim=[hs.TensorShapeProto.Dim(size=${this.getDimSize()})]\n
             tensor = hs.TensorProto(dtype=hs.${dtype}, tensor_shape=tensor_shape, ${typeVal}=${inputValue})\n
             request = hs.PredictRequest(model_spec=model_spec, inputs={"${inputKey}": tensor}) \n
             result = stub.Predict(request) \n
