@@ -3,7 +3,7 @@ import { CommandCreator } from './command-creator';
 import { GrpcCommandCreator } from "@core/services/command-creator/grpc-command-creator";
 import { CurlCommandCreator } from "@core/services/command-creator/curl-command-creator";
 
-export class UnknownCommandCreator implements CommandCreator {
+export class UnknownCommandCreator extends CommandCreator {
     getCommand(){
         return ''
     }

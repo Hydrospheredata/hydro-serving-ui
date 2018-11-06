@@ -1,11 +1,11 @@
-import { CommandCreator } from './command-creator'
+import { CommandCreator, IApplicationContract } from './command-creator'
 import { Application } from '@shared/_index';
-import * as hocon from 'hocon-parser';
 
+export class GrpcCommandCreator extends CommandCreator {
 
-export class GrpcCommandCreator implements CommandCreator {
-    getCommand(application: Application): string {
-        const valueAttributes = {
+    private contract: IApplicationContract;
+
+    private valueAttributes: { [propName: string]: string } = {
             DT_HALF : "half_val",
             DT_FLOAT : "float_val",
             DT_DOUBLE : "double_val",
@@ -21,38 +21,66 @@ export class GrpcCommandCreator implements CommandCreator {
             DT_BOOL : "bool_val",
             DT_COMPLEX128 : "dcomplex_val",
             DT_VARIANT : "variant_val"
-        }
+    }
 
-        const { name: appName, contract, input: appInput } = application;
-        const contr = hocon(contract);
-        const { inputs } = contr.signatures;
-        const type_val = valueAttributes[inputs.dtype];
-
-        let dim= '';
-        if(inputs.shape.dim){
-          dim = `hs.TensorShapeProto.Dim(size=${inputs.shape.dim.size})`
-        }
-
-        let inputKey;
-        let inputValue;
-
+    private getDim(): string {
         try {
-            let parsedObj = JSON.parse(appInput);
-            inputKey = Object.keys(parsedObj)[0];
-            inputValue = JSON.stringify(parsedObj[inputKey]).replace(/,/g, ', ');
+            return `hs.TensorShapeProto.Dim(size=${this.contract.signatures.inputs.shape.dim.size})`;
         } catch {
-            inputKey = " %your input key% ";
-            inputValue = "%your input value% ";
+            return ``;
         }
+    }
+
+    private getTypeVal(dtype: string): string {
+        return this.valueAttributes[dtype] || '';
+    }
+
+    getInputKeyValue(appInput: string): {inputKey: string, inputValue: string} {
+        try {
+            const parsedObj = JSON.parse(appInput);
+            const inputKey = Object.keys(parsedObj)[0];
+            const inputValue = JSON.stringify(parsedObj[inputKey]).replace(/,/g, ', ');
+
+            return { inputKey, inputValue };
+        } catch {
+            return {inputKey: " %your input key% ", inputValue: "%your input value% "}
+        }
+    }
+
+    getSignatureName(): string {
+        try {
+            return this.contract.signatures.signature_name;
+        } catch {
+            return ``;
+        }
+    }
+
+    getDtype() : string {
+        try {
+            return this.contract.signatures.inputs.dtype;
+        } catch {
+            return ``;
+        }
+    }
+
+    getCommand(application: Application): string {
+        const { name: appName, input: appInput } = application;
+
+        this.contract = this.getApplicationContract(application);
+
+        const dtype = this.getDtype();
+        const typeVal = this.getTypeVal(dtype);
+        const { inputKey, inputValue} = this.getInputKeyValue(appInput);
 
         return `import grpc \n
             import hydro_serving_grpc as hs \n
-            channel = grpc.insecure_channel("localhost:8080") \n
+            channel = grpc.insecure_channel("localhost") \n
             stub = hs.PredictionServiceStub(channel) \n
-            model_spec = hs.ModelSpec(name="${appName}", signature_name="${contr.signatures.signature_name}")\n
-            tensor_shape = hs.TensorShapeProto(dim=[${dim}])\n
-            tensor = hs.TensorProto(dtype=hs.${inputs.dtype}, tensor_shape=tensor_shape, ${type_val}="${inputValue}")\n
+            model_spec = hs.ModelSpec(name="${appName}", signature_name="${this.getSignatureName()}")\n
+            tensor_shape = hs.TensorShapeProto(dim=[${this.getDim()}])\n
+            tensor = hs.TensorProto(dtype=hs.${dtype}, tensor_shape=tensor_shape, ${typeVal}=${inputValue})\n
             request = hs.PredictRequest(model_spec=model_spec, inputs={"${inputKey}": tensor}) \n
-            result = stub.Predict(request) \n`.trim();
+            result = stub.Predict(request) \n
+            `.trim();
     }
 }
