@@ -11,8 +11,8 @@ export class MetricsService {
     this.baseMetricsUrl = `${environment.monitoringUrl}`;
   }
 
-  public getMetrics(application: number, stage: string, interval: number, metrics: Array<string>) {
-    return this.http.get(`${this.baseMetricsUrl}/metrics`, {params: {application, stage, interval, metrics}}, false)
+  public getMetrics(application: number, stage: string, interval: number, metrics: Array<string>, columnIndex) {
+    return this.http.get(`${this.baseMetricsUrl}/metrics`, {params: {application, stage, interval, metrics, columnIndex}}, false)
       .map((res: Response): any => {
         return res.json()
       })

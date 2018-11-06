@@ -1,4 +1,4 @@
-import { DeleteMetricAction } from './../../../../modules/core/actions/monitoring.actions';
+import { DeleteMetricAction } from '@core/actions/monitoring.actions';
 import { Component, InjectionToken, Inject } from '@angular/core';
 import { MdlDialogReference } from '@angular-mdl/core';
 import { Store } from '@ngrx/store';
@@ -17,10 +17,8 @@ export const METRIC_ID_VALUE = new InjectionToken<string>('metric id value');
     styleUrls: ['./dialog-delete-metric.component.scss']
 })
 export class DialogDeleteMetricComponent extends DialogBase {
-    // private applicationId: number;
 
     constructor(
-        // @Inject(injectableApplicationId) data,
         @Inject(METRIC_ID_VALUE) public metricId: string,
         public dialogRef: MdlDialogReference,
         private store: Store<HydroServingState>
@@ -28,13 +26,9 @@ export class DialogDeleteMetricComponent extends DialogBase {
         super(
             dialogRef
         );
-        // this.applicationId = data;
-        // this.store.select(fromApplication.getSelectedApplicationId)
-            // .subscribe(id => this.applicationId = id);
     }
 
     public onDelete() {
-        // console.log(this.store);
         console.log(`deleting ${this.metricId}`);
         this.store.dispatch(new DeleteMetricAction(this.metricId));
         this.dialogRef.hide();

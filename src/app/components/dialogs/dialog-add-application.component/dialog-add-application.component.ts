@@ -39,6 +39,3 @@ export class DialogAddApplicationComponent extends DialogBase {
         this.close();
     }
 }
-
-
-

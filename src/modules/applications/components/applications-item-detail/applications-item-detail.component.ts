@@ -1,18 +1,10 @@
-// import { MetricsService } from './../../../core/services/metrics/metrics.service';
-// import * as moment from 'moment';
+import { MetricsService } from '@core/services/metrics/metrics.service';
 import { Component, ViewEncapsulation } from '@angular/core';
-// import { Router, ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
-// import { chart } from 'highcharts';
-// import * as Highcharts from 'highcharts';
-// import * as hocon from 'hocon-parser';
-
 import { Store } from '@ngrx/store';
 import { Application, Model } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-// import { InfluxDBService } from '@core/services';
-// import { environment } from '@environments/environment';
-
+import { InfluxDBService } from '@core/services';
 import * as fromApplications from '@applications/reducers';
 import * as fromModels from '@models/reducers';
 
@@ -28,15 +20,12 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
 import { tap, filter } from 'rxjs/operators'
-// import { InfluxDBService } from '@core/services';
-// import { UpdateApplicationAction } from '@applications/actions';
 
 @Component({
     selector: 'hydro-applications-item-detail',
     templateUrl: './applications-item-detail.component.html',
     styleUrls: ['./applications-item-detail.component.scss'],
     encapsulation: ViewEncapsulation.None,
-    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ApplicationsItemDetailComponent {
     public application: Application;
@@ -51,8 +40,8 @@ export class ApplicationsItemDetailComponent {
     constructor(
         public store: Store<HydroServingState>,
         public dialog: MdlDialogService,
-        // private metricsService: MetricsService,
-        // private influxdbService: InfluxDBService
+        private metricsService: MetricsService,
+        private influxdbService: InfluxDBService
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
         this.modelSub = this.store.select(fromModels.getAllModels).pipe(
@@ -65,26 +54,25 @@ export class ApplicationsItemDetailComponent {
     public getHealthClass() {
         // const stageId = `app${applicationId}stage${stageIndex}`;
         // const query = `select sum("health"), count("health") from /.*/ where time >= now() - 1m group by "stageId", "modelVersionId"`;
-        // return this.metricsService.getHealth().then((res) => {
-        //     const result = this.influxdbService.parse(res);
-        //     const aggregatedHealthStatus: Object = {};
-        //     // console.log(result);
-        //     // debugger;
-        //     for (let row of result) {
-        //         const stageAndModelVersion = `${row['stageId']}_${row["modelVersionId"]}`;
-        //         if (!aggregatedHealthStatus.hasOwnProperty(stageAndModelVersion)) {
-        //             aggregatedHealthStatus[stageAndModelVersion] = true;
-        //         }
-        //         aggregatedHealthStatus[stageAndModelVersion] = aggregatedHealthStatus[stageAndModelVersion] && row['sum'] >= row['count'];
-        //     }
-        //     // console.log(aggregatedHealthStatus);
-        //     const newStatuses = {}
-        //     for (let key in aggregatedHealthStatus) {
-        //         console.log(`setting ${aggregatedHealthStatus[key] ? "good" : "bad"} to ${key}`);
-        //         newStatuses[key] = aggregatedHealthStatus[key] ? "good" : "bad";
-        //     }
-        //     this.healthStatuses = newStatuses;
-        // });
+        return this.metricsService.getHealth().then((res) => {
+            const result = this.influxdbService.parse(res);
+            const aggregatedHealthStatus: Object = {};
+
+            for (let row of result) {
+                const stageAndModelVersion = `${row['stageId']}_${row["modelVersionId"]}`;
+                if (!aggregatedHealthStatus.hasOwnProperty(stageAndModelVersion)) {
+                    aggregatedHealthStatus[stageAndModelVersion] = true;
+                }
+                aggregatedHealthStatus[stageAndModelVersion] = aggregatedHealthStatus[stageAndModelVersion] && row['sum'] >= row['count'];
+            }
+            // console.log(aggregatedHealthStatus);
+            const newStatuses = {}
+            for (let key in aggregatedHealthStatus) {
+                console.log(`setting ${aggregatedHealthStatus[key] ? "good" : "bad"} to ${key}`);
+                newStatuses[key] = aggregatedHealthStatus[key] ? "good" : "bad";
+            }
+            this.healthStatuses = newStatuses;
+        });
     }
 
     ngOnInit() {
