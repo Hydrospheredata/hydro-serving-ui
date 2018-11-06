@@ -1,7 +1,8 @@
 .code {
-    background: #f9f9f9;
+    background: #f7f7f9;
     border: 1px grey solid;
     border-radius: 2px;
+    color: black;
     display: flex;
     font-family: monospace;
     font-size: 14px;
@@ -19,24 +20,19 @@
 }
 
 .copy {
-    border-bottom-left-radius: 2px;
-    border-top-right-radius: 2px;
-    background: grey;
+    border-radius: 2px;
+    background: #4d9bf1;
     cursor: pointer;
     color: white;
     font-size: 16px;
-    height: 28px;
-    padding: 4px;
+    line-height: 28px;
+    padding: 0px;
     position: absolute;
-    right: 0;
+    right: 4px;
     text-align: center;
-    top: -1px;
+    top: 4px;
     width: 64px;
     &:hover {
-        background: #04143c;
-    }
-    &__button {
-        font-size: 20px;
-        color: black;
+        background: #468dda;
     }
 }
