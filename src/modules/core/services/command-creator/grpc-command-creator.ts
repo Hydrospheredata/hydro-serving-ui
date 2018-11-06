@@ -35,7 +35,7 @@ export class GrpcCommandCreator extends CommandCreator {
         return this.valueAttributes[dtype] || '';
     }
 
-    getInputKeyValue(appInput: string): {inputKey: string, inputValue: string} {
+    private getInputKeyValue(appInput: string): {inputKey: string, inputValue: string} {
         try {
             const parsedObj = JSON.parse(appInput);
             const inputKey = Object.keys(parsedObj)[0];
@@ -47,7 +47,7 @@ export class GrpcCommandCreator extends CommandCreator {
         }
     }
 
-    getSignatureName(): string {
+    private getSignatureName(): string {
         try {
             return this.contract.signatures.signature_name;
         } catch {
@@ -55,7 +55,7 @@ export class GrpcCommandCreator extends CommandCreator {
         }
     }
 
-    getDtype() : string {
+    private getDtype() : string {
         try {
             return this.contract.signatures.inputs.dtype;
         } catch {
