@@ -94,7 +94,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
             this.stageId = Number(params['stageId']).toString();
             return this.stageId;
         });
-        this.stage$ = this.store.select(fromApplications.getCurrentStage).filter(stage => stage);
+        this.stage$ = this.store.select(fromApplications.getCurrentStage).filter(stage => !!stage);
 
         this.mainSub = combineLatest(this.application$, this.params$, this.stage$).subscribe(
             ([app, stageId, stage]) => {
