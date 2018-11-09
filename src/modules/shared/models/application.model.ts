@@ -10,13 +10,21 @@ export enum TestStatus {
     Pending = 'pending',
     Success = 'success',
     Undefined = ''
-} 
+}
+
+export interface Stage {
+    services: any
+}
+
+export interface ExecutionGraph {
+    stages: Stage[]
+}
 
 export interface IApplication {
     id?: number;
     contract?: string;
     name: string;
-    executionGraph?: any;
+    executionGraph?: ExecutionGraph;
     kafkaStreaming?: IKafkaStreaming[];
     input: string;
     output: string;
@@ -29,7 +37,7 @@ export class Application implements IApplication {
     public id?: number;
     public contract?: string;
     public name: string;
-    public executionGraph?: any;
+    public executionGraph?: ExecutionGraph;
     public namespace?: string;
     public kafkaStreaming?: { sourceTopic: string, destinationTopic: string, consumerId?: string, errorTopic?: string }[];
     public input: string;

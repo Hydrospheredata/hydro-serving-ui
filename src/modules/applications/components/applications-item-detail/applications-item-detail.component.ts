@@ -14,8 +14,8 @@ import {
     SELECTED_APPLICATION$,
     injectableServiceUpdate,
     DialogUpdateModelVersionComponent, 
-    CHANGE_IDS,
-    DialogDeleteApplicationComponent
+    DialogDeleteApplicationComponent,
+    SELECTED_SERVICE
 } from '@components/dialogs/_index';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs';
@@ -97,7 +97,7 @@ export class ApplicationsItemDetailComponent {
         }
     }
 
-    public updateModelVersionDialog(stageId, serviceId) {
+    public updateModelVersionDialog(service) {
         this.dialog.showCustomDialog({
             component: DialogUpdateModelVersionComponent,
             styles: { 'width':'fit-content', 'max-width': '400px', 'min-height': '120px' },
@@ -106,7 +106,12 @@ export class ApplicationsItemDetailComponent {
             clickOutsideToClose: true,
             enterTransitionDuration: 400,
             leaveTransitionDuration: 400,
-            providers: [{provide: CHANGE_IDS , useValue: {stageId, serviceId}}]
+            providers: [
+                {
+                    provide: SELECTED_SERVICE, 
+                    useValue: service
+                }
+            ]
         });
     }
 
