@@ -1,5 +1,8 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+
+import {catchError, finalize, tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { environment } from '@environments/environment';
 import 'rxjs/Rx';
 import {
@@ -46,64 +49,64 @@ export class HttpService extends Http {
             this.showLoader();
         }
 
-        return super.get(this.getFullUrl(url), this.requestOptions(options))
-            .catch(this.onCatch)
-            .do(() => {
+        return super.get(this.getFullUrl(url), this.requestOptions(options)).pipe(
+            catchError(this.onCatch),
+            tap(() => {
                 this.onSuccess();
             }, (error: any) => {
                 this.onError(error);
-            })
-            .finally(() => {
+            }),
+            finalize(() => {
                 this.onEnd();
-            });
+            }),);
     }
 
     post(url: string, body, options?: RequestOptionsArgs): Observable<any> {
 
         this.showLoader();
 
-        return super.post(this.getFullUrl(url), body, this.requestOptions(options))
-            .catch(this.onCatch)
-            .do(() => {
+        return super.post(this.getFullUrl(url), body, this.requestOptions(options)).pipe(
+            catchError(this.onCatch),
+            tap(() => {
                 this.onSuccess();
             }, (error: any) => {
                 this.onError(error);
-            })
-            .finally(() => {
+            }),
+            finalize(() => {
                 this.onEnd();
-            });
+            }),);
     }
 
     put(url: string, body, options?: RequestOptionsArgs): Observable<any> {
 
         this.showLoader();
 
-        return super.put(this.getFullUrl(url), body, this.requestOptions(options))
-            .catch(this.onCatch)
-            .do(() => {
+        return super.put(this.getFullUrl(url), body, this.requestOptions(options)).pipe(
+            catchError(this.onCatch),
+            tap(() => {
                 this.onSuccess();
             }, (error: any) => {
                 this.onError(error);
-            })
-            .finally(() => {
+            }),
+            finalize(() => {
                 this.onEnd();
-            });
+            }),);
     }
 
     delete(url: string, options?: RequestOptionsArgs): Observable<any> {
 
         this.showLoader();
 
-        return super.delete(this.getFullUrl(url), this.requestOptions(options))
-            .catch(this.onCatch)
-            .do(() => {
+        return super.delete(this.getFullUrl(url), this.requestOptions(options)).pipe(
+            catchError(this.onCatch),
+            tap(() => {
                 this.onSuccess();
             }, (error: any) => {
                 this.onError(error);
-            })
-            .finally(() => {
+            }),
+            finalize(() => {
                 this.onEnd();
-            });
+            }),);
     }
 
     private requestOptions(options?: RequestOptionsArgs): RequestOptionsArgs {
@@ -141,7 +144,7 @@ export class HttpService extends Http {
         } else {
             errMsg = error.message ? error.message : error.toString();
         }
-        return Observable.throw(errMsg);
+        return observableThrowError(errMsg);
     }
 
     private onSuccess() {

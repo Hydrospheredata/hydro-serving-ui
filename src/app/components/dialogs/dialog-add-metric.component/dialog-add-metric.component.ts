@@ -1,7 +1,8 @@
+
+import {map} from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable } from 'rxjs';
 import { Application } from '@shared/models/application.model';
-import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
@@ -65,11 +66,11 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
         this.initFormChangesListener();
         this.applications$ = this.store.select(fromApplications.getAllApplications);
         const app$ = this.store.select(fromApplications.getSelectedApplication)
-        this.sources$ = app$.map(_ => {
+        this.sources$ = app$.pipe(map(_ => {
             const parsed = hocon(_.contract);
             console.log(parsed);
             return [parsed["signatures"]["inputs"]["name"]];
-        });
+        }));
         this.applicationSub = app$.subscribe(_ => {
             this.application = _;
         });

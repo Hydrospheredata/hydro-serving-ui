@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { HttpService } from '@core/services/http/_index';
@@ -16,17 +18,17 @@ export class SourcesService {
     }
 
     public getSources() {
-        return this.http.get(`${this.baseAPIUrl}`)
-            .map((res: Response): any => {
+        return this.http.get(`${this.baseAPIUrl}`).pipe(
+            map((res: Response): any => {
                 return res.json();
-            });
+            }));
     }
 
     public addSource(options) {
-        return this.http.post(`${this.baseAPIUrl}/${options.type}`, options.body)
-            .map((res: Response): any => {
+        return this.http.post(`${this.baseAPIUrl}/${options.type}`, options.body).pipe(
+            map((res: Response): any => {
                 return res.json();
-            });
+            }));
     }
 
 }

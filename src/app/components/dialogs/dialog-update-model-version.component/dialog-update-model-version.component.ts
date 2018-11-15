@@ -1,3 +1,5 @@
+
+import {filter,  tap ,  catchError, takeUntil, take, map } from 'rxjs/operators';
 import { Component,InjectionToken,Inject, OnDestroy } from '@angular/core';
 import { MdlDialogReference } from '@angular-mdl/core';
 import { DialogBase } from '@shared/base/_index';
@@ -6,17 +8,12 @@ import { HydroServingState } from '@core/reducers';
 
 import * as fromApplications from '@applications/reducers';
 import * as fromModels from '@models/reducers';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subject ,  combineLatest ,  of } from 'rxjs';
 import { Application, Model, Stage } from '@shared/models/_index';
 
 import * as hocon from 'hocon-parser';
 
 import { UpdateApplicationAction } from '@applications/actions';
-import { Subject } from 'rxjs';
-import { tap } from 'rxjs/operators/tap';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of } from 'rxjs/observable/of';
-import { catchError, takeUntil, take, map } from 'rxjs/operators';
 import { ApplicationsBuilderService } from '@applications/services';
 
 export interface ServiceData {
@@ -46,8 +43,8 @@ export class DialogUpdateModelVersionComponent extends DialogBase implements OnD
         super(dialogRef);
 
         this.selectedApplication$ = this.store.select(fromApplications.getSelectedApplication);
-        this.allModels$ = this.store.select(fromModels.getAllModels)
-                                    .filter(models => models.length > 0)
+        this.allModels$ = this.store.select(fromModels.getAllModels).pipe(
+                                    filter(models => models.length > 0))
     }
 
     private updateImmediatly(): void {

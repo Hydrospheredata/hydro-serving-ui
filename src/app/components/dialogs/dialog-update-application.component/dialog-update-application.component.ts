@@ -6,8 +6,7 @@ import { Store } from '@ngrx/store';
 import * as HydroActions from '@applications/actions/applications.actions';
 import { Application } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs';
+import { Observable ,  Subscription } from 'rxjs';
 
 export let injectableServiceUpdate = new InjectionToken<Observable<Application>>('selectedService');
 

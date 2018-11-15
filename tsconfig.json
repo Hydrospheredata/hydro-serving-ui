@@ -1,15 +1,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "outDir": "hydro-serving-ui",
     "baseUrl": "src",
+    "outDir": "hydro-serving-ui",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
     "target": "es5",
     "paths": {
       "@environments/*": [
@@ -38,13 +36,15 @@
       ],
       "@profiles/*": [
         "modules/profiles/*"
-      ]
+      ],
+
     },
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es2016",
+      "es2015",
+      "es2017",
       "dom"
     ]
   }

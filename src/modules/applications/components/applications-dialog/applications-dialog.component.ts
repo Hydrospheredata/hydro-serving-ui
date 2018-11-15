@@ -3,7 +3,7 @@
 import { Component, OnDestroy, OnInit, Output,EventEmitter, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { MdlDialogReference } from '@angular-mdl/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { DialogBase } from '@shared/base/dialog-base';
 import * as hocon from 'hocon-parser';

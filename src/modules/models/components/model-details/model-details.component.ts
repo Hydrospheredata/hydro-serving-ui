@@ -5,7 +5,7 @@ import { Model, ModelBuild } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
 
 import * as fromModels from '@models/reducers';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { MdlDialogService } from '@angular-mdl/core';
 
 import { DialogDeleteModelComponent } from '@components/dialogs/_index';

@@ -21,7 +21,6 @@
                 <span class="content-info__sublist-item-title">Version</span>
                 <span class="content-info__sublist-item-value">
                     <div class="status">{{ (build$ | async)?.version }}</div>
-                    <div class="status-label" *ngIf="data?.nextVersion">New version available</div>
                 </span>
             </li>
             <li class="content-info__sublist-item">

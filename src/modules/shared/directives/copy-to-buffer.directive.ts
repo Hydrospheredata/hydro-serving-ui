@@ -1,6 +1,5 @@
 import { Directive, ElementRef, Input, OnDestroy } from "@angular/core";
-import { fromEvent } from "rxjs/observable/fromEvent";
-import { Subscription, BehaviorSubject } from "rxjs";
+import { fromEvent ,  Subscription, BehaviorSubject } from "rxjs";
 import { tap, filter, delay } from "rxjs/operators"
 
 

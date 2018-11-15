@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services';
 import { environment } from '@environments/environment';
@@ -12,18 +14,18 @@ export class MetricsService {
   }
 
   public getMetrics(application: number, stage: string, interval: number, metrics: Array<string>, columnIndex) {
-    return this.http.get(`${this.baseMetricsUrl}/metrics`, {params: {application, stage, interval, metrics, columnIndex}}, false)
-      .map((res: Response): any => {
+    return this.http.get(`${this.baseMetricsUrl}/metrics`, {params: {application, stage, interval, metrics, columnIndex}}, false).pipe(
+      map((res: Response): any => {
         return res.json()
-      })
+      }))
       .toPromise()
   }
 
   public getHealth() {
-    return this.http.get(`${this.baseMetricsUrl}/health`, null, false)
-      .map((res: Response): any => {
+    return this.http.get(`${this.baseMetricsUrl}/health`, null, false).pipe(
+      map((res: Response): any => {
         return res.json()
-      })
+      }))
       .toPromise()
   }
 }

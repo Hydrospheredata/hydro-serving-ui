@@ -1,3 +1,5 @@
+
+import {filter} from 'rxjs/operators';
 import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MdlSnackbarService } from '@angular-mdl/core';
@@ -7,10 +9,9 @@ import { HydroServingState } from '@core/reducers';
 import { SignaturesService } from '@core/services';
 import { Store } from '@ngrx/store';
 // import * as Actions from '@core/actions';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable } from 'rxjs';
 import { GetModelVersionSignaturesAction } from '@core/actions';
 import * as fromModels from '@models/reducers';
-import { Observable } from 'rxjs';
 
 
 
@@ -40,7 +41,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnInit() {
-        this.buildSub = this.build$.filter(_ => _ != null).subscribe(build => {
+        this.buildSub = this.build$.pipe(filter(_ => _ != null)).subscribe(build => {
             this.store.dispatch(new GetModelVersionSignaturesAction(build.modelVersion.id));
         });
         console.log("init signatures");

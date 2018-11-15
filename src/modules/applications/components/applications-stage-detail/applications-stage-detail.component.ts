@@ -1,7 +1,7 @@
 import { DialogDeleteMetricComponent, METRIC_ID_VALUE } from './../../../../app/components/dialogs/dialog-delete-metric/dialog-delete-metric.component';
 import { GetMetricsAction } from './../../../core/actions/monitoring.actions';
 import { MdlSelectModule } from '@angular-mdl/select';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable ,  of ,  combineLatest } from 'rxjs';
 import {
     Component, ViewEncapsulation, OnInit, OnDestroy,
     ElementRef,
@@ -14,7 +14,6 @@ import { HydroServingState } from '@core/reducers';
 
 import * as fromApplications from '@applications/reducers';
 import * as fromMetrics from '@core/reducers/index';
-import { Observable } from 'rxjs/Observable';
 import { ActivatedRoute } from '@angular/router';
 import { MdlDialogService } from '@angular-mdl/core';
 import { DialogAddMetricComponent } from '@app/components/dialogs/_index';
@@ -24,10 +23,7 @@ import { MetricSettings } from '@shared/models/metric-settings.model';
 import { IChartData } from '@shared/models/application-chart.model'
 
 import { tap, map, filter, catchError } from 'rxjs/operators'
-import { of } from 'rxjs/observable/of';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
-
-import { combineLatest } from 'rxjs/observable/combineLatest';
 export interface MetricProvider extends MetricSpecification {
     name: string,
     id: string,
@@ -89,12 +85,12 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
 
 
     ngOnInit() {
-        this.application$ = this.store.select(fromApplications.getSelectedApplication).filter(_ => _ != undefined);
-        this.params$ = this.activatedRoute.params.map(params => {
+        this.application$ = this.store.select(fromApplications.getSelectedApplication).pipe(filter(_ => _ != undefined));
+        this.params$ = this.activatedRoute.params.pipe(map(params => {
             this.stageId = Number(params['stageId']).toString();
             return this.stageId;
-        });
-        this.stage$ = this.store.select(fromApplications.getCurrentStage).filter(stage => !!stage);
+        }));
+        this.stage$ = this.store.select(fromApplications.getCurrentStage).pipe(filter(stage => !!stage));
 
         this.mainSub = combineLatest(this.application$, this.params$, this.stage$).subscribe(
             ([app, stageId, stage]) => {

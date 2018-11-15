@@ -1,3 +1,5 @@
+
+import {debounceTime} from 'rxjs/operators';
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core'
 import { Model, Application } from '@shared/models/_index';
 import { FormControl } from '@angular/forms'
@@ -19,7 +21,7 @@ export class FilterComponent implements OnInit {
     @Output() filterEvent = new EventEmitter<Array<Application | Model>>();
 
     ngOnInit(){
-        const observable: Observable<any> = this.filterControl.valueChanges.debounceTime(this.debounce);
+        const observable: Observable<any> = this.filterControl.valueChanges.pipe(debounceTime(this.debounce));
         const observer: Observer<any> = this. getObserverByType(this.filterType);
         this.filterControlSub = observable.subscribe(observer);
     }

@@ -1,5 +1,7 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { environment } from '@environments/environment';
 import { HttpService } from '@core/services/http/_index';
@@ -19,31 +21,31 @@ export class ApplicationsService {
     }
 
     public getApplications(): Observable<Application[]> {
-        return this.http.get(this.baseApiUrl)
-            .map((res: Response): any => {
+        return this.http.get(this.baseApiUrl).pipe(
+            map((res: Response): any => {
                 return res.json();
-            });
+            }));
     }
 
     public updateApplication(application: Application): Observable<Application> {
-        return this.http.put(this.baseApiUrl, application)
-            .map((res: Response): any => {
+        return this.http.put(this.baseApiUrl, application).pipe(
+            map((res: Response): any => {
                 return res.json();
-            });
+            }));
     }
 
     public addApplication(application: Application) {
-        return this.http.post(this.baseApiUrl, application)
-            .map((res: Response): any => {
+        return this.http.post(this.baseApiUrl, application).pipe(
+            map((res: Response): any => {
                 return res.json();
-            });
+            }));
     }
 
     public generateInputs(id: number, signatureName: string) {
-        return this.http.get(`${this.baseApiUrl}/generateInputs/${id}/${signatureName}`)
-            .map((res: Response): any => {
+        return this.http.get(`${this.baseApiUrl}/generateInputs/${id}/${signatureName}`).pipe(
+            map((res: Response): any => {
                 return res.json();
-            });
+            }));
     }
 
     public deleteApplication(id: number) {
@@ -51,10 +53,10 @@ export class ApplicationsService {
     }
 
     public serveService(data, id, signatureName): Observable<any> {
-        return this.http.post(`${this.baseApiUrl}/serve/${id}/${signatureName}`, data)
-            .map((response: Response) => {
+        return this.http.post(`${this.baseApiUrl}/serve/${id}/${signatureName}`, data).pipe(
+            map((response: Response) => {
                 return response.json();
-            });
+            }));
     }
 
 }

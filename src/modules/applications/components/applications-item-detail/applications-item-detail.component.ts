@@ -17,8 +17,7 @@ import {
     DialogDeleteApplicationComponent,
     SELECTED_SERVICE
 } from '@components/dialogs/_index';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs';
+import { Observable ,  Subscription } from 'rxjs';
 import { tap, filter } from 'rxjs/operators'
 
 @Component({

@@ -1,6 +1,5 @@
-// import { MetricSettings } from './../../shared/models/metric-settings.model';
-// import { MetricSettingsService } from '@core/services/metrics/metric-settings.service';
-import { Observable } from 'rxjs/Observable';
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
@@ -9,8 +8,7 @@ import { Router } from '@angular/router';
 import { ApplicationsService, ApplicationsBuilderService } from '@applications/services';
 import { Application } from '@shared/models/_index';
 import * as HydroActions from '@applications/actions/applications.actions';
-import { switchMap, catchError, withLatestFrom, skip } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
+import { switchMap, catchError, withLatestFrom, skip ,  map } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { HydroServingState } from '@core/reducers';
 
@@ -41,7 +39,7 @@ export class ApplicationsEffects {
                             const data = apps.map(app => this.applicationBuilder.build(app));
                             return (new HydroActions.GetApplicationsSuccessAction(data));
                         }),
-                        catchError(error => Observable.of(new HydroActions.GetApplicationsFailAction(error)))
+                        catchError(error => observableOf(new HydroActions.GetApplicationsFailAction(error)))
                     );
             })
         );
@@ -66,7 +64,7 @@ export class ApplicationsEffects {
                                 message: `Error: ${error}`,
                                 timeout: 5000
                             });
-                            return Observable.of(new HydroActions.AddApplicationFailAction(error));
+                            return observableOf(new HydroActions.AddApplicationFailAction(error));
                         })
                     );
             })
@@ -91,7 +89,7 @@ export class ApplicationsEffects {
                                 message: `Error: ${error}`,
                                 timeout: 5000
                             });
-                            return Observable.of(new HydroActions.UpdateApplicationFailAction(error));
+                            return observableOf(new HydroActions.UpdateApplicationFailAction(error));
                         })
                     );
             })
@@ -120,7 +118,7 @@ export class ApplicationsEffects {
                                 message: `Error: ${error}`,
                                 timeout: 5000
                             });
-                            return Observable.of(new HydroActions.DeleteApplicationFailAction(error));
+                            return observableOf(new HydroActions.DeleteApplicationFailAction(error));
                         })
                     );
             })
@@ -141,7 +139,7 @@ export class ApplicationsEffects {
                             return new HydroActions.GenerateInputSuccessAction({ id: applicationId, input: JSON.stringify(input, undefined, 2) });
                         }),
                         catchError(error => {
-                            return Observable.of(new HydroActions.GenerateInputFailAction(error));
+                            return observableOf(new HydroActions.GenerateInputFailAction(error));
                         })
                     )
             })
@@ -156,7 +154,7 @@ export class ApplicationsEffects {
                 this.store.select(fromApplications.getSelectedApplicationId)
             ),
             switchMap(([action, applicationId]) => {
-                return Observable.of(new HydroActions.SetInputSuccessAction({ id: applicationId, input: action }));
+                return observableOf(new HydroActions.SetInputSuccessAction({ id: applicationId, input: action }));
             })
         );
 
@@ -176,7 +174,7 @@ export class ApplicationsEffects {
                             return new HydroActions.TestApplicationSuccessAction({ id: applicationId, output: JSON.stringify(output, undefined, 2) })
                         }),
                         catchError(error => {
-                            return Observable.of(new HydroActions.TestApplicationFailAction({id: applicationId, error}))
+                            return observableOf(new HydroActions.TestApplicationFailAction({id: applicationId, error}))
                         })
                     )
             })

@@ -1,12 +1,13 @@
+
+import {filter} from 'rxjs/operators';
 import { Profiles, ModelBuild } from '@shared/models/_index';
 import { GetProfilesAction, CleanProfilesAction } from '@profiles/actions';
 import { GetFieldsAction } from '@profiles/actions';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable } from 'rxjs';
 import { HydroServingState } from '@core/reducers';
 import { Component, Input, OnInit, OnDestroy } from "@angular/core";
 import { Store } from '@ngrx/store';
 import * as fromProfiles from '@profiles/reducers';
-import { Observable } from 'rxjs';
 import * as fromModels from '@models/reducers';
 
 @Component({
@@ -36,7 +37,7 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log(`ngOnInit with id: ${this.modelVersionId} and store: ${this.store}`);
-    this.buildSub = this.build$.filter(_ => _ != null).subscribe(build => {
+    this.buildSub = this.build$.pipe(filter(_ => _ != null)).subscribe(build => {
       this.buildId = build.id;
       this.store.dispatch(new GetFieldsAction(build.id));
     });

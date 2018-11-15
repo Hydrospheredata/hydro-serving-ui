@@ -5,15 +5,13 @@ import * as moment from 'moment';
 
 import { IChartData, IMetricData, IMetricDataRow } from '@shared/models/application-chart.model'
 
-import { interval } from 'rxjs/observable/interval';
+import { interval ,  Subscription, Subject, Observable ,  merge } from 'rxjs';
 import {
     switchMap,
     tap
 } from 'rxjs/operators';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { InfluxDBService } from '@core/services';
-import { Subscription, Subject, Observable } from 'rxjs';
-import { merge } from 'rxjs/observable/merge';
 
 
 @Component({

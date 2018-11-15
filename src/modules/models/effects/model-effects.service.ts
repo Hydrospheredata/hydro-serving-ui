@@ -1,7 +1,8 @@
+
+import {from as observableFrom, of as observableOf,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 
 import { ModelsService } from '@models/services';
 import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@core/builders/_index';
@@ -35,7 +36,7 @@ export class ModelEffects {
                         return (new HydroActions.GetModelsSuccessAction(data.map(this.modelBuilder.build, this.modelBuilder)));
                     }),
                     catchError(error => {
-                        return Observable.of(new HydroActions.GetModelsFailAction(error));
+                        return observableOf(new HydroActions.GetModelsFailAction(error));
                     })
                 )
             )
@@ -51,7 +52,7 @@ export class ModelEffects {
                         const preparedData = data.map(this.modelVersionBuilder.build, this.modelVersionBuilder);
                         return (new HydroActions.GetModelVersionsSuccessAction(preparedData));
                     }),
-                    catchError(error => Observable.of(new HydroActions.GetModelVersionsFailAction(error)))
+                    catchError(error => observableOf(new HydroActions.GetModelVersionsFailAction(error)))
                 )
             )
         );
@@ -69,7 +70,7 @@ export class ModelEffects {
                             return new HydroActions.GetModelBuildsSuccessAction(modelBuilds);
                         }),
                         catchError((error) => {
-                            return Observable.of(new HydroActions.GetModelBuildsFailAction(error));
+                            return observableOf(new HydroActions.GetModelBuildsFailAction(error));
                         })
                     );
             })
@@ -88,7 +89,7 @@ export class ModelEffects {
                                 message: 'Model has been released',
                                 timeout: 5000
                             });
-                            return Observable.from([
+                            return observableFrom([
                                 new HydroActions.BuildModelSuccessAction(response),
                                 new HydroActions.AddModelVersionSuccessAction(response),
                                 new HydroActions.GetModelBuildsAction(response.model.id)
@@ -99,7 +100,7 @@ export class ModelEffects {
                                 message: `Error: ${error}`,
                                 timeout: 5000
                             });
-                            return Observable.of(new HydroActions.BuildModelFailAction(error));
+                            return observableOf(new HydroActions.BuildModelFailAction(error));
                         })
                     );
             })
@@ -126,7 +127,7 @@ export class ModelEffects {
                                 message: `Error: ${error}`,
                                 timeout: 5000
                             });
-                            return Observable.of(new HydroActions.DeleteModelFailAction(error));
+                            return observableOf(new HydroActions.DeleteModelFailAction(error));
                         })
                     );
             })

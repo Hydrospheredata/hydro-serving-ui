@@ -1,7 +1,8 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import { SignaturesService } from '@core/services';
 import * as HydroActions from '@core/actions';
 import { map, switchMap, catchError, take } from 'rxjs/operators';
@@ -25,10 +26,10 @@ export class SignaturesEffects {
                             map(data => {
                                 return new HydroActions.GetSignaturesSuccessAction(data.signatures);
                             }),
-                            catchError(error => Observable.of(new HydroActions.GetSignaturesFailAction(error)))
+                            catchError(error => observableOf(new HydroActions.GetSignaturesFailAction(error)))
                         );
                 } else {
-                    obs = Observable.of(new HydroActions.GetModelVersionSignaturesAction(payload.id));
+                    obs = observableOf(new HydroActions.GetModelVersionSignaturesAction(payload.id));
                 }
                 return obs;
             })
@@ -46,7 +47,7 @@ export class SignaturesEffects {
                         map(data => {
                             return new HydroActions.GetModelVersionSignaturesSuccessAction(data.signatures);
                         }),
-                        catchError(error => Observable.of(new HydroActions.GetModelVersionSignaturesFailAction(error)))
+                        catchError(error => observableOf(new HydroActions.GetModelVersionSignaturesFailAction(error)))
                     );
             })
         );

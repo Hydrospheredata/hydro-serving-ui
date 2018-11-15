@@ -1,14 +1,12 @@
 import { Injectable } from "@angular/core";
 import { CanActivateChild, Router, ActivatedRouteSnapshot } from "@angular/router";
-import { Observable } from "rxjs/Observable";
+import { Observable ,  forkJoin ,  of } from "rxjs";
 import { Store } from "@ngrx/store";
 import { GetModelBuildsAction } from "@models/actions";
 import * as fromModels from '@models/reducers';
 import { switchMap, filter, take } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
-import { forkJoin } from "rxjs/observable/forkJoin";
 import { Model } from "@shared/_index";
-import { of } from "rxjs/observable/of";
 
 @Injectable()
 export class ModelDetailsGuard implements CanActivateChild {

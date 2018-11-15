@@ -1,7 +1,9 @@
+
+import {map} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable } from 'rxjs';
 
 import { Signature, ModelBuild } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
@@ -9,7 +11,6 @@ import { HydroServingState } from '@core/reducers';
 // import * as Actions from '@core/actions';
 import { GetModelBuildsAction } from '@models/actions';
 import * as fromModels from '@models/reducers';
-import { Observable } from 'rxjs/Observable';
 
 
 @Component({
@@ -26,8 +27,8 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     public build: any;
     public build$: Observable<ModelBuild>;
 
-    private modelId: number;
-    private modelVersionId: number;
+    public modelId: number;
+    public modelVersionId: number;
     private activatedRouteSub: Subscription;
     private modelsBuildsSub: Subscription;
     private modelsStoreSelectionSub: Subscription;
@@ -41,12 +42,12 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.activatedRouteSub = this.activatedRoute.params
-            .map(params => {
+        this.activatedRouteSub = this.activatedRoute.params.pipe(
+            map(params => {
                 this.modelId = Number(params['modelId']);
                 this.modelVersionId = Number(params['modelVersionId']);
                 return this.modelVersionId;
-            })
+            }))
             .subscribe(modelVersionId => {
                 if (this.modelsStoreSelectionSub) {
                     this.modelsStoreSelectionSub.unsubscribe();

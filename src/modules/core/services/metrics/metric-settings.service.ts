@@ -1,4 +1,6 @@
-import { Observable } from 'rxjs/Observable';
+
+import {catchError, map} from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { MetricSettings } from '@shared/models/metric-settings.model';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services';
@@ -15,26 +17,26 @@ export class MetricSettingsService {
 
   public getMetricSettings(stageId: string): Observable<Object[]> {
     console.log(stageId)
-    return this.http.get(this.baseMonitoringSettingsUrl, {params: {stageId}})
-      .map((res: Response): any => {
+    return this.http.get(this.baseMonitoringSettingsUrl, {params: {stageId}}).pipe(
+      map((res: Response): any => {
         return res.json()
-      })
-      .catch(_ => {throw new Error("Can't fetch data from monitoring service")})
+      }),
+      catchError(_ => {throw new Error("Can't fetch data from monitoring service")}),)
   }
 
   public addMetricSettings(metricSettings: MetricSettings): Observable<Object> {
     console.log(metricSettings);
-    return this.http.post(this.baseMonitoringSettingsUrl, metricSettings)
-      .map((res: Response): any => {
+    return this.http.post(this.baseMonitoringSettingsUrl, metricSettings).pipe(
+      map((res: Response): any => {
         return res.json();
-      })
+      }))
   }
 
   public deleteMetricSettings(id: string): Observable<Object> {
     console.log(`calling DELETE method for ${id}`);
-    return this.http.delete(`${this.baseMonitoringSettingsUrl}/${id}`)
-      .map((res: Response): any => {
+    return this.http.delete(`${this.baseMonitoringSettingsUrl}/${id}`).pipe(
+      map((res: Response): any => {
         return res.json();
-      })
+      }))
   }
 }

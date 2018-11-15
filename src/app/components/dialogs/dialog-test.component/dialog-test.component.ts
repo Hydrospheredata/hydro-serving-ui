@@ -1,3 +1,5 @@
+
+import {take} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, InjectionToken, Inject } from '@angular/core';
 import { MdlSnackbarService, MdlDialogReference } from '@angular-mdl/core';
 import 'codemirror/mode/javascript/javascript.js';
@@ -6,7 +8,7 @@ import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
 import { TestStatus, Application } from '@shared/models/_index';
 import { DialogBase } from '@shared/base/_index';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { HydroServingState } from '@core/reducers';
 import { GenerateInputAction, TestApplicationAction, SetInputAction } from '@applications/actions';
@@ -68,7 +70,7 @@ export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy
     }
 
     public onSubmit() {
-        this.application$.take(1).subscribe(
+        this.application$.pipe(take(1)).subscribe(
             application => this.store.dispatch(new TestApplicationAction(application))
         )
     }

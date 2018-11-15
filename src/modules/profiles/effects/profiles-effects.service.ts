@@ -1,10 +1,11 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { Profiles } from '@shared/models/profiles.model';
 import { flatMap, map, catchError } from 'rxjs/operators';
 import * as HydroActions from './../actions/profiles.actions';
 import { ProfilerService } from './../services/profiler.service';
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from "@angular/core";
-import { Observable } from 'rxjs';
 import { Action } from '@ngrx/store';
 
 @Injectable()
@@ -23,7 +24,7 @@ export class ProfilesEffects {
         .getProfiles(params[0], params[1])
         .pipe(
           map(data => new HydroActions.GetProfilesSuccessAction(new Profiles(data))),
-          catchError(error => Observable.of(new HydroActions.GetProfilesFailAction(error)))
+          catchError(error => observableOf(new HydroActions.GetProfilesFailAction(error)))
         )
       )
     )
@@ -36,7 +37,7 @@ export class ProfilesEffects {
         .getFields(modelVersionId)
         .pipe(
           map(data => new HydroActions.GetFieldsSuccessAction(data)),
-          catchError(error => Observable.of(new HydroActions.GetFieldsFailAction(error)))
+          catchError(error => observableOf(new HydroActions.GetFieldsFailAction(error)))
         )
       )
     )

@@ -5,8 +5,7 @@ import { Application, Model } from '@shared/models/_index';
 import * as fromApplications from '@applications/reducers';
 import * as fromModels from '@models/reducers';
 import { DialogAddApplicationComponent, DialogModelsEmptyComponent } from '@components/dialogs/_index';
-import { Subscription } from 'rxjs';
-
+import { Subscription, Observable } from 'rxjs';
 
 
 
@@ -18,7 +17,7 @@ import { Subscription } from 'rxjs';
 
 export class ApplicationsWrapperComponent implements OnDestroy{
     public sidebarTitle = 'Applications';
-    public applications: Store<Application[]>;
+    public applications: Observable<Application[]>;
     private someModelIsFinished: boolean = false;
     private modelsSub: Subscription;
 

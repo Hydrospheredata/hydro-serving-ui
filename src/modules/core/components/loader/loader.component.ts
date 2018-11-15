@@ -1,6 +1,6 @@
 import { Component, OnDestroy, AfterViewChecked } from '@angular/core';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { LoaderStateService } from '@core/services';
 

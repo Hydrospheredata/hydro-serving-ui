@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, CanActivateChild } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import * as fromApplication from '@applications/reducers';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { Application } from '@shared/_index';
-import { of } from 'rxjs/observable/of';
 import { filter, take, switchMap} from 'rxjs/operators'
 
 @Injectable()
@@ -30,7 +29,7 @@ export class ApplicationsGuard implements CanActivateChild{
                         const stageId = Number(routerSnapshot.params.stageId);
                         return this.checkStage(application, stageId);
                     }
-                    return Observable.of(true);
+                    return of(true);
                 } else {
                     this.router.navigate([this.defaultUrl]);
                     this.mdlSnackbarService.showSnackbar({

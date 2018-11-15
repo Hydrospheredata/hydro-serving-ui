@@ -1,9 +1,9 @@
+
+import {of as observableOf,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { Action } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { switchMap, catchError } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
+import { switchMap, catchError ,  map } from 'rxjs/operators';
 
 import * as HydroActions from '@core/actions/monitoring.actions';
 import { MetricSettings } from '@shared/models/metric-settings.model';
@@ -40,7 +40,7 @@ export class MonitoringEffects {
                                 message: `Error: ${error}`,
                                 timeout: 5000
                             })
-                            return Observable.of(new HydroActions.AddMetricFailAction(error))
+                            return observableOf(new HydroActions.AddMetricFailAction(error))
                         })
                     )
             })
@@ -59,7 +59,7 @@ export class MonitoringEffects {
                                 message: `Error: ${error}`,
                                 timeout: 5000
                             });
-                            return Observable.of(new HydroActions.GetMetricsFailAction(error));
+                            return observableOf(new HydroActions.GetMetricsFailAction(error));
                         })
                     )
             })
@@ -78,7 +78,7 @@ export class MonitoringEffects {
                                 message: `Error: ${error}`,
                                 timeout: 5000
                             });
-                            return Observable.of(new HydroActions.GetMetricsFailAction(error));
+                            return observableOf(new HydroActions.GetMetricsFailAction(error));
                         })
                     )
             })

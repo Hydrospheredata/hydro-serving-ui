@@ -1,6 +1,6 @@
 import { Component, OnInit, InjectionToken, Inject, OnDestroy } from '@angular/core';
 import { MdlDialogReference } from '@angular-mdl/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';

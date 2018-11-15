@@ -1,3 +1,5 @@
+
+import {take} from 'rxjs/operators';
 import { Injectable, OnDestroy } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { HydroServingState } from "@core/reducers";
@@ -56,7 +58,7 @@ export class ServiceFormService implements OnDestroy {
     }
 
     public updateModelVersionList(modelId: number) : void {
-        this.store.select(getModelVersionsByModelId(modelId)).take(1).subscribe(
+        this.store.select(getModelVersionsByModelId(modelId)).pipe(take(1)).subscribe(
             modelVersions => {
                 this.modelVersions.next(modelVersions);
             }
