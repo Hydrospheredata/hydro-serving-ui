@@ -1,7 +1,5 @@
-import { Injectable, HostListener } from '@angular/core';
 import { MdlDialogReference } from '@angular-mdl/core';
-
-
+import { Injectable, HostListener } from '@angular/core';
 
 @Injectable()
 export class DialogBase {

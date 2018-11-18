@@ -1,7 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { ApplicationsWrapperComponent, ApplicationsItemDetailComponent, ApplicationsStageDetailComponent } from '@applications/components';
+import {
+    ApplicationsWrapperComponent,
+    ApplicationsItemDetailComponent,
+    ApplicationsStageDetailComponent
+} from '@applications/components';
 import { ApplicationsGuard } from '@applications/services';
 
 @NgModule({
@@ -21,14 +25,14 @@ import { ApplicationsGuard } from '@applications/services';
                             },
                             {
                                 path: ':id/:stageId',
-                                component: ApplicationsStageDetailComponent
-                            }
-                        ]
-                    }
-                ]
-            }
-        ])
+                                component: ApplicationsStageDetailComponent,
+                            },
+                        ],
+                    },
+                ],
+            },
+        ]),
     ],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
 export class ApplicationsRoutingModule { }

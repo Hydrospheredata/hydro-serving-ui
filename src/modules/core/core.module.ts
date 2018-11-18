@@ -1,14 +1,14 @@
-import { MetricSettingsService } from './services/metrics/metric-settings.service';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
+import { RouterModule } from '@angular/router';
+import { MetricSettingsService } from './services/metrics/metric-settings.service';
 
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
-import { CodemirrorModule } from 'ng2-codemirror';
 // import { ClipboardModule } from 'ngx-clipboard';
 import { EffectsModule } from '@ngrx/effects';
+import { CodemirrorModule } from 'ng2-codemirror';
 
 // Components
 import { NavbarComponent, LoaderComponent, PageNotFoundComponent } from './_index';
@@ -50,10 +50,9 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
+import { MetricsService } from '@core/services/metrics/metrics.service';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { SharedModule } from '@shared/shared.module';
-import { MetricsService } from '@core/services/metrics/metrics.service';
-
 
 @NgModule({
     imports: [
@@ -68,14 +67,14 @@ import { MetricsService } from '@core/services/metrics/metrics.service';
             {
                 initialState: {
                     router: {
-                        "state": {
-                            "url": "/",
-                            "params": {},
-                            "queryParams": {}
+                        state: {
+                            url: '/',
+                            params: {},
+                            queryParams: {},
                         },
-                        "navigationId": 0
-                    }
-                }
+                        navigationId: 0,
+                    },
+                },
             }
         ),
         StoreDevtoolsModule.instrument(),
@@ -84,11 +83,11 @@ import { MetricsService } from '@core/services/metrics/metrics.service';
             SignaturesEffects,
             SourcesEffects,
             EnvironmentsEffects,
-            MonitoringEffects
+            MonitoringEffects,
         ]),
         StoreRouterConnectingModule.forRoot({
             stateKey: 'router',
-        })
+        }),
     ],
     exports: [
         NavbarComponent,
@@ -101,7 +100,7 @@ import { MetricsService } from '@core/services/metrics/metrics.service';
     declarations: [
         NavbarComponent,
         LoaderComponent,
-        PageNotFoundComponent
+        PageNotFoundComponent,
     ],
     providers: [
         ModelBuilder,
@@ -120,10 +119,10 @@ import { MetricsService } from '@core/services/metrics/metrics.service';
         {
             provide: HttpService,
             useFactory: httpServiceFactory,
-            deps: [XHRBackend, RequestOptions, LoaderStateService]
+            deps: [XHRBackend, RequestOptions, LoaderStateService],
         },
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
-        SvgSpriteService
-    ]
+        SvgSpriteService,
+    ],
 })
 export class CoreModule { }

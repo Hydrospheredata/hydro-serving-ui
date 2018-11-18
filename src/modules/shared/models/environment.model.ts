@@ -4,9 +4,8 @@ export class Environment {
     public placeholders: any[];
 
     constructor(props: any = {}) {
-        this.id = props['id'];
-        this.name = props['name'];
-        this.placeholders = props['placeholders'];
+        this.id = props.id;
+        this.name = props.name;
+        this.placeholders = props.placeholders;
     }
 }
-

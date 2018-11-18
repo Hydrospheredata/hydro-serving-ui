@@ -2,8 +2,8 @@ import { Action } from '@ngrx/store';
 
 export enum DialogActionTypes {
     OpenDialog = '[Dialog] Open dialog',
-    CloseDialog = '[Dialog] Close dialog'
-};
+    CloseDialog = '[Dialog] Close dialog',
+}
 
 export class OpenDialog implements Action {
     readonly type = DialogActionTypes.OpenDialog;

@@ -1,22 +1,20 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { Model, ModelBuild } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
+import { Model, ModelBuild } from '@shared/models/_index';
 
+import { MdlDialogService } from '@angular-mdl/core';
 import * as fromModels from '@models/reducers';
 import { Observable } from 'rxjs';
-import { MdlDialogService } from '@angular-mdl/core';
 
 import { DialogDeleteModelComponent } from '@components/dialogs/_index';
-
-
 
 @Component({
     selector: 'hydro-model-details',
     templateUrl: './model-details.component.html',
     styleUrls: ['./model-details.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModelDetailsComponent {
     public model$: Observable<Model>;
@@ -25,7 +23,7 @@ export class ModelDetailsComponent {
 
     constructor(
         private store: Store<HydroServingState>,
-        private dialog: MdlDialogService,
+        private dialog: MdlDialogService
     ) {
         this.model$ = this.store.select(fromModels.getSelectedModel);
         this.modelBuilds$ = this.store.select(fromModels.getAllModelBuildsReversed);

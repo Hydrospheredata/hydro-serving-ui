@@ -1,26 +1,24 @@
 
-import {filter} from 'rxjs/operators';
-import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { MdlSnackbarService } from '@angular-mdl/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import {filter} from 'rxjs/operators';
 
-import { Signature, ModelBuild } from '@shared/models/_index';
+import { GetModelVersionSignaturesAction } from '@core/actions';
 import { HydroServingState } from '@core/reducers';
 import { SignaturesService } from '@core/services';
+import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
+import { Signature, ModelBuild } from '@shared/models/_index';
 // import * as Actions from '@core/actions';
 import { Subscription ,  Observable } from 'rxjs';
-import { GetModelVersionSignaturesAction } from '@core/actions';
-import * as fromModels from '@models/reducers';
-
-
 
 @Component({
     selector: 'hydro-signatures',
     templateUrl: './signatures.component.html',
-    styleUrls: ['./signatures.component.scss']
+    styleUrls: ['./signatures.component.scss'],
 })
-export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
+export class SignaturesComponent implements OnInit, OnDestroy {
 
     @Input() modelId: number;
     @Input() isEditable: boolean;
@@ -44,7 +42,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
         this.buildSub = this.build$.pipe(filter(_ => _ != null)).subscribe(build => {
             this.store.dispatch(new GetModelVersionSignaturesAction(build.modelVersion.id));
         });
-        console.log("init signatures");
+        console.log('init signatures');
         this.createForm();
         this.signaturesSub = this.store.select('signatures')
             .subscribe(signatures => {
@@ -53,8 +51,6 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
                 this.updateSignaturesFormValues(this.signatures);
             });
     }
-
-    ngOnChanges() { }
 
     ngOnDestroy() {
         if (this.signaturesSub) {
@@ -84,23 +80,23 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
                 this.toggleSignaturesMode();
                 this.mdlSnackbarService.showSnackbar({
                     message: 'Contract was successfully updated',
-                    timeout: 5000
+                    timeout: 5000,
                 });
-            }, (error) => {
+            }, error => {
                 this.mdlSnackbarService.showSnackbar({
                     message: `Contract update was failed with error: ${error}`,
-                    timeout: 5000
+                    timeout: 5000,
                 });
             });
     }
 
     public addSignatureFields(signatureIndex: number, fieldType: string) {
-        const control = <FormArray>this.signaturesForm.get(['signatures', signatureIndex]).get(fieldType);
+        const control = this.signaturesForm.get(['signatures', signatureIndex]).get(fieldType) as FormArray;
         control.push(this.addSignatureValues());
     }
 
     public removeSignatureFields(signatureIndex: number, fieldIndex: number, fieldType: string) {
-        const control = <FormArray>this.signaturesForm.get(['signatures', signatureIndex]).get(fieldType);
+        const control = this.signaturesForm.get(['signatures', signatureIndex]).get(fieldType) as FormArray;
         control.removeAt(fieldIndex);
     }
 
@@ -122,18 +118,18 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     public addSignatureControl(event?) {
-        const control = <FormArray>this.signaturesForm.get('signatures');
+        const control = this.signaturesForm.get('signatures') as FormArray;
         control.push(this.addSignature(event));
     }
 
     public removeSignatureControl(i: number) {
-        const control = <FormArray>this.signaturesForm.get('signatures');
+        const control = this.signaturesForm.get('signatures') as FormArray;
         control.removeAt(i);
     }
 
     private createForm() {
         this.signaturesForm = this.fb.group({
-            signatures: this.fb.array([])
+            signatures: this.fb.array([]),
         });
     }
 
@@ -149,7 +145,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
         return this.fb.group({
             fieldName: ['', Validators.required],
             dataType: ['', Validators.required],
-            shape: ['']
+            shape: [''],
         });
     }
 
@@ -160,8 +156,8 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
     private updateSignaturesFormValues(signatures: Signature[]) {
         signatures.forEach((signature, i) => {
             this.addSignatureControl();
-            const inputs = <FormArray>this.signaturesForm.get(['signatures', i]).get('inputs');
-            const outputs = <FormArray>this.signaturesForm.get(['signatures', i]).get('outputs');
+            const inputs = this.signaturesForm.get(['signatures', i]).get('inputs') as FormArray;
+            const outputs = this.signaturesForm.get(['signatures', i]).get('outputs') as FormArray;
             signature.inputs.forEach(() => {
                 inputs.push(this.addSignatureValues());
             });
@@ -169,7 +165,7 @@ export class SignaturesComponent implements OnInit, OnDestroy, OnChanges {
                 outputs.push(this.addSignatureValues());
             });
         });
-        this.signaturesForm.patchValue({ signatures: signatures });
+        this.signaturesForm.patchValue({ signatures });
     }
 
 }

@@ -1,25 +1,23 @@
-import { NgModule } from '@angular/core';
-import { ModelsRoutingModule } from './models.router';
-import { SharedModule } from '@shared/shared.module';
-import { CommonModule } from '@angular/common';
-import { MomentModule } from 'angular2-moment';
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { SharedModule } from '@shared/shared.module';
+import { MomentModule } from 'angular2-moment';
+import { ModelsRoutingModule } from './models.router';
 
 import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
     ModelVersionDetailsComponent
 } from '@models/components';
-import { EffectsModule } from '@ngrx/effects';
 import { ModelEffects } from '@models/effects';
-import { ModelsService, ModelDetailsGuard } from '@models/services';
-import { StoreModule } from '@ngrx/store';
 import { reducers } from '@models/reducers';
+import { ModelsService, ModelDetailsGuard } from '@models/services';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { ProfilesModule } from '@profiles/profiles.module';
-
-
 
 @NgModule({
     imports: [
@@ -32,13 +30,13 @@ import { ProfilesModule } from '@profiles/profiles.module';
         FormsModule,
         StoreModule.forFeature('models', reducers),
         EffectsModule.forFeature([ModelEffects]),
-        ProfilesModule
+        ProfilesModule,
     ],
     declarations: [
         ModelsWrapperComponent,
         ModelDetailsComponent,
-        ModelVersionDetailsComponent
+        ModelVersionDetailsComponent,
     ],
-    providers: [ModelsService, ModelDetailsGuard]
+    providers: [ModelsService, ModelDetailsGuard],
 })
 export class ModelsModule { }

@@ -1,8 +1,8 @@
 
-import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services';
 import { environment } from '@environments/environment';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class MetricsService {
@@ -13,19 +13,23 @@ export class MetricsService {
     this.baseMetricsUrl = `${environment.monitoringUrl}`;
   }
 
-  public getMetrics(application: number, stage: string, interval: number, metrics: Array<string>, columnIndex) {
-    return this.http.get(`${this.baseMetricsUrl}/metrics`, {params: {application, stage, interval, metrics, columnIndex}}, false).pipe(
-      map((res: Response): any => {
-        return res.json()
-      }))
-      .toPromise()
+  public getMetrics(application: number, stage: string, interval: number, metrics: string[], columnIndex) {
+    return this.http.get(
+        `${this.baseMetricsUrl}/metrics`,
+        {params: {application, stage, interval, metrics, columnIndex}}, false
+      ).pipe(
+        map((res: Response): any => {
+          return res.json();
+        })
+      )
+      .toPromise();
   }
 
   public getHealth() {
     return this.http.get(`${this.baseMetricsUrl}/health`, null, false).pipe(
       map((res: Response): any => {
-        return res.json()
+        return res.json();
       }))
-      .toPromise()
+      .toPromise();
   }
 }

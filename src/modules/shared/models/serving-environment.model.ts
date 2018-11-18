@@ -3,9 +3,9 @@ export class ServingEnvironment {
   public name: string;
   public placeholders: any[];
 
-  constructor(props: object = {}) {
-    this.id = props['id'] || '';
-    this.name = props['name'] || '';
-    this.placeholders = props['placehoders'] || [];
+  constructor(props: any = {}) {
+    this.id = props.id || '';
+    this.name = props.name || '';
+    this.placeholders = props.placehoders || [];
   }
 }

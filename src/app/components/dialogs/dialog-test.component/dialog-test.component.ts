@@ -1,26 +1,32 @@
+import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
 
-import {take} from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, InjectionToken, Inject } from '@angular/core';
-import { MdlSnackbarService, MdlDialogReference } from '@angular-mdl/core';
-import 'codemirror/mode/javascript/javascript.js';
-import 'codemirror/addon/edit/matchbrackets.js';
-import 'codemirror/addon/edit/closebrackets.js';
-import 'codemirror/addon/display/placeholder.js';
-import { TestStatus, Application } from '@shared/models/_index';
-import { DialogBase } from '@shared/base/_index';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
+import {
+    GenerateInputAction,
+    TestApplicationAction,
+    SetInputAction
+} from '@applications/actions';
 import { HydroServingState } from '@core/reducers';
-import { GenerateInputAction, TestApplicationAction, SetInputAction } from '@applications/actions';
+import { Store } from '@ngrx/store';
 
-export const SELECTED_APPLICATION$ = new InjectionToken<Observable<Application>>('selectedApplication')
+import { MdlSnackbarService, MdlDialogReference } from '@angular-mdl/core';
+import { DialogBase } from '@shared/base/_index';
+import { TestStatus, Application } from '@shared/models/_index';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+
+import 'codemirror/addon/display/placeholder.js';
+import 'codemirror/addon/edit/closebrackets.js';
+import 'codemirror/addon/edit/matchbrackets.js';
+import 'codemirror/mode/javascript/javascript.js';
+
+export const SELECTED_APPLICATION$ = new InjectionToken<Observable<Application>>('selectedApplication');
 @Component({
     selector: 'hydro-dialog-test-model',
     templateUrl: './dialog-test.component.html',
     styleUrls: ['./dialog-test.component.scss'],
-    providers: [MdlSnackbarService]
+    providers: [MdlSnackbarService],
 })
-export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy {
+export class DialogTestComponent extends DialogBase implements OnInit {
     public input: any = '';
     public inputOptions: {};
     public output: any = '';
@@ -38,11 +44,11 @@ export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy
         );
     }
 
-    public close(){
+    public close(): void {
         this.dialogRef.hide();
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.inputOptions = {
             matchBrackets: true,
             autoCloseBrackets: true,
@@ -50,9 +56,7 @@ export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy
             lineWrapping: true,
             readOnly: false,
             scrollbarStyle: 'null',
-            onChange: (val) => {
-                console.log(val);
-            }
+            onChange: val => { console.log(val); },
         };
         this.outputOptions = {
             matchBrackets: true,
@@ -60,19 +64,16 @@ export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy
             mode: { name: 'javascript', json: true },
             lineWrapping: true,
             readOnly: true,
-            scrollbarStyle: 'null'
+            scrollbarStyle: 'null',
         };
 
         this.generateInput();
     }
 
-    ngOnDestroy(){
-    }
-
-    public onSubmit() {
+    public onSubmit(): void {
         this.application$.pipe(take(1)).subscribe(
             application => this.store.dispatch(new TestApplicationAction(application))
-        )
+        );
     }
 
     public onChange(input) {
@@ -85,16 +86,16 @@ export class DialogTestComponent extends DialogBase implements OnInit, OnDestroy
         return status === TestStatus.Failed;
     }
 
-    public isValidInput(input){
+    public isValidInput(input): boolean {
         try {
             JSON.parse(input);
             return true;
-        } catch(e) {
+        } catch (e) {
             return false;
         }
     }
 
     private generateInput() {
-        this.store.dispatch(new GenerateInputAction);
+        this.store.dispatch(new GenerateInputAction());
     }
 }

@@ -6,8 +6,8 @@ export enum FormActionTypes {
     AddStage = '[Form] Add stage to form',
     RemoveStage = '[Form] Remove stage from form',
     AddModelVersion = '[Form] Add model version to stage',
-    RemoveModelVersion = '[Form] Remove model version from stage'
-};
+    RemoveModelVersion = '[Form] Remove model version from stage',
+}
 
 export class CreateForm implements Action {
     readonly type = FormActionTypes.CreateForm;

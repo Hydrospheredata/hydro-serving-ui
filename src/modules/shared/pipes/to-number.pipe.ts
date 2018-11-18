@@ -1,10 +1,10 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'toNumber'
+    name: 'toNumber',
 })
 export class ToNumberPipe implements PipeTransform {
-    transform(string: string) {
-        return Number(string);
+    transform(str: string) {
+        return Number(str);
     }
 }

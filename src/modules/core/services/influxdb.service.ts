@@ -1,10 +1,10 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 import { InfluxDB } from 'influx';
 import { parse } from 'influx/lib/src/results';
-import { environment } from '@environments/environment';
 
 @Injectable()
-export class InfluxDBService implements OnInit {
+export class InfluxDBService {
 
     private client: InfluxDB;
 
@@ -14,13 +14,11 @@ export class InfluxDBService implements OnInit {
         }
     }
 
-    ngOnInit() { }
-
     public connect() {
         this.client = new InfluxDB({
             host: environment.production ? `${window.location.hostname}` : 'localhost',
             port: 8086, // Number(environment.production ? `${window.location.port}` : `${environment.port}`),
-            database: 'appmetrics'
+            database: 'appmetrics',
         });
     }
 
@@ -42,7 +40,7 @@ export class InfluxDBService implements OnInit {
 
     public getSeries() {
         return this.client.getSeries({
-            measurement: 'envoy_cluster_name'
+            measurement: 'envoy_cluster_name',
         });
     }
 
@@ -50,5 +48,3 @@ export class InfluxDBService implements OnInit {
         return parse(response);
     }
 }
-
-

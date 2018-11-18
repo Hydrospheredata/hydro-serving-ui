@@ -8,7 +8,7 @@ describe('InputTextComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [InputTextComponent]
+            declarations: [InputTextComponent],
         })
             .compileComponents();
     }));

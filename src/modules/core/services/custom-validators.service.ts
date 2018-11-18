@@ -1,59 +1,26 @@
-import { 
-    ValidatorFn, 
-    FormArray, 
-    ValidationErrors, 
+import { Injectable } from '@angular/core';
+import {
+    ValidatorFn,
+    FormArray,
+    ValidationErrors,
     FormControl
-} from "@angular/forms";
-import { Injectable } from "@angular/core";
-import { Store } from "@ngrx/store";
-import { HydroServingState } from "@core/reducers";
-import { getAllApplications } from "@applications/reducers";
+} from '@angular/forms';
+import { Store } from '@ngrx/store';
 
+import { getAllApplications } from '@applications/reducers';
+import { HydroServingState } from '@core/reducers';
 
 @Injectable()
 export class CustomValidatorsService {
+
+    get VALIDATION_PATTERNS() {
+        return this._VALIDATION_PATTERNS;
+    }
+
+    get MESSAGES() {
+        return this._MESSAGES;
+    }
     public applicationNames: string[];
-
-    public weightValidation(): ValidatorFn {
-        return (control: FormArray) : ValidationErrors => {
-            const sum = control.controls.reduce((a, c) => a + Number(c.get('weight').value), 0)
-            if(sum !== 100) {
-                return { 'weight': 'Sum of weights must be equal 100'}
-            }
-        }
-    }
-
-    public uniqNameValidation(initialApplicationName): ValidatorFn {
-        return (control: FormControl) : ValidationErrors => {
-            const currentApplicationName = control.value;
-
-            if(currentApplicationName === initialApplicationName) { return null}
-
-            if(this.applicationNames.includes(control.value)) {
-                return { 'uniq': 'Application name must be uniq'}
-            }
-        }
-    }
-
-    public pattern(pattern): ValidatorFn {
-        return (control: FormControl) => {
-            if(!pattern.test(control.value)){
-                return {
-                    pattern : 'It is not correct format.'
-                }
-            };
-        }
-    }
-
-    public required(): ValidatorFn {
-        return (control: FormControl) => {
-            if(control.value === null || control.value === ''){
-                return {
-                    'required': 'Field is required'
-                }
-            }
-        }
-    }
 
     private _VALIDATION_PATTERNS = {
         text: /[a-zA-Z]+/,
@@ -67,41 +34,74 @@ export class CustomValidatorsService {
             forms: {
                 service: {
                     serviceName: {
-                        'pattern': 'It is not correct format.',
-                        'maxLength': 'Service name\' max length is 30.',
-                        'required': 'Service name is required.'
+                        pattern: 'It is not correct format.',
+                        maxLength: 'Service name\' max length is 30.',
+                        required: 'Service name is required.',
                     },
                     serviceId: {
-                        'pattern': 'Service id must be a number.',
-                        'required': 'Service id is required.'
+                        pattern: 'Service id must be a number.',
+                        required: 'Service id is required.',
                     },
                     weight: {
-                        'pattern': 'Weight must be a number.',
-                        'required': 'Weight is required.'
+                        pattern: 'Weight must be a number.',
+                        required: 'Weight is required.',
                     },
                     weights: {
-                        'overflow': 'Error. Sum of weights should be 100%.'
-                    }
-                }
-            }
-        }
+                        overflow: 'Error. Sum of weights should be 100%.',
+                    },
+                },
+            },
+        },
     };
 
     constructor(
         private store: Store<HydroServingState>
-    ) { 
+    ) {
         this.store.select(getAllApplications)
-            .subscribe(applications => { 
+            .subscribe(applications => {
                 this.applicationNames = applications.map(app => app.name);
             }
         );
     }
 
-    get VALIDATION_PATTERNS() {
-        return this._VALIDATION_PATTERNS;
+    public weightValidation(): ValidatorFn {
+        return (control: FormArray): ValidationErrors => {
+            const sum = control.controls.reduce((a, c) => a + Number(c.get('weight').value), 0);
+            if (sum !== 100) {
+                return { weight: 'Sum of weights must be equal 100'};
+            }
+        };
     }
 
-    get MESSAGES() {
-        return this._MESSAGES;
+    public uniqNameValidation(initialApplicationName): ValidatorFn {
+        return (control: FormControl): ValidationErrors => {
+            const currentApplicationName = control.value;
+
+            if (currentApplicationName === initialApplicationName) { return null; }
+
+            if (this.applicationNames.includes(control.value)) {
+                return { uniq: 'Application name must be uniq'};
+            }
+        };
+    }
+
+    public pattern(pattern): ValidatorFn {
+        return (control: FormControl) => {
+            if (!pattern.test(control.value)) {
+                return {
+                    pattern : 'It is not correct format.',
+                };
+            }
+        };
+    }
+
+    public required(): ValidatorFn {
+        return (control: FormControl) => {
+            if (control.value === null || control.value === '') {
+                return {
+                    required: 'Field is required',
+                };
+            }
+        };
     }
 }

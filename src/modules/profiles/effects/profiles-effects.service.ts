@@ -1,20 +1,15 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { Profiles } from '@shared/models/profiles.model';
+import {of as observableOf,  Observable } from 'rxjs';
 import { flatMap, map, catchError } from 'rxjs/operators';
 import * as HydroActions from './../actions/profiles.actions';
 import { ProfilerService } from './../services/profiler.service';
-import { Actions, Effect } from '@ngrx/effects';
-import { Injectable } from "@angular/core";
-import { Action } from '@ngrx/store';
 
 @Injectable()
 export class ProfilesEffects {
-
-  constructor(
-    private profilerService: ProfilerService,
-    private actions$: Actions
-  ) {}
 
   @Effect() loadProfiles$: Observable<Action> = this.actions$
     .ofType(HydroActions.ProfilesActionTypes.GetProfiles)
@@ -27,7 +22,7 @@ export class ProfilesEffects {
           catchError(error => observableOf(new HydroActions.GetProfilesFailAction(error)))
         )
       )
-    )
+    );
 
   @Effect() loadFields$: Observable<Action> = this.actions$
     .ofType(HydroActions.ProfilesActionTypes.GetFields)
@@ -40,5 +35,10 @@ export class ProfilesEffects {
           catchError(error => observableOf(new HydroActions.GetFieldsFailAction(error)))
         )
       )
-    )
+    );
+
+  constructor(
+    private profilerService: ProfilerService,
+    private actions$: Actions
+  ) {}
 }

@@ -1,10 +1,7 @@
 
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 
-import {catchError, finalize, tap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment';
-import 'rxjs/Rx';
 import {
     Http,
     RequestOptionsArgs,
@@ -12,10 +9,11 @@ import {
     Headers,
     XHRBackend
 } from '@angular/http';
-import { HydroRequestOptions } from './hydro-request-options';
+import { environment } from '@environments/environment';
+import 'rxjs/Rx';
+import {catchError, finalize, tap} from 'rxjs/operators';
 import { LoaderStateService } from '../loader-state.service';
-
-
+import { HydroRequestOptions } from './hydro-request-options';
 
 @Injectable()
 export class HttpService extends Http {
@@ -31,20 +29,20 @@ export class HttpService extends Http {
             backend,
             defaultOptions
         );
-        
-        if(environment.production){
+
+        if (environment.production) {
             const { protocol, hostname, port } = window.location;
 
-            this.baseUrl = `${protocol}//${hostname}:${port}`
+            this.baseUrl = `${protocol}//${hostname}:${port}`;
         } else {
-            this.baseUrl = `${environment.host}:${environment.port}`
+            this.baseUrl = `${environment.host}:${environment.port}`;
         }
 
         this.requestCount = 0;
     }
 
     get(url: string, options?: RequestOptionsArgs, showLoader: boolean = true): Observable<any> {
-        
+
         if (showLoader) {
             this.showLoader();
         }
@@ -58,7 +56,7 @@ export class HttpService extends Http {
             }),
             finalize(() => {
                 this.onEnd();
-            }),);
+            }), );
     }
 
     post(url: string, body, options?: RequestOptionsArgs): Observable<any> {
@@ -74,7 +72,7 @@ export class HttpService extends Http {
             }),
             finalize(() => {
                 this.onEnd();
-            }),);
+            }), );
     }
 
     put(url: string, body, options?: RequestOptionsArgs): Observable<any> {
@@ -90,7 +88,7 @@ export class HttpService extends Http {
             }),
             finalize(() => {
                 this.onEnd();
-            }),);
+            }), );
     }
 
     delete(url: string, options?: RequestOptionsArgs): Observable<any> {
@@ -106,7 +104,7 @@ export class HttpService extends Http {
             }),
             finalize(() => {
                 this.onEnd();
-            }),);
+            }), );
     }
 
     private requestOptions(options?: RequestOptionsArgs): RequestOptionsArgs {
@@ -123,7 +121,7 @@ export class HttpService extends Http {
     }
 
     private getFullUrl(url: string): string {
-        if (url.startsWith("http")) {
+        if (url.startsWith('http')) {
             return url;
         }
         return this.baseUrl + url;
@@ -148,6 +146,7 @@ export class HttpService extends Http {
     }
 
     private onSuccess() {
+        console.log('success');
     }
 
     private onError(res: Response) {

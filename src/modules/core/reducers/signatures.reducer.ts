@@ -1,7 +1,5 @@
-import { Signature } from '@shared/models/_index';
 import { SignaturesActionTypes, SignaturesActions } from '@core/actions';
-
-
+import { Signature } from '@shared/models/_index';
 
 const initialState: Signature[] = [];
 

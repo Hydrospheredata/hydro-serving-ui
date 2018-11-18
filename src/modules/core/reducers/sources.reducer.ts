@@ -1,7 +1,5 @@
-import { Source } from '@shared/models/_index';
 import * as Actions from '@core/actions';
-
-
+import { Source } from '@shared/models/_index';
 
 const initialState: Source[] = [];
 

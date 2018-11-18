@@ -1,8 +1,8 @@
 // import { FormActionTypes, FormActions } from "@form/actions";
-import { EntityState, EntityAdapter, createEntityAdapter } from "@ngrx/entity";
-import { Form } from "@shared/models/form.model";
+import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { Form } from '@shared/models/form.model';
 
-export interface State extends EntityState<Form> { };
+export interface State extends EntityState<Form> { }
 
 export const adapter: EntityAdapter<Form> = createEntityAdapter<Form>();
 

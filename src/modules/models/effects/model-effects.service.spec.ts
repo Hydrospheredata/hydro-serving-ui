@@ -13,7 +13,7 @@ import { ModelEffects } from './model-effects.service';
 describe('ModelEffectsService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [ModelEffects]
+            providers: [ModelEffects],
         });
     });
 

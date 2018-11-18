@@ -1,14 +1,12 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import * as HydroActions from '@core/actions';
+import { SignaturesService } from '@core/services';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { SignaturesService } from '@core/services';
-import * as HydroActions from '@core/actions';
+import {of as observableOf,  Observable } from 'rxjs';
 import { map, switchMap, catchError, take } from 'rxjs/operators';
 // import { Model } from '@shared/models/_index';
-
-
 
 @Injectable()
 export class SignaturesEffects {
@@ -34,7 +32,7 @@ export class SignaturesEffects {
                 return obs;
             })
         );
-    
+
     @Effect() getModelVersionSignatures$: Observable<Action> = this.actions$
         .ofType(HydroActions.SignaturesActionTypes.GetModelVersionSignatures)
         .pipe(
@@ -51,7 +49,7 @@ export class SignaturesEffects {
                     );
             })
         );
-    
+
     constructor(
         private signaturesService: SignaturesService,
         private actions$: Actions

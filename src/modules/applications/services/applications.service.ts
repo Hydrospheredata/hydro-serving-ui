@@ -1,14 +1,12 @@
 
-import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 
-import { environment } from '@environments/environment';
 import { HttpService } from '@core/services/http/_index';
+import { environment } from '@environments/environment';
 import { Application } from '@shared/models/_index';
 
-
-
+import { Observable } from 'rxjs';
+import {map} from 'rxjs/operators';
 @Injectable()
 export class ApplicationsService {
 

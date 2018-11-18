@@ -1,1 +1,1 @@
-export * from './metric-settings.service'
+export * from './metric-settings.service';

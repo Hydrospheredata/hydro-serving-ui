@@ -1,16 +1,18 @@
-import { DataStatsComponent } from './components/data-stats/data-stats.component';
-import { DataComparisonHistogramComponent } from './components/data-comparison-histogram/data-comparison-histogram.component';
-import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
-import { DataProfilesComponent } from './components/data-profiles/data-profiles.component';
-import { ProfilesEffects } from '@profiles/effects';
-import { EffectsModule } from '@ngrx/effects';
-import { ProfilerService } from '@profiles/services';
-import { NgModule } from "@angular/core";
-import { SharedModule } from "@shared/shared.module";
-import { StoreModule } from '@ngrx/store';
-import { reducers } from '@profiles/reducers';
 import { MdlSelectModule } from '@angular-mdl/select';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { ProfilesEffects } from '@profiles/effects';
+import { reducers } from '@profiles/reducers';
+import { ProfilerService } from '@profiles/services';
+import { SharedModule } from '@shared/shared.module';
+import {
+  DataComparisonHistogramComponent
+} from './components/data-comparison-histogram/data-comparison-histogram.component';
+import { DataProfilesComponent } from './components/data-profiles/data-profiles.component';
+import { DataStatsComponent } from './components/data-stats/data-stats.component';
 
 @NgModule({
   imports: [
@@ -23,6 +25,6 @@ import { MdlSelectModule } from '@angular-mdl/select';
   ],
   declarations: [DataProfilesComponent, DataStatsComponent, DataComparisonHistogramComponent],
   providers: [ProfilerService],
-  exports: [DataProfilesComponent, DataStatsComponent, DataComparisonHistogramComponent]
+  exports: [DataProfilesComponent, DataStatsComponent, DataComparisonHistogramComponent],
 })
 export class ProfilesModule {}

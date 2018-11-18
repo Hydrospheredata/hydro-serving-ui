@@ -1,5 +1,5 @@
-import { Profiles } from '@shared/models/profiles.model';
 import { Action } from '@ngrx/store';
+import { Profiles } from '@shared/models/profiles.model';
 
 export enum ProfilesActionTypes {
   GetProfiles = '[Profiles] Get profiles',
@@ -8,7 +8,7 @@ export enum ProfilesActionTypes {
   CleanProfiles = '[Profiles] Clean profiles state',
   GetFields = '[Profiles] Get fields',
   GetFieldsSuccess = '[Profiles] Get fields with success',
-  GetFieldsFail = '[Profiles] Get fields with fail'
+  GetFieldsFail = '[Profiles] Get fields with fail',
 }
 
 export class GetProfilesAction implements Action {
@@ -37,7 +37,7 @@ export class GetFieldsAction implements Action {
 
 export class GetFieldsSuccessAction implements Action {
   readonly type = ProfilesActionTypes.GetFieldsSuccess;
-  constructor(public payload: Array<string>) {}
+  constructor(public payload: string[]) {}
 }
 
 export class GetFieldsFailAction implements Action {
@@ -52,4 +52,4 @@ export type ProfilesActions
     CleanProfilesAction |
     GetFieldsAction |
     GetFieldsSuccessAction |
-    GetFieldsFailAction
+    GetFieldsFailAction;

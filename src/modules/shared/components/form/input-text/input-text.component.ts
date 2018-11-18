@@ -1,3 +1,4 @@
+// tslint:disable:variable-name
 import { Component, Input, forwardRef, Output, EventEmitter } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
 
@@ -8,17 +9,25 @@ const noop = (_?: any) => {};
     templateUrl: './input-text.component.html',
     styleUrls: ['./input-text.component.scss'],
     providers: [
-    {
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => InputTextComponent),
-    multi: true
-    }
-    ]
-    })
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => InputTextComponent),
+            multi: true,
+        },
+    ],
+})
 export class InputTextComponent implements ControlValueAccessor {
-  protected _value: any;
-  protected onChange: (_: any) => void = noop;
-  protected onTouched: () => void = noop;
+
+  get value(): any {
+      return this._value;
+  }
+
+  set value(value: any) {
+      if (value !== this._value) {
+          this._value = value;
+          this.onChange(value);
+      }
+  }
 
   @Input() public inputClass: string = '';
   @Input() public label: string;
@@ -39,22 +48,12 @@ export class InputTextComponent implements ControlValueAccessor {
   /** left of right */
   @Input() public iconDirection: string;
   @Output() onIconClick = new EventEmitter<NgModel>();
-
-  constructor() {}
+  protected _value: any;
+  protected onChange: (_: any) => void = noop;
+  protected onTouched: () => void = noop;
 
   public iconClick(model: NgModel) {
       this.onIconClick.emit(model);
-  }
-
-  get value(): any {
-      return this._value;
-  }
-
-  set value(value: any) {
-      if (value !== this._value) {
-          this._value = value;
-          this.onChange(value);
-      }
   }
 
   public writeValue(value: any) {

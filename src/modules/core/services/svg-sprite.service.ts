@@ -1,17 +1,17 @@
-import { Injectable } from "@angular/core";
-import { HttpService } from "@core/services/http/_index";
+import { Injectable } from '@angular/core';
+import { HttpService } from '@core/services/http/_index';
 
 @Injectable()
 export class SvgSpriteService {
   constructor(
-    private http: HttpService,
+    private http: HttpService
   ) {
   }
 
-  public loadSvgSprite(){
+  public loadSvgSprite() {
       if (!document.createElementNS || !document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect) {
-          return true
-      };
+          return true;
+      }
       const fileUrl = 'assets/images/sprites/hydro-sprite.svg';
       const { protocol, port, hostname } = window.location;
 
@@ -21,5 +21,5 @@ export class SvgSpriteService {
 
             document.body ? insert() : document.addEventListener('DOMContentLoaded', insert);
           });
-    };
+    }
 }

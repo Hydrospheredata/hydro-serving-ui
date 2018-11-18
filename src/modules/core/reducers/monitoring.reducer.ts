@@ -1,28 +1,15 @@
-import { EntityState, createEntityAdapter, EntityAdapter } from "@ngrx/entity";
-import { MonitoringActions, MonitoringActionTypes } from "@core/actions/monitoring.actions";
-import { MetricSettings } from "@shared/models/metric-settings.model";
-// import { State } from "@ngrx/store";
-// import { getRouterState } from '@core/reducers';
-// import { createFeatureSelector, createSelector } from "@ngrx/store";
+import { MonitoringActions, MonitoringActionTypes } from '@core/actions/monitoring.actions';
+import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
+import { MetricSettings } from '@shared/models/metric-settings.model';
 
-// export interface State {
-
-// };
-
-// const initialErrorState: State = {
-
-// };
-
-export interface MState extends EntityState<MetricSettings> { };
-// export interface ErrorState extends State<Error> { };
+export interface MState extends EntityState<MetricSettings> { }
 
 export const adapter: EntityAdapter<MetricSettings> = createEntityAdapter<MetricSettings>({
     selectId: (metricSettings: MetricSettings) => metricSettings.id,
-    sortComparer: (a, b) => ~~b.timestamp - ~~a.timestamp
+    sortComparer: (a, b) => ~~b.timestamp - ~~a.timestamp,
 });
 
 export const initialState: MState = adapter.getInitialState();
-
 
 export function reducer(state = initialState, action: MonitoringActions) {
     switch (action.type) {
@@ -43,16 +30,3 @@ export function reducer(state = initialState, action: MonitoringActions) {
         }
     }
 }
-
-// export interface MetricsState {
-//     metrics: MState;
-// }
-
-// export interface State extends fromRoot.HydroServingState {
-//     metrics: MetricsState
-// }
-
-// export const reducers: ActionReducerMap<MetricsState> = {
-//     metrics: reducer
-// }
-

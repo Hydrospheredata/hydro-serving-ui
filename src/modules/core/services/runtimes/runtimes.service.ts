@@ -1,10 +1,8 @@
 
-import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment';
 import { HttpService } from '@core/services/http/_index';
-
-
+import { environment } from '@environments/environment';
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class RuntimesService {
@@ -30,9 +28,4 @@ export class RuntimesService {
                 return res.json();
             }));
     }
-
-    // public getModelType(modelType: Model) {
-    //     return this.http.post(this.baseAPIUrl, model);
-    // }
-
 }

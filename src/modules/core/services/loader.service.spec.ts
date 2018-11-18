@@ -5,7 +5,7 @@ import { LoaderStateService } from './loader-state.service';
 describe('LoaderStateService', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [LoaderStateService]
+            providers: [LoaderStateService],
         });
     });
 

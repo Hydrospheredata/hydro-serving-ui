@@ -11,5 +11,4 @@ export const environment = {
     uiUrl: '/ui/v1',
     monitoringUrl: '/monitoring',
     profilerUrl: '/profiler',
-    
 };

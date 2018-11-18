@@ -8,7 +8,7 @@ describe('DialogUpdateApplicationComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [DialogUpdateApplicationComponent]
+            declarations: [DialogUpdateApplicationComponent],
         })
             .compileComponents();
     }));

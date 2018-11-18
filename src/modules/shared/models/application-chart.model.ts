@@ -21,7 +21,7 @@ export interface IMetricDataRow {
 
 export interface IMetricData {
     name: string;
-    rows: IMetricDataRow[]
+    rows: IMetricDataRow[];
 }
 
 export interface IChartData {

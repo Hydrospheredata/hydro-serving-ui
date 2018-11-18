@@ -1,3 +1,4 @@
+// tslint:disable:variable-name
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
 
@@ -11,25 +12,11 @@ const noop = (_?: any) => {};
     {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => TextareaComponent),
-    multi: true
-    }
-    ]
+    multi: true,
+    },
+    ],
     })
 export class TextareaComponent implements ControlValueAccessor {
-    protected _value: any;
-    protected onChange: (_: any) => void = noop;
-    protected onTouched: () => void = noop;
-
-    @Input() public label: string;
-    @Input() public name: string;
-    @Input() public formErrors: string;
-    @Input() public disabled: string;
-    @Input() public readonly: string;
-
-    @Input() public placeholder: string;
-    @Input() public errors: any;
-
-    constructor() {}
 
     get value(): any {
         return this._value;
@@ -41,6 +28,18 @@ export class TextareaComponent implements ControlValueAccessor {
             this.onChange(value);
         }
     }
+
+    @Input() public label: string;
+    @Input() public name: string;
+    @Input() public formErrors: string;
+    @Input() public disabled: string;
+    @Input() public readonly: string;
+
+    @Input() public placeholder: string;
+    @Input() public errors: any;
+    protected _value: any;
+    protected onChange: (_: any) => void = noop;
+    protected onTouched: () => void = noop;
 
     public writeValue(value: any) {
         if (value !== this._value) {

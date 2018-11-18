@@ -12,7 +12,7 @@ export enum MonitoringActionTypes {
     DeleteMetric = '[Metrics] Delete metric',
     DeleteMetricSuccess = '[Metrics] Delete metric with success',
     DeleteMetricFail = '[Metrics] Delete metric with fail',
-};
+}
 
 export class AddMetricAction implements Action {
     readonly type = MonitoringActionTypes.AddMetric;
@@ -59,7 +59,6 @@ export class DeleteMetricFailAction implements Action {
     constructor(public error) {}
 }
 
-
 export type MonitoringActions
     = GetMetricsAction
     | GetMetricsSuccessAction
@@ -69,4 +68,4 @@ export type MonitoringActions
     | AddMetricFailAction
     | DeleteMetricAction
     | DeleteMetricSuccessAction
-    | DeleteMetricFailAction
+    | DeleteMetricFailAction;

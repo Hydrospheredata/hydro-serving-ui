@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'angular2-moment';
 
@@ -40,7 +40,7 @@ import {
     KolmogorovSmirnovChartComponent
 } from './components/_index';
 
-//Directives
+// Directives
 import {
     ModelStatusDirective,
     CopyToBufferDirective
@@ -86,7 +86,7 @@ import {
         KolmogorovSmirnovChartComponent,
         // Directives
         ModelStatusDirective,
-        CopyToBufferDirective
+        CopyToBufferDirective,
     ],
     exports: [
         // Pipes
@@ -113,9 +113,9 @@ import {
         CommandTemplateComponent,
         BaseMetricChartComponent,
         KolmogorovSmirnovChartComponent,
-        //Directives
+        // Directives
         ModelStatusDirective,
-        CopyToBufferDirective
-    ]
+        CopyToBufferDirective,
+    ],
 })
 export class SharedModule { }

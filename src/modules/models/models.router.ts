@@ -8,14 +8,13 @@ import {
 } from '@models/components';
 import { ModelDetailsGuard } from '@models/services';
 
-
 @NgModule({
     imports: [
         RouterModule.forChild([
             {
                 path: '',
                 redirectTo: 'models',
-                pathMatch: 'full'
+                pathMatch: 'full',
             },
             {
                 path: 'models',
@@ -24,16 +23,16 @@ import { ModelDetailsGuard } from '@models/services';
                 children: [
                     {
                         path: ':modelId',
-                        component: ModelDetailsComponent
+                        component: ModelDetailsComponent,
                     },
                     {
                         path: ':modelId/:modelVersionId',
-                        component: ModelVersionDetailsComponent
-                    }
-                ]
-            }
-        ])
+                        component: ModelVersionDetailsComponent,
+                    },
+                ],
+            },
+        ]),
     ],
-    exports: [RouterModule]
+    exports: [RouterModule],
 })
 export class ModelsRoutingModule { }

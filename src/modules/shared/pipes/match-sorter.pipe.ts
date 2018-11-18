@@ -5,11 +5,11 @@ import matchSorter from 'match-sorter';
     name: 'matchSorter',
 })
 export class MatchSorterPipe implements PipeTransform {
-    transform(input: any[] = [], options: Object|string, value: string): any {
+    transform(input: any[] = [], options: object|string, value: string): any {
         return matchSorter(
             input,
             value,
-            typeof options === 'string' ? { keys: [options] } : options,
+            typeof options === 'string' ? { keys: [options] } : options
         );
     }
 }
