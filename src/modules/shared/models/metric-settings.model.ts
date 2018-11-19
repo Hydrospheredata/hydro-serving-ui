@@ -3,7 +3,10 @@ import { MetricSpecification } from './metric-specification.model';
 export class MetricSettings {
   public id: string;
   public name: string;
-  public filter: Map<string, string>;
+  public filter: {
+    sourceName: string;
+    stageId: string;
+  };
   public metricProviderSpecification: MetricSpecification;
   public timestamp?: number;
 

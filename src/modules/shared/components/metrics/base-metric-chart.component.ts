@@ -107,7 +107,13 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     protected getRequestPromise(): Promise<any> {
-        return this.metricsService.getMetrics(this.applicationId, this.stageId, this.chartTimeWidth, this.metrics, '');
+        return this.metricsService.getMetrics(
+            this.applicationId.toString(),
+            this.stageId,
+            this.chartTimeWidth.toString(),
+            this.metrics,
+            ''
+        );
     }
 
     private initThreshold(metricProvider): void {
@@ -264,6 +270,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             return this.stage.services.reduce((modelNames, service) => {
                 if (service.modelVersion.id === ~~modelId) {
                     return modelNames.push(service.modelVersion.modelName);
+                } else {
+                    return modelNames;
                 }
             }, [])[0];
         };

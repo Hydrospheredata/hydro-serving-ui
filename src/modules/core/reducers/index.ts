@@ -11,7 +11,7 @@ import {
     Runtime,
     Signature,
     Source,
-    Environment,
+    Environment
 } from '@shared/models/_index';
 
 import { Params, RouterStateSnapshot } from '@angular/router';
@@ -83,15 +83,22 @@ export const {
 export const getSelectedMetrics = createSelector(
     getMetricsEntities,
     getRouterState,
-    (entities, router): MetricSettings[] =>
-        router.state
-            ? Object.keys(entities)
+    (metrics, router): MetricSettings[] => {
+        return router.state
+            ? Object.keys(metrics)
                     .reverse()
-                    .map(_ => entities[_])
-                    .filter(_ =>
-                        Object.keys(_.filter).length === 0
-                        ||
-                        _.filter.get('stageId') === `app${router.state.params.id}stage${router.state.params.stageId}`
-                    )
-            : []
+                    .map(metricId => metrics[metricId])
+                    .filter(metric => metricWithoutFiltres(metric) || checkMetrickFilterStageId(metric, router))
+            : [];
+    }
+
 );
+
+function checkMetrickFilterStageId(metric: MetricSettings, router): boolean {
+    const { id: appId, stageId} = router.state.params;
+    return metric.filter.stageId === `app${appId}stage${stageId}`;
+}
+
+function metricWithoutFiltres(metric: MetricSettings): boolean {
+    return Object.keys(metric.filter).length === 0;
+}

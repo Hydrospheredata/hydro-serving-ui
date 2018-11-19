@@ -60,7 +60,8 @@
         "no-empty-interface": false,
         "no-empty": [true, "allow-empty-functions"],
         "jsdoc-format": false,
-        "no-unused-variable": true
+        "no-unused-variable": true,
+        "no-unused-expression": true,
     },
     "linterOptions": {
         "exclude": [

@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { HttpService } from '@core/services/http/_index';
+import { NewHttpService } from '@core/services/new_http/new_http.service';
 import { environment } from '@environments/environment';
 import {map} from 'rxjs/operators';
 
@@ -10,30 +10,23 @@ export class SignaturesService {
     private baseAPIUrl: string;
 
     constructor(
-        private http: HttpService
+        private http: NewHttpService
     ) {
         this.baseAPIUrl = `${environment.apiUrl}/model`;
     }
 
     public getModelSignatures(id: number) {
         return this.http.get(`${this.baseAPIUrl}/${id}/flatContract`).pipe(
-            map((res: Response): any => {
-                return res.json();
-            }));
+            map((res: Response): any => res));
     }
 
     public getModelVersionSignatures(versionId: number) {
         return this.http.get(`${this.baseAPIUrl}/version/${versionId}/flatContract`).pipe(
-            map((res: Response): any => {
-                return res.json();
-            }));
+            map((res: Response): any => res));
     }
 
     public updateModelSignatures(id: number, contract) {
         return this.http.post(`${this.baseAPIUrl}/${id}/contract/flat`, contract).pipe(
-            map((res: Response): any => {
-                return res.json();
-            }));
+            map((res: Response): any => res));
     }
-
 }

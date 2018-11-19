@@ -181,6 +181,6 @@ export class ApplicationsEffects {
         private applicationBuilder: ApplicationsBuilderService,
         private mdlSnackbarService: MdlSnackbarService,
         private store: Store<HydroServingState>
-    ) { }
-
+    ) {
+    }
 }

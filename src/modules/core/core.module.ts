@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -6,7 +7,6 @@ import { MetricSettingsService } from './services/metrics/metric-settings.servic
 
 import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
-// import { ClipboardModule } from 'ngx-clipboard';
 import { EffectsModule } from '@ngrx/effects';
 import { CodemirrorModule } from 'ng2-codemirror';
 
@@ -25,6 +25,7 @@ import {
     InfluxDBService,
     SvgSpriteService
 } from '@core/services';
+import { NewHttpService } from '@core/services/new_http/new_http.service';
 
 // Effects
 import {
@@ -62,6 +63,7 @@ import { SharedModule } from '@shared/shared.module';
         MdlSelectModule,
         CodemirrorModule,
         HttpModule,
+        HttpClientModule,
         SharedModule,
         StoreModule.forRoot(reducers,
             {
@@ -116,6 +118,7 @@ import { SharedModule } from '@shared/shared.module';
         MetricSettingsService,
         MetricsService,
         LoaderStateService,
+        NewHttpService,
         {
             provide: HttpService,
             useFactory: httpServiceFactory,
