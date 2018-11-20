@@ -14,13 +14,15 @@ import * as Highcharts from 'highcharts';
 import * as HighchartsNoDataToDisplay from 'highcharts/modules/no-data-to-display.src';
 import * as moment from 'moment';
 
-import { IChartData, IMetricData, IMetricDataRow } from '@shared/models/application-chart.model';
+import { IChartData } from '@shared/models/application-chart.model';
 
 import { Subscription, Subject, Observable, merge } from 'rxjs';
 import {
     switchMap,
     tap
 } from 'rxjs/operators';
+
+import { ChartRow, GroupedRows } from '@shared/models/_index';
 
 import { InfluxDBService } from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
@@ -32,10 +34,8 @@ import { MetricsService } from '@core/services/metrics/metrics.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
-    protected metrics: string[] = [];
-    protected REQUEST_DELAY_MS: number = 1500;
-    protected updateChartObservable$: Observable<any>;
-    protected timeSubject: Subject<any> = new Subject<any>();
+    @Input()
+    public chartData: IChartData;
 
     @Input()
     protected applicationId: number;
@@ -49,8 +49,10 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     @Input()
     protected stageId;
 
-    @Input()
-    private chartData: IChartData;
+    protected metrics: string[] = [];
+    protected REQUEST_DELAY_MS: number = 1500;
+    protected updateChartObservable$: Observable<any>;
+    protected timeSubject: Subject<any> = new Subject<any>();
 
     @Output()
     private delete: EventEmitter<any> = new EventEmitter();
@@ -65,8 +67,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private series: { [s: string]: {name: string; data: Array<[number, number]>}} = {};
     private dataLength: number = 0;
     // common data
-    private metricData: any = {};
-    private metricsData: any = [];
+    private metricsData: Array<GroupedRows<ChartRow>> = [];
     private threshold: any = {};
     private updateChartSub: Subscription;
 
@@ -269,10 +270,10 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         const getModelName = (modelId): string => {
             return this.stage.services.reduce((modelNames, service) => {
                 if (service.modelVersion.id === ~~modelId) {
-                    return modelNames.push(service.modelVersion.modelName);
-                } else {
-                    return modelNames;
+                    modelNames.push(service.modelVersion.modelName);
                 }
+
+                return modelNames;
             }, [])[0];
         };
 
@@ -281,10 +282,10 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
         metrics.forEach(metricName => {
             const groupedByModelVersionId: { [s: string]: any[] } = {};
-            const metricData: IMetricData = metricsData.find(item => item.name === metricName);
+            const metricData = metricsData.find(item => item.name === metricName);
 
             if (metricData) {
-                const rows: IMetricDataRow[] = metricData.rows;
+                const rows = metricData.rows;
                 rows.filter(row => this.filterFunction(row)).forEach(_ => {
                     if (!groupedByModelVersionId.hasOwnProperty(_.modelVersionId)) {
                         groupedByModelVersionId[_.modelVersionId] = [];
@@ -342,26 +343,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
     private getMetrics(): Promise<any> {
         return this.getRequestPromise().then(result => {
-            const res = this.influxdbService.parse(result) as any;
-
-            this.metrics.forEach(metric => {
-                const groupRow = res.groupRows.find(_ => _.name === metric);
-                if (!groupRow) { return; }
-
-                this.metricData[metric] = groupRow;
-            });
-
-            this.metricsData = this.getMetricsData();
+            const res = this.influxdbService.parse<ChartRow>(result);
+            this.metricsData = res.groupRows;
         });
-    }
-
-    private getMetricsData(): IMetricData[] {
-        return this.metrics.reduce((metricsData, metricName) => {
-            if (this.metricData[metricName]) {
-                return metricsData.concat(this.metricData[metricName]);
-            } else {
-                return metricsData;
-            }
-        }, []);
     }
 }

@@ -61,7 +61,7 @@
         "no-empty": [true, "allow-empty-functions"],
         "jsdoc-format": false,
         "no-unused-variable": true,
-        "no-unused-expression": true,
+        "no-unused-expression": true
     },
     "linterOptions": {
         "exclude": [

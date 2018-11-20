@@ -18,9 +18,9 @@ import { Observable ,  Subscription } from 'rxjs';
 import { tap, filter } from 'rxjs/operators';
 
 import { MdlDialogService } from '@angular-mdl/core';
-import { InfluxDBService } from '@core/services';
+import { InfluxDBService} from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
-import { Application, Model } from '@shared/models/_index';
+import { Application, Model, HealthRow } from '@shared/models/_index';
 
 @Component({
     selector: 'hydro-applications-item-detail',
@@ -52,19 +52,18 @@ export class ApplicationsItemDetailComponent {
     }
 
     // TODO: remove me please
-    public getHealthClass() {
+    public getHealthClass(): Promise<void> {
         return this.metricsService.getHealth().then(res => {
-            const result: any = this.influxdbService.parse(res);
+            const result = this.influxdbService.parse<HealthRow>(res);
             const aggregatedHealthStatus: object = {};
 
             for (const row of result) {
-                const stageAndModelVersion = `${row.stageId}_${row.modelVersionId}`;
-                if (!aggregatedHealthStatus.hasOwnProperty(stageAndModelVersion)) {
-                    aggregatedHealthStatus[stageAndModelVersion] = true;
+                const key = `${row.stageId}_${row.modelVersionId}`;
+                if (!aggregatedHealthStatus.hasOwnProperty(key)) {
+                    aggregatedHealthStatus[key] = true;
                 }
 
-                let _ = aggregatedHealthStatus[stageAndModelVersion];
-                _ = _ && row.sum >= row.count;
+                aggregatedHealthStatus[key] = aggregatedHealthStatus[key] && row.sum >= row.count;
             }
             // console.log(aggregatedHealthStatus);
             const newStatuses = {};

@@ -1,3 +1,5 @@
+import { GroupedRows, ChartRow } from '@shared/models/_index';
+
 export interface IMetricProvider {
     config: {};
     id: string;
@@ -11,21 +13,8 @@ export interface IMetricProvider {
     withHealth: boolean;
 }
 
-export interface IMetricDataRow {
-    time: Date;
-    value: number;
-    health: number | null;
-    modelVersionId: string;
-    columnIndex: string | null;
-}
-
-export interface IMetricData {
-    name: string;
-    rows: IMetricDataRow[];
-}
-
 export interface IChartData {
     metricProvider: IMetricProvider;
-    metricsData?: IMetricData[];
+    metricsData?: GroupedRows<ChartRow>;
     threshold?: number | null;
 }

@@ -9,3 +9,4 @@ export * from './runtime.model';
 export * from './source.model';
 
 export * from './profiles.model';
+export * from './influxdb';
