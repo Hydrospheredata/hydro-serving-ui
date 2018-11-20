@@ -31,14 +31,15 @@ export class MetricsService {
               metrics,
               columnIndex,
             },
-          }
+          },
+          false
         ).pipe(
           map((res: Response): any => res)
         ).toPromise();
   }
 
   public getHealth() {
-    return this.newHttp.get(`${this.baseMetricsUrl}/health`).pipe(
+    return this.newHttp.get(`${this.baseMetricsUrl}/health`, null, false).pipe(
       map((res: Response): any => res)
     ).toPromise();
   }

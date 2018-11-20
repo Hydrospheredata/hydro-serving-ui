@@ -21,7 +21,6 @@ import {
     EnvironmentsService,
     SignaturesService,
     RuntimesService,
-    SourcesService,
     InfluxDBService,
     SvgSpriteService
 } from '@core/services';
@@ -31,7 +30,6 @@ import { NewHttpService } from '@core/services/new_http/new_http.service';
 import {
     RuntimesEffects,
     SignaturesEffects,
-    SourcesEffects,
     EnvironmentsEffects,
     MonitoringEffects,
 } from '@core/effects/_index';
@@ -43,9 +41,6 @@ import {
     ModelBuildBuilder,
     RuntimeBuilder
 } from '@core/builders/_index';
-
-// Factories
-import { httpServiceFactory } from '@core/factories/_index';
 
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -62,7 +57,6 @@ import { SharedModule } from '@shared/shared.module';
         MdlModule,
         MdlSelectModule,
         CodemirrorModule,
-        HttpModule,
         HttpClientModule,
         SharedModule,
         StoreModule.forRoot(reducers,
@@ -83,7 +77,6 @@ import { SharedModule } from '@shared/shared.module';
         EffectsModule.forRoot([
             RuntimesEffects,
             SignaturesEffects,
-            SourcesEffects,
             EnvironmentsEffects,
             MonitoringEffects,
         ]),
@@ -113,17 +106,11 @@ import { SharedModule } from '@shared/shared.module';
         EnvironmentsService,
         SignaturesService,
         RuntimesService,
-        SourcesService,
         InfluxDBService,
         MetricSettingsService,
         MetricsService,
         LoaderStateService,
         NewHttpService,
-        {
-            provide: HttpService,
-            useFactory: httpServiceFactory,
-            deps: [XHRBackend, RequestOptions, LoaderStateService],
-        },
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         SvgSpriteService,
     ],
