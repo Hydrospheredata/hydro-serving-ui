@@ -13,19 +13,15 @@
           "build": {
             "builder": "@angular-devkit/build-angular:browser",
             "options": {
-              "stylePreprocessorOptions": {
-                "includePaths": [
-                  "src/assets/styles"
-                ]
-              },
               "outputPath": "hydro-serving-ui",
               "index": "src/index.html",
               "main": "src/main.ts",
               "polyfills": "src/polyfills.ts",
               "tsConfig": "src/tsconfig.app.json",
               "assets": [
-                "src/favicon.ico",
-                "src/assets"
+                {"glob": "**/fonts/**", "input": "src/assets", "output": "assets"},
+                {"glob": "*.*", "input": "src/assets/images", "output": "assets/images"},
+                {"glob": "**", "input": "src/assets/images/sprites", "output": "assets/images/sprites"}
               ],
               "styles": [
                 "node_modules/@angular-mdl/core/scss/material-design-lite.scss",
@@ -33,6 +29,11 @@
                 "node_modules/codemirror/lib/codemirror.css",
                 "src/assets/styles/_styles.scss"
               ],
+              "stylePreprocessorOptions": {
+                "includePaths": [
+                  "src/assets/styles"
+                ]
+              },
               "scripts": []
             },
             "configurations": {
