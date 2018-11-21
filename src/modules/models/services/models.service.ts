@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { NewHttpService } from '@core/services/new_http/new_http.service';
+import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import {map} from 'rxjs/operators';
 
@@ -10,7 +10,7 @@ export class ModelsService {
     private baseAPIUrl: string;
 
     constructor(
-        private http: NewHttpService
+        private http: HttpService
     ) {
         this.baseAPIUrl = `${environment.apiUrl}/model`;
     }

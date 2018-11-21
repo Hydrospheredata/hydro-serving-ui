@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 
-import { NewHttpService } from '@core/services/new_http/new_http.service';
+import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import { Application } from '@shared/models/_index';
 
@@ -13,7 +13,7 @@ export class ApplicationsService {
     private baseApiUrl: string;
 
     constructor(
-        private http: NewHttpService
+        private http: HttpService
     ) {
         this.baseApiUrl = `${environment.apiUrl}/applications`;
     }

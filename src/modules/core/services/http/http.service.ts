@@ -14,7 +14,7 @@ interface IHydroHttpOptions {
 }
 
 @Injectable()
-export class NewHttpService {
+export class HttpService {
     private baseUrl: string = '';
     private requestCount: number = 0;
 

@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { NewHttpService } from '@core/services/new_http/new_http.service';
+import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import { map } from 'rxjs/operators';
 
@@ -10,7 +10,7 @@ export class MetricsService {
   private baseMetricsUrl: string;
 
   constructor(
-    private newHttp: NewHttpService
+    private http: HttpService
   ) {
     this.baseMetricsUrl = `${environment.monitoringUrl}`;
   }
@@ -22,7 +22,7 @@ export class MetricsService {
     metrics: string[],
     columnIndex?: string
     ) {
-      return this.newHttp.get(
+      return this.http.get(
           `${this.baseMetricsUrl}/metrics`,
           { params: {
               application,
@@ -39,7 +39,7 @@ export class MetricsService {
   }
 
   public getHealth() {
-    return this.newHttp.get(`${this.baseMetricsUrl}/health`, null, false).pipe(
+    return this.http.get(`${this.baseMetricsUrl}/health`, null, false).pipe(
       map((res: Response): any => res)
     ).toPromise();
   }

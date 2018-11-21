@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { NewHttpService } from '@core/services/new_http/new_http.service';
+import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import { MetricSettings } from '@shared/models/metric-settings.model';
 import { Observable } from 'rxjs';
@@ -11,13 +11,13 @@ export class MetricSettingsService {
   private baseMonitoringSettingsUrl: string;
 
   constructor(
-    private newHttp: NewHttpService
+    private http: HttpService
   ) {
     this.baseMonitoringSettingsUrl = `${environment.monitoringUrl}/aggregations`;
   }
 
   public getMetricSettings(stageId: string): Observable<object[]> {
-    return this.newHttp.get(this.baseMonitoringSettingsUrl, {
+    return this.http.get(this.baseMonitoringSettingsUrl, {
       params: {
         stageId,
       },
@@ -29,13 +29,13 @@ export class MetricSettingsService {
 
   public addMetricSettings(metricSettings: MetricSettings): Observable<object> {
     console.log(`MetricSettings: ${metricSettings}`);
-    return this.newHttp.post(this.baseMonitoringSettingsUrl, metricSettings).pipe(
+    return this.http.post(this.baseMonitoringSettingsUrl, metricSettings).pipe(
       map((res: Response): any => res));
   }
 
   public deleteMetricSettings(id: string): Observable<object> {
     console.log(`calling DELETE method for ${id}`);
-    return this.newHttp.delete(`${this.baseMonitoringSettingsUrl}/${id}`).pipe(
+    return this.http.delete(`${this.baseMonitoringSettingsUrl}/${id}`).pipe(
       map((res: Response): any => res));
   }
 }

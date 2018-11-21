@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { HttpModule, XHRBackend, RequestOptions } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { MetricSettingsService } from './services/metrics/metric-settings.service';
 
@@ -23,7 +22,7 @@ import {
     InfluxDBService,
     SvgSpriteService
 } from '@core/services';
-import { NewHttpService } from '@core/services/new_http/new_http.service';
+import { HttpService } from '@core/services/http';
 
 // Effects
 import {
@@ -89,7 +88,6 @@ import { SharedModule } from '@shared/shared.module';
         MdlModule,
         MdlSelectModule,
         CodemirrorModule,
-        // ClipboardModule,
     ],
     declarations: [
         NavbarComponent,
@@ -109,7 +107,7 @@ import { SharedModule } from '@shared/shared.module';
         MetricSettingsService,
         MetricsService,
         LoaderStateService,
-        NewHttpService,
+        HttpService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         SvgSpriteService,
     ],
