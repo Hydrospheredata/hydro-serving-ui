@@ -16,7 +16,7 @@ import * as moment from 'moment';
 
 import { IChartData } from '@shared/models/application-chart.model';
 
-import { Subscription, Subject, Observable, merge } from 'rxjs';
+import { Subscription, Subject, Observable, merge, interval } from 'rxjs';
 import {
     switchMap,
     tap
@@ -76,7 +76,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         public influxdbService: InfluxDBService
     ) {
         this.updateChartObservable$ = merge(
-            Observable.interval(this.REQUEST_DELAY_MS),
+            interval(this.REQUEST_DELAY_MS),
             this.timeSubject.asObservable()
         );
     }

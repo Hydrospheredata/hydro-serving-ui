@@ -15,7 +15,6 @@ import { NavbarComponent, LoaderComponent, PageNotFoundComponent } from './_inde
 
 // Services
 import {
-    HttpService,
     LoaderStateService,
     FormsService,
     EnvironmentsService,
