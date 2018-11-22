@@ -1,22 +1,31 @@
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription ,  Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { Application } from '@shared/models/application.model';
-import { Observable } from 'rxjs/Observable';
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+
 import { MdlDialogReference, MdlSnackbarService } from '@angular-mdl/core';
 
-import { Store } from '@ngrx/store';
-import { DialogBase } from '@shared/base/_index';
 import * as fromApplications from '@applications/reducers';
-import { HydroServingState } from '@core/reducers';
-import { FormsService } from '@core/services';
-import * as hocon from 'hocon-parser';
 import * as HydroActions from '@core/actions/monitoring.actions';
+import { HydroServingState } from '@core/reducers';
+import * as fromRoot from '@core/reducers';
+import { Store } from '@ngrx/store';
+
+import * as hocon from 'hocon-parser';
+
+import { FormsService } from '@core/services';
+import { DialogBase } from '@shared/base/_index';
 import { MetricSettings } from '@shared/models/metric-settings.model';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
-import * as fromRoot from '@core/reducers';
 
+interface IAggreagation {
+    name: string;
+    className: string;
+}
 @Component({
     selector: 'hydro-dialog-add-metric',
     templateUrl: './dialog-add-metric.component.html',
@@ -31,22 +40,21 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
     public isHealthChecked: boolean = false;
     public isHealthDisabled: boolean = true;
 
-
     public applications$: Observable<Application[]>;
     public sources$: Observable<string[]>;
     public applicationSub: Subscription;
     public application: Application;
     public stageId: number;
 
-    public aggregations: {name: string, className: string}[] = [
-        {name: "Kolmogorov-Smirnov", className: "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov"},
-        {name: "Autoencoder", className: "io.hydrosphere.sonar.core.metrics.providers.Autoencoder"},
-        {name: "Random Forest", className: "io.hydrosphere.sonar.core.metrics.providers.RandomForest"},
-        {name: "GAN", className: "io.hydrosphere.sonar.core.metrics.providers.GAN"},
-        {name: "Average", className: "io.hydrosphere.sonar.core.metrics.providers.Average"},
-        {name: "Min", className: "io.hydrosphere.sonar.core.metrics.providers.Min"},
-        {name: "Max", className: "io.hydrosphere.sonar.core.metrics.providers.Max"},
-    ]
+    public aggregations: IAggreagation[] = [
+        {name: 'Kolmogorov-Smirnov', className: 'io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov'},
+        {name: 'Autoencoder', className: 'io.hydrosphere.sonar.core.metrics.providers.Autoencoder'},
+        {name: 'Random Forest', className: 'io.hydrosphere.sonar.core.metrics.providers.RandomForest'},
+        {name: 'GAN', className: 'io.hydrosphere.sonar.core.metrics.providers.GAN'},
+        {name: 'Average', className: 'io.hydrosphere.sonar.core.metrics.providers.Average'},
+        {name: 'Min', className: 'io.hydrosphere.sonar.core.metrics.providers.Min'},
+        {name: 'Max', className: 'io.hydrosphere.sonar.core.metrics.providers.Max'},
+    ];
 
     constructor(
         public fb: FormBuilder,
@@ -60,16 +68,18 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
     }
 
     ngOnInit() {
-        this.store.select(fromRoot.getRouterParams).subscribe(x => {console.log(x)});
+        this.store.select(fromRoot.getRouterParams).subscribe(x => { console.log(x); });
         this.createForm();
         this.initFormChangesListener();
         this.applications$ = this.store.select(fromApplications.getAllApplications);
-        const app$ = this.store.select(fromApplications.getSelectedApplication)
-        this.sources$ = app$.map(_ => {
+
+        const app$ = this.store.select(fromApplications.getSelectedApplication);
+
+        this.sources$ = app$.pipe(map(_ => {
             const parsed = hocon(_.contract);
             console.log(parsed);
-            return [parsed["signatures"]["inputs"]["name"]];
-        });
+            return [parsed.signatures.inputs.name];
+        }));
         this.applicationSub = app$.subscribe(_ => {
             this.application = _;
         });
@@ -80,27 +90,27 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
             return;
         }
 
-        const stageId = location.pathname.split("/")[3];
+        const stageId = location.pathname.split('/')[3];
 
         const filters = {
             sourceName: this.serviceForm.value.sourceName,
-            stageId: `app${this.application.id}stage${stageId}`
-        }
-        
+            stageId: `app${this.application.id}stage${stageId}`,
+        };
+
         const metricInfo = {
             metricProviderClass: this.serviceForm.value.metricAggregation,
             config: this.serviceForm.value.metricConfig,
             withHealth: this.serviceForm.value.withHealth,
-            healthConfig: this.serviceForm.value.healthConfig
-        }
+            healthConfig: this.serviceForm.value.healthConfig,
+        };
 
         const metricSettings = new MetricSettings({
             name: this.serviceForm.value.metricName,
             filter: filters,
-            metricProviderSpecification: new MetricSpecification(metricInfo)
-        })
+            metricProviderSpecification: new MetricSpecification(metricInfo),
+        });
 
-        console.log("Will send: ");
+        console.log('Will send: ');
         console.log(metricInfo, filters);
         this.store.dispatch(new HydroActions.AddMetricAction(metricSettings));
         this.dialogRef.hide();
@@ -121,41 +131,43 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
 
     public changeConfigForm(aggregation) {
         this.isHealthDisabled = false;
-        this.serviceForm.controls["withHealth"].enable();
+        this.serviceForm.controls.withHealth.enable();
         switch (aggregation) {
-            case "io.hydrosphere.sonar.core.metrics.providers.Autoencoder":
-            case "io.hydrosphere.sonar.core.metrics.providers.RandomForest":
-            case "io.hydrosphere.sonar.core.metrics.providers.GAN":
-                (<FormGroup>this.serviceForm.controls["metricConfig"]).addControl("applicationId", this.fb.control("", Validators.required));
+            case 'io.hydrosphere.sonar.core.metrics.providers.Autoencoder':
+            case 'io.hydrosphere.sonar.core.metrics.providers.RandomForest':
+            case 'io.hydrosphere.sonar.core.metrics.providers.GAN':
+                (this.serviceForm.controls.metricConfig as FormGroup)
+                    .addControl('applicationId', this.fb.control('', Validators.required));
                 break;
-            case "io.hydrosphere.sonar.core.metrics.providers.Average":
-            case "io.hydrosphere.sonar.core.metrics.providers.Min":
-            case "io.hydrosphere.sonar.core.metrics.providers.Max":
-            case "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov":
-                this.serviceForm.setControl("metricConfig", this.fb.group({}));
+            case 'io.hydrosphere.sonar.core.metrics.providers.Average':
+            case 'io.hydrosphere.sonar.core.metrics.providers.Min':
+            case 'io.hydrosphere.sonar.core.metrics.providers.Max':
+            case 'io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov':
+                this.serviceForm.setControl('metricConfig', this.fb.group({}));
                 break;
         }
         this.toggleHealthConfig();
     }
 
     public toggleHealthConfig() {
-        this.isHealthChecked = this.serviceForm.get("withHealth").value;
+        this.isHealthChecked = this.serviceForm.get('withHealth').value;
         if (this.isHealthChecked) {
-            switch (this.serviceForm.get("metricAggregation").value) {
-                case "io.hydrosphere.sonar.core.metrics.providers.Autoencoder":
-                case "io.hydrosphere.sonar.core.metrics.providers.RandomForest":
-                case "io.hydrosphere.sonar.core.metrics.providers.Average":
-                case "io.hydrosphere.sonar.core.metrics.providers.Min":
-                case "io.hydrosphere.sonar.core.metrics.providers.Max":
-                    (<FormGroup>this.serviceForm.controls["healthConfig"]).addControl("threshold", this.fb.control({disabled: false, value: ""}, Validators.required));
+            switch (this.serviceForm.get('metricAggregation').value) {
+                case 'io.hydrosphere.sonar.core.metrics.providers.Autoencoder':
+                case 'io.hydrosphere.sonar.core.metrics.providers.RandomForest':
+                case 'io.hydrosphere.sonar.core.metrics.providers.Average':
+                case 'io.hydrosphere.sonar.core.metrics.providers.Min':
+                case 'io.hydrosphere.sonar.core.metrics.providers.Max':
+                    (this.serviceForm.controls.healthConfig as FormGroup)
+                        .addControl('threshold', this.fb.control({disabled: false, value: ''}, Validators.required));
                     break;
-                case "io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov":
-                case "io.hydrosphere.sonar.core.metrics.providers.GAN":
-                    this.serviceForm.setControl("healthConfig", this.fb.group({}));
+                case 'io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov':
+                case 'io.hydrosphere.sonar.core.metrics.providers.GAN':
+                    this.serviceForm.setControl('healthConfig', this.fb.group({}));
                     break;
             }
         } else {
-            this.serviceForm.setControl("healthConfig", this.fb.group({}));
+            this.serviceForm.setControl('healthConfig', this.fb.group({}));
         }
     }
 
@@ -166,7 +178,7 @@ export class DialogAddMetricComponent extends DialogBase implements OnDestroy, O
             metricAggregation: ['', Validators.required],
             withHealth: {value: false, disabled: true},
             metricConfig: this.fb.group({}),
-            healthConfig: this.fb.group({})
+            healthConfig: this.fb.group({}),
         });
 
         if (data) {

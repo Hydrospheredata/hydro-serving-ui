@@ -104,37 +104,37 @@ export class GenerateInputAction implements Action {
 
 export class SetInputAction implements Action {
     readonly type = ApplicationActionTypes.SetInput;
-    constructor(public payload) { };
+    constructor(public payload) { }
 }
 
 export class SetInputSuccessAction implements Action {
     readonly type = ApplicationActionTypes.SetInputSuccess;
-    constructor(public payload) { };
+    constructor(public payload) { }
 }
 
 export class GenerateInputSuccessAction implements Action {
     readonly type = ApplicationActionTypes.GenerateInputSuccess;
-    constructor(public payload) { };
+    constructor(public payload) { }
 }
 
 export class GenerateInputFailAction implements Action {
     readonly type = ApplicationActionTypes.GenerateInputFail;
-    constructor(public error) { };
+    constructor(public error) { }
 }
 
 export class TestApplicationAction implements Action {
     readonly type = ApplicationActionTypes.Test;
-    constructor(public payload: Application) { };
+    constructor(public payload: Application) { }
 }
 
 export class TestApplicationSuccessAction implements Action {
     readonly type = ApplicationActionTypes.TestSuccess;
-    constructor(public payload) { };
+    constructor(public payload) { }
 }
 
 export class TestApplicationFailAction implements Action {
     readonly type = ApplicationActionTypes.TestFail;
-    constructor(public payload) { };
+    constructor(public payload) { }
 }
 
 export type ApplicationActions
@@ -157,4 +157,4 @@ export type ApplicationActions
     | GenerateInputFailAction
     | TestApplicationAction
     | TestApplicationSuccessAction
-    | TestApplicationFailAction
+    | TestApplicationFailAction;

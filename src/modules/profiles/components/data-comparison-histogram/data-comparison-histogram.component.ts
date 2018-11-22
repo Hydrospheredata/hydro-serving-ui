@@ -1,11 +1,11 @@
-import { DoubleProfile } from '@shared/models/_index';
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, SimpleChanges, SimpleChange } from "@angular/core";
-import * as Highcharts from 'highcharts';
+import { Component, Input, ViewChild, ElementRef, AfterViewInit, SimpleChanges, SimpleChange } from '@angular/core';
 import { HIGHCHART_COLORS } from '@profiles/highchart-colors';
+import { DoubleProfile } from '@shared/models/_index';
+import * as Highcharts from 'highcharts';
 @Component({
   selector: 'hydro-data-comparison-histogram',
   templateUrl: './data-comparison-histogram.component.html',
-  styleUrls: ['./data-comparison-histogram.component.scss']
+  styleUrls: ['./data-comparison-histogram.component.scss'],
 })
 export class DataComparisonHistogramComponent implements AfterViewInit {
   @Input() trainingProfile: DoubleProfile | null;
@@ -15,8 +15,6 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
   private trainingDataColor = HIGHCHART_COLORS.profiles.training;
   private productionDataColor = HIGHCHART_COLORS.profiles.production;
   private chart: Highcharts.ChartObject;
-
-  constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
     const trainingProfile: SimpleChange = changes.trainingProfile;
@@ -43,28 +41,28 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
 
       this.chart = Highcharts.chart(this.chartContainerRef.nativeElement, {
         chart: {
-          type: 'column'
+          type: 'column',
         },
         title: {
-          text: ''
+          text: '',
         },
         subtitle: {
-          text: ''
+          text: '',
         },
         xAxis: {
           categories: bins,
-          crosshair: true
+          crosshair: true,
         },
-        yAxis: 
+        yAxis:
         [
           {
             title: {
-              text: ''
+              text: '',
             },
-            labels:{
-              format: '{value}%'
-            }
-          }
+            labels: {
+              format: '{value}%',
+            },
+          },
         ],
         tooltip: {
           headerFormat: '<span style="font-size:10px">{point.key:.1f}</span><table>',
@@ -72,7 +70,7 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
             '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
           footerFormat: '</table>',
           shared: true,
-          useHTML: true
+          useHTML: true,
         },
         legend: {
           layout: 'horizontal',
@@ -82,54 +80,54 @@ export class DataComparisonHistogramComponent implements AfterViewInit {
             pointPadding: 0,
             borderWidth: 0,
             groupPadding: 0,
-            shadow: false
+            shadow: false,
           },
         },
         series: [{
           name: 'Training Data',
           data: trainingCount,
-          color: this.trainingDataColor
-        },{
+          color: this.trainingDataColor,
+        }, {
           name: 'Production Data',
           data: productionCount,
-          color: this.productionDataColor
-        }]
+          color: this.productionDataColor,
+        }],
       });
   }
 
-  private getBins(): number[]{
+  private getBins(): number[] {
     const trainingBins = (this.trainingProfile && this.trainingProfile.histogram.bins) || [];
     const productionBins = (this.productionProfile && this.productionProfile.histogram.bins) || [];
 
     return productionBins.reduce((bins, bin) => {
-      if(!bins.includes(bin)){
-        bins.push(bin)
-      };
+      if (!bins.includes(bin)) {
+        bins.push(bin);
+      }
 
       return bins;
     }, trainingBins.slice()).sort((a, b) => a - b);
   }
-  
-  private matchFreqs(profile: DoubleProfile): (number) => number {
+
+  private matchFreqs(profile: DoubleProfile): (num: number) => number {
     const oldBins: number[] = (profile && profile.histogram.bins) || [];
     const oldFreqs: number[] = (profile && profile.histogram.frequencies) || [];
     let count = 0;
-    if(profile){
+    if (profile) {
       count = profile.commonStatistics.count - profile.commonStatistics.missing;
     }
-    return function(bin: number): number{
-      if(count === 0) return 0;
+    return (bin: number): number => {
+      if (count === 0) { return 0; }
 
       const idx = oldBins.indexOf(bin);
-      if(idx >= 0) {
-        return (oldFreqs[idx]/count)*100;
+      if (idx >= 0) {
+        return (oldFreqs[idx] / count) * 100;
       } else {
         return 0;
       }
-    }
+    };
   }
 
-  private freqsToPercent(bins: number[], profile: DoubleProfile): number[]{
-    return bins.map(this.matchFreqs(profile))
+  private freqsToPercent(bins: number[], profile: DoubleProfile): number[] {
+    return bins.map(this.matchFreqs(profile));
   }
 }

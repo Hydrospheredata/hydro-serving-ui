@@ -1,19 +1,15 @@
+
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
 import { Profiles } from '@shared/models/profiles.model';
+import {of as observableOf,  Observable } from 'rxjs';
 import { flatMap, map, catchError } from 'rxjs/operators';
 import * as HydroActions from './../actions/profiles.actions';
 import { ProfilerService } from './../services/profiler.service';
-import { Actions, Effect } from '@ngrx/effects';
-import { Injectable } from "@angular/core";
-import { Observable } from 'rxjs';
-import { Action } from '@ngrx/store';
 
 @Injectable()
 export class ProfilesEffects {
-
-  constructor(
-    private profilerService: ProfilerService,
-    private actions$: Actions
-  ) {}
 
   @Effect() loadProfiles$: Observable<Action> = this.actions$
     .ofType(HydroActions.ProfilesActionTypes.GetProfiles)
@@ -23,10 +19,10 @@ export class ProfilesEffects {
         .getProfiles(params[0], params[1])
         .pipe(
           map(data => new HydroActions.GetProfilesSuccessAction(new Profiles(data))),
-          catchError(error => Observable.of(new HydroActions.GetProfilesFailAction(error)))
+          catchError(error => observableOf(new HydroActions.GetProfilesFailAction(error)))
         )
       )
-    )
+    );
 
   @Effect() loadFields$: Observable<Action> = this.actions$
     .ofType(HydroActions.ProfilesActionTypes.GetFields)
@@ -36,8 +32,13 @@ export class ProfilesEffects {
         .getFields(modelVersionId)
         .pipe(
           map(data => new HydroActions.GetFieldsSuccessAction(data)),
-          catchError(error => Observable.of(new HydroActions.GetFieldsFailAction(error)))
+          catchError(error => observableOf(new HydroActions.GetFieldsFailAction(error)))
         )
       )
-    )
+    );
+
+  constructor(
+    private profilerService: ProfilerService,
+    private actions$: Actions
+  ) {}
 }

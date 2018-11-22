@@ -1,34 +1,22 @@
-// import { MetricSettings } from './../../shared/models/metric-settings.model';
-// import { MetricSettingsService } from '@core/services/metrics/metric-settings.service';
-import { Observable } from 'rxjs/Observable';
+
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
+import * as HydroActions from '@applications/actions/applications.actions';
+import * as fromApplications from '@applications/reducers';
+import { HydroServingState } from '@core/reducers';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { Router } from '@angular/router';
 
 import { ApplicationsService, ApplicationsBuilderService } from '@applications/services';
 import { Application } from '@shared/models/_index';
-import * as HydroActions from '@applications/actions/applications.actions';
-import { switchMap, catchError, withLatestFrom, skip } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
+
 import { MdlSnackbarService } from '@angular-mdl/core';
-import { HydroServingState } from '@core/reducers';
-
-import * as fromApplications from '@applications/reducers';
-
+import {of as observableOf,  Observable } from 'rxjs';
+import { switchMap, catchError, withLatestFrom, skip ,  map } from 'rxjs/operators';
 
 @Injectable()
 export class ApplicationsEffects {
-
-    constructor(
-        private actions$: Actions,
-        private router: Router,
-        private applicationsService: ApplicationsService,
-        // private metricService: MetricSettingsService,
-        private applicationBuilder: ApplicationsBuilderService,
-        private mdlSnackbarService: MdlSnackbarService,
-        private store: Store<HydroServingState>,
-    ) { }
 
     @Effect() getApplications$: Observable<Action> = this.actions$
         .ofType(HydroActions.ApplicationActionTypes.Get)
@@ -41,7 +29,7 @@ export class ApplicationsEffects {
                             const data = apps.map(app => this.applicationBuilder.build(app));
                             return (new HydroActions.GetApplicationsSuccessAction(data));
                         }),
-                        catchError(error => Observable.of(new HydroActions.GetApplicationsFailAction(error)))
+                        catchError(error => observableOf(new HydroActions.GetApplicationsFailAction(error)))
                     );
             })
         );
@@ -56,7 +44,7 @@ export class ApplicationsEffects {
                         map(response => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: 'Application was successfully added',
-                                timeout: 5000
+                                timeout: 5000,
                             });
                             this.router.navigate(['/applications', response.id]);
                             return new HydroActions.AddApplicationSuccessAction(new Application(response));
@@ -64,9 +52,9 @@ export class ApplicationsEffects {
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: `Error: ${error}`,
-                                timeout: 5000
+                                timeout: 5000,
                             });
-                            return Observable.of(new HydroActions.AddApplicationFailAction(error));
+                            return observableOf(new HydroActions.AddApplicationFailAction(error));
                         })
                     );
             })
@@ -82,22 +70,20 @@ export class ApplicationsEffects {
                         map(response => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: 'Application was successfully updated',
-                                timeout: 5000
+                                timeout: 5000,
                             });
                             return new HydroActions.UpdateApplicationSuccessAction(new Application(response));
                         }),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: `Error: ${error}`,
-                                timeout: 5000
+                                timeout: 5000,
                             });
-                            return Observable.of(new HydroActions.UpdateApplicationFailAction(error));
+                            return observableOf(new HydroActions.UpdateApplicationFailAction(error));
                         })
                     );
             })
         );
-
-
 
     @Effect() deleteApplication$: Observable<Action> = this.actions$
         .ofType(HydroActions.ApplicationActionTypes.Delete)
@@ -111,16 +97,16 @@ export class ApplicationsEffects {
                             this.router.navigate(['applications']);
                             this.mdlSnackbarService.showSnackbar({
                                 message: 'Application has been deleted',
-                                timeout: 5000
+                                timeout: 5000,
                             });
                             return (new HydroActions.DeleteApplicationSuccessAction(applicationId));
                         }),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: `Error: ${error}`,
-                                timeout: 5000
+                                timeout: 5000,
                             });
-                            return Observable.of(new HydroActions.DeleteApplicationFailAction(error));
+                            return observableOf(new HydroActions.DeleteApplicationFailAction(error));
                         })
                     );
             })
@@ -138,12 +124,13 @@ export class ApplicationsEffects {
                 return this.applicationsService.generateInputs(applicationId, encodeURIComponent(signatureName))
                     .pipe(
                         map(input => {
-                            return new HydroActions.GenerateInputSuccessAction({ id: applicationId, input: JSON.stringify(input, undefined, 2) });
+                            const payload = { id: applicationId, input: JSON.stringify(input, undefined, 2) };
+                            return new HydroActions.GenerateInputSuccessAction(payload);
                         }),
                         catchError(error => {
-                            return Observable.of(new HydroActions.GenerateInputFailAction(error));
+                            return observableOf(new HydroActions.GenerateInputFailAction(error));
                         })
-                    )
+                    );
             })
         );
 
@@ -156,7 +143,7 @@ export class ApplicationsEffects {
                 this.store.select(fromApplications.getSelectedApplicationId)
             ),
             switchMap(([action, applicationId]) => {
-                return Observable.of(new HydroActions.SetInputSuccessAction({ id: applicationId, input: action }));
+                return observableOf(new HydroActions.SetInputSuccessAction({ id: applicationId, input: action }));
             })
         );
 
@@ -170,16 +157,30 @@ export class ApplicationsEffects {
             ),
             switchMap(([action, inputs, signatureName, applicationId]) => {
                 console.log(action, inputs);
-                return this.applicationsService.serveService(JSON.parse(inputs), applicationId, encodeURIComponent(signatureName))
-                    .pipe(
-                        map(output => {
-                            return new HydroActions.TestApplicationSuccessAction({ id: applicationId, output: JSON.stringify(output, undefined, 2) })
-                        }),
-                        catchError(error => {
-                            return Observable.of(new HydroActions.TestApplicationFailAction({id: applicationId, error}))
-                        })
-                    )
+                return this.applicationsService
+                        .serveService(JSON.parse(inputs), applicationId, encodeURIComponent(signatureName))
+                        .pipe(
+                            map(output => {
+                                return new HydroActions.TestApplicationSuccessAction({
+                                    id: applicationId,
+                                    output: JSON.stringify(output, undefined, 2),
+                                });
+                            }),
+                            catchError(error => {
+                                const payload = {id: applicationId, error};
+                                return observableOf(new HydroActions.TestApplicationFailAction(payload));
+                            })
+                        );
             })
-        )
+        );
 
+    constructor(
+        private actions$: Actions,
+        private router: Router,
+        private applicationsService: ApplicationsService,
+        private applicationBuilder: ApplicationsBuilderService,
+        private mdlSnackbarService: MdlSnackbarService,
+        private store: Store<HydroServingState>
+    ) {
+    }
 }

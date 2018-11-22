@@ -1,30 +1,30 @@
-import { MdlSelectModule } from '@angular-mdl/select';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { MdlModule } from '@angular-mdl/core';
-import { SharedModule } from '@shared/shared.module';
+import { MdlSelectModule } from '@angular-mdl/select';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
-
-import { ChartsModule } from 'ng2-charts';
-
-import { CodemirrorModule } from 'ng2-codemirror' 
 import { ApplicationsRoutingModule } from '@applications/applications.router';
-import { reducers } from '@applications/reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { SharedModule } from '@shared/shared.module';
+import { ChartsModule } from 'ng2-charts';
+import { CodemirrorModule } from 'ng2-codemirror';
+
 import { ApplicationsEffects } from '@applications/effects/_index';
-import { 
-    ApplicationsWrapperComponent, 
-    ApplicationsItemDetailComponent, 
-    ApplicationsStageDetailComponent, 
-    ApplicationsDialogComponent, 
+import { reducers } from '@applications/reducers';
+
+import {
+    ApplicationsWrapperComponent,
+    ApplicationsItemDetailComponent,
+    ApplicationsStageDetailComponent,
+    ApplicationsDialogComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
     ServiceFormComponent
 } from '@applications/components';
-import { 
-    ApplicationsService, 
-    ApplicationsBuilderService, 
+import {
+    ApplicationsService,
+    ApplicationsBuilderService,
     ApplicationsGuard,
     ApplicationFormService
 } from '@applications/services';
@@ -42,24 +42,24 @@ import { CustomValidatorsService } from '@core/services/custom-validators.servic
         StoreModule.forFeature('applications', reducers),
         EffectsModule.forFeature([ApplicationsEffects]),
         ReactiveFormsModule,
-        CodemirrorModule
+        CodemirrorModule,
     ],
     declarations: [
         ApplicationsWrapperComponent,
         ApplicationsItemDetailComponent,
         ApplicationsStageDetailComponent,
-        ApplicationsDialogComponent, 
+        ApplicationsDialogComponent,
         ApplicationFormComponent,
         KafkaFormComponent,
-        ServiceFormComponent
+        ServiceFormComponent,
     ],
     providers: [
-        ApplicationsService, 
-        ApplicationsBuilderService, 
-        ApplicationsGuard, 
-        ApplicationFormService, 
-        CustomValidatorsService
+        ApplicationsService,
+        ApplicationsBuilderService,
+        ApplicationsGuard,
+        ApplicationFormService,
+        CustomValidatorsService,
     ],
-    exports: [ApplicationsDialogComponent, ApplicationFormComponent]
+    exports: [ApplicationsDialogComponent, ApplicationFormComponent],
 })
 export class ApplicationsModule { }

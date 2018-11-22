@@ -1,17 +1,15 @@
 import { Component, OnDestroy, AfterViewChecked } from '@angular/core';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { LoaderStateService } from '@core/services';
 
 import { LoaderState } from './loader';
 
-
-
 @Component({
     selector: 'hydro-loader',
     templateUrl: './loader.component.html',
-    styleUrls: ['./loader.component.scss']
+    styleUrls: ['./loader.component.scss'],
 })
 export class LoaderComponent implements AfterViewChecked, OnDestroy {
 

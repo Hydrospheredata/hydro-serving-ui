@@ -1,25 +1,29 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { Component, Input } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'kafka-form',
     templateUrl: './kafka-form.component.html',
-    styleUrls: ['./kafka-form.component.scss']
+    styleUrls: ['./kafka-form.component.scss'],
 })
-export class KafkaFormComponent implements OnInit{
+export class KafkaFormComponent {
     @Input()
     public kafkaFormArray: FormArray;
 
     isKafkaEnabled: boolean = false;
-    
-    public addKafkaControl(){
+
+    constructor(
+        private fb: FormBuilder
+    ) { }
+
+    public addKafkaControl(): void {
         this.kafkaFormArray.push(this.buildKafkaSourceControl());
     }
 
     public removeKafkaControlAtIndex(index: number): void {
         this.kafkaFormArray.removeAt(index);
-        
-        if(this.kafkaFormArray.length === 0){
+
+        if (this.kafkaFormArray.length === 0) {
             this.isKafkaEnabled = false;
         }
     }
@@ -27,7 +31,7 @@ export class KafkaFormComponent implements OnInit{
     public toggleKafkaEnabled(event): void {
         this.isKafkaEnabled = event.target.checked;
 
-        if(this.isKafkaEnabled){
+        if (this.isKafkaEnabled) {
             this.addKafkaControl();
         } else {
             this.removeAllKafkaControls();
@@ -37,20 +41,13 @@ export class KafkaFormComponent implements OnInit{
     private buildKafkaSourceControl(): FormGroup {
         return this.fb.group({
             sourceTopic: new FormControl(),
-            destinationTopic: new FormControl()
-        })
+            destinationTopic: new FormControl(),
+        });
     }
 
     private removeAllKafkaControls(): void {
-        while(this.kafkaFormArray.length){
-            this.removeKafkaControlAtIndex(0)
+        while (this.kafkaFormArray.length) {
+            this.removeKafkaControlAtIndex(0);
         }
     }
-
-    constructor(
-        private fb: FormBuilder
-    ){
-    }
-
-    ngOnInit(){}
 }

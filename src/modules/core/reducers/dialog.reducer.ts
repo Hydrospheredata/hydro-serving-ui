@@ -2,7 +2,7 @@ import { DialogActionTypes, DialogActions } from '@core/actions';
 
 export interface State {
 
-};
+}
 
 const initialState: State = {
 

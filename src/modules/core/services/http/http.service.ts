@@ -1,170 +1,119 @@
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { LoaderStateService } from '@core/services/loader-state.service';
 import { environment } from '@environments/environment';
-import 'rxjs/Rx';
-import {
-    Http,
-    RequestOptionsArgs,
-    Response,
-    Headers,
-    XHRBackend
-} from '@angular/http';
-import { HydroRequestOptions } from './hydro-request-options';
-import { LoaderStateService } from '../loader-state.service';
+import { Observable, throwError } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 
+type HydroHttpParams = string | { [param: string]: string | string[]; } | HttpParams;
 
+interface IHydroHttpOptions {
+    headers?: any;
+    params?: HydroHttpParams;
+    [propName: string]: any;
+}
 
 @Injectable()
-export class HttpService extends Http {
-    baseUrl: string;
-    private requestCount: number;
+export class HttpService {
+    private baseUrl: string = '';
+    private requestCount: number = 0;
 
     constructor(
-        backend: XHRBackend,
-        defaultOptions: HydroRequestOptions,
-        private loaderStateService: LoaderStateService
+        public http: HttpClient,
+        private loader: LoaderStateService
     ) {
-        super(
-            backend,
-            defaultOptions
-        );
-        
-        if(environment.production){
+        if (environment.production) {
             const { protocol, hostname, port } = window.location;
 
-            this.baseUrl = `${protocol}//${hostname}:${port}`
+            this.baseUrl = `${protocol}//${hostname}:${port}`;
         } else {
-            this.baseUrl = `${environment.host}:${environment.port}`
+            this.baseUrl = `${environment.host}${environment.port ? ':' + environment.port : ''}`;
         }
-
-        this.requestCount = 0;
     }
 
-    get(url: string, options?: RequestOptionsArgs, showLoader: boolean = true): Observable<any> {
-        
+    get(url: string, options?: IHydroHttpOptions, showLoader: boolean = true): Observable<any> {
         if (showLoader) {
             this.showLoader();
         }
-
-        return super.get(this.getFullUrl(url), this.requestOptions(options))
-            .catch(this.onCatch)
-            .do(() => {
-                this.onSuccess();
-            }, (error: any) => {
-                this.onError(error);
+        return this.http.get(this.getFullUrl(url), this.hydroOptions(options)).pipe(
+            catchError(err => this.handleError(err)),
+            finalize(() => {
+                if (showLoader) {
+                    this.hideLoader();
+                }
             })
-            .finally(() => {
-                this.onEnd();
-            });
+        );
     }
 
-    post(url: string, body, options?: RequestOptionsArgs): Observable<any> {
-
-        this.showLoader();
-
-        return super.post(this.getFullUrl(url), body, this.requestOptions(options))
-            .catch(this.onCatch)
-            .do(() => {
-                this.onSuccess();
-            }, (error: any) => {
-                this.onError(error);
-            })
-            .finally(() => {
-                this.onEnd();
-            });
+    delete(url: string, options?: IHydroHttpOptions) {
+        return this.http.delete(this.getFullUrl(url), this.hydroOptions(options)).pipe(
+            catchError(err => this.handleError(err))
+        );
     }
 
-    put(url: string, body, options?: RequestOptionsArgs): Observable<any> {
-
-        this.showLoader();
-
-        return super.put(this.getFullUrl(url), body, this.requestOptions(options))
-            .catch(this.onCatch)
-            .do(() => {
-                this.onSuccess();
-            }, (error: any) => {
-                this.onError(error);
-            })
-            .finally(() => {
-                this.onEnd();
-            });
+    post(url: string, body, options?: IHydroHttpOptions) {
+        return this.http.post(this.getFullUrl(url), body, this.hydroOptions(options)).pipe(
+            catchError(err => this.handleError(err))
+        );
     }
 
-    delete(url: string, options?: RequestOptionsArgs): Observable<any> {
-
-        this.showLoader();
-
-        return super.delete(this.getFullUrl(url), this.requestOptions(options))
-            .catch(this.onCatch)
-            .do(() => {
-                this.onSuccess();
-            }, (error: any) => {
-                this.onError(error);
-            })
-            .finally(() => {
-                this.onEnd();
-            });
-    }
-
-    private requestOptions(options?: RequestOptionsArgs): RequestOptionsArgs {
-
-        if (options == null) {
-            options = new HydroRequestOptions();
-        }
-
-        if (options.headers == null) {
-            options.headers = new Headers();
-        }
-
-        return options;
+    put(url: string, body, options?: IHydroHttpOptions) {
+        return this.http.put(this.getFullUrl(url), body, this.hydroOptions(options)).pipe(
+            catchError(err => this.handleError(err))
+        );
     }
 
     private getFullUrl(url: string): string {
-        if (url.startsWith("http")) {
-            return url;
-        }
-        return this.baseUrl + url;
+        return `${this.baseUrl}${url}`;
     }
 
-    private onCatch(error: any): Observable<any> {
-        let errMsg: string;
-        if (error instanceof Response) {
-            let body;
-            try {
-                body = error.json();
-            } catch (e) {
-                body = error.text();
-            }
+    private handleError(error: HttpErrorResponse): Observable<string> {
+        let message: string;
 
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+        if (error.error instanceof ErrorEvent) {
+            message = `An error occurred: ${error.error.message}`;
         } else {
-            errMsg = error.message ? error.message : error.toString();
+            message = `status: ${error.status}, statusText: ${error.statusText} `;
         }
-        return Observable.throw(errMsg);
+
+        console.error(message);
+        return throwError(message);
     }
 
-    private onSuccess() {
+    private hydroOptions(options: IHydroHttpOptions = {}) {
+        if (options === null) {
+            return {};
+        }
+
+        return {
+            ...options,
+            params: this.createHttpParams(options.params),
+        };
     }
 
-    private onError(res: Response) {
-        console.log('Error, status code: ' + res.status);
-    }
-
-    private onEnd() {
-        this.hideLoader();
+    private createHttpParams(params: string | { [param: string]: string | string[]; } | HttpParams = ''): HttpParams {
+        if (params instanceof HttpParams) {
+            return params;
+        } else if (typeof params === 'string') {
+            return new HttpParams({ fromString: params });
+        } else if (typeof params === 'object') {
+            return new HttpParams({ fromObject: params });
+        }
     }
 
     private showLoader() {
         if (this.requestCount === 0) {
-            this.loaderStateService.showLoader();
+            this.loader.showLoader();
         }
-        this.requestCount++;
+
+        this.requestCount = this.requestCount + 1;
     }
 
     private hideLoader() {
-        if (--this.requestCount === 0) {
-            this.loaderStateService.hideLoader();
+        this.requestCount = this.requestCount - 1;
+
+        if (this.requestCount === 0) {
+            this.loader.hideLoader();
         }
     }
 }

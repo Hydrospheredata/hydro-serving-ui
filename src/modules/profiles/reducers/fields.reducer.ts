@@ -1,20 +1,19 @@
-import { ProfilesActions, ProfilesActionTypes } from "../actions";
-
+import { ProfilesActions, ProfilesActionTypes } from '../actions';
 
 export interface State {
-  fields: Array<string>
+  fields: string[];
 }
 
 export const initialState: State = {
-  fields: []
+  fields: [],
 };
 
 export function reducer(state = initialState, action: ProfilesActions) {
   switch (action.type) {
     case ProfilesActionTypes.GetFieldsSuccess:
     return {
-      fields: action.payload
-    }
+      fields: action.payload,
+    };
 
     default:
       return state;

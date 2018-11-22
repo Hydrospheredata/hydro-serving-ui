@@ -16,27 +16,25 @@ export class FormsService {
             forms: {
                 service: {
                     serviceName: {
-                        'pattern': 'It is not correct format.',
-                        'maxLength': 'Service name\' max length is 30.',
-                        'required': 'Service name is required.'
+                        pattern: 'It is not correct format.',
+                        maxLength: 'Service name\' max length is 30.',
+                        required: 'Service name is required.',
                     },
                     serviceId: {
-                        'pattern': 'Service id must be a number.',
-                        'required': 'Service id is required.'
+                        pattern: 'Service id must be a number.',
+                        required: 'Service id is required.',
                     },
                     weight: {
-                        'pattern': 'Weight must be a number.',
-                        'required': 'Weight is required.'
+                        pattern: 'Weight must be a number.',
+                        required: 'Weight is required.',
                     },
                     weights: {
-                        'overflow': 'Error. Sum of weights should be 100%.'
-                    }
-                }
-            }
-        }
+                        overflow: 'Error. Sum of weights should be 100%.',
+                    },
+                },
+            },
+        },
     };
-
-    constructor() { }
 
     get VALIDATION_PATTERNS() {
         return this._VALIDATION_PATTERNS;

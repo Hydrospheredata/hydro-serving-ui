@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class DialogEffects {
-
-    constructor() { }
-}
+export class DialogEffects { }

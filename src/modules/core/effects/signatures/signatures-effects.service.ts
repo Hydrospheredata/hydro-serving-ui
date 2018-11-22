@@ -1,13 +1,12 @@
+
 import { Injectable } from '@angular/core';
+import * as HydroActions from '@core/actions';
+import { SignaturesService } from '@core/services';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { SignaturesService } from '@core/services';
-import * as HydroActions from '@core/actions';
+import {of as observableOf,  Observable } from 'rxjs';
 import { map, switchMap, catchError, take } from 'rxjs/operators';
 // import { Model } from '@shared/models/_index';
-
-
 
 @Injectable()
 export class SignaturesEffects {
@@ -25,15 +24,15 @@ export class SignaturesEffects {
                             map(data => {
                                 return new HydroActions.GetSignaturesSuccessAction(data.signatures);
                             }),
-                            catchError(error => Observable.of(new HydroActions.GetSignaturesFailAction(error)))
+                            catchError(error => observableOf(new HydroActions.GetSignaturesFailAction(error)))
                         );
                 } else {
-                    obs = Observable.of(new HydroActions.GetModelVersionSignaturesAction(payload.id));
+                    obs = observableOf(new HydroActions.GetModelVersionSignaturesAction(payload.id));
                 }
                 return obs;
             })
         );
-    
+
     @Effect() getModelVersionSignatures$: Observable<Action> = this.actions$
         .ofType(HydroActions.SignaturesActionTypes.GetModelVersionSignatures)
         .pipe(
@@ -46,11 +45,11 @@ export class SignaturesEffects {
                         map(data => {
                             return new HydroActions.GetModelVersionSignaturesSuccessAction(data.signatures);
                         }),
-                        catchError(error => Observable.of(new HydroActions.GetModelVersionSignaturesFailAction(error)))
+                        catchError(error => observableOf(new HydroActions.GetModelVersionSignaturesFailAction(error)))
                     );
             })
         );
-    
+
     constructor(
         private signaturesService: SignaturesService,
         private actions$: Actions

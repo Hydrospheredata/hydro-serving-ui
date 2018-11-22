@@ -5,7 +5,7 @@ import { ModelBuilder } from './model.builder';
 describe('ModelBuilder', () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
-            providers: [ModelBuilder]
+            providers: [ModelBuilder],
         });
     });
 

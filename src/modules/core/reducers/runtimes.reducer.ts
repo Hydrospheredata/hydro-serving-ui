@@ -1,7 +1,5 @@
-import { Runtime } from '@shared/models/_index';
 import * as Actions from '@core/actions';
-
-
+import { Runtime } from '@shared/models/_index';
 
 const initialState: Runtime[] = [];
 

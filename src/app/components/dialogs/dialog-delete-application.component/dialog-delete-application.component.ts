@@ -1,21 +1,18 @@
 import { Component } from '@angular/core';
-import { MdlDialogReference } from '@angular-mdl/core';
-import { Store } from '@ngrx/store';
 
 import { DialogBase } from '@shared/base/_index';
+
 import { DeleteApplicationAction } from '@applications/actions/applications.actions';
-import { HydroServingState } from '@core/reducers';
-
-// export let injectableApplicationId = new InjectionToken<number>('injectableApplicationId');
-
 import * as fromApplication from '@applications/reducers';
+import { HydroServingState } from '@core/reducers';
+import { Store } from '@ngrx/store';
 
-
+import { MdlDialogReference } from '@angular-mdl/core';
 
 @Component({
     selector: 'hydro-dialog-delete-application',
     templateUrl: './dialog-delete-application.component.html',
-    styleUrls: ['./dialog-delete-application.component.scss']
+    styleUrls: ['./dialog-delete-application.component.scss'],
 })
 export class DialogDeleteApplicationComponent extends DialogBase {
     private applicationId: number;

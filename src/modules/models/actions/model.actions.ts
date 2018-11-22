@@ -13,7 +13,6 @@ export enum ModelActionTypes {
     BuildFail = '[Model] Build model with fail',
 }
 
-
 export class GetModelsAction implements Action {
     readonly type = ModelActionTypes.Get;
 }
@@ -57,8 +56,6 @@ export class BuildModelFailAction implements Action {
     readonly type = ModelActionTypes.BuildFail;
     constructor(public error) { }
 }
-
-
 
 export type ModelActions
     = GetModelsAction

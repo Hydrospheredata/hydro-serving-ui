@@ -1,54 +1,46 @@
-import { Injectable, OnInit } from '@angular/core';
-import { InfluxDB } from 'influx';
-import { parse } from 'influx/lib/src/results';
-import { environment } from '@environments/environment';
+import { Injectable } from '@angular/core';
+import { ParsingResult, Response} from '@shared/models/_index';
 
 @Injectable()
-export class InfluxDBService implements OnInit {
+export class InfluxDBService {
+    public parse<T>(response: Response): ParsingResult<T> {
+        const series = response.results[0].series || [];
+        const res: any = [];
+        res.groupRows = [];
 
-    private client: InfluxDB;
+        const tags = series.length && series[0].tags ? Object.keys(series[0].tags) : [];
 
-    constructor() {
-        if (!this.client) {
-            this.connect();
+        for (let i = 0; i < series.length; i++) {
+            const { values = [], columns = []} = series[i];
+            const nextGroup = [];
+
+            for (const currentValue of values) {
+                const obj = {};
+
+                for (let j = 0; j < columns.length; j++) {
+                    const currentColumn = columns[j];
+
+                    if (currentColumn === 'time') {
+                        obj[currentColumn] = new Date(currentValue[j]);
+                    } else {
+                        obj[currentColumn] = currentValue[j];
+                    }
+                }
+
+                for (const currentTag of tags) {
+                    obj[currentTag] = series[i].tags[currentTag];
+                }
+
+                res.push(obj);
+                nextGroup.push(obj);
+            }
+
+            res.groupRows[i] = {
+                name: series[i].name,
+                rows: nextGroup,
+                tags: series[i].tags,
+            };
         }
-    }
-
-    ngOnInit() { }
-
-    public connect() {
-        this.client = new InfluxDB({
-            host: environment.production ? `${window.location.hostname}` : 'localhost',
-            port: 8086, // Number(environment.production ? `${window.location.port}` : `${environment.port}`),
-            database: 'appmetrics'
-        });
-    }
-
-    public search(query: string) {
-        return this.client.query(query);
-    }
-
-    public getDataBases(): Promise<string[]> {
-        return this.client.getDatabaseNames();
-    }
-
-    public getMeasurements(): Promise<string[]> {
-        return this.client.getMeasurements();
-    }
-
-    public getUsers() {
-        return this.client.getUsers();
-    }
-
-    public getSeries() {
-        return this.client.getSeries({
-            measurement: 'envoy_cluster_name'
-        });
-    }
-
-    public parse(response) {
-        return parse(response);
+        return res;
     }
 }
-
-

@@ -1,6 +1,5 @@
-import { DialogModelBuildComponent } from './dialog-model-build.component';
 import { ComponentFixture, async, TestBed } from '@angular/core/testing';
-
+import { DialogModelBuildComponent } from './dialog-model-build.component';
 
 describe('DialogModelBuildComponent', () => {
 
@@ -9,7 +8,7 @@ describe('DialogModelBuildComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [DialogModelBuildComponent]
+            declarations: [DialogModelBuildComponent],
         })
             .compileComponents();
     }));

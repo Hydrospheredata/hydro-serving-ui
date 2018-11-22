@@ -1,19 +1,19 @@
-import * as fromApplications from './applications.reducer';
 import * as fromRoot from '@core/reducers';
 import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 import { Application, TestStatus } from '@shared/models/_index';
+import * as fromApplications from './applications.reducer';
 
 export interface ApplicationsState {
     applications: fromApplications.State;
 }
 
 export interface State extends fromRoot.HydroServingState {
-    applications: ApplicationsState
+    applications: ApplicationsState;
 }
 
 export const reducers: ActionReducerMap<ApplicationsState> = {
-    applications: fromApplications.reducer
-}
+    applications: fromApplications.reducer,
+};
 
 export const getApplicationState = createFeatureSelector<ApplicationsState>('applications');
 
@@ -25,7 +25,7 @@ export const getApplicationEntitiesState = createSelector(
 export const getApplicationEntitiesLoaded = createSelector(
     getApplicationEntitiesState,
     state => state.loaded
-)
+);
 
 export const {
     selectEntities: getApplicationEntities,
@@ -41,7 +41,7 @@ export const getSelectedApplication = createSelector(
 
 export const getSelectedStageId = createSelector(
     fromRoot.getRouterState,
-    (router) => router.state && router.state.params.stageId
+    router => router.state && router.state.params.stageId
 );
 
 export const getSelectedApplicationName = createSelector(
@@ -57,25 +57,25 @@ export const getSelectedApplicationSignatureName = createSelector(
 export const getSelectedApplicationId = createSelector(
     getSelectedApplication,
     (application: Application): number => application && application.id
-)
+);
 
 export const getSelectedApplicationInput = createSelector(
     getSelectedApplication,
     (application: Application): string => application && application.input
-)
+);
 
 export const getSelectedApplicationOutput = createSelector(
     getSelectedApplication,
     (application: Application): string => application && application.output
-)
+);
 
 export const getSelectedApplicationTestStatus = createSelector(
     getSelectedApplication,
     (application: Application): TestStatus => application && application.testStatus
-)
+);
 
 export const getCurrentStage = createSelector(
     getSelectedApplication,
     getSelectedStageId,
     (application: Application, stageId) => application && application.executionGraph.stages[stageId]
-)
+);

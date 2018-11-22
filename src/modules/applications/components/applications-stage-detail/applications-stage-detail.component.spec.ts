@@ -8,7 +8,7 @@ describe('ApplicationsStageDetailComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ApplicationsStageDetailComponent]
+            declarations: [ApplicationsStageDetailComponent],
         })
             .compileComponents();
     }));

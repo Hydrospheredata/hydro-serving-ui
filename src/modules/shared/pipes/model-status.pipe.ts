@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Model } from '@shared/models/_index';
 
 @Pipe({
-    name: 'modelStatus'
+    name: 'modelStatus',
     })
 export class ModelStatusPipe implements PipeTransform {
 
@@ -11,18 +11,10 @@ export class ModelStatusPipe implements PipeTransform {
             deployed: 'DEPLOYED',
             created: 'CREATED',
             stopped: 'STOPPED',
-            failed: 'FAILED'
+            failed: 'FAILED',
         };
-        let status = modelStatuses['created'];
+        const status = modelStatuses.created;
         console.log(model);
-
-        // if (model.currentServices && model.currentServices.length) {
-        //     status = modelStatuses['deployed'];
-        // } else if (Object.keys(model.lastModelRuntime).length && model.lastModelBuild.status === 'FINISHED') {
-        //     status = modelStatuses['stopped'];
-        // } else if (model.lastModelBuild.status === 'ERROR' || model.lastModelBuild.status === 'FAILED') {
-        //     status = modelStatuses['failed'];
-        // }
 
         return status;
     }

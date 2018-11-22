@@ -1,16 +1,17 @@
-import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { MdlDialogOutletService } from '@angular-mdl/core';
-import { Store } from '@ngrx/store';
-import { HydroServingState } from '@core/reducers';
-import * as Actions from '@core/actions';
-import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
+import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { GetApplicationsAction } from '@applications/actions';
+
+import * as Actions from '@core/actions';
+import { HydroServingState } from '@core/reducers';
 import { SvgSpriteService } from '@core/services';
+import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
+import { Store } from '@ngrx/store';
 
 @Component({
     selector: 'hydro-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
 
@@ -26,10 +27,10 @@ export class AppComponent implements OnInit {
     ngOnInit() {
         this.svgSprite.loadSvgSprite();
 
-        this.store.dispatch(new GetModelsAction);
-        this.store.dispatch(new GetApplicationsAction);
+        this.store.dispatch(new GetModelsAction());
+        this.store.dispatch(new GetApplicationsAction());
         this.store.dispatch({ type: Actions.GET_RUNTIMES });
         this.store.dispatch({ type: Actions.GET_ENVIRONMENTS });
-        this.store.dispatch(new GetModelVersionsAction);
+        this.store.dispatch(new GetModelVersionsAction());
     }
 }

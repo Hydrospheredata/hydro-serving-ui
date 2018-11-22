@@ -3,7 +3,7 @@ def repository = 'hydro-serving-ui'
 def buildFunction = {
   def curVersion = getVersion()
   sh "npm install"
-  sh "./node_modules/.bin/ng build --prod --aot=false"
+  sh "./node_modules/.bin/ng build --prod"
   sh "cp -r ${repository} docker"
   sh "cd docker && docker build -t hydrosphere/serving-manager-ui:${curVersion} ."
 }

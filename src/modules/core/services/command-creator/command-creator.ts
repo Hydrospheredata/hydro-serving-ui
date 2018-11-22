@@ -1,17 +1,17 @@
-import { Application } from "@shared/_index";
+import { Application } from '@shared/_index';
 import * as hocon from 'hocon-parser';
 
 export interface IContractInputsShape {
     dim?: {
         name: string,
         size: number
-    },
-    unknown_rank: boolean
+    };
+    unknown_rank: boolean;
 }
 export interface IContractInputs {
     dtype: string;
     name: string;
-    shape?: IContractInputsShape
+    shape?: IContractInputsShape;
 }
 
 export interface IContractOutputs {

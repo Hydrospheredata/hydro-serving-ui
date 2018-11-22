@@ -12,9 +12,9 @@ export class MonitoringDictionary implements IMonitoringDictionary {
     isSystem: boolean;
 
     constructor(parameters) {
-        this.name = parameters['name'];
-        this.className = parameters['className'];
-        this.metrics = parameters['metrics'];
-        this.isSystem = parameters['isSystem'];
+        this.name = parameters.name;
+        this.className = parameters.className;
+        this.metrics = parameters.metrics;
+        this.isSystem = parameters.isSystem;
     }
 }

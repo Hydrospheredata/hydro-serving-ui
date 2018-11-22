@@ -1,8 +1,7 @@
 import { Component, Input, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { SortByPipe } from '@shared/pipes/_index';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Subscription ,  Observable } from 'rxjs';
 
 import { Application, Model, Source } from '@shared/models/_index';
 
@@ -10,7 +9,7 @@ import { Application, Model, Source } from '@shared/models/_index';
     selector: 'hydro-sidebar',
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.scss'],
-    providers: [SortByPipe]
+    providers: [SortByPipe],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
     @Input() actionButton: TemplateRef<any>;
@@ -29,7 +28,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     constructor(
         private activatedRoute: ActivatedRoute,
         private router: Router,
-        private sortBy: SortByPipe,
+        private sortBy: SortByPipe
     ) {
         this.routeSub = this.router.events
             .subscribe(event => {
@@ -60,15 +59,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
         }
     }
 
+    onFilter(filtredItems: Application[] | Model[]): void {
+        this.sidebarFiltredList = filtredItems;
+    }
 
     private redirectToFirst() {
         if (this.isRedirectable && this.sidebarList.length > 0) {
             this.isRedirectable = false;
             this.router.navigate([this.sidebarList[0].id], { relativeTo: this.activatedRoute });
         }
-    }
-
-    onFilter(filtredItems: Application[] | Model[]): void {
-        this.sidebarFiltredList = filtredItems;
     }
 }

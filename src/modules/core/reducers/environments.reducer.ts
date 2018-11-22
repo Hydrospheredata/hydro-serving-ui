@@ -1,7 +1,5 @@
-import { Environment } from '@shared/models/_index';
 import * as ModelActions from '@core/actions';
-
-
+import { Environment } from '@shared/models/_index';
 
 const initialState: Environment[] = [];
 

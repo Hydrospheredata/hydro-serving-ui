@@ -1,13 +1,9 @@
-import { Directive, ElementRef, Input, OnDestroy } from "@angular/core";
-import { fromEvent } from "rxjs/observable/fromEvent";
-import { Subscription, BehaviorSubject } from "rxjs";
-import { tap, filter, delay } from "rxjs/operators"
-
-
-
+import { Directive, ElementRef, Input, OnDestroy } from '@angular/core';
+import { fromEvent ,  Subscription, BehaviorSubject } from 'rxjs';
+import { tap, filter, delay } from 'rxjs/operators';
 
 @Directive({
-    selector: '[copyToBuffer]'
+    selector: '[copyToBuffer]',
 })
 export class CopyToBufferDirective implements OnDestroy {
     @Input('copyToBuffer') copiedText: string;
@@ -20,21 +16,21 @@ export class CopyToBufferDirective implements OnDestroy {
         this.clickSubscriprtion$ = this.createClickSubscription();
     }
 
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.clickSubscriprtion$.unsubscribe();
         this.copy$.complete();
     }
 
     private createClickSubscription(): Subscription {
        return fromEvent(this.el.nativeElement, 'click').pipe(
-            filter(_ => {return this.copy$.getValue() === false}),
-            tap(_ => { this.copy$.next(true) }),
+            filter(_ => this.copy$.getValue() === false),
+            tap(_ => { this.copy$.next(true); }),
             delay(this.toogleDelay),
-            tap(_ => { this.copy$.next(false) })
-        ).subscribe()
+            tap(_ => { this.copy$.next(false); })
+        ).subscribe();
     }
 
-    private copyToClipboard(text: string) : void {
+    private copyToClipboard(text: string): void {
         const el = document.createElement('textarea');
         el.value = text;
         el.setAttribute('readonly', '');
@@ -47,11 +43,11 @@ export class CopyToBufferDirective implements OnDestroy {
     }
 
     private setHostElementText(copy: boolean): void {
-        if(copy){
+        if (copy) {
             this.copyToClipboard(this.copiedText);
-            this.el.nativeElement.innerText = "copied";
+            this.el.nativeElement.innerText = 'copied';
         } else {
-            this.el.nativeElement.innerText = "copy"; 
+            this.el.nativeElement.innerText = 'copy';
         }
     }
 }

@@ -8,7 +8,7 @@ describe('ModelsWrapperComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [ModelsWrapperComponent]
+            declarations: [ModelsWrapperComponent],
         })
             .compileComponents();
     }));

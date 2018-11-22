@@ -1,23 +1,22 @@
-import { Component, OnInit, InjectionToken, Inject, OnDestroy } from '@angular/core';
-import { MdlDialogReference } from '@angular-mdl/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Store } from '@ngrx/store';
+import { Component, InjectionToken, Inject, OnDestroy } from '@angular/core';
 
-import { DialogBase } from '@shared/base/_index';
-import { Signature } from '@shared/models/_index';
 import { HydroServingState } from '@core/reducers';
 import { BuildModelAction } from '@models/actions';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+
+import { MdlDialogReference } from '@angular-mdl/core';
+import { DialogBase } from '@shared/base/_index';
+import { Signature } from '@shared/models/_index';
 
 export let injectableModelOptions = new InjectionToken<object>('injectableModelOptions');
-
-
 
 @Component({
     selector: 'hydro-dialog-model-build',
     templateUrl: './dialog-model-build.component.html',
-    styleUrls: ['./dialog-model-build.component.scss']
+    styleUrls: ['./dialog-model-build.component.scss'],
 })
-export class DialogModelBuildComponent extends DialogBase implements OnInit, OnDestroy {
+export class DialogModelBuildComponent extends DialogBase implements OnDestroy {
     public currentModelRuntimeType;
     public runtimeTypes;
     public data;
@@ -32,15 +31,13 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit, OnD
     constructor(
         public dialogRef: MdlDialogReference,
         @Inject(injectableModelOptions) data,
-        private store: Store<HydroServingState>,
+        private store: Store<HydroServingState>
     ) {
         super(
             dialogRef
         );
         this.model = data;
     }
-
-    ngOnInit() { }
 
     ngOnDestroy() {
         if (this.runtimeTypesSub) {
@@ -50,7 +47,7 @@ export class DialogModelBuildComponent extends DialogBase implements OnInit, OnD
 
     public onSubmit() {
         const modelOptions = {
-            modelId: this.model.id
+            modelId: this.model.id,
         };
 
         this.buildModel(modelOptions);

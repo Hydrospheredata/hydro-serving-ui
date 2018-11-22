@@ -1,8 +1,8 @@
+
 import { Injectable } from '@angular/core';
+import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import { HttpService } from '@core/services/http/_index';
-
-
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class RuntimesService {
@@ -16,21 +16,12 @@ export class RuntimesService {
     }
 
     public getRuntimes() {
-        return this.http.get(`${this.baseAPIUrl}`)
-            .map((res: Response): any => {
-                return res.json();
-            });
+        return this.http.get(`${this.baseAPIUrl}`).pipe(
+            map((res: Response): any => res));
     }
 
     public createRuntime(options) {
-        return this.http.post(this.baseAPIUrl, options)
-            .map((res: Response): any => {
-                return res.json();
-            });
+        return this.http.post(this.baseAPIUrl, options).pipe(
+            map((res: Response): any => res));
     }
-
-    // public getModelType(modelType: Model) {
-    //     return this.http.post(this.baseAPIUrl, model);
-    // }
-
 }

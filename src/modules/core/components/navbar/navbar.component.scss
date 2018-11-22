@@ -11,9 +11,11 @@ $active-color: white;
   align-items: center;
   padding: 0 30px;
   &__logo {
-    height: 50px;
     cursor: pointer;
     outline: none;
+    &-icon {
+      height: 50px;
+    }
   }
   &__menu {
     height: 100%;

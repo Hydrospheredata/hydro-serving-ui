@@ -1,12 +1,8 @@
-
-
-import { Component, OnDestroy, OnInit, Output,EventEmitter, Input } from '@angular/core';
+import { Component, OnDestroy, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { MdlDialogReference } from '@angular-mdl/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
-import { DialogBase } from '@shared/base/dialog-base';
-import * as hocon from 'hocon-parser';
+import * as fromModel from '@models/reducers';
 import { Store } from '@ngrx/store';
 import {
     Application,
@@ -19,17 +15,19 @@ import { HydroServingState } from '@core/reducers';
 
 import { FormsService } from '@core/services';
 
-import 'codemirror/mode/yaml/yaml.js';
-import 'codemirror/addon/edit/matchbrackets.js';
-import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/display/placeholder.js';
+import 'codemirror/addon/edit/closebrackets.js';
+import 'codemirror/addon/edit/matchbrackets.js';
+import 'codemirror/mode/yaml/yaml.js';
 
-import * as fromModel from '@models/reducers';
+import { MdlDialogReference } from '@angular-mdl/core';
+import { DialogBase } from '@shared/base/dialog-base';
+import * as hocon from 'hocon-parser';
 
 @Component({
     selector: 'hydro-applications-dialog',
     templateUrl: './applications-dialog.component.html',
-    styleUrls: ['./applications-dialog.component.scss']
+    styleUrls: ['./applications-dialog.component.scss'],
 })
 export class ApplicationsDialogComponent extends DialogBase implements OnDestroy, OnInit {
     @Input()
@@ -49,11 +47,11 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
         autoCloseBrackets: true,
         mode: {
             name: 'javascript',
-            json: true
+            json: true,
         },
         lineWrapping: true,
         readOnly: false,
-        scrollbarStyle: 'null'
+        scrollbarStyle: 'null',
     };
 
     public pipelineEditorValue = '';
@@ -117,14 +115,14 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
             {
                 id: 0,
                 name: 'CPU',
-                placeholders: []
+                placeholders: [],
             },
             {
                 id: 1,
                 name: 'GPU',
-                placeholders: []
-            }
-        ]
+                placeholders: [],
+            },
+        ];
 
         this.defaultAppOptions = {
             services: {
@@ -132,21 +130,20 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
                 runtimeId: this.runtimes && this.runtimes.length > 0 ? this.runtimes[0].id : 0,
                 environmentId: this.environments && this.environments.length > 0 ? this.environments[0].id : 0,
                 modelVersionId: this.modelVersions && this.modelVersions.length > 0 ? this.modelVersions[0].id : 0,
-                signatureName: this.signatures ? this.signatures.signature_name : ''
+                signatureName: this.signatures ? this.signatures.signature_name : '',
             },
             kafkaStreaming: {
                 sourceTopic: '',
-                destinationTopic: ''
-            }
+                destinationTopic: '',
+            },
         };
     }
 
-    ngOnInit(){
+    ngOnInit(): void {
         this.createForm(this.applicationData);
-        this.initFormChangesListener();
     }
 
-    public createForm(data?: Application) {
+    public createForm(data?: Application): void {
         this.applicationForm = this.fb.group({
             applicationName: ['', Validators.required],
             applicationNamespace: '',
@@ -176,7 +173,7 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
         }
     }
 
-    public ngOnDestroy() {
+    public ngOnDestroy(): void {
         if (this.signaturesStoreSub) {
             this.signaturesStoreSub.unsubscribe();
         }
@@ -191,17 +188,12 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
         }
     }
 
-    public initFormChangesListener() {
-        this.applicationForm.valueChanges
-            .subscribe(form => {
-                console.log(form);
-            });
-    }
-
     public addStageControl(stage, i?: number) {
         let index: number;
-        const control = <FormArray>this.applicationForm.get('stages');
+        const control = this.applicationForm.get('stages') as FormArray;
+
         control.push(this.addStage());
+
         if (i !== undefined) {
             index = i;
         } else {
@@ -218,28 +210,40 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
         }
     }
 
+    public onSubmit() {
+        if (this.applicationForm.invalid) {
+            return;
+        }
+
+        const formData = {
+            name: this.applicationForm.value.applicationName,
+            kafkaStreaming: this.isKafkaEnabled ? this.applicationForm.value.kafkaStreaming : [],
+            executionGraph: {
+                stages: this.prepareFormDataToSubmit(),
+            },
+        };
+
+        this.submitEvent.emit(formData);
+    }
+
     public removeStageControl(i: number) {
-        const control = <FormArray>this.applicationForm.get('stages');
+        const control = this.applicationForm.get('stages') as FormArray;
         control.removeAt(i);
     }
 
     public addServiceByModelVerId(modelVersionId: number, index: number) {
-        const service = { 
-                modelVersion: { 
-                    id: modelVersionId
-                }
-            };
+        const service = { modelVersion: { id: modelVersionId } };
 
         this.addServiceControl(service, index);
         }
 
     public addServiceControl(service: object, index: number) {
-        const control = <FormArray>this.applicationForm.get(['stages', index]).get('services');
+        const control = this.applicationForm.get(['stages', index]).get('services') as FormArray;
         control.push(this.addService(service));
     }
 
     public removeServiceControl(i: number, j: number) {
-        const control = <FormArray>this.applicationForm.get(['stages', i]).get('services');
+        const control = this.applicationForm.get(['stages', i]).get('services') as FormArray;
         control.removeAt(j);
     }
 
@@ -247,12 +251,12 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
         if (!this.isKafkaEnabled) {
             this.isKafkaEnabled = !this.isKafkaEnabled;
         }
-        const control = <FormArray>this.applicationForm.get('kafkaStreaming');
+        const control = this.applicationForm.get('kafkaStreaming') as FormArray;
         control.push(this.addKafkaSource(kafkaStreaming));
     }
 
     public removeKafkaControl(i: number) {
-        const control = <FormArray>this.applicationForm.get('kafkaStreaming');
+        const control = this.applicationForm.get('kafkaStreaming') as FormArray;
         control.removeAt(i);
     }
 
@@ -266,13 +270,12 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
                     {
                         runtimeId: service.runtime,
                         modelVersionId: service.modelVersion,
-                        // environmentId: service.environment,
                         weight: Number(service.weight),
-                        signatureName: service.signatureName
+                        signatureName: service.signatureName,
                     }
                 );
             });
-            stages.push({ services: services });
+            stages.push({ services });
         });
 
         return stages;
@@ -294,7 +297,7 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
 
     private addStage(): FormGroup {
         return this.fb.group({
-            services: this.fb.array([])
+            services: this.fb.array([]),
         });
     }
 
@@ -308,7 +311,7 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
             weight,
             runtime = {},
             environment = {},
-            modelVersion = {}
+            modelVersion = {},
         } = options;
         const defaultServiceOptions = this.defaultAppOptions.services;
 
@@ -317,9 +320,10 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
             runtime: [runtime.id || defaultServiceOptions.runtimeId, this.runtimeControlValidator],
             environment: [environment.id || defaultServiceOptions.environmentId],
             modelVersion: [modelVersion.id || defaultServiceOptions.modelVersionId],
-            signatureName: [options.signatureName || this.getSignature(modelVersion.id || defaultServiceOptions.modelVersionId),
-            this.signatureNameControlValidator
-            ]
+            signatureName: [
+                options.signatureName || this.getSignature(modelVersion.id || defaultServiceOptions.modelVersionId),
+                this.signatureNameControlValidator,
+            ],
         });
     }
 
@@ -329,7 +333,7 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
         }
         return this.fb.group({
             sourceTopic: [kafkaStreaming.sourceTopic, Validators.required],
-            destinationTopic: [kafkaStreaming.destinationTopic, Validators.required]
+            destinationTopic: [kafkaStreaming.destinationTopic, Validators.required],
         });
     }
 
@@ -342,27 +346,11 @@ export class ApplicationsDialogComponent extends DialogBase implements OnDestroy
     }
 
     private get signatureNameControlValidator(): ValidatorFn[] {
-        const control = <FormArray>this.applicationForm.get('stages');
+        const control = this.applicationForm.get('stages') as FormArray;
         if (control.length > 1) {
             return [Validators.required, Validators.pattern(this.formsService.VALIDATION_PATTERNS.text)];
         } else {
             return [Validators.pattern(this.formsService.VALIDATION_PATTERNS.text)];
         }
-    }
-
-    public onSubmit(){
-        if (this.applicationForm.invalid) {
-            return;
-        }
-
-        const formData = {
-            name: this.applicationForm.value.applicationName,
-            kafkaStreaming: this.isKafkaEnabled ? this.applicationForm.value.kafkaStreaming : [],
-            executionGraph: {
-                stages: this.prepareFormDataToSubmit()
-            }
-        };
-        
-        this.submitEvent.emit(formData);
     }
 }

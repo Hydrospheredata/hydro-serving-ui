@@ -1,29 +1,18 @@
+
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import {from as observableFrom, of as observableOf,  Observable } from 'rxjs';
 
-import { ModelsService } from '@models/services';
-import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@core/builders/_index';
-import * as HydroActions from '@models/actions';
-import { flatMap, map, catchError, mergeMap, switchMap } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { Router } from '@angular/router';
-
-
+import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@core/builders/_index';
+import * as HydroActions from '@models/actions';
+import { ModelsService } from '@models/services';
+import { flatMap, map, catchError, mergeMap, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class ModelEffects {
-
-    constructor(
-        private modelBuilder: ModelBuilder,
-        private modelVersionBuilder: ModelVersionBuilder,
-        private modelBuildBuilder: ModelBuildBuilder,
-        private modelsService: ModelsService,
-        private actions$: Actions,
-        private mdlSnackbarService: MdlSnackbarService,
-        private router: Router,
-    ) { }
 
     @Effect() loadModels$: Observable<Action> = this.actions$
         .ofType(HydroActions.ModelActionTypes.Get)
@@ -32,10 +21,11 @@ export class ModelEffects {
                 .getModels()
                 .pipe(
                     map(data => {
-                        return (new HydroActions.GetModelsSuccessAction(data.map(this.modelBuilder.build, this.modelBuilder)));
+                        const newData = data.map(this.modelBuilder.build, this.modelBuilder);
+                        return (new HydroActions.GetModelsSuccessAction(newData));
                     }),
                     catchError(error => {
-                        return Observable.of(new HydroActions.GetModelsFailAction(error));
+                        return observableOf(new HydroActions.GetModelsFailAction(error));
                     })
                 )
             )
@@ -51,7 +41,7 @@ export class ModelEffects {
                         const preparedData = data.map(this.modelVersionBuilder.build, this.modelVersionBuilder);
                         return (new HydroActions.GetModelVersionsSuccessAction(preparedData));
                     }),
-                    catchError(error => Observable.of(new HydroActions.GetModelVersionsFailAction(error)))
+                    catchError(error => observableOf(new HydroActions.GetModelVersionsFailAction(error)))
                 )
             )
         );
@@ -68,8 +58,8 @@ export class ModelEffects {
                             const modelBuilds = data.map(this.modelBuildBuilder.build, this.modelBuildBuilder);
                             return new HydroActions.GetModelBuildsSuccessAction(modelBuilds);
                         }),
-                        catchError((error) => {
-                            return Observable.of(new HydroActions.GetModelBuildsFailAction(error));
+                        catchError(error => {
+                            return observableOf(new HydroActions.GetModelBuildsFailAction(error));
                         })
                     );
             })
@@ -79,27 +69,27 @@ export class ModelEffects {
         .ofType(HydroActions.ModelActionTypes.Build)
         .pipe(
             map((action: HydroActions.BuildModelAction) => action.payload),
-            flatMap((options) => {
+            flatMap(options => {
                 return this.modelsService
                     .buildModel(options)
                     .pipe(
-                        mergeMap((response) => {
+                        mergeMap(response => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: 'Model has been released',
-                                timeout: 5000
+                                timeout: 5000,
                             });
-                            return Observable.from([
+                            return observableFrom([
                                 new HydroActions.BuildModelSuccessAction(response),
                                 new HydroActions.AddModelVersionSuccessAction(response),
-                                new HydroActions.GetModelBuildsAction(response.model.id)
+                                new HydroActions.GetModelBuildsAction(response.model.id),
                             ]);
                         }),
-                        catchError((error) => {
+                        catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: `Error: ${error}`,
-                                timeout: 5000
+                                timeout: 5000,
                             });
-                            return Observable.of(new HydroActions.BuildModelFailAction(error));
+                            return observableOf(new HydroActions.BuildModelFailAction(error));
                         })
                     );
             })
@@ -117,18 +107,28 @@ export class ModelEffects {
                             this.router.navigate(['models']);
                             this.mdlSnackbarService.showSnackbar({
                                 message: 'Model has been deleted',
-                                timeout: 5000
+                                timeout: 5000,
                             });
                             return (new HydroActions.DeleteModelSuccessAction(modelId));
                         }),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: `Error: ${error}`,
-                                timeout: 5000
+                                timeout: 5000,
                             });
-                            return Observable.of(new HydroActions.DeleteModelFailAction(error));
+                            return observableOf(new HydroActions.DeleteModelFailAction(error));
                         })
                     );
             })
         );
+
+    constructor(
+        private modelBuilder: ModelBuilder,
+        private modelVersionBuilder: ModelVersionBuilder,
+        private modelBuildBuilder: ModelBuildBuilder,
+        private modelsService: ModelsService,
+        private actions$: Actions,
+        private mdlSnackbarService: MdlSnackbarService,
+        private router: Router
+    ) { }
 }
