@@ -97,7 +97,7 @@ export class ApplicationsItemDetailComponent {
 
         if (this.models) {
             const modell = this.models.find(model => model.name === modelName);
-            return modell.lastModelBuild.version > modelVersion;
+            return modell.lastModelVersion.modelVersion > modelVersion;
         }
     }
 

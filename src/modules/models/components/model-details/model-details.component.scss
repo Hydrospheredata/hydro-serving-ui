@@ -160,3 +160,15 @@
       margin: 0;
   }
 }
+
+.alert {
+  color: grey;
+  display: inline-block;
+  font-style: italic;
+  margin-bottom: 8px;
+  text-align: center;
+  width: 100%;
+  &__ancor {
+    color: $error-text-color;
+  }
+}
