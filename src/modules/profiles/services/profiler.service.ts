@@ -14,7 +14,7 @@ export class ProfilerService {
   }
 
   public getFields(modelVersionId: number) {
-    return this.http.get(`${this.baseAPIUrl}/fields/${modelVersionId}`).pipe(
+    return this.http.get(`${this.baseAPIUrl}/fields/${modelVersionId}`, null, false).pipe(
             map((res: Response): any => res));
   }
 
