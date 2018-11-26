@@ -7,7 +7,6 @@
         </button>
     </div>
 
-
     <div class="content-body">
         <hydro-list-info [data]="(model$ | async)"></hydro-list-info>
 
@@ -17,41 +16,51 @@
             <div class="hydro-panel__header">
                 <h5>Versions</h5>
             </div>
-            <table class='hydro-table hydro-table-models'>
-                <thead class="hydro-table-head">
-                    <tr>
-                        <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of (modelBuilds$ | async) | sortBy:'started' | reverseArray" class='hydro-table-body__row'>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ item.version }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-overflow-ellipsis model-build-status model-build-status--{{item.status | lowercase}}' [status]="item.status" modelStatus>
-                                <hydro-icon #statusIcon class="icon"></hydro-icon>
-                                <span #statusText class="icon-label"></span>
-                            </div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <span class="model-item__application" *ngFor="let app of (item.modelVersion.applications | slice: item.modelVersion.applications.length - 2)"
-                                [routerLink]="['../../applications', app.id]">
-                                <span>{{app.name}}</span>
-                            </span>
-                            <span *ngIf="item.modelVersion.applications.length === 0">-</span>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <button class="button button--flat navigation-button" [routerLink]="[item.version]" *ngIf="item.status === 'Finished'">
-                                <hydro-icon [type]="'icon-right'" class='button__icon navigation-icon'></hydro-icon>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+
+            <ng-container *ngIf="(modelBuilds$ | async); let modelBuilds">
+                <ng-container *ngIf="modelBuilds.length === 0">
+                    <span class="alert">
+                        <span class="alert__ancor">Ooops!</span> It looks like API does not return any builds for this model. Please check model.
+                    </span>
+                </ng-container>
+                <ng-container *ngIf="modelBuilds.length">
+                    <table class='hydro-table hydro-table-models'>
+                        <thead class="hydro-table-head">
+                            <tr>
+                                <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of modelBuilds | sortBy:'started' | reverseArray" class='hydro-table-body__row'>
+                                    <td class="hydro-table-body__cell">
+                                        <div class='cs-text-overflow-ellipsis'>{{ item.version }}</div>
+                                    </td>
+                                    <td class="hydro-table-body__cell">
+                                        <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
+                                    </td>
+                                    <td class="hydro-table-body__cell">
+                                        <div class='cs-text-overflow-ellipsis model-build-status model-build-status--{{item.status | lowercase}}' [status]="item.status" modelStatus>
+                                            <hydro-icon #statusIcon class="icon"></hydro-icon>
+                                            <span #statusText class="icon-label"></span>
+                                        </div>
+                                    </td>
+                                    <td class="hydro-table-body__cell">
+                                        <span class="model-item__application" *ngFor="let app of (item.modelVersion.applications | slice: item.modelVersion.applications.length - 2)"
+                                            [routerLink]="['../../applications', app.id]">
+                                            <span>{{app.name}}</span>
+                                        </span>
+                                        <span *ngIf="item.modelVersion.applications.length === 0">-</span>
+                                    </td>
+                                    <td class="hydro-table-body__cell">
+                                        <button class="button button--flat navigation-button" [routerLink]="[item.version]" *ngIf="item.status === 'Finished'">
+                                            <hydro-icon [type]="'icon-right'" class='button__icon navigation-icon'></hydro-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </ng-container>
+            </ng-container>
         </div>
     </div>
 </div>

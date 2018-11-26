@@ -40,5 +40,4 @@ export class ModelDetailsComponent {
             leaveTransitionDuration: 400,
         });
     }
-
 }
