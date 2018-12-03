@@ -16,9 +16,9 @@ import { Application, Model, HealthRow } from '@shared/models/_index';
 import {
     DialogDeleteApplicationComponent,
     DialogUpdateApplicationComponent,
-    injectableServiceUpdate,
     DialogUpdateModelVersionComponent,
     SELECTED_SERVICE,
+    SELECTED_UPD_APPLICATION$,
     DialogTestComponent,
     SELECTED_APPLICATION$,
 } from '@applications/components/dialogs';
@@ -119,7 +119,7 @@ export class ApplicationsItemDetailComponent {
     public editApplication(application: Observable<Application>) {
         this.dialog.createDialog({
             component: DialogUpdateApplicationComponent,
-            providers: [{ provide: injectableServiceUpdate, useValue: application }],
+            providers: [{ provide: SELECTED_UPD_APPLICATION$, useValue: application }],
             styles: {
                 height: '100%',
             },

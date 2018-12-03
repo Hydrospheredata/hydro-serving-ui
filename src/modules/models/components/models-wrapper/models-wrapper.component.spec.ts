@@ -1,5 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { RouterTestingModule } from '@angular/router/testing';
+import { SharedModule } from '@shared/shared.module';
+import { MockStoreProvider } from '@testing/mocks';
 import { ModelsWrapperComponent } from './models-wrapper.component';
 
 describe('ModelsWrapperComponent', () => {
@@ -9,6 +12,13 @@ describe('ModelsWrapperComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [ModelsWrapperComponent],
+            imports: [
+                SharedModule,
+                RouterTestingModule,
+            ],
+            providers: [
+                MockStoreProvider,
+            ],
         })
             .compileComponents();
     }));

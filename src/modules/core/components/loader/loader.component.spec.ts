@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { MdlModule } from '@angular-mdl/core';
+import { LoaderStateService } from '@core/services';
 import { LoaderComponent } from './loader.component';
 
 describe('LoaderComponent', () => {
@@ -8,7 +10,13 @@ describe('LoaderComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
+            imports: [
+                MdlModule,
+            ],
             declarations: [LoaderComponent],
+            providers: [
+                LoaderStateService,
+            ],
         })
             .compileComponents();
     }));

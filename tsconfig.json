@@ -39,8 +39,10 @@
       ],
       "@dialog/*": [
         "modules/dialog/*"
+      ],
+      "@testing/*": [
+        "testing/*"
       ]
-
     },
     "typeRoots": [
       "node_modules/@types"

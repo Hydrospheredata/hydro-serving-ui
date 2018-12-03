@@ -9,7 +9,7 @@ import { Observable ,  Subscription } from 'rxjs';
 
 import { DialogService } from '@dialog/dialog.service';
 
-export let injectableServiceUpdate = new InjectionToken<Observable<Application>>('selectedService');
+export let SELECTED_UPD_APPLICATION$ = new InjectionToken<Observable<Application>>('selectedApplication');
 
 @Component({
     selector: '',
@@ -21,7 +21,7 @@ export class DialogUpdateApplicationComponent implements OnInit, OnDestroy {
     public data: Application;
 
     constructor(
-        @Inject(injectableServiceUpdate) data: Observable<Application>,
+        @Inject(SELECTED_UPD_APPLICATION$) data: Observable<Application>,
         public store: Store<HydroServingState>,
         public dialog: DialogService
     ) {

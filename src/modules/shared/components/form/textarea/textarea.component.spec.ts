@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from '@shared/shared.module';
 import { TextareaComponent } from './textarea.component';
 
 describe('TextareaComponent', () => {
@@ -8,7 +10,11 @@ describe('TextareaComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [TextareaComponent],
+            declarations: [],
+            imports: [
+                SharedModule,
+                FormsModule,
+            ],
         })
             .compileComponents();
     }));
