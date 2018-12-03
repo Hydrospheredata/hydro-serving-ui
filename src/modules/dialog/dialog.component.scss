@@ -1,0 +1,57 @@
+
+.dialog {
+    &__layout {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.24);
+        height: 100%;
+        box-sizing: border-box;
+        position: absolute;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &__container {
+        position: relative;
+        background: white;
+        padding: 24px;
+        box-shadow: 0px 0px 40px -10px black;
+        max-height: calc(100% - 48px);
+        overflow: scroll;
+    }
+
+    &__close-icon {
+        cursor: pointer;
+        color: black;
+        position: absolute;
+        right: 0;
+        top:0;
+        height: 16px;
+        width: 16px;
+    }
+
+    &__header {
+
+    }
+
+    &__content {
+        &--question {
+            display: inline-block;
+            font-size: 24px;
+            line-height: 32px;
+            margin-bottom: 46px;
+            max-width: 300px;
+            text-align: center;
+        }
+    }
+
+    &__footer {
+        border-top: 1px grey solid;
+        padding-top: 8px;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+}

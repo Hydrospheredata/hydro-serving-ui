@@ -17,11 +17,18 @@ import {
     ApplicationsWrapperComponent,
     ApplicationsItemDetailComponent,
     ApplicationsStageDetailComponent,
-    ApplicationsDialogComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
-    ServiceFormComponent
+    ServiceFormComponent,
+    DialogAddApplicationComponent,
+    DialogAddMetricComponent,
+    DialogDeleteMetricComponent,
+    DialogDeleteApplicationComponent,
+    DialogTestComponent,
+    DialogUpdateApplicationComponent,
+    DialogUpdateModelVersionComponent
 } from '@applications/components';
+
 import {
     ApplicationsService,
     ApplicationsBuilderService,
@@ -30,6 +37,24 @@ import {
 } from '@applications/services';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 
+const DIALOGS = [
+    DialogDeleteApplicationComponent,
+    DialogAddApplicationComponent,
+    DialogAddMetricComponent,
+    DialogDeleteMetricComponent,
+    DialogUpdateApplicationComponent,
+    DialogUpdateModelVersionComponent,
+    DialogTestComponent,
+];
+
+const PRIVATE_COMPONENTS = [
+    ApplicationsWrapperComponent,
+    ApplicationsItemDetailComponent,
+    ApplicationsStageDetailComponent,
+    ApplicationFormComponent,
+    KafkaFormComponent,
+    ServiceFormComponent,
+];
 @NgModule({
     imports: [
         SharedModule,
@@ -45,13 +70,11 @@ import { CustomValidatorsService } from '@core/services/custom-validators.servic
         CodemirrorModule,
     ],
     declarations: [
-        ApplicationsWrapperComponent,
-        ApplicationsItemDetailComponent,
-        ApplicationsStageDetailComponent,
-        ApplicationsDialogComponent,
-        ApplicationFormComponent,
-        KafkaFormComponent,
-        ServiceFormComponent,
+        ...PRIVATE_COMPONENTS,
+        ...DIALOGS,
+    ],
+    entryComponents: [
+        ...DIALOGS,
     ],
     providers: [
         ApplicationsService,
@@ -60,6 +83,5 @@ import { CustomValidatorsService } from '@core/services/custom-validators.servic
         ApplicationFormService,
         CustomValidatorsService,
     ],
-    exports: [ApplicationsDialogComponent, ApplicationFormComponent],
 })
 export class ApplicationsModule { }

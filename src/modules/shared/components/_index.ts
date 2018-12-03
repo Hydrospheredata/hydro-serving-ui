@@ -9,3 +9,6 @@ export * from './command-template/command-template.component';
 // metrics
 export * from './metrics/base-metric-chart.component';
 export * from '@shared/components/metrics/kolmogorov-smirnov-metric-chart.component';
+
+// dialogs
+export * from './dialogs';

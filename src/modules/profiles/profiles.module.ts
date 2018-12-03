@@ -14,6 +14,12 @@ import {
 import { DataProfilesComponent } from './components/data-profiles/data-profiles.component';
 import { DataStatsComponent } from './components/data-stats/data-stats.component';
 
+const COMPONENTS = [
+  DataProfilesComponent,
+  DataStatsComponent,
+  DataComparisonHistogramComponent,
+];
+
 @NgModule({
   imports: [
     CommonModule,
@@ -23,8 +29,8 @@ import { DataStatsComponent } from './components/data-stats/data-stats.component
     StoreModule.forFeature('profiles', reducers),
     EffectsModule.forFeature([ProfilesEffects]),
   ],
-  declarations: [DataProfilesComponent, DataStatsComponent, DataComparisonHistogramComponent],
+  declarations: [...COMPONENTS],
   providers: [ProfilerService],
-  exports: [DataProfilesComponent, DataStatsComponent, DataComparisonHistogramComponent],
+  exports: [...COMPONENTS],
 })
 export class ProfilesModule {}

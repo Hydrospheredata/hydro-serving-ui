@@ -37,6 +37,9 @@
       "@profiles/*": [
         "modules/profiles/*"
       ],
+      "@dialog/*": [
+        "modules/dialog/*"
+      ]
 
     },
     "typeRoots": [

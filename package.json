@@ -48,6 +48,7 @@
     "highcharts": "^6.0.7",
     "hocon-parser": "^1.0.1",
     "influx": "^5.0.0-alpha.4",
+    "karma-junit-reporter": "^1.2.0",
     "match-sorter": "^2.2.3",
     "ng2-charts": "^1.6.0",
     "ng2-codemirror": "^1.1.3",

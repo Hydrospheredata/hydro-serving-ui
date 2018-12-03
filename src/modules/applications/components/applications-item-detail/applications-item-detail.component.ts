@@ -5,22 +5,23 @@ import { HydroServingState } from '@core/reducers';
 import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
 
-import {
-    DialogUpdateApplicationComponent,
-    DialogTestComponent,
-    SELECTED_APPLICATION$,
-    injectableServiceUpdate,
-    DialogUpdateModelVersionComponent,
-    DialogDeleteApplicationComponent,
-    SELECTED_SERVICE
-} from '@components/dialogs/_index';
 import { Observable ,  Subscription } from 'rxjs';
 import { tap, filter } from 'rxjs/operators';
 
-import { MdlDialogService } from '@angular-mdl/core';
 import { InfluxDBService} from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
+import { DialogService } from '@dialog/dialog.service';
 import { Application, Model, HealthRow } from '@shared/models/_index';
+
+import {
+    DialogDeleteApplicationComponent,
+    DialogUpdateApplicationComponent,
+    injectableServiceUpdate,
+    DialogUpdateModelVersionComponent,
+    SELECTED_SERVICE,
+    DialogTestComponent,
+    SELECTED_APPLICATION$,
+} from '@applications/components/dialogs';
 
 @Component({
     selector: 'hydro-applications-item-detail',
@@ -40,7 +41,7 @@ export class ApplicationsItemDetailComponent {
 
     constructor(
         public store: Store<HydroServingState>,
-        public dialog: MdlDialogService,
+        public dialog: DialogService,
         private metricsService: MetricsService,
         private influxdbService: InfluxDBService
     ) {
@@ -102,75 +103,30 @@ export class ApplicationsItemDetailComponent {
     }
 
     public updateModelVersionDialog(service) {
-        this.dialog.showCustomDialog({
+        this.dialog.createDialog({
             component: DialogUpdateModelVersionComponent,
-            styles: {
-                'width': 'fit-content',
-                'max-width': '400px',
-                'min-height': '120px',
-            },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-            providers: [
-                {
-                    provide: SELECTED_SERVICE,
-                    useValue: service,
-                },
-            ],
+            providers: [{provide: SELECTED_SERVICE, useValue: service}],
         });
     }
 
     public testApplication(application: Observable<Application>) {
-        this.dialog.showCustomDialog({
+        this.dialog.createDialog({
             component: DialogTestComponent,
-            styles: {
-                'width': '900px',
-                'height': '100%',
-                'min-height': '250px',
-                'max-height': 'calc(100% - 100px)',
-                'overflow': 'scroll',
-            },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
             providers: [{provide: SELECTED_APPLICATION$, useValue: application}],
         });
     }
 
     public editApplication(application: Observable<Application>) {
-        this.dialog.showCustomDialog({
+        this.dialog.createDialog({
             component: DialogUpdateApplicationComponent,
-            styles: {
-                'width': '100%',
-                'height': '100%',
-                'min-height': '250px',
-                'max-height': '90vh',
-                'overflow': 'auto',
-                'max-width': '840px',
-            },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
             providers: [{ provide: injectableServiceUpdate, useValue: application }],
+            styles: {
+                height: '100%',
+            },
         });
     }
 
     public removeApplication() {
-        this.dialog.showCustomDialog({
-            component:  DialogDeleteApplicationComponent,
-            styles: {'min-height': '120px' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-        });
+        this.dialog.createDialog({component: DialogDeleteApplicationComponent});
     }
 }
