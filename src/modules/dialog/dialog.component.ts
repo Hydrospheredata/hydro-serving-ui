@@ -51,7 +51,7 @@ export class DialogComponent {
     layoutRef: ElementRef;
 
     constructor(
-        private dialog: DialogService
+        public dialog: DialogService
     ) {}
 
     @HostListener('document:keydown.escape')
