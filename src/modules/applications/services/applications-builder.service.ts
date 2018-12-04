@@ -22,11 +22,10 @@ export class ApplicationsBuilderService {
             id,
             contract,
             name: props.name,
-            executionGraph: props.executionGraph,
-            kafkaStreaming: props.kafkaStreaming,
+            executionGraph: props.executionGraph || [],
+            kafkaStreaming: props.kafkaStreaming || [],
         });
 
         return application;
     }
-
 }

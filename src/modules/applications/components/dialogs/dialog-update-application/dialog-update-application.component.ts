@@ -16,21 +16,21 @@ export let SELECTED_UPD_APPLICATION$ = new InjectionToken<Observable<Application
     templateUrl: './dialog-update-application.component.html',
 })
 export class DialogUpdateApplicationComponent implements OnInit, OnDestroy {
-    public data$: Observable<Application>;
-    public dataSub: Subscription;
-    public data: Application;
+    public application$: Observable<Application>;
+    public applicationSub: Subscription;
+    public application: Application;
 
     constructor(
-        @Inject(SELECTED_UPD_APPLICATION$) data: Observable<Application>,
+        @Inject(SELECTED_UPD_APPLICATION$) application: Observable<Application>,
         public store: Store<HydroServingState>,
         public dialog: DialogService
     ) {
-        this.data$ = data;
+        this.application$ = application;
     }
 
     ngOnInit(): void {
-        this.dataSub = this.data$.subscribe(data => {
-            this.data = data;
+        this.applicationSub = this.application$.subscribe(application => {
+            this.application = application;
         });
     }
 
@@ -39,7 +39,7 @@ export class DialogUpdateApplicationComponent implements OnInit, OnDestroy {
     }
 
     public onSubmit(formData) {
-        formData.id = this.data.id;
+        formData.id = this.application.id;
         const application = new Application(formData);
         this.store.dispatch(new HydroActions.UpdateApplicationAction(application));
 
@@ -47,6 +47,6 @@ export class DialogUpdateApplicationComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.dataSub.unsubscribe();
+        this.applicationSub.unsubscribe();
     }
 }

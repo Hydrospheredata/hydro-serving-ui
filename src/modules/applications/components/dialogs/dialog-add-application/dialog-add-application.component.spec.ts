@@ -33,8 +33,7 @@ describe('DialogAddApplicationComponent', () => {
                 MockStoreProvider,
                 CustomValidatorsService,
             ],
-        })
-            .compileComponents();
+        }).compileComponents();
     }));
 
     beforeEach(() => {

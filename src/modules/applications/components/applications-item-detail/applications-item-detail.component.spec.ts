@@ -4,13 +4,14 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
 import { ApplicationsItemDetailComponent } from './applications-item-detail.component';
 
-import { HttpClient, HttpHandler } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoaderStateService, InfluxDBService } from '@core/services';
 import { HttpService } from '@core/services/http';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
-import { Store } from '@ngrx/store';
+import { application } from '@testing/factories/application';
 import { MockStoreProvider } from '@testing/mocks';
+import { of } from 'rxjs';
 
 describe('ApplicationsItemDetailComponent', () => {
     let component: ApplicationsItemDetailComponent;
@@ -23,6 +24,7 @@ describe('ApplicationsItemDetailComponent', () => {
                 SharedModule,
                 RouterModule,
                 SharedModule,
+                HttpClientTestingModule,
             ],
             providers: [
                 MockStoreProvider,
@@ -30,8 +32,6 @@ describe('ApplicationsItemDetailComponent', () => {
                 MetricsService,
                 LoaderStateService,
                 InfluxDBService,
-                HttpHandler,
-                HttpClient,
                 HttpService,
             ],
         })
@@ -41,6 +41,8 @@ describe('ApplicationsItemDetailComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(ApplicationsItemDetailComponent);
         component = fixture.componentInstance;
+        component.application$ = of(application);
+
         fixture.detectChanges();
     });
 

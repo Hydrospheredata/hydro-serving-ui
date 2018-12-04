@@ -3,6 +3,8 @@ import { Application } from '@shared/_index';
 import { CommandCreator, IApplicationContract } from './command-creator';
 
 export class CurlCommandCreator extends CommandCreator {
+    readonly headers: string = `--header 'Content-Type: application/json' --header 'Accept: application/json'`;
+
     get apiUrl() {
         if (environment.production) {
             const { protocol, hostname } = window.location;
@@ -13,12 +15,14 @@ export class CurlCommandCreator extends CommandCreator {
     }
 
     getCommand(application: Application): string {
-        const headers = `--header 'Content-Type: application/json' --header 'Accept: application/json'`;
-        const { input, name } = application;
-        const contract: IApplicationContract = this.getApplicationContract(application);
-        const url: string = `${this.apiUrl}/gateway/applications/${name}/${contract.signatures.signature_name}`;
-
-        return `curl -X POST ${headers} -d '${this.removeNewLineSymbolsFromString(input)}' '${url}'`.trim();
+        try {
+            const { input, name } = application;
+            const contract: IApplicationContract = this.getApplicationContract(application);
+            const url: string = `${this.apiUrl}/gateway/applications/${name}/${contract.signatures.signature_name}`;
+            return `curl -X POST ${this.headers} -d '${this.removeNewLineSymbolsFromString(input)}' '${url}'`.trim();
+        } catch (err) {
+            return 'invalid contract';
+        }
     }
 
     private removeNewLineSymbolsFromString(str: string = ''): string {

@@ -25,8 +25,7 @@ describe('ApplicationsStageDetailComponent', () => {
                 MockStoreProvider,
                 DialogService,
             ],
-        })
-            .compileComponents();
+        }).compileComponents();
     }));
 
     beforeEach(() => {

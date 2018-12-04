@@ -32,6 +32,8 @@ export abstract class CommandCreator {
     abstract getCommand(application: Application): string;
 
     protected getApplicationContract({contract}: Application): IApplicationContract {
-        return hocon(contract);
+        if (contract) {
+            return hocon(contract);
+        }
     }
 }

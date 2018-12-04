@@ -64,7 +64,7 @@ export class GrpcCommandCreator extends CommandCreator {
 
             return { inputKey, inputValue };
         } catch {
-            return {inputKey: ' %input key% ', inputValue: '%input value% '};
+            return { inputKey: ' %input key% ', inputValue: '%input value% ' };
         }
     }
 

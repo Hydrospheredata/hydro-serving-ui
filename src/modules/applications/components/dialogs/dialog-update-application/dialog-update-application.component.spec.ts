@@ -6,8 +6,10 @@ import { ApplicationFormComponent, KafkaFormComponent, ServiceFormComponent } fr
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { DialogService } from '@dialog/dialog.service';
 import { SharedModule } from '@shared/shared.module';
-import { MockSelectedApplication, MockSelectedUpdApplication, MockStoreProvider } from '@testing/mocks';
-import { DialogUpdateApplicationComponent } from './dialog-update-application.component';
+import { application } from '@testing/factories/application';
+import { MockStoreProvider } from '@testing/mocks';
+import { of } from 'rxjs';
+import { DialogUpdateApplicationComponent, SELECTED_UPD_APPLICATION$ } from './dialog-update-application.component';
 
 describe('DialogUpdateApplicationComponent', () => {
     let component: DialogUpdateApplicationComponent;
@@ -27,13 +29,12 @@ describe('DialogUpdateApplicationComponent', () => {
                 ServiceFormComponent,
             ],
             providers: [
-                MockSelectedUpdApplication,
+                { provide: SELECTED_UPD_APPLICATION$, useValue: of(application) },
                 MockStoreProvider,
                 DialogService,
                 CustomValidatorsService,
             ],
-        })
-            .compileComponents();
+        }).compileComponents();
     }));
 
     beforeEach(() => {

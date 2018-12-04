@@ -22,8 +22,6 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
         'Field name', 'Data type', 'Shape',
     ];
 
-    public contracts: Signature[];
-    public build: any;
     public build$: Observable<ModelBuild>;
 
     public modelId: number;

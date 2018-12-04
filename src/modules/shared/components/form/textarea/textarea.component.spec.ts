@@ -15,8 +15,7 @@ describe('TextareaComponent', () => {
                 SharedModule,
                 FormsModule,
             ],
-        })
-            .compileComponents();
+        }).compileComponents();
     }));
 
     beforeEach(() => {

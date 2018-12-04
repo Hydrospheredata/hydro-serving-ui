@@ -17,5 +17,4 @@ export const MockStoreProvider: Provider = { provide: Store, useValue: MockStore
 export const MockActivatedRouterProvider: Provider = { provide: ActivatedRoute, useValue: {}};
 export const MockRouterProvider: Provider = { provide: Router, useValue: MockRouter};
 export const MockSelectedApplication: Provider = { provide: SELECTED_APPLICATION$, useValue: of({})};
-export const MockSelectedUpdApplication: Provider = { provide: SELECTED_UPD_APPLICATION$, useValue: of({})};
 export const MockSelectedServiceProvider: Provider = { provide: SELECTED_SERVICE, useValue: {}};
