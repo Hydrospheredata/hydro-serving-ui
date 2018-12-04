@@ -9,7 +9,7 @@ import {
 import { DialogService } from './dialog.service';
 
 import {
-   group, state, trigger, style, transition, animate, animation, animateChild, query, AnimationEvent
+   group, state, trigger, style, transition, animate, query, AnimationEvent
 } from '@angular/animations';
 
 @Component({

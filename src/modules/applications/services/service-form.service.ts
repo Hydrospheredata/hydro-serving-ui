@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, Type } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 import { Store } from '@ngrx/store';

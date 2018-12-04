@@ -1,6 +1,6 @@
 import { Provider } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SELECTED_APPLICATION$, SELECTED_UPD_APPLICATION$, SELECTED_SERVICE } from '@applications/components';
+import { SELECTED_APPLICATION$, SELECTED_SERVICE } from '@applications/components';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 

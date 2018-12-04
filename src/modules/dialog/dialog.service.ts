@@ -35,7 +35,7 @@ export class DialogService {
     constructor(
         private cfr: ComponentFactoryResolver,
         private parentInjector: Injector,
-        private rendererFactory: RendererFactory2
+        rendererFactory: RendererFactory2
     ) {
         this.renderer = rendererFactory.createRenderer(null, null);
 
