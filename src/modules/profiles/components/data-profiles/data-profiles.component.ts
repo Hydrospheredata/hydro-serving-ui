@@ -39,7 +39,7 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
     console.log(`ngOnInit with id: ${this.modelVersionId} and store: ${this.store}`);
     this.buildSub = this.build$.pipe(filter(_ => _ != null)).subscribe(build => {
       this.buildId = build.id;
-      this.store.dispatch(new GetFieldsAction(build.id));
+      this.store.dispatch(new GetFieldsAction(build.modelVersion.id));
     });
     this.fieldsSub = this.store.select(fromProfiles.getFieldsEntitiesState).subscribe(state => {
       this.isLoading = false;
