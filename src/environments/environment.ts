@@ -5,8 +5,8 @@
 
 export const environment = {
     production: false,
-    host: 'http://localhost',
-    port: '8080',
+    host: 'https://dev.k8s.hydrosphere.io',
+    port: '',
     apiUrl: '/api/v1',
     uiUrl: '/ui/v1',
     monitoringUrl: '/monitoring',
