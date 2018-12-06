@@ -29,7 +29,8 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
   private currentField: string;
   private intervalId: any;
   private build$: Observable<ModelBuild>;
-  private buildId: number;
+
+  private buildModelVerId: number;
 
   constructor(private store: Store<HydroServingState>) {
     this.build$ = this.store.select(fromModels.getSelectedBuild);
@@ -38,9 +39,8 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log(`ngOnInit with id: ${this.modelVersionId} and store: ${this.store}`);
     this.buildSub = this.build$.pipe(filter(_ => _ != null)).subscribe(build => {
-      this.buildId = build.id;
-
-      this.store.dispatch(new GetFieldsAction(build.modelVersion.id));
+      this.buildModelVerId = build.modelVersion.id;
+      this.store.dispatch(new GetFieldsAction(this.buildModelVerId));
     });
     this.fieldsSub = this.store.select(fromProfiles.getFieldsEntitiesState).subscribe(state => {
       this.isLoading = false;
@@ -54,7 +54,7 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
     });
     this.intervalId = setInterval(() => {
       if (this.currentField) {
-        this.store.dispatch(new GetProfilesAction(this.buildId, this.currentField));
+        this.store.dispatch(new GetProfilesAction(this.buildModelVerId, this.currentField));
       }
     }, 5000);
   }
@@ -80,6 +80,6 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
     console.log(selectedField);
     this.isLoading = true;
     this.currentField = selectedField;
-    this.store.dispatch(new GetProfilesAction(this.buildId, selectedField));
+    this.store.dispatch(new GetProfilesAction(this.buildModelVerId, selectedField));
   }
 }
