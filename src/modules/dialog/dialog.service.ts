@@ -60,12 +60,9 @@ export class DialogService {
         }
 
         this.viewContainerRef.insert(c.hostView);
+
         this.setStyles(styles);
         this.openDialog();
-    }
-
-    public openDialog(): void {
-        this.show.next(true);
     }
 
     public closeDialog(): void {
@@ -83,6 +80,10 @@ export class DialogService {
 
     public setContainerElementRef(elRef: ElementRef): void {
         this.containerElementRef = elRef;
+    }
+
+    private openDialog(): void {
+        this.show.next(true);
     }
 
     private setStyles(styles = {}): void {

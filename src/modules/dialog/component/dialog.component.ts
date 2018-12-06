@@ -5,8 +5,9 @@ import {
     ElementRef,
     HostListener,
     ViewEncapsulation,
+    OnInit,
 } from '@angular/core';
-import { DialogService } from './dialog.service';
+import { DialogService } from '../dialog.service';
 
 import {
    group, state, trigger, style, transition, animate, query, AnimationEvent
@@ -40,7 +41,7 @@ import {
         ]),
       ],
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit {
     @ViewChild('ancor', {read: ViewContainerRef})
     containerRef: ViewContainerRef;
 
@@ -49,6 +50,8 @@ export class DialogComponent {
 
     @ViewChild('layout')
     layoutRef: ElementRef;
+
+    public isAnimationDisabled: boolean = false;
 
     constructor(
         public dialog: DialogService
@@ -59,19 +62,23 @@ export class DialogComponent {
         this.dialog.closeDialog();
     }
 
-    ngAfterViewInit() {
+    ngOnInit(): void {
         this.dialog.setViewContainerRef(this.containerRef);
         this.dialog.setContainerElementRef(this.containerElRef);
     }
 
     onLayoutClick(e: Event): void {
         if (e.target === this.layoutRef.nativeElement) {
-            this.dialog.closeDialog();
+            this.closeDialog();
         }
     }
 
-    onAnimationEvent(e: AnimationEvent) {
-        if (e.toState === 'close') {
+    closeDialog() {
+        this.dialog.closeDialog();
+    }
+
+    onAnimationEvent(e: AnimationEvent): void {
+        if (e.fromState === 'open' && e.toState === 'close') {
             this.dialog.clearContainer();
         }
     }
