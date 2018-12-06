@@ -82,6 +82,6 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
     console.log(selectedField);
     this.isLoading = true;
     this.currentField = selectedField;
-    this.store.dispatch(new GetProfilesAction(this.buildId, selectedField));
+    this.store.dispatch(new GetProfilesAction(this.buildModelVerId, selectedField));
   }
 }
