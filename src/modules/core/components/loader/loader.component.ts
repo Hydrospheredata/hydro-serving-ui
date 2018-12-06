@@ -13,7 +13,7 @@ import { LoaderState } from './loader';
 })
 export class LoaderComponent implements AfterViewChecked, OnDestroy {
 
-    public show: boolean;
+    public show: boolean = false;
 
     private subscription: Subscription;
 
