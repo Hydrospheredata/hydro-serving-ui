@@ -69,11 +69,19 @@ export class HttpService {
 
     private handleError(error: HttpErrorResponse): Observable<string> {
         let message: string;
-
         if (error.error instanceof ErrorEvent) {
             message = `An error occurred: ${error.error.message}`;
         } else {
-            message = `status: ${error.status}, statusText: ${error.statusText} `;
+            const status: number = error.status;
+
+            let err: string = '';
+            let information: string = '';
+            if (error.error) {
+                err = error.error.error || error.name || '';
+                information = error.error.information || error.message || '';
+            }
+
+            message = `status: ${status}, error: ${err}, message: ${information} `;
         }
 
         console.error(message);
