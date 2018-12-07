@@ -1,4 +1,4 @@
-import { Component, OnDestroy, AfterViewChecked } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
 
 import { Subscription } from 'rxjs';
 
@@ -10,25 +10,28 @@ import { LoaderState } from './loader';
     selector: 'hydro-loader',
     templateUrl: './loader.component.html',
     styleUrls: ['./loader.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoaderComponent implements AfterViewChecked, OnDestroy {
+export class LoaderComponent implements OnInit, OnDestroy {
 
-    public show: boolean = false;
+    public show: boolean;
 
     private subscription: Subscription;
 
     constructor(
-        private loaderStateService: LoaderStateService
-    ) { }
+        private loaderStateService: LoaderStateService,
+        private cdr: ChangeDetectorRef
+    ) {}
 
-    ngAfterViewChecked() {
+    ngOnInit(): void {
         this.subscription = this.loaderStateService.loaderState
             .subscribe((state: LoaderState) => {
                 this.show = state.show;
+                this.cdr.detectChanges();
             });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscription.unsubscribe();
     }
 }
