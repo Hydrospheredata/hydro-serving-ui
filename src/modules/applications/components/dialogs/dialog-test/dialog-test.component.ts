@@ -1,4 +1,4 @@
-import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
+import { Component, OnInit, InjectionToken, Inject, ViewChild } from '@angular/core';
 
 import {
     GenerateInputAction,
@@ -18,6 +18,7 @@ import 'codemirror/addon/display/placeholder.js';
 import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/mode/javascript/javascript.js';
+import { CodemirrorComponent } from 'ng2-codemirror';
 
 export const SELECTED_APPLICATION$ = new InjectionToken<Observable<Application>>('selectedApplication');
 @Component({
@@ -33,6 +34,12 @@ export class DialogTestComponent implements OnInit {
     public output$: Observable<string>;
     public outputOptions: {};
     public requestBody: string;
+
+    @ViewChild('inputCodeMirror')
+    inputCodeMirror: CodemirrorComponent;
+
+    @ViewChild('outputCodeMirror')
+    outputCodeMirror: CodemirrorComponent;
 
     constructor(
         public dialog: DialogService,
@@ -53,8 +60,8 @@ export class DialogTestComponent implements OnInit {
             lineWrapping: true,
             readOnly: false,
             scrollbarStyle: 'null',
-            onChange: val => { console.log(val); },
         };
+
         this.outputOptions = {
             matchBrackets: true,
             autoCloseBrackets: true,
@@ -63,7 +70,6 @@ export class DialogTestComponent implements OnInit {
             readOnly: true,
             scrollbarStyle: 'null',
         };
-
         this.generateInput();
     }
 
@@ -76,6 +82,14 @@ export class DialogTestComponent implements OnInit {
     public onChange(input) {
         if (!(input instanceof Event)) {
             this.store.dispatch(new SetInputAction(input));
+            setTimeout(() => {
+                if (this.inputCodeMirror) {
+                    this.inputCodeMirror.instance.refresh();
+                }
+                if (this.outputCodeMirror) {
+                    this.outputCodeMirror.instance.refresh();
+                }
+            }, 0);
         }
     }
 

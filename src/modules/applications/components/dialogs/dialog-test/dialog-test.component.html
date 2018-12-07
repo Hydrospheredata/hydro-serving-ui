@@ -13,6 +13,7 @@
                       <div class="test-fields__item __input" *ngIf="application.input; let input;">
                         <label>Input</label>
                         <codemirror
+                          #inputCodeMirror
                           name="input"
                           [ngModel]="application.input"
                           [config]="inputOptions" 
@@ -31,7 +32,8 @@
                           </span>
                         </div>
                         <ng-container *ngIf="application.output;let output;">
-                            <codemirror 
+                            <codemirror
+                              #outputCodeMirror
                               [ngModel]="output" 
                               [config]="outputOptions" 
                               name="output">

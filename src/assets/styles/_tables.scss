@@ -19,7 +19,7 @@ $table-padding: 14px;
         line-height: 1;
       }
     }
-    [class$="models"] & {
+    &--with-border {
       border-bottom: 1px solid $secondary-color;
       border-top: 2px solid $secondary-color;
     }
