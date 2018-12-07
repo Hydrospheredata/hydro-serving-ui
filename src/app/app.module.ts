@@ -10,32 +10,21 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.router';
 
 // Modules
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ApplicationsModule } from '@applications/applications.module';
 import { CoreModule } from '@core/core.module';
+import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
 import { ProfilesModule } from '@profiles/profiles.module';
 import { SharedModule } from '@shared/shared.module';
-
-// Dialogs
-import * as Dialog from '@components/dialogs/_index';
-
 @NgModule({
     declarations: [
         AppComponent,
-        Dialog.DialogModelBuildComponent,
-        Dialog.DialogTestComponent,
-        Dialog.DialogUpdateApplicationComponent,
-        Dialog.DialogAddApplicationComponent,
-        Dialog.DialogDeleteApplicationComponent,
-        Dialog.DialogAddMetricComponent,
-        Dialog.DialogDeleteMetricComponent,
-        Dialog.DialogUpdateModelVersionComponent,
-        Dialog.DialogDeleteModelComponent,
-        Dialog.DialogModelsEmptyComponent,
     ],
     imports: [
         RouterModule,
         BrowserModule,
+        BrowserAnimationsModule,
         CoreModule,
         ModelsModule,
         ApplicationsModule,
@@ -45,18 +34,7 @@ import * as Dialog from '@components/dialogs/_index';
         SharedModule,
         ProfilesModule,
         AppRoutingModule,
-    ],
-    entryComponents: [
-        Dialog.DialogModelBuildComponent,
-        Dialog.DialogTestComponent,
-        Dialog.DialogUpdateApplicationComponent,
-        Dialog.DialogDeleteApplicationComponent,
-        Dialog.DialogAddApplicationComponent,
-        Dialog.DialogAddMetricComponent,
-        Dialog.DialogDeleteMetricComponent,
-        Dialog.DialogUpdateModelVersionComponent,
-        Dialog.DialogDeleteModelComponent,
-        Dialog.DialogModelsEmptyComponent,
+        DialogModule,
     ],
     bootstrap: [AppComponent],
 })

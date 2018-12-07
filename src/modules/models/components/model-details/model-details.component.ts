@@ -4,11 +4,11 @@ import { Store } from '@ngrx/store';
 import { HydroServingState } from '@core/reducers';
 import { Model, ModelBuild } from '@shared/models/_index';
 
-import { MdlDialogService } from '@angular-mdl/core';
 import * as fromModels from '@models/reducers';
 import { Observable } from 'rxjs';
 
-import { DialogDeleteModelComponent } from '@components/dialogs/_index';
+import { DialogService } from '@dialog/dialog.service';
+import { DialogDeleteModelComponent } from '@models/components/dialogs';
 
 @Component({
     selector: 'hydro-model-details',
@@ -23,21 +23,15 @@ export class ModelDetailsComponent {
 
     constructor(
         private store: Store<HydroServingState>,
-        private dialog: MdlDialogService
+        private dialog: DialogService
     ) {
         this.model$ = this.store.select(fromModels.getSelectedModel);
         this.modelBuilds$ = this.store.select(fromModels.getAllModelBuildsReversed);
     }
 
     public removeModel() {
-        this.dialog.showCustomDialog({
+        this.dialog.createDialog({
             component: DialogDeleteModelComponent,
-            styles: { 'min-height': '120px' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
         });
     }
 }

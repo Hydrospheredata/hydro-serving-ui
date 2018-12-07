@@ -75,7 +75,7 @@ export class ServiceFormComponent implements OnInit {
         this.modelVersionIdControl.setValue(this.serviceFormService.getDefaultModelVersion().id);
     }
 
-    public onModelVersionChange(modelVersionId): void {
+    public onModelVersionChange(modelVersionId: number): void {
         this.signatureName.patchValue(this.serviceFormService.getSignature(modelVersionId));
     }
 

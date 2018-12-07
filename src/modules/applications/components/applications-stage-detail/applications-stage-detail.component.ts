@@ -13,16 +13,17 @@ import { HydroServingState } from '@core/reducers';
 import * as fromMetrics from '@core/reducers/index';
 import { Store } from '@ngrx/store';
 
-import { MdlDialogService } from '@angular-mdl/core';
 import { Subscription ,  Observable ,  of ,  combineLatest } from 'rxjs';
 import { tap, map, filter, catchError } from 'rxjs/operators';
 
 import { MdlSelectModule } from '@angular-mdl/select';
-import { DialogAddMetricComponent } from '@app/components/dialogs/_index';
+
 import {
+    DialogAddMetricComponent,
     DialogDeleteMetricComponent,
     METRIC_ID_VALUE
-} from '@app/components/dialogs/dialog-delete-metric/dialog-delete-metric.component';
+} from '@applications/components/dialogs';
+import { DialogService } from '@dialog/dialog.service';
 import { Application } from '@shared/models/_index';
 import { IChartData } from '@shared/models/application-chart.model';
 import { MetricSettings } from '@shared/models/metric-settings.model';
@@ -81,7 +82,7 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
         public store: Store<HydroServingState>,
         private activatedRoute: ActivatedRoute,
         public selectRef: MdlSelectModule,
-        public dialog: MdlDialogService
+        public dialog: DialogService
     ) {
     }
 
@@ -112,32 +113,12 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
     }
 
     public addMetric() {
-        this.dialog.showCustomDialog({
-            component: DialogAddMetricComponent,
-            styles: {
-                'width': 'fit-content',
-                'min-width': '600px',
-                'min-height': '250px',
-                'max-height': '90vh',
-                'overflow': 'auto',
-                'max-width': '1224px' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
-        });
+        this.dialog.createDialog({component: DialogAddMetricComponent});
     }
 
     deleteMetric(id: number): void {
-        this.dialog.showCustomDialog({
+        this.dialog.createDialog({
             component: DialogDeleteMetricComponent,
-            styles: { 'width': 'fit-content', 'max-width': '400px', 'min-height': '120px' },
-            classes: '',
-            isModal: true,
-            clickOutsideToClose: true,
-            enterTransitionDuration: 400,
-            leaveTransitionDuration: 400,
             providers: [{ provide: METRIC_ID_VALUE, useValue: id }],
         });
     }

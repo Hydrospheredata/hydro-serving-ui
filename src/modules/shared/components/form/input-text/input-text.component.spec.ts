@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '@shared/shared.module';
 import { InputTextComponent } from './input-text.component';
 
 describe('InputTextComponent', () => {
@@ -8,9 +8,11 @@ describe('InputTextComponent', () => {
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [InputTextComponent],
-        })
-            .compileComponents();
+            declarations: [],
+            imports: [
+                SharedModule,
+            ],
+        }).compileComponents();
     }));
 
     beforeEach(() => {

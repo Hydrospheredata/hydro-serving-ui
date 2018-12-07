@@ -29,7 +29,6 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
   private currentField: string;
   private intervalId: any;
   private build$: Observable<ModelBuild>;
-  private buildId: number;
 
   private buildModelVerId: number;
 
@@ -40,7 +39,6 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     console.log(`ngOnInit with id: ${this.modelVersionId} and store: ${this.store}`);
     this.buildSub = this.build$.pipe(filter(_ => _ != null)).subscribe(build => {
-      this.buildId = build.id;
       this.buildModelVerId = build.modelVersion.id;
       this.store.dispatch(new GetFieldsAction(this.buildModelVerId));
     });

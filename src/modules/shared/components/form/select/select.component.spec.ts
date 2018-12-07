@@ -1,20 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HydroSelectComponent } from '@shared/components/form/select/select.component';
 
-import { InputTextComponent } from '@shared/components/form/input-text/input-text.component';
-
-describe('InputTextComponent', () => {
-    let component: InputTextComponent;
-    let fixture: ComponentFixture<InputTextComponent>;
+describe('SelectComponent', () => {
+    let component: HydroSelectComponent;
+    let fixture: ComponentFixture<HydroSelectComponent>;
 
     beforeEach(async(() => {
         TestBed.configureTestingModule({
-            declarations: [InputTextComponent],
+            declarations: [HydroSelectComponent],
         })
             .compileComponents();
     }));
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(InputTextComponent);
+        fixture = TestBed.createComponent(HydroSelectComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

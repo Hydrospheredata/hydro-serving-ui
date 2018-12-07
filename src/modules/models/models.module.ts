@@ -10,7 +10,7 @@ import { ModelsRoutingModule } from './models.router';
 import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
-    ModelVersionDetailsComponent
+    ModelVersionDetailsComponent,
 } from '@models/components';
 import { ModelEffects } from '@models/effects';
 import { reducers } from '@models/reducers';
@@ -19,6 +19,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilesModule } from '@profiles/profiles.module';
 
+import { DialogDeleteModelComponent } from '@models/components/dialogs';
 @NgModule({
     imports: [
         ModelsRoutingModule,
@@ -36,7 +37,9 @@ import { ProfilesModule } from '@profiles/profiles.module';
         ModelsWrapperComponent,
         ModelDetailsComponent,
         ModelVersionDetailsComponent,
+        DialogDeleteModelComponent,
     ],
+    entryComponents: [DialogDeleteModelComponent],
     providers: [ModelsService, ModelDetailsGuard],
 })
 export class ModelsModule { }

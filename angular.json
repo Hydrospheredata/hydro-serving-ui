@@ -82,6 +82,11 @@
               "karmaConfig": "src/karma.conf.js",
               "styles": [
               ],
+              "stylePreprocessorOptions": {
+                "includePaths": [
+                  "src/assets/styles"
+                ]
+              },
               "scripts": [],
               "assets": [
                 "src/favicon.ico",

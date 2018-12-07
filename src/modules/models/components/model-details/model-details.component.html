@@ -10,8 +10,6 @@
     <div class="content-body">
         <hydro-list-info [data]="(model$ | async)"></hydro-list-info>
 
-        <hydro-signatures [isEditable]="true" *ngIf="(model$ | async)?.nextVersion" [modelId]="model.id"></hydro-signatures>
-
         <div class="hydro-panel" *ngIf="!(model$ | async)?.nextVersion || (model$ | async)?.lastModelBuild">
             <div class="hydro-panel__header">
                 <h5>Versions</h5>
@@ -25,7 +23,7 @@
                 </ng-container>
                 <ng-container *ngIf="modelBuilds.length">
                     <table class='hydro-table hydro-table-models'>
-                        <thead class="hydro-table-head">
+                        <thead class="hydro-table-head hydro-table-head--with-border">
                             <tr>
                                 <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
                             </tr>

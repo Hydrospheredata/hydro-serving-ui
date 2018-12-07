@@ -37,7 +37,7 @@ export class GrpcCommandCreator extends CommandCreator {
             channel = grpc.insecure_channel("localhost") \n
             stub = hs.PredictionServiceStub(channel) \n
             model_spec = hs.ModelSpec(name="${appName}", signature_name="${this.getSignatureName()}")\n
-            tensor_shape = hs.TensorShapeProto(dim=[hs.TensorShapeProto.Dim(size=${this.getDimSize()})]\n
+            tensor_shape = hs.TensorShapeProto(dim=[hs.TensorShapeProto.Dim(size=${this.getDimSize()})])\n
             tensor = hs.TensorProto(dtype=hs.${dtype}, tensor_shape=tensor_shape, ${typeVal}=${inputValue})\n
             request = hs.PredictRequest(model_spec=model_spec, inputs={"${inputKey}": tensor}) \n
             result = stub.Predict(request) \n
@@ -64,7 +64,7 @@ export class GrpcCommandCreator extends CommandCreator {
 
             return { inputKey, inputValue };
         } catch {
-            return {inputKey: ' %input key% ', inputValue: '%input value% '};
+            return { inputKey: ' %input key% ', inputValue: '%input value% ' };
         }
     }
 

@@ -48,9 +48,14 @@ export class ServiceFormService implements OnDestroy {
         );
     }
 
-    public getSignature(versionId): string {
-        const modelVersion = this.allModelVersions.find(version => version.id === versionId);
-        return hocon(modelVersion.modelContract).signatures.signature_name;
+    public getSignature(modelVersionId: number): string {
+        const modelVer = this.allModelVersions.find(version => version.id === modelVersionId);
+        try {
+            return hocon(modelVer.modelContract).signatures.signature_name;
+        } catch (err) {
+            console.error(err);
+            return '';
+        }
     }
 
     public getModelVersions(): Observable<any> {
@@ -78,7 +83,7 @@ export class ServiceFormService implements OnDestroy {
         const modelId = this.defaultModelId();
         this.updateModelVersionList(modelId);
         const modelVersion = this.getDefaultModelVersion();
-        const signatureName = this.getSignature(modelVersion.id);
+        const signatureName = modelVersion ? this.getSignature(modelVersion.id) : '';
 
         return {
             weight: 100,
@@ -90,7 +95,7 @@ export class ServiceFormService implements OnDestroy {
             },
             signatureName,
             modelVersion: {
-                id: modelVersion.id,
+                id: modelVersion && modelVersion.id,
                 model: {
                     id: modelId,
                 },
@@ -106,7 +111,7 @@ export class ServiceFormService implements OnDestroy {
         );
         const runtime = new FormControl(service.runtime.id, this.customValidators.required());
         const signatureName = new FormControl(
-            service.signatureName || this.getSignature(service.modelVersion.id),
+            service.signatureName || this.getSignature(service.modelVersion && service.modelVersion.id),
             [this.customValidators.required(), this.customValidators.pattern(/[a-zA-Z0-9]+/)]
         );
         const model = new FormGroup({
@@ -130,13 +135,13 @@ export class ServiceFormService implements OnDestroy {
     }
 
     private defaultRuntimeId() {
-        if (this.runtimes) {
+        if (this.runtimes[0]) {
             return this.runtimes[0].id;
         }
     }
 
     private defaultModelId() {
-        if (this.models.length) {
+        if (this.models[0]) {
             return this.models[0].id;
         }
     }
