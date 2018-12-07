@@ -5,7 +5,6 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DialogComponent } from '@dialog/component/dialog.component';
 import { DialogService } from '@dialog/dialog.service';
 
-import { container } from '@angular/core/src/render3/instructions';
 import {BrowserDynamicTestingModule} from '@angular/platform-browser-dynamic/testing';
 
 @Component({

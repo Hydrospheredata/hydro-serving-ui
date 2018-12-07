@@ -114,21 +114,6 @@ export class ApplicationsStageDetailComponent implements OnInit, OnDestroy {
 
     public addMetric() {
         this.dialog.createDialog({component: DialogAddMetricComponent});
-        // this.dialog.showCustomDialog({
-        //     component: DialogAddMetricComponent,
-        //     styles: {
-        //         'width': 'fit-content',
-        //         'min-width': '600px',
-        //         'min-height': '250px',
-        //         'max-height': '90vh',
-        //         'overflow': 'auto',
-        //         'max-width': '1224px' },
-        //     classes: '',
-        //     isModal: true,
-        //     clickOutsideToClose: true,
-        //     enterTransitionDuration: 400,
-        //     leaveTransitionDuration: 400,
-        // });
     }
 
     deleteMetric(id: number): void {
