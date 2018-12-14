@@ -26,6 +26,7 @@ interface IAggreagation {
     name: string;
     className: string;
 }
+
 @Component({
     selector: '',
     templateUrl: './dialog-add-metric.component.html',

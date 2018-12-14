@@ -72,3 +72,9 @@
         }
     }
 }
+
+@media all and (max-width: 1024px) {
+    .content {
+        padding: 32px 46px;
+    }
+}

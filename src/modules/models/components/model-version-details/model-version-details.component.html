@@ -10,7 +10,7 @@
 
 
     <div class="content-body">
-        <ol class="content-info__sublist">
+        <ol class="content__body-section content-info__sublist">
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Created</span>
                 <span class="content-info__sublist-item-value">
@@ -43,8 +43,13 @@
                 </span>
             </li>
         </ol>
-        <hydro-signatures [isEditable]="false" [modelId]="modelId"></hydro-signatures>
 
-        <hydro-data-profiles [modelVersionId]="modelVersionId"></hydro-data-profiles>
+        <div class="content__body-section">
+            <hydro-signatures [isEditable]="false" [modelId]="modelId"></hydro-signatures>
+        </div>        
+
+        <div class="content__body-section">
+            <hydro-data-profiles [modelVersionId]="modelVersionId"></hydro-data-profiles>
+        </div>
     </div>
 </div>

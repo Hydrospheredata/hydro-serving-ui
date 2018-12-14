@@ -5,7 +5,6 @@ const initialState: Signature[] = [];
 
 export function SignaturesReducer(state = initialState, action: SignaturesActions) {
     switch (action.type) {
-        case SignaturesActionTypes.GetSignaturesSuccess:
         case SignaturesActionTypes.GetModelVersionSignaturesSuccess:
             let signatures;
             if (action.signatures.length === 0) {
