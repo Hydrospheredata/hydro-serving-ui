@@ -36,3 +36,10 @@
     }
   }
 }
+
+.shape {
+  &--anyType {
+    border-bottom: 2px black dotted;
+    cursor: default;
+  }
+}

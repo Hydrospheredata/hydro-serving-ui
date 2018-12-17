@@ -12,7 +12,13 @@
             <div *ngFor="let input of signature.inputs" class="signature__data-row">
                 <span class="signature__data-cell">{{input.fieldName}}</span>
                 <span class="signature__data-cell">{{input.dataType}}</span>
-                <span class="signature__data-cell">
+                <span *ngIf="input.shape === undefined" class="signature__data-cell">
+                    <span class="tooltip">
+                        <span class="shape--anyType">?</span>
+                        <span class="tooltiptext">Any shape</span>
+                    </span>
+                </span>
+                <span *ngIf="input.shape !== undefined" class="signature__data-cell">
                     {{input.shape}}
                 </span>
             </div>
@@ -24,7 +30,15 @@
             <div *ngFor="let output of signature.outputs" class="signature__data-row">
                 <span class="signature__data-cell">{{output.fieldName}}</span>
                 <span class="signature__data-cell">{{output.dataType}}</span>
-                <span class="signature__data-cell">{{output.shape}}</span>
+                <span *ngIf="output.shape === undefined" class="signature__data-cell">
+                    <span class="tooltip">
+                        <span class="shape--anyType">?</span>
+                        <span class="tooltiptext">Any shape</span>
+                    </span>
+                </span>
+                <span *ngIf="output.shape !== undefined" class="signature__data-cell">
+                    {{output.shape}}
+                </span>
             </div>
         </div>
     </div>
