@@ -31,7 +31,7 @@ export class HttpService {
         }
     }
 
-    get(url: string, options?: IHydroHttpOptions, showLoader: boolean = true): Observable<any> {
+    get(url: string, options?: IHydroHttpOptions, showLoader: boolean = false): Observable<any> {
         if (showLoader) {
             this.showLoader();
         }
@@ -110,18 +110,18 @@ export class HttpService {
     }
 
     private showLoader() {
-        if (this.requestCount === 0) {
-            this.loader.showLoader();
-        }
+        // if (this.requestCount === 0) {
+        //     this.loader.showLoader();
+        // }
 
-        this.requestCount = this.requestCount + 1;
+        // this.requestCount = this.requestCount + 1;
     }
 
     private hideLoader() {
-        this.requestCount = this.requestCount - 1;
+        // this.requestCount = this.requestCount - 1;
 
-        if (this.requestCount === 0) {
-            this.loader.hideLoader();
-        }
+        // if (this.requestCount === 0) {
+        //     this.loader.hideLoader();
+        // }
     }
 }

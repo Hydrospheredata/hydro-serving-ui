@@ -24,10 +24,12 @@ import { ModelDetailsGuard } from '@models/services';
                     {
                         path: ':modelId',
                         component: ModelDetailsComponent,
+                        data: { anim: 'modelDetail'},
                     },
                     {
                         path: ':modelId/:modelVersionId',
                         component: ModelVersionDetailsComponent,
+                        data: {anim: 'modelVerDetail'},
                     },
                 ],
             },
