@@ -2,7 +2,7 @@
     <h5 class="signatures__title">Signatures</h5>
     <div *ngFor="let signature of signatures"
         class="signature">
-        <span class="signature__name">Signature: {{signature.signatureName}}</span>
+        <span class="signature__name">Signature: {{ signature.signatureName }}</span>
         <div class="signature__data">
             <div class="signature__data-row">
                 <span class="signature__data-cell signature__data-label">input_field_name</span>
@@ -10,8 +10,8 @@
                 <span class="signature__data-cell signature__data-label">input_shape</span>
             </div>
             <div *ngFor="let input of signature.inputs" class="signature__data-row">
-                <span class="signature__data-cell">{{input.fieldName}}</span>
-                <span class="signature__data-cell">{{input.dataType}}</span>
+                <span class="signature__data-cell">{{ input.fieldName }}</span>
+                <span class="signature__data-cell">{{ input.dataType }}</span>
                 <span *ngIf="input.shape === undefined" class="signature__data-cell">
                     <span class="tooltip">
                         <span class="shape--anyType">?</span>
@@ -19,7 +19,7 @@
                     </span>
                 </span>
                 <span *ngIf="input.shape !== undefined" class="signature__data-cell">
-                    {{input.shape}}
+                    {{ input.shape }}
                 </span>
             </div>
             <div class="signature__data-row">
@@ -28,8 +28,8 @@
                 <span class="signature__data-cell signature__data-label">output_shape</span>
             </div>
             <div *ngFor="let output of signature.outputs" class="signature__data-row">
-                <span class="signature__data-cell">{{output.fieldName}}</span>
-                <span class="signature__data-cell">{{output.dataType}}</span>
+                <span class="signature__data-cell">{{ output.fieldName }}</span>
+                <span class="signature__data-cell">{{ output.dataType }}</span>
                 <span *ngIf="output.shape === undefined" class="signature__data-cell">
                     <span class="tooltip">
                         <span class="shape--anyType">?</span>
@@ -37,7 +37,7 @@
                     </span>
                 </span>
                 <span *ngIf="output.shape !== undefined" class="signature__data-cell">
-                    {{output.shape}}
+                    {{ output.shape }}
                 </span>
             </div>
         </div>

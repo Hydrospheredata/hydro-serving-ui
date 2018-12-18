@@ -28,7 +28,7 @@ import { InfluxDBService } from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 
 @Component({
-    selector: 'hydro-base-metric-chart',
+    selector: 'hs-base-metric-chart',
     templateUrl: './base-metric-chart.component.html',
     styleUrls: ['./base-metric-chart.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,

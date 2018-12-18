@@ -1,7 +1,7 @@
 import { Directive, Input, OnInit, ContentChild, ElementRef } from '@angular/core';
 import { IconComponent } from '@shared/_index';
 @Directive({
-    selector: '[modelStatus]',
+    selector: '[hsModelStatus]',
 })
 export class ModelStatusDirective implements OnInit {
     @ContentChild('statusIcon') statusIcon: IconComponent;

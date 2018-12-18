@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SignaturesService, LoaderStateService } from '@core/services';
+import { SignaturesService } from '@core/services';
 import { HttpService } from '@core/services/http';
 import {
     DataComparisonHistogramComponent
@@ -40,7 +40,6 @@ describe('ModelVersionDetailsComponent', () => {
                 MockStoreProvider,
                 SignaturesService,
                 HttpService,
-                LoaderStateService,
             ],
         }).compileComponents();
     }));
@@ -48,7 +47,6 @@ describe('ModelVersionDetailsComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(ModelVersionDetailsComponent);
         component = fixture.componentInstance;
-        // TODO: mock store
         component.build$ = of(modelBuild);
 
         fixture.detectChanges();

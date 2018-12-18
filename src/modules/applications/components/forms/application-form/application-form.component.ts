@@ -16,13 +16,13 @@ import { ApplicationFormService } from '@applications/services/application-form.
 import { ServiceFormService } from '@applications/services/service-form.service';
 
 @Component({
-    selector: 'hydro-application-form',
+    selector: 'hs-application-form',
     templateUrl: './application-form.component.html',
     styleUrls: ['./application-form.component.scss'],
     providers: [ ServiceFormService, ApplicationFormService ],
 })
 export class ApplicationFormComponent implements OnInit {
-    @Output('onSubmit') submitEvent: EventEmitter<any> = new EventEmitter();
+    @Output() submitHandle: EventEmitter<any> = new EventEmitter();
     @Input('data') data;
 
     public applicationForm: FormGroup;
@@ -78,7 +78,7 @@ export class ApplicationFormComponent implements OnInit {
             },
         };
 
-        this.submitEvent.emit(formData);
+        this.submitHandle.emit(formData);
     }
 
     public showRemoveStageButton(): boolean {

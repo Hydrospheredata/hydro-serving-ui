@@ -38,7 +38,7 @@ export interface MetricProvider extends MetricSpecification {
 }
 
 @Component({
-    selector: 'hydro-applications-stage-detail',
+    selector: 'hs-applications-stage-detail',
     templateUrl: './applications-stage-detail.component.html',
     styleUrls: ['./applications-stage-detail.component.scss'],
     encapsulation: ViewEncapsulation.None,

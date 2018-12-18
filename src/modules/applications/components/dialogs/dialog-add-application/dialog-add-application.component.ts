@@ -15,7 +15,6 @@ import * as HydroActions from '@applications/actions/applications.actions';
 import { DialogService } from '@dialog/dialog.service';
 
 @Component({
-    selector: '',
     templateUrl: './dialog-add-application.component.html',
 })
 export class DialogAddApplicationComponent {

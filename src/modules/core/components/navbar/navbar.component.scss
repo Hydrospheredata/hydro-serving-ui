@@ -1,20 +1,20 @@
-$default-line-height: 80px;
 $default-color: #475f9e;
 $active-color: white;
 
 .hydro-navbar {
-  height: $default-line-height;
+  height: 64px;
   background-color: #04143c;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
+  padding: 0 26px;
   &__logo {
     cursor: pointer;
     outline: none;
     &-icon {
-      height: 50px;
+      width: 180px;
+      height: 46px;
     }
   }
   &__menu {
@@ -30,7 +30,7 @@ $active-color: white;
       padding: 0 15px;
       color: $default-color;
       text-decoration: none;
-      font-size: 18px;
+      font-size: 16px;
       min-width: 170px;
       &:not(:last-child) {
         margin-right: 15px;

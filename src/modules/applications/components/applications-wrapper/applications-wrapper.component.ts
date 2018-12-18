@@ -13,7 +13,7 @@ import { Subscription, Observable } from 'rxjs';
 import { DialogAddApplicationComponent } from '@applications/components/dialogs';
 
 @Component({
-    selector: 'hydro-applications-wrapper',
+    selector: 'hs-applications-wrapper',
     templateUrl: './applications-wrapper.component.html',
     styleUrls: ['./applications-wrapper.component.scss'],
 })

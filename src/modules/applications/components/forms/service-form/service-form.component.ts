@@ -23,7 +23,7 @@ import { Runtime, Model } from '@shared/_index';
 import { Observable } from 'rxjs';
 
 @Component({
-    selector: 'hydro-service-form',
+    selector: 'hs-service-form',
     templateUrl: './service-form.component.html',
     styleUrls: ['./service-form.component.scss'],
     providers: [EnvironmentsService, ServiceFormService],

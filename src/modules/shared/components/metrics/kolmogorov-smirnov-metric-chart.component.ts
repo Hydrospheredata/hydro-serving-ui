@@ -8,7 +8,7 @@ import { MetricsService } from '@core/services/metrics/metrics.service';
 import { BaseMetricChartComponent } from '@shared/components/metrics/base-metric-chart.component';
 
 @Component({
-    selector: 'hydro-kolmogorov-smirnov-metric-chart',
+    selector: 'hs-kolmogorov-smirnov-metric-chart',
     templateUrl: './kolmogorov-smirnov-metric-chart.component.html',
     styleUrls: [
         './base-metric-chart.component.scss',

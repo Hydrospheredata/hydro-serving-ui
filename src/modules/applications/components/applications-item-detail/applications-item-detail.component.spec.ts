@@ -5,7 +5,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ApplicationsItemDetailComponent } from './applications-item-detail.component';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { LoaderStateService, InfluxDBService } from '@core/services';
+import { InfluxDBService } from '@core/services';
 import { HttpService } from '@core/services/http';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
@@ -30,7 +30,6 @@ describe('ApplicationsItemDetailComponent', () => {
                 MockStoreProvider,
                 DialogService,
                 MetricsService,
-                LoaderStateService,
                 InfluxDBService,
                 HttpService,
             ],

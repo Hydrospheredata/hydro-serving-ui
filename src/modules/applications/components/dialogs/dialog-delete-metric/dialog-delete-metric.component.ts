@@ -9,7 +9,6 @@ import { DialogService } from '@dialog/dialog.service';
 export const METRIC_ID_VALUE = new InjectionToken<string>('metric id value');
 
 @Component({
-    selector: '',
     templateUrl: './dialog-delete-metric.component.html',
 })
 export class DialogDeleteMetricComponent {

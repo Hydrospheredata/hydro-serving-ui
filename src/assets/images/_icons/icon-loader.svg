@@ -1,0 +1,13 @@
+ <svg viewBox="0 0 120 120" version="1.1" width="120px" height="120px"
+xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" r="50"
+fill="none"
+stroke="rgba(48, 55, 74, 0.5)"
+stroke-width="10%">
+<animate 
+    attributeType="CSS" 
+    attributeName="stroke-dasharray" 
+    from="0 500" to="320 500" dur="3s" repeatCount="indefinite">
+    </animate>
+    </circle>
+</svg>

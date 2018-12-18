@@ -24,7 +24,6 @@ export interface IServiceData {
 
 export const SELECTED_SERVICE = new InjectionToken<any>('selected service');
 @Component({
-    selector: 'hydro-dialog-update-model-version',
     templateUrl: './dialog-update-model-version.component.html',
     styleUrls: ['./dialog-update-model-version.component.scss'],
 })

@@ -38,7 +38,7 @@ import {
     CommandTemplateComponent,
     BaseMetricChartComponent,
     KolmogorovSmirnovChartComponent,
-    DialogModelsEmptyComponent
+    DialogModelsEmptyComponent,
 } from './components/_index';
 
 // Directives

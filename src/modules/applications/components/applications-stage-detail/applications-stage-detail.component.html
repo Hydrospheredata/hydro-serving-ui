@@ -30,7 +30,7 @@
         
         <div *ngFor="let chartKey of objectKeys(chartsData)">
             <ng-container [ngSwitch]="chartsData[chartKey].metricProvider.metricProviderClass">
-                <hydro-kolmogorov-smirnov-metric-chart 
+                <hs-kolmogorov-smirnov-metric-chart 
                     *ngSwitchCase="'io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov'"
                     [chartTimeWidth]="chartTimeWidth" 
                     [chartData]="chartsData[chartKey]"
@@ -38,8 +38,8 @@
                     [applicationId]="application.id"
                     [stageId]="stageId"
                     (delete)="deleteMetric($event)">
-                </hydro-kolmogorov-smirnov-metric-chart>
-                <hydro-base-metric-chart 
+                </hs-kolmogorov-smirnov-metric-chart>
+                <hs-base-metric-chart 
                     *ngSwitchDefault
                     [chartTimeWidth]="chartTimeWidth" 
                     [chartData]="chartsData[chartKey]"
@@ -47,7 +47,7 @@
                     [applicationId]="application.id"
                     [stageId]="stageId"
                     (delete)="deleteMetric($event)">
-                </hydro-base-metric-chart>
+                </hs-base-metric-chart>
             </ng-container>
         </div>
     </div>

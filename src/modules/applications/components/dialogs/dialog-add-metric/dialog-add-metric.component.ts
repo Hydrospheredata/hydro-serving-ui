@@ -28,7 +28,6 @@ interface IAggreagation {
 }
 
 @Component({
-    selector: '',
     templateUrl: './dialog-add-metric.component.html',
     styleUrls: ['./dialog-add-metric.component.scss'],
 })

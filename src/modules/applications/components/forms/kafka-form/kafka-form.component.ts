@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'kafka-form',
+    selector: 'hs-kafka-form',
     templateUrl: './kafka-form.component.html',
     styleUrls: ['./kafka-form.component.scss'],
 })

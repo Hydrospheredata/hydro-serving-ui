@@ -172,3 +172,13 @@
     color: $error-text-color;
   }
 }
+
+.loader {
+  &-container {
+    text-align: center;
+  }
+  &-icon {
+    width: 40px;
+    height: 40px;
+  }
+}

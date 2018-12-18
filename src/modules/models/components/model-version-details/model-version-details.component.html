@@ -26,7 +26,7 @@
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Status</span>
                 <ng-container *ngIf="build$ | async;let build">
-                    <span class="content-info__sublist-item-value model-build-status--{{build.status | lowercase}}" [status]="build.status"  modelStatus >
+                    <span class="content-info__sublist-item-value model-build-status--{{build.status | lowercase}}" [status]="build.status"  hsModelStatus >
                         <span #statusText class="status"></span>
                     </span>
                 </ng-container>

@@ -9,7 +9,7 @@ import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
 import { Store } from '@ngrx/store';
 
 @Component({
-    selector: 'hydro-root',
+    selector: 'hs-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })

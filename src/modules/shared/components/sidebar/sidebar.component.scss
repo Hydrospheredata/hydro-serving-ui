@@ -10,25 +10,21 @@
   background-color: $aside-bg-color;
   min-height: 100%;
   &-header {
-    padding: 45px 32px 26px;
+    padding: 24px;
     border-bottom: 2px solid #d4d7d9;
     &__row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      &:not(:last-child) {
-        margin-bottom: 26px;
-      }
     }
   }
   &-title {
     font-weight: 700;
-    font-family: $font-family-regular;
-    font-size: $title-font-size;
+    font-size: 22px;
     margin: 0;
     line-height: 1;
     text-transform: capitalize;
-    line-height: 36px;
+    line-height: 46px;
   }
   &-search {
     flex-basis: 100%;
@@ -56,11 +52,6 @@
       &:focus {
         background-color: $secondary-color;
       }
-      // > span {
-      //   font-size: 18px;
-      //   font-family: $font-family-bold;
-      //   color: #04143c;
-      // }
       &-status {
         display: flex;
         align-items: center;

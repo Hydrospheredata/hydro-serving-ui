@@ -22,7 +22,6 @@ import { CodemirrorComponent } from 'ng2-codemirror';
 
 export const SELECTED_APPLICATION$ = new InjectionToken<Observable<Application>>('selectedApplication');
 @Component({
-    selector: '',
     templateUrl: './dialog-test.component.html',
     styleUrls: ['./dialog-test.component.scss'],
     providers: [MdlSnackbarService],

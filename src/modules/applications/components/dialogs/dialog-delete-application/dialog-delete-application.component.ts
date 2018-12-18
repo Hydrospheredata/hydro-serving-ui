@@ -7,7 +7,6 @@ import { Store } from '@ngrx/store';
 import { DialogService } from '@dialog/dialog.service';
 
 @Component({
-    selector: '',
     templateUrl: './dialog-delete-application.component.html',
 })
 export class DialogDeleteApplicationComponent {

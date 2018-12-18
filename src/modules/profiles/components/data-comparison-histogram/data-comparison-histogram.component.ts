@@ -1,4 +1,13 @@
-import { Component, Input, ViewChild, ElementRef, AfterViewInit, SimpleChanges, SimpleChange } from '@angular/core';
+import {
+  Component,
+  Input,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  SimpleChanges,
+  SimpleChange,
+  OnChanges
+} from '@angular/core';
 import { HIGHCHART_COLORS } from '@profiles/highchart-colors';
 import { DoubleProfile } from '@shared/models/_index';
 import * as Highcharts from 'highcharts';
@@ -7,7 +16,7 @@ import * as Highcharts from 'highcharts';
   templateUrl: './data-comparison-histogram.component.html',
   styleUrls: ['./data-comparison-histogram.component.scss'],
 })
-export class DataComparisonHistogramComponent implements AfterViewInit {
+export class DataComparisonHistogramComponent implements AfterViewInit, OnChanges {
   @Input() trainingProfile: DoubleProfile | null;
   @Input() productionProfile: DoubleProfile | null;
   @ViewChild('chartContainer') chartContainerRef: ElementRef;

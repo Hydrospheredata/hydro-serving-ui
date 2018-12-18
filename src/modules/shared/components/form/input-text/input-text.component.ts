@@ -11,6 +11,7 @@ const noop = (_?: any) => {};
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,
+            // tslint:disable-next-line:no-forward-ref
             useExisting: forwardRef(() => InputTextComponent),
             multi: true,
         },
@@ -47,13 +48,13 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() public errors: any;
   /** left of right */
   @Input() public iconDirection: string;
-  @Output() onIconClick = new EventEmitter<NgModel>();
+  @Output() iconClick = new EventEmitter<NgModel>();
   protected _value: any;
   protected onChange: (_: any) => void = noop;
   protected onTouched: () => void = noop;
 
-  public iconClick(model: NgModel) {
-      this.onIconClick.emit(model);
+  public iconClickHandle(model: NgModel) {
+      this.iconClick.emit(model);
   }
 
   public writeValue(value: any) {

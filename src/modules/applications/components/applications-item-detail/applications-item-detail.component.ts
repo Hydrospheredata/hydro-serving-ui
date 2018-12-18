@@ -1,17 +1,16 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 
 import * as fromApplications from '@applications/reducers';
 import { HydroServingState } from '@core/reducers';
 import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
 
-import { Observable ,  Subscription } from 'rxjs';
-import { tap, filter } from 'rxjs/operators';
-
 import { InfluxDBService} from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
 import { Application, Model, HealthRow } from '@shared/models/_index';
+import { Observable ,  Subscription } from 'rxjs';
+import { tap, filter } from 'rxjs/operators';
 
 import {
     DialogDeleteApplicationComponent,
@@ -24,12 +23,12 @@ import {
 } from '@applications/components/dialogs';
 
 @Component({
-    selector: 'hydro-applications-item-detail',
+    selector: 'hs-applications-item-detail',
     templateUrl: './applications-item-detail.component.html',
     styleUrls: ['./applications-item-detail.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class ApplicationsItemDetailComponent {
+export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     public application: Application;
 
     public application$: Observable<Application>;

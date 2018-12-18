@@ -1,5 +1,4 @@
 export * from './form-service.service';
-export * from './loader-state.service';
 export * from './influxdb.service';
 export * from './svg-sprite.service';
 

@@ -18,11 +18,11 @@
             </ul>
         </ng-container>
     </div>
-    <kafka-form
+    <hs-kafka-form
         class="application__kafka"
         formArrayName="kafkaStreaming"
         [kafkaFormArray]="kafkaFormArray">
-    </kafka-form>
+    </hs-kafka-form>
     <div formArrayName="stages">
         <div *ngFor="let stage of applicationStagesFormArray.controls;index as stageIdx" 
             [formGroup]="stage"
@@ -47,11 +47,11 @@
                         <div 
                             class="services__item"
                             [ngClass]="{'services__item--isLast': isLast}">
-                            <hydro-service-form
+                            <hs-service-form
                                 [group]="service" 
                                 [index]="serviceIdx"
                                 [showRemoveIcon]="showRemoveServiceIcon(stage)"
-                                (delete)="onServiceDelete(stage, $event)"></hydro-service-form>
+                                (delete)="onServiceDelete(stage, $event)"></hs-service-form>
                         </div>
                     </div>
                 </div>
