@@ -3,6 +3,10 @@
     display: flex;
 }
 
+.sidebar {
+    z-index: 2;
+}
+
 .container {
     width: 100%;
     overflow: scroll;

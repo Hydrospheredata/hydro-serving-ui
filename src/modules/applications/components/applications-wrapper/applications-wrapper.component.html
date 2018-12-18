@@ -7,9 +7,12 @@
 
 <div class="content-wrapper">
     <hydro-sidebar 
+        class='sidebar'
         [sidebarData]="applications" 
         [sidebarTitle]="sidebarTitle" 
         [actionButton]="addButton" 
         [isFilterEnabled]="true"></hydro-sidebar>
-    <router-outlet></router-outlet>
+    <div [@anim]="prepare(out)" class="container" >
+        <router-outlet #out="outlet"></router-outlet>
+    </div>
 </div>

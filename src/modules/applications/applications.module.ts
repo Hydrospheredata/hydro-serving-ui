@@ -29,6 +29,7 @@ import {
     DialogUpdateModelVersionComponent
 } from '@applications/components';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
     ApplicationsService,
     ApplicationsBuilderService,
@@ -68,6 +69,7 @@ const PRIVATE_COMPONENTS = [
         EffectsModule.forFeature([ApplicationsEffects]),
         ReactiveFormsModule,
         CodemirrorModule,
+        BrowserAnimationsModule,
     ],
     declarations: [
         ...PRIVATE_COMPONENTS,

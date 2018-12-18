@@ -1,5 +1,10 @@
 <div class="content-wrapper">
-    <hydro-sidebar style="z-index: 2;" [sidebarData]="models" [sidebarTitle]="sidebarTitle" [isModels]="true" [isFilterEnabled]="true"></hydro-sidebar>
+    <hydro-sidebar 
+        class="sidebar"
+        [sidebarData]="models"
+        [sidebarTitle]="sidebarTitle"
+        [isModels]="true"
+        [isFilterEnabled]="true"></hydro-sidebar>
     <div [@anim]="prepare(out)" class="container" >
         <router-outlet #out="outlet"></router-outlet>
     </div>

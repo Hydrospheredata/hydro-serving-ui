@@ -22,10 +22,12 @@ import { ApplicationsGuard } from '@applications/services';
                             {
                                 path: ':id',
                                 component: ApplicationsItemDetailComponent,
+                                data: { anim: 'appDetail' },
                             },
                             {
                                 path: ':id/:stageId',
                                 component: ApplicationsStageDetailComponent,
+                                data: { anim: 'appStageDetail' },
                             },
                         ],
                     },
