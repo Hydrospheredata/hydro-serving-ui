@@ -12,14 +12,13 @@ import {
     ModelDetailsComponent,
     ModelVersionDetailsComponent,
 } from '@models/components';
+import { DialogDeleteModelComponent } from '@models/components/dialogs';
 import { ModelEffects } from '@models/effects';
 import { reducers } from '@models/reducers';
 import { ModelsService, ModelDetailsGuard } from '@models/services';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilesModule } from '@profiles/profiles.module';
-
-import { DialogDeleteModelComponent } from '@models/components/dialogs';
 @NgModule({
     imports: [
         ModelsRoutingModule,

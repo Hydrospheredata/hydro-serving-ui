@@ -1,4 +1,11 @@
 <div class="content-wrapper">
-    <hydro-sidebar [sidebarData]="models" [sidebarTitle]="sidebarTitle" [isModels]="true" [isFilterEnabled]="true"></hydro-sidebar>
-    <router-outlet></router-outlet>
+    <hydro-sidebar 
+        class="sidebar"
+        [sidebarData]="models"
+        [sidebarTitle]="sidebarTitle"
+        [isModels]="true"
+        [isFilterEnabled]="true"></hydro-sidebar>
+    <div [@anim]="prepare(out)" class="container" >
+        <router-outlet #out="outlet"></router-outlet>
+    </div>
 </div>
