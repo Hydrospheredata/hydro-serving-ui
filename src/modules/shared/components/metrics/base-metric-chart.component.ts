@@ -136,6 +136,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             },
             chart: {
                 type: 'spline',
+                animation: false,
             },
             title: {
                 text: '',
