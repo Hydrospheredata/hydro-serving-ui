@@ -11,3 +11,16 @@
     width: 100%;
     overflow: scroll;
 }
+
+.add-application {
+   &__button{
+    margin-bottom: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+   }
+   &__icon{
+        height: 10px;
+        width: 10px;
+   }
+}

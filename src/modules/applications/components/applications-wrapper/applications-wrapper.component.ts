@@ -6,7 +6,7 @@ import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
 
 import { DialogModelsEmptyComponent } from '@shared/components/dialogs';
-import { Application, Model } from '@shared/models/_index';
+import { IApplication } from '@shared/models/_index';
 
 import { DialogService } from '@dialog/dialog.service';
 import { Subscription, Observable } from 'rxjs';
@@ -68,10 +68,9 @@ import { DialogAddApplicationComponent } from '@applications/components/dialogs'
     ],
 })
 export class ApplicationsWrapperComponent implements OnDestroy {
-    public sidebarTitle = 'Applications';
-    public applications: Observable<Application[]>;
-    private someModelIsFinished: boolean = false;
-    private modelsSub: Subscription;
+    public applications: Observable<IApplication[]>;
+    private someModelVersionIsFinished: boolean = false;
+    private modelsVersionSub: Subscription;
 
     constructor(
         private storeApp: Store<fromApplications.State>,
@@ -79,15 +78,17 @@ export class ApplicationsWrapperComponent implements OnDestroy {
         private dialog: DialogService
     ) {
         this.applications = this.storeApp.select(fromApplications.getAllApplications);
-        this.modelsSub = this.storeModels.select(fromModels.getAllModels).subscribe(
-            models => {
-                this.someModelIsFinished = models.some(this.lastModelVersionExist);
+        this.modelsVersionSub = this.storeModels.select(fromModels.getAllModelVersions).subscribe(
+            modelVersions => {
+                this.someModelVersionIsFinished = modelVersions.some(
+                    modelVersion => modelVersion.status.toLowerCase() === 'finished'
+                );
             }
         );
     }
 
     public addApplication(): void {
-        this.someModelIsFinished ? this.showAddApplicationDialog() : this.showAlert();
+        this.someModelVersionIsFinished ? this.showAddApplicationDialog() : this.showAlert();
     }
 
     prepare(outlet: RouterOutlet) {
@@ -95,11 +96,7 @@ export class ApplicationsWrapperComponent implements OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.modelsSub.unsubscribe();
-    }
-
-    private lastModelVersionExist({ lastModelVersion }: Model): boolean {
-        return !!lastModelVersion;
+        this.modelsVersionSub.unsubscribe();
     }
 
     private showAlert(): void {

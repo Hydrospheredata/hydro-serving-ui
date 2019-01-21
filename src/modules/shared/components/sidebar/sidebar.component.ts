@@ -15,11 +15,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
     @Input() actionButton: TemplateRef<any>;
     @Input() isFilterEnabled = false;
     @Input() isModels: boolean;
-    @Input() sidebarTitle: string;
-    @Input() sidebarData: Observable<Application[] | Model[] | Source[]>;
+    @Input() sidebarData: Observable<Application[] | Model[]>;
 
-    public sidebarList: Application[] | Model[] | Source[] = [];
-    public sidebarFiltredList: Application[] | Model[] | Source[] = [];
+    public sidebarList: Application[] | Model[] = [];
+    public sidebarFiltredList: Application[] | Model[]= [];
 
     private isRedirectable = false;
     private routeSub: Subscription;

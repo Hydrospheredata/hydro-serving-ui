@@ -8,62 +8,66 @@
     </div>
 
     <div class="content-body">
-        <hydro-list-info [data]="(model$ | async)"></hydro-list-info>
-
-        <div class="hydro-panel" *ngIf="!(model$ | async)?.nextVersion || (model$ | async)?.lastModelBuild">
+        <div class="hydro-panel">
             <div class="hydro-panel__header">
                 <h5>Versions</h5>
             </div>
-
-            <ng-container *ngIf="modelBuildsLoading$ | async">
-                <div class='loader-container'>
-                    <hydro-icon type='icon-loader' class='loader-icon'></hydro-icon>
-                </div>
-            </ng-container>
-            <ng-container *ngIf="!(modelBuildsLoading$ | async)">
-                    <ng-container *ngIf="(modelBuilds$ | async); let modelBuilds">
-                    <ng-container *ngIf="modelBuilds.length === 0">
-                            <span class="alert">
-                                <span class="alert__ancor">Ooops!</span> It looks like API does not return any builds for this model. Please check model.
-                            </span>
-                    </ng-container>
-                    <ng-container *ngIf="modelBuilds.length">
-                        <table class='hydro-table hydro-table-models'>
-                            <thead class="hydro-table-head hydro-table-head--with-border">
-                                <tr>
-                                    <th class="hydro-table-head__cell" *ngFor="let headCell of tableHeader">{{headCell}}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let item of modelBuilds | sortBy:'started' | reverseArray" class='hydro-table-body__row row'>
-                                        <td class="hydro-table-body__cell">
-                                            <div class='cs-text-overflow-ellipsis'>{{ item.version }}</div>
-                                        </td>
-                                        <td class="hydro-table-body__cell">
-                                            <div class='cs-text-overflow-ellipsis'>{{ item.started | utcToLocal | amTimeAgo }}</div>
-                                        </td>
-                                        <td class="hydro-table-body__cell">
-                                            <div class='cs-text-overflow-ellipsis model-build-status model-build-status--{{item.status | lowercase}}' [status]="item.status" hsModelStatus>
-                                                <hydro-icon #statusIcon class="icon"></hydro-icon>
-                                                <span #statusText class="icon-label"></span>
-                                            </div>
-                                        </td>
-                                        <td class="hydro-table-body__cell">
-                                            <span class="model-item__application" *ngFor="let app of (item.modelVersion.applications | slice: item.modelVersion.applications.length - 2)"
-                                                [routerLink]="['../../applications', app.id]">
-                                                <span>{{app.name}}</span>
-                                            </span>
-                                            <span *ngIf="item.modelVersion.applications.length === 0">-</span>
-                                        </td>
-                                        <td class="hydro-table-body__cell">
-                                            <button class="button button--flat navigation-button" [routerLink]="[item.version]" *ngIf="item.status === 'Finished'">
-                                                <hydro-icon [type]="'icon-right'" class='button__icon navigation-icon'></hydro-icon>
-                                            </button>
-                                        </td>
-                                    </tr>
-                            </tbody>
-                        </table>
-                    </ng-container>
+            <ng-container *ngIf="modelVersions$ | async; let modelVersions">
+                <ng-container *ngIf="modelVersions.length === 0">
+                    <span class="alert">
+                        <span class="alert__ancor">Ooops!</span> It looks like API does not return any builds for this model. Please check model.
+                    </span>
+                </ng-container>
+                <ng-container *ngIf="modelVersions.length">
+                    <table class='hydro-table hydro-table-models'>
+                        <colgroup>
+                            <col width="100px">
+                            <col>
+                            <col>
+                            <col>
+                            <col width="80px">
+                        </colgroup>
+                        <thead class="hydro-table-head hydro-table-head--with-border">
+                            <th class="hydro-table-head__cell">Version</th>
+                            <th class="hydro-table-head__cell">Created</th>
+                            <th class="hydro-table-head__cell">Status</th>
+                            <th class="hydro-table-head__cell">Applications</th>
+                            <th class="hydro-table-head__cell"></th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let modelVersion of modelVersions" class='hydro-table-body__row row'>
+                                <td class="hydro-table-body__cell">{{ modelVersion.id }}</td>
+                                <td class="hydro-table-body__cell">{{ modelVersion.started | utcToLocal | amTimeAgo }}</td>
+                                <td class="hydro-table-body__cell">
+                                    <div 
+                                        *ngIf="modelVersion.status"
+                                        class='cs-text-overflow-ellipsis model-build-status model-build-status--{{modelVersion.status | lowercase}}' 
+                                        [status]="modelVersion.status"
+                                        hsModelStatus>
+                                        <hydro-icon #statusIcon class="icon"></hydro-icon>
+                                        <span #statusText class="icon-label"></span>
+                                    </div>
+                                </td>
+                                <td class="hydro-table-body__cell">
+                                    <ng-container *ngIf="modelVersion.applications.length > 0">
+                                        <span class="model-item__application" *ngFor="let appName of modelVersion.applications"
+                                            [routerLink]="['../../applications', appName]">
+                                            <span>{{appName}}</span>
+                                        </span>
+                                    </ng-container>
+                                    <span *ngIf="modelVersion.applications.length === 0">-</span>
+                                </td>
+                                <td class="hydro-table-body__cell">
+                                    <button 
+                                        *ngIf="modelVersion.status.toLowerCase() === 'finished'"
+                                        [routerLink]="[modelVersion.id]"
+                                        class="button button--flat">
+                                        <hydro-icon type="icon-right" class="button__icon navigation-icon"></hydro-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </ng-container>
             </ng-container>
         </div>

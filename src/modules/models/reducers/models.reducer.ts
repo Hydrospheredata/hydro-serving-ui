@@ -22,8 +22,6 @@ export function reducer(state = initialState, action: ModelActions) {
             return adapter.addMany(action.payload, { ...state, loading: false, loaded: true });
         case ModelActionTypes.GetFail:
             return { ...state, loading: false };
-        case ModelActionTypes.BuildSuccess:
-            return state;
         case ModelActionTypes.DeleteSuccess:
             return adapter.removeOne(action.modelId, state);
         default:

@@ -15,8 +15,6 @@ import { HydroServingState } from '@core/reducers';
 import * as fromRoot from '@core/reducers';
 import { Store } from '@ngrx/store';
 
-import * as hocon from 'hocon-parser';
-
 import { FormsService } from '@core/services';
 import { DialogService } from '@dialog/dialog.service';
 import { MetricSettings } from '@shared/models/metric-settings.model';
@@ -73,11 +71,12 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
 
         const app$ = this.store.select(fromApplications.getSelectedApplication);
 
-        this.sources$ = app$.pipe(map(_ => {
-            const parsed = hocon(_.contract);
-            console.log(parsed);
-            return [parsed.signatures.inputs.name];
+        this.sources$ = app$.pipe(map(application => {
+            const inputsNames: string[] = application.signature.inputs.map(field => field.name);
+
+            return inputsNames;
         }));
+
         this.applicationSub = app$.subscribe(_ => {
             this.application = _;
         });

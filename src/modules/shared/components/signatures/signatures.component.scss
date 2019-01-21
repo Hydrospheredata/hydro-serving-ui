@@ -5,35 +5,41 @@
   padding: 12px 24px;
   &__title {
     text-transform: uppercase;
-    line-height: 48px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 32px;
+    padding: 0;
+    margin: 0;
   }
 }
 
 .signature {
+  margin-bottom: 12px;
   &__name {
     border-bottom: 1px #e6e9ed solid;
     display: inline-block;
-    font-size: 14px;
-    line-height: 48px;
-    padding: 0px 24px;
+    font-size: 16px;
+    line-height: 44px;
+    margin-bottom: 4px;
+    padding: 0px;
+    margin: 0;
     width: 100%;
   }
+}
 
-  &__data {
-    padding: 12px 24px;
-    &-label {
+.fields-table {
+  width: 100%;
+  font-size: 14px;
+  &__row {
+    line-height: 28px;
+    &--labels {
       text-transform: uppercase;
-      color: #abafb2;
+      font-size: 12px;
+      color: rgb(138, 138, 138);
     }
-    &-row {
-      display: flex;
-    }
-    &-cell {
-      display: inline-block;
-      font-size: 13px;
-      line-height: 36px;
-      width: 100%
-    }
+  }
+  &__cell {
+    padding: 0 4px; 
   }
 }
 

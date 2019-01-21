@@ -2,7 +2,6 @@
 import {
     RuntimesReducer,
     SignaturesReducer,
-    EnvironmentsReducer,
 } from '@core/reducers/_index';
 import { ActionReducerMap, createSelector } from '@ngrx/store';
 
@@ -43,7 +42,6 @@ export class CustomRouterStateSerializer implements RouterStateSerializer<Router
 export interface HydroServingState {
     runtimes: Runtime[];
     signatures: Signature[];
-    environments: Environment[];
     router: fromRouter.RouterReducerState<RouterStateUrl>;
     metrics: fromMonitoring.MState | Error;
 }
@@ -51,7 +49,6 @@ export interface HydroServingState {
 export const reducers: ActionReducerMap<HydroServingState> = {
     runtimes: RuntimesReducer,
     signatures: SignaturesReducer,
-    environments: EnvironmentsReducer,
     router: fromRouter.routerReducer,
     metrics: fromMonitoring.reducer,
 };

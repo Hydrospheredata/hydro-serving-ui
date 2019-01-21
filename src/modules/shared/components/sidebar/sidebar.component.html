@@ -1,32 +1,18 @@
 <aside class="sidebar">
     <div class="sidebar-header">
         <div class="sidebar-header__row">
-            <h3 class='sidebar-title'>{{ sidebarTitle }}</h3>
+            <!-- <h3 class='sidebar-title'>{{ sidebarTitle }}</h3> -->
             <ng-container *ngIf='actionButton'>
                 <ng-container *ngTemplateOutlet="actionButton"></ng-container>
             </ng-container>
         </div>
         <div class="sidebar-header__row" *ngIf="isFilterEnabled">
-            <hydro-filter class='sidebar__filter' [data]="sidebarList" (filterEvent)="onFilter($event)"></hydro-filter>
+            <hydro-filter 
+                class='sidebar__filter' 
+                [data]="sidebarList" 
+                (filterEvent)="onFilter($event)">
+            </hydro-filter>
         </div>
-
-        <!-- <div class="sidebar-filter"  *ngIf="isFilterEnabled">
-            <span class="sidebar-filter__label">Filter:</span>
-            <button *ngIf="isModels" (click)="toggleSidebarFilter('deployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['deployed']}">
-                <svg class="icon sidebar-filter__button--icon deployed"><use xlink:href="#icon-arrow"/></svg>
-                <span class="sidebar-filter__button--label">Builded</span>
-            </button>
-            <button *ngIf="isModels" (click)="toggleSidebarFilter('undeployed')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['undeployed']}" >
-                <svg class="icon sidebar-filter__button--icon undeployed-filter"><use xlink:href="#icon-arrow"/></svg>
-                <span class="sidebar-filter__button--label">Unbuilded</span>
-            </button>
-            <button *ngIf="!isModels" (click)="toggleSidebarFilter('apps')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['apps']}" >
-                <span class="sidebar-filter__button--label">Apps</span>
-            </button>
-            <button *ngIf="!isModels" (click)="toggleSidebarFilter('pipelines')" class="sidebar-filter__button" [ngClass]="{'sidebar-filter__selected': !sidebarFilter['pipelines']}" >
-                <span class="sidebar-filter__button--label">Pipelines</span>
-            </button>
-        </div> -->
     </div>
 
 
@@ -37,24 +23,6 @@
                 [routerLink]="[item.id]" 
                 routerLinkActive='__active'>
                 <span class="sidebar-list__item-name">{{ item.name }}</span>
-                <span class='sidebar-list__item-status' *ngIf="item.currentServices && item.currentServices.length"
-                    [mdl-badge]="item.currentServices.length"></span>
-                <div *ngIf="isModels || (item.stages && item.stages.length > 1)" class="sidebar-list__item-details">
-                    <hydro-icon
-                        *ngIf="item.stages && item.stages.length > 1"
-                        type="icon-pipeline"
-                        class="sidebar__pipeline-icon"></hydro-icon>
-                    <span 
-                        *ngIf="isModels" class="sidebar-list__item--version status" 
-                        [ngClass]="{'__new-version': item.nextVersion, 'version-failed': item.lastModelBuild?.status === 'Failed'}">
-                            {{ item.nextVersion || item.lastModelVersion.modelVersion || 1 }}
-                    </span>
-                    <hydro-icon
-                        *ngIf="isModels"
-                        type="icon-arrow" 
-                        class="sidebar__deploy-icon" 
-                        [ngClass]="item.lastModelVersion ? 'deployed' : 'undeployed'"></hydro-icon>
-                </div>
             </li>
         </ul>
     </div>

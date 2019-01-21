@@ -22,7 +22,8 @@ import {
     ToNumberPipe,
     MatchSorterPipe,
     DockerImageSplitPipe,
-    ReverseArrayPipe
+    ReverseArrayPipe,
+    FieldShapePipe
 } from './pipes/_index';
 
 // Components
@@ -38,7 +39,7 @@ import {
     CommandTemplateComponent,
     BaseMetricChartComponent,
     KolmogorovSmirnovChartComponent,
-    DialogModelsEmptyComponent,
+    DialogModelsEmptyComponent
 } from './components/_index';
 
 // Directives
@@ -60,6 +61,7 @@ const PIPES = [
     MatchSorterPipe,
     DockerImageSplitPipe,
     ReverseArrayPipe,
+    FieldShapePipe,
 ];
 
 const COMPONENTS = [

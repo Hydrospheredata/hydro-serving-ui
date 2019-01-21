@@ -41,27 +41,27 @@
                     </hydro-icon>
                 </span>
             </div>
-            <ng-container *ngIf="stage.get('services'); let services">
-                <div formArrayName="services" class="services__list">
-                    <div *ngFor="let service of services.controls;index as serviceIdx;last as isLast">
+            <ng-container *ngIf="stage.get('modelVariants'); let modelVariants">
+                <div formArrayName="modelVariants" class="services__list">
+                    <div *ngFor="let modelVariant of modelVariants.controls;index as modelVariantIdx;last as isLast">
                         <div 
                             class="services__item"
                             [ngClass]="{'services__item--isLast': isLast}">
-                            <hs-service-form
-                                [group]="service" 
-                                [index]="serviceIdx"
-                                [showRemoveIcon]="showRemoveServiceIcon(stage)"
-                                (delete)="onServiceDelete(stage, $event)"></hs-service-form>
+                            <hs-model-variant-form
+                                [group]="modelVariant" 
+                                [index]="modelVariantIdx"
+                                [showRemoveIcon]="showRemoveModelVariantIcon(stage)"
+                                (delete)="onModelVariantDelete(stage, $event)"></hs-model-variant-form>
                         </div>
                     </div>
                 </div>
                 <button
-                    *ngIf="!stage.get('services').errors"
-                    (click)="addServiceToStage(stage)"
+                    *ngIf="!stage.get('modelVariants').errors"
+                    (click)="addModelVariantToStage(stage)"
                     class="button button--flat stage__add-service-button">
                     add model variant
                 </button>
-                <ng-container *ngIf="stage.get('services').errors; let errors">
+                <ng-container *ngIf="stage.get('modelVariants').errors; let errors">
                     <div class="error-container" 
                         *ngFor="let error of errors | iterateAsArray">
                         {{errors[error]}}

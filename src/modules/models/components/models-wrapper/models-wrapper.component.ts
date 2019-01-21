@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
+import { IModel } from '@shared/_index';
+import { Observable } from 'rxjs';
 
 @Component({
     selector: 'hydro-models-wrapper',
@@ -58,9 +60,7 @@ import { Store } from '@ngrx/store';
     ],
 })
 export class ModelsWrapperComponent implements OnInit {
-
-    public sidebarTitle = 'Models';
-    public models: any;
+    public models: Observable<IModel[]>;
 
     constructor(
         private store: Store<fromModels.ModelsState>

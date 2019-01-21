@@ -12,18 +12,19 @@ import {
 } from '@angular/forms';
 
 // providers
-import { ApplicationFormService } from '@applications/services/application-form.service';
-import { ServiceFormService } from '@applications/services/service-form.service';
+import { ApplicationFormService, StageFormData } from '@applications/services/application-form.service';
+import { ModelVariantFormService } from '@applications/services/model-variant-form.service';
+import { IApplication } from '@shared/_index';
 
 @Component({
     selector: 'hs-application-form',
     templateUrl: './application-form.component.html',
     styleUrls: ['./application-form.component.scss'],
-    providers: [ ServiceFormService, ApplicationFormService ],
+    providers: [ ModelVariantFormService, ApplicationFormService ],
 })
 export class ApplicationFormComponent implements OnInit {
     @Output() submitHandle: EventEmitter<any> = new EventEmitter();
-    @Input('data') data;
+    @Input() application: IApplication;
 
     public applicationForm: FormGroup;
 
@@ -40,25 +41,24 @@ export class ApplicationFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.applicationForm = this.formService.initForm(this.data);
+        this.applicationForm = this.formService.initForm(this.application);
     }
 
     public addStageControl() {
         this.formService.addStageControl();
     }
 
-    public addServiceToStage(stage: FormGroup) {
-        this.formService.addServiceToStage(stage);
+    public addModelVariantToStage(stage: FormGroup) {
+        this.formService.addModelVariantToStage(stage);
     }
 
     public normalizeStageControlsValue() {
-        return this.applicationForm.value.stages.map(stage => {
+        return this.applicationForm.value.stages.map((stage: StageFormData) => {
             return stage = {
-                services: stage.services.map(service => ({
-                        runtimeId: service.runtime,
-                        modelVersionId: service.model.modelVersionId,
-                        weight: Number(service.weight),
-                        signatureName: service.signatureName,
+                modelVariants: stage.modelVariants.map(modelVariant => ({
+                        modelVersionId: modelVariant.modelVersionId,
+                        weight: Number(modelVariant.weight),
+                        signatureName: modelVariant.signatureName,
                     })
                 ),
             };
@@ -89,12 +89,12 @@ export class ApplicationFormComponent implements OnInit {
         this.applicationStagesFormArray.removeAt(stageIdx);
     }
 
-    public showRemoveServiceIcon(stage: FormControl): boolean {
-        return stage.get('services').value.length > 1;
+    public showRemoveModelVariantIcon(stage: FormControl): boolean {
+        return stage.get('modelVariants').value.length > 1;
     }
 
-    public onServiceDelete(stage: FormControl, serviceIdx: number): void {
-        const services = stage.get('services') as FormArray;
-        services.removeAt(serviceIdx);
+    public onModelVariantDelete(stage: FormControl, modelVariantIdx: number): void {
+        const modelVariants = stage.get('modelVariants') as FormArray;
+        modelVariants.removeAt(modelVariantIdx);
     }
 }

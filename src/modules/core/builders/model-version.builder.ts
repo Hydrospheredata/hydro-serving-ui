@@ -7,27 +7,19 @@ export class ModelVersionBuilder {
         return this.toModelVersion(props);
     }
 
-    private toModelVersion(props) {
-        let lastModelVersion: ModelVersion;
-
-        if (props) {
-            lastModelVersion = new ModelVersion({
-                id: props.id,
-                model: props.model,
-                source: props.source,
-                created: props.created,
-                modelContract: props.modelContract,
-                imageName: props.imageName,
-                imageTag: props.imageTag,
-                modelName: props.modelName,
-                modelType: props.modelType,
-                imageSHA256: props.imageSHA256,
-                modelVersion: props.modelVersion,
-                applications: props.applications,
-            });
-
-            return lastModelVersion;
-        }
+    private toModelVersion(props): ModelVersion {
+        return new ModelVersion({
+            id: props.id,
+            image: props.image,
+            created: props.created,
+            finished: props.finished,
+            modelVersion: props.modelVersion,
+            modelContract: props.modelContract,
+            runtime: props.runtime,
+            model: props.model,
+            hostSelector: props.hostSelector,
+            status: props.status,
+            applications: props.applications,
+        });
     }
-
 }

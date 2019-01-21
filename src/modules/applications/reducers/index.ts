@@ -51,7 +51,9 @@ export const getSelectedApplicationName = createSelector(
 
 export const getSelectedApplicationSignatureName = createSelector(
     getSelectedApplication,
-    (application: Application): string => application && application.contract.match(/signature_name: \"(.*)\"\n/)[1]
+    (application: Application): string => {
+       return application && application.signature.signatureName;
+    }
 );
 
 export const getSelectedApplicationId = createSelector(

@@ -1,6 +1,6 @@
 import { Provider } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SELECTED_APPLICATION$, SELECTED_SERVICE } from '@applications/components';
+import { SELECTED_APPLICATION$, SELECTED_MODEL_VARIANT, LATEST_MODEL_VERSION_ID } from '@applications/components';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 
@@ -17,4 +17,5 @@ export const MockStoreProvider: Provider = { provide: Store, useValue: MockStore
 export const MockActivatedRouterProvider: Provider = { provide: ActivatedRoute, useValue: {}};
 export const MockRouterProvider: Provider = { provide: Router, useValue: MockRouter};
 export const MockSelectedApplication: Provider = { provide: SELECTED_APPLICATION$, useValue: of({})};
-export const MockSelectedServiceProvider: Provider = { provide: SELECTED_SERVICE, useValue: {}};
+export const MockSelectedModelVariantProvider: Provider = { provide: SELECTED_MODEL_VARIANT, useValue: {}};
+export const MockLatestModelVersionId: Provider = { provide: LATEST_MODEL_VERSION_ID, useValue: 0};

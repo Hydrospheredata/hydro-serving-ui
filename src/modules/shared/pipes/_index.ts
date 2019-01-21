@@ -10,3 +10,4 @@ export * from './to-number.pipe';
 export * from './match-sorter.pipe';
 export * from './docker-image-split.pipe';
 export * from './reverse-array.pipe';
+export * from './fieldShape.pipe';

@@ -1,7 +1,6 @@
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
 import { CanActivateChild, Router, ActivatedRouteSnapshot } from '@angular/router';
-import { GetModelBuildsAction } from '@models/actions';
 import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { Model } from '@shared/_index';
@@ -21,11 +20,9 @@ export class ModelDetailsGuard implements CanActivateChild {
     canActivateChild(route: ActivatedRouteSnapshot): Observable<boolean> {
         const modelId = Number(route.params.modelId);
 
-        this.store.dispatch(new GetModelBuildsAction(modelId));
-
         return forkJoin(
             this.modelsAreLoaded(),
-            this.modelBuildsAreLoaded()
+            this.modelVersionAreLoaded()
         ).pipe(
             switchMap(_ => this.store.select(fromModels.getAllModels)),
             switchMap(models => {
@@ -55,18 +52,18 @@ export class ModelDetailsGuard implements CanActivateChild {
         );
     }
 
-    private modelBuildsAreLoaded(): Observable<boolean> {
-        return this.store.select(fromModels.getModelBuildEntitiesLoaded).pipe(
+    private modelVersionAreLoaded(): Observable<boolean> {
+        return this.store.select(fromModels.getModelVersionLoaded).pipe(
             filter(loaded => loaded),
             take(1)
         );
     }
 
-    private checkVersion(modelId: number, modelVersion: number): Observable<boolean> {
-        return this.store.select(fromModels.getAllModelBuilds).pipe(
-            switchMap(modelBuilds => {
-                const modelBuild = modelBuilds.find(curModelBuild => curModelBuild.version === modelVersion);
-                if (modelBuild) {
+    private checkVersion(modelId: number, modelVersionId: number): Observable<boolean> {
+        return this.store.select(fromModels.getModelVersionsByModelId(modelId)).pipe(
+            switchMap(modelVersions => {
+                const modelVersion = modelVersions.find(modelVer => modelVer.id === modelVersionId);
+                if (modelVersion) {
                     return of(true);
                 } else {
                     this.router.navigate([this.defaultUrl, modelId]);

@@ -22,6 +22,7 @@ export class ApplicationsEffects {
         .ofType(HydroActions.ApplicationActionTypes.Get)
         .pipe(
             switchMap(() => {
+
                 return this.applicationsService
                     .getApplications()
                     .pipe(
@@ -153,21 +154,25 @@ export class ApplicationsEffects {
             withLatestFrom(
                 this.store.select(fromApplications.getSelectedApplicationInput),
                 this.store.select(fromApplications.getSelectedApplicationSignatureName),
-                this.store.select(fromApplications.getSelectedApplicationId)
+                this.store.select(fromApplications.getSelectedApplication)
             ),
-            switchMap(([action, inputs, signatureName, applicationId]) => {
+            switchMap(([action, inputs, signatureName, application]) => {
                 console.log(action, inputs);
                 return this.applicationsService
-                        .serveService(JSON.parse(inputs), applicationId, encodeURIComponent(signatureName))
+                        .serveService(
+                            JSON.parse(inputs),
+                            application.name,
+                            encodeURIComponent(application.signature.signatureName)
+                        )
                         .pipe(
                             map(output => {
                                 return new HydroActions.TestApplicationSuccessAction({
-                                    id: applicationId,
+                                    id: application.id,
                                     output: JSON.stringify(output, undefined, 2),
                                 });
                             }),
                             catchError(error => {
-                                const payload = {id: applicationId, error};
+                                const payload = {id: application.id, error};
                                 return observableOf(new HydroActions.TestApplicationFailAction(payload));
                             })
                         );

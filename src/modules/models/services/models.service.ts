@@ -2,7 +2,9 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import {map} from 'rxjs/operators';
+import { ModelVersion } from '@shared/_index';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ModelsService {
@@ -19,25 +21,13 @@ export class ModelsService {
         return this.http.get(this.baseAPIUrl).pipe(
             map((res: Response): any => res)
         );
+
     }
 
-    public getModelBuilds(id: number) {
-        return this.http.get(`${this.baseAPIUrl}/builds/${id}`).pipe(
-            map((res: Response): any => res)
-        );
-    }
-
-    public getAllVersions() {
+    public getAllVersions(): Observable<ModelVersion[]> {
         return this.http.get(`${this.baseAPIUrl}/version`).pipe(
             map((res: Response): any => res)
         );
-    }
-
-    // TODO: remove?
-    public buildModel(options) {
-        const updateModelUrl = `${this.baseAPIUrl}/build`;
-        return this.http.post(updateModelUrl, options).pipe(
-            map((res: Response): any => res));
     }
 
     public deleteModel(modelId) {

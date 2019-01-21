@@ -2,24 +2,23 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 
 import * as fromApplications from '@applications/reducers';
 import { HydroServingState } from '@core/reducers';
-import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
 
 import { InfluxDBService} from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
-import { Application, Model, HealthRow } from '@shared/models/_index';
-import { Observable ,  Subscription } from 'rxjs';
-import { tap, filter } from 'rxjs/operators';
+import { Application, HealthRow, ModelVersion } from '@shared/models/_index';
+import { Observable } from 'rxjs';
 
 import {
     DialogDeleteApplicationComponent,
     DialogUpdateApplicationComponent,
     DialogUpdateModelVersionComponent,
-    SELECTED_SERVICE,
+    SELECTED_MODEL_VARIANT,
     SELECTED_UPD_APPLICATION$,
     DialogTestComponent,
     SELECTED_APPLICATION$,
+    LATEST_MODEL_VERSION_ID,
 } from '@applications/components/dialogs';
 
 @Component({
@@ -32,11 +31,10 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     public application: Application;
 
     public application$: Observable<Application>;
-    public models: Model[];
+    public modelVersions: ModelVersion[];
 
     public healthStatuses: { [s: string]: string } = {};
     private intervalId: number;
-    private modelSub: Subscription;
 
     constructor(
         public store: Store<HydroServingState>,
@@ -45,10 +43,6 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
         private influxdbService: InfluxDBService
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication);
-        this.modelSub = this.store.select(fromModels.getAllModels).pipe(
-            filter(models => models.length > 0),
-            tap(models => this.models = models)
-        ).subscribe();
     }
 
     // TODO: remove me please
@@ -87,24 +81,15 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         clearInterval(this.intervalId);
-        if (this.modelSub) {
-            this.modelSub.unsubscribe();
-        }
     }
 
-    public checkNewVersion(modelVersionData): boolean {
-        const { modelName, modelVersion } = modelVersionData;
-
-        if (this.models) {
-            const modell = this.models.find(model => model.name === modelName);
-            return modell.lastModelVersion.modelVersion > modelVersion;
-        }
-    }
-
-    public updateModelVersionDialog(service) {
+    public updateModelVersionDialog(lastModelVersionId, modelVariant) {
         this.dialog.createDialog({
             component: DialogUpdateModelVersionComponent,
-            providers: [{provide: SELECTED_SERVICE, useValue: service}],
+            providers: [
+                { provide: SELECTED_MODEL_VARIANT, useValue: modelVariant },
+                { provide: LATEST_MODEL_VERSION_ID, useValue: lastModelVersionId },
+            ],
         });
     }
 

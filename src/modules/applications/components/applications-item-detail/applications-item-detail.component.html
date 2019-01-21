@@ -42,6 +42,12 @@
             </button>
         </div>
         <table class='hydro-table hydro-table-models'>
+            <colgroup>
+                <col width="220px">
+                <col>
+                <col>
+                <col>
+            </colgroup>
             <thead class="hydro-table-head hydro-table-head--with-border">
                 <tr>
                     <th class="hydro-table-head__cell">Model Variant</th>
@@ -51,34 +57,36 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of stage.services; let j = index;" class='hydro-table-body__row'>
+                <tr *ngFor="let modelVariant of stage.modelVariants; let j = index;" class='hydro-table-body__row'>
                     <td class="hydro-table-body__cell model-variant__cell">
                         <span
-                            class="model-variant__version-new tooltip"
-                            [ngClass]="{'model-variant__version-new--visible': checkNewVersion(item.modelVersion)}">
+                            class="model-variant__version-new tooltip">
                             <hydro-icon 
                                 type='icon-upgrade'
                                 class="icon model-variant__version-new-icon"
-                                (click)="updateModelVersionDialog(item)">
+                                hsUpdateModelVersion
+                                [modelVersion]="modelVariant.modelVersion"
+                                (handleClick)="updateModelVersionDialog($event, modelVariant)"
+                                >
                             </hydro-icon>
                             <span class="tooltiptext">Model has new version</span>
                         </span>
-                        <span class='model-variant__version-text cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                            {{ item.modelVersion.modelName + ':v' + item.modelVersion.modelVersion }}
+                        <span class='model-variant__version-text cs-text-overflow-ellipsis cs-text-center'>
+                            {{ modelVariant.modelVersion.model.name + ':v' + modelVariant.modelVersion.modelVersion }}
                         </span>
                     </td>
                     <td class="hydro-table-body__cell">
                         <div class='cs-text-overflow-ellipsis cs-text-center' style="max-width: 300px;">
-                            {{ item.runtime.name ? item.runtime.name : item.runtime.id }}
+                            {{ modelVariant.modelVersion.runtime.name ? modelVariant.modelVersion.runtime.name : modelVariant.modelVersion.runtime.id }}
                         </div>
                     </td>
 
                     <td class="hydro-table-body__cell">
-                        <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>{{ item.weight }}%</div>
+                        <div class='cs-text-center'>{{ modelVariant.weight }}%</div>
                     </td>
                     <td class="hydro-table-body__cell">
-                        <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                            <div [ngClass]="healthStatuses['app' + (application$ | async)?.id + 'stage' + i + '_' + item.modelVersion.id]"
+                        <div class='cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
+                            <div [ngClass]="healthStatuses['app' + (application$ | async)?.id + 'stage' + i + '_' + modelVariant.modelVersion.id]"
                                 class="health-status"></div>
                         </div>
                     </td>
@@ -86,7 +94,4 @@
             </tbody>
         </table>
     </div>
-
-    <!-- <div #chart></div> -->
-
 </div>

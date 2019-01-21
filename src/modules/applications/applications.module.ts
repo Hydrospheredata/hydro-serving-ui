@@ -19,7 +19,7 @@ import {
     ApplicationsStageDetailComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
-    ServiceFormComponent,
+    ModelVariantFormComponent,
     DialogAddApplicationComponent,
     DialogAddMetricComponent,
     DialogDeleteMetricComponent,
@@ -30,6 +30,7 @@ import {
 } from '@applications/components';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UpdateModelVersionDirective } from '@applications/directives';
 import {
     ApplicationsService,
     ApplicationsBuilderService,
@@ -54,7 +55,11 @@ const PRIVATE_COMPONENTS = [
     ApplicationsStageDetailComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
-    ServiceFormComponent,
+    ModelVariantFormComponent,
+];
+
+const DIRECTIVES = [
+    UpdateModelVersionDirective,
 ];
 @NgModule({
     imports: [
@@ -74,6 +79,7 @@ const PRIVATE_COMPONENTS = [
     declarations: [
         ...PRIVATE_COMPONENTS,
         ...DIALOGS,
+        ...DIRECTIVES,
     ],
     entryComponents: [
         ...DIALOGS,

@@ -5,7 +5,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import {
     DialogAddApplicationComponent
 } from '@applications/components';
-import { ApplicationFormComponent, KafkaFormComponent, ServiceFormComponent } from '@applications/components/forms';
+import {
+    ApplicationFormComponent,
+    KafkaFormComponent,
+    ModelVariantFormComponent
+} from '@applications/components/forms';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { DialogService } from '@dialog/dialog.service';
 import { SharedModule } from '@shared/shared.module';
@@ -26,7 +30,7 @@ describe('DialogAddApplicationComponent', () => {
                 ApplicationFormComponent,
                 DialogAddApplicationComponent,
                 KafkaFormComponent,
-                ServiceFormComponent,
+                ModelVariantFormComponent,
             ],
             providers: [
                 DialogService,

@@ -15,7 +15,7 @@ export class ApplicationsService {
     constructor(
         private http: HttpService
     ) {
-        this.baseApiUrl = `${environment.apiUrl}/applications`;
+        this.baseApiUrl = `${environment.apiUrl}/application`;
     }
 
     public getApplications(): Observable<Application[]> {
@@ -42,8 +42,9 @@ export class ApplicationsService {
         return this.http.delete(`${this.baseApiUrl}/${id}`);
     }
 
-    public serveService(data, id, signatureName): Observable<any> {
-        return this.http.post(`${this.baseApiUrl}/serve/${id}/${signatureName}`, data).pipe(
+    public serveService(data, applicationName: string, signatureName: string): Observable<any> {
+        const url = `${this.baseApiUrl}/gateway/application/${applicationName}/${signatureName}`;
+        return this.http.post(url, data).pipe(
             map((res: Response): any =>  res));
     }
 }

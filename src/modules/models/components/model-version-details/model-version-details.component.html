@@ -5,7 +5,7 @@
             back to model
         </button>
 
-        <div class="content-header__title">{{ (build$ | async)?.model.name }} / v{{ (build$ | async)?.version }}</div>
+        <div class="content-header__title">{{ (modelVersion$ | async)?.model?.name }} / v{{ (modelVersion$ | async)?.modelVersion }}</div>
     </div>
 
 
@@ -14,19 +14,22 @@
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Created</span>
                 <span class="content-info__sublist-item-value">
-                    <div class="status">{{ (build$ | async)?.finished | utcToLocal | amTimeAgo }}</div>
+                    <div class="status">{{ (modelVersion$ | async)?.finished | utcToLocal | amTimeAgo }}</div>
                 </span>
             </li>
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Version</span>
                 <span class="content-info__sublist-item-value">
-                    <div class="status">{{ (build$ | async)?.version }}</div>
+                    <div class="status">{{ (modelVersion$ | async)?.modelVersion }}</div>
                 </span>
             </li>
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Status</span>
-                <ng-container *ngIf="build$ | async;let build">
-                    <span class="content-info__sublist-item-value model-build-status--{{build.status | lowercase}}" [status]="build.status"  hsModelStatus >
+                <ng-container *ngIf="(modelVersion$ | async)?.status;let status">
+                    <span 
+                        class="content-info__sublist-item-value model-build-status--{{status | lowercase}}" 
+                        [status]="status"  
+                        hsModelStatus >
                         <span #statusText class="status"></span>
                     </span>
                 </ng-container>
@@ -34,21 +37,21 @@
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Applications</span>
                 <span class="content-info__sublist-item-value">
-                    <span *ngFor="let app of ((build$ | async)?.modelVersion.applications | slice: (build$ | async)?.modelVersion.applications.length - 2);last as isLast"
-                        [routerLink]="['../../../applications', app.id]"
+                    <span *ngFor="let appName of ((modelVersion$ | async)?.applications);last as isLast"
+                        [routerLink]="['../../../applications', appName]"
                         class='application'
                         [ngClass] = "{'application--isLast': isLast}">
-                        <span class="application-name">{{app.name}}</span>
+                        <span class="application-name">{{appName}}</span>
                     </span>
                 </span>
             </li>
         </ol>
 
         <div class="content__body-section">
-            <hydro-signatures [isEditable]="false" [modelId]="modelId"></hydro-signatures>
+            <hydro-signatures [signatures]="(modelVersion$ | async)?.modelContract?.signatures"></hydro-signatures>
         </div>        
 
-        <div class="content__body-section">
+        <div *ngIf="modelVersion$?.id | async; let modelVersionId"class="content__body-section">
             <hydro-data-profiles [modelVersionId]="modelVersionId"></hydro-data-profiles>
         </div>
     </div>

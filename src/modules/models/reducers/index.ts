@@ -1,14 +1,12 @@
 import * as fromRoot from '@core/reducers';
 import { ActionReducerMap, createFeatureSelector, createSelector } from '@ngrx/store';
 import { Model } from '@shared/_index';
-import * as fromModelBuild from './model-builds.reducer';
 import * as fromModelVersion from './model-versions.reducer';
 import * as fromModel from './models.reducer';
 
 export interface ModelsState {
     models: fromModel.State;
     modelVersion: fromModelVersion.State;
-    modelBuild: fromModelBuild.State;
 }
 
 export interface State extends fromRoot.HydroServingState {
@@ -17,8 +15,7 @@ export interface State extends fromRoot.HydroServingState {
 
 export const reducers: ActionReducerMap<ModelsState> = {
     models: fromModel.reducer,
-    modelVersion: fromModelVersion.reducer,
-    modelBuild: fromModelBuild.reducer,
+    modelVersion: fromModelVersion.modelVersionReducer,
 };
 
 export const getModelState = createFeatureSelector<ModelsState>('models');
@@ -38,24 +35,14 @@ export const getModelEntitiesLoaded = createSelector(
     state => state.loaded
 );
 
-export const getModelVersionEntitiesState = createSelector(
+export const getModelVersionState = createSelector(
     getModelState,
     state => state.modelVersion
 );
 
-export const getModelBuildEntitiesState = createSelector(
-    getModelState,
-    state => state.modelBuild
-);
-
-export const getModelBuildEntitiesLoading = createSelector(
-    getModelBuildEntitiesState,
-    state => state.loading
-);
-
-export const getModelBuildEntitiesLoaded = createSelector(
-    getModelBuildEntitiesState,
-    state => state.loaded
+export const getModelVersionEntitiesState = createSelector(
+    getModelVersionState,
+    state => state.allModelVersions
 );
 
 export const {
@@ -63,12 +50,6 @@ export const {
     selectEntities: getModelEntities,
     selectTotal: getTotalModels,
 } = fromModel.adapter.getSelectors(getModelEntitiesState);
-
-export const {
-    selectAll: getAllModelBuilds,
-    selectEntities: getModelBuildEntities,
-    selectTotal: getTotalModelBuilds,
-} = fromModelBuild.adapter.getSelectors(getModelBuildEntitiesState);
 
 export const {
     selectAll: getAllModelVersions,
@@ -87,19 +68,26 @@ export const getSelectedModelId = createSelector(
     (model: Model): number => model && model.id
 );
 
-export const getSelectedBuild = createSelector(
-    getAllModelBuilds,
+export const getSelectedModelVersion = createSelector(
+    getModelVersionEntities,
     fromRoot.getRouterState,
-    (builds, router) => {
-        return router.state && builds.find(build => build.version === Number(router.state.params.modelVersionId));
-    }
+    (entities, router) => router.state && entities[router.state.params.modelVersionId]
 );
 
-export const getAllModelBuildsReversed = createSelector(
-    getAllModelBuilds,
-    builds => builds.reverse()
+export const getModelVersionLoading = createSelector(
+    getModelVersionEntitiesState,
+    state => state.loading
+);
+
+export const getModelVersionLoaded = createSelector(
+    getModelVersionEntitiesState,
+    state => state.loaded
 );
 
 export const getModelVersionsByModelId = (modelId: number) => createSelector(
-    getAllModelVersions, state => state.filter(modelVersion => modelVersion.model.id === modelId)
+    getModelVersionState,
+    getModelVersionEntities,
+    (state, entities) => {
+        return state.byModel[modelId] && state.byModel[modelId].map(id => entities[id]);
+    }
 );

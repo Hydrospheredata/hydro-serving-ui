@@ -28,6 +28,9 @@
         &-label {
             font-size: 12px;
             line-height: 12px;
+            margin-bottom: 5px;
+            color: #818994;
+            font-weight: 500;
         }
         &-input {
             padding: 4px 8px;
@@ -51,13 +54,13 @@
             width: 80px;
         }
         &--runtime {
-            width: 460px;
+            width: 368px;
         }
         &--is-last {
             margin-right: 0;
         }
-        &--environment {
-            width: 98px;
+        &--hostSelector {
+            width: 80px;
         }
         &--weight {
             width: 50px;

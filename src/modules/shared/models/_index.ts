@@ -10,3 +10,6 @@ export * from './source.model';
 
 export * from './profiles.model';
 export * from './influxdb';
+
+export * from './image.model';
+export * from './hostSelector.model';

@@ -1,7 +1,7 @@
 <ng-template #addButton>
-    <button class="button button--secondary" (click)="addApplication($event)" title="Add new app">
-        <hydro-icon class="button__icon" [type]="'icon-plus'"></hydro-icon>
-        add new
+    <button class="button button--primary add-application__button" (click)="addApplication($event)" title="Add new app">
+        <hydro-icon class="button__icon add-application__icon" [type]="'icon-plus'"></hydro-icon>
+        add new application
     </button>
 </ng-template>
 
@@ -9,7 +9,6 @@
     <hydro-sidebar 
         class='sidebar'
         [sidebarData]="applications" 
-        [sidebarTitle]="sidebarTitle" 
         [actionButton]="addButton" 
         [isFilterEnabled]="true"></hydro-sidebar>
     <div [@anim]="prepare(out)" class="container" >

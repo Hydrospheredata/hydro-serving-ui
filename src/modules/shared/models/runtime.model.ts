@@ -1,17 +1,16 @@
+export interface IRuntime {
+    name: string;
+    tag: string;
+    sha256: string;
+}
 export class Runtime {
-    public id: number;
     public name: string;
-    public version: string;
-    public suitableModelType: any[];
-    public tags: string[];
-    public configParams: any;
+    public tag: string;
+    public sha256: string;
 
     constructor(props: any = {}) {
-        this.id = props.id;
-        this.name = props.name;
-        this.version = props.version;
-        this.suitableModelType = props.suitableModelType;
-        this.tags = props.tags;
-        this.configParams = props.configParams;
+        this.name = props.id;
+        this.tag = props.name;
+        this.sha256 = props.sha256;
     }
 }
