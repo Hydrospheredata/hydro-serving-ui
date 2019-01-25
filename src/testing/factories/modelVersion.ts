@@ -20,7 +20,7 @@ export const MockModelVersion1Model1: IModelVersion = {
     runtime: MockRuntime,
     model: MockModel1,
     hostSelector: MockHostSelector,
-    status: 'finished',
+    status: ModelVersionStatus.Released,
     applications: [],
 };
 
@@ -34,7 +34,7 @@ export const MockModelVersion2Model1: IModelVersion = {
     runtime: MockRuntime3,
     model: MockModel1,
     hostSelector: MockHostSelector,
-    status: 'finished',
+    status: ModelVersionStatus.Released,
     applications: ['app1', 'app2'],
 };
 
@@ -48,6 +48,6 @@ export const MockModelVersion3Model2: IModelVersion = {
     runtime: MockRuntime2,
     model: MockModel2,
     hostSelector: MockHostSelector,
-    status: 'finished',
+    status: ModelVersionStatus.Released,
     applications: ['app1', 'app2'],
 };

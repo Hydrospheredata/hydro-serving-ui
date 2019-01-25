@@ -26,17 +26,18 @@ import {
     DialogDeleteApplicationComponent,
     DialogTestComponent,
     DialogUpdateApplicationComponent,
-    DialogUpdateModelVersionComponent
+    DialogUpdateModelVersionComponent,
+    ApplicationStatusComponent
 } from '@applications/components';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UpdateModelVersionDirective } from '@applications/directives';
 import {
     ApplicationsService,
-    ApplicationsBuilderService,
     ApplicationsGuard,
     ApplicationFormService
 } from '@applications/services';
+import { ApplicationBuilder } from '@core/builders/application.builder';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 
 const DIALOGS = [
@@ -53,6 +54,7 @@ const PRIVATE_COMPONENTS = [
     ApplicationsWrapperComponent,
     ApplicationsItemDetailComponent,
     ApplicationsStageDetailComponent,
+    ApplicationStatusComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
     ModelVariantFormComponent,
@@ -86,7 +88,7 @@ const DIRECTIVES = [
     ],
     providers: [
         ApplicationsService,
-        ApplicationsBuilderService,
+        ApplicationBuilder,
         ApplicationsGuard,
         ApplicationFormService,
         CustomValidatorsService,

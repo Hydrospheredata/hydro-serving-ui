@@ -7,8 +7,8 @@ import { Store } from '@ngrx/store';
 import { InfluxDBService} from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
-import { Application, HealthRow, ModelVersion } from '@shared/models/_index';
-import { Observable } from 'rxjs';
+import { Application, HealthRow, ModelVersion, ApplicationStatus, IApplication } from '@shared/models/_index';
+import { Observable, Subscription } from 'rxjs';
 
 import {
     DialogDeleteApplicationComponent,
@@ -20,6 +20,7 @@ import {
     SELECTED_APPLICATION$,
     LATEST_MODEL_VERSION_ID,
 } from '@applications/components/dialogs';
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'hs-applications-item-detail',
@@ -28,13 +29,14 @@ import {
     encapsulation: ViewEncapsulation.None,
 })
 export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
-    public application: Application;
+    public application: IApplication;
 
     public application$: Observable<Application>;
     public modelVersions: ModelVersion[];
 
     public healthStatuses: { [s: string]: string } = {};
     private intervalId: number;
+    private applicationSub: Subscription;
 
     constructor(
         public store: Store<HydroServingState>,
@@ -42,7 +44,9 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
         private metricsService: MetricsService,
         private influxdbService: InfluxDBService
     ) {
-        this.application$ = this.store.select(fromApplications.getSelectedApplication);
+        this.applicationSub = this.store.select(fromApplications.getSelectedApplication).pipe(
+            tap( application => this.application = application)
+        ).subscribe();
     }
 
     // TODO: remove me please
@@ -81,6 +85,7 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         clearInterval(this.intervalId);
+        this.applicationSub.unsubscribe();
     }
 
     public updateModelVersionDialog(lastModelVersionId, modelVariant) {
@@ -112,5 +117,9 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
 
     public removeApplication() {
         this.dialog.createDialog({component: DialogDeleteApplicationComponent});
+    }
+
+    public isReady(status: string): boolean {
+        return ApplicationStatus.Ready === status;
     }
 }

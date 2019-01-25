@@ -1,7 +1,8 @@
+
 import { Injectable } from '@angular/core';
-import { Application, IApplication, Signature, ISignature } from '@shared/models/_index';
+import { Application, IApplication, ISignature } from '@shared/models/_index';
 @Injectable()
-export class ApplicationsBuilderService {
+export class ApplicationBuilder {
     public build(props): Application {
         return this.toApplication(props);
     }
@@ -24,6 +25,7 @@ export class ApplicationsBuilderService {
             name: props.name,
             executionGraph: props.executionGraph || [],
             kafkaStreaming: props.kafkaStreaming || [],
+            status: props.status && props.status.toLowerCase(),
         });
 
         return application;

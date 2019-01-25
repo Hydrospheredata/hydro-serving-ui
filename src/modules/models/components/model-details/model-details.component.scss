@@ -59,6 +59,7 @@
     height: 14px;
     margin-top: -2px;
     &-label {
+        text-transform: capitalize;
         margin-left: 5px;
     }
 }
@@ -80,17 +81,6 @@
       font-size: 12px;
       padding: 5px 7px;
     }
-}
-
-.deploy-btn {
-    background-color: $color--blue;
-    color: #FFFFFF;
-    font-family: $font-family-bold;
-    font-size: 12px;
-    fill: #FFFFFF;
-    padding: 3px 20px;
-    cursor: pointer;
-    margin-left: 10px;
 }
 
 .hydro-table {
@@ -146,6 +136,9 @@
     &__detail-icon {
       padding-top: -2px;
     }
+  }
+  &-version-status {
+    
   }
 }
 

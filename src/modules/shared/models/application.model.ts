@@ -15,6 +15,13 @@ export enum TestStatus {
     Undefined = '',
 }
 
+export enum ApplicationStatus {
+    Assembling = 'assembling',
+    Ready = 'ready',
+    Failed = 'failed',
+    Undefined = 'undefined',
+}
+
 export interface Stage {
     modelVariants: IModelVariant[];
     signature: string;
@@ -40,6 +47,7 @@ export interface IApplication {
     output: string;
     namespace?: string;
     testStatus?: TestStatus;
+    status: string;
     error?: string;
 }
 
@@ -54,6 +62,7 @@ export class Application implements IApplication {
     public output: string;
     public testStatus?: TestStatus;
     public error?: string;
+    public status: string;
 
     constructor(props: any = {}) {
         if (props.id) { this.id = props.id; }
@@ -67,5 +76,6 @@ export class Application implements IApplication {
         this.testStatus = props.testStatus || null;
         this.error = props.error || '';
         this.testStatus = props.testStatus || TestStatus.Undefined;
+        this.status = props.status;
     }
 }

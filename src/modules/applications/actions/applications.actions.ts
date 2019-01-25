@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Application } from '@shared/models/_index';
+import { Application, IApplication } from '@shared/models/_index';
 
 export enum ApplicationActionTypes {
     Get = '[Application] Get all applications',
@@ -85,7 +85,7 @@ export class UpdateApplicationFailAction implements Action {
 
 export class DeleteApplicationAction implements Action {
     readonly type = ApplicationActionTypes.Delete;
-    constructor(public applicationId: number) { }
+    constructor(public application: IApplication) { }
 }
 
 export class DeleteApplicationSuccessAction implements Action {

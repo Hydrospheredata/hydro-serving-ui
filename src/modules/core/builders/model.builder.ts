@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Model, ModelBuild, ModelVersion } from '@shared/models/_index';
-import { ModelBuildBuilder } from './model-build.builder';
-import { ModelVersionBuilder } from './model-version.builder';
+import { Model } from '@shared/models/_index';
 
 @Injectable()
 export class ModelBuilder {

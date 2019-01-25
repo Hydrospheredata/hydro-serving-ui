@@ -1,22 +1,21 @@
 import { Directive, Input, OnInit, ContentChild, ElementRef } from '@angular/core';
 import { IconComponent } from '@shared/_index';
+import { ModelVersionStatus } from '@shared/models/_index';
 @Directive({
-    selector: '[hsModelStatus]',
+    selector: '[hsModelVersionStatus]',
 })
-export class ModelStatusDirective implements OnInit {
+export class ModelVersionStatusDirective implements OnInit {
     @ContentChild('statusIcon') statusIcon: IconComponent;
     @ContentChild('statusText') statusText: ElementRef;
     @Input() public status: string;
 
     ngOnInit() {
-        this.status = this.status.toLowerCase();
-
         if (this.statusIcon) {
             this.statusIcon.type = this.getIconType(this.status);
         }
 
         if (this.statusText) {
-            this.statusText.nativeElement.textContent = this.getStatusText(this.status);
+            this.statusText.nativeElement.textContent = this.status;
         }
     }
 
@@ -24,13 +23,13 @@ export class ModelStatusDirective implements OnInit {
         let iconType: string;
 
         switch (status) {
-            case 'started':
+            case ModelVersionStatus.Assembling:
                 iconType = 'icon-arrow';
                 break;
-            case 'finished':
+            case ModelVersionStatus.Released:
                 iconType = 'icon-done';
                 break;
-            case 'failed':
+            case ModelVersionStatus.Failed:
                 iconType = 'icon-error-outline';
                 break;
             default:
@@ -38,25 +37,5 @@ export class ModelStatusDirective implements OnInit {
         }
 
         return iconType;
-    }
-
-    private getStatusText(status: string): string {
-        let textStatus: string;
-
-        switch (status) {
-            case 'started':
-                textStatus = 'Started';
-                break;
-            case 'finished':
-                textStatus = 'Released';
-                break;
-            case 'failed':
-                textStatus = 'Failed';
-                break;
-            default:
-                textStatus = 'Pending';
-        }
-
-        return textStatus;
     }
 }

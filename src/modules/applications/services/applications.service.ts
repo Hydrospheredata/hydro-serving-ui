@@ -33,13 +33,13 @@ export class ApplicationsService {
             map((res: Response): any => res));
     }
 
-    public generateInputs(id: number, signatureName: string) {
-        return this.http.get(`${this.baseApiUrl}/generateInputs/${id}/${signatureName}`).pipe(
+    public generateInputs(appName: string) {
+        return this.http.get(`${this.baseApiUrl}/generateInputs/${appName}`).pipe(
             map((res: Response): any => res));
     }
 
-    public deleteApplication(id: number) {
-        return this.http.delete(`${this.baseApiUrl}/${id}`);
+    public deleteApplication(appName: string) {
+        return this.http.delete(`${this.baseApiUrl}/${appName}`);
     }
 
     public serveService(data, applicationName: string, signatureName: string): Observable<any> {

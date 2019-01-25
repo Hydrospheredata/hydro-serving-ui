@@ -12,7 +12,6 @@ import { SelectModule } from 'ng2-select';
 // Pipes
 import {
     SidebarFilterPipe,
-    ModelStatusPipe,
     PositiveNumbersPipe,
     SearchPipe,
     SortByPipe,
@@ -44,13 +43,12 @@ import {
 
 // Directives
 import {
-    ModelStatusDirective,
+    ModelVersionStatusDirective,
     CopyToBufferDirective
 } from './directives/_index';
 
 const PIPES = [
     SidebarFilterPipe,
-    ModelStatusPipe,
     PositiveNumbersPipe,
     SearchPipe,
     SortByPipe,
@@ -80,7 +78,7 @@ const COMPONENTS = [
 ];
 
 const DIRECTIVES = [
-    ModelStatusDirective,
+    ModelVersionStatusDirective,
     CopyToBufferDirective,
 ];
 

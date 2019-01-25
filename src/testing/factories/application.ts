@@ -1,9 +1,9 @@
-import { ApplicationsBuilderService } from '@applications/services';
-import { Application, IModelVariant, IApplication, TestStatus } from '@shared/_index';
+import { ApplicationBuilder } from '@core/builders/application.builder';
+import { Application, IModelVariant, IApplication, TestStatus, ApplicationStatus } from '@shared/_index';
 import { MockModelVersion1Model1, MockModelVersion3Model2 } from '@testing/factories/modelVersion';
 import { MockSignature1, MockSignature2 } from '@testing/factories/signature';
 
-const applicationBuilder = new ApplicationsBuilderService();
+const applicationBuilder = new ApplicationBuilder();
 export const application: Application = applicationBuilder.build({});
 
 const MockService: IModelVariant = {
@@ -38,4 +38,5 @@ export const MockApplication: IApplication = {
     testStatus: TestStatus.Undefined,
     error: '',
     kafkaStreaming: [],
+    status: ApplicationStatus.Ready,
 };

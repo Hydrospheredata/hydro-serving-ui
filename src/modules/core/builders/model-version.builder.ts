@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ModelVersion } from '@shared/models/_index';
+import { ModelVersion, ModelVersionStatus } from '@shared/models/_index';
 
 @Injectable()
 export class ModelVersionBuilder {
@@ -18,7 +18,7 @@ export class ModelVersionBuilder {
             runtime: props.runtime,
             model: props.model,
             hostSelector: props.hostSelector,
-            status: props.status,
+            status: props.status || props.status.toLowerCase(),
             applications: props.applications,
         });
     }

@@ -6,7 +6,7 @@ import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
 
 import { DialogModelsEmptyComponent } from '@shared/components/dialogs';
-import { IApplication } from '@shared/models/_index';
+import { IApplication, ModelVersionStatus } from '@shared/models/_index';
 
 import { DialogService } from '@dialog/dialog.service';
 import { Subscription, Observable } from 'rxjs';
@@ -81,7 +81,7 @@ export class ApplicationsWrapperComponent implements OnDestroy {
         this.modelsVersionSub = this.storeModels.select(fromModels.getAllModelVersions).subscribe(
             modelVersions => {
                 this.someModelVersionIsFinished = modelVersions.some(
-                    modelVersion => modelVersion.status.toLowerCase() === 'finished'
+                    modelVersion => modelVersion.status === ModelVersionStatus.Released
                 );
             }
         );

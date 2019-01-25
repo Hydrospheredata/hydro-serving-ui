@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { SortByPipe } from '@shared/pipes/_index';
 import { Subscription ,  Observable } from 'rxjs';
 
-import { Application, Model, Source } from '@shared/models/_index';
+import { Application, Model } from '@shared/models/_index';
 
 @Component({
     selector: 'hydro-sidebar',
@@ -18,7 +18,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     @Input() sidebarData: Observable<Application[] | Model[]>;
 
     public sidebarList: Application[] | Model[] = [];
-    public sidebarFiltredList: Application[] | Model[]= [];
+    public sidebarFiltredList: Application[] | Model[] = [];
 
     private isRedirectable = false;
     private routeSub: Subscription;
@@ -41,7 +41,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.sidebarDataSub = this.sidebarData
             .subscribe(items => {
-                console.log('Sidebar data: ', items);
                 this.sidebarList = this.sidebarFiltredList = this.sortBy.transform(items, 'id');
                 if (this.sidebarList.length > 0) {
                     this.redirectToFirst();

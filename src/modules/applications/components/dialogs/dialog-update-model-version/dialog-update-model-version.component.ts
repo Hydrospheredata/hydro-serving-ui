@@ -10,7 +10,8 @@ import { Observable ,  Subject,  of } from 'rxjs';
 import { tap ,  catchError, takeUntil, take, map } from 'rxjs/operators';
 
 import { UpdateApplicationAction } from '@applications/actions';
-import { ApplicationsBuilderService, IModelVariantFormData } from '@applications/services';
+import { IModelVariantFormData } from '@applications/services';
+import { ApplicationBuilder } from '@core/builders/application.builder';
 import { DialogService } from '@dialog/dialog.service';
 
 export const SELECTED_MODEL_VARIANT = new InjectionToken<any>('selected model variant');
@@ -26,7 +27,7 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     constructor(
         public dialog: DialogService,
         private store: Store<HydroServingState>,
-        private applicationBuilder: ApplicationsBuilderService,
+        private applicationBuilder: ApplicationBuilder,
         @Inject(SELECTED_MODEL_VARIANT) private selectedModelVariant: any,
         @Inject(LATEST_MODEL_VERSION_ID) private latestModelVersionId: number
     ) {

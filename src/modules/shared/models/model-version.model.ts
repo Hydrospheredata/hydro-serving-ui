@@ -4,7 +4,12 @@ import { Runtime } from '@shared/models/runtime.model';
 import { ISignature } from '@shared/models/signature.model';
 import { Model } from './model.model';
 
-export type ModelVersionStatus = 'started' | 'finished' | 'failed';
+export enum ModelVersionStatus {
+    Assembling = 'assembling',
+    Released = 'released',
+    Failed = 'failed',
+    Undefined = 'undefined',
+}
 
 export interface IModelContract {
     modelName: string;

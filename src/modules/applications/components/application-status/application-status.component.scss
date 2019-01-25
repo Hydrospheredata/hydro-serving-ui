@@ -1,0 +1,19 @@
+.status {
+    display: inline-block;
+    font-size: 12px;
+    padding: 0 6px;
+    vertical-align: bottom;
+    border-radius: 2px;
+    &--failed {
+        background: #ff9e9e;
+        color: #7f0303;
+    }
+    &--assembling {
+        background: #9ed7ff;
+        color: #2f3e69;
+    }
+    &--ready {
+        background: #c8eac6;
+        color: #057f03;
+    }
+}

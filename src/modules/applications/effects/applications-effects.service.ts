@@ -8,10 +8,11 @@ import { HydroServingState } from '@core/reducers';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
-import { ApplicationsService, ApplicationsBuilderService } from '@applications/services';
+import { ApplicationsService } from '@applications/services';
 import { Application } from '@shared/models/_index';
 
 import { MdlSnackbarService } from '@angular-mdl/core';
+import { ApplicationBuilder } from '@core/builders/application.builder';
 import {of as observableOf,  Observable } from 'rxjs';
 import { switchMap, catchError, withLatestFrom, skip ,  map } from 'rxjs/operators';
 
@@ -48,7 +49,9 @@ export class ApplicationsEffects {
                                 timeout: 5000,
                             });
                             this.router.navigate(['/applications', response.id]);
-                            return new HydroActions.AddApplicationSuccessAction(new Application(response));
+
+                            const app = this.applicationBuilder.build(response);
+                            return new HydroActions.AddApplicationSuccessAction(app);
                         }),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
@@ -89,10 +92,10 @@ export class ApplicationsEffects {
     @Effect() deleteApplication$: Observable<Action> = this.actions$
         .ofType(HydroActions.ApplicationActionTypes.Delete)
         .pipe(
-            map((action: HydroActions.DeleteApplicationAction) => action.applicationId),
-            switchMap(applicationId => {
+            map((action: HydroActions.DeleteApplicationAction) => action.application),
+            switchMap(({ id, name }) => {
                 return this.applicationsService
-                    .deleteApplication(applicationId)
+                    .deleteApplication(name)
                     .pipe(
                         map(() => {
                             this.router.navigate(['applications']);
@@ -100,7 +103,7 @@ export class ApplicationsEffects {
                                 message: 'Application has been deleted',
                                 timeout: 5000,
                             });
-                            return (new HydroActions.DeleteApplicationSuccessAction(applicationId));
+                            return (new HydroActions.DeleteApplicationSuccessAction(id));
                         }),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
@@ -117,12 +120,11 @@ export class ApplicationsEffects {
         .ofType(HydroActions.ApplicationActionTypes.GenerateInput)
         .pipe(
             withLatestFrom(
-                this.store.select(fromApplications.getSelectedApplicationSignatureName),
-                this.store.select(fromApplications.getSelectedApplicationId)
+                this.store.select(fromApplications.getSelectedApplication)
             ),
-            switchMap(([action, signatureName, applicationId]) => {
-                console.log(action, applicationId);
-                return this.applicationsService.generateInputs(applicationId, encodeURIComponent(signatureName))
+            switchMap(([action, { id: applicationId, name: applicationName }]) => {
+                console.log(action, applicationName);
+                return this.applicationsService.generateInputs(applicationName)
                     .pipe(
                         map(input => {
                             const payload = { id: applicationId, input: JSON.stringify(input, undefined, 2) };
@@ -153,10 +155,9 @@ export class ApplicationsEffects {
         .pipe(
             withLatestFrom(
                 this.store.select(fromApplications.getSelectedApplicationInput),
-                this.store.select(fromApplications.getSelectedApplicationSignatureName),
                 this.store.select(fromApplications.getSelectedApplication)
             ),
-            switchMap(([action, inputs, signatureName, application]) => {
+            switchMap(([action, inputs, application]) => {
                 console.log(action, inputs);
                 return this.applicationsService
                         .serveService(
@@ -183,7 +184,7 @@ export class ApplicationsEffects {
         private actions$: Actions,
         private router: Router,
         private applicationsService: ApplicationsService,
-        private applicationBuilder: ApplicationsBuilderService,
+        private applicationBuilder: ApplicationBuilder,
         private mdlSnackbarService: MdlSnackbarService,
         private store: Store<HydroServingState>
     ) {

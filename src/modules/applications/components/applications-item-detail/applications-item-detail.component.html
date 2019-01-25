@@ -1,12 +1,19 @@
 <div class="content">
     <div class="content-header">
-        <div class="content-header__title">{{ (application$ | async)?.name }}</div>
+        <div class="content-header__title">
+            {{ application.name }}
+            <hs-application-status [application]="application"></hs-application-status>
+        </div>
         <div class="action-buttons">
-            <button class="button button--primary button--test action-button" (click)="testApplication(application$)">
+            <button 
+                class="button button--primary button--test action-button"
+                [ngClass]="{'button--disabled': isReady(application.status)}"
+                [disabled]="true"
+                (click)="testApplication(application)">
                 <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
                 Test
             </button>
-            <button class="button button--secondary action-button" (click)="editApplication(application$)">
+            <button class="button button--secondary action-button" (click)="editApplication(application)">
                 <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
                 Edit
             </button>
@@ -18,11 +25,11 @@
     </div>
 
     <div class="content-info">
-        <ul class="content-info__list" *ngIf="(application$ | async)?.kafkaStreaming.length">
+        <ul class="content-info__list" *ngIf="application.kafkaStreaming?.length">
             <li class="content-info__list-title">
                 Kafka Info
             </li>
-            <li class="content-info__list-item" *ngFor="let kafka of (application$ | async).kafkaStreaming">
+            <li class="content-info__list-item" *ngFor="let kafka of application.kafkaStreaming">
                 <ol class="content-info__sublist">
                     <li class="content-info__sublist-item" *ngFor="let item of kafka | iterateAsArray">
                         <span class="content-info__sublist-item-title">{{ item }}</span>
@@ -33,7 +40,7 @@
         </ul>
     </div>
 
-    <div class="hydro-panel" *ngFor="let stage of (application$ | async)?.executionGraph.stages; let i = index;">
+    <div class="hydro-panel" *ngFor="let stage of application.executionGraph?.stages; let i = index;">
         <div class="hydro-panel__header">
             <h5>Stage {{i + 1}}</h5>
             <button class="button button--flat navigation-button" [routerLink]="[i]">
@@ -86,7 +93,7 @@
                     </td>
                     <td class="hydro-table-body__cell">
                         <div class='cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                            <div [ngClass]="healthStatuses['app' + (application$ | async)?.id + 'stage' + i + '_' + modelVariant.modelVersion.id]"
+                            <div [ngClass]="healthStatuses['app' + application.id + 'stage' + i + '_' + modelVariant.modelVersion.id]"
                                 class="health-status"></div>
                         </div>
                     </td>
