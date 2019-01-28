@@ -59,11 +59,13 @@
                                 </td>
                                 <td class="hydro-table-body__cell">
                                     <button 
-                                        *ngIf="modelVersion.status === 'finished'"
+                                        *ngIf="modelVersion.status === 'Released'"
                                         [routerLink]="[modelVersion.id]"
                                         class="button button--flat">
                                         <hydro-icon type="icon-right" class="button__icon navigation-icon"></hydro-icon>
                                     </button>
+                                    <span [routerLink]="[modelVersion.id, 'profiler']">profiler</span>
+                                    <span [routerLink]="[modelVersion.id, 'monitoring']">monitoring</span>
                                 </td>
                             </tr>
                         </tbody>

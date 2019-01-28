@@ -1,5 +1,5 @@
-import { Subscription ,  Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Subscription ,  Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { Application } from '@shared/models/application.model';
 
@@ -19,9 +19,6 @@ import { FormsService } from '@core/services';
 import { DialogService } from '@dialog/dialog.service';
 import { MetricSettings } from '@shared/models/metric-settings.model';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { IModelVersion } from '@shared/_index';
-
-import * as fromModels from '@models/reducers';
 
 interface IAggreagation {
     name: string;
@@ -32,19 +29,17 @@ interface IAggreagation {
     templateUrl: './dialog-add-metric.component.html',
     styleUrls: ['./dialog-add-metric.component.scss'],
 })
-export class DialogAddMetricComponent implements OnDestroy, OnInit {
+export class DialogAddMetric2Component implements OnDestroy, OnInit {
     public serviceForm: FormGroup;
 
     public isHealthChecked: boolean = false;
     public isHealthDisabled: boolean = true;
 
     public applications$: Observable<Application[]>;
+    public sources$: Observable<string[]>;
     public applicationSub: Subscription;
     public application: Application;
     public stageId: number;
-
-    public modelVersion$: Observable<IModelVersion>;
-    public sources$: Observable<string[]>;
 
     public aggregations: IAggreagation[] = [
         {name: 'Kolmogorov-Smirnov', className: 'io.hydrosphere.sonar.core.metrics.providers.KolmogorovSmirnov'},
@@ -67,14 +62,22 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     }
 
     ngOnInit() {
+        this.store.select(fromRoot.getRouterParams).subscribe(x => { console.log(x); });
         this.createForm();
         this.initFormChangesListener();
+        this.applications$ = this.store.select(fromApplications.getAllApplications);
 
-        this.modelVersion$ = this.store.select(fromModels.getSelectedModelVersion)
+        const app$ = this.store.select(fromApplications.getSelectedApplication);
 
-        this.sources$ = this.modelVersion$.pipe(
-            switchMap(modelVersion => this.getInputNames(modelVersion)
-        ));
+        this.sources$ = app$.pipe(map(application => {
+            const inputsNames: string[] = application.signature.inputs.map(field => field.name);
+
+            return inputsNames;
+        }));
+
+        this.applicationSub = app$.subscribe(_ => {
+            this.application = _;
+        });
     }
 
     getInputNames(modelVersion: IModelVersion): Observable<string[]> {

@@ -10,7 +10,7 @@ export class ProfilerService {
   private baseAPIUrl: string;
 
   constructor(private http: HttpService) {
-    this.baseAPIUrl = `${environment.profilerUrl}`;
+    this.baseAPIUrl = `${environment.monitoringUrl}`;
   }
 
   public getFields(modelVersionId: number) {
