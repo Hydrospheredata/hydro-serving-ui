@@ -81,7 +81,9 @@ export class ApplicationsWrapperComponent implements OnDestroy {
         this.modelsVersionSub = this.storeModels.select(fromModels.getAllModelVersions).subscribe(
             modelVersions => {
                 this.someModelVersionIsFinished = modelVersions.some(
-                    modelVersion => modelVersion.status === ModelVersionStatus.Released
+                    modelVersion => {
+                        return modelVersion.status === ModelVersionStatus.Released
+                    }
                 );
             }
         );
