@@ -7,8 +7,8 @@
         <div class="action-buttons">
             <button 
                 class="button button--primary button--test action-button"
-                [ngClass]="{'button--disabled': isReady(application.status)}"
-                [disabled]="true"
+                [ngClass]="{'button--disabled': !isReady(application.status)}"
+                [disabled]="!isReady(application.status)"
                 (click)="testApplication(application)">
                 <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
                 Test

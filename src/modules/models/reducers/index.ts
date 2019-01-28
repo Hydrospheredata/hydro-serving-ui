@@ -6,7 +6,7 @@ import * as fromModel from './models.reducer';
 
 export interface ModelsState {
     models: fromModel.State;
-    modelVersion: fromModelVersion.State;
+    modelVersion: fromModelVersion.ModelVersionState;
 }
 
 export interface State extends fromRoot.HydroServingState {
@@ -15,7 +15,7 @@ export interface State extends fromRoot.HydroServingState {
 
 export const reducers: ActionReducerMap<ModelsState> = {
     models: fromModel.reducer,
-    modelVersion: fromModelVersion.modelVersionReducer,
+    modelVersion: fromModelVersion.reducer,
 };
 
 export const getModelState = createFeatureSelector<ModelsState>('models');
@@ -40,11 +40,6 @@ export const getModelVersionState = createSelector(
     state => state.modelVersion
 );
 
-export const getModelVersionEntitiesState = createSelector(
-    getModelVersionState,
-    state => state.allModelVersions
-);
-
 export const {
     selectAll: getAllModels,
     selectEntities: getModelEntities,
@@ -55,7 +50,7 @@ export const {
     selectAll: getAllModelVersions,
     selectEntities: getModelVersionEntities,
     selectTotal: getTotalModelVersions,
-} = fromModelVersion.adapter.getSelectors(getModelVersionEntitiesState);
+} = fromModelVersion.adapter.getSelectors(getModelVersionState);
 
 export const getSelectedModel = createSelector(
     getModelEntities,
@@ -75,12 +70,12 @@ export const getSelectedModelVersion = createSelector(
 );
 
 export const getModelVersionLoading = createSelector(
-    getModelVersionEntitiesState,
+    getModelVersionState,
     state => state.loading
 );
 
 export const getModelVersionLoaded = createSelector(
-    getModelVersionEntitiesState,
+    getModelVersionState,
     state => state.loaded
 );
 

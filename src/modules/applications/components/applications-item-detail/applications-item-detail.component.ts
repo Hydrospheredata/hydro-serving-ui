@@ -8,7 +8,7 @@ import { InfluxDBService} from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
 import { Application, HealthRow, ModelVersion, ApplicationStatus, IApplication } from '@shared/models/_index';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 
 import {
     DialogDeleteApplicationComponent,
@@ -98,17 +98,17 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    public testApplication(application: Observable<Application>) {
+    public testApplication(application: IApplication) {
         this.dialog.createDialog({
             component: DialogTestComponent,
-            providers: [{provide: SELECTED_APPLICATION$, useValue: application}],
+            providers: [{provide: SELECTED_APPLICATION$, useValue: of(application)}],
         });
     }
 
-    public editApplication(application: Observable<Application>) {
+    public editApplication(application: IApplication) {
         this.dialog.createDialog({
             component: DialogUpdateApplicationComponent,
-            providers: [{ provide: SELECTED_UPD_APPLICATION$, useValue: application }],
+            providers: [{ provide: SELECTED_UPD_APPLICATION$, useValue: of(application) }],
             styles: {
                 height: '100%',
             },
