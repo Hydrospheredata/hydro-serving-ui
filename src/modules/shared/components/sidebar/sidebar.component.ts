@@ -13,8 +13,8 @@ import { Application, Model } from '@shared/models/_index';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
     @Input() actionButton: TemplateRef<any>;
-    @Input() isFilterEnabled = false;
-    @Input() isModels: boolean;
+    @Input() isFilterEnabled: boolean = false;
+    @Input() isApplications: boolean;
     @Input() sidebarData: Observable<Application[] | Model[]>;
 
     public sidebarList: Application[] | Model[] = [];

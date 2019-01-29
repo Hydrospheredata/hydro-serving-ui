@@ -9,7 +9,8 @@
     <hydro-sidebar 
         class='sidebar'
         [sidebarData]="applications" 
-        [actionButton]="addButton" 
+        [actionButton]="addButton"
+        [isApplications]="true"
         [isFilterEnabled]="true"></hydro-sidebar>
     <div [@anim]="prepare(out)" class="container" >
         <router-outlet #out="outlet"></router-outlet>

@@ -26,8 +26,7 @@ import {
     DialogDeleteApplicationComponent,
     DialogTestComponent,
     DialogUpdateApplicationComponent,
-    DialogUpdateModelVersionComponent,
-    ApplicationStatusComponent
+    DialogUpdateModelVersionComponent
 } from '@applications/components';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -54,7 +53,6 @@ const PRIVATE_COMPONENTS = [
     ApplicationsWrapperComponent,
     ApplicationsItemDetailComponent,
     ApplicationsStageDetailComponent,
-    ApplicationStatusComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
     ModelVariantFormComponent,

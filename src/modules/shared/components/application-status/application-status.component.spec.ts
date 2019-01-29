@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ApplicationStatusComponent } from '@applications/components/application-status/application-status.component';
-import { ApplicationStatus } from '@shared/_index';
+import { ApplicationStatus, ApplicationStatusComponent } from '@shared/_index';
 import { MockApplication } from '@testing/factories/application';
 
 describe('ApplicationsItemDetailComponent', () => {

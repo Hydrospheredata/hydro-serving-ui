@@ -82,7 +82,7 @@ export class ApplicationsWrapperComponent implements OnDestroy {
             modelVersions => {
                 this.someModelVersionIsFinished = modelVersions.some(
                     modelVersion => {
-                        return modelVersion.status === ModelVersionStatus.Released
+                        return modelVersion.status === ModelVersionStatus.Released;
                     }
                 );
             }

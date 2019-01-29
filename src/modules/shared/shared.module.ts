@@ -38,7 +38,8 @@ import {
     CommandTemplateComponent,
     BaseMetricChartComponent,
     KolmogorovSmirnovChartComponent,
-    DialogModelsEmptyComponent
+    DialogModelsEmptyComponent,
+    ApplicationStatusComponent,
 } from './components/_index';
 
 // Directives
@@ -75,6 +76,7 @@ const COMPONENTS = [
     BaseMetricChartComponent,
     KolmogorovSmirnovChartComponent,
     DialogModelsEmptyComponent,
+    ApplicationStatusComponent,
 ];
 
 const DIRECTIVES = [

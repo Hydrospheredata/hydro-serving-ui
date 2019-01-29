@@ -36,6 +36,9 @@
     margin: 0;
     padding: 0;
     &__item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       border-bottom: 1px solid $secondary-color;
       padding: 0 24px;
       cursor: pointer;
@@ -47,24 +50,14 @@
         background-color: $secondary-color;
       }
       &-status {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      &-details {
-        display: inline-flex;
-        justify-content: flex-end;
-        padding-right: 10px;
-        > span {
-          margin-right: 26px;
-        }
+        line-height: 24px;
       }
       &-name {
         line-break: strict;
         font-size: 16px;
         color: #04143c;
         display: block;
-        width: 100%;
+        width: 70%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis
