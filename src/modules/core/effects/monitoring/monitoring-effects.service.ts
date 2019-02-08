@@ -8,7 +8,7 @@ import { switchMap, catchError ,  map } from 'rxjs/operators';
 import { MdlSnackbarService } from '@angular-mdl/core';
 import * as HydroActions from '@core/actions/monitoring.actions';
 import { MetricSettingsService } from '@core/services/metrics/_index';
-import { MetricSettings } from '@shared/models/metric-settings.model';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
 
 @Injectable()
 export class MonitoringEffects {
@@ -27,7 +27,7 @@ export class MonitoringEffects {
                                 message: 'Metric was successfully added',
                                 timeout: 5000,
                             });
-                            return new HydroActions.AddMetricSuccessAction(new MetricSettings(response));
+                            return new HydroActions.AddMetricSuccessAction(new MetricSpecification(response));
                         }),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
@@ -43,12 +43,14 @@ export class MonitoringEffects {
     @Effect() getMetrics$: Observable<Action> = this.actions$
         .ofType(HydroActions.MonitoringActionTypes.GetMetrics)
         .pipe(
-            map((action: HydroActions.GetMetricsAction) => action.stageId),
-            switchMap(stageId => {
-                return this.metricService.getMetricSettings(stageId)
+            map((action: HydroActions.GetMetricsAction) => action.modelVersionId),
+            switchMap(modelVersionId => {
+                return this.metricService.getMetricSettings(modelVersionId)
                     .pipe(
-                        map(response =>
-                            new HydroActions.GetMetricsSuccessAction(response.map(_ => new MetricSettings(_)))
+                        map(response => {
+                            const metricSpecifications = response.map(_ => new MetricSpecification(_));
+                            return new HydroActions.GetMetricsSuccessAction(metricSpecifications);
+                        }
                         ),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
@@ -68,7 +70,7 @@ export class MonitoringEffects {
             switchMap(metricId => {
                 return this.metricService.deleteMetricSettings(metricId)
                     .pipe(
-                        map(response => new HydroActions.DeleteMetricSuccessAction(new MetricSettings(response))),
+                        map(response => new HydroActions.DeleteMetricSuccessAction(new MetricSpecification(response))),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: `Error: ${error}`,

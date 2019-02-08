@@ -37,7 +37,11 @@
                         <tbody>
                             <tr *ngFor="let modelVersion of modelVersions" class='hydro-table-body__row row'>
                                 <td class="hydro-table-body__cell">{{ modelVersion.id }}</td>
-                                <td class="hydro-table-body__cell">{{ modelVersion.started | utcToLocal | amTimeAgo }}</td>
+                                <td class="hydro-table-body__cell">
+                                    <span class="cs-text-overflow-ellipsis">
+                                        {{ modelVersion.started | utcToLocal | amTimeAgo }}
+                                    </span>
+                                </td>
                                 <td class="hydro-table-body__cell">
                                     <div 
                                         *ngIf="modelVersion.status"
@@ -58,14 +62,24 @@
                                     <span *ngIf="modelVersion.applications.length === 0">-</span>
                                 </td>
                                 <td class="hydro-table-body__cell">
-                                    <button 
-                                        *ngIf="modelVersion.status === 'Released'"
-                                        [routerLink]="[modelVersion.id]"
-                                        class="button button--flat">
-                                        <hydro-icon type="icon-right" class="button__icon navigation-icon"></hydro-icon>
-                                    </button>
-                                    <span [routerLink]="[modelVersion.id, 'profiler']">profiler</span>
-                                    <span [routerLink]="[modelVersion.id, 'monitoring']">monitoring</span>
+                                    <div class="actions">
+
+                                        <div class="actions__item"
+                                            [ngClass]="{'actions__item--is-disabled': modelVersion.status !== 'released'}"
+                                            [routerLink]="[modelVersion.id, 'profiler']">
+                                            <hydro-icon type="profiler" class="actions__icon"></hydro-icon>
+                                        </div>
+                                        <div class="actions__item"
+                                            [ngClass]="{'actions__item--is-disabled': modelVersion.status !== 'released'}"
+                                            [routerLink]="[modelVersion.id, 'monitoring']">
+                                            <hydro-icon type="monitoring" class="actions__icon"></hydro-icon>
+                                        </div>
+                                        <div class="actions__item"
+                                            [ngClass]="{'actions__item--is-disabled': modelVersion.status !== 'released'}"
+                                            [routerLink]="[modelVersion.id]">
+                                        <hydro-icon type="icon-arrow-right" class="actions__icon"></hydro-icon>
+                                    </div>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

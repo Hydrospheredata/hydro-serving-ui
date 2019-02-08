@@ -36,15 +36,10 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
         return features;
     }
 
-    protected filterFunction(_): boolean {
-        return _.columnIndex === this.selectedFeature;
-    }
-
     protected getRequestPromise(): Promise<any> {
         return this.metricsService
                    .getMetrics(
-                       this.applicationId.toString(),
-                       this.stageId,
+                       this.modelVersionId.toString(),
                        this.chartTimeWidth.toString(),
                        this.metrics,
                        this.selectedFeature

@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'hs-profiler',
-    templateUrl: './profiler.component.html',
+    templateUrl: './model-version-profiler.component.html',
 })
 export class ProfilerComponent implements OnDestroy {
     public modelVersionId: number;

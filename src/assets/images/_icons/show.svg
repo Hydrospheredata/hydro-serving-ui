@@ -1,0 +1,9 @@
+<svg width="24" height="24">
+  <path d="M2,12 
+           C6,4 18,4 22,12 
+           C18,20 6,20 2,12" 
+        fill="none" 
+        stroke="black" 
+        strokeWidth="2"></path>
+  <circle cx="12" cy="12" r="4"></circle>
+</svg>

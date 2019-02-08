@@ -4,9 +4,18 @@
             <hydro-icon class="button__icon" [type]="'icon-left'" ></hydro-icon>
             back to model
         </button>
-        <span [routerLink]="['profiler']">profiler</span>
-        <span [routerLink]="['monitoring']">monitoring</span>
+
         <div class="content-header__title">{{ (modelVersion$ | async)?.model?.name }} / v{{ (modelVersion$ | async)?.modelVersion }}</div>
+        <div class="actions">
+            <span class="actions__item" [routerLink]="['profiler']">
+                <hydro-icon type="profiler" class="actions__icon"></hydro-icon>
+                <span class="actions__text">profiler</span>
+            </span>
+            <span class="actions__item" [routerLink]="['monitoring']">
+                <hydro-icon type="monitoring" class="actions__icon"></hydro-icon>
+                <span class="actions__text">monitoring</span> 
+            </span>
+        </div>
     </div>
 
 

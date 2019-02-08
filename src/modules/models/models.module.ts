@@ -14,14 +14,17 @@ import {
     ProfilerComponent,
     ModelVersionMonitoringComponent,
 } from '@models/components';
-import { DialogDeleteModelComponent, DialogAddMetric2Component } from '@models/components/dialogs';
+import {
+    DialogDeleteModelComponent,
+    DialogAddMetricComponent,
+    DialogDeleteMetricComponent
+} from '@models/components/dialogs';
 import { ModelEffects } from '@models/effects';
 import { reducers } from '@models/reducers';
 import { ModelsService, ModelDetailsGuard } from '@models/services';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilesModule } from '@profiles/profiles.module';
-import { MonitoringModule } from '../monitoring/monitoring.module';
 @NgModule({
     imports: [
         ModelsRoutingModule,
@@ -35,18 +38,22 @@ import { MonitoringModule } from '../monitoring/monitoring.module';
         StoreModule.forFeature('models', reducers),
         EffectsModule.forFeature([ModelEffects]),
         ProfilesModule,
-        MonitoringModule,
     ],
     declarations: [
         ModelsWrapperComponent,
         ModelDetailsComponent,
         ModelVersionDetailsComponent,
         DialogDeleteModelComponent,
-        DialogAddMetric2Component,
+        DialogAddMetricComponent,
         ProfilerComponent,
         ModelVersionMonitoringComponent,
+        DialogDeleteMetricComponent,
     ],
-    entryComponents: [DialogDeleteModelComponent, DialogAddMetric2Component],
+    entryComponents: [
+        DialogDeleteModelComponent,
+        DialogAddMetricComponent,
+        DialogDeleteMetricComponent,
+    ],
     providers: [ModelsService, ModelDetailsGuard],
 })
 export class ModelsModule { }

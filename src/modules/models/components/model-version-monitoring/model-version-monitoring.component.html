@@ -1,4 +1,45 @@
-<div>
-    im monitoring
-    <div class="button button--primary" (click)="openAddMetricDialog()">add metric</div>
+<div class="content">
+    <button class="button button--flat navigation-button" [routerLink]="['../']">
+        <hydro-icon class="button__icon" [type]="'icon-left'" ></hydro-icon>
+        back to model version
+    </button>
+    <div class="monitoring">
+        <div class="monitoring__title">
+            <h4 class="monitoring__title-name">Monitoring</h4>
+            {{(modelVersion$ | async)?.model.name}} /v{{(modelVersion$ | async)?.modelVersion}}
+        </div>
+        <ng-container *ngIf="isMonitoringAvailable$ | async">
+            <div class="monitoring__actions">
+                <mdl-select class="time-select" label="Chart time window" [(ngModel)]="chartTimeWidth">
+                    <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms">{{ param.text }}</mdl-option>
+                </mdl-select>
+                <div class="button button--primary add-metric-button" (click)="openAddMetricDialog()">add metric</div>
+            </div>
+            <div *ngIf="true">
+                <div *ngFor="let metricSpecificationProvider of metricSpecificationProviders$ | async">
+                    <ng-container [ngSwitch]="metricSpecificationProvider.kind">
+                        <hs-kolmogorov-smirnov-metric-chart 
+                            *ngSwitchCase="'KSMetricSpec'"
+                            [chartTimeWidth]="chartTimeWidth"
+                            [modelVersionId]="(modelVersion$ | async)?.id"
+                            [metricSpecificationProvider]="metricSpecificationProvider"
+                            (delete)="deleteMetric($event)">
+                        </hs-kolmogorov-smirnov-metric-chart>
+                        <hs-base-metric-chart 
+                            *ngSwitchDefault
+                            [chartTimeWidth]="chartTimeWidth" 
+                            [modelVersionId]="(modelVersion$ | async)?.id"
+                            [metricSpecificationProvider]="metricSpecificationProvider"
+                            (delete)="deleteMetric($event)">
+                        </hs-base-metric-chart>
+                    </ng-container>
+                </div>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="!(isMonitoringAvailable$ | async)">
+            <div class="unavailable-message">
+                Monitoring service is unavailable
+            </div>
+        </ng-container>
+    </div>
 </div>

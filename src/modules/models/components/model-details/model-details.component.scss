@@ -54,6 +54,26 @@
     }
 }
 
+.actions {
+  display: flex;
+  &__item {
+    cursor: pointer;
+    margin-right: 8px;
+    color: hsla(239, 100%, 3%, 0.73);
+    transition: color .3s ease;
+    &--is-disabled {
+      color: hsla(239, 100%, 3%, .3);
+    }
+    &:not(&--is-disabled):hover {
+      color: hsla(239, 100%, 3%, 1);
+    }
+  }
+  &__icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
 .icon {
     width: 14px;
     height: 14px;

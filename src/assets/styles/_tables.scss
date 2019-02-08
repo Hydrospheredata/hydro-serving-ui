@@ -6,17 +6,12 @@ $table-padding: 14px;
   &-head {
     &__cell {
       font-size: 12px;
+      line-height: 36px;
       color: #abafb2;
-      padding: $table-padding $table-padding * 2;
+      padding: 0 $table-padding * 2;
       text-align: center;
       .__small & {
-        padding: 8px $table-padding * 2;
-      }
-      [class$="signature"] & {
-        text-align: left;
-        text-transform: uppercase;
-        padding: 24px 28px 6px;
-        line-height: 1;
+        padding: 0 $table-padding * 2;
       }
     }
     &--with-border {
@@ -39,12 +34,13 @@ $table-padding: 14px;
       }
     }
     &__cell {
-      padding: 10px $table-padding * 1.2;
+      padding: 0 $table-padding * 1.2;
+      line-height: 36px;
       .__small & {
-        padding: 12px $table-padding * 2;
+        padding: 0 $table-padding * 2;
       }
       [class$="signature"] & {
-        padding: 6px $table-padding * 2;
+        padding: 0 $table-padding * 2;
       }
     }
   }

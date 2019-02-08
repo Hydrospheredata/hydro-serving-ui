@@ -1,6 +1,5 @@
 import { Action } from '@ngrx/store';
-// import { MonitoringDictionary } from '@shared/models/monitoring-dictionary.model';
-import { MetricSettings } from '@shared/models/metric-settings.model';
+import { IMetricSpecificationRequest, IMetricSpecification } from '@shared/models/metric-specification.model';
 
 export enum MonitoringActionTypes {
     AddMetric = '[Metrics] Add metric',
@@ -16,12 +15,12 @@ export enum MonitoringActionTypes {
 
 export class AddMetricAction implements Action {
     readonly type = MonitoringActionTypes.AddMetric;
-    constructor(public aggregation: MetricSettings) { }
+    constructor(public aggregation: IMetricSpecificationRequest) { }
 }
 
 export class AddMetricSuccessAction implements Action {
     readonly type = MonitoringActionTypes.AddMetricSuccess;
-    constructor(public payload: MetricSettings) { }
+    constructor(public payload: IMetricSpecification) { }
 }
 
 export class AddMetricFailAction implements Action {
@@ -31,12 +30,12 @@ export class AddMetricFailAction implements Action {
 
 export class GetMetricsAction implements Action {
     readonly type = MonitoringActionTypes.GetMetrics;
-    constructor(public stageId: string) {}
+    constructor(public modelVersionId: string) {}
 }
 
 export class GetMetricsSuccessAction implements Action {
     readonly type = MonitoringActionTypes.GetMetricsSuccess;
-    constructor(public payload: MetricSettings[]) {}
+    constructor(public payload: IMetricSpecification[]) {}
 }
 
 export class GetMetricsFailAction implements Action {
@@ -51,7 +50,7 @@ export class DeleteMetricAction implements Action {
 
 export class DeleteMetricSuccessAction implements Action {
     readonly type = MonitoringActionTypes.DeleteMetricSuccess;
-    constructor(public payload: MetricSettings) {}
+    constructor(public payload: IMetricSpecification) {}
 }
 
 export class DeleteMetricFailAction implements Action {

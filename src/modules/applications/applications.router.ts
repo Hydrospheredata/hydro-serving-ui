@@ -3,8 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import {
     ApplicationsWrapperComponent,
-    ApplicationsItemDetailComponent,
-    ApplicationsStageDetailComponent
+    ApplicationsItemDetailComponent
 } from '@applications/components';
 import { ApplicationsGuard } from '@applications/services';
 
@@ -23,11 +22,6 @@ import { ApplicationsGuard } from '@applications/services';
                                 path: ':id',
                                 component: ApplicationsItemDetailComponent,
                                 data: { anim: 'appDetail' },
-                            },
-                            {
-                                path: ':id/:stageId',
-                                component: ApplicationsStageDetailComponent,
-                                data: { anim: 'appStageDetail' },
                             },
                         ],
                     },

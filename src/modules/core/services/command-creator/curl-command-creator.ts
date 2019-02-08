@@ -5,7 +5,7 @@ import { CommandCreator } from './command-creator';
 export class CurlCommandCreator extends CommandCreator {
     readonly headers: string = `--header 'Content-Type: application/json' --header 'Accept: application/json'`;
 
-    apiUrl() {
+    get apiUrl(): string {
         if (environment.production) {
             const { protocol, hostname } = window.location;
             return `${protocol}//${hostname}`;

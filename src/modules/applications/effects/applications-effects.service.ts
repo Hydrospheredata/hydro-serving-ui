@@ -76,7 +76,8 @@ export class ApplicationsEffects {
                                 message: 'Application was successfully updated',
                                 timeout: 5000,
                             });
-                            return new HydroActions.UpdateApplicationSuccessAction(new Application(response));
+                            const app = this.applicationBuilder.build(response);
+                            return new HydroActions.UpdateApplicationSuccessAction(app);
                         }),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
@@ -162,8 +163,7 @@ export class ApplicationsEffects {
                 return this.applicationsService
                         .serveService(
                             JSON.parse(inputs),
-                            application.name,
-                            encodeURIComponent(application.signature.signatureName)
+                            application.name
                         )
                         .pipe(
                             map(output => {

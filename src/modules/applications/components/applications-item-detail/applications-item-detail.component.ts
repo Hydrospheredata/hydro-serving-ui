@@ -44,9 +44,11 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
         private metricsService: MetricsService,
         private influxdbService: InfluxDBService
     ) {
-        this.applicationSub = this.store.select(fromApplications.getSelectedApplication).pipe(
+        this.application$ = this.store.select(fromApplications.getSelectedApplication).pipe(
             tap( application => this.application = application)
-        ).subscribe();
+        );
+
+        this.applicationSub = this.application$.subscribe();
     }
 
     // TODO: remove me please
@@ -98,17 +100,17 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
         });
     }
 
-    public testApplication(application: Observable<Application>) {
+    public testApplication(): void {
         this.dialog.createDialog({
             component: DialogTestComponent,
-            providers: [{provide: SELECTED_APPLICATION$, useValue: application}],
+            providers: [{provide: SELECTED_APPLICATION$, useValue: this.application$}],
         });
     }
 
-    public editApplication(application: Observable<Application>) {
+    public editApplication(): void {
         this.dialog.createDialog({
             component: DialogUpdateApplicationComponent,
-            providers: [{ provide: SELECTED_UPD_APPLICATION$, useValue: application }],
+            providers: [{ provide: SELECTED_UPD_APPLICATION$, useValue: this.application$ }],
             styles: {
                 height: '100%',
             },

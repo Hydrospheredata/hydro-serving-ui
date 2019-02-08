@@ -16,13 +16,10 @@ import { reducers } from '@applications/reducers';
 import {
     ApplicationsWrapperComponent,
     ApplicationsItemDetailComponent,
-    ApplicationsStageDetailComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
     ModelVariantFormComponent,
     DialogAddApplicationComponent,
-    DialogAddMetricComponent,
-    DialogDeleteMetricComponent,
     DialogDeleteApplicationComponent,
     DialogTestComponent,
     DialogUpdateApplicationComponent,
@@ -43,8 +40,6 @@ import { CustomValidatorsService } from '@core/services/custom-validators.servic
 const DIALOGS = [
     DialogDeleteApplicationComponent,
     DialogAddApplicationComponent,
-    DialogAddMetricComponent,
-    DialogDeleteMetricComponent,
     DialogUpdateApplicationComponent,
     DialogUpdateModelVersionComponent,
     DialogTestComponent,
@@ -53,7 +48,6 @@ const DIALOGS = [
 const PRIVATE_COMPONENTS = [
     ApplicationsWrapperComponent,
     ApplicationsItemDetailComponent,
-    ApplicationsStageDetailComponent,
     ApplicationStatusComponent,
     ApplicationFormComponent,
     KafkaFormComponent,

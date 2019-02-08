@@ -7,13 +7,13 @@
         <div class="action-buttons">
             <button 
                 class="button button--primary button--test action-button"
-                [ngClass]="{'button--disabled': isReady(application.status)}"
-                [disabled]="true"
-                (click)="testApplication(application)">
+                [ngClass]="{'button--disabled': !isReady(application.status)}"
+                [disabled]="!isReady(application.status)"
+                (click)="testApplication()">
                 <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
                 Test
             </button>
-            <button class="button button--secondary action-button" (click)="editApplication(application)">
+            <button class="button button--secondary action-button" (click)="editApplication()">
                 <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
                 Edit
             </button>
@@ -43,10 +43,6 @@
     <div class="hydro-panel" *ngFor="let stage of application.executionGraph?.stages; let i = index;">
         <div class="hydro-panel__header">
             <h5>Stage {{i + 1}}</h5>
-            <button class="button button--flat navigation-button" [routerLink]="[i]">
-                <hydro-icon class="button__icon navigation-icon" [type]="'icon-right'">
-                </hydro-icon>
-            </button>
         </div>
         <table class='hydro-table hydro-table-models'>
             <colgroup>
@@ -83,9 +79,9 @@
                         </span>
                     </td>
                     <td class="hydro-table-body__cell">
-                        <div class='cs-text-overflow-ellipsis cs-text-center' style="max-width: 300px;">
+                        <span class='cs-text-overflow-ellipsis cs-text-center' style="max-width: 300px;">
                             {{ modelVariant.modelVersion.runtime.name ? modelVariant.modelVersion.runtime.name : modelVariant.modelVersion.runtime.id }}
-                        </div>
+                        </span>
                     </td>
 
                     <td class="hydro-table-body__cell">
