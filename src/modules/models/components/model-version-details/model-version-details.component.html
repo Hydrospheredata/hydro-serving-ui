@@ -57,15 +57,7 @@
             </li>
         </ol>
 
-        <div class="content__body-section">
-            <hydro-signatures [signatures]="(modelVersion$ | async)?.modelContract?.signatures"></hydro-signatures>
-<<<<<<< HEAD
-        </div>        
-
-        <div *ngIf="(modelVersion$ | async)?.id; let modelVersionId"class="content__body-section">
-            <hydro-data-profiles [modelVersionId]="modelVersionId"></hydro-data-profiles>
-=======
->>>>>>> monitoring-profiler-v2
-        </div>
+    <div class="content__body-section">
+        <hydro-signatures [signatures]="(modelVersion$ | async)?.modelContract?.signatures"></hydro-signatures>
     </div>
 </div>

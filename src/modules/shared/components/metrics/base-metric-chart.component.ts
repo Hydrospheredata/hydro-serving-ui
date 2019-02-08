@@ -109,7 +109,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public onDelete(): void {
-        this.delete.emit(this.metricSpecificationProvider.id);
+        this.delete.emit(this.metricSpecId);
     }
 
     protected getRequestPromise(): Promise<any> {
