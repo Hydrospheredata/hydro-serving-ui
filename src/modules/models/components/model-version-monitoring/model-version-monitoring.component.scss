@@ -1,0 +1,19 @@
+.monitoring {
+    position: relative;
+    &__title {
+        &-name {
+            font-size: 28px;
+            margin: 0;
+        }
+    }
+    &__actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 32px;
+        .add-metric-button {
+        }
+        .time-select {
+            margin-right: 24px;
+        }
+    }
+}

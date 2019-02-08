@@ -1,0 +1,56 @@
+<form 
+    [formGroup]="form" 
+    (ngSubmit)="onSubmit()">
+    <hydro-input-text 
+        name="metricName" 
+        label="Metric Name" 
+        formControlName="name">
+    </hydro-input-text>
+    <div class="row">
+        <mdl-select formControlName="kind" label="Choose metric">
+            <mdl-option *ngFor="let kind of metricSpecificationKinds" [value]="kind.className">{{ kind.name }}</mdl-option>
+        </mdl-select>
+    </div>
+    <div class="row" >
+        <label class="hydro-checkbox">
+            Use this metric for health checks
+            <input type="checkbox" formControlName="withHealth">
+            <span></span>
+        </label>
+    </div>
+    <div formGroupName="config">
+        <div class="row" *ngIf="form.get('config').get('input')">
+            <mdl-select 
+                [formControl]="form.get('config').get('input')" 
+                label="Choose input">
+                <mdl-option *ngFor="let source of sources$ | async" [value]="source">{{ source }}</mdl-option>
+            </mdl-select>
+        </div>
+        <div class="row" *ngIf="form.get('config').get('applicationName')">
+            <mdl-select 
+                [formControl]="form.get('config').get('applicationName')"
+                label="Choose application">
+                <mdl-option *ngFor="let application of applications$ | async" [value]="application.name">{{ application.name }}</mdl-option>
+            </mdl-select>
+        </div>
+        <div class="row" *ngIf="form.get('config').get('threshold')">
+            <hydro-input-text 
+                name="threshold" 
+                label="threshold" 
+                [formControl]="form.get('config').get('threshold')">
+            </hydro-input-text>
+        </div>
+        <div class="row" *ngIf="form.get('config').get('interval')">
+            <hydro-input-text 
+                name="interval" 
+                label="interval" 
+                [formControl]="form.get('config').get('interval')">
+            </hydro-input-text>
+        </div>
+    </div>
+    <button 
+        class="button button--primary"
+        [disabled]="!form.valid">
+        Add Metric
+    </button>
+</form>

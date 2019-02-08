@@ -42,8 +42,8 @@ export class ApplicationsService {
         return this.http.delete(`${this.baseApiUrl}/${appName}`);
     }
 
-    public serveService(data, applicationName: string, signatureName: string): Observable<any> {
-        const url = `${this.baseApiUrl}/gateway/application/${applicationName}/${signatureName}`;
+    public serveService(data, applicationName: string): Observable<any> {
+        const url = `/gateway/application/${applicationName}`;
         return this.http.post(url, data).pipe(
             map((res: Response): any =>  res));
     }

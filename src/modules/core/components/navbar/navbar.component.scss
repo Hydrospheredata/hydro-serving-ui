@@ -56,4 +56,16 @@ $active-color: white;
       height: 28px;
     }
   }
+
+  &__documentation {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color .3s ease;
+    position: absolute;
+    right: 24px;
+    text-decoration: none;
+    &:hover {
+      color: rgba(255, 255, 255, .8);
+    }
+  }
 }

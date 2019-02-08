@@ -6,6 +6,16 @@
         </button>
 
         <div class="content-header__title">{{ (modelVersion$ | async)?.model?.name }} / v{{ (modelVersion$ | async)?.modelVersion }}</div>
+        <div class="actions">
+            <span class="actions__item" [routerLink]="['profiler']">
+                <hydro-icon type="profiler" class="actions__icon"></hydro-icon>
+                <span class="actions__text">profiler</span>
+            </span>
+            <span class="actions__item" [routerLink]="['monitoring']">
+                <hydro-icon type="monitoring" class="actions__icon"></hydro-icon>
+                <span class="actions__text">monitoring</span> 
+            </span>
+        </div>
     </div>
 
 
@@ -49,10 +59,13 @@
 
         <div class="content__body-section">
             <hydro-signatures [signatures]="(modelVersion$ | async)?.modelContract?.signatures"></hydro-signatures>
+<<<<<<< HEAD
         </div>        
 
         <div *ngIf="(modelVersion$ | async)?.id; let modelVersionId"class="content__body-section">
             <hydro-data-profiles [modelVersionId]="modelVersionId"></hydro-data-profiles>
+=======
+>>>>>>> monitoring-profiler-v2
         </div>
     </div>
 </div>

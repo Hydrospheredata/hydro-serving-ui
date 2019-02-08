@@ -4,7 +4,9 @@ import { RouterModule } from '@angular/router';
 import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
-    ModelVersionDetailsComponent
+    ModelVersionDetailsComponent,
+    ProfilerComponent,
+    ModelVersionMonitoringComponent
 } from '@models/components';
 import { ModelDetailsGuard } from '@models/services';
 
@@ -29,6 +31,16 @@ import { ModelDetailsGuard } from '@models/services';
                     {
                         path: ':modelId/:modelVersionId',
                         component: ModelVersionDetailsComponent,
+                        data: {anim: 'modelVerDetail'},
+                    },
+                    {
+                        path: ':modelId/:modelVersionId/profiler',
+                        component: ProfilerComponent,
+                        data: {anim: 'modelVerDetail'},
+                    },
+                    {
+                        path: ':modelId/:modelVersionId/monitoring',
+                        component: ModelVersionMonitoringComponent,
                         data: {anim: 'modelVerDetail'},
                     },
                 ],

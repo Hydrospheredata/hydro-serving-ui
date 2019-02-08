@@ -1,15 +1,18 @@
 import { MonitoringActions, MonitoringActionTypes } from '@core/actions/monitoring.actions';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { MetricSettings } from '@shared/models/metric-settings.model';
+import { IMetricSpecification } from '@shared/models/metric-specification.model';
 
-export interface MState extends EntityState<MetricSettings> { }
+export interface MState extends EntityState<IMetricSpecification> {
+    byModel: string[];
+}
 
-export const adapter: EntityAdapter<MetricSettings> = createEntityAdapter<MetricSettings>({
-    selectId: (metricSettings: MetricSettings) => metricSettings.id,
-    sortComparer: (a, b) => ~~b.timestamp - ~~a.timestamp,
+export const adapter: EntityAdapter<IMetricSpecification> = createEntityAdapter<IMetricSpecification>({
+    selectId: (metricSettings: IMetricSpecification) => metricSettings.id,
 });
 
-export const initialState: MState = adapter.getInitialState();
+export const initialState: MState = adapter.getInitialState({
+    byModel: [],
+});
 
 export function reducer(state = initialState, action: MonitoringActions) {
     switch (action.type) {
