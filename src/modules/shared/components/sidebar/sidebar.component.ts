@@ -63,8 +63,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     private redirectToFirst() {
         if (this.isRedirectable && this.sidebarList.length > 0) {
+            const key = this.isApplications ? 'name' : 'id';
             this.isRedirectable = false;
-            this.router.navigate([this.sidebarList[0].id], { relativeTo: this.activatedRoute });
+
+            this.router.navigate([this.sidebarList[0][key]], { relativeTo: this.activatedRoute });
         }
     }
 }

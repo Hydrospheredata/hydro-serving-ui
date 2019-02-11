@@ -48,7 +48,7 @@ export class ApplicationsEffects {
                                 message: 'Application was successfully added',
                                 timeout: 5000,
                             });
-                            this.router.navigate(['/applications', response.id]);
+                            this.router.navigate(['/applications', response.name]);
 
                             const app = this.applicationBuilder.build(response);
                             return new HydroActions.AddApplicationSuccessAction(app);
@@ -94,7 +94,7 @@ export class ApplicationsEffects {
         .ofType(HydroActions.ApplicationActionTypes.Delete)
         .pipe(
             map((action: HydroActions.DeleteApplicationAction) => action.application),
-            switchMap(({ id, name }) => {
+            switchMap(({ name }) => {
                 return this.applicationsService
                     .deleteApplication(name)
                     .pipe(
@@ -104,7 +104,7 @@ export class ApplicationsEffects {
                                 message: 'Application has been deleted',
                                 timeout: 5000,
                             });
-                            return (new HydroActions.DeleteApplicationSuccessAction(id));
+                            return (new HydroActions.DeleteApplicationSuccessAction(name));
                         }),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
@@ -123,12 +123,12 @@ export class ApplicationsEffects {
             withLatestFrom(
                 this.store.select(fromApplications.getSelectedApplication)
             ),
-            switchMap(([action, { id: applicationId, name: applicationName }]) => {
+            switchMap(([action, { name: applicationName }]) => {
                 console.log(action, applicationName);
                 return this.applicationsService.generateInputs(applicationName)
                     .pipe(
                         map(input => {
-                            const payload = { id: applicationId, input: JSON.stringify(input, undefined, 2) };
+                            const payload = { name: applicationName, input: JSON.stringify(input, undefined, 2) };
                             return new HydroActions.GenerateInputSuccessAction(payload);
                         }),
                         catchError(error => {
@@ -144,10 +144,10 @@ export class ApplicationsEffects {
             skip(1),
             map((action: HydroActions.SetInputAction) => action.payload),
             withLatestFrom(
-                this.store.select(fromApplications.getSelectedApplicationId)
+                this.store.select(fromApplications.getSelectedApplication)
             ),
-            switchMap(([action, applicationId]) => {
-                return observableOf(new HydroActions.SetInputSuccessAction({ id: applicationId, input: action }));
+            switchMap(([action, { name }]) => {
+                return observableOf(new HydroActions.SetInputSuccessAction({ name, input: action }));
             })
         );
 
@@ -168,12 +168,12 @@ export class ApplicationsEffects {
                         .pipe(
                             map(output => {
                                 return new HydroActions.TestApplicationSuccessAction({
-                                    id: application.id,
+                                    name: application.name,
                                     output: JSON.stringify(output, undefined, 2),
                                 });
                             }),
                             catchError(error => {
-                                const payload = {id: application.id, error};
+                                const payload = { name, error };
                                 return observableOf(new HydroActions.TestApplicationFailAction(payload));
                             })
                         );

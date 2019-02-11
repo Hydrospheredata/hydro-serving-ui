@@ -36,12 +36,7 @@ export const {
 export const getSelectedApplication = createSelector(
     getApplicationEntities,
     fromRoot.getRouterState,
-    (entities, router): Application => router.state && entities[router.state.params.id]
-);
-
-export const getSelectedStageId = createSelector(
-    fromRoot.getRouterState,
-    router => router.state && router.state.params.stageId
+    (entities, router): Application => router.state && entities[router.state.params.name]
 );
 
 export const getSelectedApplicationName = createSelector(
@@ -74,10 +69,4 @@ export const getSelectedApplicationOutput = createSelector(
 export const getSelectedApplicationTestStatus = createSelector(
     getSelectedApplication,
     (application: Application): TestStatus => application && application.testStatus
-);
-
-export const getCurrentStage = createSelector(
-    getSelectedApplication,
-    getSelectedStageId,
-    (application: Application, stageId) => application && application.executionGraph.stages[stageId]
 );

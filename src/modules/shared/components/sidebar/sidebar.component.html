@@ -20,7 +20,7 @@
         <ul class='sidebar-list'>
             <li *ngFor="let item of sidebarFiltredList"
                 class='sidebar-list__item' 
-                [routerLink]="[item.id]" 
+                [routerLink]="[isApplications ? item.name : item.id]" 
                 routerLinkActive='__active'>
                 <span class="sidebar-list__item-name">{{ item.name }}</span>
                 <ng-container *ngIf="isApplications">

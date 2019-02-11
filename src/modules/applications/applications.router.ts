@@ -19,7 +19,7 @@ import { ApplicationsGuard } from '@applications/services';
                         canActivateChild: [ApplicationsGuard],
                         children: [
                             {
-                                path: ':id',
+                                path: ':name',
                                 component: ApplicationsItemDetailComponent,
                                 data: { anim: 'appDetail' },
                             },

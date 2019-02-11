@@ -24,19 +24,15 @@ export class ApplicationsGuard implements CanActivateChild {
         return this.applicationsAreLoaded().pipe(
             switchMap( _ => this.store.select(fromApplication.getAllApplications)),
             switchMap((applications: Application[]) => {
-                const applicationId = Number(routerSnapshot.params.id);
-                const application: Application = applications.find(app => app.id === applicationId);
+                const applicationName = routerSnapshot.params.name;
+                const application: Application = applications.find(app => app.name === applicationName);
 
                 if (application) {
-                    if (routerSnapshot.params.stageId !== undefined) {
-                        const stageId = Number(routerSnapshot.params.stageId);
-                        return this.checkStage(application, stageId);
-                    }
                     return of(true);
                 } else {
                     this.router.navigate([this.defaultUrl]);
                     this.mdlSnackbarService.showSnackbar({
-                        message: `Application with id = ${applicationId} doesn't exist`,
+                        message: `Application with name: ${applicationName} doesn't exist`,
                         timeout: 5000,
                     });
                     return of(false);
@@ -50,19 +46,5 @@ export class ApplicationsGuard implements CanActivateChild {
             filter(loaded => loaded),
             take(1)
         );
-    }
-
-    private checkStage(application: Application, stageId: number): Observable<boolean> {
-        const stage = application.executionGraph.stages[stageId];
-        if (stage) {
-            return of(true);
-        } else {
-            this.router.navigate([this.defaultUrl, application.id]);
-            this.mdlSnackbarService.showSnackbar({
-                message: `Stage: ${stageId} doesn't exist for application with id: ${application.id}`,
-                timeout: 5000,
-            });
-            return of(false);
-        }
     }
 }
