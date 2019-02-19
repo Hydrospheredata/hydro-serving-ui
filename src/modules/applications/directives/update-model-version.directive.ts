@@ -2,7 +2,7 @@ import { Directive, ElementRef, OnInit, OnDestroy, HostListener, Input, Output, 
 import { HydroServingState } from '@core/reducers';
 import { getModelVersionsByModelId } from '@models/reducers';
 import { Store } from '@ngrx/store';
-import { IModelVersion } from '@shared/_index';
+import { IModelVersion, ModelVersionStatus } from '@shared/_index';
 import { Subscription } from 'rxjs';
 import { tap, filter } from 'rxjs/operators';
 
@@ -33,28 +33,28 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
     ngOnInit() {
         const {model: {id}, modelVersion } = this.modelVersion;
         this.modelVersionSub = this.store
-        .select(getModelVersionsByModelId(this.modelVersion.model.id))
-        .pipe(
-            filter(modelVersions => !!modelVersions),
-            tap(modelVersions => {
-                const latestModelVersion = modelVersions.find(
-                    modelVer => {
-                      return modelVer.model.id === id
-                        && modelVer.modelVersion > modelVersion
-                        && modelVer.status.toLocaleLowerCase() === 'finished';
+            .select(getModelVersionsByModelId(this.modelVersion.model.id))
+            .pipe(
+                filter(modelVersions => !!modelVersions),
+                tap((modelVersions: IModelVersion[]) => {
+                    const latestModelVersions = modelVersions.filter(
+                        modelVer => {
+                            return modelVer.model.id === id
+                                && modelVer.modelVersion > modelVersion
+                                && modelVer.status.toLocaleLowerCase() === ModelVersionStatus.Released;
+                            }
+                    );
+
+                    if (latestModelVersions.length) {
+                        const { id: latestModelVersionId } = latestModelVersions[latestModelVersions.length - 1];
+                        this.el.nativeElement.style.display = '';
+                        this.latestModelVersionId = latestModelVersionId;
+                    } else {
+                        this.latestModelVersionId = undefined;
+                        this.el.nativeElement.style.display = 'none';
                     }
-
-                );
-
-                if (latestModelVersion) {
-                    this.el.nativeElement.style.display = '';
-                    this.latestModelVersionId = latestModelVersion.id;
-                } else {
-                    this.latestModelVersionId = undefined;
-                    this.el.nativeElement.style.display = 'none';
-                }
-            })
-        ).subscribe();
+                })
+            ).subscribe();
     }
 
     ngOnDestroy() {

@@ -51,10 +51,13 @@
 .model-variant {
     &__cell {
         position: relative;
-        height: 18px;
         line-height: 18px;
         margin-right: 2px;
         width: 18px;
+    }
+    &__link {
+        cursor: pointer;
+        text-decoration: underline;
     }
     &__version {
         &-new {

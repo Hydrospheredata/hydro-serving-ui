@@ -69,7 +69,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
 
         const kindChange = this.form.get('kind').valueChanges;
         const withHealthChange  = this.form.get('withHealth').valueChanges.pipe(
-            startWith(false)
+            startWith(true)
         );
 
         withHealthChange.pipe(
@@ -194,7 +194,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     private createForm() {
         this.form = this.fb.group({
             name: ['', Validators.required],
-            withHealth: { value: false, disabled: false },
+            withHealth: { value: true, disabled: false },
             config: this.fb.group({}),
             kind: ['', Validators.required],
         });

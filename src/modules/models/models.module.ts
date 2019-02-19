@@ -13,6 +13,7 @@ import {
     ModelVersionDetailsComponent,
     ProfilerComponent,
     ModelVersionMonitoringComponent,
+    CompareComponent,
 } from '@models/components';
 import {
     DialogDeleteModelComponent,
@@ -21,7 +22,7 @@ import {
 } from '@models/components/dialogs';
 import { ModelEffects } from '@models/effects';
 import { reducers } from '@models/reducers';
-import { ModelsService, ModelDetailsGuard } from '@models/services';
+import { ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilesModule } from '@profiles/profiles.module';
@@ -48,12 +49,13 @@ import { ProfilesModule } from '@profiles/profiles.module';
         ProfilerComponent,
         ModelVersionMonitoringComponent,
         DialogDeleteMetricComponent,
+        CompareComponent,
     ],
     entryComponents: [
         DialogDeleteModelComponent,
         DialogAddMetricComponent,
         DialogDeleteMetricComponent,
     ],
-    providers: [ModelsService, ModelDetailsGuard],
+    providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
 })
 export class ModelsModule { }

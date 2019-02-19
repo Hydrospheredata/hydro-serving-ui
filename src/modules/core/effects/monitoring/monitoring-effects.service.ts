@@ -19,7 +19,6 @@ export class MonitoringEffects {
         .pipe(
             map((action: HydroActions.AddMetricAction) => action.aggregation),
             switchMap(aggregation => {
-                // debugger;
                 return this.metricService.addMetricSettings(aggregation)
                     .pipe(
                         map(response => {

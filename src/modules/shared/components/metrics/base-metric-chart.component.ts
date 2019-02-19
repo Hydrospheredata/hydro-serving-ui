@@ -16,20 +16,21 @@ import * as moment from 'moment';
 
 import { IChartData } from '@shared/models/application-chart.model';
 
-import { Subscription, Subject, Observable, merge, interval } from 'rxjs';
+import { Subscription, Subject, Observable, interval, combineLatest } from 'rxjs';
 import {
     switchMap,
-    tap
+    tap,
+    startWith
 } from 'rxjs/operators';
 
 import { InfluxDBService } from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
-import { IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
+import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
 
 interface IMetricData {
     name: string;
     value: number;
-    labels: any;
+    labels: {modelVersionId: string};
     timestamp: number;
     health: any;
 }
@@ -45,12 +46,10 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     public chartData: IChartData;
 
     @Input()
-    set metricSpecificationProvider({id, metrics, kind, config }: IMetricSpecificationProvider) {
-        this.metrics = metrics;
-        this.metricSpecId = id;
-        this.metricSpecKind = kind;
-        this.threshold = config.threshold;
-    }
+    public metricSpecificationProviders;
+    public metricsByModelVersion: { [modelVersion: string]: string[] };
+    public makeRequest: Subject<Array<Promise<IMetricData[]>>> = new Subject();
+    public requests: Array<Promise<any>>;
 
     @Input()
     protected chartTimeWidth: number = 0;
@@ -61,9 +60,10 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     protected metrics: string[] = [];
     protected metricSpecId: string;
     protected metricSpecKind: string;
-    protected REQUEST_DELAY_MS: number = 1500;
+    protected REQUEST_DELAY_MS: number = 2000;
     protected updateChartObservable$: Observable<any>;
     protected timeSubject: Subject<any> = new Subject<any>();
+    protected providersSubject: Subject<any> = new Subject<any>();
 
     @Output()
     private delete: EventEmitter<any> = new EventEmitter();
@@ -76,26 +76,27 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private chartBands: { [metricName: string]: string[] } = {};
     private plotBands: { [metricName: string]: Array<{from: number, to: number}> } = {};
     private series: { [metricName: string]: {name: string; data: Array<[number, number]>}} = {};
-    private dataLength: number = 0;
+
     // common data
     private metricsData: IMetricData[] = [];
-    private threshold: any = {};
+    private thresholds: {[uniqName: string]: number} = {};
     private updateChartSub: Subscription;
 
     constructor(
         public metricsService: MetricsService,
         public influxdbService: InfluxDBService
     ) {
-
-        this.updateChartObservable$ = merge(
-            interval(this.REQUEST_DELAY_MS),
-            this.timeSubject.asObservable()
+        this.updateChartObservable$ = combineLatest(
+            this.timeSubject.asObservable(),
+            this.providersSubject.asObservable(),
+            interval(this.REQUEST_DELAY_MS).pipe(startWith('first tick'))
         );
+
+        this.selfUpdate();
     }
 
     ngOnInit(): void {
         this.initChart();
-        this.selfUpdate();
     }
 
     ngOnDestroy(): void {
@@ -103,20 +104,38 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.chartTimeWidth && !changes.chartTimeWidth.firstChange) {
-            this.timeSubject.next();
+        if (changes.chartTimeWidth) {
+            this.timeSubject.next(changes.chartTimeWidth.currentValue);
         }
+
+        if (changes.metricSpecificationProviders) {
+            this.initThresholds();
+            this.providersSubject.next(changes.metricSpecificationProviders.currentValue);
+        }
+    }
+
+    public initThresholds() {
+        const newThresholds = {};
+        const data = Object.entries(this.metricSpecificationProviders.byModelVersionId);
+
+        data.forEach(([modelVerId, metricSpec]: [string, IMetricSpecification]) => {
+            const uniqName = `${modelVerId}_threshold`;
+            if (newThresholds[uniqName] === undefined && metricSpec.config.threshold) {
+                newThresholds[uniqName] = metricSpec.config.threshold;
+            }
+        });
+        this.thresholds = newThresholds;
     }
 
     public onDelete(): void {
         this.delete.emit(this.metricSpecId);
     }
 
-    protected getRequestPromise(): Promise<any> {
+    protected getRequestPromise(id, i, metrics): Promise<IMetricData[]> {
         return this.metricsService.getMetrics(
-            this.modelVersionId.toString(),
-            this.chartTimeWidth.toString(),
-            this.metrics,
+            id.toString(),
+            i,
+            metrics,
             ''
         );
     }
@@ -146,12 +165,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                 title: {
                     text: this.metrics.join(','),
                 },
-                plotLines: this.threshold !== undefined ? [{
-                    color: 'red',
-                    dashStyle: 'longdashdot',
-                    value: parseFloat(this.threshold),
-                    width: 2,
-                }] : [],
             },
             tooltip: {
                 shared: true,
@@ -177,11 +190,18 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     get title(): string {
-        return this.metricSpecKind;
+        return this.metricSpecificationProviders.kind;
     }
 
     private drawSeries(): void {
         const chartSeries = this.chart.series;
+        const seriesNames = Object.keys(this.series);
+        // clear series
+        chartSeries.forEach(curChartSeries => {
+            if (!seriesNames.includes(curChartSeries.name)) {
+                curChartSeries.remove(true);
+            }
+        });
 
         Object.entries(this.series).forEach(([name, series]) => {
             const currentSeriesOnChart = chartSeries.find(_ => _.name === name);
@@ -211,6 +231,9 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         if (plotBandsEntries.length > 0 ) {
             plotBandsEntries.forEach(([metricName, plotBandList]) => {
                 plotBandList.forEach(({from, to}) => {
+                    if (this.chartBands[metricName] === undefined) {
+                        this.chartBands[metricName] = [];
+                    }
                     const id = `${from}_${to}`;
                     this.chartBands[metricName].push(id);
                     this.chart.xAxis[0].addPlotBand({
@@ -224,26 +247,34 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
-    private drawThreshold(): void {
-        const currentThresholdSeries = this.chart.series.find(_ => _.name === `${name}_threshold`);
+    private drawThresholds(): void {
+        const thresholds = Object.entries(this.thresholds);
+        const thresholdsNames = Object.keys(this.thresholds);
+        const isThreshold = ({name}: Highcharts.SeriesObject): boolean => /^.+_threshold$/.test(name);
+        const currentChartThresholdSeries = this.chart.series.filter(isThreshold);
 
-        if (this.threshold && this.metricsData.length > 0) {
-            if (currentThresholdSeries) {
-                currentThresholdSeries.update({ name: `${name}_threshold`, data: [this.threshold] }, true);
+        if (thresholds.length && currentChartThresholdSeries.length) {
+            currentChartThresholdSeries.forEach(series => series.remove(true));
             } else {
-                this.chart.addSeries({
-                    name: `${name}_threshold`,
-                    data: [[new Date().getTime(), this.threshold]],
-                    type: 'scatter',
-                    showInLegend: false,
-                    marker: { enabled: false },
-                    enableMouseTracking: false,
-                }, true);
-            }
-        } else {
-            if (currentThresholdSeries) {
-                currentThresholdSeries.remove();
-            }
+            // TODO: лишняя проверка можно оптимизнуть
+            // все перенести в стримы
+            currentChartThresholdSeries.forEach(series => {
+                if (!thresholdsNames.includes(series.name)) {
+                    series.remove(true);
+                }
+            });
+
+            thresholds.forEach(([thresholdName, value]) => {
+                const thresholdAreadyDraw = currentChartThresholdSeries.find(({name}) => name === thresholdName);
+                if (!thresholdAreadyDraw) {
+                    this.chart.yAxis[0].addPlotLine({
+                        color: 'red',
+                        dashStyle: 'scatter',
+                        value,
+                        width: 2,
+                    });
+                }
+            });
         }
     }
 
@@ -257,33 +288,36 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
         let tmpBandObject = null;
 
-        for (let i = 0, l = this.metricsData.length, isLastElement = i === l - 1; i < l; i++) {
+        for (let i = 0, l = this.metricsData.length; i < l; i++) {
+            const isLastElement = i === l - 1;
             const currentMetricData = this.metricsData[i];
-            const { name, timestamp, value, health } = currentMetricData;
+            const { name, timestamp, value, health, labels } = currentMetricData;
+
+            const uniqName = `${name}_version_${labels.modelVersionId}`;
 
             // series
-            if (newSeries[name] === undefined ) {
-               newSeries[name] = { name, data: [] };
+            if (newSeries[uniqName] === undefined ) {
+               newSeries[uniqName] = { name: uniqName, data: [] };
             }
 
-            newSeries[name].data.push([timestamp * 1000, value]);
+            newSeries[uniqName].data.push([timestamp * 1000, value]);
 
             // plotBands
-            if (newPlotBands[name] === undefined ) {
-                newPlotBands[name] = [];
+            if (newPlotBands[uniqName] === undefined ) {
+                newPlotBands[uniqName] = [];
             }
 
             if (tmpBandObject) {
-                if (health === 0) {
+                if (health === false) {
                     tmpBandObject.to = timestamp;
                  }
-                if (health === 1 || isLastElement) {
-                    newPlotBands[name].push(Object.assign({}, tmpBandObject));
+                if (health === true || isLastElement) {
+                    newPlotBands[uniqName].push(Object.assign({}, tmpBandObject));
                     tmpBandObject = null;
                 }
             } else {
-                if (health === 1) { continue; }
-                if (health === 0) {
+                if (health === true) { continue; }
+                if (health === false) {
                     tmpBandObject = { from: timestamp, to: timestamp };
                 }
 
@@ -296,7 +330,27 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
     private selfUpdate() {
         this.updateChartSub = this.updateChartObservable$.pipe(
-            switchMap(_ => this.getMetricsData()),
+            tap(_ => {
+                console.group('%c updates', 'color: tomato');
+                console.dir(_);
+                console.groupEnd();
+            }),
+            switchMap(([time, providers]) => {
+                const {
+                    byModelVersionId,
+                    metrics,
+                }: IMetricSpecificationProvider = providers;
+                const requests = [];
+
+                Object.values(byModelVersionId).forEach(metricSpecification => {
+                    requests.push(this.getRequestPromise(metricSpecification.modelVersionId, time, metrics));
+                });
+
+                return combineLatest(...requests);
+            }),
+            tap(([primaryMetricData, comparedMetricData]: [IMetricData[], IMetricData[]]) => {
+                this.metricsData = primaryMetricData.concat(comparedMetricData || []);
+            }),
             tap(_ => this.redrawChart())
         ).subscribe();
     }
@@ -304,13 +358,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private redrawChart() {
         this.fetchMetricsData();
         this.drawSeries();
-        this.drawThreshold();
+        this.drawThresholds();
         this.drawBands();
-    }
-
-    private getMetricsData(): Promise<any> {
-        return this.getRequestPromise().then(result => {
-            this.metricsData = result;
-        });
     }
 }

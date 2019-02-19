@@ -8,7 +8,7 @@ import { InfluxDBService} from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
 import { Application, HealthRow, ModelVersion, ApplicationStatus, IApplication } from '@shared/models/_index';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import {
     DialogDeleteApplicationComponent,

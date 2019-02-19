@@ -7,6 +7,13 @@ import { InfluxDBService } from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { BaseMetricChartComponent } from '@shared/components/metrics/base-metric-chart.component';
 
+interface IMetricData {
+    name: string;
+    value: number;
+    labels: {modelVersionId: string};
+    timestamp: number;
+    health: any;
+}
 @Component({
     selector: 'hs-kolmogorov-smirnov-metric-chart',
     templateUrl: './kolmogorov-smirnov-metric-chart.component.html',
@@ -36,13 +43,12 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
         return features;
     }
 
-    protected getRequestPromise(): Promise<any> {
-        return this.metricsService
-                   .getMetrics(
-                       this.modelVersionId.toString(),
-                       this.chartTimeWidth.toString(),
-                       this.metrics,
-                       this.selectedFeature
-                    );
+    protected getRequestPromise(id, i, metrics): Promise<IMetricData[]> {
+        return this.metricsService.getMetrics(
+            id.toString(),
+            i,
+            metrics,
+            this.selectedFeature
+        );
     }
 }

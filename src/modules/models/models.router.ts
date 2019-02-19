@@ -6,9 +6,10 @@ import {
     ModelDetailsComponent,
     ModelVersionDetailsComponent,
     ProfilerComponent,
-    ModelVersionMonitoringComponent
+    ModelVersionMonitoringComponent,
+    CompareComponent
 } from '@models/components';
-import { ModelDetailsGuard } from '@models/services';
+import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 
 @NgModule({
     imports: [
@@ -21,27 +22,34 @@ import { ModelDetailsGuard } from '@models/services';
             {
                 path: 'models',
                 component: ModelsWrapperComponent,
-                canActivateChild: [ModelDetailsGuard],
                 children: [
+                    {
+                        path: 'compare',
+                        component: CompareComponent,
+                    },
                     {
                         path: ':modelId',
                         component: ModelDetailsComponent,
                         data: { anim: 'modelDetail'},
+                        canActivate: [ModelDetailsGuard],
                     },
                     {
                         path: ':modelId/:modelVersionId',
                         component: ModelVersionDetailsComponent,
                         data: {anim: 'modelVerDetail'},
+                        canActivate: [ModelVersionDetailsGuard],
                     },
                     {
                         path: ':modelId/:modelVersionId/profiler',
                         component: ProfilerComponent,
                         data: {anim: 'modelVerDetail'},
+                        canActivate: [ModelVersionDetailsGuard],
                     },
                     {
                         path: ':modelId/:modelVersionId/monitoring',
                         component: ModelVersionMonitoringComponent,
                         data: {anim: 'modelVerDetail'},
+                        canActivate: [ModelVersionDetailsGuard],
                     },
                 ],
             },

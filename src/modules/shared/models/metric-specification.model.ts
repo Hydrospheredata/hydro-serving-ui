@@ -16,7 +16,17 @@ export interface IMetricSpecification {
   withHealth?: boolean;
 }
 
-export type IMetricSpecificationProvider = IMetricSpecification & { metrics: string[] };
+export interface IMetricSpecificationProvider {
+  kind: string;
+  byModelVersionId: {
+      [modelVersionId: string]: IMetricSpecification;
+  };
+  metrics: string[];
+}
+
+export interface IMetricSpecificationProviders {
+  [metricSpecKind: string]: IMetricSpecificationProvider;
+}
 
 export class MetricSpecification implements IMetricSpecification {
   public id: string;

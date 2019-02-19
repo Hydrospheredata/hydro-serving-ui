@@ -1,15 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { GetMetricsAction } from '@core/actions/monitoring.actions';
-import { HydroServingState } from '@core/reducers';
-import * as fromMetrics from '@core/reducers';
+import { HydroServingState, getAllMetrics } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
 import { DialogAddMetricComponent, DialogDeleteMetricComponent, METRIC_ID_VALUE } from '@models/components/dialogs';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { ModelVersion } from '@shared/_index';
-import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
-import { Observable, Subscription, of, combineLatest } from 'rxjs';
-import { filter, tap, switchMap } from 'rxjs/operators';
+import { IMetricSpecification, IMetricSpecificationProviders } from '@shared/models/metric-specification.model';
+import { Observable, of, combineLatest, } from 'rxjs';
+import { filter, tap, switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'hs-model-version-monitoring',
@@ -19,8 +18,8 @@ import { filter, tap, switchMap } from 'rxjs/operators';
 export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
     public isMonitoringAvailable$: Observable<boolean> = of(false);
     public modelVersion$: Observable<ModelVersion>;
-    public metricSpecificationProviders$: Observable<IMetricSpecificationProvider[]>;
-
+    public metricSpecifications$: Observable<IMetricSpecification[]>;
+    public metricSpecificationProviders$: Observable<IMetricSpecificationProviders>;
     public chartTimeWidth: number = 1800000;
     public chartTimeWidthParams: Array<{ ms: number, text: string }> = [
         { ms: 900000, text: '15 minutes' },
@@ -29,20 +28,20 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
         { ms: 7200000, text: '2 hours' },
         { ms: 14400000, text: '4 hours' },
     ];
-    private updateMetricsSub: Subscription;
 
     constructor(
         private dialog: DialogService,
         private store: Store<HydroServingState>
     ) {
+
         this.modelVersion$ = this.store.select(getSelectedModelVersion).pipe(
-            filter(modelVersion => !!modelVersion)
+            filter(modelVersion => !!modelVersion),
+            tap(({id}) => this.store.dispatch(new GetMetricsAction(`${id}`)))
         );
 
-        this.metricSpecificationProviders$ = this.store.select(fromMetrics.getSelectedMetrics).pipe(
-            filter(metricSpecs => !!metricSpecs),
-            switchMap(metricSpecifications => {
-                return of(this.createMetricProviders(metricSpecifications));
+        this.metricSpecificationProviders$ = this.store.select(getAllMetrics).pipe(
+            switchMap((mericSpecifications: IMetricSpecification[]) => {
+                return of(this.createMetricProviders(mericSpecifications));
             })
         );
 
@@ -52,15 +51,9 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.updateMetricsSub = this.modelVersion$.pipe(
-            tap(({id}) => {
-                this.store.dispatch(new GetMetricsAction(`${id}`));
-            }
-        )).subscribe();
     }
 
     ngOnDestroy(): void {
-        this.updateMetricsSub.unsubscribe();
     }
 
     public openAddMetricDialog(): void {
@@ -82,7 +75,10 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
 
     private createMetricProviders(
         metricSpecifications: IMetricSpecification[]
-    ): IMetricSpecificationProvider[] {
+    ): IMetricSpecificationProviders  {
+
+        const tmp: IMetricSpecificationProviders = {};
+
         const dict = {
             CounterMetricSpec:      ['counter'],
             KSMetricSpec:           ['kolmogorovsmirnov', 'kolmogorovsmirnov_level'],
@@ -93,8 +89,18 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
             ErrorRateMetricSpec:    ['error_rate'],
         };
 
-        return metricSpecifications.map(metricSpec => {
-            return {...metricSpec, metrics: dict[metricSpec.kind] };
+        metricSpecifications.forEach(metricSpec => {
+            if (tmp[metricSpec.kind] === undefined) {
+                tmp[metricSpec.kind] = {
+                    kind: metricSpec.kind,
+                    byModelVersionId: {},
+                    metrics: dict[metricSpec.kind],
+                };
+            }
+
+            tmp[metricSpec.kind].byModelVersionId[metricSpec.modelVersionId] = metricSpec;
         });
+
+        return tmp;
     }
 }
