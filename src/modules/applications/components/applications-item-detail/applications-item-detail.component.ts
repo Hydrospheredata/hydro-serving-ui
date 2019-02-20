@@ -19,6 +19,7 @@ import {
     DialogTestComponent,
     SELECTED_APPLICATION$,
     LATEST_MODEL_VERSION_ID,
+    SELECTED_DEL_APPLICATION$,
 } from '@applications/components/dialogs';
 import { tap } from 'rxjs/operators';
 
@@ -118,7 +119,10 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     }
 
     public removeApplication() {
-        this.dialog.createDialog({component: DialogDeleteApplicationComponent});
+        this.dialog.createDialog({
+            component: DialogDeleteApplicationComponent,
+            providers: [{ provide: SELECTED_DEL_APPLICATION$, useValue: this.application$}],
+        });
     }
 
     public isReady(status: string): boolean {

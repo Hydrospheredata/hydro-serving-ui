@@ -41,8 +41,18 @@
             display: inline-block;
             font-size: 24px;
             line-height: 32px;
-            margin-bottom: 46px;
             max-width: 300px;
+            text-align: center;
+            margin-bottom: 4px;
+        }
+    }
+
+    &__text {
+        &--is-alert {
+            font-weight: 900;
+            font-size: 20px;
+            color: #f3755e;
+            text-transform: uppercase;
             text-align: center;
         }
     }

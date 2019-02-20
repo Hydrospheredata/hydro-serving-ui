@@ -8,7 +8,7 @@ import * as fromModels from '@models/reducers';
 import { Observable } from 'rxjs';
 
 import { DialogService } from '@dialog/dialog.service';
-import { DialogDeleteModelComponent } from '@models/components/dialogs';
+import { DialogDeleteModelComponent, SELECTED_MODEL$ } from '@models/components/dialogs';
 import { switchMap, filter } from 'rxjs/operators';
 @Component({
     selector: 'hs-model-details',
@@ -35,6 +35,7 @@ export class ModelDetailsComponent {
     public removeModel() {
         this.dialog.createDialog({
             component: DialogDeleteModelComponent,
+            providers: [{ provide: SELECTED_MODEL$, useValue: this.model$} ],
         });
     }
 }
