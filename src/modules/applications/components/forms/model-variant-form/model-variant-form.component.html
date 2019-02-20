@@ -11,9 +11,12 @@
                 <label class="service__field-label">
                     Model name
                 </label>
-                <mdl-select formControlName="modelId">
+                <mdl-select 
+                    #autocompleteSelect
+                    formControlName="modelId" 
+                    [autocomplete]="true">
                     <mdl-option 
-                        *ngFor="let model of models$ | async"
+                        *ngFor="let model of models$ | async | matchSorter:'name':autocompleteSelect.searchQuery"
                         [value]="model.id">{{model.name}}</mdl-option>
                 </mdl-select>
             </div>
@@ -22,9 +25,12 @@
                 <label class="service__field-label">
                     Model version
                 </label>
-                <mdl-select formControlName="modelVersionId">
+                <mdl-select 
+                    #autocompleteSelect
+                    formControlName="modelVersionId"
+                    [autocomplete]="true">
                     <mdl-option 
-                        *ngFor="let modelVersion of modelVersions$ | async"
+                        *ngFor="let modelVersion of modelVersions$ | async | matchSorter:'modelVersion':autocompleteSelect.searchQuery"
                         [value]="modelVersion.id">{{modelVersion.modelVersion}}</mdl-option>
                 </mdl-select>
             </div>

@@ -18,7 +18,6 @@ export class MetricSettingsService {
 
   public getMetricSettings(modelVersionId: string): Observable<IMetricSpecification[]> {
     const url = `${this.baseMonitoringSettingsUrl}/modelversion/${modelVersionId}`;
-
     return this.http.get(url).pipe(
       map((res: Response): any => res),
       catchError(_ => {throw new Error('Can\'t fetch data from monitoring service'); })
