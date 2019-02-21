@@ -17,16 +17,21 @@
 
 
     <div class="sidebar-body">
-        <ul class='sidebar-list'>
-            <li *ngFor="let item of sidebarFiltredList"
-                class='sidebar-list__item' 
-                [routerLink]="[isApplications ? item.name : item.id]" 
-                routerLinkActive='__active'>
-                <span class="sidebar-list__item-name">{{ item.name }}</span>
-                <ng-container *ngIf="isApplications">
-                    <hs-application-status class="sidebar-list__item-status" [application]="item"></hs-application-status>
-                </ng-container>
-            </li>
-        </ul>
+        <ng-container *ngIf="sidebarFiltredList.length; else emptyMessage">
+            <ul class='sidebar-list'>
+                <li *ngFor="let item of sidebarFiltredList"
+                    class='sidebar-list__item' 
+                    [routerLink]="[isApplications ? item.name : item.id]" 
+                    routerLinkActive='__active'>
+                    <span class="sidebar-list__item-name">{{ item.name }}</span>
+                    <ng-container *ngIf="isApplications">
+                        <hs-application-status class="sidebar-list__item-status" [application]="item"></hs-application-status>
+                    </ng-container>
+                </li>
+            </ul>
+        </ng-container>
+        <ng-template #emptyMessage>
+           <div class="sidebar__empty-message">not found</div>
+        </ng-template>
     </div>
 </aside>
