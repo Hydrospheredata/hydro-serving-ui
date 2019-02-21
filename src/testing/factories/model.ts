@@ -7,5 +7,5 @@ export const MockModel1: IModel = {
 
 export const MockModel2: IModel = {
     id: 2,
-    name: 'Sooooooooooooooo_long_mockModel_1_Name',
+    name: 'Sooooooooooooooo_long_mockModel_2_Name',
 };

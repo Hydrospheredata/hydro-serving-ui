@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@shared/shared.module';
 import { NavbarComponent } from './navbar.component';
 
-fdescribe('NavbarComponent', () => {
+describe('NavbarComponent', () => {
     let component: NavbarComponent;
     let fixture: ComponentFixture<NavbarComponent>;
     let element: HTMLElement;
