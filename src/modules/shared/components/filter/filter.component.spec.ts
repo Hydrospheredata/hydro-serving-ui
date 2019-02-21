@@ -3,7 +3,7 @@ import { FilterComponent } from '@shared/components/filter/filter.component';
 import { SharedModule } from '@shared/shared.module';
 import { MockModel1, MockModel2 } from '@testing/factories/model';
 
-fdescribe('filter component', () => {
+describe('filter component', () => {
     let component: FilterComponent;
     let fixture: ComponentFixture<FilterComponent>;
 

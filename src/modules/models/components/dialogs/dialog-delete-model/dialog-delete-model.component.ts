@@ -2,7 +2,6 @@ import { Component, InjectionToken, Inject } from '@angular/core';
 
 import { HydroServingState } from '@core/reducers';
 import { DeleteModelAction } from '@models/actions';
-import * as fromModel from '@models/reducers';
 import { Store } from '@ngrx/store';
 
 import { DialogService } from '@dialog/dialog.service';
