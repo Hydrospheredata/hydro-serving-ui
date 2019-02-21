@@ -12,11 +12,11 @@
                     Model name
                 </label>
                 <mdl-select 
-                    #autocompleteSelect
+                    #modelSelect
                     formControlName="modelId" 
                     [autocomplete]="true">
                     <mdl-option 
-                        *ngFor="let model of models$ | async | matchSorter:'name':autocompleteSelect.searchQuery"
+                        *ngFor="let model of models$ | async | matchSorter:'name':modelSelect.searchQuery"
                         [value]="model.id">{{model.name}}</mdl-option>
                 </mdl-select>
             </div>
@@ -26,11 +26,11 @@
                     Model version
                 </label>
                 <mdl-select 
-                    #autocompleteSelect
+                    #modelVerSelect
                     formControlName="modelVersionId"
                     [autocomplete]="true">
                     <mdl-option 
-                        *ngFor="let modelVersion of modelVersions$ | async | matchSorter:'modelVersion':autocompleteSelect.searchQuery"
+                        *ngFor="let modelVersion of modelVersions$ | async | matchSorter:'modelVersion':modelVerSelect.searchQuery"
                         [value]="modelVersion.id">{{modelVersion.modelVersion}}</mdl-option>
                 </mdl-select>
             </div>
