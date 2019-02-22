@@ -1,25 +1,20 @@
 <div class="content modelDetail">
-    <div class="content-header">
+    <header class="content-header">
         <div class="content-header__title">{{ (model$ | async)?.name }}</div>
         <button class="button button--secondary button--secondary-remove" (click)="removeModel()">
             <hydro-icon class="button__icon" [type]="'icon-remove'"></hydro-icon>
             remove
         </button>
-    </div>
+    </header>
 
     <div class="content-body">
-        <div class="hydro-panel">
+        <div class="hydro-panel versions">
             <div class="hydro-panel__header">
                 <h5>Versions</h5>
             </div>
             <ng-container *ngIf="modelVersions$ | async; let modelVersions">
-                <ng-container *ngIf="modelVersions.length === 0">
-                    <span class="alert">
-                        <span class="alert__ancor">Ooops!</span> It looks like API does not return any builds for this model. Please check model.
-                    </span>
-                </ng-container>
-                <ng-container *ngIf="modelVersions.length">
-                    <table class='hydro-table hydro-table-models'>
+                <ng-container *ngIf="modelVersions.length; else emptyModelVersions">
+                    <table class='hydro-table hydro-table-models versions__table'>
                         <colgroup>
                             <col width="100px">
                             <col>
@@ -36,7 +31,7 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let modelVersion of modelVersions" class='hydro-table-body__row row'>
-                                <td class="hydro-table-body__cell">{{ modelVersion.id }}</td>
+                                <td class="hydro-table-body__cell">{{ modelVersion.modelVersion }}</td>
                                 <td class="hydro-table-body__cell">
                                     <span class="cs-text-overflow-ellipsis">
                                         {{ modelVersion.started | utcToLocal | amTimeAgo }}
@@ -53,13 +48,13 @@
                                     </div>
                                 </td>
                                 <td class="hydro-table-body__cell">
-                                    <ng-container *ngIf="modelVersion.applications.length > 0">
+                                    <ng-container *ngIf="modelVersion.applications.length > 0; else emptyApplication">
                                         <span class="model-item__application" *ngFor="let appName of modelVersion.applications"
                                             [routerLink]="['../../applications', appName]">
                                             <span>{{appName}}</span>
                                         </span>
                                     </ng-container>
-                                    <span *ngIf="modelVersion.applications.length === 0">-</span>
+                                    <ng-template #emptyApplication>-</ng-template>
                                 </td>
                                 <td class="hydro-table-body__cell">
                                     <div class="actions">
@@ -89,3 +84,9 @@
         </div>
     </div>
 </div>
+
+<ng-template #emptyModelVersions>
+    <span class="alert">
+        <span class="alert__ancor">Ooops!</span> It looks like API does not return any builds for this model. Please check model.
+    </span>
+</ng-template>

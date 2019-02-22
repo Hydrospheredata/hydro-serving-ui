@@ -2,14 +2,14 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { HydroServingState } from '@core/reducers';
-import { Model, ModelVersion } from '@shared/models/_index';
+import { Model, ModelVersion, IModel, IModelVersion } from '@shared/models/_index';
 
 import * as fromModels from '@models/reducers';
 import { Observable } from 'rxjs';
 
 import { DialogService } from '@dialog/dialog.service';
 import { DialogDeleteModelComponent, SELECTED_MODEL$ } from '@models/components/dialogs';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, tap } from 'rxjs/operators';
 @Component({
     selector: 'hs-model-details',
     templateUrl: './model-details.component.html',
@@ -17,15 +17,16 @@ import { switchMap, filter } from 'rxjs/operators';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModelDetailsComponent {
-    public model$: Observable<Model>;
-    public modelVersions$: Observable<ModelVersion[]>;
+    public model$: Observable<IModel>;
+    public modelVersions$: Observable<IModelVersion[]>;
 
     constructor(
         private store: Store<HydroServingState>,
         private dialog: DialogService
     ) {
         this.model$ = this.store.select(fromModels.getSelectedModel).pipe(
-            filter(model => !!model));
+            filter(model => !!model)
+        );
 
         this.modelVersions$ = this.model$.pipe(
             switchMap(({id}) => this.store.select(fromModels.getModelVersionsByModelId(id)))
