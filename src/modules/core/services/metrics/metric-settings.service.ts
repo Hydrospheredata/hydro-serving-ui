@@ -34,7 +34,6 @@ export class MetricSettingsService {
   }
 
   public deleteMetricSettings(id: string): Observable<object> {
-    console.log(`calling DELETE method for ${id}`);
     return this.http.delete(`${this.baseMonitoringSettingsUrl}/${id}`).pipe(
       map((res: Response): any => res));
   }

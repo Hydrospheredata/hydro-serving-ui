@@ -47,9 +47,17 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input()
     public metricSpecificationProviders;
+
     public metricsByModelVersion: { [modelVersion: string]: string[] };
     public makeRequest: Subject<Array<Promise<IMetricData[]>>> = new Subject();
     public requests: Array<Promise<any>>;
+
+    public showDeleteIcon;
+
+    @Input()
+    set canDelete(canDelete: boolean) {
+        this.showDeleteIcon = canDelete || false;
+    }
 
     @Input()
     protected chartTimeWidth: number = 0;
@@ -96,6 +104,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnInit(): void {
+
         this.initChart();
     }
 
@@ -128,7 +137,9 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public onDelete(): void {
-        this.delete.emit(this.metricSpecId);
+        const { id } = this.metricSpecificationProviders.byModelVersionId[this.modelVersionId];
+
+        this.delete.emit(id);
     }
 
     protected getRequestPromise(id, i, metrics): Promise<IMetricData[]> {

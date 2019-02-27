@@ -21,7 +21,6 @@ export function reducer(state = initialState, action: ModelVersionsActions) {
         case ModelVersionActionTypes.GetModelVersions:
             return { ...state, loading: true, loaded: false };
         case ModelVersionActionTypes.GetModelVersionsSuccess:
-
             const byModel = action.payload.reduce((newState, modelVersion: IModelVersion) => {
                 if (newState[modelVersion.model.id] === undefined) {
                     newState[modelVersion.model.id] = [];

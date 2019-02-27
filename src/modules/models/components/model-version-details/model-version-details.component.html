@@ -57,7 +57,19 @@
             </li>
         </ol>
 
-    <div class="content__body-section">
-        <hydro-signatures [signatures]="(modelVersion$ | async)?.modelContract?.signatures"></hydro-signatures>
+        <div class="metadata">
+            <div class="metadata__title">Metadata</div>
+            <ul class="metadata__list">
+                <li *ngFor="let item of (modelVersion$ | async).metadata | keyvalue"
+                    class="metadata__item"
+                >
+                    {{ item.key }} : {{ item.value}}
+                </li>
+            </ul>
+        </div>
+
+        <div class="content__body-section">
+            <hydro-signatures [signatures]="(modelVersion$ | async)?.modelContract?.signatures"></hydro-signatures>
+        </div>
     </div>
 </div>

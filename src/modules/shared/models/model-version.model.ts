@@ -27,6 +27,7 @@ export interface IModelVersion {
     hostSelector: HostSelector;
     status: ModelVersionStatus;
     applications: string[];
+    metadata: object;
 }
 export class ModelVersion implements IModelVersion {
     public id: number;
@@ -40,6 +41,7 @@ export class ModelVersion implements IModelVersion {
     public hostSelector: HostSelector;
     public status: ModelVersionStatus;
     public applications: string[];
+    public metadata: object;
 
     constructor(props: any = {}) {
         this.id = props.id;
@@ -53,5 +55,6 @@ export class ModelVersion implements IModelVersion {
         this.hostSelector = props.hostSelector;
         this.status = props.status;
         this.applications = props.applications;
+        this.metadata = props.metadata;
     }
 }

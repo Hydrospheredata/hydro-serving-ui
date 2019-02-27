@@ -3,7 +3,7 @@
         <span>
             {{ title }}
         </span>
-        <hydro-icon 
+        <hydro-icon *ngIf="showDeleteIcon"
             class="icon chart__title-icon" 
             type="icon-remove" 
             (click)="onDelete()"></hydro-icon>

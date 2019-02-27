@@ -32,6 +32,7 @@
                             [chartTimeWidth]="chartTimeWidth"
                             [modelVersionId]="(modelVersion$ | async)?.id"
                             [metricSpecificationProviders]="msp[metricSpecificationKind]"
+                            [canDelete]="true"
                             (delete)="deleteMetric($event)">
                         </hs-kolmogorov-smirnov-metric-chart>
                         <hs-base-metric-chart 
@@ -39,6 +40,7 @@
                             [chartTimeWidth]="chartTimeWidth" 
                             [modelVersionId]="(modelVersion$ | async)?.id"
                             [metricSpecificationProviders]="msp[metricSpecificationKind]"
+                            [canDelete]="true"
                             (delete)="deleteMetric($event)">
                         </hs-base-metric-chart>
                     </ng-container>

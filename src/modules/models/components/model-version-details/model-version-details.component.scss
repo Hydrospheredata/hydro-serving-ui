@@ -60,3 +60,17 @@
 .status {
     text-transform: capitalize;
 }
+
+.metadata {
+    margin-bottom: 36px;
+    &__title {
+        font-size: 18px;
+        text-transform: uppercase;
+    }
+
+    &__list {
+        list-style: none;
+        padding: 0;
+        margin: 8px 0;
+    }
+}

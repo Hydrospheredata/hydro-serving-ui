@@ -22,6 +22,7 @@ export const MockModelVersion1Model1: IModelVersion = {
     hostSelector: MockHostSelector,
     status: ModelVersionStatus.Released,
     applications: [],
+    metadata: {},
 };
 
 export const MockModelVersion2Model1: IModelVersion = {
@@ -36,6 +37,7 @@ export const MockModelVersion2Model1: IModelVersion = {
     hostSelector: MockHostSelector,
     status: ModelVersionStatus.Released,
     applications: ['app1', 'app2'],
+    metadata: {},
 };
 
 export const MockModelVersion3Model2: IModelVersion = {
@@ -50,4 +52,5 @@ export const MockModelVersion3Model2: IModelVersion = {
     hostSelector: MockHostSelector,
     status: ModelVersionStatus.Released,
     applications: ['app1', 'app2'],
+    metadata: {},
 };

@@ -15,7 +15,7 @@ import { ModelDetailsComponent } from './model-details.component';
 
 import * as fromModelsActions from '@models/actions';
 
-fdescribe('ModelDetailsComponent', () => {
+describe('ModelDetailsComponent', () => {
     let component: ModelDetailsComponent;
     let fixture: ComponentFixture<ModelDetailsComponent>;
     let element: HTMLElement;
