@@ -2,15 +2,12 @@
 import {
     RuntimesReducer,
     SignaturesReducer,
-    SourcesReducer,
-    EnvironmentsReducer,
 } from '@core/reducers/_index';
 import { ActionReducerMap, createSelector } from '@ngrx/store';
 
 import {
     Runtime,
     Signature,
-    Source,
     Environment
 } from '@shared/models/_index';
 
@@ -18,7 +15,7 @@ import { Params, RouterStateSnapshot } from '@angular/router';
 import * as fromRouter from '@ngrx/router-store';
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { createFeatureSelector } from '@ngrx/store';
-import { MetricSettings } from '@shared/models/metric-settings.model';
+import { IMetricSpecification } from '@shared/models/metric-specification.model';
 import * as fromMonitoring from './monitoring.reducer';
 
 export interface RouterStateUrl {
@@ -45,8 +42,6 @@ export class CustomRouterStateSerializer implements RouterStateSerializer<Router
 export interface HydroServingState {
     runtimes: Runtime[];
     signatures: Signature[];
-    sources: Source[];
-    environments: Environment[];
     router: fromRouter.RouterReducerState<RouterStateUrl>;
     metrics: fromMonitoring.MState | Error;
 }
@@ -54,8 +49,6 @@ export interface HydroServingState {
 export const reducers: ActionReducerMap<HydroServingState> = {
     runtimes: RuntimesReducer,
     signatures: SignaturesReducer,
-    sources: SourcesReducer,
-    environments: EnvironmentsReducer,
     router: fromRouter.routerReducer,
     metrics: fromMonitoring.reducer,
 };
@@ -83,22 +76,20 @@ export const {
 export const getSelectedMetrics = createSelector(
     getMetricsEntities,
     getRouterState,
-    (metrics, router): MetricSettings[] => {
-        return router.state
-            ? Object.keys(metrics)
-                    .reverse()
-                    .map(metricId => metrics[metricId])
-                    .filter(metric => metricWithoutFiltres(metric) || checkMetrickFilterStageId(metric, router))
-            : [];
+    (metrics, router): IMetricSpecification[] => {
+        const {modelVersionId} = router.state.params;
+
+        if (modelVersionId === undefined ) { return; }
+
+        return Object.entries(metrics)
+                .reduce(
+                    (res: IMetricSpecification[], [_, metricSpec]) => {
+                        if (metricSpec.modelVersionId === +modelVersionId) {
+                            res.push(metricSpec);
+                        }
+                        return res;
+                    }
+                    , []
+                );
     }
-
 );
-
-function checkMetrickFilterStageId(metric: MetricSettings, router): boolean {
-    const { id: appId, stageId} = router.state.params;
-    return metric.filter.stageId === `app${appId}stage${stageId}`;
-}
-
-function metricWithoutFiltres(metric: MetricSettings): boolean {
-    return Object.keys(metric.filter).length === 0;
-}

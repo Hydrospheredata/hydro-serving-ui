@@ -1,0 +1,83 @@
+<div [formGroup]="group"
+    class="service">
+    <div class="service__index">
+        <span class="test">
+            {{index + 1}}.
+        </span>
+    </div>
+    <div class="service__inputs">
+        <div  class="service__row">
+            <div class="service__field service__field--model-name">
+                <label class="service__field-label">
+                    Model name
+                </label>
+                <mdl-select 
+                    #modelSelect
+                    formControlName="modelId" 
+                    [autocomplete]="true">
+                    <mdl-option 
+                        *ngFor="let model of models$ | async | matchSorter:'name':modelSelect.searchQuery"
+                        [value]="model.id">{{model.name}}</mdl-option>
+                </mdl-select>
+            </div>
+            
+            <div class="service__field service__field--model-version">
+                <label class="service__field-label">
+                    Model version
+                </label>
+                <mdl-select 
+                    #modelVerSelect
+                    formControlName="modelVersionId"
+                    [autocomplete]="true">
+                    <mdl-option 
+                        *ngFor="let modelVersion of modelVersions$ | async | matchSorter:'modelVersion':modelVerSelect.searchQuery"
+                        [value]="modelVersion.id">{{modelVersion.modelVersion}}</mdl-option>
+                </mdl-select>
+            </div>
+            
+            <div class="service__field service__field--is-last service__field--weight">
+                <label class="service__field-label" [attr.for]="'weight_' + index">Weight</label>
+                <input class="service__field-input service__field-input--weight" [attr.id]="'weight_' + index" type="text" formControlName="weight">
+                <ul class="error__list" *ngIf="weightControl.errors">
+                    <li class="error" *ngFor="let error of weightControl.errors | iterateAsArray">
+                        * {{ weightControl.errors[error] }}
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="service__row">
+            <div class="service__field service__field--runtime">
+                <span class="service__field-label">Runtime</span>
+                <span class="docker-image__name">
+                    {{ (selectedModelVersion$ | async).runtime?.name }}
+                </span>
+            </div>
+            <div class="service__field service__field--hostSelector">
+                <label class="service__field-label">Host selector</label>
+                <span>
+                    {{ (selectedModelVersion$ | async)?.hostSelector?.name }}
+                </span>
+            </div>
+            <div class="service__field service__field--signatureName">
+                <label class="service__field-label">
+                    Signature name
+                </label>
+                <mdl-select formControlName="signatureName">
+                    <mdl-option 
+                        *ngFor="let signature of (selectedModelVersion$ | async)?.modelContract?.signatures"
+                        [value]="signature.signatureName">{{ signature.signatureName }}</mdl-option>
+                </mdl-select>
+            </div>
+        </div>
+    </div>
+    <div
+        *ngIf="showRemoveIcon" 
+        class="service__remove-container"
+        (click)="onDelete()">
+        <hydro-icon 
+            type="icon-remove"
+            class="service__remove-icon">
+        </hydro-icon>
+    </div>
+</div>

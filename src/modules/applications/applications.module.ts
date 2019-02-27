@@ -16,32 +16,29 @@ import { reducers } from '@applications/reducers';
 import {
     ApplicationsWrapperComponent,
     ApplicationsItemDetailComponent,
-    ApplicationsStageDetailComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
-    ServiceFormComponent,
+    ModelVariantFormComponent,
     DialogAddApplicationComponent,
-    DialogAddMetricComponent,
-    DialogDeleteMetricComponent,
     DialogDeleteApplicationComponent,
     DialogTestComponent,
     DialogUpdateApplicationComponent,
     DialogUpdateModelVersionComponent
 } from '@applications/components';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UpdateModelVersionDirective } from '@applications/directives';
 import {
     ApplicationsService,
-    ApplicationsBuilderService,
     ApplicationsGuard,
     ApplicationFormService
 } from '@applications/services';
+import { ApplicationBuilder } from '@core/builders/application.builder';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 
 const DIALOGS = [
     DialogDeleteApplicationComponent,
     DialogAddApplicationComponent,
-    DialogAddMetricComponent,
-    DialogDeleteMetricComponent,
     DialogUpdateApplicationComponent,
     DialogUpdateModelVersionComponent,
     DialogTestComponent,
@@ -50,10 +47,13 @@ const DIALOGS = [
 const PRIVATE_COMPONENTS = [
     ApplicationsWrapperComponent,
     ApplicationsItemDetailComponent,
-    ApplicationsStageDetailComponent,
     ApplicationFormComponent,
     KafkaFormComponent,
-    ServiceFormComponent,
+    ModelVariantFormComponent,
+];
+
+const DIRECTIVES = [
+    UpdateModelVersionDirective,
 ];
 @NgModule({
     imports: [
@@ -68,17 +68,19 @@ const PRIVATE_COMPONENTS = [
         EffectsModule.forFeature([ApplicationsEffects]),
         ReactiveFormsModule,
         CodemirrorModule,
+        BrowserAnimationsModule,
     ],
     declarations: [
         ...PRIVATE_COMPONENTS,
         ...DIALOGS,
+        ...DIRECTIVES,
     ],
     entryComponents: [
         ...DIALOGS,
     ],
     providers: [
         ApplicationsService,
-        ApplicationsBuilderService,
+        ApplicationBuilder,
         ApplicationsGuard,
         ApplicationFormService,
         CustomValidatorsService,

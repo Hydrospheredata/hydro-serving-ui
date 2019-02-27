@@ -1,12 +1,18 @@
 <div class="content">
     <div class="content-header">
-        <div class="content-header__title">{{ (application$ | async)?.name }}</div>
+        <div class="content-header__title">
+            {{ application.name }}
+        </div>
         <div class="action-buttons">
-            <button class="button button--primary button--test action-button" (click)="testApplication(application$)">
+            <button 
+                class="button button--primary button--test action-button"
+                [ngClass]="{'button--disabled': !isReady(application.status)}"
+                [disabled]="!isReady(application.status)"
+                (click)="testApplication()">
                 <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
                 Test
             </button>
-            <button class="button button--secondary action-button" (click)="editApplication(application$)">
+            <button class="button button--secondary action-button" (click)="editApplication()">
                 <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
                 Edit
             </button>
@@ -18,11 +24,11 @@
     </div>
 
     <div class="content-info">
-        <ul class="content-info__list" *ngIf="(application$ | async)?.kafkaStreaming.length">
+        <ul class="content-info__list" *ngIf="application.kafkaStreaming?.length">
             <li class="content-info__list-title">
                 Kafka Info
             </li>
-            <li class="content-info__list-item" *ngFor="let kafka of (application$ | async).kafkaStreaming">
+            <li class="content-info__list-item" *ngFor="let kafka of application.kafkaStreaming">
                 <ol class="content-info__sublist">
                     <li class="content-info__sublist-item" *ngFor="let item of kafka | iterateAsArray">
                         <span class="content-info__sublist-item-title">{{ item }}</span>
@@ -33,15 +39,17 @@
         </ul>
     </div>
 
-    <div class="hydro-panel" *ngFor="let stage of (application$ | async)?.executionGraph.stages; let i = index;">
+    <div class="hydro-panel" *ngFor="let stage of application.executionGraph?.stages; let i = index;">
         <div class="hydro-panel__header">
             <h5>Stage {{i + 1}}</h5>
-            <button class="button button--flat navigation-button" [routerLink]="[i]">
-                <hydro-icon class="button__icon navigation-icon" [type]="'icon-right'">
-                </hydro-icon>
-            </button>
         </div>
         <table class='hydro-table hydro-table-models'>
+            <colgroup>
+                <col width="220px">
+                <col>
+                <col>
+                <col>
+            </colgroup>
             <thead class="hydro-table-head hydro-table-head--with-border">
                 <tr>
                     <th class="hydro-table-head__cell">Model Variant</th>
@@ -51,34 +59,39 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of stage.services; let j = index;" class='hydro-table-body__row'>
+                <tr *ngFor="let modelVariant of stage.modelVariants; let j = index;" class='hydro-table-body__row'>
                     <td class="hydro-table-body__cell model-variant__cell">
                         <span
-                            class="model-variant__version-new tooltip"
-                            [ngClass]="{'model-variant__version-new--visible': checkNewVersion(item.modelVersion)}">
+                            class="model-variant__version-new tooltip">
                             <hydro-icon 
                                 type='icon-upgrade'
                                 class="icon model-variant__version-new-icon"
-                                (click)="updateModelVersionDialog(item)">
+                                hsUpdateModelVersion
+                                [modelVersion]="modelVariant.modelVersion"
+                                (handleClick)="updateModelVersionDialog($event, modelVariant)"
+                                >
                             </hydro-icon>
                             <span class="tooltiptext">Model has new version</span>
                         </span>
-                        <span class='model-variant__version-text cs-text-size-18 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                            {{ item.modelVersion.modelName + ':v' + item.modelVersion.modelVersion }}
-                        </span>
+                        <span class='model-variant__version-text cs-text-overflow-ellipsis cs-text-center'>
+                            <span 
+                                class="model-variant__link" 
+                                [routerLink]="[ '../../models', modelVariant.modelVersion.model.id, modelVariant.modelVersion.id]">
+                                {{ modelVariant.modelVersion.model.name + ':v' + modelVariant.modelVersion.modelVersion}}</span>
+                            </span>
                     </td>
                     <td class="hydro-table-body__cell">
-                        <div class='cs-text-overflow-ellipsis cs-text-center' style="max-width: 300px;">
-                            {{ item.runtime.name ? item.runtime.name : item.runtime.id }}
-                        </div>
+                        <span class='cs-text-overflow-ellipsis cs-text-center' style="max-width: 300px;">
+                            {{ modelVariant.modelVersion.runtime.name ? modelVariant.modelVersion.runtime.name : modelVariant.modelVersion.runtime.id }}
+                        </span>
                     </td>
 
                     <td class="hydro-table-body__cell">
-                        <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>{{ item.weight }}%</div>
+                        <div class='cs-text-center'>{{ modelVariant.weight }}%</div>
                     </td>
                     <td class="hydro-table-body__cell">
-                        <div class='cs-text-size-24 cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
-                            <div [ngClass]="healthStatuses['app' + (application$ | async)?.id + 'stage' + i + '_' + item.modelVersion.id]"
+                        <div class='cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
+                            <div [ngClass]="healthStatuses['app' + application.id + 'stage' + i + '_' + modelVariant.modelVersion.id]"
                                 class="health-status"></div>
                         </div>
                     </td>
@@ -86,7 +99,4 @@
             </tbody>
         </table>
     </div>
-
-    <!-- <div #chart></div> -->
-
 </div>

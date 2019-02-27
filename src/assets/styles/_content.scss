@@ -11,8 +11,8 @@
         > hydro-sidebar {
             flex-basis: 25%;
         }
-        > hydro-applications-item-detail,
-          hydro-model-details,
+        > hs-applications-item-detail,
+          hs-model-details,
           hydro-model-version-details,
           hydro-sources-item-detail,
           hydro-applications-stage-detail  {
@@ -70,5 +70,11 @@
                 }
             }
         }
+    }
+}
+
+@media all and (max-width: 1024px) {
+    .content {
+        padding: 32px 46px;
     }
 }

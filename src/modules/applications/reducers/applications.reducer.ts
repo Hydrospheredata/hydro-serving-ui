@@ -8,7 +8,7 @@ export interface State extends EntityState<Application> {
 }
 
 export const adapter: EntityAdapter<Application> = createEntityAdapter<Application>({
-    selectId: (application: Application) => application.id,
+    selectId: (application: Application) => application.name,
 });
 
 export const initialState: State = adapter.getInitialState({
@@ -28,21 +28,21 @@ export function reducer(state = initialState, action: ApplicationActions): State
             return adapter.addOne(action.payload, state);
         case ApplicationActionTypes.UpdateSuccess:
             return adapter.updateOne({
-                id: action.payload.id,
+                id: action.payload.name,
                 changes: action.payload,
             }, state);
         case ApplicationActionTypes.SetInputSuccess:
         case ApplicationActionTypes.GenerateInputSuccess:
             console.log(action.payload);
             return adapter.updateOne({
-                id: action.payload.id,
+                id: action.payload.name,
                 changes: {
                     input: action.payload.input,
                 },
             }, state);
         case ApplicationActionTypes.Test: {
             return adapter.updateOne({
-                id: action.payload.id,
+                id: action.payload.name,
                 changes: {
                     testStatus: TestStatus.Pending,
                     error: '',
@@ -51,7 +51,7 @@ export function reducer(state = initialState, action: ApplicationActions): State
         }
         case ApplicationActionTypes.TestSuccess:
             return adapter.updateOne({
-                id: action.payload.id,
+                id: action.payload.name,
                 changes: {
                     output: action.payload.output,
                     error: '',
@@ -60,7 +60,7 @@ export function reducer(state = initialState, action: ApplicationActions): State
             }, state);
         case ApplicationActionTypes.TestFail:
             return adapter.updateOne({
-                id: action.payload.id,
+                id: action.payload.name,
                 changes: {
                     testStatus: TestStatus.Failed,
                     output: '',
@@ -68,7 +68,7 @@ export function reducer(state = initialState, action: ApplicationActions): State
                 },
             }, state);
         case ApplicationActionTypes.DeleteSuccess:
-            return adapter.removeOne(action.applicationId, state);
+            return adapter.removeOne(action.applicationName, state);
         default:
             return state;
     }

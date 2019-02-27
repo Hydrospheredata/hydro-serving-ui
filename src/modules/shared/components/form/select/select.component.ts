@@ -9,13 +9,13 @@ export class HydroSelectComponent {
 
     @Input() items: any[];
 
-    @Output() select: EventEmitter<any>;
+    @Output() selectHandle: EventEmitter<any>;
 
     constructor() {
-        this.select = new EventEmitter();
+        this.selectHandle = new EventEmitter();
     }
 
     selectItem(value) {
-        this.select.emit(value);
+        this.selectHandle.emit(value);
     }
 }

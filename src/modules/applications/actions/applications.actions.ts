@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Application } from '@shared/models/_index';
+import { Application, IApplication } from '@shared/models/_index';
 
 export enum ApplicationActionTypes {
     Get = '[Application] Get all applications',
@@ -85,12 +85,12 @@ export class UpdateApplicationFailAction implements Action {
 
 export class DeleteApplicationAction implements Action {
     readonly type = ApplicationActionTypes.Delete;
-    constructor(public applicationId: number) { }
+    constructor(public application: IApplication) { }
 }
 
 export class DeleteApplicationSuccessAction implements Action {
     readonly type = ApplicationActionTypes.DeleteSuccess;
-    constructor(public applicationId: number) { }
+    constructor(public applicationName: string) { }
 }
 
 export class DeleteApplicationFailAction implements Action {
@@ -109,12 +109,12 @@ export class SetInputAction implements Action {
 
 export class SetInputSuccessAction implements Action {
     readonly type = ApplicationActionTypes.SetInputSuccess;
-    constructor(public payload) { }
+    constructor(public payload: {name: string, input: any }) { }
 }
 
 export class GenerateInputSuccessAction implements Action {
     readonly type = ApplicationActionTypes.GenerateInputSuccess;
-    constructor(public payload) { }
+    constructor(public payload: {name: string, input: any }) { }
 }
 
 export class GenerateInputFailAction implements Action {
@@ -129,7 +129,7 @@ export class TestApplicationAction implements Action {
 
 export class TestApplicationSuccessAction implements Action {
     readonly type = ApplicationActionTypes.TestSuccess;
-    constructor(public payload) { }
+    constructor(public payload: {name: string, output: any }) { }
 }
 
 export class TestApplicationFailAction implements Action {

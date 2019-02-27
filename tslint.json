@@ -1,13 +1,13 @@
 {
     "defaultSeverity": "error",
     "extends": [
+        "codelyzer",
         "tslint:recommended"
     ],
     "jsRules": {},
     "rules":   {
-        "directive-selector": [true, "attribute", ["dir-prefix1", "dir-prefix2"], "camelCase"],
-        "component-selector": [true, "element", ["cmp-prefix1", "cmp-prefix2"], "kebab-case"],
-    
+        "directive-selector": [true, "attribute", ["hs", "hydro"], "camelCase"],
+        "component-selector": [true, "element", ["hs", "hydro"], "kebab-case"],
         "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
         "use-input-property-decorator": true,
         "use-output-property-decorator": true,
@@ -20,17 +20,9 @@
         "use-life-cycle-interface": true,
         "use-pipe-transform-interface": true,
         "no-output-named-after-standard-event": true,
-        "max-inline-declarations": true,
-        "no-life-cycle-call": true,
-        "prefer-output-readonly": true,
-        "no-conflicting-life-cycle-hooks": true,
-        "enforce-component-selector": true,
-        "no-queries-parameter": true,
-        "prefer-inline-decorator": true,
         "quotemark": [true, "single"],
         "component-class-suffix": [true, "Component"],
         "directive-class-suffix": [true, "Directive"],
-        "rulesDirectory": [],
         "arrow-parens": [true, "ban-single-arg-parens"],
         "ordered-imports": [
             true,
@@ -60,7 +52,6 @@
         "no-empty-interface": false,
         "no-empty": [true, "allow-empty-functions"],
         "jsdoc-format": false,
-        "no-unused-variable": true,
         "no-unused-expression": true
     },
     "linterOptions": {

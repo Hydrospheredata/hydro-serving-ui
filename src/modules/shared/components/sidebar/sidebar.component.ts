@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { SortByPipe } from '@shared/pipes/_index';
 import { Subscription ,  Observable } from 'rxjs';
 
-import { Application, Model, Source } from '@shared/models/_index';
+import { Application, Model } from '@shared/models/_index';
 
 @Component({
     selector: 'hydro-sidebar',
@@ -13,13 +13,12 @@ import { Application, Model, Source } from '@shared/models/_index';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
     @Input() actionButton: TemplateRef<any>;
-    @Input() isFilterEnabled = false;
-    @Input() isModels: boolean;
-    @Input() sidebarTitle: string;
-    @Input() sidebarData: Observable<Application[] | Model[] | Source[]>;
+    @Input() isFilterEnabled: boolean = false;
+    @Input() isApplications: boolean;
+    @Input() sidebarData: Observable<Application[] | Model[]>;
 
-    public sidebarList: Application[] | Model[] | Source[] = [];
-    public sidebarFiltredList: Application[] | Model[] | Source[] = [];
+    public sidebarList: Application[] | Model[] = [];
+    public sidebarFiltredList: Application[] | Model[] = [];
 
     private isRedirectable = false;
     private routeSub: Subscription;
@@ -42,7 +41,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.sidebarDataSub = this.sidebarData
             .subscribe(items => {
-                console.log('Sidebar data: ', items);
                 this.sidebarList = this.sidebarFiltredList = this.sortBy.transform(items, 'id');
                 if (this.sidebarList.length > 0) {
                     this.redirectToFirst();
@@ -65,8 +63,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     private redirectToFirst() {
         if (this.isRedirectable && this.sidebarList.length > 0) {
+            const key = this.isApplications ? 'name' : 'id';
             this.isRedirectable = false;
-            this.router.navigate([this.sidebarList[0].id], { relativeTo: this.activatedRoute });
+
+            this.router.navigate([this.sidebarList[0][key]], { relativeTo: this.activatedRoute });
         }
     }
 }

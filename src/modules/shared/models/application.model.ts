@@ -1,3 +1,6 @@
+import { ModelVersion } from '@shared/models/model-version.model';
+import { ISignature } from '@shared/models/signature.model';
+
 export interface IKafkaStreaming {
     sourceTopic: string;
     destinationTopic: string;
@@ -12,47 +15,58 @@ export enum TestStatus {
     Undefined = '',
 }
 
-export interface Stage {
-    services: any;
+export enum ApplicationStatus {
+    Assembling = 'assembling',
+    Ready = 'ready',
+    Failed = 'failed',
+    Undefined = 'undefined',
 }
 
-export interface ExecutionGraph {
+export interface Stage {
+    modelVariants: IModelVariant[];
+    signature: string;
+}
+
+export interface IModelVariant {
+    modelVersion: ModelVersion;
+    weight: number;
+    signature: ISignature;
+}
+
+export interface IExecutionGraph {
     stages: Stage[];
 }
 
 export interface IApplication {
     id?: number;
-    contract?: string;
+    signature?: ISignature;
     name: string;
-    executionGraph?: ExecutionGraph;
+    executionGraph: IExecutionGraph;
     kafkaStreaming?: IKafkaStreaming[];
     input: string;
     output: string;
     namespace?: string;
     testStatus?: TestStatus;
+    status: string;
     error?: string;
 }
 
 export class Application implements IApplication {
     public id?: number;
-    public contract?: string;
+    public signature?: ISignature;
     public name: string;
-    public executionGraph?: ExecutionGraph;
+    public executionGraph: IExecutionGraph;
     public namespace?: string;
-    public kafkaStreaming?: Array<{
-        sourceTopic: string,
-        destinationTopic: string,
-        consumerId?: string,
-        errorTopic?: string
-    }>;
+    public kafkaStreaming?: IKafkaStreaming[];
     public input: string;
     public output: string;
-    public testStatus: TestStatus;
-    public error: string;
+    public testStatus?: TestStatus;
+    public error?: string;
+    public status: string;
 
     constructor(props: any = {}) {
         if (props.id) { this.id = props.id; }
-        if (props.contract) { this.contract = props.contract; }
+        if (props.signature) { this.signature = props.signature; }
         this.name = props.name;
         this.executionGraph = props.executionGraph;
         this.kafkaStreaming = props.kafkaStreaming;
@@ -62,5 +76,6 @@ export class Application implements IApplication {
         this.testStatus = props.testStatus || null;
         this.error = props.error || '';
         this.testStatus = props.testStatus || TestStatus.Undefined;
+        this.status = props.status;
     }
 }

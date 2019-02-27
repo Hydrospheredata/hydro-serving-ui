@@ -2,36 +2,41 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { HydroServingState } from '@core/reducers';
-import { Model, ModelBuild } from '@shared/models/_index';
+import { Model, ModelVersion, IModel, IModelVersion } from '@shared/models/_index';
 
 import * as fromModels from '@models/reducers';
 import { Observable } from 'rxjs';
 
 import { DialogService } from '@dialog/dialog.service';
-import { DialogDeleteModelComponent } from '@models/components/dialogs';
-
+import { DialogDeleteModelComponent, SELECTED_MODEL$ } from '@models/components/dialogs';
+import { switchMap, filter } from 'rxjs/operators';
 @Component({
-    selector: 'hydro-model-details',
+    selector: 'hs-model-details',
     templateUrl: './model-details.component.html',
     styleUrls: ['./model-details.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModelDetailsComponent {
-    public model$: Observable<Model>;
-    public modelBuilds$: Observable<ModelBuild[]>;
-    public tableHeader: string[] = ['Version', 'Created', 'Status', 'Applications', ''];
+    public model$: Observable<IModel>;
+    public modelVersions$: Observable<IModelVersion[]>;
 
     constructor(
         private store: Store<HydroServingState>,
         private dialog: DialogService
     ) {
-        this.model$ = this.store.select(fromModels.getSelectedModel);
-        this.modelBuilds$ = this.store.select(fromModels.getAllModelBuildsReversed);
+        this.model$ = this.store.select(fromModels.getSelectedModel).pipe(
+            filter(model => !!model)
+        );
+
+        this.modelVersions$ = this.model$.pipe(
+            switchMap(({id}) => this.store.select(fromModels.getModelVersionsByModelId(id)))
+        );
     }
 
     public removeModel() {
         this.dialog.createDialog({
             component: DialogDeleteModelComponent,
+            providers: [{ provide: SELECTED_MODEL$, useValue: this.model$} ],
         });
     }
 }

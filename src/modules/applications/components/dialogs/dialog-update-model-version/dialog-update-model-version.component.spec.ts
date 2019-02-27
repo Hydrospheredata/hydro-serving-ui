@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { ApplicationsBuilderService } from '@applications/services';
+import { ApplicationBuilder } from '@core/builders/application.builder';
 import { DialogService } from '@dialog/dialog.service';
-import { MockStoreProvider, MockSelectedServiceProvider } from '@testing/mocks';
+import { MockStoreProvider, MockSelectedModelVariantProvider, MockLatestModelVersionId } from '@testing/mocks';
 import { DialogUpdateModelVersionComponent } from './dialog-update-model-version.component';
 
 describe('DialogUpdateModelVersionComponent', () => {
@@ -14,8 +14,9 @@ describe('DialogUpdateModelVersionComponent', () => {
             providers: [
                 DialogService,
                 MockStoreProvider,
-                ApplicationsBuilderService,
-                MockSelectedServiceProvider,
+                ApplicationBuilder,
+                MockSelectedModelVariantProvider,
+                MockLatestModelVersionId,
             ],
         })
             .compileComponents();

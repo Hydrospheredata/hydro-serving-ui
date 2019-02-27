@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { SignaturesService, LoaderStateService } from '@core/services';
+import { SignaturesService } from '@core/services';
 import { SharedModule } from '@shared/shared.module';
 import { SignaturesComponent } from './signatures.component';
 
@@ -24,7 +24,6 @@ describe('SignaturesComponent', () => {
             providers: [
                 HttpService,
                 SignaturesService,
-                LoaderStateService,
                 MockStoreProvider,
             ],
         }).compileComponents();

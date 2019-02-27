@@ -10,13 +10,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { CodemirrorModule } from 'ng2-codemirror';
 
 // Components
-import { NavbarComponent, LoaderComponent, PageNotFoundComponent } from './_index';
+import { NavbarComponent, PageNotFoundComponent } from './_index';
 
 // Services
 import {
-    LoaderStateService,
     FormsService,
-    EnvironmentsService,
     SignaturesService,
     RuntimesService,
     InfluxDBService,
@@ -28,7 +26,6 @@ import { HttpService } from '@core/services/http';
 import {
     RuntimesEffects,
     SignaturesEffects,
-    EnvironmentsEffects,
     MonitoringEffects,
 } from '@core/effects/_index';
 
@@ -75,7 +72,6 @@ import { SharedModule } from '@shared/shared.module';
         EffectsModule.forRoot([
             RuntimesEffects,
             SignaturesEffects,
-            EnvironmentsEffects,
             MonitoringEffects,
         ]),
         StoreRouterConnectingModule.forRoot({
@@ -84,14 +80,12 @@ import { SharedModule } from '@shared/shared.module';
     ],
     exports: [
         NavbarComponent,
-        LoaderComponent,
         MdlModule,
         MdlSelectModule,
         CodemirrorModule,
     ],
     declarations: [
         NavbarComponent,
-        LoaderComponent,
         PageNotFoundComponent,
     ],
     providers: [
@@ -100,13 +94,11 @@ import { SharedModule } from '@shared/shared.module';
         ModelBuildBuilder,
         RuntimeBuilder,
         FormsService,
-        EnvironmentsService,
         SignaturesService,
         RuntimesService,
         InfluxDBService,
         MetricSettingsService,
         MetricsService,
-        LoaderStateService,
         HttpService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         SvgSpriteService,

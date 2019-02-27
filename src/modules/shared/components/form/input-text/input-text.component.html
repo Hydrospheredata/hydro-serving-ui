@@ -17,7 +17,7 @@
 
     <hydro-icon [type]="iconName" 
                 class="input-text__icon {{iconClass}} input-icon"
-                (click)="iconClick(input)"
+                (click)="iconClickHandle(input)"
                 [ngClass]="{
                   'left': iconDirection == 'left',
                   'right': iconDirection == 'right'

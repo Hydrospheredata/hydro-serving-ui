@@ -1,0 +1,56 @@
+<div class="content">
+    <button class="button button--flat navigation-button" [routerLink]="['../']">
+        <hydro-icon class="button__icon" [type]="'icon-left'" ></hydro-icon>
+        back to model version
+    </button>
+    <div class="monitoring">
+        <div class="monitoring__title">
+            <h4 class="monitoring__title-name">Monitoring</h4>
+            <span class="monitoring__version">
+                {{(modelVersion$ | async)?.model.name}} v:{{(modelVersion$ | async)?.modelVersion}}
+            </span>
+        </div>
+
+        <ng-container *ngIf="isMonitoringAvailable$ | async">
+            <div class="monitoring__actions">
+                <div class="button button--secondary add-metric-button" (click)="openAddMetricDialog()">add metric</div>
+                <div class="button button--secondary compare-button" [routerLink]="['../../../compare']">compare versions</div>
+            </div>
+            <ng-container *ngIf="metricSpecificationProviders$ | async; let msp">
+                <div class="time-interval">
+                    <label class="time-interval__label">Time interval: </label>
+                    <mdl-select class="time-interval__select" label="Chart time window" [(ngModel)]="chartTimeWidth">
+                        <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms">{{ param.text }}</mdl-option>
+                    </mdl-select>
+                </div>
+
+                <div *ngFor="let metricSpecificationKind of msp | iterateAsArray">
+                    {{ metricSpecificationProvider | json}}
+                    <ng-container [ngSwitch]="metricSpecificationKind">
+                        <hs-kolmogorov-smirnov-metric-chart 
+                            *ngSwitchCase="'KSMetricSpec'"
+                            [chartTimeWidth]="chartTimeWidth"
+                            [modelVersionId]="(modelVersion$ | async)?.id"
+                            [metricSpecificationProviders]="msp[metricSpecificationKind]"
+                            [canDelete]="true"
+                            (delete)="deleteMetric($event)">
+                        </hs-kolmogorov-smirnov-metric-chart>
+                        <hs-base-metric-chart 
+                            *ngSwitchDefault
+                            [chartTimeWidth]="chartTimeWidth" 
+                            [modelVersionId]="(modelVersion$ | async)?.id"
+                            [metricSpecificationProviders]="msp[metricSpecificationKind]"
+                            [canDelete]="true"
+                            (delete)="deleteMetric($event)">
+                        </hs-base-metric-chart>
+                    </ng-container>
+                </div>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="!(isMonitoringAvailable$ | async)">
+            <div class="unavailable-message">
+                Monitoring service is unavailable
+            </div>
+        </ng-container>
+    </div>
+</div>

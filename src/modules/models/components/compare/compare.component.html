@@ -1,0 +1,91 @@
+<div class="content">
+    <article class="compare">
+        <div class="compare__options">
+        <span class="compare__title">Compare options: </span>
+            <div class="compare__option">
+                
+                <span class="compare__option-label">Model: </span>
+                <mdl-select
+                    [formControl]="model"
+                    label="model">
+                    <mdl-option 
+                        *ngFor="let model of models$ | async" 
+                        [value]="model.id"
+                    >
+                        {{ model.name }}
+                    </mdl-option>
+                </mdl-select>
+            </div>
+            <div class="compare__option">
+                <span class="compare__option-label">Version: </span>
+                <mdl-select
+                    [formControl]="firstModelVersion"
+                    label="model version">
+                    <mdl-option 
+                        *ngFor="let modelVersion of firstModelVersionsList$ | async" 
+                        [value]="modelVersion"
+                    >
+                        {{ modelVersion.modelVersion }}
+                    </mdl-option>
+                </mdl-select>
+                <span 
+                    *ngIf="firstModelVersion.value" 
+                    class="button button--flat compare__option-link" 
+                    [routerLink]="[ '../', model.value, firstModelVersion.value.id]">go to</span>
+            </div>
+            <div class="compare__option">
+                <span class="compare__option-label">With version: </span>
+                <mdl-select
+                    [formControl]="secondModelVersion"
+                    label="model version">
+                    <mdl-option 
+                        *ngFor="let modelVersion of secondModelVersionsList$ | async" 
+                        [value]="modelVersion">
+                        {{ modelVersion.modelVersion }}
+                    </mdl-option>
+                </mdl-select>
+                <span 
+                *ngIf="secondModelVersion.value" 
+                class="button button--flat compare__option-link" 
+                [routerLink]="[ '../', model.value, secondModelVersion.value.id]">go to</span>
+            </div>
+            <div class="compare__option">
+                <span class="compare__option-label">Metric: </span>
+                <mdl-select
+                    [formControl]="metricKind"
+                    label="metric">
+                    <mdl-option 
+                        *ngFor="let kind of metricKindList$ | async" 
+                        [value]="kind">
+                        {{ kind }}
+                    </mdl-option>
+                </mdl-select>
+            </div>
+            <div class="compare__option">
+                <span class="compare__option-label">Time interval: </span>
+                <mdl-select class="time-select" label="Chart time window" [(ngModel)]="chartTimeWidth">
+                    <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms">{{ param.text }}</mdl-option>
+                </mdl-select>
+            </div>
+        </div>
+    
+        <ng-container *ngIf="metricProvider$ | async; let metricProvider">
+            <ng-container [ngSwitch]="metricProvider[kind]">
+                <hs-kolmogorov-smirnov-metric-chart
+                    *ngSwitchCase="'KSMetricSpec'"
+                    [chartTimeWidth]="chartTimeWidth"
+                    [modelVersionId]="(modelVersion$ | async)?.id"
+                    [metricSpecificationProviders]="metricProvider"
+                    (delete)="deleteMetric($event)">
+                </hs-kolmogorov-smirnov-metric-chart>
+                <hs-base-metric-chart 
+                    *ngSwitchDefault
+                    [chartTimeWidth]="chartTimeWidth" 
+                    [modelVersionId]="(modelVersion$ | async)?.id"
+                    [metricSpecificationProviders]="metricProvider"
+                    (delete)="deleteMetric($event)">
+                </hs-base-metric-chart>
+            </ng-container>
+        </ng-container>
+    </article>
+</div>

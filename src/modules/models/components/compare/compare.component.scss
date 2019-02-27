@@ -1,0 +1,30 @@
+.compare {
+    margin: 24px;
+    &__title {
+        font-size: 20px;
+        margin-bottom: 12px;
+        display: inline-block;
+        font-weight: 900;
+    }
+    &__options {
+        max-width: 410px;
+        min-width: 410px;
+        margin-bottom: 36px;
+    }
+    &__option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        &-label {
+            font-size: 16px;
+            line-height: 16px;
+            margin-right: 8px;
+            width: 110px;
+            text-align: right;
+            color: #37364a4f;
+        }
+        &-link {
+            width: 80px;
+        }
+    }
+}

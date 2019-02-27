@@ -1,9 +1,7 @@
-import { Application } from '@shared/_index';
-import { CommandCreator, IApplicationContract } from './command-creator';
+import { Application, ISignature } from '@shared/_index';
+import { CommandCreator } from './command-creator';
 
 export class GrpcCommandCreator extends CommandCreator {
-
-    private contract: IApplicationContract;
 
     private valueAttributes: { [propName: string]: string } = {
             DT_HALF : 'half_val',
@@ -24,11 +22,9 @@ export class GrpcCommandCreator extends CommandCreator {
     };
 
     getCommand(application: Application): string {
-        const { name: appName, input: appInput } = application;
+        const { name: appName, input: appInput, signature } = application;
 
-        this.contract = this.getApplicationContract(application);
-
-        const dtype = this.getDtype();
+        const dtype = this.getDtype(signature);
         const typeVal = this.getTypeVal(dtype);
         const { inputKey, inputValue} = this.getInputKeyValue(appInput);
 
@@ -36,17 +32,21 @@ export class GrpcCommandCreator extends CommandCreator {
             import hydro_serving_grpc as hs \n
             channel = grpc.insecure_channel("localhost") \n
             stub = hs.PredictionServiceStub(channel) \n
-            model_spec = hs.ModelSpec(name="${appName}", signature_name="${this.getSignatureName()}")\n
+            model_spec = hs.ModelSpec(name="${appName}", signature_name="${this.getSignatureName(signature)}")\n
+
             tensor_shape = hs.TensorShapeProto(dim=[hs.TensorShapeProto.Dim(size=${this.getDimSize()})])\n
             tensor = hs.TensorProto(dtype=hs.${dtype}, tensor_shape=tensor_shape, ${typeVal}=${inputValue})\n
             request = hs.PredictRequest(model_spec=model_spec, inputs={"${inputKey}": tensor}) \n
+
             result = stub.Predict(request) \n
             `.trim();
     }
 
     private getDimSize(): string {
         try {
-            return `${this.contract.signatures.inputs.shape.dim.size}`;
+            // TODO: check
+            // return `${this.contract.signatures.inputs.shape.dim.size}`;
+            return 'dim_size';
         } catch {
             return ` %dim size% `;
         }
@@ -68,17 +68,18 @@ export class GrpcCommandCreator extends CommandCreator {
         }
     }
 
-    private getSignatureName(): string {
+    private getSignatureName(signature: ISignature): string {
         try {
-            return this.contract.signatures.signature_name;
+            return signature.signatureName;
         } catch {
             return ``;
         }
     }
 
-    private getDtype(): string {
+    private getDtype(signature: ISignature): string {
         try {
-            return this.contract.signatures.inputs.dtype;
+            // TODO: check
+            return signature.inputs[0].dtype;
         } catch {
             return ``;
         }

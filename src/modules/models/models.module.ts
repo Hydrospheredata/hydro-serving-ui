@@ -2,7 +2,7 @@ import { MdlModule } from '@angular-mdl/core';
 import { MdlSelectModule } from '@angular-mdl/select';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@shared/shared.module';
 import { MomentModule } from 'angular2-moment';
 import { ModelsRoutingModule } from './models.router';
@@ -11,15 +11,21 @@ import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
     ModelVersionDetailsComponent,
+    ProfilerComponent,
+    ModelVersionMonitoringComponent,
+    CompareComponent,
 } from '@models/components';
+import {
+    DialogDeleteModelComponent,
+    DialogAddMetricComponent,
+    DialogDeleteMetricComponent
+} from '@models/components/dialogs';
 import { ModelEffects } from '@models/effects';
 import { reducers } from '@models/reducers';
-import { ModelsService, ModelDetailsGuard } from '@models/services';
+import { ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilesModule } from '@profiles/profiles.module';
-
-import { DialogDeleteModelComponent } from '@models/components/dialogs';
 @NgModule({
     imports: [
         ModelsRoutingModule,
@@ -29,6 +35,7 @@ import { DialogDeleteModelComponent } from '@models/components/dialogs';
         MdlModule,
         MdlSelectModule,
         FormsModule,
+        ReactiveFormsModule,
         StoreModule.forFeature('models', reducers),
         EffectsModule.forFeature([ModelEffects]),
         ProfilesModule,
@@ -38,8 +45,17 @@ import { DialogDeleteModelComponent } from '@models/components/dialogs';
         ModelDetailsComponent,
         ModelVersionDetailsComponent,
         DialogDeleteModelComponent,
+        DialogAddMetricComponent,
+        ProfilerComponent,
+        ModelVersionMonitoringComponent,
+        DialogDeleteMetricComponent,
+        CompareComponent,
     ],
-    entryComponents: [DialogDeleteModelComponent],
-    providers: [ModelsService, ModelDetailsGuard],
+    entryComponents: [
+        DialogDeleteModelComponent,
+        DialogAddMetricComponent,
+        DialogDeleteMetricComponent,
+    ],
+    providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
 })
 export class ModelsModule { }

@@ -3,10 +3,10 @@ import { fromEvent ,  Subscription, BehaviorSubject } from 'rxjs';
 import { tap, filter, delay } from 'rxjs/operators';
 
 @Directive({
-    selector: '[copyToBuffer]',
+    selector: '[hsCopyToBuffer]',
 })
 export class CopyToBufferDirective implements OnDestroy {
-    @Input('copyToBuffer') copiedText: string;
+    @Input() hsCopyToBuffer: string;
     private clickSubscriprtion$: Subscription;
     private toogleDelay = 3000;
     private copy$ = new BehaviorSubject<boolean>(false);
@@ -44,7 +44,7 @@ export class CopyToBufferDirective implements OnDestroy {
 
     private setHostElementText(copy: boolean): void {
         if (copy) {
-            this.copyToClipboard(this.copiedText);
+            this.copyToClipboard(this.hsCopyToBuffer);
             this.el.nativeElement.innerText = 'copied';
         } else {
             this.el.nativeElement.innerText = 'copy';

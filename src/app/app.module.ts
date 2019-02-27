@@ -36,6 +36,6 @@ import { SharedModule } from '@shared/shared.module';
         AppRoutingModule,
         DialogModule,
     ],
-    bootstrap: [AppComponent],
+    bootstrap: [ AppComponent ],
 })
 export class AppModule { }

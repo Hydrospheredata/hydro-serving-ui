@@ -3,46 +3,35 @@ import { Component, InjectionToken, Inject, OnDestroy } from '@angular/core';
 
 import * as fromApplications from '@applications/reducers';
 import { HydroServingState } from '@core/reducers';
-import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
 
-import { Application, Model, Stage } from '@shared/models/_index';
-import * as hocon from 'hocon-parser';
-import { Observable ,  Subject ,  combineLatest ,  of } from 'rxjs';
-import { filter,  tap ,  catchError, takeUntil, take, map } from 'rxjs/operators';
+import { Application, Stage } from '@shared/models/_index';
+import { Observable ,  Subject,  of } from 'rxjs';
+import { tap ,  catchError, takeUntil, take, map } from 'rxjs/operators';
 
 import { UpdateApplicationAction } from '@applications/actions';
-import { ApplicationsBuilderService } from '@applications/services';
+import { IModelVariantFormData } from '@applications/services';
+import { ApplicationBuilder } from '@core/builders/application.builder';
 import { DialogService } from '@dialog/dialog.service';
 
-export interface IServiceData {
-    runtimeId: number;
-    modelVersionId: number;
-    weight: number;
-    signatureName: string;
-}
-
-export const SELECTED_SERVICE = new InjectionToken<any>('selected service');
+export const SELECTED_MODEL_VARIANT = new InjectionToken<any>('selected model variant');
+export const LATEST_MODEL_VERSION_ID = new InjectionToken<number>('latest model version id');
 @Component({
-    selector: 'hydro-dialog-update-model-version',
     templateUrl: './dialog-update-model-version.component.html',
     styleUrls: ['./dialog-update-model-version.component.scss'],
 })
 export class DialogUpdateModelVersionComponent implements OnDestroy {
-    private allModels$: Observable<Model[]>;
     private destroySubscriptions: Subject<any> = new Subject<any>();
     private selectedApplication$: Observable<Application>;
-    private models;
 
     constructor(
         public dialog: DialogService,
         private store: Store<HydroServingState>,
-        private applicationBuilder: ApplicationsBuilderService,
-        @Inject(SELECTED_SERVICE) private selectedService: any
+        private applicationBuilder: ApplicationBuilder,
+        @Inject(SELECTED_MODEL_VARIANT) private selectedModelVariant: any,
+        @Inject(LATEST_MODEL_VERSION_ID) private latestModelVersionId: number
     ) {
         this.selectedApplication$ = this.store.select(fromApplications.getSelectedApplication);
-        this.allModels$ = this.store.select(fromModels.getAllModels).pipe(
-                                    filter(models => models.length > 0));
     }
 
     public onClose(): void {
@@ -60,10 +49,8 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     }
 
     private updateImmediatly(): void {
-        combineLatest(this.selectedApplication$, this.allModels$).pipe(
-            map(([application, models]) => {
-                this.models = models;
-
+        this.selectedApplication$.pipe(
+            map(application => {
                 const stages = this.reduceStages(application.executionGraph.stages);
 
                 return { ...application, executionGraph: { stages }};
@@ -86,33 +73,29 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
             return [
                 ...newStages,
                 {
-                    services: this.reduceServicesData(stage.services),
+                    modelVariants: this.reduceModelVariantsData(stage.modelVariants),
                 },
             ];
         }, []);
     }
 
-    private reduceServicesData(services): IServiceData[] {
-        return services.reduce((newServices, service) =>
-            [...newServices, this.createNewSeviceData(service)], []
+    private reduceModelVariantsData(modelVariants): IModelVariantFormData[] {
+        return modelVariants.reduce((newModelVarianats, modelVariant) =>
+            [...newModelVarianats, this.createNewModelVariantData(modelVariant)], []
         );
     }
 
-    private createNewSeviceData(service): IServiceData {
-        const newService: IServiceData = {
-            runtimeId: service.runtime.id,
-            modelVersionId: service.modelVersion.id,
-            weight: Number(service.weight),
-            signatureName: service.signature ? hocon(service.signature).signature_name : '',
+    private createNewModelVariantData(modelVariant): IModelVariantFormData {
+        const newModelVariant: IModelVariantFormData = {
+            modelVersionId: modelVariant.modelVersion.id,
+            weight: Number(modelVariant.weight),
+            signatureName: modelVariant.signature.signatureName,
         };
 
-        if (service === this.selectedService) {
-            const { modelName } = service.modelVersion;
-            const modell = this.models.find(model => model.name === modelName);
-            newService.modelVersionId = modell.lastModelVersion.id;
+        if (modelVariant === this.selectedModelVariant) {
+            newModelVariant.modelVersionId = this.latestModelVersionId;
         }
 
-        return newService;
+        return newModelVariant;
     }
-
 }

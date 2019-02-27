@@ -7,7 +7,7 @@ export interface LoaderState {
 
 @Injectable()
 export class LoaderStateService {
-    private loaderSubject: BehaviorSubject<LoaderState> = new BehaviorSubject<LoaderState>({show: true});
+    private loaderSubject: BehaviorSubject<LoaderState> = new BehaviorSubject<LoaderState>({show: false});
 
     get loaderState() {
         return this.loaderSubject.asObservable();

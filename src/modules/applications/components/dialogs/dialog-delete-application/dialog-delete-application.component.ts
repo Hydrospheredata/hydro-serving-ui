@@ -1,28 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, InjectionToken, Inject } from '@angular/core';
 import { DeleteApplicationAction } from '@applications/actions/applications.actions';
-import * as fromApplication from '@applications/reducers';
 import { HydroServingState } from '@core/reducers';
 import { Store } from '@ngrx/store';
 
 import { DialogService } from '@dialog/dialog.service';
+import { IApplication } from '@shared/_index';
+import { Observable } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
+
+export const SELECTED_DEL_APPLICATION$ = new InjectionToken<Observable<IApplication>>('selectedApplication');
 
 @Component({
-    selector: '',
     templateUrl: './dialog-delete-application.component.html',
 })
 export class DialogDeleteApplicationComponent {
-    private applicationId: number;
+    private application: IApplication;
+
+    get name(): string {
+        return this.application.name;
+    }
 
     constructor(
         public dialog: DialogService,
-        private store: Store<HydroServingState>
+        private store: Store<HydroServingState>,
+        @Inject(SELECTED_DEL_APPLICATION$) private application$: Observable<IApplication>
     ) {
-        this.store.select(fromApplication.getSelectedApplicationId)
-            .subscribe(id => this.applicationId = id);
+        this.application$.pipe(
+            take(1),
+            tap(application => {
+                this.application = application;
+            })
+        ).subscribe();
     }
 
     public onDelete() {
-        this.store.dispatch(new DeleteApplicationAction(this.applicationId));
+        this.store.dispatch(new DeleteApplicationAction(this.application));
         this.dialog.closeDialog();
     }
 }

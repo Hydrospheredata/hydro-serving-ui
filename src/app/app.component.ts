@@ -9,7 +9,7 @@ import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
 import { Store } from '@ngrx/store';
 
 @Component({
-    selector: 'hydro-root',
+    selector: 'hs-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.scss'],
 })
@@ -26,11 +26,8 @@ export class AppComponent implements OnInit {
 
     ngOnInit() {
         this.svgSprite.loadSvgSprite();
-
         this.store.dispatch(new GetModelsAction());
         this.store.dispatch(new GetApplicationsAction());
-        this.store.dispatch({ type: Actions.GET_RUNTIMES });
-        this.store.dispatch({ type: Actions.GET_ENVIRONMENTS });
         this.store.dispatch(new GetModelVersionsAction());
     }
 }

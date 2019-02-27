@@ -85,6 +85,20 @@ export class CustomValidatorsService {
         };
     }
 
+    public applicationNameformat(): ValidatorFn {
+        return (control: FormControl): ValidationErrors => {
+            const applicationName = control.value;
+            const reg = /^[a-zA-Z\-_\d]+$/;
+
+            if (reg.test(applicationName)) {
+                return null;
+            } else {
+                return { format: 'Application format: a-Z, 1-9,-,_'};
+
+            }
+        };
+    }
+
     public pattern(pattern): ValidatorFn {
         return (control: FormControl) => {
             if (!pattern.test(control.value)) {

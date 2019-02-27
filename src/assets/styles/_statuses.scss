@@ -38,14 +38,11 @@
     }
 }
 
-.model-build-status {
-    &--pending {
-        color: $color--pending;
-    }
-    &--finished {
+.model-version-status {
+    &--released {
         color: $color--success;
     }
-    &--started {
+    &--assembling {
         color: $color--light-blue; 
     }
     &--failed {

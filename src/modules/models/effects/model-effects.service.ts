@@ -2,19 +2,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-import {from as observableFrom, of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf,  Observable } from 'rxjs';
 
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { Router } from '@angular/router';
-import { ModelBuilder, ModelVersionBuilder, ModelBuildBuilder } from '@core/builders/_index';
+import { ModelBuilder, ModelVersionBuilder } from '@core/builders/_index';
 import * as HydroActions from '@models/actions';
 import { ModelsService } from '@models/services';
-import { flatMap, map, catchError, mergeMap, switchMap } from 'rxjs/operators';
+import { flatMap, map, catchError, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class ModelEffects {
 
-    @Effect() loadModels$: Observable<Action> = this.actions$
+    @Effect() getAllModels$: Observable<Action> = this.actions$
         .ofType(HydroActions.ModelActionTypes.Get)
         .pipe(
             flatMap(() => this.modelsService
@@ -44,55 +44,6 @@ export class ModelEffects {
                     catchError(error => observableOf(new HydroActions.GetModelVersionsFailAction(error)))
                 )
             )
-        );
-
-    @Effect() getModelBuilds$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ModelBuildsActionTypes.GetBuilds)
-        .pipe(
-            map((action: HydroActions.GetModelBuildsAction) => action.modelId),
-            flatMap(modelId => {
-                return this.modelsService
-                    .getModelBuilds(modelId)
-                    .pipe(
-                        map(data => {
-                            const modelBuilds = data.map(this.modelBuildBuilder.build, this.modelBuildBuilder);
-                            return new HydroActions.GetModelBuildsSuccessAction(modelBuilds);
-                        }),
-                        catchError(error => {
-                            return observableOf(new HydroActions.GetModelBuildsFailAction(error));
-                        })
-                    );
-            })
-        );
-
-    @Effect() buildModel$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ModelActionTypes.Build)
-        .pipe(
-            map((action: HydroActions.BuildModelAction) => action.payload),
-            flatMap(options => {
-                return this.modelsService
-                    .buildModel(options)
-                    .pipe(
-                        mergeMap(response => {
-                            this.mdlSnackbarService.showSnackbar({
-                                message: 'Model has been released',
-                                timeout: 5000,
-                            });
-                            return observableFrom([
-                                new HydroActions.BuildModelSuccessAction(response),
-                                new HydroActions.AddModelVersionSuccessAction(response),
-                                new HydroActions.GetModelBuildsAction(response.model.id),
-                            ]);
-                        }),
-                        catchError(error => {
-                            this.mdlSnackbarService.showSnackbar({
-                                message: `Error: ${error}`,
-                                timeout: 5000,
-                            });
-                            return observableOf(new HydroActions.BuildModelFailAction(error));
-                        })
-                    );
-            })
         );
 
     @Effect() deleteModel$: Observable<Action> = this.actions$
@@ -125,7 +76,6 @@ export class ModelEffects {
     constructor(
         private modelBuilder: ModelBuilder,
         private modelVersionBuilder: ModelVersionBuilder,
-        private modelBuildBuilder: ModelBuildBuilder,
         private modelsService: ModelsService,
         private actions$: Actions,
         private mdlSnackbarService: MdlSnackbarService,

@@ -1,43 +1,43 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 
 import * as fromApplications from '@applications/reducers';
 import { HydroServingState } from '@core/reducers';
-import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
-
-import { Observable ,  Subscription } from 'rxjs';
-import { tap, filter } from 'rxjs/operators';
 
 import { InfluxDBService} from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
-import { Application, Model, HealthRow } from '@shared/models/_index';
+import { Application, HealthRow, ModelVersion, ApplicationStatus, IApplication } from '@shared/models/_index';
+import { Observable, Subscription } from 'rxjs';
 
 import {
     DialogDeleteApplicationComponent,
     DialogUpdateApplicationComponent,
     DialogUpdateModelVersionComponent,
-    SELECTED_SERVICE,
+    SELECTED_MODEL_VARIANT,
     SELECTED_UPD_APPLICATION$,
     DialogTestComponent,
     SELECTED_APPLICATION$,
+    LATEST_MODEL_VERSION_ID,
+    SELECTED_DEL_APPLICATION$,
 } from '@applications/components/dialogs';
+import { tap } from 'rxjs/operators';
 
 @Component({
-    selector: 'hydro-applications-item-detail',
+    selector: 'hs-applications-item-detail',
     templateUrl: './applications-item-detail.component.html',
     styleUrls: ['./applications-item-detail.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class ApplicationsItemDetailComponent {
-    public application: Application;
+export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
+    public application: IApplication;
 
     public application$: Observable<Application>;
-    public models: Model[];
+    public modelVersions: ModelVersion[];
 
     public healthStatuses: { [s: string]: string } = {};
     private intervalId: number;
-    private modelSub: Subscription;
+    private applicationSub: Subscription;
 
     constructor(
         public store: Store<HydroServingState>,
@@ -45,11 +45,11 @@ export class ApplicationsItemDetailComponent {
         private metricsService: MetricsService,
         private influxdbService: InfluxDBService
     ) {
-        this.application$ = this.store.select(fromApplications.getSelectedApplication);
-        this.modelSub = this.store.select(fromModels.getAllModels).pipe(
-            filter(models => models.length > 0),
-            tap(models => this.models = models)
-        ).subscribe();
+        this.application$ = this.store.select(fromApplications.getSelectedApplication).pipe(
+            tap( application => this.application = application)
+        );
+
+        this.applicationSub = this.application$.subscribe();
     }
 
     // TODO: remove me please
@@ -88,38 +88,30 @@ export class ApplicationsItemDetailComponent {
 
     ngOnDestroy() {
         clearInterval(this.intervalId);
-        if (this.modelSub) {
-            this.modelSub.unsubscribe();
-        }
+        this.applicationSub.unsubscribe();
     }
 
-    public checkNewVersion(modelVersionData): boolean {
-        const { modelName, modelVersion } = modelVersionData;
-
-        if (this.models) {
-            const modell = this.models.find(model => model.name === modelName);
-            return modell.lastModelVersion.modelVersion > modelVersion;
-        }
-    }
-
-    public updateModelVersionDialog(service) {
+    public updateModelVersionDialog(lastModelVersionId, modelVariant) {
         this.dialog.createDialog({
             component: DialogUpdateModelVersionComponent,
-            providers: [{provide: SELECTED_SERVICE, useValue: service}],
+            providers: [
+                { provide: SELECTED_MODEL_VARIANT, useValue: modelVariant },
+                { provide: LATEST_MODEL_VERSION_ID, useValue: lastModelVersionId },
+            ],
         });
     }
 
-    public testApplication(application: Observable<Application>) {
+    public testApplication(): void {
         this.dialog.createDialog({
             component: DialogTestComponent,
-            providers: [{provide: SELECTED_APPLICATION$, useValue: application}],
+            providers: [{provide: SELECTED_APPLICATION$, useValue: this.application$}],
         });
     }
 
-    public editApplication(application: Observable<Application>) {
+    public editApplication(): void {
         this.dialog.createDialog({
             component: DialogUpdateApplicationComponent,
-            providers: [{ provide: SELECTED_UPD_APPLICATION$, useValue: application }],
+            providers: [{ provide: SELECTED_UPD_APPLICATION$, useValue: this.application$ }],
             styles: {
                 height: '100%',
             },
@@ -127,6 +119,13 @@ export class ApplicationsItemDetailComponent {
     }
 
     public removeApplication() {
-        this.dialog.createDialog({component: DialogDeleteApplicationComponent});
+        this.dialog.createDialog({
+            component: DialogDeleteApplicationComponent,
+            providers: [{ provide: SELECTED_DEL_APPLICATION$, useValue: this.application$}],
+        });
+    }
+
+    public isReady(status: string): boolean {
+        return ApplicationStatus.Ready === status;
     }
 }

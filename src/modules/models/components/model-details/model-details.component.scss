@@ -3,7 +3,7 @@
 
 
 .model-details {
-    >p {
+    > p {
         >span {
             font-weight: bold;
         }
@@ -54,11 +54,32 @@
     }
 }
 
+.actions {
+  display: flex;
+  &__item {
+    cursor: pointer;
+    margin-right: 8px;
+    color: hsla(239, 100%, 3%, 0.73);
+    transition: color .3s ease;
+    &--is-disabled {
+      color: hsla(239, 100%, 3%, .3);
+    }
+    &:not(&--is-disabled):hover {
+      color: hsla(239, 100%, 3%, 1);
+    }
+  }
+  &__icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
 .icon {
     width: 14px;
     height: 14px;
     margin-top: -2px;
     &-label {
+        text-transform: capitalize;
         margin-left: 5px;
     }
 }
@@ -80,17 +101,6 @@
       font-size: 12px;
       padding: 5px 7px;
     }
-}
-
-.deploy-btn {
-    background-color: $color--blue;
-    color: #FFFFFF;
-    font-family: $font-family-bold;
-    font-size: 12px;
-    fill: #FFFFFF;
-    padding: 3px 20px;
-    cursor: pointer;
-    margin-left: 10px;
 }
 
 .hydro-table {
@@ -147,6 +157,9 @@
       padding-top: -2px;
     }
   }
+  &-version-status {
+    
+  }
 }
 
 .navigation {
@@ -170,5 +183,15 @@
   width: 100%;
   &__ancor {
     color: $error-text-color;
+  }
+}
+
+.loader {
+  &-container {
+    text-align: center;
+  }
+  &-icon {
+    width: 40px;
+    height: 40px;
   }
 }

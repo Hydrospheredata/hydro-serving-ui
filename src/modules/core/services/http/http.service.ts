@@ -1,9 +1,8 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LoaderStateService } from '@core/services/loader-state.service';
 import { environment } from '@environments/environment';
 import { Observable, throwError } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 type HydroHttpParams = string | { [param: string]: string | string[]; } | HttpParams;
 
@@ -16,11 +15,9 @@ interface IHydroHttpOptions {
 @Injectable()
 export class HttpService {
     private baseUrl: string = '';
-    private requestCount: number = 0;
 
     constructor(
-        public http: HttpClient,
-        private loader: LoaderStateService
+        public http: HttpClient
     ) {
         if (environment.production) {
             const { protocol, hostname, port } = window.location;
@@ -31,17 +28,9 @@ export class HttpService {
         }
     }
 
-    get(url: string, options?: IHydroHttpOptions, showLoader: boolean = true): Observable<any> {
-        if (showLoader) {
-            this.showLoader();
-        }
+    get(url: string, options?: IHydroHttpOptions): Observable<any> {
         return this.http.get(this.getFullUrl(url), this.hydroOptions(options)).pipe(
-            catchError(err => this.handleError(err)),
-            finalize(() => {
-                if (showLoader) {
-                    this.hideLoader();
-                }
-            })
+            catchError(err => this.handleError(err))
         );
     }
 
@@ -106,22 +95,6 @@ export class HttpService {
             return new HttpParams({ fromString: params });
         } else if (typeof params === 'object') {
             return new HttpParams({ fromObject: params });
-        }
-    }
-
-    private showLoader() {
-        if (this.requestCount === 0) {
-            this.loader.showLoader();
-        }
-
-        this.requestCount = this.requestCount + 1;
-    }
-
-    private hideLoader() {
-        this.requestCount = this.requestCount - 1;
-
-        if (this.requestCount === 0) {
-            this.loader.hideLoader();
         }
     }
 }

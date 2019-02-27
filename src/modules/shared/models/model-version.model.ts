@@ -1,34 +1,60 @@
-import { Application } from '@shared/models/application.model';
+import { HostSelector } from '@shared/models/hostSelector.model';
+import { Image } from '@shared/models/image.model';
+import { Runtime } from '@shared/models/runtime.model';
+import { ISignature } from '@shared/models/signature.model';
 import { Model } from './model.model';
 
-export class ModelVersion {
+export enum ModelVersionStatus {
+    Assembling = 'assembling',
+    Released = 'released',
+    Failed = 'failed',
+    Undefined = 'undefined',
+}
+
+export interface IModelContract {
+    modelName: string;
+    signatures: ISignature[];
+}
+export interface IModelVersion {
+    id: number;
+    image: Image;
+    created: Date;
+    finished: Date;
+    modelVersion: number;
+    modelContract: IModelContract;
+    runtime: Runtime;
+    model: Model;
+    hostSelector: HostSelector;
+    status: ModelVersionStatus;
+    applications: string[];
+    metadata: object;
+}
+export class ModelVersion implements IModelVersion {
     public id: number;
-    public model: Model;
-    public source: string;
+    public image: Image;
     public created: Date;
-    public modelContract: string;
-    public imageName: string;
-    public imageTag: string;
-    public modelName: string;
-    public modelType: string;
-    public imageSHA256: string;
+    public finished: Date;
     public modelVersion: number;
-    public applications: Application[];
-    public modelFullName: string;
+    public modelContract: IModelContract;
+    public runtime: Runtime;
+    public model: Model;
+    public hostSelector: HostSelector;
+    public status: ModelVersionStatus;
+    public applications: string[];
+    public metadata: object;
 
     constructor(props: any = {}) {
-        this.id = props.id || 1;
-        this.model = props.model || new Model();
-        this.source = props.source || '';
+        this.id = props.id;
+        this.image = props.image;
         this.created = props.created;
-        this.modelContract = props.modelContract || '';
-        this.imageName = props.imageName || '';
-        this.imageTag = props.imageTag || '';
-        this.modelName = props.modelName || '';
-        this.modelType = props.modelType || '';
-        this.imageSHA256 = props.imageSHA256 || '';
-        this.modelVersion = props.modelVersion || 1;
-        this.applications = props.applications || [];
-        this.modelFullName = `${this.modelName}:v${this.modelVersion}`;
+        this.finished = props.finished;
+        this.modelVersion = props.modelVersion;
+        this.modelContract = props.modelContract;
+        this.runtime = props.runtime;
+        this.model = props.model;
+        this.hostSelector = props.hostSelector;
+        this.status = props.status;
+        this.applications = props.applications;
+        this.metadata = props.metadata;
     }
 }

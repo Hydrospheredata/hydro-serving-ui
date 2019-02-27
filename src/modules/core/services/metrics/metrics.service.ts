@@ -16,8 +16,7 @@ export class MetricsService {
   }
 
   public getMetrics(
-    application: string,
-    stage: string,
+    modelVersionId: string,
     interval: string,
     metrics: string[],
     columnIndex?: string
@@ -25,21 +24,19 @@ export class MetricsService {
       return this.http.get(
           `${this.baseMetricsUrl}/metrics`,
           { params: {
-              application,
-              stage,
+              modelVersionId,
               interval,
               metrics,
               columnIndex,
             },
-          },
-          false
+          }
         ).pipe(
           map((res: Response): any => res)
         ).toPromise();
   }
 
   public getHealth() {
-    return this.http.get(`${this.baseMetricsUrl}/health`, null, false).pipe(
+    return this.http.get(`${this.baseMetricsUrl}/health`).pipe(
       map((res: Response): any => res)
     ).toPromise();
   }

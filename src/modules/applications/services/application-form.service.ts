@@ -5,28 +5,21 @@ import {
     FormGroup,
 } from '@angular/forms';
 
-import { ServiceFormService } from '@applications/services/service-form.service';
+import { ModelVariantFormService, IModelVariantFormData } from '@applications/services/model-variant-form.service';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
+import { IApplication } from '@shared/_index';
 
-interface Service {
-    weight: number;
-    environment: any;
-    runtime: any;
-    modelVersion: any;
-    signatureName: string;
+export interface StageFormData {
+    modelVariants: IModelVariantFormData[];
 }
 
-interface Stage {
-    services: Service[];
+interface ExecutionGraphFormData {
+    stages: StageFormData[];
 }
 
-interface ExecutionGraph {
-    stages: Stage[];
-}
-
-interface FormData {
+export interface FormData {
     name?: string;
-    executionGraph: ExecutionGraph;
+    executionGraph: ExecutionGraphFormData;
 }
 
 @Injectable()
@@ -35,17 +28,25 @@ export class ApplicationFormService {
 
     constructor(
         private fb: FormBuilder,
-        private serviceFormService: ServiceFormService,
+        private modelVariantFormService: ModelVariantFormService,
         private customValidators: CustomValidatorsService
     ) {}
 
-    public initForm(data: FormData = this.defaultFormData()): FormGroup {
+    public initForm(application: IApplication): FormGroup {
+        let data: FormData;
+
+        if (application) {
+            data = this.applicationToFormData(application);
+        } else {
+            data = this.defaultFormData();
+        }
         this.form = this.fb.group({
             applicationName: [
                 data.name,
                 [
                     this.customValidators.required(),
                     this.customValidators.uniqNameValidation(data.name),
+                    this.customValidators.applicationNameformat(),
                 ],
             ],
             kafkaStreaming: this.fb.array([]),
@@ -53,6 +54,25 @@ export class ApplicationFormService {
         });
 
         return this.form;
+    }
+
+    public applicationToFormData(application: IApplication): FormData {
+        const stages = application.executionGraph.stages.map(
+            stage => {
+                const modelVariants: IModelVariantFormData[] = stage.modelVariants.map(
+                    this.modelVariantFormService.modelVariantToModelVariantFormData,
+                    this.modelVariantFormService
+                );
+                return { ...stage, modelVariants };
+            }
+        );
+
+        return {
+            name: application.name,
+            executionGraph: {
+                stages,
+            },
+        };
     }
 
     public get stages(): FormArray {
@@ -63,18 +83,20 @@ export class ApplicationFormService {
         this.stages.push(this.buildStageGroup(stage));
     }
 
-    public addServiceToStage(stageControl: FormGroup): void {
-        const services = stageControl.get('services') as FormArray;
-        services.push(this.serviceFormService.buildServiceFormGroup());
+    public addModelVariantToStage(stageControl: FormGroup): void {
+        const modelVariants = stageControl.get('modelVariants') as FormArray;
+        modelVariants.push(this.modelVariantFormService.buildModelVariantFormGroup());
     }
 
     private buildStageGroup(stage): FormGroup {
-        const services = stage.services.map(
-            (service: Service) => this.serviceFormService.buildServiceFormGroup(service)
+        const modelVariants = stage.modelVariants.map(
+            (modelVariant: IModelVariantFormData) => {
+                return this.modelVariantFormService.buildModelVariantFormGroup(modelVariant);
+            }
         );
 
         return this.fb.group({
-            services: this.fb.array(services, this.customValidators.weightValidation()),
+            modelVariants: this.fb.array(modelVariants, this.customValidators.weightValidation()),
         });
     }
 
@@ -82,10 +104,10 @@ export class ApplicationFormService {
         return stages.map(stage => this.buildStageGroup(stage));
     }
 
-    private defaultStageData(): Stage {
+    private defaultStageData(): StageFormData {
         return {
-            services: [
-                this.serviceFormService.defaultService(),
+            modelVariants: [
+                this.modelVariantFormService.defaultModelVariantFormData(),
             ],
         };
     }

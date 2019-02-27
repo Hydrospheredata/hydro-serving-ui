@@ -12,7 +12,6 @@ import { SelectModule } from 'ng2-select';
 // Pipes
 import {
     SidebarFilterPipe,
-    ModelStatusPipe,
     PositiveNumbersPipe,
     SearchPipe,
     SortByPipe,
@@ -22,7 +21,8 @@ import {
     ToNumberPipe,
     MatchSorterPipe,
     DockerImageSplitPipe,
-    ReverseArrayPipe
+    ReverseArrayPipe,
+    FieldShapePipe
 } from './pipes/_index';
 
 // Components
@@ -38,18 +38,18 @@ import {
     CommandTemplateComponent,
     BaseMetricChartComponent,
     KolmogorovSmirnovChartComponent,
-    DialogModelsEmptyComponent
+    DialogModelsEmptyComponent,
+    ApplicationStatusComponent,
 } from './components/_index';
 
 // Directives
 import {
-    ModelStatusDirective,
+    ModelVersionStatusDirective,
     CopyToBufferDirective
 } from './directives/_index';
 
 const PIPES = [
     SidebarFilterPipe,
-    ModelStatusPipe,
     PositiveNumbersPipe,
     SearchPipe,
     SortByPipe,
@@ -60,6 +60,7 @@ const PIPES = [
     MatchSorterPipe,
     DockerImageSplitPipe,
     ReverseArrayPipe,
+    FieldShapePipe,
 ];
 
 const COMPONENTS = [
@@ -75,10 +76,11 @@ const COMPONENTS = [
     BaseMetricChartComponent,
     KolmogorovSmirnovChartComponent,
     DialogModelsEmptyComponent,
+    ApplicationStatusComponent,
 ];
 
 const DIRECTIVES = [
-    ModelStatusDirective,
+    ModelVersionStatusDirective,
     CopyToBufferDirective,
 ];
 

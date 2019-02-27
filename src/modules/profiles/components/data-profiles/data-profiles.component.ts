@@ -1,14 +1,12 @@
 
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { HydroServingState } from '@core/reducers';
-import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { GetProfilesAction, CleanProfilesAction } from '@profiles/actions';
 import { GetFieldsAction } from '@profiles/actions';
 import * as fromProfiles from '@profiles/reducers';
-import { Profiles, ModelBuild } from '@shared/models/_index';
-import { Subscription ,  Observable } from 'rxjs';
-import {filter} from 'rxjs/operators';
+import { Profiles } from '@shared/models/_index';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'hydro-data-profiles',
@@ -25,23 +23,16 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
 
   private fieldsSub: Subscription;
   private profilesSub: Subscription;
-  private buildSub: Subscription;
   private currentField: string;
   private intervalId: any;
-  private build$: Observable<ModelBuild>;
-
-  private buildModelVerId: number;
 
   constructor(private store: Store<HydroServingState>) {
-    this.build$ = this.store.select(fromModels.getSelectedBuild);
   }
 
   ngOnInit() {
     console.log(`ngOnInit with id: ${this.modelVersionId} and store: ${this.store}`);
-    this.buildSub = this.build$.pipe(filter(_ => _ != null)).subscribe(build => {
-      this.buildModelVerId = build.modelVersion.id;
-      this.store.dispatch(new GetFieldsAction(this.buildModelVerId));
-    });
+
+    this.store.dispatch(new GetFieldsAction(this.modelVersionId));
     this.fieldsSub = this.store.select(fromProfiles.getFieldsEntitiesState).subscribe(state => {
       this.isLoading = false;
       this.fields = state.fields;
@@ -54,7 +45,7 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
     });
     this.intervalId = setInterval(() => {
       if (this.currentField) {
-        this.store.dispatch(new GetProfilesAction(this.buildModelVerId, this.currentField));
+        this.store.dispatch(new GetProfilesAction(this.modelVersionId, this.currentField));
       }
     }, 5000);
   }
@@ -71,15 +62,12 @@ export class DataProfilesComponent implements OnInit, OnDestroy {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
-    if (this.buildSub) {
-      this.buildSub.unsubscribe();
-    }
   }
 
   onFieldSelect(selectedField) {
     console.log(selectedField);
     this.isLoading = true;
     this.currentField = selectedField;
-    this.store.dispatch(new GetProfilesAction(this.buildModelVerId, selectedField));
+    this.store.dispatch(new GetProfilesAction(this.modelVersionId, selectedField));
   }
 }

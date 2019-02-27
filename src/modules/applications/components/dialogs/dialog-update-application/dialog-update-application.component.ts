@@ -12,7 +12,6 @@ import { DialogService } from '@dialog/dialog.service';
 export let SELECTED_UPD_APPLICATION$ = new InjectionToken<Observable<Application>>('selectedApplication');
 
 @Component({
-    selector: '',
     templateUrl: './dialog-update-application.component.html',
 })
 export class DialogUpdateApplicationComponent implements OnInit, OnDestroy {

@@ -1,26 +1,44 @@
 import { ModelVersionActionTypes, ModelVersionsActions } from '@models/actions';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { ModelVersion } from '@shared/models/_index';
+import { ModelVersion, IModelVersion } from '@shared/models/_index';
 
-export interface State extends EntityState<ModelVersion> {
-    selectedModelVersionId: string | null;
+export interface ModelVersionState extends EntityState<ModelVersion> {
+    loading: boolean;
+    loaded: boolean;
+    byModel: any[];
 }
 
 export const adapter: EntityAdapter<ModelVersion> = createEntityAdapter<ModelVersion>();
 
-export const initialState: State = adapter.getInitialState({
-    selectedModelVersionId: null,
+export const initialState: ModelVersionState = adapter.getInitialState({
+    byModel: [],
+    loading: false,
+    loaded: false,
 });
 
 export function reducer(state = initialState, action: ModelVersionsActions) {
     switch (action.type) {
+        case ModelVersionActionTypes.GetModelVersions:
+            return { ...state, loading: true, loaded: false };
         case ModelVersionActionTypes.GetModelVersionsSuccess:
+            const byModel = action.payload.reduce((newState, modelVersion: IModelVersion) => {
+                if (newState[modelVersion.model.id] === undefined) {
+                    newState[modelVersion.model.id] = [];
+                }
+
+                newState[modelVersion.model.id].push(modelVersion.id);
+
+                return newState;
+            }, {});
+
             return adapter.addMany(action.payload, {
                 ...state,
-                selectedModelVersionId: state.selectedModelVersionId,
+                loading: false,
+                loaded: true,
+                byModel,
             });
-        case ModelVersionActionTypes.AddModelVersionSuccess:
-            return state;
+        case ModelVersionActionTypes.GetModelVersionsFail:
+            return { ...state, loading: false, loaded: false };
         default:
             return state;
     }

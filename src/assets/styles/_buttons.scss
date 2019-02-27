@@ -6,112 +6,6 @@ $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 $remove: #f3755e;
 $remove-hover: #d14931;
 
-.btn {
-    background-color: transparent;
-    border: 2px solid $color--blue;
-    color: $btn-primary;
-    padding: 7px 14px;
-    font-size: 14px;
-    font-family: $font-family-regular;
-    text-transform: uppercase;
-    outline: none;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color $transition-type, color $transition-type;
-    &[disabled] {
-        cursor: default;
-        color: $secondary-color;
-        border-color: $secondary-color;
-        > hydro-icon {
-            color: $secondary-color;
-        }
-    }
-    &:not([disabled]):hover,
-    &:not([disabled]):focus {
-        background-color: $btn-primary;
-        color: $btn-secondary;
-        > hydro-icon {
-            color: $btn-secondary;
-        }
-    }
-    > hydro-icon {
-        transition: color $transition-type;
-        width: $btn-icon-size;
-        height: $btn-icon-size;
-        color: $btn-primary;
-        margin-right: $btn-icon-size;
-        line-height: $btn-icon-size;
-    }
-
-    &.btn-colored {
-        background-color: $btn-primary;
-        color: white;
-        &[disabled] {
-            color: #818994;
-            background-color: $secondary-color;
-        }
-    }
-    &.btn-large {
-        font-family: $font-family-bold;
-        font-size: 18px;
-        padding: 10px 24px;
-        letter-spacing: 1px;
-    }
-    &.btn-flat {
-        border: none;
-        &:not([disabled]):hover,
-        &:not([disabled]):focus {
-            background-color: transparent;
-            color: $btn-secondary;
-            > hydro-icon {
-                color: $btn-secondary;
-            }
-        }
-    }
-    &.btn-secondary {
-        color: $btn-secondary;
-        padding: 10px 18px;
-        > hydro-icon {
-            color: $btn-secondary;
-        }
-    }
-    &.btn-back {
-        @extend .btn-secondary;
-    }
-    &.btn-release {
-        background-color: #85bd3e;
-        color: #ffffff;
-        border-color: #85bd3e;
-        &:hover,
-        &:focus {
-            background-color: transparent;
-            color: #85bd3e;
-            > hydro-icon {
-                color: #85bd3e;
-            } 
-        }
-        > hydro-icon {
-            color: #fff;
-        }
-    }
-    &-group {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        &.__justify-end {
-            justify-content: flex-end;
-        }
-        &.__justify-space-around {
-            justify-content: space-around;
-        }
-        > .btn {
-            margin: 0 8px;
-        }
-    }
-}
-
 .button {
     border: none;
     border-radius: 2px;
@@ -121,7 +15,7 @@ $remove-hover: #d14931;
     padding: 8px;
     text-transform: uppercase;
     font-size: 12px;
-    line-height: 12px; 
+    line-height: 12px;
     &--primary {
         padding: 9px;
         background-color: #4d9bf1;
@@ -193,6 +87,13 @@ $remove-hover: #d14931;
         height: 12px;
         line-height: 10px;
         margin-right: 4px;
+    }
+    &[disabled] {
+        background: #a29e9e;
+        color: black;
+        background: #dcdcdc;
+        color: #bbbbbb;
+        cursor: not-allowed;
     }
 }
 

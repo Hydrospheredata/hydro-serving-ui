@@ -27,7 +27,7 @@ export class DialogService {
     }
     public show: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-    public containerElementRef: ElementRef<any>;
+    public containerElementRef: ElementRef;
     public viewContainerRef: ViewContainerRef;
 
     private renderer: Renderer2;

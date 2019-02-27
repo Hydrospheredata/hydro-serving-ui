@@ -20,11 +20,11 @@ import {
     encapsulation: ViewEncapsulation.None,
     animations: [
         trigger('openClose', [
-          state('close', style({ height: 0, display: 'none'})),
+          state('close', style({ transform: 'scale(0)', display: 'none'})),
           transition('close => open', [
-              style({ height: '100%', display: 'flex'}),
+              style({ transform: 'scale(1)', display: 'flex'}),
               query('.dialog__container', [
-                  style({ opacity: 0, top: '-60px'}),
+                style({ opacity: 0, top: '-60px'}),
                   animate('.2s ease-in', style({ opacity: 1, top: 0})),
               ]),
           ]),

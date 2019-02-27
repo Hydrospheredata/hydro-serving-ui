@@ -3,7 +3,11 @@
         <span>
             {{title}}
         </span>
-        <hydro-icon class="icon chart__title-icon" type="icon-remove" (click)="onDelete()" *ngIf="!chartData.metricProvider.isSystem" ></hydro-icon>
+        <hydro-icon
+            *ngIf="showDeleteIcon"
+            class="icon chart__title-icon"
+            type="icon-remove"
+            (click)="onDelete()"></hydro-icon>
     </div>
     <div class="chart__filter-list">
         <div class="chart__filter-item">
