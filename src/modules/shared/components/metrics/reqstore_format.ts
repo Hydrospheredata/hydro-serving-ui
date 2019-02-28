@@ -29,18 +29,21 @@ export function decodeTsRecord(bytes: Uint8Array): TsRecord[] {
   while (offset < bytes.length) {
     const len = readInt(bytes, offset)
     const ts = readLong(bytes, offset + 4)
-    const body = new Uint8Array(bytes.slice(offset + 4 + 8, len))
+    const body = new Uint8Array(bytes.slice(offset + 4 + 8, offset + 4 + 8 + len))
 
     const minUid = readLong(body, 0)
     const count = readInt(body, 8)
 
-    let entryOffset = 8 
+    let entryOffset = 12 
+    const entries = []
     for(let i=0; i < count; i++) {
-       const len = readInt(body, entryOffset) 
-       const data = body.slice(entryOffset + 4, entryOffset + len)
-       records.push(<Entry>{ uid: minUid + i, data: data })
-       entryOffset = entryOffset + len + 4
-    }  
+       const x = readInt(body, entryOffset) 
+       const readBodyOff = entryOffset + 4
+       const data = new Uint8Array(body.slice(readBodyOff, readBodyOff + x))
+       entries.push(<Entry>{ uid: minUid + i, data: data })
+       entryOffset = entryOffset + x + 4
+    } 
+    records.push(<TsRecord>{ ts: ts, entries: entries })
     offset = offset + 4 + 8 + len 
   }
   return records;

@@ -37,7 +37,14 @@ describe('Yoyoyo', () => {
   it('zzzz', () => {
     const bytes = decodeBase64(data) 
     const wtf = decodeTsRecord(bytes)
-    console.log(wtf)
+
+    wtf.forEach(function(v){
+      console.log("record " + v.ts + " " + v.entries.length)
+
+      v.entries.forEach(function(x){
+        console.log("\tentry:" + x.uid + " " + x.data.length)
+      })  
+    })
   })
 })
 
