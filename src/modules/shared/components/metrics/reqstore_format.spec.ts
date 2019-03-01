@@ -1,4 +1,4 @@
-import {decodeTsRecord} from "./reqstore_format";
+import {decodeTsRecord, asServingReqRes} from "./reqstore_format";
 
 describe('Yoyoyo', () => {
 
@@ -38,13 +38,24 @@ describe('Yoyoyo', () => {
     const bytes = decodeBase64(data) 
     const wtf = decodeTsRecord(bytes)
 
+    const descrR = []
     wtf.forEach(function(v){
-      console.log("record " + v.ts + " " + v.entries.length)
-
+      const descrE = []
       v.entries.forEach(function(x){
-        console.log("\tentry:" + x.uid + " " + x.data.length)
+        const reqRes = asServingReqRes(x.data)
+        const reqS = JSON.stringify(reqRes.req.toJSON())
+        const respS = JSON.stringify(reqRes.resp.toJSON())
+
+        descrE.push(`\tEntry:${x.uid}`)
+        descrE.push(`\t\tReq:${reqS}`)
+        descrE.push(`\t\tResp:${respS}`)
+
       })  
+      const joined = descrE.join("\n")
+      descrR.push(`Record:${v.ts}\n${joined}`)
     })
+    const finalDescr = descrR.join("\n")
+    console.log(finalDescr)
   })
 })
 

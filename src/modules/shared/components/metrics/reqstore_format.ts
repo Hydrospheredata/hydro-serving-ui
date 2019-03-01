@@ -1,3 +1,14 @@
+import * as protos from "./compiled"
+
+type PredictRequest = protos.hydrosphere.tensorflow.serving.PredictRequest
+const PredictRequest = protos.hydrosphere.tensorflow.serving.PredictRequest
+
+type PredictResponse = protos.hydrosphere.tensorflow.serving.PredictRequest
+const PredictResponse = protos.hydrosphere.tensorflow.serving.PredictRequest
+
+type ExecutionError = protos.hydrosphere.monitoring.ExecutionError
+const ExecutionError = protos.hydrosphere.monitoring.ExecutionError
+
 export interface Entry {
   uid: number;
   data: Uint8Array
@@ -6,6 +17,11 @@ export interface Entry {
 export interface TsRecord {
   ts: number;
   entries: Entry[];
+}
+
+export interface ReqRes {
+  req: PredictRequest;
+  resp: PredictResponse | ExecutionError;
 }
 
 function readInt(b: Uint8Array, offset: number): number {
@@ -20,6 +36,42 @@ function readLong(b: Uint8Array, offset: number): number {
   const head = readInt(b, offset) << 32
   const tail = readInt(b, offset + 4)
   return head | tail
+}
+
+function decode<A>(data: Uint8Array, f: (Uint8Array) => A): A {
+  const header = data[0]
+  let body 
+  if (header == 0) {
+    body = new Uint8Array([])
+  } else {
+    body = new Uint8Array(data.slice(1, data.length))
+  }
+  return f(body)
+}
+
+function decodeRespOrError(data: Uint8Array): PredictResponse | ExecutionError {
+  const num = data[0]
+  const body = new Uint8Array(data.slice(1, data.length))
+  switch(num) {
+    case 2:
+      return decode(body, ExecutionError.decode)
+    case 3:
+      return decode(body, PredictResponse.decode)
+    default:
+      throw new Error(`Invalid Resp Or Error number:${num}`)
+  }
+}
+
+export function asServingReqRes(data: Uint8Array): ReqRes {
+  const reqSize = data[0]
+  const respSize = data[1]
+
+  const reqBody = new Uint8Array(data.slice(2, 2 + reqSize))
+  const respBody = new Uint8Array(data.slice(2 + reqSize, 2 + reqSize + respSize))
+
+  const req = decode(reqBody, PredictRequest.decode)
+  const resp = decodeRespOrError(respBody) 
+  return <ReqRes>{ req: req, resp: resp }
 }
 
 export function decodeTsRecord(bytes: Uint8Array): TsRecord[] {
