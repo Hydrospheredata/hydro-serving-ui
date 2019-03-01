@@ -1,4 +1,6 @@
 <div class="chart">
+    {{ selectedPoints | json  }}
+    <div (click)="goToRegStore()"> make magic </div>
     <div class="chart__title">
         <span>
             {{ title }}

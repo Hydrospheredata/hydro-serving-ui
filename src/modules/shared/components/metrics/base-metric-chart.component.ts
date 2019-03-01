@@ -26,11 +26,24 @@ import {
 import { InfluxDBService } from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
+import { isArray } from 'util';
+
+import { Injectable } from '@angular/core';
+import { HttpService } from '@core/services/http';
+import { environment } from '@environments/environment';
+import { ModelVersion } from '@shared/_index';
+import { map } from 'rxjs/operators';
+
+import { HttpClient } from '@angular/common/http';
 
 interface IMetricData {
     name: string;
     value: number;
-    labels: {modelVersionId: string};
+    labels: {
+        modelVersionId: string;
+        trace?: any;
+        traces?: any;
+    };
     timestamp: number;
     health: any;
 }
@@ -38,8 +51,7 @@ interface IMetricData {
 @Component({
     selector: 'hs-base-metric-chart',
     templateUrl: './base-metric-chart.component.html',
-    styleUrls: ['./base-metric-chart.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./base-metric-chart.component.scss'],    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     @Input()
@@ -58,6 +70,11 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     set canDelete(canDelete: boolean) {
         this.showDeleteIcon = canDelete || false;
     }
+
+    public selectedPoints = {
+        from: '',
+        to: '',
+    };
 
     @Input()
     protected chartTimeWidth: number = 0;
@@ -83,7 +100,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private chart: Highcharts.ChartObject;
     private chartBands: { [metricName: string]: string[] } = {};
     private plotBands: { [metricName: string]: Array<{from: number, to: number}> } = {};
-    private series: { [metricName: string]: {name: string; data: Array<[number, number]>}} = {};
+    private series: { [metricName: string]: {name: string; data: Array<{x: any, y: any, name: any}>}} = {};
 
     // common data
     private metricsData: IMetricData[] = [];
@@ -92,7 +109,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         public metricsService: MetricsService,
-        public influxdbService: InfluxDBService
+        public influxdbService: InfluxDBService,
+        public http: HttpClient
     ) {
         this.updateChartObservable$ = combineLatest(
             this.timeSubject.asObservable(),
@@ -136,6 +154,31 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         this.thresholds = newThresholds;
     }
 
+    public goToRegStore() {
+        // let from;
+        // let to;
+
+        // const chartFrom = JSON.parse(this.selectedPoints.from);
+        // const chartTo = JSON.parse(this.selectedPoints.to);
+
+
+        // if(isArray(chartFrom)){
+        //     from = chartFrom[chartFrom.length - 1];
+        // } else {
+        //     from = chartFrom;
+        // }
+
+        // if (isArray(chartTo)){
+        //     to = chartTo[chartTo.length - 1];
+        // } else {
+        //     to = chartTo;
+        // }
+
+        this.http.get('http://localhost:7265/test/get?from=1551444837&to=1551444842').pipe(
+            tap(_ => { debugger; })
+        ).subscribe();
+    }
+
     public onDelete(): void {
         const { id } = this.metricSpecificationProviders.byModelVersionId[this.modelVersionId];
 
@@ -152,6 +195,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private initChart(): void {
+        const self = this;
+
         HighchartsNoDataToDisplay(Highcharts);
         this.chart = Highcharts.chart(this.chartContainerRef.nativeElement, {
             credits: {
@@ -181,6 +226,22 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                 shared: true,
             },
             plotOptions: {
+                series: {
+                    cursor: 'pointer',
+                    point: {
+                        events: {
+                            click: function () {
+                                if (self.selectedPoints.from) {
+                                    self.selectedPoints.to = this.options.key;
+                                } else {
+                                    self.selectedPoints.from = this.options.key;
+                                }
+                                return true;
+                            },
+                            select: () => true,
+                        },
+                    },
+                },
                 column: {
                     grouping: false,
                     shadow: false,
@@ -294,7 +355,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             return;
         }
 
-        const newSeries: { [metricName: string]: {name: string; data: Array<[number, number]>}} = {};
+        const newSeries: { [metricName: string]: {name: string; data: Array<{x: any, y: any, name: any, key: any}>}} = {};
         const newPlotBands: {[metricName: string]: Array<{from: number, to: number}>} = {};
 
         let tmpBandObject = null;
@@ -311,7 +372,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                newSeries[uniqName] = { name: uniqName, data: [] };
             }
 
-            newSeries[uniqName].data.push([timestamp * 1000, value]);
+            newSeries[uniqName].data.push({x: timestamp * 1000, y: value, name: timestamp, key: labels.trace || labels.traces });
 
             // plotBands
             if (newPlotBands[uniqName] === undefined ) {
@@ -341,11 +402,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
     private selfUpdate() {
         this.updateChartSub = this.updateChartObservable$.pipe(
-            tap(_ => {
-                console.group('%c updates', 'color: tomato');
-                console.dir(_);
-                console.groupEnd();
-            }),
+
             switchMap(([time, providers]) => {
                 const {
                     byModelVersionId,

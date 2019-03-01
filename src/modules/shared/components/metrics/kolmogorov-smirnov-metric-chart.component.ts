@@ -1,11 +1,17 @@
 import {
     Component,
-    ChangeDetectionStrategy
+    ChangeDetectionStrategy,
+    Injectable
 } from '@angular/core';
 
 import { InfluxDBService } from '@core/services';
+import { HttpService } from '@core/services/http';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { BaseMetricChartComponent } from '@shared/components/metrics/base-metric-chart.component';
+import { map } from 'rxjs/operators';
+
+import { HttpClient } from '@angular/common/http';
+
 
 interface IMetricData {
     name: string;
@@ -28,9 +34,10 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
 
     constructor(
         public metricsService: MetricsService,
-        public influxdbService: InfluxDBService
+        public influxdbService: InfluxDBService,
+        public http: HttpClient
     ) {
-        super(metricsService, influxdbService);
+        super(metricsService, influxdbService, http);
     }
 
     get featureList(): string[] {
