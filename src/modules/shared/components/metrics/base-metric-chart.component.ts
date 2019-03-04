@@ -35,6 +35,7 @@ import { ModelVersion } from '@shared/_index';
 import { map } from 'rxjs/operators';
 
 import { HttpClient } from '@angular/common/http';
+import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/reqstore_format';
 
 interface IMetricData {
     name: string;
@@ -174,9 +175,36 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         //     to = chartTo;
         // }
 
-        this.http.get('http://localhost:7265/test/get?from=1551444837&to=1551444842').pipe(
-            tap(_ => { debugger; })
-        ).subscribe();
+        this.http.get('http://localhost:7265/test/get?from=1551449321&to=1551449326', {
+            observe: 'response',
+            responseType: 'arraybuffer',
+        }).pipe(
+        ).subscribe(_ => {
+            debugger;
+
+            var x = new Uint8Array(_.body);
+            
+            var y = decodeTsRecord(x);
+            const descrR = [];
+
+            y.forEach(function(v) {
+                const descrE = [];
+                v.entries.forEach(function(x) {
+                  const reqRes = asServingReqRes(x.data);
+                  const reqS = JSON.stringify(reqRes.req.toJSON());
+                  const respS = JSON.stringify(reqRes.resp.toJSON());
+          
+                  descrE.push(`\tEntry:${x.uid}`);
+                  descrE.push(`\t\tReq:${reqS}`);
+                  descrE.push(`\t\tResp:${respS}`);
+          
+                });
+                const joined = descrE.join('\n');
+                descrR.push(`Record:${v.ts}\n${joined}`);
+              });
+
+            debugger;
+        });
     }
 
     public onDelete(): void {

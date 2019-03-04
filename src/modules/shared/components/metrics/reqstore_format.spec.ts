@@ -1,8 +1,8 @@
-import {decodeTsRecord, asServingReqRes} from "./reqstore_format";
+import {decodeTsRecord, asServingReqRes} from './reqstore_format';
 
-describe('Yoyoyo', () => {
+fdescribe('Yoyoyo', () => {
 
-  var data = 
+  const data =
     `AAAAhgAAAABcdTR0AAAAAAAAAAAAAAABAAAAdhlbAQoHGgVjbGFpbRINCgF4EggIASoEAACAPwMB
     Cg0KAXgSCAgBKgQAAIA/CisKDGR1bW15X3Jlc3VsdBIbCAdCFzIwMTktMDItMjZUMTI6NDM6MzEu
     ODE0qgYaCg5zeXN0ZW0ubGF0ZW5jeRIICAkSAFIC2gEAAAD+AAAAAFx1NHUAAAAAAAAAAAAAAAIA
@@ -32,41 +32,43 @@ describe('Yoyoyo', () => {
     PwMBCg0KAXgSCAgBKgQAAIA/CisKDGR1bW15X3Jlc3VsdBIbCAdCFzIwMTktMDItMjZUMTI6NDM6
     MzUuNjU4qgYZCg5zeXN0ZW0ubGF0ZW5jeRIHCAkSAFIBBQAAAHUZWgEKBxoFY2xhaW0SDQoBeBII
     CAEqBAAAgD8DAQoNCgF4EggIASoEAACAPworCgxkdW1teV9yZXN1bHQSGwgHQhcyMDE5LTAyLTI2
-    VDEyOjQzOjM1LjgzOKoGGQoOc3lzdGVtLmxhdGVuY3kSBwgJEgBSAQY=`
+    VDEyOjQzOjM1LjgzOKoGGQoOc3lzdGVtLmxhdGVuY3kSBwgJEgBSAQY=`;
 
   it('zzzz', () => {
-    const bytes = decodeBase64(data) 
-    const wtf = decodeTsRecord(bytes)
+    const bytes = decodeBase64(data);
+    const wtf = decodeTsRecord(bytes);
 
-    const descrR = []
-    wtf.forEach(function(v){
-      const descrE = []
-      v.entries.forEach(function(x){
-        const reqRes = asServingReqRes(x.data)
-        const reqS = JSON.stringify(reqRes.req.toJSON())
-        const respS = JSON.stringify(reqRes.resp.toJSON())
+    const descrR = [];
+    wtf.forEach(function(v) {
+      const descrE = [];
+      v.entries.forEach(function(x) {
+        const reqRes = asServingReqRes(x.data);
+        const reqS = JSON.stringify(reqRes.req.toJSON());
+        const respS = JSON.stringify(reqRes.resp.toJSON());
 
-        descrE.push(`\tEntry:${x.uid}`)
-        descrE.push(`\t\tReq:${reqS}`)
-        descrE.push(`\t\tResp:${respS}`)
+        descrE.push(`\tEntry:${x.uid}`);
+        descrE.push(`\t\tReq:${reqS}`);
+        descrE.push(`\t\tResp:${respS}`);
 
-      })  
-      const joined = descrE.join("\n")
-      descrR.push(`Record:${v.ts}\n${joined}`)
-    })
-    const finalDescr = descrR.join("\n")
-    console.log(finalDescr)
-  })
-})
+      });
+      const joined = descrE.join('\n');
+      descrR.push(`Record:${v.ts}\n${joined}`);
+    });
+    const finalDescr = descrR.join('\n');
+    console.log(finalDescr);
+  });
+});
 
 function decodeBase64(input: string): Uint8Array {
-  let raw = window.atob(input)
-  let rawLength = raw.length
+  debugger;
+  const raw = window.atob(input);
 
-  let array = new Uint8Array(new ArrayBuffer(rawLength))
+  const rawLength = raw.length;
 
-  for(let i = 0; i < rawLength; i++) {
-    array[i] = raw.charCodeAt(i)
+  const array = new Uint8Array(new ArrayBuffer(rawLength));
+
+  for (let i = 0; i < rawLength; i++) {
+    array[i] = raw.charCodeAt(i);
   }
-  return array
+  return array;
 }
