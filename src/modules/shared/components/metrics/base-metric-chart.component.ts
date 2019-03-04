@@ -46,17 +46,17 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     public chartData: IChartData;
 
     @Input()
-    public metricSpecificationProviders;
+    public metricSpecificationProviders: IMetricSpecificationProvider;
 
     public metricsByModelVersion: { [modelVersion: string]: string[] };
     public makeRequest: Subject<Array<Promise<IMetricData[]>>> = new Subject();
     public requests: Array<Promise<any>>;
 
-    public showDeleteIcon;
+    public isComparing;
 
     @Input()
-    set canDelete(canDelete: boolean) {
-        this.showDeleteIcon = canDelete || false;
+    set comparing(comparing: boolean) {
+        this.isComparing = comparing || false;
     }
 
     @Input()
@@ -202,7 +202,12 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     get title(): string {
-        return this.metricSpecificationProviders.kind;
+        if (this.isComparing) {
+            const x = Object.values(this.metricSpecificationProviders.byModelVersionId);
+            return x.map(_ => `v:${_.modelVersionId}_${_.name}`).join(' - ');
+        } else {
+            return this.metricSpecificationProviders.byModelVersionId[this.modelVersionId].name;
+        }
     }
 
     private drawSeries(): void {
