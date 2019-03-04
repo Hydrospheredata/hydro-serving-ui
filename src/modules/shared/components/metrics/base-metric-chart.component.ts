@@ -8,7 +8,6 @@ import {
     ViewChild,
     OnChanges,
     SimpleChanges,
-    ChangeDetectionStrategy,
     OnDestroy } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import * as HighchartsNoDataToDisplay from 'highcharts/modules/no-data-to-display.src';
@@ -36,6 +35,7 @@ import { map } from 'rxjs/operators';
 
 import { HttpClient } from '@angular/common/http';
 import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/reqstore_format';
+import { ReqstoreService } from '@core/services/reqstore.service';
 
 interface IMetricData {
     name: string;
@@ -111,7 +111,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         public metricsService: MetricsService,
         public influxdbService: InfluxDBService,
-        public http: HttpClient
+        public http: HttpClient,
+        public reqstore: ReqstoreService
     ) {
         this.updateChartObservable$ = combineLatest(
             this.timeSubject.asObservable(),
@@ -123,7 +124,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnInit(): void {
-
         this.initChart();
     }
 
@@ -175,7 +175,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         //     to = chartTo;
         // }
 
-        this.http.get('http://localhost:7265/test/get?from=1551449321&to=1551449326', {
+        this.http.get('http://localhost:7265/app1stage0/get?from=1551692283&to=1551692291', {
             observe: 'response',
             responseType: 'arraybuffer',
         }).pipe(

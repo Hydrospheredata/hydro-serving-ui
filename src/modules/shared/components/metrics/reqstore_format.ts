@@ -50,9 +50,11 @@ function decode<A>(data: Uint8Array, f: (Uint8Array) => A): A {
 }
 
 function decodeRespOrError(data: Uint8Array): PredictResponse | ExecutionError {
-  const num = data[0];
-  const body = new Uint8Array(data.slice(1, data.length));
-  switch (num) {
+
+  const num = readInt(data, 0);
+  const body = new Uint8Array(data.slice(4, data.length));
+  console.log(num);
+  switch(num) {
     case 2:
       return decode(body, ExecutionError.decode);
     case 3:
@@ -63,11 +65,12 @@ function decodeRespOrError(data: Uint8Array): PredictResponse | ExecutionError {
 }
 
 export function asServingReqRes(data: Uint8Array): ReqRes {
-  const reqSize = data[0];
-  const respSize = data[1];
 
-  const reqBody = new Uint8Array(data.slice(2, 2 + reqSize));
-  const respBody = new Uint8Array(data.slice(2 + reqSize, 2 + reqSize + respSize));
+  const reqSize = readInt(data, 0)
+  const respSize = readInt(data, 4)
+
+  const reqBody = new Uint8Array(data.slice(8, 8 + reqSize))
+  const respBody = new Uint8Array(data.slice(8 + reqSize, 8 + reqSize + respSize))
 
   const req = decode(reqBody, PredictRequest.decode);
   const resp = decodeRespOrError(respBody);

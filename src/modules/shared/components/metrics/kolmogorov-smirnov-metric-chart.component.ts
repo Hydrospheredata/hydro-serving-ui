@@ -11,6 +11,7 @@ import { BaseMetricChartComponent } from '@shared/components/metrics/base-metric
 import { map } from 'rxjs/operators';
 
 import { HttpClient } from '@angular/common/http';
+import { ReqstoreService } from '@core/services/reqstore.service';
 
 
 interface IMetricData {
@@ -35,9 +36,10 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
     constructor(
         public metricsService: MetricsService,
         public influxdbService: InfluxDBService,
-        public http: HttpClient
+        public http: HttpClient,
+        public reqstore: ReqstoreService
     ) {
-        super(metricsService, influxdbService, http);
+        super(metricsService, influxdbService, http, reqstore);
     }
 
     get featureList(): string[] {
