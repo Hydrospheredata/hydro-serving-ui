@@ -1,6 +1,10 @@
 <div class="chart">
     {{ selectedPoints | json  }}
-    <div (click)="goToRegStore()"> make magic </div>
+    <div class="button button--secondary" (click)="goToRegStore()"> reqstore </div>
+    <div>
+        {{ reqstoreResponse.length }}
+        {{ reqstoreResponse | json }}
+    </div>
     <div class="chart__title">
         <span>
             {{ title }}

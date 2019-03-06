@@ -34,8 +34,8 @@ import { ModelVersion } from '@shared/_index';
 import { map } from 'rxjs/operators';
 
 import { HttpClient } from '@angular/common/http';
-import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/reqstore_format';
 import { ReqstoreService } from '@core/services/reqstore.service';
+import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/reqstore_format';
 
 interface IMetricData {
     name: string;
@@ -66,6 +66,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     public requests: Array<Promise<any>>;
 
     public showDeleteIcon;
+    public reqstoreResponse = [];
 
     @Input()
     set canDelete(canDelete: boolean) {
@@ -156,35 +157,32 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public goToRegStore() {
-        // let from;
-        // let to;
+        let from;
+        let to;
 
-        // const chartFrom = JSON.parse(this.selectedPoints.from);
-        // const chartTo = JSON.parse(this.selectedPoints.to);
+        const chartFrom = JSON.parse(this.selectedPoints.from);
+        const chartTo = JSON.parse(this.selectedPoints.to);
 
+        if(isArray(chartFrom)) {
+            from = chartFrom[0];
+        } else {
+            from = chartFrom;
+        }
 
-        // if(isArray(chartFrom)){
-        //     from = chartFrom[chartFrom.length - 1];
-        // } else {
-        //     from = chartFrom;
-        // }
+        if (isArray(chartTo)) {
+            to = chartTo[chartTo.length - 1];
+        } else {
+            to = chartTo;
+        }
 
-        // if (isArray(chartTo)){
-        //     to = chartTo[chartTo.length - 1];
-        // } else {
-        //     to = chartTo;
-        // }
+        from = from.split('_')[0];
+        to = to.split('_')[0];
 
-        this.http.get('http://localhost:7265/app1stage0/get?from=1551692283&to=1551692291', {
-            observe: 'response',
-            responseType: 'arraybuffer',
-        }).pipe(
+        this.reqstore.getData(from, to).pipe(
         ).subscribe(_ => {
-            debugger;
+            const x = new Uint8Array(_.body);
 
-            var x = new Uint8Array(_.body);
-            
-            var y = decodeTsRecord(x);
+            const y = decodeTsRecord(x);
             const descrR = [];
 
             y.forEach(function(v) {
@@ -193,17 +191,18 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                   const reqRes = asServingReqRes(x.data);
                   const reqS = JSON.stringify(reqRes.req.toJSON());
                   const respS = JSON.stringify(reqRes.resp.toJSON());
-          
+
                   descrE.push(`\tEntry:${x.uid}`);
                   descrE.push(`\t\tReq:${reqS}`);
                   descrE.push(`\t\tResp:${respS}`);
-          
+
                 });
                 const joined = descrE.join('\n');
                 descrR.push(`Record:${v.ts}\n${joined}`);
               });
 
-            debugger;
+            this.reqstoreResponse = descrR;
+
         });
     }
 
@@ -258,7 +257,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     cursor: 'pointer',
                     point: {
                         events: {
-                            click: function () {
+                            click() {
                                 if (self.selectedPoints.from) {
                                     self.selectedPoints.to = this.options.key;
                                 } else {

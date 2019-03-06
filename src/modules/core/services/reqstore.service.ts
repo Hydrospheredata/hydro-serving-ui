@@ -12,12 +12,9 @@ export class ReqstoreService {
     }
 
     public getData(from, to) {
-        return this.http.get(`${this.baseAPIUrl}`, {
-            params: {
-                from,
-                to,
-            },
-        }).pipe(
-            map((res: Response): any => res));
+        return this.http.get(`http://localhost:7265/app1stage0/get?from=${from}&to=${to}`, {
+            observe: 'response',
+            responseType: 'arraybuffer',
+        });
     }
 }
