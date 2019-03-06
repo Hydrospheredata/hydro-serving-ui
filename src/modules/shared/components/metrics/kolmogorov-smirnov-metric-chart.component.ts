@@ -13,7 +13,6 @@ import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { ReqstoreService } from '@core/services/reqstore.service';
 
-
 interface IMetricData {
     name: string;
     value: number;

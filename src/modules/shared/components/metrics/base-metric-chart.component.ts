@@ -78,6 +78,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         to: '',
     };
 
+
     @Input()
     protected chartTimeWidth: number = 0;
 
@@ -231,6 +232,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             },
             chart: {
                 type: 'spline',
+                animation: false,
             },
             title: {
                 text: '',
@@ -419,7 +421,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                 if (health === false) {
                     tmpBandObject = { from: timestamp, to: timestamp };
                 }
-
             }
         }
 
@@ -429,7 +430,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
     private selfUpdate() {
         this.updateChartSub = this.updateChartObservable$.pipe(
-
             switchMap(([time, providers]) => {
                 const {
                     byModelVersionId,
