@@ -54,30 +54,31 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
 
     // TODO: remove me please
     public getHealthClass(): Promise<void> {
-        return this.metricsService.getHealth().then(res => {
-            const result = this.influxdbService.parse<HealthRow>(res);
-            const aggregatedHealthStatus: object = {};
+        return new Promise((res, req) => {});
+        // return this.metricsService.getHealth().then(res => {
+        //     const result = this.influxdbService.parse<HealthRow>(res);
+        //     const aggregatedHealthStatus: object = {};
 
-            for (const row of result) {
-                const key = `${row.stageId}_${row.modelVersionId}`;
-                if (!aggregatedHealthStatus.hasOwnProperty(key)) {
-                    aggregatedHealthStatus[key] = true;
-                }
+        //     for (const row of result) {
+        //         const key = `${row.stageId}_${row.modelVersionId}`;
+        //         if (!aggregatedHealthStatus.hasOwnProperty(key)) {
+        //             aggregatedHealthStatus[key] = true;
+        //         }
 
-                aggregatedHealthStatus[key] = aggregatedHealthStatus[key] && row.sum >= row.count;
-            }
-            // console.log(aggregatedHealthStatus);
-            const newStatuses = {};
+        //         aggregatedHealthStatus[key] = aggregatedHealthStatus[key] && row.sum >= row.count;
+        //     }
+        //     // console.log(aggregatedHealthStatus);
+        //     const newStatuses = {};
 
-            for (const key in aggregatedHealthStatus) {
-                if (aggregatedHealthStatus.hasOwnProperty(key) ) {
-                    console.log(`setting ${aggregatedHealthStatus[key] ? 'good' : 'bad'} to ${key}`);
-                    newStatuses[key] = aggregatedHealthStatus[key] ? 'good' : 'bad';
-                }
+        //     for (const key in aggregatedHealthStatus) {
+        //         if (aggregatedHealthStatus.hasOwnProperty(key) ) {
+        //             console.log(`setting ${aggregatedHealthStatus[key] ? 'good' : 'bad'} to ${key}`);
+        //             newStatuses[key] = aggregatedHealthStatus[key] ? 'good' : 'bad';
+        //         }
 
-            }
-            this.healthStatuses = newStatuses;
-        });
+        //     }
+        //     this.healthStatuses = newStatuses;
+        // });
     }
 
     ngOnInit() {

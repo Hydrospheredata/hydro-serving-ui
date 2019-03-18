@@ -173,7 +173,7 @@ export class ApplicationsEffects {
                                 });
                             }),
                             catchError(error => {
-                                const payload = { name, error };
+                                const payload = { name: application.name, error };
                                 return observableOf(new HydroActions.TestApplicationFailAction(payload));
                             })
                         );

@@ -48,9 +48,17 @@
             </hydro-input-text>
         </div>
     </div>
-    <button 
-        class="button button--primary"
-        [disabled]="!form.valid">
-        Add Metric
-    </button>
+    <div class='buttons'>
+        <button 
+            class="button button--primary"
+            [disabled]="!form.valid">
+            Add Metric
+        </button>
+        <button 
+            class="button button--secondary"
+            (click)="onClose()"> 
+            CANCEL
+        </button>
+    </div>
+
 </form>

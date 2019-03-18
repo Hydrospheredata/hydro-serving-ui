@@ -11,6 +11,11 @@ label.disabled {
     }
 }
 
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
 .row {
     padding: 10px 0 10px 0;
 }
