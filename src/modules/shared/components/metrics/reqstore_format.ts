@@ -3,8 +3,8 @@ import * as protos from './compiled';
 type PredictRequest = protos.hydrosphere.tensorflow.serving.PredictRequest;
 const PredictRequest = protos.hydrosphere.tensorflow.serving.PredictRequest;
 
-type PredictResponse = protos.hydrosphere.tensorflow.serving.PredictRequest;
-const PredictResponse = protos.hydrosphere.tensorflow.serving.PredictRequest;
+type PredictResponse = protos.hydrosphere.tensorflow.serving.PredictResponse;
+const PredictResponse = protos.hydrosphere.tensorflow.serving.PredictResponse;
 
 type ExecutionError = protos.hydrosphere.monitoring.ExecutionError;
 const ExecutionError = protos.hydrosphere.monitoring.ExecutionError;

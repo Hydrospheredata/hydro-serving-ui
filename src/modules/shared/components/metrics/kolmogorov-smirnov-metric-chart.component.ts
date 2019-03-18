@@ -5,10 +5,8 @@ import {
 } from '@angular/core';
 
 import { InfluxDBService } from '@core/services';
-import { HttpService } from '@core/services/http';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { BaseMetricChartComponent } from '@shared/components/metrics/base-metric-chart.component';
-import { map } from 'rxjs/operators';
 
 import { HttpClient } from '@angular/common/http';
 import { ReqstoreService } from '@core/services/reqstore.service';
@@ -35,10 +33,9 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
     constructor(
         public metricsService: MetricsService,
         public influxdbService: InfluxDBService,
-        public http: HttpClient,
         public reqstore: ReqstoreService
     ) {
-        super(metricsService, influxdbService, http, reqstore);
+        super(metricsService, influxdbService, reqstore);
     }
 
     get featureList(): string[] {

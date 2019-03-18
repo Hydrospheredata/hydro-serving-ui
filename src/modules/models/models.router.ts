@@ -7,7 +7,8 @@ import {
     ModelVersionDetailsComponent,
     ProfilerComponent,
     ModelVersionMonitoringComponent,
-    CompareComponent
+    CompareComponent,
+    ModelVersionMonitoringLogComponent
 } from '@models/components';
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 
@@ -50,6 +51,10 @@ import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
                         component: ModelVersionMonitoringComponent,
                         data: {anim: 'modelVerDetail'},
                         canActivate: [ModelVersionDetailsGuard],
+                    },
+                    {
+                        path: ':modelId/:modelVersionId/monitoring/:metricId',
+                        component: ModelVersionMonitoringLogComponent,
                     },
                 ],
             },

@@ -1,10 +1,11 @@
 <div class="chart">
-    {{ selectedPoints | json  }}
-    <div class="button button--secondary" (click)="goToRegStore()"> reqstore </div>
-    <div>
-        {{ reqstoreResponse.length }}
-        {{ reqstoreResponse | json }}
-    </div>
+    <div [routerLink]="['1']"> open log </div>
+    <hs-reqstore-select
+        [dateFrom]="dateFrom"
+        [dateTo]="dateTo"
+        [modelVersionId]="1"    
+    >
+    </hs-reqstore-select>
     <div class="chart__title">
         <span>
             {{ title }}

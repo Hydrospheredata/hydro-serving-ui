@@ -25,7 +25,6 @@
                 </div>
 
                 <div *ngFor="let metricSpecificationKind of msp | iterateAsArray">
-                    {{ metricSpecificationProvider | json}}
                     <ng-container [ngSwitch]="metricSpecificationKind">
                         <hs-kolmogorov-smirnov-metric-chart 
                             *ngSwitchCase="'KSMetricSpec'"

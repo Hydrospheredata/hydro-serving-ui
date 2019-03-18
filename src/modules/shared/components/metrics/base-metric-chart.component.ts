@@ -15,7 +15,7 @@ import * as moment from 'moment';
 
 import { IChartData } from '@shared/models/application-chart.model';
 
-import { Subscription, Subject, Observable, interval, combineLatest } from 'rxjs';
+import { Subscription, Subject, Observable, interval, combineLatest, BehaviorSubject } from 'rxjs';
 import {
     switchMap,
     tap,
@@ -24,18 +24,9 @@ import {
 
 import { InfluxDBService } from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
+import { ReqstoreService } from '@core/services/reqstore.service';
 import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
 import { isArray } from 'util';
-
-import { Injectable } from '@angular/core';
-import { HttpService } from '@core/services/http';
-import { environment } from '@environments/environment';
-import { ModelVersion } from '@shared/_index';
-import { map } from 'rxjs/operators';
-
-import { HttpClient } from '@angular/common/http';
-import { ReqstoreService } from '@core/services/reqstore.service';
-import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/reqstore_format';
 
 interface IMetricData {
     name: string;
@@ -66,18 +57,14 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     public requests: Array<Promise<any>>;
 
     public showDeleteIcon;
-    public reqstoreResponse = [];
+
+    public dateFrom;
+    public dateTo;
 
     @Input()
     set canDelete(canDelete: boolean) {
         this.showDeleteIcon = canDelete || false;
     }
-
-    public selectedPoints = {
-        from: '',
-        to: '',
-    };
-
 
     @Input()
     protected chartTimeWidth: number = 0;
@@ -110,10 +97,11 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private thresholds: {[uniqName: string]: number} = {};
     private updateChartSub: Subscription;
 
+    private selectSeriesPoint$: Subject<any> = new Subject();
+
     constructor(
         public metricsService: MetricsService,
         public influxdbService: InfluxDBService,
-        public http: HttpClient,
         public reqstore: ReqstoreService
     ) {
         this.updateChartObservable$ = combineLatest(
@@ -123,6 +111,17 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         );
 
         this.selfUpdate();
+        this.selectSeriesPoint$.subscribe(_ => {
+            const x = JSON.parse(_);
+            let value = isArray(x) ? x[0] : x;
+
+            value = value.split('_')[0];
+            if (this.dateFrom) {
+                this.dateTo = value;
+            } else {
+                this.dateFrom = value;
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -155,56 +154,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             }
         });
         this.thresholds = newThresholds;
-    }
-
-    public goToRegStore() {
-        let from;
-        let to;
-
-        const chartFrom = JSON.parse(this.selectedPoints.from);
-        const chartTo = JSON.parse(this.selectedPoints.to);
-
-        if(isArray(chartFrom)) {
-            from = chartFrom[0];
-        } else {
-            from = chartFrom;
-        }
-
-        if (isArray(chartTo)) {
-            to = chartTo[chartTo.length - 1];
-        } else {
-            to = chartTo;
-        }
-
-        from = from.split('_')[0];
-        to = to.split('_')[0];
-
-        this.reqstore.getData(from, to).pipe(
-        ).subscribe(_ => {
-            const x = new Uint8Array(_.body);
-
-            const y = decodeTsRecord(x);
-            const descrR = [];
-
-            y.forEach(function(v) {
-                const descrE = [];
-                v.entries.forEach(function(x) {
-                  const reqRes = asServingReqRes(x.data);
-                  const reqS = JSON.stringify(reqRes.req.toJSON());
-                  const respS = JSON.stringify(reqRes.resp.toJSON());
-
-                  descrE.push(`\tEntry:${x.uid}`);
-                  descrE.push(`\t\tReq:${reqS}`);
-                  descrE.push(`\t\tResp:${respS}`);
-
-                });
-                const joined = descrE.join('\n');
-                descrR.push(`Record:${v.ts}\n${joined}`);
-              });
-
-            this.reqstoreResponse = descrR;
-
-        });
     }
 
     public onDelete(): void {
@@ -260,11 +209,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     point: {
                         events: {
                             click() {
-                                if (self.selectedPoints.from) {
-                                    self.selectedPoints.to = this.options.key;
-                                } else {
-                                    self.selectedPoints.from = this.options.key;
-                                }
+                                self.selectSeriesPoint$.next(this.options.key);
                                 return true;
                             },
                             select: () => true,
@@ -401,7 +346,12 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                newSeries[uniqName] = { name: uniqName, data: [] };
             }
 
-            newSeries[uniqName].data.push({x: timestamp * 1000, y: value, name: timestamp, key: labels.trace || labels.traces });
+            newSeries[uniqName].data.push({
+                x: timestamp * 1000,
+                y: value,
+                name: timestamp,
+                key: labels.trace || labels.traces,
+            });
 
             // plotBands
             if (newPlotBands[uniqName] === undefined ) {

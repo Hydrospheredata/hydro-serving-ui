@@ -13,6 +13,7 @@ import {
     ModelVersionDetailsComponent,
     ProfilerComponent,
     ModelVersionMonitoringComponent,
+    ModelVersionMonitoringLogComponent,
     CompareComponent,
 } from '@models/components';
 import {
@@ -26,6 +27,7 @@ import { ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard } from '@mod
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilesModule } from '@profiles/profiles.module';
+
 @NgModule({
     imports: [
         ModelsRoutingModule,
@@ -50,6 +52,7 @@ import { ProfilesModule } from '@profiles/profiles.module';
         ModelVersionMonitoringComponent,
         DialogDeleteMetricComponent,
         CompareComponent,
+        ModelVersionMonitoringLogComponent,
     ],
     entryComponents: [
         DialogDeleteModelComponent,

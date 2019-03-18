@@ -24,7 +24,7 @@
             <li class="content-info__sublist-item">
                 <span class="content-info__sublist-item-title">Created</span>
                 <span class="content-info__sublist-item-value">
-                    <div class="status">{{ (modelVersion$ | async)?.finished | utcToLocal | amTimeAgo }}</div>
+                    <div class="status">{{ (modelVersion$ | async)?.created | utcToLocal | amTimeAgo }}</div>
                 </span>
             </li>
             <li class="content-info__sublist-item">
