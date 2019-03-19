@@ -94,8 +94,16 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
 
         kindChange.pipe(withLatestFrom(withHealthChange)).subscribe(([kind, withHealth]) => {
             switch (kind) {
-                case 'AEMetricSpec':
                 case 'ImageAEMetricSpec':
+                  const x: any = {
+                    applicationName: this.fb.control('')
+                  }
+                  if (withHealth) {
+                    x.threshold = this.fb.control('');
+                  }
+                  this.form.setControl('confg', this.fb.group(x));
+                  break;
+                case 'AEMetricSpec':
                 case 'RFMetricSpec':
                     const x: any = {
                         input: this.fb.control(''),
