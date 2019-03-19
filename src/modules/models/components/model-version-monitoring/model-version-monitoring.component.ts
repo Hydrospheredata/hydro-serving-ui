@@ -83,6 +83,7 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
             CounterMetricSpec:      ['counter'],
             KSMetricSpec:           ['kolmogorovsmirnov', 'kolmogorovsmirnov_level'],
             AEMetricSpec:           ['autoencoder_reconstruction'],
+            ImageAEMetricSpec:      ['image_autoencoder_reconstructed'],
             RFMetricSpec:           ['randomforest'],
             GANMetricSpec:          ['gan_outlier', 'gan_inlier'],
             LatencyMetricSpec:      ['latency'],

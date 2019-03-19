@@ -40,6 +40,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     public metricSpecificationKinds: IMetricSpecifiocationKind[] = [
         {name: 'Kolmogorov-Smirnov', className: 'KSMetricSpec'},
         {name: 'Autoencoder',        className: 'AEMetricSpec'},
+        {name: 'Image Autoencoder',  className: 'ImageAEMetricSpec'},
         {name: 'Random Forest',      className: 'RFMetricSpec'},
         {name: 'GAN',                className: 'GANMetricSpec'},
         {name: 'Latency',            className: 'LatencyMetricSpec'},
@@ -77,6 +78,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
             tap(([withHealth, kind]) => {
                 switch (kind) {
                     case 'AEMetricSpec':
+                    case 'ImageAEMetricSpec':
                     case 'RFMetricSpec':
                     case 'LatencyMetricSpec':
                         const config = this.form.get('config') as FormGroup;
@@ -93,6 +95,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
         kindChange.pipe(withLatestFrom(withHealthChange)).subscribe(([kind, withHealth]) => {
             switch (kind) {
                 case 'AEMetricSpec':
+                case 'ImageAEMetricSpec':
                 case 'RFMetricSpec':
                     const x: any = {
                         input: this.fb.control(''),
