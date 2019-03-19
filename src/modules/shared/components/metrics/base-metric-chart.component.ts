@@ -24,7 +24,6 @@ import {
 
 import { InfluxDBService } from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
-import { ReqstoreService } from '@core/services/reqstore.service';
 import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
 import { isArray } from 'util';
 
@@ -56,15 +55,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     public makeRequest: Subject<Array<Promise<IMetricData[]>>> = new Subject();
     public requests: Array<Promise<any>>;
 
-    public showDeleteIcon;
-
     public dateFrom;
     public dateTo;
-
-    @Input()
-    set canDelete(canDelete: boolean) {
-        this.showDeleteIcon = canDelete || false;
-    }
 
     @Input()
     protected chartTimeWidth: number = 0;
@@ -81,7 +73,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     protected providersSubject: Subject<any> = new Subject<any>();
 
     @Output()
-    private delete: EventEmitter<any> = new EventEmitter();
+    private selectPoints: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('chartContainer')
     private chartContainerRef: ElementRef;
@@ -102,7 +94,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     constructor(
         public metricsService: MetricsService,
         public influxdbService: InfluxDBService,
-        public reqstore: ReqstoreService
     ) {
         this.updateChartObservable$ = combineLatest(
             this.timeSubject.asObservable(),
@@ -121,6 +112,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             } else {
                 this.dateFrom = value;
             }
+
+            this.selectPoints.emit({dateFrom: this.dateFrom, dateTo: this.dateTo});
         });
     }
 
@@ -156,12 +149,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         this.thresholds = newThresholds;
     }
 
-    public onDelete(): void {
-        const { id } = this.metricSpecificationProviders.byModelVersionId[this.modelVersionId];
-
-        this.delete.emit(id);
-    }
-
     protected getRequestPromise(id, i, metrics): Promise<IMetricData[]> {
         return this.metricsService.getMetrics(
             id.toString(),
@@ -182,6 +169,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             chart: {
                 type: 'spline',
                 animation: false,
+                height: '300px',
             },
             title: {
                 text: '',
@@ -269,6 +257,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private drawBands(): void {
         const plotBandsEntries = Object.entries(this.plotBands);
         const chartBandsEntries = Object.entries(this.chartBands);
+        const self = this;
 
         chartBandsEntries.forEach(([_, ids]) =>
             ids.forEach(id => this.chart.xAxis[0].removePlotBand(id))
@@ -287,6 +276,11 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                         to: to * 1000,
                         color: 'rgba(176, 0, 32, 0.2)',
                         id,
+                        events: {
+                            click(e) {
+                                self.selectPoints.emit({dateFrom: from, dateTo: to});
+                            },
+                        },
                     });
                 });
             });

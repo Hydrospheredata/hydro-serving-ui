@@ -1,19 +1,8 @@
 <div class="chart">
-    <div [routerLink]="['1']"> open log </div>
-    <hs-reqstore-select
-        [dateFrom]="dateFrom"
-        [dateTo]="dateTo"
-        [modelVersionId]="1"    
-    >
-    </hs-reqstore-select>
     <div class="chart__title">
         <span>
             {{ title }}
         </span>
-        <hydro-icon *ngIf="showDeleteIcon"
-            class="icon chart__title-icon" 
-            type="icon-remove" 
-            (click)="onDelete()"></hydro-icon>
     </div>
    <div #chartContainer></div>
 </div>

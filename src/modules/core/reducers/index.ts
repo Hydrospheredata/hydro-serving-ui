@@ -93,3 +93,11 @@ export const getSelectedMetrics = createSelector(
                 );
     }
 );
+
+export const getSelectedMetric = createSelector(
+    getMetricsEntities,
+    getRouterState,
+    (metrics, router): IMetricSpecification => {
+        return router.state.params.metricId && metrics[router.state.params.metricId];
+    }
+);

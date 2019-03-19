@@ -1,11 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ReqstoreService } from '@core/services/reqstore.service';
-import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/reqstore_format';
-import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { isArray } from 'util';
 import { DialogService } from '@dialog/dialog.service';
 import { DialogReqstoreComponent, REQSTORE_LOG$ } from '@shared/components/dialogs';
+import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
     selector: 'hs-reqstore-select',
@@ -29,9 +27,6 @@ export class ReqstoreSelectComponent implements OnInit {
 
     isButtonDisabled$: Observable<boolean>;
 
-    @Input()
-    private modelVersionId: number;
-
     constructor(
         private reqstore: ReqstoreService,
         private dialog: DialogService
@@ -48,40 +43,6 @@ export class ReqstoreSelectComponent implements OnInit {
     }
 
     ngOnInit(): void { }
-
-    getReqstoreData() {
-            this.reqstore.getData(
-                this.dateFrom$.getValue(),
-                this.dateTo$.getValue()
-            ).subscribe((_: any) => {
-                const x = new Uint8Array(_);
-
-                const y = decodeTsRecord(x);
-                const descrR = [];
-
-                y.forEach(function(v) {
-                    const descrE = [];
-                    const obj: any = {};
-                    v.entries.forEach(function(x) {
-
-                      obj.record = v.ts;
-
-                      const reqRes = asServingReqRes(x.data);
-                      const reqS = JSON.stringify(reqRes.req.toJSON());
-                      const respS = JSON.stringify(reqRes.resp.toJSON());
-
-                      obj.entry = x.uid;
-                      obj.req = reqS;
-                      obj.res = respS;
-                      descrE.push(`\tEntry:${x.uid}`);
-                      descrE.push(`\t\tReq:${reqS}`);
-                      descrE.push(`\t\tResp:${respS}`);
-                    });
-                    descrR.push(obj);
-                  });
-                this.reqstoreLog$.next(descrR);
-            });
-    }
 
     showReqstoreData() {
         this.dialog.createDialog({

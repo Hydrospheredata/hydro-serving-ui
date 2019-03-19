@@ -8,9 +8,6 @@ import { InfluxDBService } from '@core/services';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { BaseMetricChartComponent } from '@shared/components/metrics/base-metric-chart.component';
 
-import { HttpClient } from '@angular/common/http';
-import { ReqstoreService } from '@core/services/reqstore.service';
-
 interface IMetricData {
     name: string;
     value: number;
@@ -32,10 +29,9 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
 
     constructor(
         public metricsService: MetricsService,
-        public influxdbService: InfluxDBService,
-        public reqstore: ReqstoreService
+        public influxdbService: InfluxDBService
     ) {
-        super(metricsService, influxdbService, reqstore);
+        super(metricsService, influxdbService);
     }
 
     get featureList(): string[] {

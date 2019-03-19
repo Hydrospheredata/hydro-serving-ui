@@ -1,4 +1,76 @@
-<section class='container'>
-    <div> back to </div>
-    {{ id }}
+<section class='reqstore'>
+    <header class='reqstore__header'>
+        <div class='button button--white reqstore__header-button' [routerLink]="[ '../' ]">
+            <hydro-icon class="button__icon" [type]="'icon-left'" ></hydro-icon>
+            back to monitoring 
+        </div>
+    </header>
+    <ng-container *ngIf="metricSpecificationProvider$ | async;let metricSpecificationProvider; else error">
+        <ng-container [ngSwitch]="metricSpecificationProvider.kind">
+            <hs-kolmogorov-smirnov-metric-chart 
+                *ngSwitchCase="'KSMetricSpec'"
+                [chartTimeWidth]="chartTimeWidth"
+                [modelVersionId]="(modelVersion$ | async)?.id"
+                [metricSpecificationProviders]="metricSpecificationProvider"
+                (selectPoints)="onSelectPoints($event)">
+            </hs-kolmogorov-smirnov-metric-chart>
+            <hs-base-metric-chart 
+                *ngSwitchDefault
+                [chartTimeWidth]="chartTimeWidth" 
+                [modelVersionId]="(modelVersion$ | async)?.id"
+                [metricSpecificationProviders]="metricSpecificationProvider"
+                (selectPoints)="onSelectPoints($event)">
+            </hs-base-metric-chart>
+        </ng-container>
+    </ng-container>
+
+
+    <div class='selector'>
+        <div class='selector__title'>Select</div>
+        <div class='selector__item'><span>from:</span> {{dateFrom || '-'}}</div>
+        <div class='selector__item'><span>to:</span> {{dateTo || '-'}}</div>
+        <div *ngIf='dateFrom && dateTo' class='button button--white' (click)="getLog()">get log</div>
+    </div>
+
+    <div *ngIf='logError$ | async; let error' class='error-container'>
+        {{ error }}
+    </div>
+
+    <ng-container *ngIf='log$ | async; let log'>
+        <div class='log'>
+            <div class='log__timestamps'>
+                <div class='log__timestamps-title'>Timestamps</div> 
+                <div 
+                    class='log__timestamps-item'
+                    [ngClass]="{'clog__timestamps-item--selected': isSelected(logItem)}"
+                    *ngFor="let logItem of log | keyvalue"
+                    (click)="selectLogItem(logItem)"
+                >
+                    <span>{{ logItem.key }}</span>
+                    <span class='log__timestamps-item-count'>{{ logItem.value.length }}</span>
+                </div>
+            </div>
+            <div class='log__details'>
+                <div class='log__details-title'> Details </div>
+                <div class='log__details-container'>
+                    <div class='log__details-item' *ngFor='let item of logResponseRequest$ | async'>
+                        <div class='log__details-item-uid'>UID: {{ item.uid }}</div>
+                        <div class='log__details-item-request'>
+                            <div class='log__details-item-title'>request</div>
+                            {{ item.request.modelSpec.signatureName}}
+                            {{ item.request | json }}
+                        </div>
+                        <div class='log__details-item-response'>
+                            <div class='log__details-item-title'>response</div>
+                            {{ item.response | json }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-template #error>
+        Something went wrong
+    </ng-template>
 </section>

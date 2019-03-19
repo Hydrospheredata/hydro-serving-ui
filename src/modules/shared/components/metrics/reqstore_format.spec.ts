@@ -153,7 +153,6 @@ bGF0ZW5jeRIHCAkSAFIBBQ==`
 });
 
 function decodeBase64(input: string): Uint8Array {
-  debugger;
   const raw = window.atob(input);
 
   const rawLength = raw.length;

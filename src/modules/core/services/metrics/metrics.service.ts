@@ -35,6 +35,7 @@ export class MetricsService {
         ).toPromise();
   }
 
+  // TODO: do not work
   public getHealth() {
     return this.http.get(`${this.baseMetricsUrl}/health`).pipe(
       map((res: Response): any => res)

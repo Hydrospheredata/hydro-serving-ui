@@ -6,8 +6,7 @@ import { catchError } from 'rxjs/operators';
 export class SvgSpriteService {
   constructor(
     private http: HttpClient
-  ) {
-  }
+  ) { }
 
   public loadSvgSprite() {
       if (!document.createElementNS || !document.createElementNS('http://www.w3.org/2000/svg', 'svg').createSVGRect) {
