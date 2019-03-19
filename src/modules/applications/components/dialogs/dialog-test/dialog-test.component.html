@@ -47,6 +47,7 @@
                         </ng-container>
                       </div>
                     </div>
+                    <div class="error-container" *ngIf="!isValidInput(application.input)">Wrong input's format. JSON validation error</div>
                     <div class="buttons">
                       <button 
                         class="button button--primary button--test form-button" 

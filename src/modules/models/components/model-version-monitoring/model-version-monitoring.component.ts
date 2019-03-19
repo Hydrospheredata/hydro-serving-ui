@@ -60,8 +60,8 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
         this.dialog.createDialog({
             component: DialogAddMetricComponent,
             styles: {
-                width: '600px',
-                height: '600px',
+                'width': '600px',
+                'max-height': 'calc(100vh - 48px)',
             },
         });
     }
