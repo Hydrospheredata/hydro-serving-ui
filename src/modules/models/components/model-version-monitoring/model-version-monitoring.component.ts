@@ -82,7 +82,7 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
         const dict = {
             CounterMetricSpec:      ['counter'],
             KSMetricSpec:           ['kolmogorovsmirnov', 'kolmogorovsmirnov_level'],
-            AEMetricSpec:           ['autoencoder_reconstruction'],
+            AEMetricSpec:           ['autoencoder_reconstructed'],
             ImageAEMetricSpec:      ['image_autoencoder_reconstructed'],
             RFMetricSpec:           ['randomforest'],
             GANMetricSpec:          ['gan_outlier', 'gan_inlier'],
