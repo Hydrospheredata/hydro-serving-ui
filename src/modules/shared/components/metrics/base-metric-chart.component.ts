@@ -46,7 +46,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     public chartData: IChartData;
 
     @Input()
-    public metricSpecificationProviders: IMetricSpecificationProvider;
+    public metricSpecificationProvider: IMetricSpecificationProvider;
 
     public metricsByModelVersion: { [modelVersion: string]: string[] };
     public makeRequest: Subject<Array<Promise<IMetricData[]>>> = new Subject();
@@ -116,15 +116,15 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             this.timeSubject.next(changes.chartTimeWidth.currentValue);
         }
 
-        if (changes.metricSpecificationProviders) {
+        if (changes.metricSpecificationProvider) {
             this.initThresholds();
-            this.providersSubject.next(changes.metricSpecificationProviders.currentValue);
+            this.providersSubject.next(changes.metricSpecificationProvider.currentValue);
         }
     }
 
     public initThresholds() {
         const newThresholds = {};
-        const data = Object.entries(this.metricSpecificationProviders.byModelVersionId);
+        const data = Object.entries(this.metricSpecificationProvider.byModelVersionId);
 
         data.forEach(([modelVerId, metricSpec]: [string, IMetricSpecification]) => {
             const uniqName = `${modelVerId}_threshold`;
@@ -136,7 +136,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public onDelete(): void {
-        const { id } = this.metricSpecificationProviders.byModelVersionId[this.modelVersionId];
+        const { id } = this.metricSpecificationProvider.byModelVersionId[this.modelVersionId];
 
         this.delete.emit(id);
     }
@@ -201,7 +201,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     get title(): string {
-        return this.metricSpecificationProviders.byModelVersionId[this.modelVersionId].name;
+        return this.metricSpecificationProvider.byModelVersionId[this.modelVersionId].name;
     }
 
     private drawSeries(): void {
@@ -299,7 +299,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
         let tmpBandObject = null;
 
-        const metricsCount = this.metricSpecificationProviders.metrics.length;
+        const metricsCount = this.metricSpecificationProvider.metrics.length;
         /* Different metrics, like ['ks', 'ks_level'], have same 'health' value */
         const plotGenerateStop = (this.metricsData.length / metricsCount) - 1;
 
