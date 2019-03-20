@@ -46,7 +46,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     public chartData: IChartData;
 
     @Input()
-    public metricSpecificationProviders;
+    public metricSpecificationProviders: IMetricSpecificationProvider;
 
     public metricsByModelVersion: { [modelVersion: string]: string[] };
     public makeRequest: Subject<Array<Promise<IMetricData[]>>> = new Subject();
@@ -104,7 +104,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnInit(): void {
-
         this.initChart();
     }
 
@@ -202,7 +201,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     get title(): string {
-        return this.metricSpecificationProviders.kind;
+        return this.metricSpecificationProviders.byModelVersionId[this.modelVersionId].name;
     }
 
     private drawSeries(): void {
@@ -300,8 +299,12 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
         let tmpBandObject = null;
 
+        const metricsCount = this.metricSpecificationProviders.metrics.length;
+        /* Different metrics, like ['ks', 'ks_level'], have same 'health' value */
+        const plotGenerateStop = (this.metricsData.length / metricsCount) - 1;
+
         for (let i = 0, l = this.metricsData.length; i < l; i++) {
-            const isLastElement = i === l - 1;
+            const isLastElement = i === plotGenerateStop;
             const currentMetricData = this.metricsData[i];
             const { name, timestamp, value, health, labels } = currentMetricData;
 
@@ -315,6 +318,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             newSeries[uniqName].data.push([timestamp * 1000, value]);
 
             // plotBands
+            if ( i > plotGenerateStop) { continue; }
             if (newPlotBands[uniqName] === undefined ) {
                 newPlotBands[uniqName] = [];
             }
@@ -332,7 +336,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                 if (health === false) {
                     tmpBandObject = { from: timestamp, to: timestamp };
                 }
-
             }
         }
 

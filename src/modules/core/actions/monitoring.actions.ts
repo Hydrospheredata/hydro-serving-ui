@@ -50,7 +50,7 @@ export class DeleteMetricAction implements Action {
 
 export class DeleteMetricSuccessAction implements Action {
     readonly type = MonitoringActionTypes.DeleteMetricSuccess;
-    constructor(public payload: IMetricSpecification) {}
+    constructor(public payload: {id: string }) {}
 }
 
 export class DeleteMetricFailAction implements Action {
