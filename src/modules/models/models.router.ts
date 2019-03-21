@@ -9,7 +9,7 @@ import {
     ModelVersionMonitoringComponent,
     CompareComponent,
     ModelVersionMonitoringLogComponent,
-    ModelVersionMonitoring2Component
+    ModelVersionMonitoringContainerComponent
 } from '@models/components';
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 
@@ -54,12 +54,8 @@ import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
                         canActivate: [ModelVersionDetailsGuard],
                     },
                     {
-                        path: ':modelId/:modelVersionId/monitoring/:metricId',
-                        component: ModelVersionMonitoringLogComponent,
-                    },
-                    {
-                        path: ':modelId/:modelVersionId/monitoring2',
-                        component: ModelVersionMonitoring2Component,
+                        path: ':modelId/:modelVersionId/monitoring',
+                        component: ModelVersionMonitoringContainerComponent,
                         children: [
                             {
                                 path: '',

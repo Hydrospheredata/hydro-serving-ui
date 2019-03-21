@@ -7,6 +7,7 @@ import { SignaturesComponent } from './signatures.component';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HttpService } from '@core/services/http';
+import { MockSignature1 } from '@testing/factories/signature';
 import { MockStoreProvider } from '@testing/mocks';
 
 describe('SignaturesComponent', () => {
@@ -32,6 +33,7 @@ describe('SignaturesComponent', () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(SignaturesComponent);
         component = fixture.componentInstance;
+        component.signature = MockSignature1;
         fixture.detectChanges();
     });
 

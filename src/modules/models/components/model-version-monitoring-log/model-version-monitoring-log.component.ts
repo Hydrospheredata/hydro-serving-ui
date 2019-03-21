@@ -82,7 +82,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit {
 
         return {
             kind: metricSpecification.kind,
-            byModelVersionId: { id: metricSpecification },
+            byModelVersionId: { [metricSpecification.modelVersionId]: metricSpecification },
             metrics: dict[metricSpecification.kind],
         };
     }

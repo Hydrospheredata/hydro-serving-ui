@@ -1,31 +1,28 @@
 <div class="signatures">
     <h5 class="signatures__title">Signatures</h5>
-    <div 
-        *ngFor="let signature of signatures"
-        class="signature">
+    <div class="signature">
         <h6 class="signature__name">
             {{ signature.signatureName }}
         </h6>
 
-        <table class="fields-table">
-            <tr class="fields-table__row fields-table__row--labels">
-                <td class="fields-table__cell">input_field_name</td>
-                <td class="fields-table__cell">input_data_type</td>
-                <td class="fields-table__cell">input_shape</td>
-            </tr>
-            <ng-container *ngFor="let field of signature.inputs">
-                <ng-container *ngTemplateOutlet="fieldRow; context: field"></ng-container>
-            </ng-container>
-            <tr class="fields-table__row fields-table__row--labels">
-                <td class="fields-table__cell">output_field_name</td>
-                <td class="fields-table__cell">output_data_type</td>
-                <td class="fields-table__cell">output_shape</td>
-            </tr>
-            <ng-container *ngFor="let field of signature.outputs">
-                <ng-container *ngTemplateOutlet="fieldRow; context: field"></ng-container>
-            </ng-container>
-        </table>
-    </div>
+    <table class="fields-table">
+        <tr class="fields-table__row fields-table__row--labels">
+            <td class="fields-table__cell">input_field_name</td>
+            <td class="fields-table__cell">input_data_type</td>
+            <td class="fields-table__cell">input_shape</td>
+        </tr>
+        <ng-container *ngFor="let field of signature.inputs">
+            <ng-container *ngTemplateOutlet="fieldRow; context: field"></ng-container>
+        </ng-container>
+        <tr class="fields-table__row fields-table__row--labels">
+            <td class="fields-table__cell">output_field_name</td>
+            <td class="fields-table__cell">output_data_type</td>
+            <td class="fields-table__cell">output_shape</td>
+        </tr>
+        <ng-container *ngFor="let field of signature.outputs">
+            <ng-container *ngTemplateOutlet="fieldRow; context: field"></ng-container>
+        </ng-container>
+    </table>
 </div>
 
 <ng-template 

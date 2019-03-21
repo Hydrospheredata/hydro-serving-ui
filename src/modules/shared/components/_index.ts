@@ -10,8 +10,5 @@ export * from './application-status/application-status.component';
 export * from './metrics/base-metric-chart.component';
 export * from '@shared/components/metrics/kolmogorov-smirnov-metric-chart.component';
 
-// reqstore
-export * from './reqstore-select/reqstore-select.component';
-
 // dialogs
 export * from './dialogs';

@@ -75,13 +75,13 @@
                     *ngSwitchCase="'KSMetricSpec'"
                     [chartTimeWidth]="chartTimeWidth"
                     [modelVersionId]="(modelVersion$ | async)?.id"
-                    [metricSpecificationProviders]="metricProvider">
+                    [metricSpecificationProvider]="metricProvider">
                 </hs-kolmogorov-smirnov-metric-chart>
                 <hs-base-metric-chart 
                     *ngSwitchDefault
                     [chartTimeWidth]="chartTimeWidth" 
                     [modelVersionId]="(modelVersion$ | async)?.id"
-                    [metricSpecificationProviders]="metricProvider">
+                    [metricSpecificationProvider]="metricProvider">
                 </hs-base-metric-chart>
             </ng-container>
         </ng-container>

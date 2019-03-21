@@ -78,6 +78,7 @@ export class ApplicationsWrapperComponent implements OnDestroy {
         private dialog: DialogService
     ) {
         this.applications = this.storeApp.select(fromApplications.getAllApplications);
+
         this.modelsVersionSub = this.storeModels.select(fromModels.getAllModelVersions).subscribe(
             modelVersions => {
                 this.someModelVersionIsFinished = modelVersions.some(

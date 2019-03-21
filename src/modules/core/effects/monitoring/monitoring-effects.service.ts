@@ -66,10 +66,12 @@ export class MonitoringEffects {
         .ofType(HydroActions.MonitoringActionTypes.DeleteMetric)
         .pipe(
             map((action: HydroActions.DeleteMetricAction) => action.id),
-            switchMap(metricId => {
-                return this.metricService.deleteMetricSettings(metricId)
+            switchMap(id => {
+                return this.metricService.deleteMetricSettings(id)
                     .pipe(
-                        map(_ =>  new HydroActions.DeleteMetricSuccessAction(metricId)),
+                        map(_ => {
+                            return new HydroActions.DeleteMetricSuccessAction({ id });
+                        }),
                         catchError(error => {
                             this.mdlSnackbarService.showSnackbar({
                                 message: `Error: ${error}`,

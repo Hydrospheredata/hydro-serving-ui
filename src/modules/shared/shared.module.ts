@@ -40,7 +40,6 @@ import {
     KolmogorovSmirnovChartComponent,
     DialogModelsEmptyComponent,
     ApplicationStatusComponent,
-    ReqstoreSelectComponent,
     DialogReqstoreComponent
 } from './components/_index';
 
@@ -79,7 +78,6 @@ const COMPONENTS = [
     KolmogorovSmirnovChartComponent,
     DialogModelsEmptyComponent,
     ApplicationStatusComponent,
-    ReqstoreSelectComponent,
     DialogReqstoreComponent,
 ];
 

@@ -8,7 +8,8 @@ import {
     ViewChild,
     OnChanges,
     SimpleChanges,
-    OnDestroy } from '@angular/core';
+    OnDestroy, 
+    ChangeDetectionStrategy} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import * as HighchartsNoDataToDisplay from 'highcharts/modules/no-data-to-display.src';
 import * as moment from 'moment';
@@ -42,14 +43,15 @@ interface IMetricData {
 @Component({
     selector: 'hs-base-metric-chart',
     templateUrl: './base-metric-chart.component.html',
-    styleUrls: ['./base-metric-chart.component.scss'],    // changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./base-metric-chart.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     @Input()
     public chartData: IChartData;
 
     @Input()
-    public metricSpecificationProviders;
+    public metricSpecificationProvider: IMetricSpecificationProvider;
 
     public metricsByModelVersion: { [modelVersion: string]: string[] };
     public makeRequest: Subject<Array<Promise<IMetricData[]>>> = new Subject();
@@ -130,15 +132,15 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             this.timeSubject.next(changes.chartTimeWidth.currentValue);
         }
 
-        if (changes.metricSpecificationProviders) {
+        if (changes.metricSpecificationProvider) {
             this.initThresholds();
-            this.providersSubject.next(changes.metricSpecificationProviders.currentValue);
+            this.providersSubject.next(changes.metricSpecificationProvider.currentValue);
         }
     }
 
     public initThresholds() {
         const newThresholds = {};
-        const data = Object.entries(this.metricSpecificationProviders.byModelVersionId);
+        const data = Object.entries(this.metricSpecificationProvider.byModelVersionId);
 
         data.forEach(([modelVerId, metricSpec]: [string, IMetricSpecification]) => {
             const uniqName = `${modelVerId}_threshold`;
@@ -224,7 +226,13 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     get title(): string {
-        return this.metricSpecificationProviders.kind;
+        const versions = Object.keys(this.metricSpecificationProvider.byModelVersionId);
+
+        if(versions.length > 1) {
+            return this.metricSpecificationProvider.kind;
+        } else {
+            return this.metricSpecificationProvider.byModelVersionId[versions[0]].name;
+        }
     }
 
     private drawSeries(): void {
@@ -328,8 +336,12 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
         let tmpBandObject = null;
 
+        const metricsCount = this.metricSpecificationProvider.metrics.length;
+        /* Different metrics, like ['ks', 'ks_level'], have same 'health' value */
+        const plotGenerateStop = (this.metricsData.length / metricsCount) - 1;
+
         for (let i = 0, l = this.metricsData.length; i < l; i++) {
-            const isLastElement = i === l - 1;
+            const isLastElement = i === plotGenerateStop;
             const currentMetricData = this.metricsData[i];
             const { name, timestamp, value, health, labels } = currentMetricData;
 
@@ -348,6 +360,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             });
 
             // plotBands
+            if ( i > plotGenerateStop) { continue; }
             if (newPlotBands[uniqName] === undefined ) {
                 newPlotBands[uniqName] = [];
             }

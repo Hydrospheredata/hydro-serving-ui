@@ -7,18 +7,16 @@ import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 @Component({
-    selector: 'hs-model-version-monitoring-2',
-    templateUrl: './model-version-monitoring-2.component.html',
-    styleUrls: ['model-version-monitoring-2.component.scss'],
+    selector: 'hs-model-version-monitoring-container',
+    templateUrl: './model-version-monitoring-container.component.html',
+    styleUrls: ['model-version-monitoring-container.component.scss'],
 })
-export class ModelVersionMonitoring2Component implements OnInit, OnDestroy {
+export class ModelVersionMonitoringContainerComponent implements OnInit, OnDestroy {
     private metricSubscription: Subscription;
 
     constructor(
         private store: Store<HydroServingState>
-    ) {
-
-    }
+    ) {}
 
     ngOnInit(): void {
         this.metricSubscription = this.store.select(getSelectedModelVersion).pipe(

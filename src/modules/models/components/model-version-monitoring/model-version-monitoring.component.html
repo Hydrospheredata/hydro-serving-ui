@@ -16,7 +16,6 @@
         </div>
 
     </header>
-
     <div class="monitoring__body">
         <ng-container *ngIf="isMonitoringAvailable$ | async">
             <ng-container *ngIf="(metricSpecifications$ | async).length;else emptyMetricListError">
@@ -38,13 +37,13 @@
                                     *ngSwitchCase="'KSMetricSpec'"
                                     [chartTimeWidth]="chartTimeWidth"
                                     [modelVersionId]="(modelVersion$ | async)?.id"
-                                    [metricSpecificationProviders]="msp[metricSpecificationKind]">
+                                    [metricSpecificationProvider]="msp[metricSpecificationKind]">
                                 </hs-kolmogorov-smirnov-metric-chart>
                                 <hs-base-metric-chart 
                                     *ngSwitchDefault
                                     [chartTimeWidth]="chartTimeWidth" 
                                     [modelVersionId]="(modelVersion$ | async)?.id"
-                                    [metricSpecificationProviders]="msp[metricSpecificationKind]">
+                                    [metricSpecificationProvider]="msp[metricSpecificationKind]">
                                 </hs-base-metric-chart>
                             </ng-container>
                         </div>
