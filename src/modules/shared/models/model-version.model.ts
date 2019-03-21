@@ -13,7 +13,7 @@ export enum ModelVersionStatus {
 
 export interface IModelContract {
     modelName: string;
-    signatures: ISignature[];
+    predict: ISignature;
 }
 export interface IModelVersion {
     id: number;
