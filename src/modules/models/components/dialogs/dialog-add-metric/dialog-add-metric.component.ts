@@ -49,6 +49,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     ];
 
     private modelVersion$: Observable<ModelVersion>;
+    private signatureNameSub: Subscription;
 
     constructor(
         public fb: FormBuilder,
@@ -60,7 +61,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
         this.modelVersion$ = this.store.select(fromModels.getSelectedModelVersion).pipe(filter(mv => !!mv));
         this.applications$ = this.store.select(fromApplications.getAllApplications);
 
-        this.modelVersion$.pipe(
+        this.signatureNameSub = this.modelVersion$.pipe(
             switchMap( modelVersion => this.signatureName = this.getInputName(modelVersion))
         ).subscribe();
     }
@@ -181,6 +182,10 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     ngOnDestroy() {
         if (this.applicationSub) {
             this.applicationSub.unsubscribe();
+        }
+
+        if (this.signatureNameSub) {
+            this.signatureNameSub.unsubscribe();
         }
     }
 
