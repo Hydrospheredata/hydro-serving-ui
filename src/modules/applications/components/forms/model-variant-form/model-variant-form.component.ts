@@ -39,9 +39,6 @@ export class ModelVariantFormComponent implements OnInit {
     public modelVersions$: Observable<any>;
     public selectedModelVersion$: Observable<ModelVersion>;
 
-    private selectModelVersionSub: Subscription;
-    private signatures: ISignature[];
-
     get modelControl(): FormControl {
         return this.group.get('modelId') as FormControl;
     }
@@ -54,23 +51,12 @@ export class ModelVariantFormComponent implements OnInit {
         return this.group.get('weight') as FormControl;
     }
 
-    get signatureNameControl(): FormControl {
-        return this.group.get('signatureName') as FormControl;
-    }
-
     constructor(
         private store: Store<HydroServingState>,
         @Self() private modelVariantFormService: ModelVariantFormService
     ) {
         this.modelVersions$ = this.modelVariantFormService.getModelVersions();
         this.selectedModelVersion$ = this.modelVariantFormService.getCurrentModelVersion();
-
-        this.selectModelVersionSub = this.selectedModelVersion$.pipe(
-            tap(modelVersion => {
-                if (!modelVersion.modelContract) { return []; }
-                return this.signatures = modelVersion.modelContract.signatures;
-            })
-        ).subscribe();
     }
 
     ngOnInit() {
@@ -88,7 +74,6 @@ export class ModelVariantFormComponent implements OnInit {
 
     public onModelVersionChange(modelVersionId: number): void {
         this.modelVariantFormService.setCurrentModelVersion(modelVersionId);
-        this.signatureNameControl.setValue(this.signatures[0].signatureName);
     }
 
     public onDelete(): void {

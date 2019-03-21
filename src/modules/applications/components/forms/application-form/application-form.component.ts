@@ -58,7 +58,6 @@ export class ApplicationFormComponent implements OnInit {
                 modelVariants: stage.modelVariants.map(modelVariant => ({
                         modelVersionId: modelVariant.modelVersionId,
                         weight: Number(modelVariant.weight),
-                        signatureName: modelVariant.signatureName,
                     })
                 ),
             };
