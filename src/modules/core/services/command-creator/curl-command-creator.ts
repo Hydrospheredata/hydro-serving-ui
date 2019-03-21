@@ -17,7 +17,7 @@ export class CurlCommandCreator extends CommandCreator {
     getCommand(application: Application): string {
         try {
             const { input, name, signature } = application;
-            const url: string = `${this.apiUrl}/gateway/applications/${name}/${signature.signatureName}`;
+            const url: string = `${this.apiUrl}/gateway/application/${name}`;
             return `curl -X POST ${this.headers} -d '${this.removeNewLineSymbolsFromString(input)}' '${url}'`.trim();
         } catch (err) {
             return 'invalid contract';

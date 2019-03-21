@@ -56,7 +56,7 @@
             <div class="service__field service__field--hostSelector">
                 <label class="service__field-label">Host selector</label>
                 <span>
-                    {{ (selectedModelVersion$ | async)?.hostSelector?.name }}
+                    {{ (selectedModelVersion$ | async)?.hostSelector?.name || '-' }}
                 </span>
             </div>
             <div class="service__field service__field--signatureName">

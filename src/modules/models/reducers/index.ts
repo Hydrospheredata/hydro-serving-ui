@@ -84,6 +84,7 @@ export const getModelVersionsByModelId = (modelId: number) => createSelector(
     getModelVersionState,
     getModelVersionEntities,
     (state, entities) => {
-        return state.byModel[modelId] && state.byModel[modelId].map(id => entities[id]);
+        return state.byModel[modelId]
+               && state.byModel[modelId].map(id => entities[id]).sort((a, b) => b.modelVersion - a.modelVersion);
     }
 );
