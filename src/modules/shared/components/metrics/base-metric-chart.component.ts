@@ -93,7 +93,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         public metricsService: MetricsService,
-        public influxdbService: InfluxDBService,
+        public influxdbService: InfluxDBService
     ) {
         this.updateChartObservable$ = combineLatest(
             this.timeSubject.asObservable(),

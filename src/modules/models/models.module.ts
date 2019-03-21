@@ -13,6 +13,7 @@ import {
     ModelVersionDetailsComponent,
     ProfilerComponent,
     ModelVersionMonitoringComponent,
+    ModelVersionMonitoring2Component,
     ModelVersionMonitoringLogComponent,
     CompareComponent,
 } from '@models/components';
@@ -50,6 +51,7 @@ import { ProfilesModule } from '@profiles/profiles.module';
         DialogAddMetricComponent,
         ProfilerComponent,
         ModelVersionMonitoringComponent,
+        ModelVersionMonitoring2Component,
         DialogDeleteMetricComponent,
         CompareComponent,
         ModelVersionMonitoringLogComponent,

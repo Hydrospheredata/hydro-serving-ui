@@ -4,7 +4,7 @@ import { ReqstoreService } from '@core/services/reqstore.service';
 import { Store } from '@ngrx/store';
 import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, filter } from 'rxjs/operators';
 
 @Component({
     selector: 'hs-model-version-monitoring-log',
@@ -34,6 +34,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit {
 
     ngOnInit(): void {
         this.metricSpecificationProvider$ = this.source$.pipe(
+            filter(_ => !!_),
             map(_ => this.createMetricProviders(_))
         );
     }

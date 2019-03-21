@@ -5,5 +5,7 @@ export * from './model-version-profiler/model-version-profiler.component';
 export * from './model-version-monitoring/model-version-monitoring.component';
 export * from './compare/compare.component';
 export * from './model-version-monitoring-log/model-version-monitoring-log.component';
+
+export * from './model-version-monitoring-2/model-version-monitoring-2.component';
 // dialogs
 export * from './dialogs';

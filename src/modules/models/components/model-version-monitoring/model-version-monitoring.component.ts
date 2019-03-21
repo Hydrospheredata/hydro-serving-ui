@@ -36,7 +36,6 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
         private router: Router,
         private ac: ActivatedRoute
     ) {
-
         this.modelVersion$ = this.store.select(getSelectedModelVersion).pipe(
             filter(modelVersion => !!modelVersion),
             tap(({id}) => this.store.dispatch(new GetMetricsAction(`${id}`)))

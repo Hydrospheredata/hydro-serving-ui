@@ -3,7 +3,7 @@ import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/reqstore_format';
 import { Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 
 export interface IReqstoreLog {
     [record: string]: Array<{
