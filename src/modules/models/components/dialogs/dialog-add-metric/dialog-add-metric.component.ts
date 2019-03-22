@@ -1,5 +1,5 @@
 import { Subscription ,  Observable, of, combineLatest } from 'rxjs';
-import { switchMap, take, tap, startWith, withLatestFrom } from 'rxjs/operators';
+import { switchMap, take, tap, startWith, withLatestFrom, filter } from 'rxjs/operators';
 
 import { Application } from '@shared/models/application.model';
 
@@ -32,14 +32,15 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     public form: FormGroup;
 
     public applications$: Observable<Application[]>;
-    public sources$: Observable<string[]>;
     public applicationSub: Subscription;
     public application: Application;
     public stageId: number;
+    public signatureName: string;
 
     public metricSpecificationKinds: IMetricSpecifiocationKind[] = [
         {name: 'Kolmogorov-Smirnov', className: 'KSMetricSpec'},
         {name: 'Autoencoder',        className: 'AEMetricSpec'},
+        {name: 'Image Autoencoder',  className: 'ImageAEMetricSpec'},
         {name: 'Random Forest',      className: 'RFMetricSpec'},
         {name: 'GAN',                className: 'GANMetricSpec'},
         {name: 'Latency',            className: 'LatencyMetricSpec'},
@@ -48,6 +49,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     ];
 
     private modelVersion$: Observable<ModelVersion>;
+    private signatureNameSub: Subscription;
 
     constructor(
         public fb: FormBuilder,
@@ -56,12 +58,12 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
         public mdlSnackbarService: MdlSnackbarService,
         public store: Store<HydroServingState>
     ) {
-        this.modelVersion$ = this.store.select(fromModels.getSelectedModelVersion);
+        this.modelVersion$ = this.store.select(fromModels.getSelectedModelVersion).pipe(filter(mv => !!mv));
         this.applications$ = this.store.select(fromApplications.getAllApplications);
 
-        this.sources$ = this.modelVersion$.pipe(
-            switchMap( modelVersion => of(this.getInputNames(modelVersion)))
-        );
+        this.signatureNameSub = this.modelVersion$.pipe(
+            switchMap( modelVersion => this.signatureName = this.getInputName(modelVersion))
+        ).subscribe();
     }
 
     ngOnInit() {
@@ -77,6 +79,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
             tap(([withHealth, kind]) => {
                 switch (kind) {
                     case 'AEMetricSpec':
+                    case 'ImageAEMetricSpec':
                     case 'RFMetricSpec':
                     case 'LatencyMetricSpec':
                         const config = this.form.get('config') as FormGroup;
@@ -92,10 +95,19 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
 
         kindChange.pipe(withLatestFrom(withHealthChange)).subscribe(([kind, withHealth]) => {
             switch (kind) {
+                case 'ImageAEMetricSpec':
+                  const xx: any = {
+                    applicationName: this.fb.control(''),
+                  };
+                  if (withHealth) {
+                    xx.threshold = this.fb.control('');
+                  }
+                  this.form.setControl('config', this.fb.group(xx));
+                  break;
                 case 'AEMetricSpec':
                 case 'RFMetricSpec':
                     const x: any = {
-                        input: this.fb.control(''),
+                        input: this.fb.control(this.signatureName),
                         applicationName: this.fb.control(''),
                     };
 
@@ -107,7 +119,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
                     break;
                 case 'GANMetricSpec':
                     this.form.setControl('config', this.fb.group({
-                        input: this.fb.control(''),
+                        input: this.fb.control(this.signatureName),
                         applicationName: this.fb.control(''),
                     }));
                     break;
@@ -130,29 +142,15 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
                     break;
                 case 'KSMetricSpec':
                     this.form.setControl('config', this.fb.group({
-                        input: this.fb.control('', Validators.required),
+                        input: this.fb.control(this.signatureName, Validators.required),
                     }));
                     break;
             }
         });
     }
 
-    getInputNames(modelVersion: IModelVersion): string[] {
-        if (!modelVersion) {
-             return [];
-        }
-
-        const getName = input => input.name;
-        const signatures = modelVersion.modelContract.signatures;
-
-        const res = signatures.reduce(
-            (namesArray, signature) => {
-                return [...namesArray, ...signature.inputs.map(getName)];
-            },
-            []
-        );
-
-        return res;
+    getInputName(modelVersion: IModelVersion): string {
+        return modelVersion.modelContract.predict.signatureName;
     }
 
     onSubmit() {
@@ -184,6 +182,10 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     ngOnDestroy() {
         if (this.applicationSub) {
             this.applicationSub.unsubscribe();
+        }
+
+        if (this.signatureNameSub) {
+            this.signatureNameSub.unsubscribe();
         }
     }
 

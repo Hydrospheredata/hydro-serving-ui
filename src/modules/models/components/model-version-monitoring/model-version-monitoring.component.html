@@ -31,7 +31,7 @@
                             *ngSwitchCase="'KSMetricSpec'"
                             [chartTimeWidth]="chartTimeWidth"
                             [modelVersionId]="(modelVersion$ | async)?.id"
-                            [metricSpecificationProviders]="msp[metricSpecificationKind]"
+                            [metricSpecificationProvider]="msp[metricSpecificationKind]"
                             [canDelete]="true"
                             (delete)="deleteMetric($event)">
                         </hs-kolmogorov-smirnov-metric-chart>
@@ -39,7 +39,7 @@
                             *ngSwitchDefault
                             [chartTimeWidth]="chartTimeWidth" 
                             [modelVersionId]="(modelVersion$ | async)?.id"
-                            [metricSpecificationProviders]="msp[metricSpecificationKind]"
+                            [metricSpecificationProvider]="msp[metricSpecificationKind]"
                             [canDelete]="true"
                             (delete)="deleteMetric($event)">
                         </hs-base-metric-chart>

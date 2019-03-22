@@ -15,7 +15,6 @@ export interface IModelVariantFormData {
     weight: number;
     modelId?: number;
     modelVersionId: number;
-    signatureName: string;
 }
 
 @Injectable()
@@ -72,8 +71,7 @@ export class ModelVariantFormService implements OnDestroy {
         return {
             weight: 100,
             modelId,
-            modelVersionId: modelVersion && modelVersion.id,
-            signatureName: modelVersion && modelVersion.modelContract.signatures[0].signatureName,
+            modelVersionId: modelVersion && modelVersion.id
         };
     }
 
@@ -81,8 +79,7 @@ export class ModelVariantFormService implements OnDestroy {
         return {
             weight: modelVariant.weight,
             modelId: modelVariant.modelVersion.model.id,
-            modelVersionId: modelVariant.modelVersion.id,
-            signatureName: modelVariant.signature.signatureName,
+            modelVersionId: modelVariant.modelVersion.id
         };
     }
 
@@ -101,11 +98,7 @@ export class ModelVariantFormService implements OnDestroy {
             modelVersionId: new FormControl(
                 modelVariantFormData.modelVersionId,
                 this.customValidators.required()
-            ),
-            signatureName: new FormControl(
-                modelVariantFormData.signatureName,
-                this.customValidators.required()
-            ),
+            )
         });
     }
 

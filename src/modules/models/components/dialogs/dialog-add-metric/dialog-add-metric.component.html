@@ -19,15 +19,14 @@
         </label>
     </div>
     <div formGroupName="config">
-        <div class="row" *ngIf="form.get('config').get('input')">
-            <mdl-select 
-                [formControl]="form.get('config').get('input')" 
-                label="Choose input">
-                <mdl-option *ngFor="let source of sources$ | async" [value]="source">{{ source }}</mdl-option>
-            </mdl-select>
+        <div class="row row--column" *ngIf="form.get('config').get('input')">
+            <label for="input">Input: </label>
+            <input [formControl]="form.get('config').get('input')" readonly name='input' class='input'>
         </div>
         <div class="row" *ngIf="form.get('config').get('applicationName')">
+            <label for="application">Application: </label>
             <mdl-select 
+                name='application'
                 [formControl]="form.get('config').get('applicationName')"
                 label="Choose application">
                 <mdl-option *ngFor="let application of applications$ | async" [value]="application.name">{{ application.name }}</mdl-option>
@@ -36,7 +35,7 @@
         <div class="row" *ngIf="form.get('config').get('threshold')">
             <hydro-input-text 
                 name="threshold" 
-                label="threshold" 
+                label="Threshold" 
                 [formControl]="form.get('config').get('threshold')">
             </hydro-input-text>
         </div>
@@ -48,9 +47,17 @@
             </hydro-input-text>
         </div>
     </div>
-    <button 
-        class="button button--primary"
-        [disabled]="!form.valid">
-        Add Metric
-    </button>
+    <div class='buttons'>
+        <button 
+            class="button button--primary"
+            [disabled]="!form.valid">
+            Add Metric
+        </button>
+        <button 
+            class="button button--secondary"
+            (click)="onClose()"> 
+            CANCEL
+        </button>
+    </div>
+
 </form>

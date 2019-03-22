@@ -1,8 +1,7 @@
 
 import { Component, Input } from '@angular/core';
 import {
-    Signature,
-    ModelVersion
+    ISignature
 } from '@shared/models/_index';
 
 @Component({
@@ -12,5 +11,5 @@ import {
 })
 export class SignaturesComponent {
     @Input() modelId: number;
-    @Input() signatures: Signature[];
+    @Input() signature: ISignature;
 }
