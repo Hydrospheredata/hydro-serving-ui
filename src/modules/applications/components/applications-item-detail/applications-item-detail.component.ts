@@ -42,11 +42,9 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     constructor(
         public store: Store<HydroServingState>,
         public dialog: DialogService,
-        private metricsService: MetricsService,
-        private influxdbService: InfluxDBService
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication).pipe(
-            tap( application => this.application = application)
+            tap(application => this.application = application)
         );
 
         this.applicationSub = this.application$.subscribe();

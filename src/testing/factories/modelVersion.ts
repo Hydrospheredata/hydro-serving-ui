@@ -7,7 +7,7 @@ import { MockSignature1, MockCompositeSignature, MockSignature2 } from '@testing
 
 export const MockModelContract: IModelContract = {
     modelName: 'ModelName',
-    signatures: [MockSignature1, MockSignature1],
+    predict: MockSignature1,
 };
 
 export const MockModelVersion1Model1: IModelVersion = {
@@ -16,7 +16,7 @@ export const MockModelVersion1Model1: IModelVersion = {
     created: new Date(),
     finished: new Date(),
     modelVersion: 1,
-    modelContract: { modelName: 'ModelName', signatures: [MockSignature1]},
+    modelContract: { modelName: 'ModelName', predict: MockSignature1},
     runtime: MockRuntime,
     model: MockModel1,
     hostSelector: MockHostSelector,
@@ -31,7 +31,7 @@ export const MockModelVersion2Model1: IModelVersion = {
     created: new Date(),
     finished: new Date(),
     modelVersion: 2,
-    modelContract: { modelName: 'ModelName', signatures: [MockSignature1, MockSignature1, MockCompositeSignature]},
+    modelContract: { modelName: 'ModelName', predict: MockSignature1 },
     runtime: MockRuntime3,
     model: MockModel1,
     hostSelector: MockHostSelector,
@@ -46,7 +46,7 @@ export const MockModelVersion3Model2: IModelVersion = {
     created: new Date(),
     finished: new Date(),
     modelVersion: 1,
-    modelContract: { modelName: 'ModelName', signatures: [MockSignature2]},
+    modelContract: { modelName: 'ModelName', predict: MockSignature2},
     runtime: MockRuntime2,
     model: MockModel2,
     hostSelector: MockHostSelector,

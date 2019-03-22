@@ -1,6 +1,7 @@
 import { IField, ISignature } from '@shared/_index';
 
 const SimpleInput: IField = {
+    profile: 'TEXT',
     name: 'simple_input_1',
     dtype: 'DTYPE',
     shape: {
@@ -9,6 +10,7 @@ const SimpleInput: IField = {
 };
 
 const SimpleOutput: IField = {
+    profile: 'TEXT',
     name: 'simple_output_1',
     dtype: 'DTYPE',
     shape: {
@@ -17,6 +19,7 @@ const SimpleOutput: IField = {
 };
 
 const SimpleInput2: IField = {
+    profile: 'TEXT',
     name: 'simple_input_2',
     dtype: 'DTYPE',
     shape: {
@@ -40,7 +43,7 @@ export const MockSignature1: ISignature = {
 export const MockSignature2: ISignature = {
     signatureName: 'signature_2',
     inputs: [SimpleInput2],
-    outputs: [{ name: 'output_2'}],
+    outputs: [{profile: 'TEXT', name: 'output_2'}],
 };
 
 export const MockCompositeSignature  = {

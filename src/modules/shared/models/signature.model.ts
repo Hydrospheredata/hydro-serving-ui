@@ -8,6 +8,7 @@ export interface IShape {
     unknownRank?: boolean;
 }
 export interface IField {
+    profile: string;
     dtype?: string;
     name?: string;
     shape?: IShape;

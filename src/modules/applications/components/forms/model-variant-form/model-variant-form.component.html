@@ -59,16 +59,6 @@
                     {{ (selectedModelVersion$ | async)?.hostSelector?.name || '-' }}
                 </span>
             </div>
-            <div class="service__field service__field--signatureName">
-                <label class="service__field-label">
-                    Signature name
-                </label>
-                <mdl-select formControlName="signatureName">
-                    <mdl-option 
-                        *ngFor="let signature of (selectedModelVersion$ | async)?.modelContract?.signatures"
-                        [value]="signature.signatureName">{{ signature.signatureName }}</mdl-option>
-                </mdl-select>
-            </div>
         </div>
     </div>
     <div

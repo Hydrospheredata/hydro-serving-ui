@@ -69,7 +69,7 @@
         </div>
 
         <div class="content__body-section">
-            <hydro-signatures [signatures]="(modelVersion$ | async)?.modelContract?.signatures"></hydro-signatures>
+            <hydro-signatures [signature]="(modelVersion$ | async)?.modelContract?.predict"></hydro-signatures>
         </div>
     </div>
 </div>
