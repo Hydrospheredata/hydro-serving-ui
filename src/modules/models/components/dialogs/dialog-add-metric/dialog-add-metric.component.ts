@@ -97,11 +97,11 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
                 case 'ImageAEMetricSpec':
                   const xx: any = {
                     applicationName: this.fb.control('')
-                  }
+                  };
                   if (withHealth) {
                     xx.threshold = this.fb.control('');
                   }
-                  this.form.setControl('confg', this.fb.group(xx));
+                  this.form.setControl('config', this.fb.group(xx));
                   break;
                 case 'AEMetricSpec':
                 case 'RFMetricSpec':
