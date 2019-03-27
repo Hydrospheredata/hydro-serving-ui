@@ -37,6 +37,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
     logError$: BehaviorSubject<any>;
     selectedLogItem: LogItem;
 
+    metrics: string[];
     metricDataFrom: IMetricData;
     metricDataTo: IMetricData;
     dateFrom: string;
@@ -75,6 +76,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
             this.metricSpecificationProvider$,
             this.onClickGetLog
             ).pipe(
+                tap(([mv, msp]) => this.metrics = msp.metrics),
                 switchMap(([mv, msp]) => this.getData(mv, msp)),
                 map(([reqstoreData, sonarData]) => this.toLog(reqstoreData, sonarData)),
                 tap(_ => {
@@ -90,8 +92,6 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
     }
 
     ngOnDestroy(): void {
-        //Called once, before the instance is destroyed.
-        //Add 'implements OnDestroy' to the class.
         this.updateLogSub.unsubscribe();
     }
 
@@ -190,10 +190,12 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
         const log: Log = {};
         if (!reqstoreData || !sonarData) { return {}; }
 
+        const length = (sonarData.length / this.metrics.length);
+
         try {
             const index = this.findIndex(sonarData);
 
-            for (let i = index, l = sonarData.length; i < l; i++ ) {
+            for (let i = index, l = length; i < l; i++ ) {
                 const traces = JSON.parse(sonarData[i].labels.traces);
 
                 traces.forEach(trace => {
