@@ -102,7 +102,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
                 const { trace, traces} = from.labels;
                 let traceArr;
                 if (trace) {
-                    this.dateFrom = this.getTimestampFromTrace(trace);
+                    this.dateFrom = this.getTimestampFromTrace(JSON.parse(trace));
                 } else {
                     traceArr = this.parseTraces(traces);
                     this.dateFrom = this.getTimestampFromTrace(traceArr[0]);
@@ -114,7 +114,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
                 const { trace, traces} = to.labels;
                 let traceArr;
                 if (trace) {
-                    this.dateTo = this.getTimestampFromTrace(trace);
+                    this.dateTo = this.getTimestampFromTrace(JSON.parse(trace));
                 } else {
                     traceArr = this.parseTraces(traces);
                     this.dateTo = this.getTimestampFromTrace(traceArr[0]);
