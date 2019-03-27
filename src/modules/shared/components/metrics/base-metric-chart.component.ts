@@ -182,7 +182,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                 },
             },
             tooltip: {
-                shared: true,
+                pointFormat: 'Date: {point.x:%e. %b} Value {point.y:.2f}',
             },
             plotOptions: {
                 series: {

@@ -36,6 +36,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     public application: Application;
     public stageId: number;
     public signatureName: string;
+    public sources$: Observable<string[]>;
 
     public metricSpecificationKinds: IMetricSpecifiocationKind[] = [
         {name: 'Kolmogorov-Smirnov', className: 'KSMetricSpec'},
@@ -61,9 +62,9 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
         this.modelVersion$ = this.store.select(fromModels.getSelectedModelVersion).pipe(filter(mv => !!mv));
         this.applications$ = this.store.select(fromApplications.getAllApplications);
 
-        this.signatureNameSub = this.modelVersion$.pipe(
-            switchMap( modelVersion => this.signatureName = this.getInputName(modelVersion))
-        ).subscribe();
+        this.sources$ = this.modelVersion$.pipe(
+            switchMap( modelVersion => of(this.getInputNames(modelVersion)))
+        );
     }
 
     ngOnInit() {
@@ -107,7 +108,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
                 case 'AEMetricSpec':
                 case 'RFMetricSpec':
                     const x: any = {
-                        input: this.fb.control(this.signatureName),
+                        input: this.fb.control(''),
                         applicationName: this.fb.control(''),
                     };
 
@@ -119,7 +120,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
                     break;
                 case 'GANMetricSpec':
                     this.form.setControl('config', this.fb.group({
-                        input: this.fb.control(this.signatureName),
+                        input: this.fb.control(''),
                         applicationName: this.fb.control(''),
                     }));
                     break;
@@ -142,15 +143,22 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
                     break;
                 case 'KSMetricSpec':
                     this.form.setControl('config', this.fb.group({
-                        input: this.fb.control(this.signatureName, Validators.required),
+                        input: this.fb.control('', Validators.required),
                     }));
                     break;
             }
         });
     }
 
-    getInputName(modelVersion: IModelVersion): string {
-        return modelVersion.modelContract.predict.signatureName;
+    getInputNames(modelVersion: IModelVersion): string[] {
+        if (!modelVersion) {
+             return [];
+        }
+
+        const getName = input => input.name;
+        const res = modelVersion.modelContract.predict.inputs.map(getName);
+
+        return res;
     }
 
     onSubmit() {
