@@ -1,0 +1,26 @@
+.model-versions {
+    &__header {
+        background: #e6e9ed;
+        padding: 2px 16px;
+        border-top-left-radius:2px; 
+        border-top-right-radius:2px;
+        text-align: center;
+    }
+
+}
+
+.actions {
+    display: flex;
+    &__item {
+        cursor: pointer;
+        transform: .3s ease color;
+        margin-left: 8px;
+        &:hover {
+            color: #35469C;
+        }
+    }
+    &__icon {
+        width: 24px;
+        height: 24px;
+    }
+}

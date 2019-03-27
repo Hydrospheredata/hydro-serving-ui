@@ -2,12 +2,9 @@ import { Component, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 
 import * as fromApplications from '@applications/reducers';
 import { HydroServingState } from '@core/reducers';
-import { Store } from '@ngrx/store';
-
-import { InfluxDBService} from '@core/services';
-import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
-import { Application, HealthRow, ModelVersion, ApplicationStatus, IApplication } from '@shared/models/_index';
+import { Store } from '@ngrx/store';
+import { Application, ModelVersion, ApplicationStatus, IApplication } from '@shared/models/_index';
 import { Observable, Subscription } from 'rxjs';
 
 import {
@@ -41,7 +38,7 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
 
     constructor(
         public store: Store<HydroServingState>,
-        public dialog: DialogService,
+        public dialog: DialogService
     ) {
         this.application$ = this.store.select(fromApplications.getSelectedApplication).pipe(
             tap(application => this.application = application)

@@ -27,14 +27,16 @@ export interface RouterStateUrl {
 export class CustomRouterStateSerializer implements RouterStateSerializer<RouterStateUrl> {
     serialize(routerState: RouterStateSnapshot): RouterStateUrl {
         let route = routerState.root;
+        let params = {};
 
         while (route.firstChild) {
+            params = Object.assign(params, route.params);
             route = route.firstChild;
         }
 
         const { url, root: { queryParams } } = routerState;
-        const { params } = route;
 
+        params = Object.assign(params, route.params);
         return { url, params, queryParams };
     }
 }
@@ -91,5 +93,13 @@ export const getSelectedMetrics = createSelector(
                     }
                     , []
                 );
+    }
+);
+
+export const getSelectedMetric = createSelector(
+    getMetricsEntities,
+    getRouterState,
+    (metrics, router): IMetricSpecification => {
+        return router.state.params.metricId && metrics[router.state.params.metricId];
     }
 );

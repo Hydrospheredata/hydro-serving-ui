@@ -8,8 +8,8 @@ import {
     ViewChild,
     OnChanges,
     SimpleChanges,
-    ChangeDetectionStrategy,
-    OnDestroy } from '@angular/core';
+    OnDestroy, 
+    ChangeDetectionStrategy} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import * as HighchartsNoDataToDisplay from 'highcharts/modules/no-data-to-display.src';
 import * as moment from 'moment';
@@ -20,20 +20,13 @@ import { Subscription, Subject, Observable, interval, combineLatest } from 'rxjs
 import {
     switchMap,
     tap,
-    startWith
+    startWith,
+    takeUntil
 } from 'rxjs/operators';
 
 import { InfluxDBService } from '@core/services';
-import { MetricsService } from '@core/services/metrics/metrics.service';
+import { MetricsService, IMetricData } from '@core/services/metrics/metrics.service';
 import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
-
-interface IMetricData {
-    name: string;
-    value: number;
-    labels: {modelVersionId: string};
-    timestamp: number;
-    health: any;
-}
 
 @Component({
     selector: 'hs-base-metric-chart',
@@ -52,12 +45,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     public makeRequest: Subject<Array<Promise<IMetricData[]>>> = new Subject();
     public requests: Array<Promise<any>>;
 
-    public showDeleteIcon;
-
-    @Input()
-    set canDelete(canDelete: boolean) {
-        this.showDeleteIcon = canDelete || false;
-    }
+    public from: IMetricData;
+    public to: IMetricData;
 
     @Input()
     protected chartTimeWidth: number = 0;
@@ -74,7 +63,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     protected providersSubject: Subject<any> = new Subject<any>();
 
     @Output()
-    private delete: EventEmitter<any> = new EventEmitter();
+    private selectPoints: EventEmitter<any> = new EventEmitter<{from: IMetricData, to: IMetricData}>();
 
     @ViewChild('chartContainer')
     private chartContainerRef: ElementRef;
@@ -82,18 +71,23 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     // chart
     private chart: Highcharts.ChartObject;
     private chartBands: { [metricName: string]: string[] } = {};
-    private plotBands: { [metricName: string]: Array<{from: number, to: number}> } = {};
-    private series: { [metricName: string]: {name: string; data: Array<[number, number]>}} = {};
+    private plotBands: { [metricName: string]: Array<{from: IMetricData, to: IMetricData}> } = {};
+    private series: { [metricName: string]: {name: string; data: Array<{x: any, y: any, name: any}>}} = {};
 
     // common data
     private metricsData: IMetricData[] = [];
     private thresholds: {[uniqName: string]: number} = {};
     private updateChartSub: Subscription;
 
+    private selectSeriesPoint$: Subject<IMetricData> = new Subject();
+    private onDestroy$: Subject<any>;
+
     constructor(
         public metricsService: MetricsService,
         public influxdbService: InfluxDBService
     ) {
+        this.onDestroy$ = new Subject();
+
         this.updateChartObservable$ = combineLatest(
             this.timeSubject.asObservable(),
             this.providersSubject.asObservable(),
@@ -101,6 +95,17 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         );
 
         this.selfUpdate();
+        this.selectSeriesPoint$.pipe(
+            takeUntil(this.onDestroy$)
+        ).subscribe(metricData => {
+            if(this.from === undefined || this.to) {
+                this.from = metricData;
+                this.to = undefined;
+            } else {
+                this.to = metricData;
+            }
+            this.selectPoints.emit({from: this.from, to: this.to});
+        });
     }
 
     ngOnInit(): void {
@@ -108,7 +113,9 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.updateChartSub.unsubscribe();
+        this.onDestroy$.next('');
+        this.onDestroy$.complete();
+        this.onDestroy$ = null;
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -135,12 +142,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         this.thresholds = newThresholds;
     }
 
-    public onDelete(): void {
-        const { id } = this.metricSpecificationProvider.byModelVersionId[this.modelVersionId];
-
-        this.delete.emit(id);
-    }
-
     protected getRequestPromise(id, i, metrics): Promise<IMetricData[]> {
         return this.metricsService.getMetrics(
             id.toString(),
@@ -151,6 +152,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private initChart(): void {
+        const self = this;
+
         HighchartsNoDataToDisplay(Highcharts);
         this.chart = Highcharts.chart(this.chartContainerRef.nativeElement, {
             credits: {
@@ -159,6 +162,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             chart: {
                 type: 'spline',
                 animation: false,
+                height: '300px',
             },
             title: {
                 text: '',
@@ -181,6 +185,19 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                 shared: true,
             },
             plotOptions: {
+                series: {
+                    cursor: 'pointer',
+                    point: {
+                        events: {
+                            click(e) {
+                                const { key } = this.options;
+                                self.selectSeriesPoint$.next(key as IMetricData);
+                                return true;
+                            },
+                            select: () => true,
+                        },
+                    },
+                },
                 column: {
                     grouping: false,
                     shadow: false,
@@ -201,7 +218,13 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     get title(): string {
-        return this.metricSpecificationProvider.byModelVersionId[this.modelVersionId].name;
+        const versions = Object.keys(this.metricSpecificationProvider.byModelVersionId);
+
+        if (versions.length > 1) {
+            return this.metricSpecificationProvider.kind;
+        } else {
+            return this.metricSpecificationProvider.byModelVersionId[versions[0]].name;
+        }
     }
 
     private drawSeries(): void {
@@ -234,6 +257,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private drawBands(): void {
         const plotBandsEntries = Object.entries(this.plotBands);
         const chartBandsEntries = Object.entries(this.chartBands);
+        const self = this;
 
         chartBandsEntries.forEach(([_, ids]) =>
             ids.forEach(id => this.chart.xAxis[0].removePlotBand(id))
@@ -248,10 +272,15 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     const id = `${from}_${to}`;
                     this.chartBands[metricName].push(id);
                     this.chart.xAxis[0].addPlotBand({
-                        from: from * 1000,
-                        to: to * 1000,
+                        from: from.timestamp * 1000,
+                        to: to.timestamp * 1000,
                         color: 'rgba(176, 0, 32, 0.2)',
                         id,
+                        events: {
+                            click(e) {
+                                self.selectPoints.emit({from, to});
+                            },
+                        },
                     });
                 });
             });
@@ -294,8 +323,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             return;
         }
 
-        const newSeries: { [metricName: string]: {name: string; data: Array<[number, number]>}} = {};
-        const newPlotBands: {[metricName: string]: Array<{from: number, to: number}>} = {};
+        const newSeries: { [metricName: string]: {name: string; data: Array<{x: any, y: any, name: any, key: IMetricData}>}} = {};
+        const newPlotBands: {[metricName: string]: Array<{from: IMetricData, to: IMetricData}>} = {};
 
         let tmpBandObject = null;
 
@@ -315,7 +344,12 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                newSeries[uniqName] = { name: uniqName, data: [] };
             }
 
-            newSeries[uniqName].data.push([timestamp * 1000, value]);
+            newSeries[uniqName].data.push({
+                x: timestamp * 1000,
+                y: value,
+                name: timestamp,
+                key: currentMetricData,
+            });
 
             // plotBands
             if ( i > plotGenerateStop) { continue; }
@@ -325,7 +359,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
             if (tmpBandObject) {
                 if (health === false) {
-                    tmpBandObject.to = timestamp;
+                    tmpBandObject.to = currentMetricData;
                  }
                 if (health === true || isLastElement) {
                     newPlotBands[uniqName].push(Object.assign({}, tmpBandObject));
@@ -334,7 +368,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             } else {
                 if (health === true) { continue; }
                 if (health === false) {
-                    tmpBandObject = { from: timestamp, to: timestamp };
+                    tmpBandObject = { from: currentMetricData, to: currentMetricData };
                 }
             }
         }
@@ -345,11 +379,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
     private selfUpdate() {
         this.updateChartSub = this.updateChartObservable$.pipe(
-            tap(_ => {
-                console.group('%c updates', 'color: tomato');
-                console.dir(_);
-                console.groupEnd();
-            }),
             switchMap(([time, providers]) => {
                 const {
                     byModelVersionId,
@@ -366,7 +395,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             tap(([primaryMetricData, comparedMetricData]: [IMetricData[], IMetricData[]]) => {
                 this.metricsData = primaryMetricData.concat(comparedMetricData || []);
             }),
-            tap(_ => this.redrawChart())
+            tap(_ => this.redrawChart()),
+            takeUntil(this.onDestroy$)
         ).subscribe();
     }
 

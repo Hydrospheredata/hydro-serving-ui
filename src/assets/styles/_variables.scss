@@ -1,13 +1,10 @@
 // BASE
 $base-size: 8px;
 
-
-
 // Colors
 $color-base: #04143c;
-$main-bg-color: #f8f9fb;
+$main-bg-color: #fdfdfd;
 
-$aside-bg-color: #f2f4f7;
 $color--success: #8cc63e;
 $color--failed: #ef3a41;
 $color--primary: #b8d7f9;
@@ -17,7 +14,6 @@ $color--light-blue: #4d9bf1;
 $color--blue: #539ae9;
 
 $border-color: #f1f3f7;
-
 $secondary-color: #e6e9ed;
 
 $error-container-border-color: #da3d3d;
@@ -35,8 +31,6 @@ $font-family-ultrabold: 'Museo Sans UltraBold',  sans-serif;
 // Font size
 $base-font-size: $base-size * 2;
 $title-font-size: $base-font-size * 1.5;
-
-
 
 // forms section
 $form-border-color-focus: #04143c;

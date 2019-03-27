@@ -71,7 +71,7 @@ export class ModelVariantFormService implements OnDestroy {
         return {
             weight: 100,
             modelId,
-            modelVersionId: modelVersion && modelVersion.id
+            modelVersionId: modelVersion && modelVersion.id,
         };
     }
 
@@ -79,7 +79,7 @@ export class ModelVariantFormService implements OnDestroy {
         return {
             weight: modelVariant.weight,
             modelId: modelVariant.modelVersion.model.id,
-            modelVersionId: modelVariant.modelVersion.id
+            modelVersionId: modelVariant.modelVersion.id,
         };
     }
 
@@ -98,7 +98,7 @@ export class ModelVariantFormService implements OnDestroy {
             modelVersionId: new FormControl(
                 modelVariantFormData.modelVersionId,
                 this.customValidators.required()
-            )
+            ),
         });
     }
 

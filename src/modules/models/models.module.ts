@@ -10,9 +10,13 @@ import { ModelsRoutingModule } from './models.router';
 import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
+    ModelVersionsListComponent,
     ModelVersionDetailsComponent,
     ProfilerComponent,
+    ModelVersionContainerComponent,
+    ModelVersionMonitoringContainerComponent,
     ModelVersionMonitoringComponent,
+    ModelVersionMonitoringLogComponent,
     CompareComponent,
 } from '@models/components';
 import {
@@ -26,6 +30,7 @@ import { ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard } from '@mod
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilesModule } from '@profiles/profiles.module';
+
 @NgModule({
     imports: [
         ModelsRoutingModule,
@@ -43,13 +48,17 @@ import { ProfilesModule } from '@profiles/profiles.module';
     declarations: [
         ModelsWrapperComponent,
         ModelDetailsComponent,
+        ModelVersionsListComponent,
         ModelVersionDetailsComponent,
         DialogDeleteModelComponent,
         DialogAddMetricComponent,
         ProfilerComponent,
+        ModelVersionMonitoringContainerComponent,
         ModelVersionMonitoringComponent,
         DialogDeleteMetricComponent,
         CompareComponent,
+        ModelVersionMonitoringLogComponent,
+        ModelVersionContainerComponent,
     ],
     entryComponents: [
         DialogDeleteModelComponent,

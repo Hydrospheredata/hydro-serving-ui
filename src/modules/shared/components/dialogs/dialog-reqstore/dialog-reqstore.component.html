@@ -1,0 +1,25 @@
+<section class='log'>
+    <header сlass='log__header'>
+        <div class='log__title'>Reqstore log</div>
+        <div class='log__description'>
+            <span class='log__description-label'>from:</span> {{ dateTimeFrom }} <span class='log__description-label'>to:</span>{{ dateTimeTo }}
+        </div>
+    </header>
+    <article *ngFor="let item of this.reqstoreLog$ | async" class='log__item'>
+        <header class='log__item-header'>
+            <span>Time:</span> {{ item.record }} <span>Entry:</span> {{ item.entry }}
+        </header>
+        <div>
+            <div class='log__item-req'>Request: </div>
+            <div>
+                {{ item.req | json }}
+            </div>
+        </div>
+        <div>
+            <div class='log__item-res'>Response: </div>
+            <div>
+                {{ item.res | json }}
+            </div>
+        </div>
+    </article>
+</section>
