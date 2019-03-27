@@ -15,25 +15,16 @@ export interface IReqstoreLog {
 
 @Injectable()
 export class ReqstoreService {
-    private baseAPIUrl: string;
+    private baseReqstoreUrl: string;
 
     constructor(
         private http: HttpService
-    ) {
-        this.baseAPIUrl = `${environment.reqstoreUrl}`;
-    }
+      ) {
+        this.baseReqstoreUrl = `${environment.reqstoreUrl}`;
+      }
 
     public getData(id, from, to): Observable<any> {
-        let base;
-        if (environment.production) {
-            const { protocol, hostname, port } = window.location;
-            base = `${protocol}//${hostname}:${port}`;
-        } else {
-            base = `${environment.host}`;
-        }
-
-
-        return this.http.getv2(`${base}:7265/${id}/get?from=${from}&to=${to}`, {
+        return this.http.get(`${this.baseReqstoreUrl}/${id}/get?from=${from}&to=${to}`, {
             responseType: 'arraybuffer',
         }).pipe(
             map((_: any) => {
