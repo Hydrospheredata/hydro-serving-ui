@@ -65,7 +65,7 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
             component: DialogAddMetricComponent,
             styles: {
                 'width': '600px',
-                'overflow': 'unset',
+                'overflow': 'scroll',
                 'max-height': 'calc(100vh - 48px)',
             },
         });

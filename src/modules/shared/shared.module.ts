@@ -40,7 +40,8 @@ import {
     KolmogorovSmirnovChartComponent,
     DialogModelsEmptyComponent,
     ApplicationStatusComponent,
-    DialogReqstoreComponent
+    DialogReqstoreComponent,
+    MetadataComponent
 } from './components/_index';
 
 // Directives
@@ -79,6 +80,7 @@ const COMPONENTS = [
     DialogModelsEmptyComponent,
     ApplicationStatusComponent,
     DialogReqstoreComponent,
+    MetadataComponent,
 ];
 
 const DIRECTIVES = [

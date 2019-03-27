@@ -1,8 +1,5 @@
 .reqstore {
-    margin: 36px 48px;
-    &__header {
-        margin-bottom: 24px;
-    }
+
 }
 
 .selector {
@@ -26,7 +23,7 @@
     width: 100%;
     box-shadow: 0 0 4px -2px black;
     &__timestamps {
-        min-width: 180px;
+        min-width: 240px;
         background: white;
         max-height: 400px;
         overflow: scroll;
@@ -41,15 +38,15 @@
             justify-content: space-between;
             transition: .3s all ease;
             cursor: pointer;
-            &-count {
-                width: 20px;
-                text-align: center;
-                background: #f6faff;
+            color: lightgray;
+            &-count, &-failed-count {
                 color: #3024809c;
-                border-radius: 4px;
+            }
+            &-failed-count {
+                color: #ff4141;
             }
             &--selected, &:hover {
-                background: #dfecff;
+                color: black;
             }
         }
     }
@@ -74,7 +71,7 @@
                 padding: 6px;
                 color: white;
             }
-            &-request, &-response {
+            &-request, &-response,&-metric-data {
                 padding: 6px;
             }
             &-title {
@@ -87,4 +84,23 @@
 .chart {
     max-width: 768px;
     max-height: 400px;
+}
+
+.metric-data {
+    &--is-error {
+        background: #f39090;
+        color: white;
+    }
+}
+
+.time-interval {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+    padding-right: 14px;
+    &__label {
+        line-height: 14px;
+        margin-right: 4px;
+    }
 }

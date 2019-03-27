@@ -1,11 +1,11 @@
 <section class='reqstore'>
-    <header class='reqstore__header'>
-        <div class='button button--white reqstore__header-button' [routerLink]="[ '../' ]">
-            <hydro-icon class="button__icon" [type]="'icon-left'" ></hydro-icon>
-            back to monitoring 
-        </div>
-    </header>
     <ng-container *ngIf="metricSpecificationProvider$ | async;let metricSpecificationProvider; else error">
+        <div class="time-interval">
+            <label class="time-interval__label">Time interval: </label>
+            <mdl-select class="time-interval__select" label="Chart time window" [(ngModel)]="chartTimeWidth">
+                <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms">{{ param.text }}</mdl-option>
+            </mdl-select>
+        </div>
         <ng-container [ngSwitch]="metricSpecificationProvider.kind">
             <hs-kolmogorov-smirnov-metric-chart 
                 *ngSwitchCase="'KSMetricSpec'"
@@ -27,44 +27,67 @@
 
     <div class='selector'>
         <div class='selector__title'>Select</div>
-        <div class='selector__item'><span>from:</span> {{dateFrom || '-'}}</div>
-        <div class='selector__item'><span>to:</span> {{dateTo || '-'}}</div>
+        <div class='selector__item'><span>from:</span> 
+            <span *ngIf='dateFrom'> {{ dateFrom*1000 | utcToLocal }}</span>
+            <span *ngIf='!dateFrom'> - </span>
+        </div>
+        <div class='selector__item'><span>to:</span>
+            <span *ngIf='dateFrom'> {{dateTo*1000 | utcToLocal}}</span>
+            <span *ngIf='!dateFrom'>-</span>
+        </div>
         <div *ngIf='dateFrom && dateTo' class='button button--white' (click)="getLog()">get log</div>
     </div>
 
     <div *ngIf='logError$ | async; let error' class='error-container'>
         {{ error }}
     </div>
-
     <ng-container *ngIf='log$ | async; let log'>
         <div class='log'>
             <div class='log__timestamps'>
                 <div class='log__timestamps-title'>Timestamps</div> 
                 <div 
                     class='log__timestamps-item'
-                    [ngClass]="{'clog__timestamps-item--selected': isSelected(logItem)}"
+                    [ngClass]="{'log__timestamps-item--selected': selectedLogItem === logItem.value}"
                     *ngFor="let logItem of log | keyvalue"
-                    (click)="selectLogItem(logItem)"
+                    (click)="selectLogItem(logItem.value)"
                 >
-                    <span>{{ logItem.key }}</span>
-                    <span class='log__timestamps-item-count'>{{ logItem.value.length }}</span>
+                    <span>{{ logItem.key * 1000 | utcToLocal }}</span>
+                    <span>
+                        <span *ngIf='logItem.value.failed' class='log__timestamps-item-failed-count'>{{ logItem.value.failed }}/</span><span class='log__timestamps-item-count'>{{ logItem.value.count }}</span>
+                    </span>
                 </div>
             </div>
             <div class='log__details'>
                 <div class='log__details-title'> Details </div>
                 <div class='log__details-container'>
-                    <div class='log__details-item' *ngFor='let item of logResponseRequest$ | async'>
-                        <div class='log__details-item-uid'>UID: {{ item.uid }}</div>
-                        <div class='log__details-item-request'>
-                            <div class='log__details-item-title'>request</div>
-                            {{ item.request.modelSpec.signatureName}}
-                            {{ item.request | json }}
+                    <ng-container *ngIf='selectedLogItem'>
+                        <div class='log__details-item' *ngFor='let item of selectedLogItem.entities'>
+                            <div 
+                                class='metric-data log__details-item-metric-data'
+                                [ngClass]="{'metric-data--is-error': item.metricData.health === false}"
+                            >
+                                {{ item.metricData.name }}
+                                {{ item.metricData.value }}
+                            </div>
+                            <div class='log__details-item-request'>
+                                <div class='log__details-item-title'>request</div>
+                                inputs:
+                                <div *ngFor='let input of item.request.inputs | keyvalue'>
+                                    <div>name : {{ input.key }}</div>
+                                    <div>val: {{ input.value.doubleVal | json}}</div>
+                                </div>
+                            </div>
+                            <div class='log__details-item-response'>
+                                <div class='log__details-item-title'>response</div>
+                                <div>outputs</div>
+                                {{ item.response | json }}
+                                <div *ngFor='let output of item.response.outputs | keyvalue'>
+                                        <div>name : {{ output.key }}</div>
+                                        <div>val: {{ output.value.doubleVal | json}}</div>
+                                    </div>
+                            </div>
                         </div>
-                        <div class='log__details-item-response'>
-                            <div class='log__details-item-title'>response</div>
-                            {{ item.response | json }}
-                        </div>
-                    </div>
+                    </ng-container>
                 </div>
             </div>
         </div>

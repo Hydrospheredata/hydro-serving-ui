@@ -1,3 +1,28 @@
+.application {
+    &__header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 48px;
+        &-title {
+            font-size: 18px;
+        }
+        &-monitoring-button {
+            margin-right: 8px;
+        }
+        &-buttons {
+            position: absolute;
+            &--right {
+                right: 24px;
+            }
+            &--left {
+                left: 24px;
+            }
+        }
+    }
+}
+
+
 .alerts {
     &-list {
         list-style: none;

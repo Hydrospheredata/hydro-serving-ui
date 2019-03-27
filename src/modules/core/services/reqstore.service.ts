@@ -23,8 +23,17 @@ export class ReqstoreService {
         this.baseAPIUrl = `${environment.reqstoreUrl}`;
     }
 
-    public getData(from, to): Observable<any> {
-        return this.http.getv2(`http://localhost:7265/app1stage0/get?from=${from}&to=${to}`, {
+    public getData(id, from, to): Observable<any> {
+        let base;
+        if (environment.production) {
+            const { protocol, hostname, port } = window.location;
+            base = `${protocol}//${hostname}:${port}`;
+        } else {
+            base = `${environment.host}`;
+        }
+
+
+        return this.http.getv2(`${base}:7265/${id}/get?from=${from}&to=${to}`, {
             responseType: 'arraybuffer',
         }).pipe(
             map((_: any) => {

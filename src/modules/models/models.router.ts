@@ -9,7 +9,8 @@ import {
     ModelVersionMonitoringComponent,
     CompareComponent,
     ModelVersionMonitoringLogComponent,
-    ModelVersionMonitoringContainerComponent
+    ModelVersionMonitoringContainerComponent,
+    ModelVersionContainerComponent
 } from '@models/components';
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 
@@ -37,33 +38,37 @@ import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
                     },
                     {
                         path: ':modelId/:modelVersionId',
-                        component: ModelVersionDetailsComponent,
+                        component: ModelVersionContainerComponent,
                         data: {anim: 'modelVerDetail'},
                         canActivate: [ModelVersionDetailsGuard],
-                    },
-                    {
-                        path: ':modelId/:modelVersionId/profiler',
-                        component: ProfilerComponent,
-                        data: {anim: 'modelVerDetail'},
-                        canActivate: [ModelVersionDetailsGuard],
-                    },
-                    {
-                        path: ':modelId/:modelVersionId/monitoring',
-                        component: ModelVersionMonitoringComponent,
-                        data: {anim: 'modelVerDetail'},
-                        canActivate: [ModelVersionDetailsGuard],
-                    },
-                    {
-                        path: ':modelId/:modelVersionId/monitoring',
-                        component: ModelVersionMonitoringContainerComponent,
                         children: [
                             {
                                 path: '',
-                                component: ModelVersionMonitoringComponent,
+                                redirectTo: 'details',
+                                pathMatch: 'full',
                             },
                             {
-                                path: ':metricId',
-                                component: ModelVersionMonitoringLogComponent,
+                                path: 'details',
+                                component: ModelVersionDetailsComponent,
+                            },
+                            {
+                                path: 'profiler',
+                                component: ProfilerComponent,
+                                data: {anim: 'modelVerDetail'},
+                            },
+                            {
+                                path: 'monitoring',
+                                component: ModelVersionMonitoringContainerComponent,
+                                children: [
+                                    {
+                                        path: '',
+                                        component: ModelVersionMonitoringComponent,
+                                    },
+                                    {
+                                        path: ':metricId',
+                                        component: ModelVersionMonitoringLogComponent,
+                                    },
+                                ],
                             },
                         ],
                     },

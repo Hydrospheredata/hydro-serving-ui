@@ -46,7 +46,7 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
                     );
 
                     if (latestModelVersions.length) {
-                        const { id: latestModelVersionId } = latestModelVersions[latestModelVersions.length - 1];
+                        const { id: latestModelVersionId } = latestModelVersions[0];
                         this.el.nativeElement.style.display = '';
                         this.latestModelVersionId = latestModelVersionId;
                     } else {

@@ -101,7 +101,7 @@ export class Profiles {
   public productionProfile: DoubleProfile | null;
 
   constructor(props: any = {}) {
-    this.trainingProfile = props.trainingProfile ? new DoubleProfile(props.trainingProfile) : null;
-    this.productionProfile = props.productionProfile ? new DoubleProfile(props.productionProfile) : null;
+    this.trainingProfile = props.training ? new DoubleProfile(props.training) : null;
+    this.productionProfile = props.production ? new DoubleProfile(props.production) : null;
   }
 }

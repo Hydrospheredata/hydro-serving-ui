@@ -10,8 +10,10 @@ import { ModelsRoutingModule } from './models.router';
 import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
+    ModelVersionsListComponent,
     ModelVersionDetailsComponent,
     ProfilerComponent,
+    ModelVersionContainerComponent,
     ModelVersionMonitoringContainerComponent,
     ModelVersionMonitoringComponent,
     ModelVersionMonitoringLogComponent,
@@ -46,6 +48,7 @@ import { ProfilesModule } from '@profiles/profiles.module';
     declarations: [
         ModelsWrapperComponent,
         ModelDetailsComponent,
+        ModelVersionsListComponent,
         ModelVersionDetailsComponent,
         DialogDeleteModelComponent,
         DialogAddMetricComponent,
@@ -55,6 +58,7 @@ import { ProfilesModule } from '@profiles/profiles.module';
         DialogDeleteMetricComponent,
         CompareComponent,
         ModelVersionMonitoringLogComponent,
+        ModelVersionContainerComponent,
     ],
     entryComponents: [
         DialogDeleteModelComponent,

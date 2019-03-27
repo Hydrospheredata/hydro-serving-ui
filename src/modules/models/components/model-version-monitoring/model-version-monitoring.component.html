@@ -1,18 +1,8 @@
 <section class="monitoring">
     <header class="monitoring__header">
-        <span class="monitoring__header-version">
-            {{(modelVersion$ | async)?.model.name}} v:{{(modelVersion$ | async)?.modelVersion}}
-        </span>
         <div class="monitoring__header-buttons">
-            <button class="button button--white navigation-button" [routerLink]="['../']">
-                <hydro-icon class="button__icon" [type]="'icon-left'" ></hydro-icon>
-                back to model version
-            </button>
-
-            <div class="monitoring__actions">
-                <div class="button button--white monitoring__actions-button" (click)="openAddMetricDialog()">add metric</div>
-                <div class="button button--white monitoring__actions-button" [routerLink]="['../../../compare']">compare versions</div>
-            </div>
+                <div class="button button--white monitoring__header-button" (click)="openAddMetricDialog()">add metric</div>
+                <div class="button button--white monitoring__header-button" [routerLink]="['../../../compare']">compare versions</div>
         </div>
 
     </header>

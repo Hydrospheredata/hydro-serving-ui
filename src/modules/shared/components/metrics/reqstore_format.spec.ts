@@ -1,6 +1,6 @@
 import {decodeTsRecord, asServingReqRes} from './reqstore_format';
 
-fdescribe('Yoyoyo', () => {
+describe('Yoyoyo', () => {
 
   const data = 
     `AAADngAAAABceU+JAAAAAAAAAAAAAAAHAAAAfwAAABkAAABeAQoHGgVjbGFpbRINCgF4EggIASoE
