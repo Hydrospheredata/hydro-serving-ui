@@ -29,11 +29,11 @@
         <div class='selector__title'>Select</div>
         <div class='selector__item'><span>from:</span> 
             <span *ngIf='dateFrom'> {{ dateFrom*1000 | utcToLocal }}</span>
-            <span *ngIf='!dateFrom'> - </span>
+            <span *ngIf='dateFrom === undefined'> - </span>
         </div>
         <div class='selector__item'><span>to:</span>
-            <span *ngIf='dateFrom'> {{dateTo*1000 | utcToLocal}}</span>
-            <span *ngIf='!dateFrom'>-</span>
+            <span *ngIf='dateTo'> {{dateTo*1000 | utcToLocal}}</span>
+            <span *ngIf='dateTo === undefined'>-</span>
         </div>
         <div *ngIf='dateFrom && dateTo' class='button button--white' (click)="getLog()">get log</div>
     </div>
