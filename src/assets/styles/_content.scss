@@ -31,6 +31,7 @@
     }
     &__body {
         padding: 80px 24px 24px;
+        max-width: 1200px;
     }
     &-info {
         margin-bottom: $base-size * 3;
