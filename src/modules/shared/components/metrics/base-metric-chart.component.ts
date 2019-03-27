@@ -57,7 +57,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     protected metrics: string[] = [];
     protected metricSpecId: string;
     protected metricSpecKind: string;
-    protected REQUEST_DELAY_MS: number = 2000;
+    protected REQUEST_DELAY_MS: number = 3000;
     protected updateChartObservable$: Observable<any>;
     protected timeSubject: Subject<any> = new Subject<any>();
     protected providersSubject: Subject<any> = new Subject<any>();
@@ -186,6 +186,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             },
             plotOptions: {
                 series: {
+                    turboThreshold: 10000,
                     cursor: 'pointer',
                     point: {
                         events: {
