@@ -1,37 +1,46 @@
 .monitoring {
-    position: relative;
-    &__title {
-        margin-bottom: 24px;
-        &-name {
-            font-size: 28px;
-            margin: 0;
-        }
-    }
-    &__version {
-        line-height: 24px;
-    }
-    &__actions {
+    &__header {
         display: flex;
-        position: absolute;
-        top: 4px;
-        right: 0;        
+        flex-direction: column;
+        justify-content: center;
         align-items: center;
-        width: 240px;
-        .add-metric-button {
-            margin-right: 8px;
+        position: relative;
+        margin-bottom: 36px;
+        &-title {
+            font-size: 18px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        &-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        &-button {
+            margin-left: 8px;
+            display: inline-block;
+            text-align: center;
+            width: 156px;
         }
     }
-}
 
-.navigation-button {
-    margin-bottom: 24px;
+    &__chart {
+        &-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+        }
+
+        &-button {
+            margin-left: 8px ;
+        }
+    }
 }
 
 .time-interval {
     display: flex;
     align-items: flex-end;
     margin-bottom: 20px;
-    justify-content: flex-end;
+    justify-content: flex-start;
     padding-right: 14px;
     &__label {
         line-height: 14px;
@@ -51,6 +60,16 @@
         padding: 0 8px;
     }
     &__button {
+
         display: inline-block;
     }
+}
+
+
+.empty-list-text {
+    text-align: center;
+    font-size: 20px;
+    color: #959cab;
+    font-style: italic;
+    padding: 64px;
 }

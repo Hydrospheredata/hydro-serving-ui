@@ -60,17 +60,17 @@ import { Observable } from 'rxjs';
     ],
 })
 export class ModelsWrapperComponent implements OnInit {
-    public models: Observable<IModel[]>;
+    models$: Observable<IModel[]>;
 
     constructor(
         private store: Store<fromModels.ModelsState>
     ) { }
 
     ngOnInit() {
-        this.models = this.store.select(fromModels.getAllModels);
+        this.models$ = this.store.select(fromModels.getAllModels);
     }
 
-    prepare(outlet: RouterOutlet) {
+    prepareAnimation(outlet: RouterOutlet) {
         return outlet.activatedRouteData && outlet.activatedRouteData.anim;
     }
 }

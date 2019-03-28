@@ -7,6 +7,7 @@ ENV MANAGER_HOST=localhost
 ENV SONAR_HOST=localhost
 ENV ELASTIC_HOST=localhost
 ENV INFLUX_HOST=localhost
+ENV REQSTORE_HOST=localhost
 
 LABEL DEPLOYMENT_TYPE=APP
 LABEL SERVICE_ID=-22
@@ -16,6 +17,6 @@ LABEL RUNTIME_ID=-22
 
 EXPOSE 9091
 
-CMD envsubst '${MANAGER_HOST} ${SONAR_HOST} ${ELASTIC_HOST} ${INFLUX_HOST}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf \
+CMD envsubst '${MANAGER_HOST} ${SONAR_HOST} ${ELASTIC_HOST} ${INFLUX_HOST} ${REQSTORE_HOST}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf \
  && cat /etc/nginx/conf.d/default.conf \
  && exec nginx -g 'daemon off;'

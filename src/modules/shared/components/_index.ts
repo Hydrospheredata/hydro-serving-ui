@@ -6,6 +6,7 @@ export * from './icons/icons.component';
 export * from './filter/filter.component';
 export * from './command-template/command-template.component';
 export * from './application-status/application-status.component';
+export * from './metadata/metadata.component';
 // metrics
 export * from './metrics/base-metric-chart.component';
 export * from '@shared/components/metrics/kolmogorov-smirnov-metric-chart.component';

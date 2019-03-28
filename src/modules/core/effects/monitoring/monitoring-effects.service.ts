@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import {of as observableOf,  Observable } from 'rxjs';
-import { switchMap, catchError ,  map } from 'rxjs/operators';
+import { switchMap, catchError ,  map, tap } from 'rxjs/operators';
 
 import { MdlSnackbarService } from '@angular-mdl/core';
 import * as HydroActions from '@core/actions/monitoring.actions';

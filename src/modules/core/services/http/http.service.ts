@@ -34,6 +34,12 @@ export class HttpService {
         );
     }
 
+    getv2(url, options) {
+        return this.http.get(url, this.hydroOptions(options)).pipe(
+            catchError(err => this.handleError(err))
+        );
+    }
+
     delete(url: string, options?: IHydroHttpOptions) {
         return this.http.delete(this.getFullUrl(url), this.hydroOptions(options)).pipe(
             catchError(err => this.handleError(err))

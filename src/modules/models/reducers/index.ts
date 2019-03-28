@@ -66,7 +66,9 @@ export const getSelectedModelId = createSelector(
 export const getSelectedModelVersion = createSelector(
     getModelVersionEntities,
     fromRoot.getRouterState,
-    (entities, router) => router.state && entities[router.state.params.modelVersionId]);
+    (entities, router) => {
+        return router.state && entities[router.state.params.modelVersionId]
+    });
 
 export const getModelVersionLoading = createSelector(
     getModelVersionState,
