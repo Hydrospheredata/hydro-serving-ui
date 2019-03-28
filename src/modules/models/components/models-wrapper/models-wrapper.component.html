@@ -1,9 +1,9 @@
 <div class="content-wrapper">
     <hydro-sidebar 
         class="sidebar"
-        [sidebarData]="models"
+        [sidebarData]="models$"
         [isFilterEnabled]="true"></hydro-sidebar>
-    <div [@anim]="prepare(out)" class="container" >
+    <div [@anim]="prepareAnimation(out)" class="container" >
         <router-outlet #out="outlet"></router-outlet>
     </div>
 </div>

@@ -19,10 +19,15 @@
         </label>
     </div>
     <div formGroupName="config">
-        <div class="row row--column" *ngIf="form.get('config').get('input')">
-            <label for="input">Input: </label>
-            <input [formControl]="form.get('config').get('input')" readonly name='input' class='input'>
-        </div>
+        <div class="row" *ngIf="form.get('config').get('input')">
+                <mdl-select
+                    [formControl]="form.get('config').get('input')"
+                    label="Choose input">	
+                    <mdl-option *ngFor="let source of sources$ | async" [value]="source">{{ source }}</mdl-option>	
+                </mdl-select>	
+            </div>
+
+        
         <div class="row" *ngIf="form.get('config').get('applicationName')">
             <label for="application">Application: </label>
             <mdl-select 

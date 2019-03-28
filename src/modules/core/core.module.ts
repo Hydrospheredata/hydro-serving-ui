@@ -42,6 +42,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
 import { MetricsService } from '@core/services/metrics/metrics.service';
+import { ReqstoreService } from '@core/services/reqstore.service';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { SharedModule } from '@shared/shared.module';
 
@@ -102,6 +103,7 @@ import { SharedModule } from '@shared/shared.module';
         HttpService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         SvgSpriteService,
+        ReqstoreService,
     ],
 })
 export class CoreModule { }

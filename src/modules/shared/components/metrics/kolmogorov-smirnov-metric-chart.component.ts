@@ -1,6 +1,7 @@
 import {
     Component,
-    ChangeDetectionStrategy
+    ChangeDetectionStrategy,
+    Injectable
 } from '@angular/core';
 
 import { InfluxDBService } from '@core/services';

@@ -39,13 +39,18 @@
 }
 
 .model-version-status {
+    padding: 2px 8px;
+    border-radius: 12px;
     &--released {
-        color: $color--success;
+        background: #C6F7E2;
+        color: #27AB83;
     }
     &--assembling {
-        color: $color--light-blue; 
+        background: #B3ECFF;
+        color: #2BB0ED; 
     }
     &--failed {
-        color: $color--failed;
+        background: #FFBDBD;
+        color: #E12D39;
     }
 }
