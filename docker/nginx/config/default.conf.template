@@ -1,18 +1,18 @@
 # upstreams
 
 upstream manager_grpc {
-  zone manager 64k;
+  zone manager_grpc 64k;
   server ${MANAGER_HOST}:${MANAGER_GRPC_PORT};
 }
 
 upstream monitoring_grpc {
-  zone monitoring 64k;
+  zone monitoring_grpc 64k;
   server ${MONITORING_HOST}:${MONITORING_GRPC_PORT};
 }
 
 upstream gateway_grpc {
-  zone gateway 64k;
-  server ${GATEWAY_HOST}:${GATEWAY_GRPC_HOST};
+  zone gateway_grpc 64k;
+  server ${GATEWAY_HOST}:${GATEWAY_GRPC_PORT};
 }
 
 upstream manager_http {
@@ -37,15 +37,19 @@ server {
   listen 9090 http2;
 
   location /tensorflow.serving. {
-    grpc_pass grpc://gateway;
+    grpc_pass grpc://gateway_grpc;
   }
 
   location /hydrosphere.manager. {
-    grpc_pass grpc://manager;
+    grpc_pass grpc://manager_grpc;
   }
 
   location /hydrosphere.monitoring. {
-    grpc_pass grpc://monitoring;
+    grpc_pass grpc://monitoring_grpc;
+  }
+
+  location /hydrosphere.discovery. {
+    grpc_pass grpc://manager_grpc;
   }
 }
 
