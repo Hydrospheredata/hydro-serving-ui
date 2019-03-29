@@ -8,8 +8,9 @@ import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { IModelVersion } from '@shared/_index';
 import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
-import { Observable, BehaviorSubject, combineLatest, Subject, of, merge, ReplaySubject, Subscription } from 'rxjs';
-import { map, tap, filter, switchMap, withLatestFrom, timestamp } from 'rxjs/operators';
+import { Observable, BehaviorSubject, combineLatest, Subject, ReplaySubject, Subscription } from 'rxjs';
+import { map, tap, filter, switchMap } from 'rxjs/operators';
+import { debug } from 'util';
 
 interface LogItem {
     count: number;
@@ -33,6 +34,8 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
     onClickGetLog: Subject<any>;
     log: ReplaySubject<Log>;
     log$: Observable<Log>;
+
+    selectedFeature: string;
 
     logError$: BehaviorSubject<any>;
     selectedLogItem: LogItem;
@@ -93,6 +96,10 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
 
     ngOnDestroy(): void {
         this.updateLogSub.unsubscribe();
+    }
+
+    onChangeFeature(feature) {
+        this.selectedFeature = feature;
     }
 
     onSelectPoints({from, to}: {from: IMetricData, to: IMetricData}): void {
@@ -156,25 +163,18 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
                     this.metricService.getMetrics(
                         modelVersion.id.toString(),
                         this.chartTimeWidth + '',
-                        metricSpecificationProvider.metrics, '')
+                        metricSpecificationProvider.metrics, this.selectedFeature)
                 );
     }
 
     // TODO: binary search
     // multiple metrics
     private findIndex(arr: IMetricData[] = []): number {
-        let res;
         const ts = this.metricDataFrom.timestamp;
-
         for (let i = 0, l = arr.length; i < l; i++) {
-            if (arr[i].timestamp === ts) { res = i; }
+            if (arr[i].timestamp === ts) { return i; }
         }
-
-        if (res !== undefined) {
-            return res;
-        } else {
-            throw new Error(`Not found timestamp ${ts} in sonar data`);
-        }
+        throw new Error(`Not found timestamp ${ts} in sonar data`);
     }
 
     private toLog(
