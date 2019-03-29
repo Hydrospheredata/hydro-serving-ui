@@ -40,13 +40,18 @@ import {
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
+import { BuildInformationDialogComponent } from '@core/components/_index';
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { ReqstoreService } from '@core/services/reqstore.service';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { SharedModule } from '@shared/shared.module';
+import { BuildInformationService } from '@core/services/build-information.service';
 
 @NgModule({
+    entryComponents: [
+        BuildInformationDialogComponent,
+    ],
     imports: [
         CommonModule,
         RouterModule,
@@ -88,6 +93,7 @@ import { SharedModule } from '@shared/shared.module';
     declarations: [
         NavbarComponent,
         PageNotFoundComponent,
+        BuildInformationDialogComponent,
     ],
     providers: [
         ModelBuilder,
@@ -104,6 +110,7 @@ import { SharedModule } from '@shared/shared.module';
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         SvgSpriteService,
         ReqstoreService,
+        BuildInformationService,
     ],
 })
 export class CoreModule { }
