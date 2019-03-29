@@ -4,13 +4,14 @@
             {{title}}
         </span>
     </div>
+    {{ _sF }}
     <div class="chart__filter-list">
         <div class="chart__filter-item">
             <span class="filter-name">Feature: </span>
             <mdl-select
                 #featureSelect
                 label="Choose feature"
-                [(ngModel)]="selectedFeature"
+                [(ngModel)]="sF"
                 [autocomplete]="true"
                 (keydown.enter)="$event.preventDefault()"
                 class="filter-input">
