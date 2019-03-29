@@ -35,10 +35,10 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
     log: ReplaySubject<Log>;
     log$: Observable<Log>;
 
-    selectedFeature: string;
+    selectedFeature: string = '';
 
     logError$: BehaviorSubject<any>;
-    selectedLogItem: LogItem;
+    selectedLogItem: LogItem ;
 
     metrics: string[];
     metricDataFrom: IMetricData;
