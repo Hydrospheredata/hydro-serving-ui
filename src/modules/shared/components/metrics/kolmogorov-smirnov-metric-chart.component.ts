@@ -1,7 +1,9 @@
 import {
     Component,
     ChangeDetectionStrategy,
-    Injectable
+    Injectable,
+    Output,
+    EventEmitter
 } from '@angular/core';
 
 import { InfluxDBService } from '@core/services';
@@ -25,7 +27,17 @@ interface IMetricData {
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
-    public selectedFeature: string = '0';
+    selectedFeature: string = '0';
+    @Output() selectFeature = new EventEmitter();
+
+    set sF(value: string) {
+        this.selectedFeature = value;
+        this.selectFeature.next(value);
+    }
+
+    get sF() {
+        return this.selectedFeature;
+    }
 
     constructor(
         public metricsService: MetricsService,
@@ -49,7 +61,7 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
             id.toString(),
             i,
             metrics,
-            this.selectedFeature
+            this.sF
         );
     }
 }

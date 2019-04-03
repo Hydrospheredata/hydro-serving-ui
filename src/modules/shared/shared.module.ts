@@ -47,7 +47,8 @@ import {
 // Directives
 import {
     ModelVersionStatusDirective,
-    CopyToBufferDirective
+    CopyToBufferDirective,
+    BuildInformationDirective,
 } from './directives/_index';
 
 const PIPES = [
@@ -86,6 +87,7 @@ const COMPONENTS = [
 const DIRECTIVES = [
     ModelVersionStatusDirective,
     CopyToBufferDirective,
+    BuildInformationDirective,
 ];
 
 @NgModule({

@@ -12,14 +12,16 @@
                 [chartTimeWidth]="chartTimeWidth"
                 [modelVersionId]="(modelVersion$ | async)?.id"
                 [metricSpecificationProvider]="metricSpecificationProvider"
-                (selectPoints)="onSelectPoints($event)">
+                (selectPoints)="onSelectPoints($event)"
+                (selectFeature)="onChangeFeature($event)">
             </hs-kolmogorov-smirnov-metric-chart>
             <hs-base-metric-chart 
                 *ngSwitchDefault
                 [chartTimeWidth]="chartTimeWidth" 
                 [modelVersionId]="(modelVersion$ | async)?.id"
                 [metricSpecificationProvider]="metricSpecificationProvider"
-                (selectPoints)="onSelectPoints($event)">
+                (selectPoints)="onSelectPoints($event)"
+                >
             </hs-base-metric-chart>
         </ng-container>
     </ng-container>
