@@ -18,6 +18,7 @@ import {
     ModelVersionMonitoringComponent,
     ModelVersionMonitoringLogComponent,
     CompareComponent,
+    ReqstoreComponent,
 } from '@models/components';
 import {
     DialogDeleteModelComponent,
@@ -59,6 +60,7 @@ import { ProfilesModule } from '@profiles/profiles.module';
         CompareComponent,
         ModelVersionMonitoringLogComponent,
         ModelVersionContainerComponent,
+        ReqstoreComponent,
     ],
     entryComponents: [
         DialogDeleteModelComponent,

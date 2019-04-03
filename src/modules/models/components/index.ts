@@ -13,3 +13,5 @@ export * from './model-version-monitoring-log/model-version-monitoring-log.compo
 export * from './model-version-monitoring-container/model-version-monitoring-containercomponent';
 // dialogs
 export * from './dialogs';
+// reqstore
+export * from './reqstore/reqstore.component'
