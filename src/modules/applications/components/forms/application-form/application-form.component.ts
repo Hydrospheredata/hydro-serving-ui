@@ -66,6 +66,7 @@ export class ApplicationFormComponent implements OnInit {
 
     public submit(): void {
         if (this.applicationForm.invalid) {
+            this.applicationForm.get('applicationName').markAsDirty();
             return;
         }
 
