@@ -59,7 +59,7 @@ export class ModelVariantFormService implements OnDestroy {
         const currentModelVersionsArray: ModelVersion[] = this.modelVersions.getValue();
 
         if (currentModelVersionsArray.length) {
-            return currentModelVersionsArray[currentModelVersionsArray.length - 1];
+            return currentModelVersionsArray[0];
         }
     }
 

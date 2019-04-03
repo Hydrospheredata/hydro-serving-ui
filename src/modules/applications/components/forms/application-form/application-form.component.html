@@ -8,8 +8,8 @@
             class="hydro-input application-name__input" 
             type="text" 
             formControlName="applicationName" 
-            id="applicationName">
-        <ng-container *ngIf="applicationForm.get('applicationName').errors; let errors">
+            id="applicationName" autofocus>
+        <ng-container *ngIf="applicationForm.get('applicationName').dirty && applicationForm.get('applicationName').errors ; let errors">
             <ul class="error__list">
                 <li class="error__item"
                     *ngFor="let error of errors | iterateAsArray">
