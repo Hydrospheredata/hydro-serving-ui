@@ -36,6 +36,12 @@ upstream reqstore_http {
 server {
   listen 9090 http2;
 
+  client_max_body_size 4000M;
+  grpc_connect_timeout 1d;
+  grpc_read_timeout 1d;
+  grpc_send_timeout 1d;
+  grpc_buffer_size 500m;
+
   location /tensorflow.serving. {
     grpc_pass grpc://gateway_grpc;
   }
@@ -98,6 +104,7 @@ server {
 
 
   location /reqstore {
+    rewrite /reqstore/(.*) /$1 break;
     proxy_pass http://reqstore_http;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
