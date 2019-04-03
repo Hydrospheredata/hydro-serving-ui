@@ -49,9 +49,14 @@
         <div class="service__row">
             <div class="service__field service__field--runtime">
                 <span class="service__field-label">Runtime</span>
-                <span class="docker-image__name">
-                    {{ (selectedModelVersion$ | async).runtime?.name }}
+                <span class='docker-image'>
+                    <span class="docker-image__name">
+                        {{ (selectedModelVersion$ | async).runtime?.name }}
+                    </span>
+                    <span class="docker-image__tag">: {{ (selectedModelVersion$ | async).runtime?.tag }}
+                    </span>
                 </span>
+
             </div>
             <div class="service__field service__field--hostSelector">
                 <label class="service__field-label">Host selector</label>
