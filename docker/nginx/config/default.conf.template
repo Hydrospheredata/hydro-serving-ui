@@ -1,5 +1,67 @@
+# upstreams
+
+upstream manager_grpc {
+  zone manager_grpc 64k;
+  server ${MANAGER_HOST}:${MANAGER_GRPC_PORT};
+}
+
+upstream monitoring_grpc {
+  zone monitoring_grpc 64k;
+  server ${MONITORING_HOST}:${MONITORING_GRPC_PORT};
+}
+
+upstream gateway_grpc {
+  zone gateway_grpc 64k;
+  server ${GATEWAY_HOST}:${GATEWAY_GRPC_PORT};
+}
+
+upstream manager_http {
+  server ${MANAGER_HOST}:${MANAGER_HTTP_PORT};
+}
+
+upstream gateway_http {
+  server ${GATEWAY_HOST}:${GATEWAY_HTTP_PORT};
+}
+
+upstream monitoring_http {
+  server ${MONITORING_HOST}:${MONITORING_HTTP_PORT};
+}
+
+upstream reqstore_http {
+  server ${REQSTORE_HOST}:${REQSTORE_HTTP_PORT};
+}
+
+# GRPC
+
 server {
-  listen 9091 default_server;
+  listen 9090 http2;
+
+  client_max_body_size 4000M;
+  grpc_connect_timeout 1d;
+  grpc_read_timeout 1d;
+  grpc_send_timeout 1d;
+  grpc_buffer_size 500m;
+
+  location /tensorflow.serving. {
+    grpc_pass grpc://gateway_grpc;
+  }
+
+  location /hydrosphere.manager. {
+    grpc_pass grpc://manager_grpc;
+  }
+
+  location /hydrosphere.monitoring. {
+    grpc_pass grpc://monitoring_grpc;
+  }
+
+  location /hydrosphere.discovery. {
+    grpc_pass grpc://manager_grpc;
+  }
+}
+
+# HTTP
+server {
+  listen 80 default_server;
 
   client_max_body_size 1G;
   root   /usr/share/nginx/html;
@@ -12,84 +74,94 @@ server {
       return 200 'no content';
   }
 
-  location /query {
-    proxy_pass http://${INFLUX_HOST};
+#  location /query {
+#    proxy_pass http://${INFLUX_HOST};
+#    proxy_set_header X-Real-IP $remote_addr;
+#    proxy_set_header X-Scheme $scheme;
+#    proxy_set_header Upgrade $http_upgrade;
+#    proxy_http_version 1.1;
+#    add_header Access-Control-Allow-Origin *;
+#    add_header Access-Control-Allow-Methods "POST, GET, OPTIONS";
+#    add_header Access-Control-Allow-Headers "Origin, Authorization, Accept";
+#    add_header Access-Control-Allow-Credentials true;
+#  }
+
+#  location /manager {
+#    proxy_pass http://${MANAGER_HOST};
+#    proxy_set_header X-Real-IP $remote_addr;
+#    proxy_set_header X-Scheme $scheme;
+#    proxy_set_header Upgrade $http_upgrade;
+#    proxy_http_version 1.1;
+#  }
+
+  location /monitoring {
+    proxy_pass http://monitoring_http;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
     proxy_http_version 1.1;
-    add_header Access-Control-Allow-Origin *;
-    add_header Access-Control-Allow-Methods "POST, GET, OPTIONS";
-    add_header Access-Control-Allow-Headers "Origin, Authorization, Accept";
-    add_header Access-Control-Allow-Credentials true;
   }
 
-  location /manager {
-    proxy_pass http://${MANAGER_HOST};
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_http_version 1.1;
-  }
-  
-  location /monitoring {
-    proxy_pass http://${MANAGER_HOST};
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_http_version 1.1;
-  }
 
   location /reqstore {
-    proxy_pass http://${REQSTORE_HOST};
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_http_version 1.1;
-  }
-  
-  location /influx {
-    proxy_pass http://${INFLUX_HOST};
+    rewrite /reqstore/(.*) /$1 break;
+    proxy_pass http://reqstore_http;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
     proxy_http_version 1.1;
   }
 
-  location /v1/prometheus {
-    proxy_pass http://${MANAGER_HOST};
+#  location /influx {
+#    proxy_pass http://${INFLUX_HOST};
+#    proxy_set_header X-Real-IP $remote_addr;
+#    proxy_set_header X-Scheme $scheme;
+#    proxy_set_header Upgrade $http_upgrade;
+#    proxy_http_version 1.1;
+#  }
+
+#  location /v1/prometheus {
+#    proxy_pass http://${MANAGER_HOST};
+#    proxy_set_header X-Real-IP $remote_addr;
+#    proxy_set_header X-Scheme $scheme;
+#    proxy_set_header Upgrade $http_upgrade;
+#    proxy_http_version 1.1;
+#  }
+
+  location /api {
+    proxy_pass http://manager_http;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
     proxy_http_version 1.1;
   }
 
-  location /api/v1 {
-    proxy_pass http://${MANAGER_HOST};
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_http_version 1.1;
-  }
+#  location /ui/v1 {
+#    proxy_pass http://${MANAGER_HOST};
+#    proxy_set_header X-Real-IP $remote_addr;
+#    proxy_set_header X-Scheme $scheme;
+#    proxy_set_header Upgrade $http_upgrade;
+#    proxy_http_version 1.1;
+#  }
 
-  location /ui/v1 {
-    proxy_pass http://${MANAGER_HOST};
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_http_version 1.1;
-  }
-
-  location /api-docs {
-    proxy_pass http://${MANAGER_HOST};
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_http_version 1.1;
-  }
+#  location /api-docs {
+#    proxy_pass http://${MANAGER_HOST};
+#    proxy_set_header X-Real-IP $remote_addr;
+#    proxy_set_header X-Scheme $scheme;
+#    proxy_set_header Upgrade $http_upgrade;
+#    proxy_http_version 1.1;
+#  }
 
   location /swagger {
-    proxy_pass http://${MANAGER_HOST};
+    proxy_pass http://manager_http;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
+
+  location /gateway {
+    proxy_pass http://gateway_http;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
