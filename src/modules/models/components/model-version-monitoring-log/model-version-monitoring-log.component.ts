@@ -193,7 +193,17 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
             const index = this.findIndex(sonarData);
 
             for (let i = index, l = length; i < l; i++ ) {
-                const traces = JSON.parse(sonarData[i].labels.traces);
+                let traces = [];
+                try {
+                    traces = JSON.parse(sonarData[i].labels.traces);
+                } catch (e) {
+                    // console.error(e);
+                    try {
+                        traces = [JSON.parse(sonarData[i].labels.trace)];
+                    } catch (e) {
+                        console.error(e);
+                    }
+                }
 
                 traces.forEach(trace => {
                     const [ts, uid] = trace.split('_');

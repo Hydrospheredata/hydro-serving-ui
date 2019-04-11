@@ -1,5 +1,5 @@
 .hydro-input {
-    &.ng-invalid {
+    &.ng-dirty.ng-invalid {
         border-color: #ff7d7df7;
     }
 }
