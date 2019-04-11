@@ -9,7 +9,9 @@ export * from './application-status/application-status.component';
 export * from './metadata/metadata.component';
 // metrics
 export * from './metrics/base-metric-chart.component';
-export * from '@shared/components/metrics/kolmogorov-smirnov-metric-chart.component';
+export * from './metrics/kolmogorov-smirnov-metric-chart.component';
+
+export * from './health-timeline/health-timeline.component';
 
 // dialogs
 export * from './dialogs';

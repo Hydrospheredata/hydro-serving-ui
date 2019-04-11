@@ -41,7 +41,8 @@ import {
     DialogModelsEmptyComponent,
     ApplicationStatusComponent,
     DialogReqstoreComponent,
-    MetadataComponent
+    MetadataComponent,
+    HealthTimelineComponent,
 } from './components/_index';
 
 // Directives
@@ -81,6 +82,7 @@ const COMPONENTS = [
     ApplicationStatusComponent,
     DialogReqstoreComponent,
     MetadataComponent,
+    HealthTimelineComponent,
 ];
 
 const DIRECTIVES = [

@@ -1,0 +1,23 @@
+<div class='reqstore_chart'>
+    <div class='reqstore_chart__header'>
+        <div class='selected-time'>
+                {{ currentFrom }} - 
+                {{ currentTo }}
+        </div>
+        <div class='button button--white zoom-out' *ngIf='showZoomOut()' (click)="zoomOut()">Zoom out</div>
+    </div>
+    <svg [attr.width]='canvasWidth' [attr.height]='canvasHeight' #svgContainer>
+        <defs>
+            <clipPath id='datasetClipPath'>
+                <rect x=0 y=0 width=840 height=64></rect>
+            </clipPath>
+        </defs>
+        <g #yTitleContainer></g>
+        <g #dataContainer clip-path='url(#datasetClipPath)'></g>
+        <g #axisContainer></g>
+        <g #minimapContainer>
+            <g #minimapDataContainer></g>
+            <g #minimapBrush></g>
+        </g>
+    </svg>
+</div>

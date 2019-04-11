@@ -1,6 +1,4 @@
-import { Type } from '@angular/compiler';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { HydroServingState, getSelectedMetric } from '@core/reducers';
 import { MetricsService, IMetricData } from '@core/services/metrics/metrics.service';
 import { ReqstoreService, IReqstoreLog } from '@core/services/reqstore.service';
@@ -10,7 +8,6 @@ import { IModelVersion } from '@shared/_index';
 import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
 import { Observable, BehaviorSubject, combineLatest, Subject, ReplaySubject, Subscription } from 'rxjs';
 import { map, tap, filter, switchMap } from 'rxjs/operators';
-import { debug } from 'util';
 
 interface LogItem {
     count: number;

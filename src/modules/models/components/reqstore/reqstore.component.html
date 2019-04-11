@@ -1,2 +1,6 @@
-<div>Reqstore</div>
-<div class='container' #container></div>
+<hs-health-timeline (timeInterval)='onChangeTimeInterval($event)'></hs-health-timeline>
+
+{{ timeInterval.from }} {{ timeInterval.to }}
+
+<div class='logs'>LOGS</div>
+<div>CHARTS</div>
