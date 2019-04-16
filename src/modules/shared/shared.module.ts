@@ -43,13 +43,17 @@ import {
     DialogReqstoreComponent,
     MetadataComponent,
     HealthTimelineComponent,
+    HealthTimelineMiniComponent,
+    ReqstoreTableLogComponent,
 } from './components/_index';
 
 // Directives
+import { HsD3Module } from '../hs-d3/hs-d3.module';
 import {
     ModelVersionStatusDirective,
     CopyToBufferDirective,
     BuildInformationDirective,
+    PixelToCanvasDirective,
 } from './directives/_index';
 
 const PIPES = [
@@ -84,12 +88,15 @@ const COMPONENTS = [
     DialogReqstoreComponent,
     MetadataComponent,
     HealthTimelineComponent,
+    HealthTimelineMiniComponent,
+    ReqstoreTableLogComponent,
 ];
 
 const DIRECTIVES = [
     ModelVersionStatusDirective,
     CopyToBufferDirective,
     BuildInformationDirective,
+    PixelToCanvasDirective,
 ];
 
 @NgModule({
@@ -103,6 +110,7 @@ const DIRECTIVES = [
         RouterModule,
         MomentModule,
         SelectModule,
+        HsD3Module,
     ],
     declarations: [
         ...PIPES,

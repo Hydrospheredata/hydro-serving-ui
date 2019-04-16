@@ -65,7 +65,6 @@ function decodeRespOrError(data: Uint8Array): PredictResponse | ExecutionError {
 }
 
 export function asServingReqRes(data: Uint8Array): ReqRes {
-
   const reqSize = readInt(data, 0)
   const respSize = readInt(data, 4)
 

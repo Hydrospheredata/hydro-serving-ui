@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/reqstore_format';
-import { Observable, of } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface IReqstoreLog {
     [record: string]: Array<{
@@ -11,6 +11,10 @@ export interface IReqstoreLog {
         request: any;
         response: any;
     }>;
+}
+
+export interface IReqstoreRequestOptions {
+
 }
 
 @Injectable()
@@ -23,8 +27,12 @@ export class ReqstoreService {
         this.baseReqstoreUrl = `${environment.reqstoreUrl}`;
       }
 
-    public getData(id, from, to): Observable<any> {
-        return this.http.get(`${this.baseReqstoreUrl}/${id}/get?from=${from}&to=${to}`, {
+    public getData(id, from, to, opts?: IReqstoreRequestOptions): Observable<any> {
+        debugger;
+        const f = from * 1000000;
+        const t = to * 1000000;
+        debugger;
+        return this.http.get(`${this.baseReqstoreUrl}/${id}/get?from=${f}&to=${t}`, {
             responseType: 'arraybuffer',
         }).pipe(
             map((_: any) => {

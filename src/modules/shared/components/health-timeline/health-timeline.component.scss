@@ -40,15 +40,9 @@
     transition: .3s fill ease;
     &--s {
         fill: #3395da80;
-        &:hover {
-            fill: #3394da8f;
-        }
     }
     &--f {
-        fill: #fd6868cc;
-        &:hover {
-            fill: #fd6868;
-        }
+        fill: #ef1919cc;
     }
 
 }

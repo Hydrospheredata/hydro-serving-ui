@@ -31,6 +31,7 @@ import { ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard } from '@mod
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilesModule } from '@profiles/profiles.module';
+import { HsD3Module } from '../hs-d3/hs-d3.module';
 
 @NgModule({
     imports: [

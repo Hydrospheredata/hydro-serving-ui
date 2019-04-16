@@ -3,8 +3,8 @@ $btn-secondary: $color-base;
 $btn-icon-size: 12px;
 $transition-type: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
-$remove: #f3755e;
-$remove-hover: #d14931;
+$remove: #ff7a7a;
+$remove-hover: #ff7a7a;
 
 .button {
     border: none;
@@ -64,6 +64,7 @@ $remove-hover: #d14931;
         background-color: $remove;
         &:not([disabled]):hover {
             background-color: $remove-hover;
+            color: white;
         }
     }
 
@@ -72,13 +73,15 @@ $remove-hover: #d14931;
         &:not([disabled]):hover {
             background-color: $remove;
             border-color: $remove;
+            color: white;
         }
     }
 
     &--test {
         background-color: #63bf8c;
         &:not([disabled]):hover {
-            background-color: #5db383;
+            background-color: #85dcac;
+            color: #f7fffa;
         }
     }
 

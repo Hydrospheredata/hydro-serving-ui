@@ -1,0 +1,106 @@
+.reqstore {
+
+}
+
+.selector {
+    display: flex;
+    padding: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    &__title {
+        width: 100%;
+        color: rgba(80, 77, 117, 0.582);
+    }
+    &__item {
+        margin-right: 8px;
+    }
+}
+
+.log {
+    display: flex;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    box-shadow: 0 0 4px -2px black;
+    &__timestamps {
+        min-width: 240px;
+        background: white;
+        max-height: 400px;
+        overflow: scroll;
+        &-title {
+            padding: 8px;
+            font-weight: bold;
+            color: #8d93a7;
+        }
+        &-item {
+            padding: 4px 12px;
+            display: flex;
+            justify-content: space-between;
+            transition: .3s all ease;
+            cursor: pointer;
+            color: lightgray;
+            &-count, &-failed-count {
+                color: #3024809c;
+            }
+            &-failed-count {
+                color: #ff4141;
+            }
+            &--selected, &:hover {
+                color: black;
+            }
+        }
+    }
+    &__details {
+        width: 100%;
+        max-width: 100%;
+        overflow: scroll;
+        max-height: 400px;
+        background: white;
+        &-title {
+            padding: 8px 24px;
+            font-weight: bold;
+            color: #8d93a7;
+        }
+        &-container {
+            padding: 0px 24px;
+        }
+        &-item {
+            margin-bottom: 8px;
+            &-uid {
+                background: #686780;
+                padding: 6px;
+                color: white;
+            }
+            &-request, &-response,&-metric-data {
+                padding: 6px;
+            }
+            &-title {
+                color: orange;
+            }
+        }
+    }
+}
+
+.chart {
+    max-width: 768px;
+    max-height: 400px;
+}
+
+.metric-data {
+    &--is-error {
+        background: #f39090;
+        color: white;
+    }
+}
+
+.time-interval {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+    padding-right: 14px;
+    &__label {
+        line-height: 14px;
+        margin-right: 4px;
+    }
+}

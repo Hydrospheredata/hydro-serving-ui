@@ -23,7 +23,7 @@ interface Log {
     templateUrl: 'model-version-monitoring-log.component.html',
     styleUrls: ['model-version-monitoring-log.component.scss'],
 })
-export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
+export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
     metricSpecification$: Observable<IMetricSpecification>;
     metricSpecificationProvider$: Observable<IMetricSpecificationProvider>;
     modelVersion$: Observable<IModelVersion>;

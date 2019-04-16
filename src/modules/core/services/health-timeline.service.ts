@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HealthTimelineHistoryService } from '@core/services/health-timeline-history.service';
 import { HttpService } from '@core/services/http';
-import { ITimelineLog, ITimelineLogItemStatus } from '@shared/models/timeline-log.model';
-import { Observable, of, BehaviorSubject } from 'rxjs';
+import { ITimelineLog } from '@shared/models/timeline-log.model';
+import { BehaviorSubject, of, Observable } from 'rxjs';
 
 const data = {
     KS: [
@@ -46,7 +46,7 @@ const data = {
     ],
 };
 
-const data_2 = {
+const data2 = {
     KS: [
         {
             from: new Date(2019, 1, 1).getTime(),
@@ -66,6 +66,10 @@ const data_2 = {
     ],
 };
 
+const da = [
+    data, data2,
+];
+
 @Injectable()
 export class HealthTimelineService {
     currentData: BehaviorSubject<ITimelineLog> = new BehaviorSubject(null);
@@ -77,13 +81,9 @@ export class HealthTimelineService {
     ) {
     }
 
-    getData(from: number, to: number, derived?: boolean): void {
+    getData(from: number, to: number, idx: number = 0): Observable<ITimelineLog> {
         if (this.currentData.getValue()) { this.storePrevLog(); }
-        if (derived) {
-            this.currentData.next(data_2);
-        } else {
-            this.currentData.next(data);
-        }
+        return of(da[idx]);
     }
 
     historyExist(): boolean {
@@ -93,6 +93,30 @@ export class HealthTimelineService {
     getPrevLog() {
         const prevLog = this.log.pull();
         this.currentData.next(prevLog);
+    }
+
+    getMinimumAndMaximumTimestamps(d: ITimelineLog): [number, number] {
+        const logItems = Object.values(d);
+        let minTimestamp: number;
+        let maxTimestamp: number;
+
+        for (let i = 0, l = logItems.length; i < l; i++) {
+            const firstElement = logItems[i][0];
+            const lastElement = logItems[i][logItems[i].length - 1];
+
+            if (minTimestamp === undefined || firstElement.from < minTimestamp) {
+                minTimestamp = firstElement.from;
+            }
+
+            if (maxTimestamp === undefined || lastElement.to > maxTimestamp) {
+                maxTimestamp = lastElement.to;
+            }
+        }
+
+        return [
+           minTimestamp,
+           maxTimestamp,
+        ];
     }
 
     private storePrevLog() {

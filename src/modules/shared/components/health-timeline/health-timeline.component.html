@@ -1,23 +1,31 @@
 <div class='reqstore_chart'>
     <div class='reqstore_chart__header'>
         <div class='selected-time'>
-                {{ currentFrom }} - 
-                {{ currentTo }}
+            {{ (displayedTime$ | async).from | utcToLocal}} - 
+            {{ (displayedTime$ | async).to | utcToLocal}}
         </div>
         <div class='button button--white zoom-out' *ngIf='showZoomOut()' (click)="zoomOut()">Zoom out</div>
     </div>
     <svg [attr.width]='canvasWidth' [attr.height]='canvasHeight' #svgContainer>
-        <defs>
-            <clipPath id='datasetClipPath'>
-                <rect x=0 y=0 width=840 height=64></rect>
-            </clipPath>
-        </defs>
-        <g #yTitleContainer></g>
-        <g #dataContainer clip-path='url(#datasetClipPath)'></g>
-        <g #axisContainer></g>
-        <g #minimapContainer>
-            <g #minimapDataContainer></g>
-            <g #minimapBrush></g>
+        <g style="transform:translate(100px, 0)">
+                <defs>
+                        <clipPath id='datasetClipPath'>
+                            <rect x=0 y=0 width=840 height=64></rect>
+                        </clipPath>
+                    </defs>
+            <g #yTitleContainer style='transform:translate(-100px, 0)'></g>
+            <!-- <g #dataContainer clip-path='url(#datasetClipPath)'></g> -->
+            <g #brush></g>
+            <g #dataContainer></g>
+            <g hsD3Axis [transform]='xAxisTransform' [scale]='scale'></g>
         </g>
+
     </svg>
+    <hs-health-timeline-minimap 
+        [width]='minimapWidth'
+        [fullLog]='fullLog'
+        [currentTimeInterval]='brushEnd$ | async'
+        (brushEnd)='onMinimapBrushEnd($event)'
+        (brushMove)='onMinimapBrushMove($event)'>
+    </hs-health-timeline-minimap>
 </div>

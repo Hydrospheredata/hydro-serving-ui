@@ -12,6 +12,8 @@ export * from './metrics/base-metric-chart.component';
 export * from './metrics/kolmogorov-smirnov-metric-chart.component';
 
 export * from './health-timeline/health-timeline.component';
+export * from './health-timeline-mini/health-timeline-mini.component';
 
 // dialogs
 export * from './dialogs';
+export * from './reqstore-table-log/reqstore-table-log.component';

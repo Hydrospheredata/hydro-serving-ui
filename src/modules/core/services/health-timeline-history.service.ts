@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class HealthTimelineHistoryService {

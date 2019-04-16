@@ -7,7 +7,7 @@ export enum ITimelineLogItemStatus {
 export interface ITimelineLogItem {
     from: number;
     to: number;
-    status: 'success' | 'failed';
+    status: string;
 }
 
 export interface ITimelineLog {
