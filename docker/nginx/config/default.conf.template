@@ -31,6 +31,12 @@ upstream reqstore_http {
   server ${REQSTORE_HOST}:${REQSTORE_HTTP_PORT};
 }
 
+upstream reqstore_grpc {
+  zone gateway_grpc 64k;
+  server ${REQSTORE_HOST}:${REQSTORE_GRPC_PORT};
+}
+
+
 # GRPC
 
 server {
@@ -44,6 +50,10 @@ server {
 
   location /tensorflow.serving. {
     grpc_pass grpc://gateway_grpc;
+  }
+
+  location /timemachine. {
+    grpc_pass grpc://reqstore_grpc;
   }
 
   location /hydrosphere.manager. {
