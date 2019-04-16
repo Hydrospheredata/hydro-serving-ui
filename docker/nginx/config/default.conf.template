@@ -32,7 +32,7 @@ upstream reqstore_http {
 }
 
 upstream reqstore_grpc {
-  zone gateway_grpc 64k;
+  zone reqstore_grpc 64k;
   server ${REQSTORE_HOST}:${REQSTORE_GRPC_PORT};
 }
 
