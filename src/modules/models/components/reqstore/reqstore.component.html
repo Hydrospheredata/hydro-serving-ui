@@ -1,4 +1,4 @@
 <hs-health-timeline (timeInterval)='onChangeTimeInterval($event)'></hs-health-timeline>
-<hs-reqstore-table-log [timeInterval]='timeInterval'></hs-reqstore-table-log>
+<hs-reqstore-table-log [logData]='logData' [modelVersion]='selectedModelVersion$ | async'></hs-reqstore-table-log>
 
 <div>CHARTS</div>

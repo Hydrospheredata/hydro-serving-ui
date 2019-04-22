@@ -1,8 +1,8 @@
 <div class='reqstore_chart'>
     <div class='reqstore_chart__header'>
         <div class='selected-time'>
-            {{ (displayedTime$ | async).from | utcToLocal}} - 
-            {{ (displayedTime$ | async).to | utcToLocal}}
+            {{ (displayedTime$ | async)?.from | utcToLocal}} - 
+            {{ (displayedTime$ | async)?.to | utcToLocal}}
         </div>
         <div class='button button--white zoom-out' *ngIf='showZoomOut()' (click)="zoomOut()">Zoom out</div>
     </div>

@@ -25,7 +25,7 @@ import {
 } from 'rxjs/operators';
 
 import { InfluxDBService } from '@core/services';
-import { MetricsService, IMetricData } from '@core/services/metrics/metrics.service';
+import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
 import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
 
 @Component({
@@ -83,7 +83,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private onDestroy$: Subject<any>;
 
     constructor(
-        public metricsService: MetricsService,
+        public metricsService: MonitoringService,
         public influxdbService: InfluxDBService
     ) {
         this.onDestroy$ = new Subject();

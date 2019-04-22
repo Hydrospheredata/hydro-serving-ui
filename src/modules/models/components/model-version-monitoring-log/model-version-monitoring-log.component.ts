@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HydroServingState, getSelectedMetric } from '@core/reducers';
-import { MetricsService, IMetricData } from '@core/services/metrics/metrics.service';
+import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
 import { ReqstoreService, IReqstoreLog } from '@core/services/reqstore.service';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
@@ -56,7 +56,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
     constructor(
         private store: Store<HydroServingState>,
         private reqstore: ReqstoreService,
-        private metricService: MetricsService
+        private metricService: MonitoringService
     ) {
         this.modelVersion$ = this.store.select(getSelectedModelVersion);
         this.metricSpecification$ = this.store.select(getSelectedMetric);
@@ -178,12 +178,6 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
         reqstoreData: IReqstoreLog,
         sonarData: IMetricData[]
     ): Log {
-
-        console.group('data');
-        console.dir(reqstoreData);
-        console.dir(sonarData);
-        console.groupEnd();
-
         const log: Log = {};
         if (!reqstoreData || !sonarData) { return {}; }
 
@@ -228,6 +222,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
         } catch (error) {
             this.logError$.next(error);
         }
+
         return log;
     }
 }

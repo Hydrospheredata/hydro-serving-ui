@@ -14,7 +14,6 @@ import { HealthTimelineService } from '@core/services/health-timeline.service';
 import { ITimeInterval } from '@shared/models/_index';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
 import * as d3 from 'd3';
-import { filter } from 'rxjs/operators';
 
 @Component({
     selector: 'hs-health-timeline-minimap',
@@ -67,6 +66,8 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
             }
         }
 
+        if (currentTimeInterval === undefined) { return; }
+
         if (!currentTimeInterval.firstChange
             && currentTimeInterval.currentValue
             && this.brush
@@ -100,7 +101,7 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
 
         d3.select(this.minimapBrush.nativeElement).select('.overlay').remove();
 
-        brush.on('end', function() {
+        brush.on('end', () => {
             if (!d3.event.sourceEvent) { return; }
             const select = d3.event.selection;
             self.brushEnd.next({
@@ -109,7 +110,7 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
             });
         });
 
-        brush.on('brush', function() {
+        brush.on('brush', () => {
             const select = d3.event.selection;
             self.brushMove.next({
                 from: self.scale.invert(select[0]).getTime(),
@@ -155,9 +156,10 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
 
     private drawRect(selection) {
         return selection
-            .classed('dataset-m__rect--s',  d => d.status === 'success')
-            .classed('dataset-m__rect--f', d => d.status === 'failed')
-            .attr('x', d => this.scale(new Date(d.from)))
-            .attr('width', d => this.scale(new Date(d.to)) - this.scale(new Date(d.from)));
+            .filter(d => d.meanValue !== null)
+            .classed('dataset-m__rect--s',  d => d.meanHealth === 1)
+            .classed('dataset-m__rect--f', d => d.meanHealth < 1)
+            .attr('x', d => this.scale(new Date(d.from * 1000)))
+            .attr('width', d => this.scale(new Date(d.till * 1000)) - this.scale(new Date(d.from * 1000)));
     }
 }

@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { InfluxDBService } from '@core/services';
-import { MetricsService } from '@core/services/metrics/metrics.service';
+import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { BaseMetricChartComponent } from '@shared/components/metrics/base-metric-chart.component';
 
 interface IMetricData {
@@ -40,7 +40,7 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
     }
 
     constructor(
-        public metricsService: MetricsService,
+        public metricsService: MonitoringService,
         public influxdbService: InfluxDBService
     ) {
         super(metricsService, influxdbService);

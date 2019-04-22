@@ -1,22 +1,22 @@
 import { Directive, ElementRef, Input } from '@angular/core';
+import { flatArray } from '@shared/utils/flat-array';
 
 @Directive({
     selector: '[hsPixelToCanvas]',
 })
 export class PixelToCanvasDirective {
-    data;
-    context;
-
+    @Input() width: number;
+    @Input() height: number;
     @Input()
     set pixels(pixels) {
         if (pixels) {
-            this.data = this.addAlphaChanel(JSON.parse(pixels));
-
-            var x = new Uint8ClampedArray(this.data);
-            const imgData = new ImageData(x, 720, 527);
-            this.context.putImageData(imgData, 20, 20);
+            const data = this.transformArrayToPixels(pixels);
+            const clampedArray = new Uint8ClampedArray(data);
+            const imgData = new ImageData(clampedArray, 28, 28);
+            this.context.putImageData(imgData, 0, 0);
         }
     }
+    private context: CanvasRenderingContext2D;
 
     constructor(
         el: ElementRef
@@ -24,15 +24,41 @@ export class PixelToCanvasDirective {
         this.context = el.nativeElement.getContext('2d');
     }
 
-    addAlphaChanel(pixels) {
-        const o = pixels.slice('');
+    private transformArrayToPixels(pixels) {
+        const dim = pixels.length / (this.width * this.height);
+        switch (dim) {
+            case 1:
+                return this.grayScaleToRGBA(pixels);
+            case 3:
+                return this.fromRGBtoRGBA(pixels);
+            default:
+                break;
+        }
+    }
+
+    private grayScaleToRGBA(array): number[] {
+        const flArray = flatArray(array);
+        const rgb = flArray.reduce((acc, cur) => {
+            const offset = acc.length;
+            acc[offset] = 0;
+            acc[offset + 1] = 0;
+            acc[offset + 2] = 0;
+            acc[offset + 3] = 255 * (1 - cur);
+
+            return acc;
+        }, []);
+        return rgb;
+    }
+
+    private fromRGBtoRGBA(pixels) {
+        const fArray = flatArray(pixels);
         const arr = [];
 
-        for (let i = 0; i < o.length; i += 3) {
+        for (let i = 0, l = fArray.length; i < l; i += 3) {
             const x = arr.length;
-            arr[x] = pixels[i];
-            arr[x + 1] = pixels[i + 1];
-            arr[x + 2] = pixels[i + 2];
+            arr[x] = fArray[i];
+            arr[x + 1] = fArray[i + 1];
+            arr[x + 2] = fArray[i + 2];
             arr[x + 3] = 255;
         }
 

@@ -1,0 +1,25 @@
+.request {
+    margin-bottom: 12px;
+    &__inputs {
+        margin-left: 8px;
+        &-title {
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 1px;
+            margin-left: 0px;
+            margin-top: 4px;
+            color: #b3b3b3
+        }
+        &-list{
+            font-size: 12px;
+            white-space: nowrap;
+        }
+    }
+
+    &__input {
+        &-name {
+            color: grey;
+            padding-right: 8px;
+        }
+    }
+}

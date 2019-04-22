@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface IMetricData {
@@ -16,15 +17,26 @@ export interface IMetricData {
   timestamp: number;
   health: any;
 }
-@Injectable()
-export class MetricsService {
 
-  private baseMetricsUrl: string;
+export interface IMonitoringAggregationItem {
+  meanValue: number | null;
+  meanHealth: number | null;
+  from: number;
+  till: number;
+  modelVersionId: number;
+  minValue: null;
+  maxValue: null;
+}
+
+@Injectable()
+export class MonitoringService {
+
+  private baseMonitoringUrl: string;
 
   constructor(
     private http: HttpService
   ) {
-    this.baseMetricsUrl = `${environment.monitoringUrl}`;
+    this.baseMonitoringUrl = `${environment.monitoringUrl}`;
   }
 
   public getMetrics(
@@ -34,7 +46,7 @@ export class MetricsService {
     columnIndex?: string
     ): Promise<IMetricData[]> {
       return this.http.get(
-          `${this.baseMetricsUrl}/metrics`,
+          `${this.baseMonitoringUrl}/metrics`,
           { params: {
               modelVersionId,
               interval,
@@ -49,9 +61,45 @@ export class MetricsService {
 
   // TODO: do not work
   public getHealth() {
-    return this.http.get(`${this.baseMetricsUrl}/health`).pipe(
+    return this.http.get(`${this.baseMonitoringUrl}/health`).pipe(
       map((res: Response): any => res)
     ).toPromise();
+  }
+
+  public getAggregation(
+    modelVersionId: string,
+    metrics: string[],
+    optional: {
+      from?: string;
+      till?: string;
+      steps?: string;
+    } = {}
+  ): Observable<IMonitoringAggregationItem[]> {
+    return this.http.get(`${this.baseMonitoringUrl}/metrics/aggregation`, {
+      params: {
+        modelVersionId,
+        metrics,
+        ...optional,
+      },
+    });
+  }
+
+  public getMetricsInRange(
+    modelVersionId: string,
+    metrics: string[],
+    optional: {
+      from?: string;
+      till?: string;
+      columnIndex?: string;
+    } = {}
+  ): Observable<IMonitoringAggregationItem[]> {
+    return this.http.get(`${this.baseMonitoringUrl}/metrics/range`, {
+      params: {
+        modelVersionId,
+        metrics,
+        ...optional,
+      },
+    });
   }
 
   public createMetricProviders(metricSpecification: IMetricSpecification): IMetricSpecificationProvider  {
@@ -73,7 +121,7 @@ export class MetricsService {
     };
   }
 
-  public getMetricsBySpec(spec: string): string[] {
+  public getMetricsBySpecKind(spec: string): string[] {
     const dict = {
       CounterMetricSpec:      ['counter'],
       KSMetricSpec:           ['kolmogorovsmirnov', 'kolmogorovsmirnov_level'],

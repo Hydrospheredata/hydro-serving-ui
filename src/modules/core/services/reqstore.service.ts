@@ -1,10 +1,11 @@
+import { HttpParams } from '@angular/common/http';
+import { HttpParamsOptions } from '@angular/common/http/src/params';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/reqstore_format';
+import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/req';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 export interface IReqstoreLog {
     [record: string]: Array<{
         uid: number;
@@ -14,7 +15,7 @@ export interface IReqstoreLog {
 }
 
 export interface IReqstoreRequestOptions {
-
+    [prop: string]: string;
 }
 
 @Injectable()
@@ -27,13 +28,14 @@ export class ReqstoreService {
         this.baseReqstoreUrl = `${environment.reqstoreUrl}`;
       }
 
-    public getData(id, from, to, opts?: IReqstoreRequestOptions): Observable<any> {
-        debugger;
-        const f = from * 1000000;
-        const t = to * 1000000;
-        debugger;
+    public getData(id, from, to, opts: IReqstoreRequestOptions = {}): Observable<any> {
+        const f = this.fromSecondsToMicroseconds(from);
+        const t = this.fromSecondsToMicroseconds(to);
+        const params: HttpParams = new HttpParams({ fromObject : opts });
+
         return this.http.get(`${this.baseReqstoreUrl}/${id}/get?from=${f}&to=${t}`, {
             responseType: 'arraybuffer',
+            params,
         }).pipe(
             map((_: any) => {
                 const x = new Uint8Array(_);
@@ -62,5 +64,17 @@ export class ReqstoreService {
                 return parsedLog;
             })
         );
+    }
+
+    fromSecondsToMicroseconds(timestamp): number {
+        try {
+            const MICROSECONDS_LENGTH = 19;
+            const ts = timestamp + '';
+
+            return +ts * Math.pow(10, MICROSECONDS_LENGTH - ts.length);
+        } catch (e) {
+            throw Error('Cant convert timestamp to microseconds');
+        }
+
     }
 }

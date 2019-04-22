@@ -1,18 +1,16 @@
 <section class='reqstore'>
-    <div class='selector'>
-        <div class='selector__item'><span>from:</span> 
-            <span> {{ ti?.from | utcToLocal }}</span>
+    <div class='reqstore__options'>
+        <div class='reqstore__options-item'>
+            Max count message
+            <input class='reqstore__options-input' [(ngModel)]="maxMessages">
         </div>
-        <div class='selector__item'><span>to:</span>
-            <span> {{ ti?.to | utcToLocal }}</span>
+        <div class='reqstore__options-item'>
+            Max bytes
+            <input class='reqstore__options-input' [(ngModel)]="maxBytes">
         </div>
+        <button class='button button--white reqstore__options-button'>update log</button>
     </div>
-
-
-    Log {{ log$ | async | json }}
-    {{ selectedLogItem | json }}
-
-    <ng-container *ngIf='log$ | async; let log'>
+    <ng-container *ngIf='logData; let log'>
         <div class='log'>
             <div class='log__timestamps'>
                 <div class='log__timestamps-title'>Timestamps</div> 
@@ -22,9 +20,9 @@
                     *ngFor="let logItem of log | keyvalue"
                     (click)="selectLogItem(logItem.value)"
                 >
-                    <span>{{ logItem.key * 1000 | utcToLocal }}</span>
+                    <span>{{ logItem.key / 1000000 | utcToLocal }}</span>
                     <span>
-                        <span *ngIf='logItem.value.failed' class='log__timestamps-item-failed-count'>{{ logItem.value.failed }}/</span><span class='log__timestamps-item-count'>{{ logItem.value.count }}</span>
+                        <span *ngIf='logItem.value.failed' class='log__timestamps-item-failed-count'>!</span>
                     </span>
                 </div>
             </div>
@@ -32,30 +30,24 @@
                 <div class='log__details-title'> Details </div>
                 <div class='log__details-container'>
                     <ng-container *ngIf='selectedLogItem'>
-                        <div class='log__details-item' *ngFor='let item of selectedLogItem.entities'>
-                            <div 
-                                class='metric-data log__details-item-metric-data'
-                                [ngClass]="{'metric-data--is-error': item.metricData.health === false}"
-                            >
-                                {{ item.metricData.name }}
-                                {{ item.metricData.value }}
+                        <div class='log__details-item'>
+                            <div class='metrics log__details-item-metrics'>
+                                <div class='metrics__title'>Metrics</div>
+                                <div class='metrics__list'>
+                                    <div class='metrics__item' *ngFor='let metric of selectedLogItem.metrics | keyvalue'>
+                                        <span class='metrics__item-name'>{{ metric.key }}</span>
+                                        <span class='metrics__item-value'>{{ metric.value.value }}</span>
+                                        
+                                    </div>
+                                </div>
                             </div>
                             <div class='log__details-item-request'>
                                 <div class='log__details-item-title'>request</div>
-                                inputs:
-                                <div *ngFor='let input of item.request.inputs | keyvalue'>
-                                    <div>name : {{ input.key }}</div>
-                                    <div>val: {{ input.value.doubleVal | json}}</div>
-                                </div>
+                                <hs-predict-request [request]='selectedLogItem.request' [modelVersion]='modelVersion'></hs-predict-request>
                             </div>
                             <div class='log__details-item-response'>
                                 <div class='log__details-item-title'>response</div>
-                                <div>outputs</div>
-                                {{ item.response | json }}
-                                <div *ngFor='let output of item.response.outputs | keyvalue'>
-                                        <div>name : {{ output.key }}</div>
-                                        <div>val: {{ output.value.doubleVal | json}}</div>
-                                    </div>
+                                <hs-predict-response [response]='selectedLogItem.response' [modelVersion]='modelVersion'></hs-predict-response>
                             </div>
                         </div>
                     </ng-container>

@@ -9,11 +9,18 @@ import {
     Output,
     EventEmitter
 } from '@angular/core';
+import { HydroServingState } from '@core/reducers';
 import { HealthTimelineHistoryService } from '@core/services/health-timeline-history.service';
 import { HealthTimelineService } from '@core/services/health-timeline.service';
-import { ITimeInterval } from '@shared/models/_index';
+import { MetricSettingsService } from '@core/services/metrics/_index';
+import { MonitoringService } from '@core/services/metrics/monitoring.service';
+import { getSelectedModelVersion } from '@models/reducers';
+import { Store } from '@ngrx/store';
+import { ITimeInterval, IModelVersion, IModel } from '@shared/models/_index';
+import { IMetricSpecification } from '@shared/models/metric-specification.model';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
 import * as d3 from 'd3';
+import { request } from 'http';
 import { Subscription, Subject, merge, Observable, TimeInterval, pipe, combineLatest, of, BehaviorSubject } from 'rxjs';
 import { filter, startWith, switchMap, tap } from 'rxjs/operators';
 
@@ -47,7 +54,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     mimimapTransform = 'translate(0,0)';
     minimapWidth = 840;
 
-    fullLog: ITimelineLog;
+    fullLog: any;
 
     brushMove$: Subject<ITimeInterval>;
     minimapBrushMove$: Subject<ITimeInterval>;
@@ -72,8 +79,12 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     readonly X_AXIS_HEIGHT = 10;
 
     try: number;
-
     scale;
+
+    modelVersion$: Observable<IModelVersion>;
+    modelVersion: IModelVersion;
+    metricSpecs: IMetricSpecification[];
+    metrics$: Observable<IMetricSpecification[]>;
 
     @Output()
     private timeInterval: EventEmitter<ITimeInterval> = new EventEmitter();
@@ -82,36 +93,68 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     private healthTimelineDataSub: Subscription;
     constructor(
         private timelineService: HealthTimelineService,
-        private cd: ChangeDetectorRef
+        private cd: ChangeDetectorRef,
+        private metricSettingsService: MetricSettingsService,
+        private monitoringService: MonitoringService,
+        private store: Store<HydroServingState>
     ) {
         this.brushEnd$ = new Subject();
         this.brushMove$ = new Subject();
         this.minimapBrushMove$ = new Subject();
         this.minimapBrushEnd$ = new Subject();
-
         this.displayedTime$ = merge(this.displayedTime.asObservable(), this.brushMove$, this.minimapBrushMove$);
-
         this.selectedTime$ = merge(
             this.brushEnd$,
             this.minimapBrushEnd$
-        ).pipe(startWith({from: new Date(2019, 0, 1).getTime(), to: new Date(2020, 0, 1).getTime()}));
+        ).pipe(startWith());
+        this.modelVersion$ = this.store.select(getSelectedModelVersion);
     }
 
     ngOnInit(): void {
-        let i = 0;
-        this.selectedTime$.pipe(
-            tap( timeInterval => {
+        this.metrics$ = combineLatest(this.modelVersion$).pipe(
+            switchMap(([modelVersion]) => this.metricSettingsService.getMetricSettings(`${modelVersion.id}`))
+        );
+
+        combineLatest(this.metrics$, this.modelVersion$).pipe(
+            switchMap(([metricSpecs, mv]) => {
+                this.metricSpecs = metricSpecs;
+                this.modelVersion = mv;
+                return this.createInitRequests();
+            }),
+            tap(res => {
+                const m = this.metricSpecs;
+                const m2 = this.metricSpecs.reduce((acc, cur, idx) => {
+                    acc[m[idx].name] = res[idx];
+                    return acc;
+                }, {});
+                if (this.fullLog === undefined) {this.fullLog = m2; }
+                this.currentLogData = m2;
+
+                const interval = this.timelineService.getMinimumAndMaximumTimestamps(this.currentLogData);
+                const i = { from: interval[0], to: interval[1]};
+                this.displayedTime.next(i);
+                this.timeInterval.next(i);
+                this.render();
+            })
+        ).subscribe();
+
+        combineLatest(this.selectedTime$, this.metrics$, this.modelVersion$).pipe(
+            tap( ([timeInterval, metricSpecs, mv]) => {
                 this.displayedTime.next(timeInterval);
                 this.timeInterval.next(timeInterval);
             }),
-            switchMap(_ => {
-                console.dir(`request ${_.from} - ${_.to}`);
-                return this.timelineService.getData(0, 1, i++);
+            switchMap(([timeInterval, metricSpecs, mv]) => {
+                this.metricSpecs = metricSpecs;
+                this.modelVersion = mv;
+                return this.createRequestsByInterval(timeInterval);
             }),
-            tap( _ => {
-                if (this.fullLog === undefined) {this.fullLog = _; }
-
-                this.currentLogData = _;
+            tap(res => {
+                const m = this.metricSpecs;
+                const m2 = this.metricSpecs.reduce((acc, cur, idx) => {
+                    acc[m[idx].name] = res[idx];
+                    return acc;
+                }, {});
+                this.currentLogData = m2;
                 this.render();
             })
         ).subscribe();
@@ -126,7 +169,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-            // this.healthTimelineDataSub.unsubscribe();
+        // this.healthTimelineDataSub.unsubscribe();
     }
 
     onMinimapBrushEnd(t: ITimeInterval) {
@@ -134,6 +177,32 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     }
     onMinimapBrushMove(t: ITimeInterval) {
         this.minimapBrushMove$.next(t);
+    }
+
+    private createInitRequests() {
+        const requests = this.metricSpecs
+            .map(mS =>
+                this.monitoringService.getAggregation(
+                    `${this.modelVersion.id}`,
+                    this.monitoringService.getMetricsBySpecKind(mS.kind)
+                ));
+
+        return combineLatest(...requests);
+    }
+
+    private createRequestsByInterval(timeInterval: ITimeInterval) {
+        const requests = this.metricSpecs
+            .map(mS =>
+                this.monitoringService.getAggregation(
+                    `${this.modelVersion.id}`,
+                    this.monitoringService.getMetricsBySpecKind(mS.kind),
+                    {
+                        from: `${Math.floor(timeInterval.from / 1000)}`,
+                        till: `${Math.floor(timeInterval.to / 1000)}`,
+                    }
+                ));
+
+        return combineLatest(...requests);
     }
 
     private updateBrush() {
@@ -185,9 +254,18 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     }
 
     private updateScale() {
-        this.scale = d3.scaleTime()
+        if(this.logDataNotEmpty()){
+            this.scale = d3.scaleTime()
             .domain(this.timelineService.getMinimumAndMaximumTimestamps(this.currentLogData))
             .range([0, 840]);
+        } else {
+            const {from, to} = this.displayedTime.getValue();
+
+            this.scale = d3.scaleTime()
+            .domain([new Date(from), new Date(to)])
+            .range([0, 840]);
+        }
+
     }
 
     private updateYTitle(): void {
@@ -196,9 +274,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
         d3.select(this.yTitleContainer.nativeElement)
           .selectAll('text')
           .data(yLabels).join(
-              enter => enter.append('text').attr('class', 'y-title').attr('y', 24),
-              update => update,
-             exit => exit.remove()
+              enter => enter.append('text').attr('class', 'y-title').attr('y', 24)
           ).attr('transform', (_, j) => `translate(0, ${j * this.LINE_HEIGHT + 10})`)
            .text(d => d);
     }
@@ -217,6 +293,10 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
             ).attr('transform', (d, idx) => `translate(0, ${idx * 32})`)
              .each( function(data, index) {
                 d3.select(this)
+                .selectAll('rect')
+                .remove();
+
+                d3.select(this)
                     .selectAll('rect')
                     .data(data)
                     .join(
@@ -228,14 +308,13 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     }
 
     private drawRect(selection) {
-        selection.classed('dataset__rect--s',  d => d.status === 'success')
-            .classed('dataset__rect--f', d => d.status === 'failed')
+        selection
+            .filter( d => d.meanValue !== null)
+            .classed('dataset-m__rect--s',  d => d.meanHealth === 1)
+            .classed('dataset-m__rect--f', d => d.meanHealth < 1)
             .attr('height', 14)
-            .attr('x', d => this.scale(new Date(d.from)))
-            .attr('width', d => this.scale(new Date(d.to)) - this.scale(new Date(d.from)))
-            .on('click', () => {
-                this.timelineService.getData(0, 1);
-            });
+            .attr('x', d => this.scale(new Date(d.from * 1000)))
+            .attr('width', d => this.scale(new Date(d.till * 1000)) - this.scale(new Date(d.from * 1000)));
     }
 
     private updateCanvasSize(): void {
@@ -249,5 +328,11 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     private rescaleMain(from, to) {
         this.scale = d3.scaleTime().domain([from, to]).range([0, 840]);
         this.updateDataset();
+    }
+
+    private logDataNotEmpty(){
+        const data = Object.values(this.currentLogData);
+
+        return data.some(el => el.length > 0);
     }
 }

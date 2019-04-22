@@ -1,5 +1,27 @@
 .reqstore {
-
+    &__options {
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: grey;
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+        &-item {
+            margin-right: 8px;
+        }
+        &-input {
+            border: 1px #9c9c9c solid;
+            line-height: 12px;
+            text-align: right;
+            width: 35px;
+            padding: 2px;
+        }
+        &-button {
+            font-size: 8px;
+            padding: 4px;
+        }
+    }
 }
 
 .selector {
@@ -18,15 +40,14 @@
 
 .log {
     display: flex;
-    border-radius: 4px;
     overflow: hidden;
     width: 100%;
-    box-shadow: 0 0 4px -2px black;
     &__timestamps {
         min-width: 240px;
-        background: white;
+        background: #f9f9f9;
         max-height: 400px;
         overflow: scroll;
+        font-size: 12px;
         &-title {
             padding: 8px;
             font-weight: bold;
@@ -36,7 +57,7 @@
             padding: 4px 12px;
             display: flex;
             justify-content: space-between;
-            transition: .3s all ease;
+            transition: .3s color ease;
             cursor: pointer;
             color: lightgray;
             &-count, &-failed-count {
@@ -46,7 +67,8 @@
                 color: #ff4141;
             }
             &--selected, &:hover {
-                color: black;
+                background: white;
+                color: rgb(37, 37, 37);
             }
         }
     }
@@ -56,6 +78,7 @@
         overflow: scroll;
         max-height: 400px;
         background: white;
+        font-size:12px;
         &-title {
             padding: 8px 24px;
             font-weight: bold;
@@ -66,16 +89,12 @@
         }
         &-item {
             margin-bottom: 8px;
-            &-uid {
-                background: #686780;
-                padding: 6px;
-                color: white;
-            }
-            &-request, &-response,&-metric-data {
-                padding: 6px;
+            &-request, &-response, &-metrics {
+                margin-bottom: 8px;
             }
             &-title {
-                color: orange;
+                color: rgb(100, 100, 100);
+                text-transform: uppercase;
             }
         }
     }
@@ -86,10 +105,19 @@
     max-height: 400px;
 }
 
-.metric-data {
-    &--is-error {
-        background: #f39090;
-        color: white;
+.metrics {
+    &__title {
+        color: #646464;
+        text-transform: uppercase;
+    }
+    &__list {
+        margin-left: 8px;
+    }
+    &__item {
+        &-name {
+            color: grey;
+            margin-right: 8px;
+        }
     }
 }
 

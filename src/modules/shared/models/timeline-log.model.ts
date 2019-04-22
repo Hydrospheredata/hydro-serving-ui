@@ -1,3 +1,5 @@
+import { IMonitoringAggregationItem } from '@core/services/metrics/monitoring.service';
+
 export enum ITimelineLogItemStatus {
     'success' = '#76da8c',
     'failed' = '#e45757',
@@ -11,5 +13,5 @@ export interface ITimelineLogItem {
 }
 
 export interface ITimelineLog {
-    [key: string]: ITimelineLogItem[];
+    [key: string]: IMonitoringAggregationItem[];
 }

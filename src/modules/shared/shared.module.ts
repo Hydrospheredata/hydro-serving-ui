@@ -45,6 +45,8 @@ import {
     HealthTimelineComponent,
     HealthTimelineMiniComponent,
     ReqstoreTableLogComponent,
+    PredictRequestComponent,
+    PredictResponseComponent
 } from './components/_index';
 
 // Directives
@@ -90,6 +92,8 @@ const COMPONENTS = [
     HealthTimelineComponent,
     HealthTimelineMiniComponent,
     ReqstoreTableLogComponent,
+    PredictRequestComponent,
+    PredictResponseComponent,
 ];
 
 const DIRECTIVES = [
