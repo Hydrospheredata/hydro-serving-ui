@@ -2,11 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, AbstractControl } from '@angular/forms';
 import { HydroServingState } from '@core/reducers';
 import { MetricSettingsService } from '@core/services/metrics/_index';
-import { getAllModels, getModelVersionsByModelId } from '@models/reducers';
+import { getModelVersionsByModelId, getSelectedModelId, getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
-import { IModel, IModelVersion } from '@shared/_index';
+import { IModelVersion } from '@shared/_index';
 import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
-import { Observable, Subject, combineLatest, BehaviorSubject, of } from 'rxjs';
+import { Observable, Subject, combineLatest, BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, tap, takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -15,20 +15,15 @@ import { filter, switchMap, map, tap, takeUntil } from 'rxjs/operators';
     styleUrls: ['./compare.component.scss'],
 })
 export class CompareComponent implements OnInit, OnDestroy {
-    models$: Observable<IModel[]>;
-    firstModelVersionsList$: Observable<IModelVersion[]>;
+    selectedModelId$: Observable<number>;
+    selectedModelVersion$: Observable<IModelVersion>;
+    modelVersionList$: Observable<IModelVersion[]>;
     secondModelVersionsList$: Observable<IModelVersion[]>;
 
     metricSpecificationsSubject: BehaviorSubject<IMetricSpecification[]> = new BehaviorSubject([]);
 
     metricKindList$: Observable<string[]>;
     metricProvider$: Subject<IMetricSpecificationProvider> = new Subject();
-
-    model: AbstractControl = new FormControl('');
-    modelChanges$: Observable<any>;
-
-    firstModelVersion: AbstractControl = new FormControl('');
-    firstModelVersionChanges$: Observable<any>;
 
     secondModelVersion: AbstractControl = new FormControl('');
     secondModelVersionChanges$: Observable<any>;
@@ -51,36 +46,30 @@ export class CompareComponent implements OnInit, OnDestroy {
         store: Store<HydroServingState>,
         metricService: MetricSettingsService
     ) {
-        this.models$ = store.select(getAllModels);
-        this.modelChanges$ = this.model.valueChanges;
-        this.firstModelVersionChanges$ = this.firstModelVersion.valueChanges;
+        this.selectedModelId$ = store.select(getSelectedModelId);
+        this.selectedModelVersion$ = store.select(getSelectedModelVersion);
         this.secondModelVersionChanges$ = this.secondModelVersion.valueChanges;
         this.metricKindChanges$ = this.metricKind.valueChanges;
 
-        this.firstModelVersionsList$ = this.modelChanges$.pipe(
+        this.modelVersionList$ = this.selectedModelId$.pipe(
             filter(id => id !== undefined),
             switchMap(id => store.select(getModelVersionsByModelId(id)))
         );
 
-        this.firstModelVersionsList$.pipe(
-            takeUntil(this.close),
-            tap(_ => this.firstModelVersion.setValue(_[0]))
-        ).subscribe();
 
         this.secondModelVersionsList$ = combineLatest(
-            this.firstModelVersionChanges$,
-            this.firstModelVersionsList$
+            this.selectedModelVersion$,
+            this.modelVersionList$
         ).pipe(
-            map(([{id: firstId}, list]) => list.filter(({id}) => id !== firstId)),
+            map(([{id: modelVerId}, list]) => list.filter(({id}) => id !== modelVerId)),
             tap(modelVersions => this.secondModelVersion.setValue(modelVersions[0]))
         );
 
         // metrics
         combineLatest(
-            this.firstModelVersionChanges$,
+            this.selectedModelVersion$,
             this.secondModelVersionChanges$
         ).pipe(
-            takeUntil(this.close),
             filter(([first, second]) => !!first && !!second),
             switchMap(modelVersions => {
                 const requests = [];
@@ -97,7 +86,8 @@ export class CompareComponent implements OnInit, OnDestroy {
                 this.metricSpecificationsSubject.next(
                     [...primaryMericSpecifications, ...secondaryMetricSpecifications]
                 );
-            })
+            }),
+            takeUntil(this.close)
         ).subscribe();
 
         this.metricKindList$ = this.metricSpecificationsSubject.asObservable().pipe(
