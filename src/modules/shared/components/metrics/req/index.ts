@@ -11,12 +11,12 @@ type ExecutionError = protos.hydrosphere.monitoring.ExecutionError;
 const ExecutionError = protos.hydrosphere.monitoring.ExecutionError;
 
 export interface Entry {
-  uid: number;
+  uid: string;
   data: Uint8Array;
 }
 
 export interface TsRecord {
-  ts: number;
+  ts: string;
   entries: Entry[];
 }
 
@@ -79,8 +79,8 @@ export function decodeTsRecord(bytes: Uint8Array): TsRecord[] {
   const records: TsRecord[] = [];
 
   while (bb.offset < bb.limit) {
-    const ts = bb.readLong().toNumber();
-    const unique = bb.readLong().toNumber();
+    const ts = bb.readLong().toString();
+    const unique = bb.readLong().toString();
     const len = bb.readInt();
     const data = new Uint8Array(bb.readBytes(len).toArrayBuffer());
 
@@ -91,7 +91,7 @@ export function decodeTsRecord(bytes: Uint8Array): TsRecord[] {
 
   }
 
-  const resultMap: Map<Number, TsRecord> = records.reduce(function(map: Map<Number, TsRecord>, obj) {
+  const resultMap: Map<string, TsRecord> = records.reduce(function(map: Map<string, TsRecord>, obj) {
     if (map.has(obj.ts)) {
         const prev = map[obj.ts];
         map[obj.ts] = {ts: obj.ts, entries: prev.entries.concat(obj.entries)};
@@ -99,7 +99,7 @@ export function decodeTsRecord(bytes: Uint8Array): TsRecord[] {
       map[obj.ts] = obj;
     }
     return map;
-  }, new Map<Number, TsRecord>());
+  }, new Map<string, TsRecord>());
 
   return records;
 }

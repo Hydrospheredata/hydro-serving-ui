@@ -22,7 +22,8 @@ import {
     MatchSorterPipe,
     DockerImageSplitPipe,
     ReverseArrayPipe,
-    FieldShapePipe
+    FieldShapePipe,
+    MomentPipe
 } from './pipes/_index';
 
 // Components
@@ -46,7 +47,8 @@ import {
     HealthTimelineMiniComponent,
     ReqstoreTableLogComponent,
     PredictRequestComponent,
-    PredictResponseComponent
+    PredictResponseComponent,
+    TensorImageListComponent
 } from './components/_index';
 
 // Directives
@@ -71,6 +73,7 @@ const PIPES = [
     DockerImageSplitPipe,
     ReverseArrayPipe,
     FieldShapePipe,
+    MomentPipe,
 ];
 
 const COMPONENTS = [
@@ -94,6 +97,7 @@ const COMPONENTS = [
     ReqstoreTableLogComponent,
     PredictRequestComponent,
     PredictResponseComponent,
+    TensorImageListComponent,
 ];
 
 const DIRECTIVES = [

@@ -6,7 +6,14 @@
         border-top-right-radius:2px;
         text-align: center;
     }
+}
 
+.application {
+    cursor: pointer;
+}
+
+.applications-is--empty {
+    color: #e6e9ed;
 }
 
 .actions {

@@ -1,4 +1,7 @@
 <div class='reqstore_chart'>
+    <div *ngIf='loading$ | async' class='reqstore_chart__loader'>
+        loading
+    </div>
     <div class='reqstore_chart__header'>
         <div class='selected-time'>
             {{ (displayedTime$ | async)?.from | utcToLocal}} - 
@@ -14,7 +17,6 @@
                         </clipPath>
                     </defs>
             <g #yTitleContainer style='transform:translate(-100px, 0)'></g>
-            <!-- <g #dataContainer clip-path='url(#datasetClipPath)'></g> -->
             <g #brush></g>
             <g #dataContainer></g>
             <g hsD3Axis [transform]='xAxisTransform' [scale]='scale'></g>

@@ -1,15 +1,37 @@
 
-import { Component, OnInit, AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { HydroServingState } from '@core/reducers';
 import { MetricSettingsService } from '@core/services/metrics/_index';
-import { MonitoringService } from '@core/services/metrics/monitoring.service';
+import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
 import { ReqstoreService } from '@core/services/reqstore.service';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { ITimeInterval, IModelVersion } from '@shared/_index';
 import { IMetricSpecification } from '@shared/models/metric-specification.model';
-import { Observable, Subject, combineLatest, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { IReqstoreEntry, IReqstoreLog } from '@shared/models/reqstore.model';
+import { isEmptyObj } from '@shared/utils/is-empty-object';
+import { Observable, Subject, combineLatest, BehaviorSubject, merge } from 'rxjs';
+import { switchMap, withLatestFrom } from 'rxjs/operators';
+
+type ILogEntry = IReqstoreEntry & {
+    failed: boolean;
+    metrics: any;
+};
+
+type ILogEntry2 = IReqstoreEntry & {
+    failed: boolean;
+    metrics: {
+        [metricKind: string]: {
+            [columnIndex: string]: {
+                [metricName: string]: any
+            }
+        }
+    };
+};
+
+interface ILog {
+    [timestamp: string]: ILogEntry[];
+}
 
 @Component({
     selector: 'hs-reqstore',
@@ -18,14 +40,22 @@ import { switchMap } from 'rxjs/operators';
 })
 export class ReqstoreComponent implements OnInit, AfterViewInit {
     timeInterval: ITimeInterval;
+    timeInterval$: Subject<ITimeInterval> = new Subject();
+
     selectedModelVersion$: Observable<IModelVersion>;
     metricSpecs$: Observable<IMetricSpecification[]>;
 
-    timeInterval$: Subject<ITimeInterval> = new Subject();
-    reqStoreData;
-    sonarData;
+    reqstoreLog: IReqstoreLog;
+    sonarData: IMetricData[][];
+    logLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    logData: ILog;
 
-    logData;
+    // reqstoreOptions
+    maxMBytes: string = '1';
+    maxMessages: string = '20';
+    reverse: boolean = true;
+    onlyFailedReqstoreData: boolean = true;
+    updateReqstore$: BehaviorSubject<any> = new BehaviorSubject('');
 
     constructor(
        public cd: ChangeDetectorRef,
@@ -42,70 +72,41 @@ export class ReqstoreComponent implements OnInit, AfterViewInit {
         combineLatest(this.timeInterval$, this.selectedModelVersion$, this.metricSpecs$)
             .pipe(
                 switchMap(([interval, mv, ms]) => {
-                    const reqstoreData$ = this.reqstoreRequest(interval, mv);
+                    this.logLoading$.next(true);
+                    const reqstoreLog$ = this.reqstoreRequest(interval, mv);
                     const sonarData$ = this.sonarRequest(interval, mv, ms);
-                    return combineLatest(reqstoreData$, sonarData$);
+                    return combineLatest(reqstoreLog$, sonarData$);
                 })
-            )
-            .subscribe(
-                ([reqstoreData, sonarData]) => {
-                    this.reqStoreData = reqstoreData;
+            ).subscribe(
+                ([reqstoreLog, sonarData]) => {
+                    this.logLoading$.next(false);
+                    this.reqstoreLog = reqstoreLog;
                     this.sonarData = sonarData;
+                    this.logData = this.mapReqstorAndSonarToLog(reqstoreLog, sonarData);
+            }
+        );
 
-                    console.dir(reqstoreData);
-                    console.dir(sonarData);
-
-                    const log = {};
-                    const metricsCount = sonarData.length;
-
-                    for (let i = 0; i < metricsCount; i++) {
-                        const currentMetricData = sonarData[i];
-
-                        for (let j = 0; j < currentMetricData.length; j++) {
-                            let traces = [];
-                            try {
-                                traces = JSON.parse(currentMetricData[j].labels.traces);
-                            } catch (e) {
-                                // console.error(e);
-                                try {
-                                    traces = [JSON.parse(currentMetricData[j].labels.trace)];
-                                } catch (e) {
-                                    console.error(e);
-                                }
-                            }
-
-                            if (traces.length === 0) { continue; }
-
-                            traces.forEach(trace => {
-                                const [ts, uid] = trace.split('_');
-                                if (reqstoreData[ts] !== undefined) {
-                                    if (log[ts] === undefined) {
-                                        log[ts] = reqstoreData[ts][0];
-                                        log[ts].failed = false;
-                                        log[ts].metrics = {
-                                        };
-                                    }
-
-                                    if (log[ts].metrics[currentMetricData[j].name] === undefined) {
-                                        log[ts].metrics[currentMetricData[j].name] = currentMetricData[j];
-                                    }
-
-                                    if (currentMetricData[j].health === false) {
-                                        log[ts].failed = true;
-                                    }
-                                }
-
-                            });
-                        }
-                    }
-
-                    this.logData = log;
-
-                }
-            );
+        this.updateReqstore$.pipe(
+            withLatestFrom(this.timeInterval$, this.selectedModelVersion$, this.metricSpecs$)
+        ).pipe(
+            switchMap(([_, interval, mv, ms]) => {
+                this.logLoading$.next(true);
+                const reqstoreLog$ = this.reqstoreRequest(interval, mv);
+                const sonarData$ = this.sonarRequest(interval, mv, ms);
+                return combineLatest(reqstoreLog$, sonarData$);
+            })
+        ).subscribe(
+            ([reqstoreLog, sonarData]) => {
+                this.logLoading$.next(false);
+                this.reqstoreLog = reqstoreLog;
+                this.sonarData = sonarData;
+                this.logData = this.mapReqstorAndSonarToLog(reqstoreLog, sonarData);
+            }
+        );
     }
 
     ngOnInit(): void {
+
     }
 
     ngAfterViewInit(): void {
@@ -116,45 +117,111 @@ export class ReqstoreComponent implements OnInit, AfterViewInit {
         this.timeInterval$.next(timeInterval);
     }
 
+    updateReqstore() {
+        this.updateReqstore$.next(true);
+    }
+
     private reqstoreRequest(interval, modelVersion) {
         return this.reqstore.getData(
             modelVersion.id,
             interval.from,
             interval.to,
             {
-                maxBytes: '1000000',
-                maxMessages: '1030',
-                reverse: 'true',
-                }
-            );
+                maxBytes: `${+this.maxMBytes * 1024 * 1024}`,
+                maxMessages: this.maxMessages,
+                reverse: this.reverse ? 'true' : 'false',
+            }
+        );
     }
 
-    private sonarRequest(interval, modelVersion, ms) {
-        const requests = ms
-        .map(mS => {
-            if (mS.kind === 'KSMetricSpec') {
+    private sonarRequest(
+        interval: ITimeInterval,
+        modelVersion: IModelVersion,
+        metricSpecifications: IMetricSpecification[]
+    ): Observable<IMetricData[][]> {
+        const requests = metricSpecifications
+            .map(mS => {
+                const options: any = {
+                    from: `${Math.floor(interval.from / 1000)}`,
+                    till: `${Math.floor(interval.to / 1000)}`,
+                };
+
+                if(this.onlyFailedReqstoreData) {
+                    options.health = '0';
+                }
+
                 return this.monitoringService.getMetricsInRange(
                     `${modelVersion.id}`,
                     this.monitoringService.getMetricsBySpecKind(mS.kind),
-                    {
-                        from: `${Math.floor(interval.from / 1000)}`,
-                        till: `${Math.floor(interval.to / 1000)}`,
-                        columnIndex: '0',
-                    }
+                    options
                 );
-            } else {
-                return this.monitoringService.getMetricsInRange(
-                    `${modelVersion.id}`,
-                    this.monitoringService.getMetricsBySpecKind(mS.kind),
-                    {
-                        from: `${Math.floor(interval.from / 1000)}`,
-                        till: `${Math.floor(interval.to / 1000)}`,
+            });
+
+        return combineLatest(requests);
+    }
+
+    private mapReqstorAndSonarToLog(
+        reqstoreLog: IReqstoreLog,
+        sonarData: IMetricData[][]
+    ): ILog {
+        if (isEmptyObj(reqstoreLog) || sonarData.length === 0) { return {}; }
+
+        const log = {};
+        const metricsCount = sonarData.length;
+
+        for (let i = 0; i < metricsCount; i++) {
+            const currentMetricDataArray = sonarData[i];
+
+            for (let j = 0; j < currentMetricDataArray.length; j++) {
+                const currentMetricData = currentMetricDataArray[j];
+
+                let traces = [];
+                try {
+                    traces = JSON.parse(currentMetricData.labels.traces);
+                } catch (e) {
+                    // console.error(e);
+                    try {
+                        traces = [JSON.parse(currentMetricData.labels.trace)];
+                    } catch (e) {
+                        console.error(e);
                     }
-                );
+                }
+
+                if (traces.length === 0) { continue; }
+
+                traces.forEach(trace => {
+                    if (trace) {
+                        const [ts] = trace.split('_');
+                        if (reqstoreLog[ts] !== undefined) {
+                            if (log[ts] === undefined) {
+                                log[ts] = reqstoreLog[ts][0];
+                                log[ts].failed = false;
+                                log[ts].metrics = {};
+                            }
+
+                            const metricKind = this.monitoringService.getSpecKindByMetricName(currentMetricData.name);
+
+                            if (log[ts].metrics[metricKind] === undefined) {
+                                log[ts].metrics[metricKind] = {};
+                            }
+
+                            if (log[ts].metrics[metricKind][+currentMetricData.labels.columnIndex || 0] === undefined) {
+                                log[ts].metrics[metricKind][+currentMetricData.labels.columnIndex || 0] = {};
+                            }
+
+                            if (log[ts].metrics[metricKind][+currentMetricData.labels.columnIndex || 0][currentMetricData.name] === undefined) {
+                                log[ts].metrics[metricKind][+currentMetricData.labels.columnIndex || 0][currentMetricData.name] = currentMetricData;
+                            }
+
+                            if (currentMetricData.health === false) {
+                                log[ts].failed = true;
+                            }
+                        }
+                    }
+                });
             }
+        }
 
-        });
-
-        return combineLatest(...requests);
+        return log;
     }
 }

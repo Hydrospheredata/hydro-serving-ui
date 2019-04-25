@@ -1,26 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HealthTimelineHistoryService } from '@core/services/health-timeline-history.service';
-import { HttpService } from '@core/services/http';
-import { IMonitoringAggregationItem } from '@core/services/metrics/monitoring.service';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
-import { BehaviorSubject, of, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class HealthTimelineService {
     currentData: BehaviorSubject<ITimelineLog> = new BehaviorSubject(null);
-    private baseReqstoreUrl: string;
 
     constructor(
-        private http: HttpService,
         private log: HealthTimelineHistoryService
     ) {
 
     }
-
-    // getData(from: number, to: number, idx: number = 0): Observable<IMonitoringAggregationItem> {
-    //     if (this.currentData.getValue()) { this.storePrevLog(); }
-    //     return of();
-    // }
 
     historyExist(): boolean {
         return this.log.existRecords();
@@ -50,8 +41,8 @@ export class HealthTimelineService {
         }
 
         return [
-           minTimestamp * 1000,
-           maxTimestamp * 1000,
+           minTimestamp,
+           maxTimestamp,
         ];
     }
 

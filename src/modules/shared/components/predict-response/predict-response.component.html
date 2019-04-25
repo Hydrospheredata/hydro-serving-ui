@@ -6,11 +6,11 @@
                 <span class='response__output-name'>{{ output.key }}</span>
                 <ng-container *ngTemplateOutlet="isImage(output.key) ? image : plainText;"></ng-container>
                 <ng-template #image>
-                    <canvas width='28' height='28' hsPixelToCanvas [pixels]='getValue(output.value)'></canvas>
+                    <hs-tensor-image-list [tensorProto]='input.value'></hs-tensor-image-list>
                 </ng-template>
-                 <ng-template #plainText>
-                     {{ getValue(output.value) }}
-                 </ng-template>
+                <ng-template #plainText>
+                    {{ getValue(output.value) }}
+                </ng-template>
             </div>
         </div>
     </div>

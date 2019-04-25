@@ -10,7 +10,6 @@ import { InfluxDBService } from '@core/services';
 import { HttpService } from '@core/services/http';
 import { MetricsService } from '@core/services/metrics/metrics.service';
 import { DialogService } from '@dialog/dialog.service';
-import { ApplicationStatusComponent } from '@shared/_index';
 import { MockApplication } from '@testing/factories/application';
 import { MockStoreProvider } from '@testing/mocks';
 import { of } from 'rxjs';

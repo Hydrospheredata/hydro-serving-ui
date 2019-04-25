@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
+import { IMonitoringAggregationList } from '@shared/models/monitoring-aggregation.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -10,22 +11,13 @@ export interface IMetricData {
   name: string;
   value: number;
   labels: {
+      columnIndex: string;
       modelVersionId: string;
       trace?: any;
       traces?: any;
   };
   timestamp: number;
   health: any;
-}
-
-export interface IMonitoringAggregationItem {
-  meanValue: number | null;
-  meanHealth: number | null;
-  from: number;
-  till: number;
-  modelVersionId: number;
-  minValue: null;
-  maxValue: null;
 }
 
 @Injectable()
@@ -74,7 +66,7 @@ export class MonitoringService {
       till?: string;
       steps?: string;
     } = {}
-  ): Observable<IMonitoringAggregationItem[]> {
+  ): Observable<IMonitoringAggregationList> {
     return this.http.get(`${this.baseMonitoringUrl}/metrics/aggregation`, {
       params: {
         modelVersionId,
@@ -91,8 +83,9 @@ export class MonitoringService {
       from?: string;
       till?: string;
       columnIndex?: string;
+      health?: string;
     } = {}
-  ): Observable<IMonitoringAggregationItem[]> {
+  ): Observable<IMetricData[]> {
     return this.http.get(`${this.baseMonitoringUrl}/metrics/range`, {
       params: {
         modelVersionId,
@@ -100,25 +93,6 @@ export class MonitoringService {
         ...optional,
       },
     });
-  }
-
-  public createMetricProviders(metricSpecification: IMetricSpecification): IMetricSpecificationProvider  {
-    const dict = {
-        CounterMetricSpec:      ['counter'],
-        KSMetricSpec:           ['kolmogorovsmirnov', 'kolmogorovsmirnov_level'],
-        AEMetricSpec:           ['autoencoder_reconstructed'],
-        ImageAEMetricSpec:      ['image_autoencoder_reconstructed'],
-        RFMetricSpec:           ['randomforest'],
-        GANMetricSpec:          ['gan_outlier', 'gan_inlier'],
-        LatencyMetricSpec:      ['latency'],
-        ErrorRateMetricSpec:    ['error_rate'],
-    };
-
-    return {
-        kind: metricSpecification.kind,
-        byModelVersionId: { [metricSpecification.modelVersionId]: metricSpecification },
-        metrics: dict[metricSpecification.kind],
-    };
   }
 
   public getMetricsBySpecKind(spec: string): string[] {
@@ -134,5 +108,30 @@ export class MonitoringService {
     };
 
     return dict[spec];
+  }
+
+  public getSpecKindByMetricName(metricName: string) {
+    const dict = {
+      counter :                         'CounterMetricSpec',
+      kolmogorovsmirnov:                'KSMetricSpec',
+      kolmogorovsmirnov_level:          'KSMetricSpec',
+      autoencoder_reconstructed:        'AEMetricSpec',
+      image_autoencoder_reconstructed:  'ImageAEMetricSpec',
+      randomforest:                     'RFMetricSpec',
+      gan_outlier:                      'GANMetricSpec',
+      gan_inlier:                       'GANMetricSpec',
+      latency:                          'LatencyMetricSpec',
+      error_rate:                       'ErrorRateMetricSpec',
+    };
+
+    return dict[metricName];
+  }
+
+  public createMetricProviders(metricSpecification: IMetricSpecification): IMetricSpecificationProvider  {
+    return {
+        kind: metricSpecification.kind,
+        byModelVersionId: { [metricSpecification.modelVersionId]: metricSpecification },
+        metrics: this.getMetricsBySpecKind(metricSpecification.kind),
+    };
   }
 }

@@ -1,5 +1,7 @@
 .request {
-    margin-bottom: 12px;
+    max-width: 100%;
+    overflow: scroll;
+    margin-bottom: 24px;
     &__inputs {
         margin-left: 8px;
         &-title {

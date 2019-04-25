@@ -51,7 +51,6 @@
     height: 15px;
     background: gray;
     border-radius: 50%;
-    margin: auto;
 }
 
 .good {
@@ -85,6 +84,7 @@
         &-new {
             position: absolute;
             display: inline-block;
+            left: 6px;
             &--visible {
                 cursor: pointer;
                 display: block
@@ -98,7 +98,6 @@
         &-text {
             display: inline-block;
             width: 100%;
-            margin-left: 6px;
         }
     }
 }

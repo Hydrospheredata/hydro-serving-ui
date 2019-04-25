@@ -1,18 +1,11 @@
 import { HttpParams } from '@angular/common/http';
-import { HttpParamsOptions } from '@angular/common/http/src/params';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import { decodeTsRecord, asServingReqRes } from '@shared/components/metrics/req';
+import { IReqstoreLog } from '@shared/models/reqstore.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-export interface IReqstoreLog {
-    [record: string]: Array<{
-        uid: number;
-        request: any;
-        response: any;
-    }>;
-}
 
 export interface IReqstoreRequestOptions {
     [prop: string]: string;
@@ -39,7 +32,6 @@ export class ReqstoreService {
         }).pipe(
             map((_: any) => {
                 const x = new Uint8Array(_);
-
                 const y = decodeTsRecord(x);
                 const parsedLog: IReqstoreLog = {};
 
@@ -75,6 +67,5 @@ export class ReqstoreService {
         } catch (e) {
             throw Error('Cant convert timestamp to microseconds');
         }
-
     }
 }

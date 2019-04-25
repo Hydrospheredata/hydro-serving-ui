@@ -3,7 +3,6 @@ import { PredictResponse} from '@shared/components/metrics/req';
 import { IModelVersion } from '@shared/models/_index';
 import { getFiledNameByTensorDataType } from '@shared/utils/field-name-by-tensor-data-type';
 import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
-
 @Component({
     selector: 'hs-predict-response',
     templateUrl: './predict-response.component.html',
@@ -32,5 +31,13 @@ export class PredictResponseComponent implements OnInit {
         const field = fromSnakeToCamel(getFiledNameByTensorDataType(tensorProto.dtype));
         const data = tensorProto[field];
         return data;
+    }
+
+    getImageWidth(tensorProto) {
+        return tensorProto.tensorShape.dim[1].size;
+    }
+
+    getImageHeight(tensorProto) {
+        return tensorProto.tensorShape.dim[2].size;
     }
 }

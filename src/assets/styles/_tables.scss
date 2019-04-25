@@ -36,4 +36,7 @@ $table-padding: 14px;
       @extend .cell;
     }
   }
+  &-models {
+    background: white;
+  }
 }

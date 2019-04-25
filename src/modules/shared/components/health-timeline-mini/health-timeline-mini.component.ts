@@ -48,8 +48,6 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
 
     innerTimeInterval: ITimeInterval;
 
-    intrev;
-
     constructor(
         public timelineService: HealthTimelineService
     ) {}
@@ -157,9 +155,10 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
     private drawRect(selection) {
         return selection
             .filter(d => d.meanValue !== null)
-            .classed('dataset-m__rect--s',  d => d.meanHealth === 1)
-            .classed('dataset-m__rect--f', d => d.meanHealth < 1)
-            .attr('x', d => this.scale(new Date(d.from * 1000)))
-            .attr('width', d => this.scale(new Date(d.till * 1000)) - this.scale(new Date(d.from * 1000)));
+            .classed('dataset-m__rect--s',  d => d.meanHealth !== null && d.meanHealth === 1)
+            .classed('dataset-m__rect--f', d => d.meanHealth !== null && d.meanHealth < 1)
+            .classed('dataset-m__rect--u', d => d.meanHealth === null)
+            .attr('x', d => this.scale(new Date(d.from)))
+            .attr('width', d => this.scale(new Date(d.till)) - this.scale(new Date(d.from)));
     }
 }

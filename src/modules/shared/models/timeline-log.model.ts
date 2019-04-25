@@ -1,4 +1,4 @@
-import { IMonitoringAggregationItem } from '@core/services/metrics/monitoring.service';
+import { IMonitoringAggregationItem } from '@shared/models/monitoring-aggregation.model';
 
 export enum ITimelineLogItemStatus {
     'success' = '#76da8c',
