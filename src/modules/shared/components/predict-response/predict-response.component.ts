@@ -32,12 +32,4 @@ export class PredictResponseComponent implements OnInit {
         const data = tensorProto[field];
         return data;
     }
-
-    getImageWidth(tensorProto) {
-        return tensorProto.tensorShape.dim[1].size;
-    }
-
-    getImageHeight(tensorProto) {
-        return tensorProto.tensorShape.dim[2].size;
-    }
 }
