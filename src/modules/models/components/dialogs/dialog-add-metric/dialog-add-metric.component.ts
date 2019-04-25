@@ -39,14 +39,15 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
     public sources$: Observable<string[]>;
 
     public metricSpecificationKinds: IMetricSpecifiocationKind[] = [
-        {name: 'Kolmogorov-Smirnov', className: 'KSMetricSpec'},
-        {name: 'Autoencoder',        className: 'AEMetricSpec'},
-        {name: 'Image Autoencoder',  className: 'ImageAEMetricSpec'},
-        {name: 'Random Forest',      className: 'RFMetricSpec'},
-        {name: 'GAN',                className: 'GANMetricSpec'},
-        {name: 'Latency',            className: 'LatencyMetricSpec'},
-        {name: 'Counter',            className: 'CounterMetricSpec'},
-        {name: 'Error Rate',         className: 'ErrorRateMetricSpec'},
+        {name: 'Kolmogorov-Smirnov',    className: 'KSMetricSpec'},
+        {name: 'Autoencoder',           className: 'AEMetricSpec'},
+        {name: 'Image Autoencoder',     className: 'ImageAEMetricSpec'},
+        {name: 'Random Forest',         className: 'RFMetricSpec'},
+        {name: 'GAN',                   className: 'GANMetricSpec'},
+        {name: 'Latency',               className: 'LatencyMetricSpec'},
+        {name: 'Counter',               className: 'CounterMetricSpec'},
+        {name: 'Error Rate',            className: 'ErrorRateMetricSpec'},
+        {name: 'Prediction Accuracy',   className: 'AccuracyMetricSpec'},
     ];
 
     private modelVersion$: Observable<ModelVersion>;
@@ -96,6 +97,9 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
 
         kindChange.pipe(withLatestFrom(withHealthChange)).subscribe(([kind, withHealth]) => {
             switch (kind) {
+                case 'AccuracyMetricSpec':
+                    this.form.removeControl('config');
+                    break;
                 case 'ImageAEMetricSpec':
                   const xx: any = {
                     applicationName: this.fb.control(''),
@@ -168,7 +172,7 @@ export class DialogAddMetricComponent implements OnDestroy, OnInit {
             .pipe(
                 take(1),
                 tap(([modelVersion]) => {
-                    const { withHealth, config, kind } = this.form.value;
+                    const { withHealth, config = {}, kind } = this.form.value;
 
                     const metricSpecificationRequest: IMetricSpecificationRequest = {
                         name: this.form.value.name,

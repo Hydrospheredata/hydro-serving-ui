@@ -105,6 +105,7 @@ export class MonitoringService {
       GANMetricSpec:          ['gan_outlier', 'gan_inlier'],
       LatencyMetricSpec:      ['latency'],
       ErrorRateMetricSpec:    ['error_rate'],
+      AccuracyMetricSpec:     ['accuracy'],
     };
 
     return dict[spec];
@@ -122,6 +123,7 @@ export class MonitoringService {
       gan_inlier:                       'GANMetricSpec',
       latency:                          'LatencyMetricSpec',
       error_rate:                       'ErrorRateMetricSpec',
+      accuracy:                         'AccuracyMetricSpec',
     };
 
     return dict[metricName];

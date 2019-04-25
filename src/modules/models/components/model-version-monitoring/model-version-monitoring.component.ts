@@ -10,6 +10,7 @@ import { ModelVersion } from '@shared/_index';
 import { IMetricSpecification, IMetricSpecificationProviders } from '@shared/models/metric-specification.model';
 import { Observable, of, combineLatest, } from 'rxjs';
 import { filter, tap, switchMap, take} from 'rxjs/operators';
+import { MonitoringService } from '@core/services/metrics/monitoring.service';
 
 @Component({
     selector: 'hs-model-version-monitoring',
@@ -34,7 +35,8 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
         private dialog: DialogService,
         private store: Store<HydroServingState>,
         private router: Router,
-        private ac: ActivatedRoute
+        private ac: ActivatedRoute,
+        private monitoringService: MonitoringService
     ) {
         this.modelVersion$ = this.store.select(getSelectedModelVersion).pipe(
             filter(modelVersion => !!modelVersion),
@@ -93,24 +95,12 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
     ): IMetricSpecificationProviders  {
 
         const tmp: IMetricSpecificationProviders = {};
-
-        const dict = {
-            CounterMetricSpec:      ['counter'],
-            KSMetricSpec:           ['kolmogorovsmirnov', 'kolmogorovsmirnov_level'],
-            AEMetricSpec:           ['autoencoder_reconstructed'],
-            ImageAEMetricSpec:      ['image_autoencoder_reconstructed'],
-            RFMetricSpec:           ['randomforest'],
-            GANMetricSpec:          ['gan_outlier', 'gan_inlier'],
-            LatencyMetricSpec:      ['latency'],
-            ErrorRateMetricSpec:    ['error_rate'],
-        };
-
         metricSpecifications.forEach(metricSpec => {
             if (tmp[metricSpec.kind] === undefined) {
                 tmp[metricSpec.kind] = {
                     kind: metricSpec.kind,
                     byModelVersionId: {},
-                    metrics: dict[metricSpec.kind],
+                    metrics: this.monitoringService.getMetricsBySpecKind(metricSpec.kind),
                 };
             }
 
