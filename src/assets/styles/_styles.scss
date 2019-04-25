@@ -168,3 +168,10 @@ md-dialog-container.mat-dialog-container {
 .text-center {
   text-align: center;
 }
+
+.monitoring-log .highcharts-plot-band  {
+  cursor: pointer;
+  &:hover {
+     fill: rgb(247, 73, 73);
+  }
+}

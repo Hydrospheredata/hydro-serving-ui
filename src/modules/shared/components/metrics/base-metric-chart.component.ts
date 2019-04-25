@@ -8,7 +8,7 @@ import {
     ViewChild,
     OnChanges,
     SimpleChanges,
-    OnDestroy, 
+    OnDestroy,
     ChangeDetectionStrategy} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import * as HighchartsNoDataToDisplay from 'highcharts/modules/no-data-to-display.src';
@@ -26,6 +26,7 @@ import {
 
 import { InfluxDBService } from '@core/services';
 import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
+import { ITimeInterval } from '@shared/models/_index';
 import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
 
 @Component({
@@ -63,7 +64,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     protected providersSubject: Subject<any> = new Subject<any>();
 
     @Output()
-    private selectPoints: EventEmitter<any> = new EventEmitter<{from: IMetricData, to: IMetricData}>();
+    private selectPoints: EventEmitter<ITimeInterval> = new EventEmitter<ITimeInterval>();
 
     @ViewChild('chartContainer')
     private chartContainerRef: ElementRef;
@@ -79,7 +80,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private thresholds: {[uniqName: string]: number} = {};
     private updateChartSub: Subscription;
 
-    private selectSeriesPoint$: Subject<IMetricData> = new Subject();
+    // private selectSeriesPoint$: Subject<IMetricData> = new Subject();
     private onDestroy$: Subject<any>;
 
     constructor(
@@ -95,17 +96,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         );
 
         this.selfUpdate();
-        this.selectSeriesPoint$.pipe(
-            takeUntil(this.onDestroy$)
-        ).subscribe(metricData => {
-            if(this.from === undefined || this.to) {
-                this.from = metricData;
-                this.to = undefined;
-            } else {
-                this.to = metricData;
-            }
-            this.selectPoints.emit({from: this.from, to: this.to});
-        });
     }
 
     ngOnInit(): void {
@@ -154,6 +144,12 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private initChart(): void {
         const self = this;
 
+        Highcharts.setOptions({
+            time: {
+               useUTC: false,
+            },
+        });
+
         HighchartsNoDataToDisplay(Highcharts);
         this.chart = Highcharts.chart(this.chartContainerRef.nativeElement, {
             credits: {
@@ -190,11 +186,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     cursor: 'pointer',
                     point: {
                         events: {
-                            click(e) {
-                                const { key } = this.options;
-                                self.selectSeriesPoint$.next(key as IMetricData);
-                                return true;
-                            },
                             select: () => true,
                         },
                     },
@@ -270,7 +261,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     if (this.chartBands[metricName] === undefined) {
                         this.chartBands[metricName] = [];
                     }
-                    const id = `${from}_${to}`;
+                    const id = `${from.timestamp}_${to.timestamp}`;
                     this.chartBands[metricName].push(id);
                     this.chart.xAxis[0].addPlotBand({
                         from: from.timestamp * 1000,
@@ -279,7 +270,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                         id,
                         events: {
                             click(e) {
-                                self.selectPoints.emit({from, to});
+                                self.selectPoints.emit({from: from.timestamp, to: to.timestamp});
                             },
                         },
                     });

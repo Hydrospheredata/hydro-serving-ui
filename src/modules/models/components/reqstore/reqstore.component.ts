@@ -1,5 +1,5 @@
 
-import { Component, OnInit, AfterViewInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { HydroServingState } from '@core/reducers';
 import { MetricSettingsService } from '@core/services/metrics/_index';
 import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
@@ -10,8 +10,8 @@ import { ITimeInterval, IModelVersion } from '@shared/_index';
 import { IMetricSpecification } from '@shared/models/metric-specification.model';
 import { IReqstoreEntry, IReqstoreLog } from '@shared/models/reqstore.model';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
-import { Observable, Subject, combineLatest, BehaviorSubject, merge } from 'rxjs';
-import { switchMap, withLatestFrom } from 'rxjs/operators';
+import { Observable, Subject, combineLatest, BehaviorSubject, merge, Subscription } from 'rxjs';
+import { switchMap, filter } from 'rxjs/operators';
 
 type ILogEntry = IReqstoreEntry & {
     failed: boolean;
@@ -38,7 +38,7 @@ interface ILog {
     templateUrl: './reqstore.component.html',
     styleUrls: ['./reqstore.component.scss'],
 })
-export class ReqstoreComponent implements OnInit, AfterViewInit {
+export class ReqstoreComponent implements OnInit, OnDestroy {
     timeInterval: ITimeInterval;
     timeInterval$: Subject<ITimeInterval> = new Subject();
 
@@ -49,6 +49,7 @@ export class ReqstoreComponent implements OnInit, AfterViewInit {
     sonarData: IMetricData[][];
     logLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
     logData: ILog;
+    logDataSub: Subscription;
 
     // reqstoreOptions
     maxMBytes: string = '1';
@@ -64,13 +65,22 @@ export class ReqstoreComponent implements OnInit, AfterViewInit {
        private metricSettingsService: MetricSettingsService,
        private monitoringService: MonitoringService
     ) {
-        this.selectedModelVersion$ = this.store.select(getSelectedModelVersion);
-        this.metricSpecs$ = this.selectedModelVersion$.pipe(
-            switchMap( mv => this.metricSettingsService.getMetricSettings(`${mv.id}`))
+        this.selectedModelVersion$ = this.store.select(getSelectedModelVersion).pipe(
+            filter( mv => !!mv)
         );
+        this.metricSpecs$ = this.selectedModelVersion$.pipe(
+            switchMap(mv => this.metricSettingsService.getMetricSettings(`${mv.id}`))
+        );
+    }
 
-        combineLatest(this.timeInterval$, this.selectedModelVersion$, this.metricSpecs$)
-            .pipe(
+    ngOnInit(): void {
+        this.logDataSub = combineLatest(
+            this.timeInterval$,
+            this.selectedModelVersion$,
+            this.metricSpecs$,
+            this.updateReqstore$
+        ).pipe(
+                filter(([timeInterval]) => !!timeInterval),
                 switchMap(([interval, mv, ms]) => {
                     this.logLoading$.next(true);
                     const reqstoreLog$ = this.reqstoreRequest(interval, mv);
@@ -85,31 +95,10 @@ export class ReqstoreComponent implements OnInit, AfterViewInit {
                     this.logData = this.mapReqstorAndSonarToLog(reqstoreLog, sonarData);
             }
         );
-
-        this.updateReqstore$.pipe(
-            withLatestFrom(this.timeInterval$, this.selectedModelVersion$, this.metricSpecs$)
-        ).pipe(
-            switchMap(([_, interval, mv, ms]) => {
-                this.logLoading$.next(true);
-                const reqstoreLog$ = this.reqstoreRequest(interval, mv);
-                const sonarData$ = this.sonarRequest(interval, mv, ms);
-                return combineLatest(reqstoreLog$, sonarData$);
-            })
-        ).subscribe(
-            ([reqstoreLog, sonarData]) => {
-                this.logLoading$.next(false);
-                this.reqstoreLog = reqstoreLog;
-                this.sonarData = sonarData;
-                this.logData = this.mapReqstorAndSonarToLog(reqstoreLog, sonarData);
-            }
-        );
     }
 
-    ngOnInit(): void {
-
-    }
-
-    ngAfterViewInit(): void {
+    ngOnDestroy(): void {
+        this.logDataSub.unsubscribe();
     }
 
     onChangeTimeInterval(timeInterval: ITimeInterval): void {
