@@ -21,7 +21,8 @@ import {
     switchMap,
     tap,
     startWith,
-    takeUntil
+    takeUntil,
+    filter
 } from 'rxjs/operators';
 
 import { InfluxDBService } from '@core/services';
@@ -58,7 +59,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     protected metrics: string[] = [];
     protected metricSpecId: string;
     protected metricSpecKind: string;
-    protected REQUEST_DELAY_MS: number = 3000;
+    protected REQUEST_DELAY_MS: number = 1000;
     protected updateChartObservable$: Observable<any>;
     protected timeSubject: Subject<any> = new Subject<any>();
     protected providersSubject: Subject<any> = new Subject<any>();
@@ -370,7 +371,9 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private selfUpdate() {
+        let loading = false;
         this.updateChartSub = this.updateChartObservable$.pipe(
+            filter(() => !loading),
             switchMap(([time, providers]) => {
                 const {
                     byModelVersionId,
@@ -382,10 +385,12 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     requests.push(this.getRequestPromise(metricSpecification.modelVersionId, time, metrics));
                 });
 
+                loading = true;
                 return combineLatest(...requests);
             }),
             tap(([primaryMetricData, comparedMetricData]: [IMetricData[], IMetricData[]]) => {
                 this.metricsData = primaryMetricData.concat(comparedMetricData || []);
+                loading = false;
             }),
             tap(_ => this.redrawChart()),
             takeUntil(this.onDestroy$)
