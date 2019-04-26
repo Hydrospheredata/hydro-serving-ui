@@ -316,7 +316,15 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             return;
         }
 
-        const newSeries: { [metricName: string]: {name: string; data: Array<{x: any, y: any, name: any, key: IMetricData}>}} = {};
+        const newSeries: {
+            [metricName: string]: {
+                name: string;
+                data: Array<{
+                    x: any,
+                    y: any,
+                    name: any,
+                    key: IMetricData}>
+            }} = {};
         const newPlotBands: {[metricName: string]: Array<{from: IMetricData, to: IMetricData}>} = {};
 
         let tmpBandObject = null;

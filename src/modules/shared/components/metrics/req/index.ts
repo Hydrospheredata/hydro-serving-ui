@@ -91,7 +91,7 @@ export function decodeTsRecord(bytes: Uint8Array): TsRecord[] {
 
   }
 
-  const resultMap: Map<string, TsRecord> = records.reduce(function(map: Map<string, TsRecord>, obj) {
+  const resultMap: Map<string, TsRecord> = records.reduce((map: Map<string, TsRecord>, obj) => {
     if (map.has(obj.ts)) {
         const prev = map[obj.ts];
         map[obj.ts] = {ts: obj.ts, entries: prev.entries.concat(obj.entries)};

@@ -2,15 +2,15 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { GetMetricsAction } from '@core/actions/monitoring.actions';
 import { HydroServingState, getAllMetrics } from '@core/reducers';
+import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { DialogService } from '@dialog/dialog.service';
 import { DialogAddMetricComponent, DialogDeleteMetricComponent, METRIC_ID_VALUE } from '@models/components/dialogs';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { ModelVersion } from '@shared/_index';
 import { IMetricSpecification, IMetricSpecificationProviders } from '@shared/models/metric-specification.model';
-import { Observable, of, combineLatest, } from 'rxjs';
+import { Observable, of, combineLatest } from 'rxjs';
 import { filter, tap, switchMap, take} from 'rxjs/operators';
-import { MonitoringService } from '@core/services/metrics/monitoring.service';
 
 @Component({
     selector: 'hs-model-version-monitoring',

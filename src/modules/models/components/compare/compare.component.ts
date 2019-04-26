@@ -56,7 +56,6 @@ export class CompareComponent implements OnInit, OnDestroy {
             switchMap(id => store.select(getModelVersionsByModelId(id)))
         );
 
-
         this.secondModelVersionsList$ = combineLatest(
             this.selectedModelVersion$,
             this.modelVersionList$

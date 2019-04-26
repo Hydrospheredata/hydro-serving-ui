@@ -7,13 +7,13 @@
         <div class='service-info__container'>
             <div class='service-info__keys'>
                 <div class='service-info__key' *ngFor='let item of serviceInfo | keyvalue'>
-                        <span >{{item.key}}</span>
+                        <span >{{ item.key }}</span>
                 </div>
             </div>
             <div class='service-info__values'>
                 <div class='service-info__value' *ngFor='let item of serviceInfo | keyvalue'>
                     <ng-container *ngIf='item.value; else na'>
-                        <span >{{item.value}}</span>
+                        <span >{{ item.value }}</span>
                     </ng-container>
                 </div>
             </div>

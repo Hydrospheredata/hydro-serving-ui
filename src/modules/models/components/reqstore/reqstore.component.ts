@@ -135,7 +135,7 @@ export class ReqstoreComponent implements OnInit, OnDestroy {
                     till: `${Math.floor(interval.to / 1000)}`,
                 };
 
-                if(this.onlyFailedReqstoreData) {
+                if (this.onlyFailedReqstoreData) {
                     options.health = '0';
                 }
 
@@ -161,9 +161,7 @@ export class ReqstoreComponent implements OnInit, OnDestroy {
         for (let i = 0; i < metricsCount; i++) {
             const currentMetricDataArray = sonarData[i];
 
-            for (let j = 0; j < currentMetricDataArray.length; j++) {
-                const currentMetricData = currentMetricDataArray[j];
-
+            for (const currentMetricData of currentMetricDataArray) {
                 let traces = [];
                 try {
                     traces = JSON.parse(currentMetricData.labels.traces);
@@ -194,12 +192,15 @@ export class ReqstoreComponent implements OnInit, OnDestroy {
                                 log[ts].metrics[metricKind] = {};
                             }
 
-                            if (log[ts].metrics[metricKind][+currentMetricData.labels.columnIndex || 0] === undefined) {
-                                log[ts].metrics[metricKind][+currentMetricData.labels.columnIndex || 0] = {};
+                            const metricsByKind = log[ts].metrics[metricKind];
+                            let featureData = metricsByKind[+currentMetricData.labels.columnIndex || 0];
+
+                            if (featureData === undefined) {
+                                featureData = {};
                             }
 
-                            if (log[ts].metrics[metricKind][+currentMetricData.labels.columnIndex || 0][currentMetricData.name] === undefined) {
-                                log[ts].metrics[metricKind][+currentMetricData.labels.columnIndex || 0][currentMetricData.name] = currentMetricData;
+                            if (featureData[currentMetricData.name] === undefined) {
+                                featureData[currentMetricData.name] = currentMetricData;
                             }
 
                             if (currentMetricData.health === false) {
