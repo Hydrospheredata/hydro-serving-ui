@@ -19,6 +19,7 @@
 @import "statuses.scss";
 @import "error.scss";
 @import "tooltip.scss";
+@import "expandable.scss";
 
 * {
   -webkit-box-sizing: border-box;
@@ -167,4 +168,11 @@ md-dialog-container.mat-dialog-container {
 // common styles
 .text-center {
   text-align: center;
+}
+
+.monitoring-log .highcharts-plot-band  {
+  cursor: pointer;
+  &:hover {
+     fill: rgb(247, 73, 73);
+  }
 }

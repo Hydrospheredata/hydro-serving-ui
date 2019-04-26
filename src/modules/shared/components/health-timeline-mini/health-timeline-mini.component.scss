@@ -1,0 +1,38 @@
+.selected-time {
+    font-size: 12px;
+    color: #626a73;
+    font-weight: 100;
+}
+
+.zoom-out {
+    display: inline;
+    font-size: 8px;
+    line-height: 8px;
+    margin: 0 20px;
+}
+
+.y-title {
+    font-size: 12px;
+    letter-spacing: 1px;
+    fill: #57626b;
+}
+
+.dataset-m__rect {
+    cursor: pointer;
+    transition: .3s fill ease;
+    &--s {
+        fill: #3394da50;
+    }
+    &--f {
+        fill: #ef1919d9;
+    }
+    &--u {
+        fill: rgb(128, 128, 128);
+    }
+}
+
+.selection {
+    fill: #0282f16b;
+    stroke: #3556805e;
+    stroke-width: 2;
+}

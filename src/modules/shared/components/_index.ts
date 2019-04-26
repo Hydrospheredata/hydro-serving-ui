@@ -9,7 +9,13 @@ export * from './application-status/application-status.component';
 export * from './metadata/metadata.component';
 // metrics
 export * from './metrics/base-metric-chart.component';
-export * from '@shared/components/metrics/kolmogorov-smirnov-metric-chart.component';
+export * from './metrics/kolmogorov-smirnov-metric-chart.component';
 
+export * from './health-timeline/health-timeline.component';
+export * from './health-timeline-mini/health-timeline-mini.component';
+export * from './predict-request/predict-request.component';
+export * from './predict-response/predict-response.component';
+export * from './tensor-image-list/tensor-image-list.component';
 // dialogs
 export * from './dialogs';
+export * from './reqstore-table-log/reqstore-table-log.component';

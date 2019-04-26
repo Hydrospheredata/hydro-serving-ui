@@ -42,11 +42,11 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { BuildInformationDialogComponent } from '@core/components/_index';
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
-import { MetricsService } from '@core/services/metrics/metrics.service';
+import { BuildInformationService } from '@core/services/build-information.service';
+import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { ReqstoreService } from '@core/services/reqstore.service';
 import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { SharedModule } from '@shared/shared.module';
-import { BuildInformationService } from '@core/services/build-information.service';
 
 @NgModule({
     entryComponents: [
@@ -105,7 +105,7 @@ import { BuildInformationService } from '@core/services/build-information.servic
         RuntimesService,
         InfluxDBService,
         MetricSettingsService,
-        MetricsService,
+        MonitoringService,
         HttpService,
         { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
         SvgSpriteService,

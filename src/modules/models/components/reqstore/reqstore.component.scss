@@ -1,0 +1,42 @@
+.container {
+    min-width: 960px;
+    max-width: 960px;
+}
+
+.y-title__text {
+    fill: red;
+}
+
+.empty-metrics {
+   text-align: center;
+   color: grey;
+   font-size: 16px;
+   font-style: italic;
+}
+
+.reqstore {
+    &__options {
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: grey;
+        display: flex;
+        align-items: center;
+        margin-bottom: 4px;
+        &-item {
+            margin-right: 8px;
+        }
+        &-input {
+            border: 1px #9c9c9c solid;
+            line-height: 12px;
+            text-align: right;
+            width: 35px;
+            padding: 2px;
+            background: white;
+        }
+        &-button {
+            font-size: 8px;
+            padding: 4px;
+        }
+    }
+}

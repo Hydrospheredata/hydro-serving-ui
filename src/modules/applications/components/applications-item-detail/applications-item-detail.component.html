@@ -40,16 +40,16 @@
             </ul>
         </div>
 
-        <div class="content__cell" *ngFor="let stage of application.executionGraph?.stages; let i = index;">
+        <div class="" *ngFor="let stage of application.executionGraph?.stages; let i = index;">
             <div class="content__cell-title">
                 Stage {{i + 1}}
             </div>
             <table class='hydro-table hydro-table-models'>
                 <colgroup>
-                    <col width="220px">
+                    <col width="300px">
                     <col>
-                    <col>
-                    <col>
+                    <col width='100px'>
+                    <col width='100px'>
                 </colgroup>
                 <thead class="hydro-table-head hydro-table-head--with-border">
                     <tr>
@@ -74,7 +74,7 @@
                                 </hydro-icon>
                                 <span class="tooltiptext">Model has new version</span>
                             </span>
-                            <span class='model-variant__version-text cs-text-overflow-ellipsis cs-text-center'>
+                            <span class='model-variant__version-text cs-text-overflow-ellipsis'>
                                 <span 
                                     class="model-variant__link" 
                                     [routerLink]="[ '../../models', modelVariant.modelVersion.model.id, modelVariant.modelVersion.id]">
@@ -88,10 +88,10 @@
                         </td>
 
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-center'>{{ modelVariant.weight }}%</div>
+                            <div class=''>{{ modelVariant.weight }}%</div>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <div class='cs-text-bold cs-text-overflow-ellipsis cs-text-center'>
+                            <div class='cs-text-bold cs-text-overflow-ellipsis'>
                                 <div [ngClass]="healthStatuses['app' + application.id + 'stage' + i + '_' + modelVariant.modelVersion.id]"
                                     class="health-status"></div>
                             </div>

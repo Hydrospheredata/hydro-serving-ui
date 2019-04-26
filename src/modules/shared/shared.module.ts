@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'angular2-moment';
-
 import { SelectModule } from 'ng2-select';
 
 // Pipes
@@ -22,7 +21,8 @@ import {
     MatchSorterPipe,
     DockerImageSplitPipe,
     ReverseArrayPipe,
-    FieldShapePipe
+    FieldShapePipe,
+    MomentPipe
 } from './pipes/_index';
 
 // Components
@@ -41,14 +41,23 @@ import {
     DialogModelsEmptyComponent,
     ApplicationStatusComponent,
     DialogReqstoreComponent,
-    MetadataComponent
+    MetadataComponent,
+    HealthTimelineComponent,
+    HealthTimelineMiniComponent,
+    ReqstoreTableLogComponent,
+    PredictRequestComponent,
+    PredictResponseComponent,
+    TensorImageListComponent
 } from './components/_index';
 
 // Directives
+import { HsD3Module } from '../hs-d3/hs-d3.module';
 import {
     ModelVersionStatusDirective,
     CopyToBufferDirective,
     BuildInformationDirective,
+    PixelToCanvasDirective,
+    ExpandableDirective,
 } from './directives/_index';
 
 const PIPES = [
@@ -64,6 +73,7 @@ const PIPES = [
     DockerImageSplitPipe,
     ReverseArrayPipe,
     FieldShapePipe,
+    MomentPipe,
 ];
 
 const COMPONENTS = [
@@ -82,12 +92,20 @@ const COMPONENTS = [
     ApplicationStatusComponent,
     DialogReqstoreComponent,
     MetadataComponent,
+    HealthTimelineComponent,
+    HealthTimelineMiniComponent,
+    ReqstoreTableLogComponent,
+    PredictRequestComponent,
+    PredictResponseComponent,
+    TensorImageListComponent,
 ];
 
 const DIRECTIVES = [
     ModelVersionStatusDirective,
     CopyToBufferDirective,
     BuildInformationDirective,
+    PixelToCanvasDirective,
+    ExpandableDirective,
 ];
 
 @NgModule({
@@ -101,6 +119,7 @@ const DIRECTIVES = [
         RouterModule,
         MomentModule,
         SelectModule,
+        HsD3Module,
     ],
     declarations: [
         ...PIPES,

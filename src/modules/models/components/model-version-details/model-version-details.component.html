@@ -31,9 +31,8 @@
                     <span class="content-info__sublist-item-value">
                         <span *ngFor="let appName of ((modelVersion$ | async)?.applications);last as isLast"
                             [routerLink]="['../../../../applications', appName]"
-                            class='application'
-                            [ngClass] = "{'application--isLast': isLast}">
-                            <span class="application-name">{{appName}}</span>
+                            class='application'>
+                            <span class="application-name">{{appName}}</span><span *ngIf='!isLast'>, </span>
                         </span>
                     </span>
                 </li>

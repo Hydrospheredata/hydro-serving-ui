@@ -18,7 +18,7 @@
     "test-headless": "ng test --watch=false --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-prod": "ng test --watch=false --browsers=ChromeHeadlessCI && npm run sprites && ng build --prod",
+    "build-prod": "npm run sprites && ng build --prod",
     "sprites": "svg-sprite --config sprite-config.json src/assets/images/_icons/*.svg",
     "bundle-report": "webpack-bundle-analyzer hydro-serving-ui/stats.json"
   },
@@ -41,11 +41,13 @@
     "@ngrx/router-store": "^6.1.2",
     "@ngrx/store": "^6.1.2",
     "@ngrx/store-devtools": "^6.1.2",
+    "@types/d3": "^5.7.1",
     "@types/elasticsearch": "^5.0.22",
     "@types/long": "^4.0.0",
     "angular2-moment": "^1.6.0",
     "chart.js": "^2.7.2",
     "core-js": "^2.5.0",
+    "d3": "^5.9.2",
     "elasticsearch": "^14.2.2",
     "highcharts": "^6.0.7",
     "hocon-parser": "^1.0.1",
@@ -90,6 +92,8 @@
     "tslint": "^5.9.1",
     "typescript": "^2.7.2",
     "typescript-eslint-parser": "^9.0.0",
-    "webpack-bundle-analyzer": "^2.9.0"
+    "webpack-bundle-analyzer": "^2.9.0",
+    "bytebuffer": "5.0.1",
+    "@types/bytebuffer": "5.0.40"
   }
 }

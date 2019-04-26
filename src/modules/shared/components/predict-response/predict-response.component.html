@@ -1,0 +1,17 @@
+<div class='response'>
+   <div class='response__outputs'>
+        <div class='response__outputs-title'>outputs</div>
+        <div class='response__outputs-list'>
+            <div class='response__output' *ngFor="let output of response.outputs | keyvalue">
+                <span class='response__output-name'>{{ output.key }}</span>
+                <ng-container *ngTemplateOutlet="isImage(output.key) ? image : plainText;"></ng-container>
+                <ng-template #image>
+                    <hs-tensor-image-list [tensorProto]='input.value'></hs-tensor-image-list>
+                </ng-template>
+                <ng-template #plainText>
+                    {{ getValue(output.value) }}
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,6 @@
 export * from './models-wrapper/models-wrapper.component';
 export * from './model-details/model-details.component';
 
-
 export * from './model-version-container/model-version-container.component';
 export * from './model-versions-list/model-versions-list.component';
 export * from './model-version-details/model-version-details.component';
@@ -13,3 +12,5 @@ export * from './model-version-monitoring-log/model-version-monitoring-log.compo
 export * from './model-version-monitoring-container/model-version-monitoring-containercomponent';
 // dialogs
 export * from './dialogs';
+// reqstore
+export * from './reqstore/reqstore.component';

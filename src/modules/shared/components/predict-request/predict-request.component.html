@@ -1,0 +1,19 @@
+
+
+<div class='request'>
+    <div class='request__inputs'>
+        <div class='request__inputs-title'>inputs</div>
+        <div class='request__inputs-list'>
+            <div class='request__input' *ngFor="let input of request.inputs | keyvalue">
+                <span class='request__input-name'>{{ input.key }}</span>
+                <ng-container *ngTemplateOutlet="isImage(input.key) ? image : plainText;"></ng-container>
+                <ng-template #image>
+                    <hs-tensor-image-list [tensorProto]='input.value'></hs-tensor-image-list>
+                </ng-template>
+                    <ng-template #plainText>
+                        {{ getValue(input.value) }}
+                    </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

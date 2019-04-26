@@ -8,7 +8,7 @@ import {
     ViewChild,
     OnChanges,
     SimpleChanges,
-    OnDestroy, 
+    OnDestroy,
     ChangeDetectionStrategy} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import * as HighchartsNoDataToDisplay from 'highcharts/modules/no-data-to-display.src';
@@ -21,11 +21,13 @@ import {
     switchMap,
     tap,
     startWith,
-    takeUntil
+    takeUntil,
+    filter
 } from 'rxjs/operators';
 
 import { InfluxDBService } from '@core/services';
-import { MetricsService, IMetricData } from '@core/services/metrics/metrics.service';
+import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
+import { ITimeInterval } from '@shared/models/_index';
 import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
 
 @Component({
@@ -57,13 +59,13 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     protected metrics: string[] = [];
     protected metricSpecId: string;
     protected metricSpecKind: string;
-    protected REQUEST_DELAY_MS: number = 3000;
+    protected REQUEST_DELAY_MS: number = 1000;
     protected updateChartObservable$: Observable<any>;
     protected timeSubject: Subject<any> = new Subject<any>();
     protected providersSubject: Subject<any> = new Subject<any>();
 
     @Output()
-    private selectPoints: EventEmitter<any> = new EventEmitter<{from: IMetricData, to: IMetricData}>();
+    private selectPoints: EventEmitter<ITimeInterval> = new EventEmitter<ITimeInterval>();
 
     @ViewChild('chartContainer')
     private chartContainerRef: ElementRef;
@@ -79,11 +81,11 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private thresholds: {[uniqName: string]: number} = {};
     private updateChartSub: Subscription;
 
-    private selectSeriesPoint$: Subject<IMetricData> = new Subject();
+    // private selectSeriesPoint$: Subject<IMetricData> = new Subject();
     private onDestroy$: Subject<any>;
 
     constructor(
-        public metricsService: MetricsService,
+        public metricsService: MonitoringService,
         public influxdbService: InfluxDBService
     ) {
         this.onDestroy$ = new Subject();
@@ -95,17 +97,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         );
 
         this.selfUpdate();
-        this.selectSeriesPoint$.pipe(
-            takeUntil(this.onDestroy$)
-        ).subscribe(metricData => {
-            if(this.from === undefined || this.to) {
-                this.from = metricData;
-                this.to = undefined;
-            } else {
-                this.to = metricData;
-            }
-            this.selectPoints.emit({from: this.from, to: this.to});
-        });
     }
 
     ngOnInit(): void {
@@ -154,6 +145,12 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private initChart(): void {
         const self = this;
 
+        Highcharts.setOptions({
+            time: {
+               useUTC: false,
+            },
+        });
+
         HighchartsNoDataToDisplay(Highcharts);
         this.chart = Highcharts.chart(this.chartContainerRef.nativeElement, {
             credits: {
@@ -190,11 +187,6 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     cursor: 'pointer',
                     point: {
                         events: {
-                            click(e) {
-                                const { key } = this.options;
-                                self.selectSeriesPoint$.next(key as IMetricData);
-                                return true;
-                            },
                             select: () => true,
                         },
                     },
@@ -270,7 +262,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     if (this.chartBands[metricName] === undefined) {
                         this.chartBands[metricName] = [];
                     }
-                    const id = `${from}_${to}`;
+                    const id = `${from.timestamp}_${to.timestamp}`;
                     this.chartBands[metricName].push(id);
                     this.chart.xAxis[0].addPlotBand({
                         from: from.timestamp * 1000,
@@ -279,7 +271,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                         id,
                         events: {
                             click(e) {
-                                self.selectPoints.emit({from, to});
+                                self.selectPoints.emit({from: from.timestamp, to: to.timestamp});
                             },
                         },
                     });
@@ -324,7 +316,15 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             return;
         }
 
-        const newSeries: { [metricName: string]: {name: string; data: Array<{x: any, y: any, name: any, key: IMetricData}>}} = {};
+        const newSeries: {
+            [metricName: string]: {
+                name: string;
+                data: Array<{
+                    x: any,
+                    y: any,
+                    name: any,
+                    key: IMetricData}>
+            }} = {};
         const newPlotBands: {[metricName: string]: Array<{from: IMetricData, to: IMetricData}>} = {};
 
         let tmpBandObject = null;
@@ -379,7 +379,9 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private selfUpdate() {
+        let loading = false;
         this.updateChartSub = this.updateChartObservable$.pipe(
+            filter(() => !loading),
             switchMap(([time, providers]) => {
                 const {
                     byModelVersionId,
@@ -391,10 +393,12 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     requests.push(this.getRequestPromise(metricSpecification.modelVersionId, time, metrics));
                 });
 
+                loading = true;
                 return combineLatest(...requests);
             }),
             tap(([primaryMetricData, comparedMetricData]: [IMetricData[], IMetricData[]]) => {
                 this.metricsData = primaryMetricData.concat(comparedMetricData || []);
+                loading = false;
             }),
             tap(_ => this.redrawChart()),
             takeUntil(this.onDestroy$)

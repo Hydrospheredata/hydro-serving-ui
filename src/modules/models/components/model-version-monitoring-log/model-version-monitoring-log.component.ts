@@ -1,24 +1,34 @@
-import { Type } from '@angular/compiler';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { HydroServingState, getSelectedMetric } from '@core/reducers';
-import { MetricsService, IMetricData } from '@core/services/metrics/metrics.service';
-import { ReqstoreService, IReqstoreLog } from '@core/services/reqstore.service';
+import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
+import { ReqstoreService } from '@core/services/reqstore.service';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
-import { IModelVersion } from '@shared/_index';
+import { IModelVersion, ITimeInterval } from '@shared/_index';
 import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
-import { Observable, BehaviorSubject, combineLatest, Subject, ReplaySubject, Subscription } from 'rxjs';
-import { map, tap, filter, switchMap } from 'rxjs/operators';
-import { debug } from 'util';
+import { IReqstoreEntry, IReqstoreLog } from '@shared/models/reqstore.model';
+import { isEmptyObj } from '@shared/utils/is-empty-object';
+import { Observable, BehaviorSubject, Subject, ReplaySubject, Subscription, combineLatest } from 'rxjs';
+import { map, filter, switchMap, withLatestFrom, tap } from 'rxjs/operators';
 
-interface LogItem {
-    count: number;
-    failed: number;
-    entities: any[];
-}
-interface Log {
-    [timestamp: string]: LogItem;
+type ILogEntry = IReqstoreEntry & {
+    failed: boolean;
+    metrics: any;
+};
+
+type ILogEntry2 = IReqstoreEntry & {
+    failed: boolean;
+    metrics: {
+        [metricKind: string]: {
+            [columnIndex: string]: {
+                [metricName: string]: any
+            }
+        }
+    };
+};
+
+interface ILog {
+    [timestamp: string]: ILogEntry[];
 }
 
 @Component({
@@ -26,20 +36,14 @@ interface Log {
     templateUrl: 'model-version-monitoring-log.component.html',
     styleUrls: ['model-version-monitoring-log.component.scss'],
 })
-export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
+export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
     metricSpecification$: Observable<IMetricSpecification>;
     metricSpecificationProvider$: Observable<IMetricSpecificationProvider>;
     modelVersion$: Observable<IModelVersion>;
 
-    onClickGetLog: Subject<any>;
-    log: ReplaySubject<Log>;
-    log$: Observable<Log>;
-
     selectedFeature: string = '';
 
     logError$: BehaviorSubject<any>;
-    selectedLogItem: LogItem ;
-
     metrics: string[];
     metricDataFrom: IMetricData;
     metricDataTo: IMetricData;
@@ -55,182 +59,174 @@ export class ModelVersionMonitoringLogComponent implements OnInit,OnDestroy {
     ];
 
     updateLogSub: Subscription;
+    selectedTimeInterval$: BehaviorSubject<ITimeInterval> = new BehaviorSubject(null);
+
+    // reqstoreOptions
+    maxMBytes: string = '1';
+    maxMessages: string = '20';
+    reverse: boolean = true;
+    onlyFailedReqstoreData: boolean = true;
+    updateReqstore$: BehaviorSubject<any> = new BehaviorSubject('');
+
+    reqstoreLog: IReqstoreLog;
+    sonarData: IMetricData[][];
+    logLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    logData: ILog;
+    logDataSub: Subscription;
 
     constructor(
         private store: Store<HydroServingState>,
         private reqstore: ReqstoreService,
-        private metricService: MetricsService
+        private monitoringService: MonitoringService
     ) {
-        this.modelVersion$ = this.store.select(getSelectedModelVersion);
-        this.metricSpecification$ = this.store.select(getSelectedMetric);
+        this.modelVersion$ = this.store.select(getSelectedModelVersion).pipe( filter(mv => !!mv));
+        this.metricSpecification$ = this.store.select(getSelectedMetric).pipe( filter(ms => !!ms));
 
-        this.onClickGetLog = new Subject();
-        this.log = new ReplaySubject(1);
-        this.log$ = this.log.asObservable();
         this.logError$ = new BehaviorSubject(null);
 
         this.metricSpecificationProvider$ = this.metricSpecification$.pipe(
             filter(_ => !!_),
-            map(_ => this.metricService.createMetricProviders(_))
+            map(_ => this.monitoringService.createMetricProviders(_))
         );
-
-        this.updateLogSub = combineLatest(
-            this.modelVersion$,
-            this.metricSpecificationProvider$,
-            this.onClickGetLog
-            ).pipe(
-                tap(([mv, msp]) => this.metrics = msp.metrics),
-                switchMap(([mv, msp]) => this.getData(mv, msp)),
-                map(([reqstoreData, sonarData]) => this.toLog(reqstoreData, sonarData)),
-                tap(_ => {
-                    this.logError$.next(null);
-                    this.log.next(_);
-                    this.selectedLogItem = _[Object.keys(_)[0]];
-                })
-        ).subscribe();
-
     }
 
     ngOnInit(): void {
+        this.logDataSub = combineLatest(
+            this.selectedTimeInterval$,
+            this.modelVersion$,
+            this.metricSpecification$,
+            this.updateReqstore$
+        ).pipe(
+            filter(([timeInterval, _, ms]) => !!timeInterval && !!ms),
+            switchMap(([interval, mv, ms]) => {
+                this.logLoading$.next(true);
+                const reqstoreLog$ = this.reqstoreRequest(interval, mv);
+                const sonarData$ = this.sonarRequest(interval, mv, ms);
+                return combineLatest(reqstoreLog$, sonarData$);
+            })
+        ).subscribe(
+            ([reqstoreLog, sonarData]) => {
+                this.logLoading$.next(false);
+                this.reqstoreLog = reqstoreLog;
+                this.sonarData = sonarData;
+                this.logData = this.mapReqstorAndSonarToLog(reqstoreLog, sonarData);
+        });
     }
 
     ngOnDestroy(): void {
-        this.updateLogSub.unsubscribe();
+        this.logDataSub.unsubscribe();
     }
 
     onChangeFeature(feature) {
         this.selectedFeature = feature;
     }
 
-    onSelectPoints({from, to}: {from: IMetricData, to: IMetricData}): void {
-        try {
-            if (from) {
-                this.metricDataFrom = from;
-                const { trace, traces} = from.labels;
-                let traceArr;
-                if (trace) {
-                    this.dateFrom = this.getTimestampFromTrace(JSON.parse(trace));
-                } else {
-                    traceArr = this.parseTraces(traces);
-                    this.dateFrom = this.getTimestampFromTrace(traceArr[0]);
-                }
-            }
-
-            if (to) {
-                this.metricDataTo = to;
-                const { trace, traces} = to.labels;
-                let traceArr;
-                if (trace) {
-                    this.dateTo = this.getTimestampFromTrace(JSON.parse(trace));
-                } else {
-                    traceArr = this.parseTraces(traces);
-                    this.dateTo = this.getTimestampFromTrace(traceArr[0]);
-                }
-            } else {
-                this.metricDataTo = undefined;
-                this.dateTo = undefined;
-            }
-        } catch (error) {
-            this.logError$.next(`${error.name}: ${error.message}`);
+    onSelectPoints(timeInterval: ITimeInterval): void {
+        if (timeInterval.from && timeInterval.to) {
+            this.selectedTimeInterval$.next(timeInterval);
         }
     }
 
-    selectLogItem(logItem) {
-        this.selectedLogItem = logItem;
+    updateReqstore() {
+        this.updateReqstore$.next(true);
     }
 
-    getLog() {
-        this.onClickGetLog.next('click');
+    private reqstoreRequest(interval, modelVersion) {
+        return this.reqstore.getData(
+            modelVersion.id,
+            interval.from,
+            interval.to,
+            {
+                maxBytes: `${+this.maxMBytes * 1024 * 1024}`,
+                maxMessages: this.maxMessages,
+                reverse: this.reverse ? 'true' : 'false',
+            }
+        );
     }
 
-    private parseTraces(traces): string[] {
-        try {
-            return JSON.parse(traces);
-        } catch (error) {
-            throw new Error(`Can't parse traces`);
-        }
-    }
-
-    private getTimestampFromTrace(trace: string): string {
-        return trace.split('_')[0];
-    }
-
-    private getData(
+    private sonarRequest(
+        interval: ITimeInterval,
         modelVersion: IModelVersion,
-        metricSpecificationProvider: IMetricSpecificationProvider): Observable<[IReqstoreLog, IMetricData[]]> {
-                return combineLatest(
-                    this.reqstore.getData(modelVersion.id.toString(), this.dateFrom, this.dateTo),
-                    this.metricService.getMetrics(
-                        modelVersion.id.toString(),
-                        this.chartTimeWidth + '',
-                        metricSpecificationProvider.metrics, this.selectedFeature)
-                );
-    }
+        metricSpecifications: IMetricSpecification
+    ): Observable<IMetricData[][]> {
+        const options: any = {
+            from: `${Math.floor(interval.from)}`,
+            till: `${Math.floor(interval.to)}`,
+        };
 
-    // TODO: binary search
-    // multiple metrics
-    private findIndex(arr: IMetricData[] = []): number {
-        const ts = this.metricDataFrom.timestamp;
-        for (let i = 0, l = arr.length; i < l; i++) {
-            if (arr[i].timestamp === ts) { return i; }
+        if (this.onlyFailedReqstoreData) {
+            options.health = '0';
         }
-        throw new Error(`Not found timestamp ${ts} in sonar data`);
+
+        const request = this.monitoringService.getMetricsInRange(
+            `${modelVersion.id}`,
+            this.monitoringService.getMetricsBySpecKind(metricSpecifications.kind),
+            options
+        );
+
+        return combineLatest(request);
     }
 
-    private toLog(
-        reqstoreData: IReqstoreLog,
-        sonarData: IMetricData[]
-    ): Log {
+    private mapReqstorAndSonarToLog(
+        reqstoreLog: IReqstoreLog,
+        sonarData: IMetricData[][]
+    ): ILog {
+        if (isEmptyObj(reqstoreLog) || sonarData.length === 0) { return {}; }
 
-        console.group('data');
-        console.dir(reqstoreData);
-        console.dir(sonarData);
-        console.groupEnd();
+        const log = {};
+        const metricsCount = sonarData.length;
 
-        const log: Log = {};
-        if (!reqstoreData || !sonarData) { return {}; }
+        for (let i = 0; i < metricsCount; i++) {
+            const currentMetricDataArray = sonarData[i];
 
-        const length = (sonarData.length / this.metrics.length);
-
-        try {
-            const index = this.findIndex(sonarData);
-
-            for (let i = index, l = length; i < l; i++ ) {
+            for (const currentMetricData of currentMetricDataArray) {
                 let traces = [];
                 try {
-                    traces = JSON.parse(sonarData[i].labels.traces);
+                    traces = JSON.parse(currentMetricData.labels.traces);
                 } catch (e) {
                     // console.error(e);
                     try {
-                        traces = [JSON.parse(sonarData[i].labels.trace)];
+                        traces = [JSON.parse(currentMetricData.labels.trace)];
                     } catch (e) {
                         console.error(e);
                     }
                 }
 
+                if (traces.length === 0) { continue; }
+
                 traces.forEach(trace => {
-                    const [ts, uid] = trace.split('_');
-                    if (reqstoreData[ts] !== undefined) {
-                        if (log[ts] === undefined) {
-                            log[ts] = { count:  0, failed: 0, entities: []};
+                    if (trace) {
+                        const [ts] = trace.split('_');
+                        if (reqstoreLog[ts] !== undefined) {
+                            if (log[ts] === undefined) {
+                                log[ts] = reqstoreLog[ts][0];
+                                log[ts].failed = false;
+                                log[ts].metrics = {};
+                            }
+
+                            const metricKind = this.monitoringService.getSpecKindByMetricName(currentMetricData.name);
+
+                            if (log[ts].metrics[metricKind] === undefined) {
+                                log[ts].metrics[metricKind] = {};
+                            }
+
+                            const metricsByKind = log[ts].metrics[metricKind];
+                            const columnIndex = +currentMetricData.labels.columnIndex || 0;
+                            metricsByKind[columnIndex] = metricsByKind[columnIndex]  || {};
+
+                            if (metricsByKind[columnIndex][currentMetricData.name] === undefined) {
+                                metricsByKind[columnIndex][currentMetricData.name] = currentMetricData;
+                            }
+
+                            if (currentMetricData.health === false) {
+                                log[ts].failed = true;
+                            }
                         }
-
-                        if (sonarData[i].health === false ) {
-                            log[ts] = {...log[ts], failed: log[ts].failed + 1};
-                        }
-
-                        log[ts] = {...log[ts], count: log[ts].count + 1};
-
-                        if (reqstoreData[ts][uid]) {
-                            log[ts].entities.push({...reqstoreData[ts][uid], metricData: sonarData[i] });
-                        }
-
                     }
                 });
             }
-        } catch (error) {
-            this.logError$.next(error);
         }
+
         return log;
     }
 }

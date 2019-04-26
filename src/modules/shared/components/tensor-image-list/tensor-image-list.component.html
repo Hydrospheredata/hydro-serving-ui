@@ -1,0 +1,12 @@
+<div class='images'>
+    <ng-container *ngFor='let imagePixels of imagePixelsArray'>
+        <canvas
+            class='images__item'
+            hsPixelToCanvas
+            [pixels]='imagePixels'
+            [width]='imageWidth' 
+            [height]='imageHeight'></canvas>
+    </ng-container>
+</div>
+
+

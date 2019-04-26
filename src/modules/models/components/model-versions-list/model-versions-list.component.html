@@ -35,13 +35,15 @@
                             </span>
                         </td>
                         <td class="hydro-table-body__cell">
-                            <ng-container *ngIf="modelVersion.applications.length > 0; else emptyApplication">
-                                <span class="model-item__application" *ngFor="let appName of modelVersion.applications"
+                            <ng-container class='applications' *ngIf="modelVersion.applications.length > 0; else emptyApplication">
+                                <span class="application" *ngFor="let appName of modelVersion.applications; last as lastItem"
                                     [routerLink]="['../../applications', appName]">
-                                    <span>{{appName}}</span>
+                                    <span>{{appName}}</span><span *ngIf='!lastItem'>, </span>
                                 </span>
                             </ng-container>
-                            <ng-template #emptyApplication>-</ng-template>
+                            <ng-template #emptyApplication>
+                                <span class='applications-is--empty'>-</span>
+                            </ng-template>
                         </td>
                         <td class="hydro-table-body__cell">
                             <div class="actions">

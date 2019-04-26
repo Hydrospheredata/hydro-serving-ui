@@ -1,5 +1,36 @@
 .reqstore {
-
+    &__options {
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: grey;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 4px;
+        &-item {
+            margin-right: 8px;
+        }
+        &-input {
+            border: 1px #9c9c9c solid;
+            line-height: 12px;
+            text-align: right;
+            width: 35px;
+            padding: 2px;
+            background: white;
+        }
+        &-button {
+            font-size: 8px;
+            padding: 4px;
+        }
+        &-interval {
+            width: 100%;
+            &-time {
+                font-size: 10px;
+                color: rgb(14, 14, 14);
+            }
+        }
+    }
 }
 
 .selector {
@@ -13,71 +44,6 @@
     }
     &__item {
         margin-right: 8px;
-    }
-}
-
-.log {
-    display: flex;
-    border-radius: 4px;
-    overflow: hidden;
-    width: 100%;
-    box-shadow: 0 0 4px -2px black;
-    &__timestamps {
-        min-width: 240px;
-        background: white;
-        max-height: 400px;
-        overflow: scroll;
-        &-title {
-            padding: 8px;
-            font-weight: bold;
-            color: #8d93a7;
-        }
-        &-item {
-            padding: 4px 12px;
-            display: flex;
-            justify-content: space-between;
-            transition: .3s all ease;
-            cursor: pointer;
-            color: lightgray;
-            &-count, &-failed-count {
-                color: #3024809c;
-            }
-            &-failed-count {
-                color: #ff4141;
-            }
-            &--selected, &:hover {
-                color: black;
-            }
-        }
-    }
-    &__details {
-        width: 100%;
-        max-width: 100%;
-        overflow: scroll;
-        max-height: 400px;
-        background: white;
-        &-title {
-            padding: 8px 24px;
-            font-weight: bold;
-            color: #8d93a7;
-        }
-        &-container {
-            padding: 0px 24px;
-        }
-        &-item {
-            margin-bottom: 8px;
-            &-uid {
-                background: #686780;
-                padding: 6px;
-                color: white;
-            }
-            &-request, &-response,&-metric-data {
-                padding: 6px;
-            }
-            &-title {
-                color: orange;
-            }
-        }
     }
 }
 

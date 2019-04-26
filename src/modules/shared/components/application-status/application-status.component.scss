@@ -5,15 +5,15 @@
     vertical-align: bottom;
     border-radius: 2px;
     &--failed {
-        background: #ff9e9e;
-        color: #7f0303;
+        background: #FFBDBD;
+        color: #E12D39;
     }
     &--assembling {
-        background: #9ed7ff;
-        color: #2f3e69;
+        background: #B3ECFF;
+        color: #2BB0ED; 
     }
     &--ready {
-        background: #c8eac6;
-        color: #057f03;
+        background: #C6F7E2;
+        color: #27AB83;
     }
 }

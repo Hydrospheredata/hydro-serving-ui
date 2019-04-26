@@ -10,7 +10,8 @@ import {
     CompareComponent,
     ModelVersionMonitoringLogComponent,
     ModelVersionMonitoringContainerComponent,
-    ModelVersionContainerComponent
+    ModelVersionContainerComponent,
+    ReqstoreComponent
 } from '@models/components';
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 
@@ -26,10 +27,7 @@ import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
                 path: 'models',
                 component: ModelsWrapperComponent,
                 children: [
-                    {
-                        path: 'compare',
-                        component: CompareComponent,
-                    },
+
                     {
                         path: ':modelId',
                         component: ModelDetailsComponent,
@@ -42,6 +40,7 @@ import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
                         data: {anim: 'modelVerDetail'},
                         canActivate: [ModelVersionDetailsGuard],
                         children: [
+
                             {
                                 path: '',
                                 redirectTo: 'details',
@@ -57,12 +56,20 @@ import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
                                 data: {anim: 'modelVerDetail'},
                             },
                             {
+                                path: 'reqstore',
+                                component: ReqstoreComponent,
+                            },
+                            {
                                 path: 'monitoring',
                                 component: ModelVersionMonitoringContainerComponent,
                                 children: [
                                     {
                                         path: '',
                                         component: ModelVersionMonitoringComponent,
+                                    },
+                                    {
+                                        path: 'compare',
+                                        component: CompareComponent,
                                     },
                                     {
                                         path: ':metricId',

@@ -3,7 +3,7 @@
         <div class="model-details__header-title">{{ (model$ | async)?.name }}</div>
         <div class="model-details__header-buttons">
             <button 
-                class="button button--white" 
+                class="button button--white button--primary-remove" 
                 (click)="removeModel()">
                 <hydro-icon class="button__icon" [type]="'icon-remove'"></hydro-icon>
                 remove

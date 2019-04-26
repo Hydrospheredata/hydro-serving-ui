@@ -2,7 +2,7 @@
     <article class="compare">
         <div class="compare__options">
         <span class="compare__title">Compare options: </span>
-            <div class="compare__option">
+            <!-- <div class="compare__option">
                 
                 <span class="compare__option-label">Model: </span>
                 <mdl-select
@@ -15,8 +15,8 @@
                         {{ model.name }}
                     </mdl-option>
                 </mdl-select>
-            </div>
-            <div class="compare__option">
+            </div> -->
+            <!-- <div class="compare__option">
                 <span class="compare__option-label">Version: </span>
                 <mdl-select
                     [formControl]="firstModelVersion"
@@ -28,11 +28,7 @@
                         {{ modelVersion.modelVersion }}
                     </mdl-option>
                 </mdl-select>
-                <span 
-                    *ngIf="firstModelVersion.value" 
-                    class="button button--flat compare__option-link" 
-                    [routerLink]="[ '../', model.value, firstModelVersion.value.id]">go to</span>
-            </div>
+            </div> -->
             <div class="compare__option">
                 <span class="compare__option-label">With version: </span>
                 <mdl-select
@@ -44,10 +40,6 @@
                         {{ modelVersion.modelVersion }}
                     </mdl-option>
                 </mdl-select>
-                <span 
-                *ngIf="secondModelVersion.value" 
-                class="button button--flat compare__option-link" 
-                [routerLink]="[ '../', model.value, secondModelVersion.value.id]">go to</span>
             </div>
             <div class="compare__option">
                 <span class="compare__option-label">Metric: </span>
