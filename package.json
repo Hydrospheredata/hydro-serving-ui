@@ -58,7 +58,6 @@
     "ng2-codemirror": "^1.1.3",
     "ng2-select": "^1.2.0",
     "protobufjs": "^6.8.8",
-    "recstore-ts": "^0.1.0",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.3.3",
     "stream-http": "^3.0.0",

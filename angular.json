@@ -21,7 +21,6 @@
               "assets": [
                 {"glob": "**/fonts/**", "input": "src/assets", "output": "assets"},
                 {"glob": "*.*", "input": "src/assets/images", "output": "assets/images"},
-                {"glob": "*.*", "input": "src/assets/reqstore", "output": "assets/reqstore"},
                 {"glob": "**", "input": "src/assets/images/sprites", "output": "assets/images/sprites"}
               ],
               "styles": [
