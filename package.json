@@ -18,7 +18,7 @@
     "test-headless": "ng test --watch=false --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build-prod": "ng test --watch=false --browsers=ChromeHeadlessCI && npm run sprites && ng build --prod",
+    "build-prod": "npm run sprites && ng build --prod",
     "sprites": "svg-sprite --config sprite-config.json src/assets/images/_icons/*.svg",
     "bundle-report": "webpack-bundle-analyzer hydro-serving-ui/stats.json"
   },

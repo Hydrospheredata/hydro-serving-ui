@@ -8,7 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { UpdateModelVersionDirective } from '@applications/directives';
 import { InfluxDBService } from '@core/services';
 import { HttpService } from '@core/services/http';
-import { MetricsService } from '@core/services/metrics/metrics.service';
+import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { DialogService } from '@dialog/dialog.service';
 import { MockApplication } from '@testing/factories/application';
 import { MockStoreProvider } from '@testing/mocks';
@@ -32,7 +32,7 @@ describe('ApplicationsItemDetailComponent', () => {
             providers: [
                 MockStoreProvider,
                 DialogService,
-                MetricsService,
+                MonitoringService,
                 InfluxDBService,
                 HttpService,
             ],
