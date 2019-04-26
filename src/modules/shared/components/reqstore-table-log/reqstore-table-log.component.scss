@@ -118,9 +118,30 @@
         margin-left: 8px;
     }
     &__item {
+        &-features {
+            text-transform: uppercase;
+            font-size: 10px;
+            color: #bfbfbf;
+            &-count {
+                color: black;
+                &--is-failed {
+                    color: #ff5151;
+                }
+            }
+        }
         &-name {
             color: grey;
             margin-right: 8px;
+            width: 100%;
+        }
+        &-key {
+            color: grey;
+            margin-right: 4px;
+        }
+        &-value {
+            &--is-false {
+                color: #ff5151;
+            }
         }
     }
 }

@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { MomentModule } from 'angular2-moment';
-
 import { SelectModule } from 'ng2-select';
 
 // Pipes
@@ -58,6 +57,7 @@ import {
     CopyToBufferDirective,
     BuildInformationDirective,
     PixelToCanvasDirective,
+    ExpandableDirective,
 } from './directives/_index';
 
 const PIPES = [
@@ -105,6 +105,7 @@ const DIRECTIVES = [
     CopyToBufferDirective,
     BuildInformationDirective,
     PixelToCanvasDirective,
+    ExpandableDirective,
 ];
 
 @NgModule({

@@ -189,7 +189,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
             .map(mS =>
                 this.monitoringService.getAggregation(
                     `${this.modelVersion.id}`,
-                    this.monitoringService.getMetricsBySpecKind(mS.kind),
+                    this.monitoringService.getMetricsBySpecKind(mS.kind).slice(0, 1),
                     {
                         from: `${Math.floor(timeInterval.from / 1000)}`,
                         till: `${Math.floor(timeInterval.to / 1000)}`,

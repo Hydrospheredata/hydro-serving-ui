@@ -31,10 +31,12 @@
     <div class='reqstore__options'>
             <div class='reqstore__options-interval'>
                 Selected plot interval:
-                <span *ngIf="selectedTimeInterval$ | async; let ti" class='reqstore__options-interval-time'>
+                <span *ngIf="selectedTimeInterval$ | async; let ti; else emptyInterval" class='reqstore__options-interval-time'>
                     {{ ti.from*1000 | utcToLocal }} - 
                     {{ ti.to*1000 | utcToLocal }}
                 </span>
+                <ng-template #emptyInterval>-</ng-template>
+                
             </div>
             <div class='reqstore__options-item'>
                 Maximum
