@@ -206,15 +206,16 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
 
                             const metricKind = this.monitoringService.getSpecKindByMetricName(currentMetricData.name);
 
-                            const metricsByKind = log[ts].metrics[metricKind];
-                            let featureData = metricsByKind[+currentMetricData.labels.columnIndex || 0];
-
-                            if (featureData === undefined) {
-                                featureData = {};
+                            if (log[ts].metrics[metricKind] === undefined) {
+                                log[ts].metrics[metricKind] = {};
                             }
 
-                            if (featureData[currentMetricData.name] === undefined) {
-                                featureData[currentMetricData.name] = currentMetricData;
+                            const metricsByKind = log[ts].metrics[metricKind];
+                            const columnIndex = +currentMetricData.labels.columnIndex || 0;
+                            metricsByKind[columnIndex] = metricsByKind[columnIndex]  || {};
+
+                            if (metricsByKind[columnIndex][currentMetricData.name] === undefined) {
+                                metricsByKind[columnIndex][currentMetricData.name] = currentMetricData;
                             }
 
                             if (currentMetricData.health === false) {

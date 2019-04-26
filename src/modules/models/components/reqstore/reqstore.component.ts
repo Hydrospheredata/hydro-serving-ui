@@ -193,14 +193,11 @@ export class ReqstoreComponent implements OnInit, OnDestroy {
                             }
 
                             const metricsByKind = log[ts].metrics[metricKind];
-                            let featureData = metricsByKind[+currentMetricData.labels.columnIndex || 0];
+                            const columnIndex = +currentMetricData.labels.columnIndex || 0;
+                            metricsByKind[columnIndex] = metricsByKind[columnIndex]  || {};
 
-                            if (featureData === undefined) {
-                                featureData = {};
-                            }
-
-                            if (featureData[currentMetricData.name] === undefined) {
-                                featureData[currentMetricData.name] = currentMetricData;
+                            if (metricsByKind[columnIndex][currentMetricData.name] === undefined) {
+                                metricsByKind[columnIndex][currentMetricData.name] = currentMetricData;
                             }
 
                             if (currentMetricData.health === false) {
@@ -211,7 +208,6 @@ export class ReqstoreComponent implements OnInit, OnDestroy {
                 });
             }
         }
-
         return log;
     }
 }
