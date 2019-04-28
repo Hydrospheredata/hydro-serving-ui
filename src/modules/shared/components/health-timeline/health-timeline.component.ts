@@ -82,8 +82,6 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
     loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-    updateMinimapScale$: BehaviorSubject<ITimeInterval> = new BehaviorSubject(null);
-
     fullLogSub: Subscription;
     detailLogSub: Subscription;
 
@@ -173,7 +171,6 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.fullLogSub.unsubscribe();
         this.detailLogSub.unsubscribe();
-        // this.healthTimelineDataSub.unsubscribe();
     }
 
     onMinimapBrushEnd(t: ITimeInterval) {
