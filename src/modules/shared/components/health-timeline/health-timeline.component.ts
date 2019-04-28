@@ -17,7 +17,7 @@ import { IMetricSpecification } from '@shared/models/metric-specification.model'
 import { IMonitoringAggregationList, IMonitoringAggregationVM } from '@shared/models/monitoring-aggregation.model';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
 import * as d3 from 'd3';
-import { Subject, merge, Observable, combineLatest, BehaviorSubject } from 'rxjs';
+import { Subject, merge, Observable, combineLatest, BehaviorSubject, Subscription } from 'rxjs';
 import { startWith, switchMap, tap, filter } from 'rxjs/operators';
 
 @Component({
@@ -82,6 +82,11 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
     loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
+    updateMinimapScale$: BehaviorSubject<ITimeInterval> = new BehaviorSubject(null);
+
+    fullLogSub: Subscription;
+    detailLogSub: Subscription;
+
     @Output()
     private timeInterval: EventEmitter<ITimeInterval> = new EventEmitter();
 
@@ -104,7 +109,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        combineLatest(this.metricSpecifications$, this.selectedModelVersion$).pipe(
+        this.fullLogSub = combineLatest(this.metricSpecifications$, this.selectedModelVersion$).pipe(
             switchMap(([metricSpecs, mv]) => {
                 this.metricSpecs = metricSpecs;
                 this.modelVersion = mv;
@@ -127,7 +132,11 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
             })
         ).subscribe();
 
-        combineLatest(this.selectedTime$, this.metricSpecifications$, this.selectedModelVersion$).pipe(
+        this.detailLogSub = combineLatest(
+            this.selectedTime$,
+            this.metricSpecifications$,
+            this.selectedModelVersion$
+        ).pipe(
             filter(([timeInterval]) => !!timeInterval),
             tap( ([timeInterval]) => {
                 this.displayedTime.next(timeInterval);
@@ -153,14 +162,17 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     }
 
     showZoomOut(): boolean {
-        return this.timelineService.historyExist();
+        return true;
     }
 
     zoomOut(): void {
-        this.timelineService.getPrevLog();
+        const [from, to] = this.timelineService.getMinimumAndMaximumTimestamps(this.fullLog);
+        this.brushEnd$.next({ from, to });
     }
 
     ngOnDestroy(): void {
+        this.fullLogSub.unsubscribe();
+        this.detailLogSub.unsubscribe();
         // this.healthTimelineDataSub.unsubscribe();
     }
 
