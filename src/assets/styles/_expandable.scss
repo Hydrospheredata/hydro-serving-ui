@@ -1,8 +1,11 @@
 .expandable {
     padding: 8px 0;
     &__header {
+        position: relative;
         cursor: pointer;
-
+        &:hover {
+            background: #f1f5f9;
+        }
         &:hover > .expandable__text {
             color: #00437d;
         }

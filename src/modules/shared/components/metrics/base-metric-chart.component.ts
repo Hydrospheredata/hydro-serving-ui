@@ -160,6 +160,17 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                 type: 'spline',
                 animation: false,
                 height: '300px',
+                events: {
+                    selection: event => {
+                        if (event.xAxis && event.xAxis[0]) {
+                            const from = Math.floor(event.xAxis[0].min / 1000);
+                            const to = Math.ceil(event.xAxis[0].max / 1000);
+                            self.selectPoints.emit({from, to});
+                        }
+                        return false;
+                    },
+                },
+                zoomType: 'x',
             },
             title: {
                 text: '',
