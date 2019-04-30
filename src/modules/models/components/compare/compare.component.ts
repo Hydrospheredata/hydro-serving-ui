@@ -46,8 +46,8 @@ export class CompareComponent implements OnInit, OnDestroy {
         store: Store<HydroServingState>,
         metricService: MetricSettingsService
     ) {
-        this.selectedModelId$ = store.select(getSelectedModelId);
-        this.selectedModelVersion$ = store.select(getSelectedModelVersion);
+        this.selectedModelId$ = store.select(getSelectedModelId).pipe(filter(_ => !!_));
+        this.selectedModelVersion$ = store.select(getSelectedModelVersion).pipe(filter(_ => !!_));
         this.secondModelVersionChanges$ = this.secondModelVersion.valueChanges;
         this.metricKindChanges$ = this.metricKind.valueChanges;
 
