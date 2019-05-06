@@ -1,0 +1,17 @@
+.model-version {
+    &__actions {
+        display: flex;
+        &-item {
+            cursor: pointer;
+            transform: .3s ease color;
+            margin-left: 8px;
+            &:hover {
+                color: #35469C;
+            }
+        }
+        &-icon {
+            width: 24px;
+            height: 24px;
+        }
+    }
+}

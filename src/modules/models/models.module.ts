@@ -10,7 +10,7 @@ import { ModelsRoutingModule } from './models.router';
 import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
-    ModelVersionsListComponent,
+    ModelVersionsTableComponent,
     ModelVersionDetailsComponent,
     ProfilerComponent,
     ModelVersionContainerComponent,
@@ -19,6 +19,7 @@ import {
     ModelVersionMonitoringLogComponent,
     CompareComponent,
     ReqstoreComponent,
+    ModelVersionsTableRowComponent,
 } from '@models/components';
 import {
     DialogDeleteModelComponent,
@@ -50,7 +51,8 @@ import { HsD3Module } from '../hs-d3/hs-d3.module';
     declarations: [
         ModelsWrapperComponent,
         ModelDetailsComponent,
-        ModelVersionsListComponent,
+        ModelVersionsTableComponent,
+        ModelVersionsTableRowComponent,
         ModelVersionDetailsComponent,
         DialogDeleteModelComponent,
         DialogAddMetricComponent,

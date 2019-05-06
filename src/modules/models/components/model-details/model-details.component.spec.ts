@@ -14,7 +14,7 @@ import { of } from 'rxjs';
 import { ModelDetailsComponent } from './model-details.component';
 
 import * as fromModelsActions from '@models/actions';
-import { ModelVersionsListComponent } from '@models/components/model-versions-list/model-versions-list.component';
+import { ModelVersionsTableComponent } from '@models/components/model-versions-table/model-versions-table.component';
 
 describe('ModelDetailsComponent', () => {
     let component: ModelDetailsComponent;
@@ -26,7 +26,7 @@ describe('ModelDetailsComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 ModelDetailsComponent,
-                ModelVersionsListComponent,
+                ModelVersionsTableComponent,
             ],
             imports: [
                 SharedModule,

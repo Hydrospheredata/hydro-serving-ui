@@ -54,3 +54,33 @@ export const MockModelVersion3Model2: IModelVersion = {
     applications: ['app1', 'app2'],
     metadata: {},
 };
+
+export const FailedModelVersion: IModelVersion = {
+    id: 4,
+    image: MockImage,
+    created: new Date(),
+    finished: new Date(),
+    modelVersion: 1,
+    modelContract: { modelName: 'ModelName', predict: MockSignature2},
+    runtime: MockRuntime2,
+    model: MockModel2,
+    hostSelector: MockHostSelector,
+    status: ModelVersionStatus.Failed,
+    applications: [],
+    metadata: {},
+};
+
+export const AssemblingModelVersion: IModelVersion = {
+    id: 5,
+    image: MockImage,
+    created: new Date(),
+    finished: new Date(),
+    modelVersion: 1,
+    modelContract: { modelName: 'ModelName', predict: MockSignature2},
+    runtime: MockRuntime2,
+    model: MockModel2,
+    hostSelector: MockHostSelector,
+    status: ModelVersionStatus.Assembling,
+    applications: [],
+    metadata: {},
+};

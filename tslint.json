@@ -7,7 +7,7 @@
     "jsRules": {},
     "rules":   {
         "directive-selector": [true, "attribute", ["hs", "hydro"], "camelCase"],
-        "component-selector": [true, "element", ["hs", "hydro"], "kebab-case"],
+        "component-selector": [true, ["element", "attribute"], ["hs", "hydro"], "kebab-case"],
         "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
         "use-input-property-decorator": true,
         "use-output-property-decorator": true,
