@@ -14,6 +14,7 @@ import { of } from 'rxjs';
 import { ModelDetailsComponent } from './model-details.component';
 
 import * as fromModelsActions from '@models/actions';
+import { ModelVersionsListComponent } from '@models/components/model-versions-list/model-versions-list.component';
 
 describe('ModelDetailsComponent', () => {
     let component: ModelDetailsComponent;
@@ -25,6 +26,7 @@ describe('ModelDetailsComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 ModelDetailsComponent,
+                ModelVersionsListComponent,
             ],
             imports: [
                 SharedModule,
@@ -65,7 +67,7 @@ describe('ModelDetailsComponent', () => {
         let headerElement: HTMLElement;
 
         beforeEach(() => {
-            headerElement = element.querySelector('.content-header');
+            headerElement = element.querySelector('.model-details__header');
         });
 
         it('exists', () => {
@@ -73,7 +75,7 @@ describe('ModelDetailsComponent', () => {
         });
 
         it('has title element with models name', () => {
-            const title = headerElement.querySelector('.content-header__title');
+            const title = headerElement.querySelector('.model-details__header-title');
 
             expect(title).toBeTruthy();
             expect(title.textContent).toEqual(MockModel1.name);
@@ -94,25 +96,6 @@ describe('ModelDetailsComponent', () => {
 
         it('exists', () => {
             expect(versionsElement).toBeTruthy();
-        });
-
-        describe('if modelVersions is empty', () => {
-            let errorElement: HTMLElement;
-            beforeEach(() => {
-                component.modelVersions$ = of([]);
-                fixture.detectChanges();
-                errorElement = versionsElement.querySelector('span.alert');
-
-            });
-
-            it('shows error message element', () => {
-                expect(errorElement).toBeTruthy();
-            });
-
-            it('shows error text', () => {
-                expect(errorElement.textContent)
-                .toEqual('Ooops! It looks like API does not return any builds for this model. Please check model. ');
-            });
         });
     });
 });
