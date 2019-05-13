@@ -231,7 +231,20 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    private clearSeries() {
+        const chartSeries = this.chart.series;
+
+        chartSeries.forEach(curChartSeries => {
+            curChartSeries.remove(true);
+        });
+    }
+
     private drawSeries(): void {
+        if (this.series === null) {
+            this.clearSeries();
+            return;
+        }
+
         const chartSeries = this.chart.series;
         const seriesNames = Object.keys(this.series);
         // clear series
@@ -258,7 +271,18 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         });
     }
 
+    private clearPlotBands() {
+        const chartBandsEntries = Object.entries(this.chartBands);
+        chartBandsEntries.forEach(([_, ids]) =>
+            ids.forEach(id => this.chart.xAxis[0].removePlotBand(id))
+        );
+    }
+
     private drawBands(): void {
+        if (this.plotBands === null) {
+            this.clearPlotBands();
+            return;
+        }
         const plotBandsEntries = Object.entries(this.plotBands);
         const chartBandsEntries = Object.entries(this.chartBands);
         const self = this;
@@ -299,9 +323,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
         if (thresholds.length && currentChartThresholdSeries.length) {
             currentChartThresholdSeries.forEach(series => series.remove(true));
-            } else {
-            // TODO: лишняя проверка можно оптимизнуть
-            // все перенести в стримы
+        } else {
             currentChartThresholdSeries.forEach(series => {
                 if (!thresholdsNames.includes(series.name)) {
                     series.remove(true);
@@ -323,7 +345,9 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private fetchMetricsData(): void {
-        if (this.metricsData.length === 0) {
+        if (!this.metricsData || this.metricsData.length === 0) {
+            this.series = null;
+            this.plotBands = null;
             return;
         }
 
@@ -341,6 +365,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         let tmpBandObject = null;
 
         const metricsCount = this.metricSpecificationProvider.metrics.length;
+
         /* Different metrics, like ['ks', 'ks_level'], have same 'health' value */
         const plotGenerateStop = (this.metricsData.length / metricsCount) - 1;
 
@@ -418,8 +443,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
 
     private redrawChart() {
         this.fetchMetricsData();
-        this.drawSeries();
         this.drawThresholds();
+        this.drawSeries();
         this.drawBands();
     }
 }

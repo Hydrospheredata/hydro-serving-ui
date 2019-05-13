@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, AbstractControl } from '@angular/forms';
 import { HydroServingState } from '@core/reducers';
 import { MetricSettingsService } from '@core/services/metrics/_index';
+import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { getModelVersionsByModelId, getSelectedModelId, getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { IModelVersion } from '@shared/_index';
@@ -44,7 +45,8 @@ export class CompareComponent implements OnInit, OnDestroy {
 
     constructor(
         store: Store<HydroServingState>,
-        metricService: MetricSettingsService
+        metricService: MetricSettingsService,
+        public monitoringService: MonitoringService
     ) {
         this.selectedModelId$ = store.select(getSelectedModelId).pipe(filter(_ => !!_));
         this.selectedModelVersion$ = store.select(getSelectedModelVersion).pipe(filter(_ => !!_));
@@ -134,20 +136,10 @@ export class CompareComponent implements OnInit, OnDestroy {
             metricSpecifications: IMetricSpecification[],
             kind
     ): IMetricSpecificationProvider  {
-        const dict = {
-            CounterMetricSpec:      ['counter'],
-            KSMetricSpec:           ['kolmogorovsmirnov', 'kolmogorovsmirnov_level'],
-            AEMetricSpec:           ['autoencoder_reconstruction'],
-            RFMetricSpec:           ['randomforest'],
-            GANMetricSpec:          ['gan_outlier', 'gan_inlier'],
-            LatencyMetricSpec:      ['latency'],
-            ErrorRateMetricSpec:    ['error_rate'],
-        };
-
         const tmp: IMetricSpecificationProvider = {
             kind,
             byModelVersionId: {},
-            metrics: dict[kind],
+            metrics: this.monitoringService.getMetricsBySpecKind(kind),
         };
 
         metricSpecifications.forEach(metricSpec => {
