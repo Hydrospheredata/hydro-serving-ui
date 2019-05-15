@@ -52,7 +52,7 @@ server {
     grpc_pass grpc://gateway_grpc;
   }
   
-  location /hydrosphere.gateway. {
+  location /hydrosphere.serving.gateway. {
     grpc_pass grpc://gateway_grpc;
   }
 
