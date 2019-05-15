@@ -51,6 +51,10 @@ server {
   location /tensorflow.serving. {
     grpc_pass grpc://gateway_grpc;
   }
+  
+  location /hydrosphere.gateway. {
+    grpc_pass grpc://gateway_grpc;
+  }
 
   location /timemachine. {
     grpc_pass grpc://reqstore_grpc;
