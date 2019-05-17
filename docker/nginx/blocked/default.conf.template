@@ -51,16 +51,18 @@ server {
   error_page 404 =200 /index.html;
 
   location /health {
-      return 200 'no content';
+    return 200 'no content';
   }
 
   location /monitoring {
-    return 501 'Monitoring is not available in OSS version'
+    default_type text/plain;
+    return 501 "Monitoring is not available in OSS version";
   }
 
 
   location /reqstore {
-    return 501 'Reqstore is not available is OSS version'
+    default_type text/plain;
+    return 501 "Reqstore is not available is OSS version";
   }
 
   location /api {
