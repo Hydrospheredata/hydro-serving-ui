@@ -8,8 +8,8 @@ import { IModelVersion, ITimeInterval } from '@shared/_index';
 import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
 import { IReqstoreEntry, IReqstoreLog } from '@shared/models/reqstore.model';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
-import { Observable, BehaviorSubject, Subject, ReplaySubject, Subscription, combineLatest } from 'rxjs';
-import { map, filter, switchMap, withLatestFrom, tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { map, filter, switchMap } from 'rxjs/operators';
 
 type ILogEntry = IReqstoreEntry & {
     failed: boolean;

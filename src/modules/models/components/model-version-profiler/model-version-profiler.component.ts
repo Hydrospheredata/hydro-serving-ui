@@ -11,7 +11,6 @@ import { tap } from 'rxjs/operators';
 })
 export class ModelVersionProfilerComponent implements OnDestroy {
     public modelVersionId: number;
-    errors = true;
     private selectedModelVersionSub: Subscription;
 
     constructor(

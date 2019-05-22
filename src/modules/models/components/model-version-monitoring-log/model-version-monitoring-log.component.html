@@ -1,5 +1,4 @@
 <section *ngIf='!errors; else alert' class='monitoring-log'>
-    123
     <ng-container *ngIf="metricSpecificationProvider$ | async;let metricSpecificationProvider; else error">
         <div class="time-interval">
             <label class="time-interval__label">Time interval: </label>

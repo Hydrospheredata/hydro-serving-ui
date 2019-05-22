@@ -40,7 +40,7 @@ describe('ProfilerPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfilerPageComponent);
     component = fixture.componentInstance;
-    fixture.autoDetectChanges();
+    fixture.detectChanges();
   });
 
   it('should create', () => {
