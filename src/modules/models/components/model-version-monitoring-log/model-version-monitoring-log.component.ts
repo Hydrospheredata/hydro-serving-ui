@@ -37,6 +37,7 @@ interface ILog {
     styleUrls: ['model-version-monitoring-log.component.scss'],
 })
 export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
+    errors = true;
     metricSpecification$: Observable<IMetricSpecification>;
     metricSpecificationProvider$: Observable<IMetricSpecificationProvider>;
     modelVersion$: Observable<IModelVersion>;

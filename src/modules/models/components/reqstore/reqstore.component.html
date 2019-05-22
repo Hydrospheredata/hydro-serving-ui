@@ -1,39 +1,48 @@
 
-
-<div *ngIf='(metricSpecs$ | async)?.length; else emptyMetricsMessage'>
-    <hs-health-timeline 
-        [metricSpecifications$]='metricSpecs$'
-        [selectedModelVersion$]='selectedModelVersion$'
-        (timeInterval)='onChangeTimeInterval($event)'>
-    </hs-health-timeline>
-
-    <div class='reqstore__options'>
-        <div class='reqstore__options-item'>
-            Maximum
-            <input class='reqstore__options-input' [(ngModel)]="maxMessages">
-            messages
+<div *ngIf='!errors; else alert'>
+    <div *ngIf='(metricSpecs$ | async)?.length; else emptyMetricsMessage'>
+        <hs-health-timeline 
+            [metricSpecifications$]='metricSpecs$'
+            [selectedModelVersion$]='selectedModelVersion$'
+            (timeInterval)='onChangeTimeInterval($event)'>
+        </hs-health-timeline>
+    
+        <div class='reqstore__options'>
+            <div class='reqstore__options-item'>
+                Maximum
+                <input class='reqstore__options-input' [(ngModel)]="maxMessages">
+                messages
+            </div>
+            <div class='reqstore__options-item'>
+                Maximum
+                <input class='reqstore__options-input' [(ngModel)]="maxMBytes">
+                MB
+            </div>
+            <div class='reqstore__options-item'>
+                Load last records
+                <input type="checkbox" [(ngModel)]='reverse'>
+            </div>
+            <div class='reqstore__options-item'>
+                Load only failed
+                <input type="checkbox" [(ngModel)]='onlyFailedReqstoreData'>
+            </div>
+            <button class='button button--white reqstore__options-button' (click)='updateReqstore()'>update log</button>
         </div>
-        <div class='reqstore__options-item'>
-            Maximum
-            <input class='reqstore__options-input' [(ngModel)]="maxMBytes">
-            MB
-        </div>
-        <div class='reqstore__options-item'>
-            Load last records
-            <input type="checkbox" [(ngModel)]='reverse'>
-        </div>
-        <div class='reqstore__options-item'>
-            Load only failed
-            <input type="checkbox" [(ngModel)]='onlyFailedReqstoreData'>
-        </div>
-        <button class='button button--white reqstore__options-button' (click)='updateReqstore()'>update log</button>
+        <hs-reqstore-table-log
+            [logData]='logData' 
+            [modelVersion]='selectedModelVersion$ | async'
+            [loading]='logLoading$ | async'>
+        </hs-reqstore-table-log>
     </div>
-    <hs-reqstore-table-log
-     [logData]='logData' 
-     [modelVersion]='selectedModelVersion$ | async'
-     [loading]='logLoading$ | async'>
-    </hs-reqstore-table-log>
+    <ng-template #emptyMetricsMessage>
+        <div class='empty-metrics'>Can't find any metrics</div>
+    </ng-template>
 </div>
-<ng-template #emptyMetricsMessage>
-    <div class='empty-metrics'>Can't find any metrics</div>
+
+
+<ng-template #alert>
+    <hs-alert-message>
+        Reqstore isn't available in OSC yet. But you can make request for a <a href="https://hydrosphere.io/">demo</a>
+    </hs-alert-message>
 </ng-template>
+

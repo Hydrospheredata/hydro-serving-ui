@@ -5,14 +5,17 @@ import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
     ModelVersionDetailsComponent,
-    ProfilerComponent,
     ModelVersionMonitoringComponent,
     CompareComponent,
     ModelVersionMonitoringLogComponent,
     ModelVersionMonitoringContainerComponent,
     ModelVersionContainerComponent,
-    ReqstoreComponent
+    ReqstoreComponent,
+    ModelVersionProfilerComponent
 } from '@models/components';
+
+import { ProfilerPageComponent } from '../profiler/containers';
+
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 
 @NgModule({
@@ -40,7 +43,6 @@ import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
                         data: {anim: 'modelVerDetail'},
                         canActivate: [ModelVersionDetailsGuard],
                         children: [
-
                             {
                                 path: '',
                                 redirectTo: 'details',
@@ -52,7 +54,7 @@ import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
                             },
                             {
                                 path: 'profiler',
-                                component: ProfilerComponent,
+                                component: ModelVersionProfilerComponent,
                                 data: {anim: 'modelVerDetail'},
                             },
                             {

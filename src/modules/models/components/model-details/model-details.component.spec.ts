@@ -7,15 +7,14 @@ import * as fromModels from '@models/reducers';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 import { MockModel1 } from '@testing/factories/model';
-import { MockModelVersion1Model1, MockModelVersion2Model1 } from '@testing/factories/modelVersion';
+import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
 import { MockStoreProvider } from '@testing/mocks';
 import { MomentModule } from 'angular2-moment';
 import { of } from 'rxjs';
 import { ModelDetailsComponent } from './model-details.component';
 
 import * as fromModelsActions from '@models/actions';
-import { ModelVersionsTableComponent } from '@models/components/model-versions-table/model-versions-table.component';
-
+import * as mockComponents from '@testing/components';
 describe('ModelDetailsComponent', () => {
     let component: ModelDetailsComponent;
     let fixture: ComponentFixture<ModelDetailsComponent>;
@@ -26,7 +25,7 @@ describe('ModelDetailsComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 ModelDetailsComponent,
-                ModelVersionsTableComponent,
+                mockComponents.ModelVersionsTableComponent,
             ],
             imports: [
                 SharedModule,

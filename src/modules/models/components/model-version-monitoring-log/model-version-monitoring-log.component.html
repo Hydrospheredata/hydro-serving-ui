@@ -1,4 +1,5 @@
-<section class='monitoring-log'>
+<section *ngIf='!errors; else alert' class='monitoring-log'>
+    123
     <ng-container *ngIf="metricSpecificationProvider$ | async;let metricSpecificationProvider; else error">
         <div class="time-interval">
             <label class="time-interval__label">Time interval: </label>
@@ -68,3 +69,10 @@
         Something went wrong
     </ng-template>
 </section>
+
+
+<ng-template #alert>
+    <hs-alert-message>
+        Reqstore isn't available in OSC yet. But you can make request for a <a href="https://hydrosphere.io/">demo</a>
+    </hs-alert-message>
+</ng-template>

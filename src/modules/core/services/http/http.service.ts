@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { debug } from 'util';
 
 type HydroHttpParams = string | { [param: string]: string | string[]; } | HttpParams;
 
@@ -30,12 +31,6 @@ export class HttpService {
 
     get(url: string, options?: IHydroHttpOptions): Observable<any> {
         return this.http.get(this.getFullUrl(url), this.hydroOptions(options)).pipe(
-            catchError(err => this.handleError(err))
-        );
-    }
-
-    getv2(url, options) {
-        return this.http.get(url, this.hydroOptions(options)).pipe(
             catchError(err => this.handleError(err))
         );
     }
@@ -78,8 +73,6 @@ export class HttpService {
 
             message = `status: ${status}, error: ${err}, message: ${information} `;
         }
-
-        console.error(message);
         return throwError(message);
     }
 

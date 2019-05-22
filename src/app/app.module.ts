@@ -15,7 +15,6 @@ import { ApplicationsModule } from '@applications/applications.module';
 import { CoreModule } from '@core/core.module';
 import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
-import { ProfilesModule } from '@profiles/profiles.module';
 import { SharedModule } from '@shared/shared.module';
 @NgModule({
     declarations: [
@@ -32,7 +31,6 @@ import { SharedModule } from '@shared/shared.module';
         ReactiveFormsModule,
         MomentModule,
         SharedModule,
-        ProfilesModule,
         AppRoutingModule,
         DialogModule,
     ],

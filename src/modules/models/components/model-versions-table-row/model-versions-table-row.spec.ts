@@ -11,7 +11,7 @@ import {
 } from '@testing/factories/modelVersion';
 import { MomentModule, TimeAgoPipe } from 'angular2-moment';
 
-fdescribe('ModelVersionTableRow component', () => {
+describe('ModelVersionTableRow component', () => {
     let fixture: ComponentFixture<ModelVersionsTableRowComponent>;
     let component: ModelVersionsTableRowComponent;
     let element: Element;

@@ -33,7 +33,7 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     public modelVersions: ModelVersion[];
 
     public healthStatuses: { [s: string]: string } = {};
-    private intervalId: number;
+    private intervalId: any;
     private applicationSub: Subscription;
 
     constructor(

@@ -47,11 +47,15 @@ import {
     ReqstoreTableLogComponent,
     PredictRequestComponent,
     PredictResponseComponent,
-    TensorImageListComponent
+    TensorImageListComponent,
+    AlertMessageComponent
 } from './components/_index';
 
 // Directives
 import { HsD3Module } from '../hs-d3/hs-d3.module';
+import {
+    ErrorMessageComponent
+} from './components/error-message/error-message.component';
 import {
     ModelVersionStatusDirective,
     CopyToBufferDirective,
@@ -98,6 +102,8 @@ const COMPONENTS = [
     PredictRequestComponent,
     PredictResponseComponent,
     TensorImageListComponent,
+    AlertMessageComponent,
+    ErrorMessageComponent,
 ];
 
 const DIRECTIVES = [

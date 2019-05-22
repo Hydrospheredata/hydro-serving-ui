@@ -7,6 +7,7 @@ export * from './filter/filter.component';
 export * from './command-template/command-template.component';
 export * from './application-status/application-status.component';
 export * from './metadata/metadata.component';
+export * from './alert-message/alert-message.component';
 // metrics
 export * from './metrics/base-metric-chart.component';
 export * from './metrics/kolmogorov-smirnov-metric-chart.component';

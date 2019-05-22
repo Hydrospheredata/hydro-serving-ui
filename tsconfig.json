@@ -37,6 +37,9 @@
       "@profiles/*": [
         "modules/profiles/*"
       ],
+      "@profiler/*": [
+        "modules/profiler/*"
+      ],
       "@dialog/*": [
         "modules/dialog/*"
       ],

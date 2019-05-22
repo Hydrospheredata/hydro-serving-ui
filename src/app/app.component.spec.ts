@@ -15,7 +15,7 @@ import { CoreModule } from '@core/core.module';
 import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
 import { Store } from '@ngrx/store';
-import { ProfilesModule } from '@profiles/profiles.module';
+import { ProfilerModule } from '@profiler/profiler.module';
 import { MomentModule } from 'angular2-moment';
 
 describe('AppComponent', () => {
@@ -33,7 +33,7 @@ describe('AppComponent', () => {
                 ReactiveFormsModule,
                 MomentModule,
                 SharedModule,
-                ProfilesModule,
+                ProfilerModule,
                 AppRoutingModule,
                 DialogModule,
             ],

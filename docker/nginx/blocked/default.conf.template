@@ -56,12 +56,13 @@ server {
 
   location /monitoring {
     default_type text/plain;
+    add_header Access-Control-Allow-Origin  * always;
     return 501 "Monitoring is not available in OSS version";
   }
 
-
   location /reqstore {
     default_type text/plain;
+    add_header Access-Control-Allow-Origin  * always;
     return 501 "Reqstore is not available is OSS version";
   }
 

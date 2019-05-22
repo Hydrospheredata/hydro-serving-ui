@@ -39,8 +39,7 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
         private monitoringService: MonitoringService
     ) {
         this.modelVersion$ = this.store.select(getSelectedModelVersion).pipe(
-            filter(modelVersion => !!modelVersion),
-            tap(({id}) => this.store.dispatch(new GetMetricsAction(`${id}`)))
+            filter(modelVersion => !!modelVersion)
         );
 
         this.metricSpecifications$ = this.store.select(getAllMetrics);

@@ -1,0 +1,20 @@
+<div *ngIf='status$ | async; let status'>
+  <span [ngSwitch]="status">
+    <p *ngSwitchCase="isLoading()">
+      Loading ...
+    </p>
+    <p *ngSwitchCase="isFailed()">
+      <hs-error-message>
+        {{ errorMessage$ | async }}
+      </hs-error-message>
+    </p>
+    <p *ngSwitchCase="isClosedForOSS()">
+      <hs-alert-message>
+          Profiler isn't available in OSS yet. But you can make request for a <a href="https://hydrosphere.io/">demo</a>
+      </hs-alert-message>
+    </p>
+    <p *ngSwitchDefault>
+      <hs-profiles [modelVersionId]='modelVersionId'></hs-profiles>
+    </p>
+    </span>
+</div>

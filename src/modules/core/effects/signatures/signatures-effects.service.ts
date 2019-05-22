@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import * as HydroActions from '@core/actions';
 import { SignaturesService } from '@core/services';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import {of as observableOf,  Observable } from 'rxjs';
 import { map, switchMap, catchError, take } from 'rxjs/operators';
@@ -11,8 +11,8 @@ import { map, switchMap, catchError, take } from 'rxjs/operators';
 @Injectable()
 export class SignaturesEffects {
     @Effect() getModelVersionSignatures$: Observable<Action> = this.actions$
-        .ofType(HydroActions.SignaturesActionTypes.GetModelVersionSignatures)
-        .pipe(
+    .pipe(
+        ofType(HydroActions.SignaturesActionTypes.GetModelVersionSignatures),
             map((action: HydroActions.GetModelVersionSignaturesAction) => action.modelVersionId),
             switchMap(versionId => {
                 return this.signaturesService

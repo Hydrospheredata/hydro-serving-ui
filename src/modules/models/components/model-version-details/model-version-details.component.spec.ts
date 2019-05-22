@@ -6,10 +6,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SignaturesService } from '@core/services';
 import { HttpService } from '@core/services/http';
 import {
-    DataComparisonHistogramComponent
-} from '@profiles/components/data-comparison-histogram/data-comparison-histogram.component';
-import { DataProfilesComponent } from '@profiles/components/data-profiles/data-profiles.component';
-import { DataStatsComponent } from '@profiles/components/data-stats/data-stats.component';
+    ProfilesComparisonHistogramComponent,
+    ProfilesComponent,
+    ProfileStatsComponent,
+} from '@profiler/components';
 import { SharedModule } from '@shared/shared.module';
 import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
 import { MockStoreProvider } from '@testing/mocks';
@@ -25,9 +25,6 @@ describe('ModelVersionDetailsComponent', () => {
         TestBed.configureTestingModule({
             declarations: [
                 ModelVersionDetailsComponent,
-                DataProfilesComponent,
-                DataComparisonHistogramComponent,
-                DataStatsComponent,
             ],
             imports: [
                 MdlSelectModule,

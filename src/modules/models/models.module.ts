@@ -12,7 +12,6 @@ import {
     ModelDetailsComponent,
     ModelVersionsTableComponent,
     ModelVersionDetailsComponent,
-    ProfilerComponent,
     ModelVersionContainerComponent,
     ModelVersionMonitoringContainerComponent,
     ModelVersionMonitoringComponent,
@@ -20,7 +19,9 @@ import {
     CompareComponent,
     ReqstoreComponent,
     ModelVersionsTableRowComponent,
+    ModelVersionProfilerComponent,
 } from '@models/components';
+
 import {
     DialogDeleteModelComponent,
     DialogAddMetricComponent,
@@ -31,8 +32,7 @@ import { reducers } from '@models/reducers';
 import { ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ProfilesModule } from '@profiles/profiles.module';
-import { HsD3Module } from '../hs-d3/hs-d3.module';
+import { ProfilerModule } from '../profiler/profiler.module';
 
 @NgModule({
     imports: [
@@ -46,7 +46,7 @@ import { HsD3Module } from '../hs-d3/hs-d3.module';
         ReactiveFormsModule,
         StoreModule.forFeature('models', reducers),
         EffectsModule.forFeature([ModelEffects]),
-        ProfilesModule,
+        ProfilerModule,
     ],
     declarations: [
         ModelsWrapperComponent,
@@ -56,7 +56,6 @@ import { HsD3Module } from '../hs-d3/hs-d3.module';
         ModelVersionDetailsComponent,
         DialogDeleteModelComponent,
         DialogAddMetricComponent,
-        ProfilerComponent,
         ModelVersionMonitoringContainerComponent,
         ModelVersionMonitoringComponent,
         DialogDeleteMetricComponent,
@@ -64,6 +63,8 @@ import { HsD3Module } from '../hs-d3/hs-d3.module';
         ModelVersionMonitoringLogComponent,
         ModelVersionContainerComponent,
         ReqstoreComponent,
+        ModelVersionProfilerComponent,
+        ModelVersionsTableComponent,
     ],
     entryComponents: [
         DialogDeleteModelComponent,

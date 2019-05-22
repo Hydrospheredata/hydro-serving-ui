@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import {of as observableOf,  Observable } from 'rxjs';
 import { switchMap, catchError ,  map, tap } from 'rxjs/operators';
@@ -12,11 +12,11 @@ import { MetricSpecification } from '@shared/models/metric-specification.model';
 
 @Injectable()
 export class MonitoringEffects {
-    @Effect() name$: Observable<Action> = this.actions$.ofType('ACTIONTYPE');
+    @Effect() name$: Observable<Action> = this.actions$.pipe(ofType('ACTIONTYPE'));
 
     @Effect() addMetric$: Observable<Action> = this.actions$
-        .ofType(HydroActions.MonitoringActionTypes.AddMetric)
-        .pipe(
+    .pipe(
+            ofType(HydroActions.MonitoringActionTypes.AddMetric),
             map((action: HydroActions.AddMetricAction) => action.aggregation),
             switchMap(aggregation => {
                 return this.metricService.addMetricSettings(aggregation)
@@ -40,8 +40,8 @@ export class MonitoringEffects {
         );
 
     @Effect() getMetrics$: Observable<Action> = this.actions$
-        .ofType(HydroActions.MonitoringActionTypes.GetMetrics)
-        .pipe(
+    .pipe(
+        ofType(HydroActions.MonitoringActionTypes.GetMetrics),
             map((action: HydroActions.GetMetricsAction) => action.modelVersionId),
             switchMap(modelVersionId => {
                 return this.metricService.getMetricSettings(modelVersionId)
@@ -63,8 +63,8 @@ export class MonitoringEffects {
         );
 
     @Effect() deleteMetric$: Observable<Action> = this.actions$
-        .ofType(HydroActions.MonitoringActionTypes.DeleteMetric)
-        .pipe(
+    .pipe(
+            ofType(HydroActions.MonitoringActionTypes.DeleteMetric),
             map((action: HydroActions.DeleteMetricAction) => action.id),
             switchMap(id => {
                 return this.metricService.deleteMetricSettings(id)

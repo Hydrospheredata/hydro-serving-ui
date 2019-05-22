@@ -1,2 +1,9 @@
-<hydro-data-profiles [modelVersionId]="modelVersionId">
+<!-- <hydro-data-profiles *ngIf='!errors; else alert' [modelVersionId]="modelVersionId">
 </hydro-data-profiles>
+
+<ng-template #alert>
+    <hs-alert-message>
+    </hs-alert-message>
+</ng-template> -->
+
+<hs-profiler-page [modelVersionId]="modelVersionId"></hs-profiler-page>

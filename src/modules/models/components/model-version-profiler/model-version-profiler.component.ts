@@ -9,8 +9,9 @@ import { tap } from 'rxjs/operators';
     selector: 'hs-profiler',
     templateUrl: './model-version-profiler.component.html',
 })
-export class ProfilerComponent implements OnDestroy {
+export class ModelVersionProfilerComponent implements OnDestroy {
     public modelVersionId: number;
+    errors = true;
     private selectedModelVersionSub: Subscription;
 
     constructor(

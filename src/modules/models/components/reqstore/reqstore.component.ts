@@ -10,7 +10,7 @@ import { ITimeInterval, IModelVersion } from '@shared/_index';
 import { IMetricSpecification } from '@shared/models/metric-specification.model';
 import { IReqstoreEntry, IReqstoreLog } from '@shared/models/reqstore.model';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
-import { Observable, Subject, combineLatest, BehaviorSubject, merge, Subscription } from 'rxjs';
+import { Observable, Subject, combineLatest, BehaviorSubject, Subscription } from 'rxjs';
 import { switchMap, filter } from 'rxjs/operators';
 
 type ILogEntry = IReqstoreEntry & {
@@ -39,6 +39,8 @@ interface ILog {
     styleUrls: ['./reqstore.component.scss'],
 })
 export class ReqstoreComponent implements OnInit, OnDestroy {
+    errors = true;
+
     timeInterval: ITimeInterval;
     timeInterval$: Subject<ITimeInterval> = new Subject();
 
