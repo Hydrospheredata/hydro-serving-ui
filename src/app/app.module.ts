@@ -16,6 +16,7 @@ import { CoreModule } from '@core/core.module';
 import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
 import { SharedModule } from '@shared/shared.module';
+import { MonitoringModule } from 'modules/monitoring/monitoring.module';
 @NgModule({
     declarations: [
         AppComponent,
@@ -33,6 +34,7 @@ import { SharedModule } from '@shared/shared.module';
         SharedModule,
         AppRoutingModule,
         DialogModule,
+        MonitoringModule,
     ],
     bootstrap: [ AppComponent ],
 })

@@ -34,8 +34,8 @@
       "@shared/*": [
         "modules/shared/*"
       ],
-      "@profiles/*": [
-        "modules/profiles/*"
+      "@monitoring/*": [
+        "modules/monitoring/*"
       ],
       "@profiler/*": [
         "modules/profiler/*"

@@ -1,0 +1,22 @@
+<div class="loading">
+  Loading ...
+</div>
+
+<span [ngSwitch]="status$ | async">
+  <div *ngSwitchCase="isAvailable()">
+    <div class="monitoring"></div>
+  </div>
+  <div *ngSwitchCase="isFailed()">
+    <hs-error-message>
+      <div>{{error$ | async}}</div>
+    </hs-error-message>
+  </div>
+  <div *ngSwitchCase="isClosedForOSS()">
+    <hs-alert-message>
+      Monitoring isn't available in OSS yet. But you can make request for a <a href="https://hydrosphere.io/">demo</a>
+    </hs-alert-message>
+  </div>
+  <div *ngSwitchDefault>
+
+  </div>
+</span>

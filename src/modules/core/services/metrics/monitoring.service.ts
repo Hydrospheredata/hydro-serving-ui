@@ -95,6 +95,10 @@ export class MonitoringService {
     });
   }
 
+  public getMonitoringServiceStatus() {
+    return this.http.get(this.baseMonitoringUrl);
+  }
+
   public getMetricsBySpecKind(spec: string): string[] {
     const dict = {
       CounterMetricSpec:      ['counter'],

@@ -8,9 +8,8 @@ import {
     ProfilerServiceStatusIsClosedForOSS,
     ProfilerServiceStatusIsFailed
 } from '@profiler/actions';
-import { ProfilerStatus } from '@profiler/models';
 import { of } from 'rxjs';
-import { map, catchError, tap, switchMap } from 'rxjs/operators';
+import { catchError, tap, switchMap, mapTo } from 'rxjs/operators';
 
 @Injectable()
 export class ProfilerEffects {
@@ -19,16 +18,7 @@ export class ProfilerEffects {
         ofType(ProfilerServiceStatusActionTypes.GetProfilerServiceStatus),
         tap(_ => console.log()),
         switchMap( _ => this.profilerService.getProfilerServiceStatus().pipe(
-            map( status => {
-                switch (status) {
-                    case ProfilerStatus.AVAILABLE:
-                        return new ProfilerServiceStatusIsAvailable();
-                    case ProfilerStatus.CLOSED_FOR_OSS:
-                        return new ProfilerServiceStatusIsClosedForOSS();
-                    default:
-                        return new ProfilerServiceStatusIsUnknown();
-                }
-            }),
+            mapTo(() => new ProfilerServiceStatusIsAvailable()),
             catchError(err => {
                 const is501Error = /501/i.test(err);
                 if (is501Error) {
