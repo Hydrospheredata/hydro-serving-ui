@@ -30,6 +30,7 @@ import { reducers } from './reducers';
   ],
   exports: [
     ProfilerPageComponent,
+    ProfilesComponent,
   ],
 })
 export class ProfilerModule { }

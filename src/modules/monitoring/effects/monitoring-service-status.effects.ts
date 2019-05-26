@@ -27,9 +27,10 @@ export class MonitoringServiceStatusEffects {
                     catchError(err => {
                         const is501Error = /501/i.test(err);
                         if (is501Error) {
-                            return of(new SetStatusToFailedAction('err'));
-                        } else {
                             return of(new SetStatusToClosedForOSSAction());
+                        } else {
+                            const errMsg = err || 'Something went wrong';
+                            return of(new SetStatusToFailedAction(errMsg));
                         }
                     })
                 );

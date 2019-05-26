@@ -31,6 +31,6 @@ export class ProfilerService {
   }
 
   public getProfilerServiceStatus() {
-    return this.http.get(`${this.baseAPIUrl}`);
+    return this.http.get(`${this.baseAPIUrl}/buildinfo`);
   }
 }

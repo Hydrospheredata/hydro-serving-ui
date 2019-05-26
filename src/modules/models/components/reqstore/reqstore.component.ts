@@ -39,8 +39,6 @@ interface ILog {
     styleUrls: ['./reqstore.component.scss'],
 })
 export class ReqstoreComponent implements OnInit, OnDestroy {
-    errors = true;
-
     timeInterval: ITimeInterval;
     timeInterval$: Subject<ITimeInterval> = new Subject();
 

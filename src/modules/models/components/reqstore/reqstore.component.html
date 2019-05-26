@@ -1,5 +1,4 @@
-
-<div *ngIf='!errors; else alert'>
+<hs-monitoring-page>
     <div *ngIf='(metricSpecs$ | async)?.length; else emptyMetricsMessage'>
         <hs-health-timeline 
             [metricSpecifications$]='metricSpecs$'
@@ -37,12 +36,5 @@
     <ng-template #emptyMetricsMessage>
         <div class='empty-metrics'>Can't find any metrics</div>
     </ng-template>
-</div>
-
-
-<ng-template #alert>
-    <hs-alert-message>
-        Reqstore isn't available in OSC yet. But you can make request for a <a href="https://hydrosphere.io/">demo</a>
-    </hs-alert-message>
-</ng-template>
+</hs-monitoring-page>
 

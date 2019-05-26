@@ -87,14 +87,14 @@ describe('ProfilerPageComponent', () => {
   describe('if profiler service is available', () => {
     let alertDebugElement: DebugElement;
     let errorDebugElement: DebugElement;
-    let profilesComponent: DebugElement;
+    let profilesComponent: HTMLElement;
 
     beforeEach(() => {
       store.dispatch(new ProfilerServiceStatusIsAvailable());
       fixture.detectChanges();
       alertDebugElement = fixture.debugElement.query(By.directive(AlertMessageComponent));
       errorDebugElement = fixture.debugElement.query(By.directive(ErrorMessageComponent));
-      profilesComponent = fixture.debugElement.query(By.directive(ProfilesComponent));
+      profilesComponent = fixture.nativeElement.querySelector('.profiler');
     });
 
     it('error did not show', () => {

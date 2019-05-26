@@ -1,8 +1,4 @@
 
-<router-outlet *ngIf='!errors; else alert'></router-outlet>
-
-<ng-template #alert>
-    <hs-alert-message>
-        Monitoring isn't available in OSC yet. But you can make request for a <a href="https://hydrosphere.io/">demo</a>
-    </hs-alert-message>
-</ng-template>
+<hs-monitoring-page>
+    <router-outlet></router-outlet>
+</hs-monitoring-page>

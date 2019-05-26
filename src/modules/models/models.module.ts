@@ -30,6 +30,7 @@ import {
 import { ModelEffects } from '@models/effects';
 import { reducers } from '@models/reducers';
 import { ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
+import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilerModule } from '../profiler/profiler.module';
@@ -47,6 +48,7 @@ import { ProfilerModule } from '../profiler/profiler.module';
         StoreModule.forFeature('models', reducers),
         EffectsModule.forFeature([ModelEffects]),
         ProfilerModule,
+        MonitoringModule,
     ],
     declarations: [
         ModelsWrapperComponent,

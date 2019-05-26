@@ -96,7 +96,7 @@ export class MonitoringService {
   }
 
   public getMonitoringServiceStatus() {
-    return this.http.get(this.baseMonitoringUrl);
+    return this.http.get(`${this.baseMonitoringUrl}/buildinfo`);
   }
 
   public getMetricsBySpecKind(spec: string): string[] {

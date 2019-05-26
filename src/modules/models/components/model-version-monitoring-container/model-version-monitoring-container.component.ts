@@ -11,7 +11,6 @@ import { filter, tap } from 'rxjs/operators';
     templateUrl: './model-version-monitoring-container.component.html',
 })
 export class ModelVersionMonitoringContainerComponent implements OnInit, OnDestroy {
-    errors: boolean;
     private metricSubscription: Subscription;
     constructor(
         private store: Store<HydroServingState>
