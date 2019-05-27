@@ -30,7 +30,7 @@ export function reducer(
             return {
                 ...state,
                 status: MonitoringServiceStatus.FAILED,
-                error: action.errorMessage,
+                error: action.payload.errorMessage,
             };
         }
         case MonitoringServiceStatusActionTypes.SetStatusToAvailable: {

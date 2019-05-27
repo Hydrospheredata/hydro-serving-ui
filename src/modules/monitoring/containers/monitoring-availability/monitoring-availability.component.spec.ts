@@ -13,15 +13,15 @@ import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { AlertMessageComponent } from '@shared/_index';
 import { ErrorMessageComponent } from '@shared/components/error-message/error-message.component';
 import { SharedModule } from '@shared/shared.module';
-import { MonitoringPageComponent } from './monitoring-page.component';
+import { MonitoringAvailabilityComponent } from './monitoring-availability.component';
 
 interface MockState {
   'monitoring': fromMonitoring.State;
 }
 
-describe('MonitoringPageComponent', () => {
-  let component: MonitoringPageComponent;
-  let fixture: ComponentFixture<MonitoringPageComponent>;
+describe('MonitoringAvailabilityComponent', () => {
+  let component: MonitoringAvailabilityComponent;
+  let fixture: ComponentFixture<MonitoringAvailabilityComponent>;
   let store: Store<MockState>;
 
   const reducers = combineReducers({
@@ -34,13 +34,13 @@ describe('MonitoringPageComponent', () => {
         SharedModule,
         StoreModule.forRoot({monitoring: reducers}),
       ],
-      declarations: [ MonitoringPageComponent ],
+      declarations: [ MonitoringAvailabilityComponent ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MonitoringPageComponent);
+    fixture = TestBed.createComponent(MonitoringAvailabilityComponent);
     component = fixture.componentInstance;
     store = TestBed.get(Store);
     spyOn(store, 'dispatch').and.callThrough();
@@ -83,7 +83,7 @@ describe('MonitoringPageComponent', () => {
     const errorMessage = 'Fail';
 
     beforeEach(() => {
-      store.dispatch(new SetStatusToFailedAction(errorMessage));
+      store.dispatch(new SetStatusToFailedAction({errorMessage}));
       fixture.detectChanges();
 
       errorMessageComponent = fixture.debugElement.query(By.directive(ErrorMessageComponent));

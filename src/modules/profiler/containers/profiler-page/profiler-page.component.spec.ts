@@ -51,7 +51,7 @@ describe('ProfilerPageComponent', () => {
     let errorDebugElement: DebugElement;
 
     beforeEach(() => {
-      store.dispatch(new ProfilerServiceStatusIsFailed('Fail'));
+      store.dispatch(new ProfilerServiceStatusIsFailed({errorMessage: 'Fail'}));
       fixture.detectChanges();
       errorDebugElement = fixture.debugElement.query(By.directive(ErrorMessageComponent));
     });

@@ -1,14 +1,10 @@
-// import { MetricSettings } from '@shared/models/metric-settings.model';
 import {
-    RuntimesReducer,
     SignaturesReducer,
 } from '@core/reducers/_index';
 import { ActionReducerMap, createSelector } from '@ngrx/store';
 
 import {
-    Runtime,
     Signature,
-    Environment
 } from '@shared/models/_index';
 
 import { Params, RouterStateSnapshot } from '@angular/router';
@@ -42,14 +38,12 @@ export class CustomRouterStateSerializer implements RouterStateSerializer<Router
 }
 
 export interface HydroServingState {
-    runtimes: Runtime[];
     signatures: Signature[];
     router: fromRouter.RouterReducerState<RouterStateUrl>;
     metrics: fromMonitoring.MState | Error;
 }
 
 export const reducers: ActionReducerMap<HydroServingState> = {
-    runtimes: RuntimesReducer,
     signatures: SignaturesReducer,
     router: fromRouter.routerReducer,
     metrics: fromMonitoring.reducer,

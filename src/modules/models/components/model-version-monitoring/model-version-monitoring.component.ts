@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { GetMetricsAction } from '@core/actions/monitoring.actions';
 import { HydroServingState, getAllMetrics } from '@core/reducers';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { DialogService } from '@dialog/dialog.service';
@@ -10,14 +9,14 @@ import { Store } from '@ngrx/store';
 import { ModelVersion } from '@shared/_index';
 import { IMetricSpecification, IMetricSpecificationProviders } from '@shared/models/metric-specification.model';
 import { Observable, of, combineLatest } from 'rxjs';
-import { filter, tap, switchMap, take} from 'rxjs/operators';
+import { filter, switchMap, take} from 'rxjs/operators';
 
 @Component({
     selector: 'hs-model-version-monitoring',
     templateUrl: './model-version-monitoring.component.html',
     styleUrls: ['model-version-monitoring.component.scss'],
 })
-export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
+export class ModelVersionMonitoringComponent {
     isMonitoringAvailable$: Observable<boolean> = of(false);
     modelVersion$: Observable<ModelVersion>;
     metricSpecifications$: Observable<IMetricSpecification[]>;
@@ -53,12 +52,6 @@ export class ModelVersionMonitoringComponent implements OnInit, OnDestroy {
         this.isMonitoringAvailable$ = combineLatest(this.modelVersion$).pipe(
             switchMap(([modelVersion]) => of(!!modelVersion))
         );
-    }
-
-    ngOnInit(): void {
-    }
-
-    ngOnDestroy(): void {
     }
 
     public openAddMetricDialog(): void {

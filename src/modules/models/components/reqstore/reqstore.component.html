@@ -1,4 +1,4 @@
-<hs-monitoring-page>
+<hs-monitoring-availability>
     <div *ngIf='(metricSpecs$ | async)?.length; else emptyMetricsMessage'>
         <hs-health-timeline 
             [metricSpecifications$]='metricSpecs$'
@@ -36,5 +36,5 @@
     <ng-template #emptyMetricsMessage>
         <div class='empty-metrics'>Can't find any metrics</div>
     </ng-template>
-</hs-monitoring-page>
+</hs-monitoring-availability>
 

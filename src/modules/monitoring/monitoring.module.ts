@@ -4,12 +4,12 @@ import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-s
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
-import { MonitoringPageComponent } from './containers';
+import { MonitoringAvailabilityComponent } from './containers';
 import { reducer } from './reducers';
 
 @NgModule({
   declarations: [
-    MonitoringPageComponent,
+    MonitoringAvailabilityComponent,
   ],
   imports: [
     SharedModule,
@@ -18,7 +18,7 @@ import { reducer } from './reducers';
     EffectsModule.forFeature([MonitoringServiceStatusEffects]),
   ],
   exports: [
-    MonitoringPageComponent,
+    MonitoringAvailabilityComponent,
   ],
 })
 export class MonitoringModule { }

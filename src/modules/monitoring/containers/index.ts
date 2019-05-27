@@ -1,1 +1,1 @@
-export * from './monitoring-page/monitoring-page.component';
+export * from './monitoring-availability/monitoring-availability.component';

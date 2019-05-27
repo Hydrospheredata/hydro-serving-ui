@@ -4,12 +4,11 @@ import { Effect, Actions, ofType } from '@ngrx/effects';
 import {
     ProfilerServiceStatusActionTypes,
     ProfilerServiceStatusIsAvailable,
-    ProfilerServiceStatusIsUnknown,
     ProfilerServiceStatusIsClosedForOSS,
     ProfilerServiceStatusIsFailed
 } from '@profiler/actions';
 import { of } from 'rxjs';
-import { catchError, tap, switchMap, mapTo } from 'rxjs/operators';
+import { catchError, tap, switchMap, map } from 'rxjs/operators';
 
 @Injectable()
 export class ProfilerEffects {
@@ -18,13 +17,14 @@ export class ProfilerEffects {
         ofType(ProfilerServiceStatusActionTypes.GetProfilerServiceStatus),
         tap(_ => console.log()),
         switchMap( _ => this.profilerService.getProfilerServiceStatus().pipe(
-            mapTo(() => new ProfilerServiceStatusIsAvailable()),
-            catchError(err => {
+            map(() => new ProfilerServiceStatusIsAvailable()),
+            catchError((err: string) => {
                 const is501Error = /501/i.test(err);
                 if (is501Error) {
                     return of(new ProfilerServiceStatusIsClosedForOSS());
                 } else {
-                    return of(new ProfilerServiceStatusIsFailed(err || 'Something went wrong'));
+                    const errorMessage =  err || 'Something went wrong';
+                    return of(new ProfilerServiceStatusIsFailed({errorMessage}));
                 }
 
             })

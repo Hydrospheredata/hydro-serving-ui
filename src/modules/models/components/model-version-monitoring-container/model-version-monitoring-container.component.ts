@@ -17,6 +17,7 @@ export class ModelVersionMonitoringContainerComponent implements OnInit, OnDestr
     ) {}
 
     ngOnInit(): void {
+        console.log('1');
         this.metricSubscription = this.store.select(getSelectedModelVersion).pipe(
             filter(modelVersion => !!modelVersion),
             tap(({id}) => this.store.dispatch(new GetMetricsAction(`${id}`)))

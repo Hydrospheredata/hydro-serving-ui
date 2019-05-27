@@ -18,15 +18,14 @@ export class SetStatusToAvailableAction implements Action {
 
 export class SetStatusToFailedAction implements Action {
     readonly type = MonitoringServiceStatusActionTypes.SetStatusToFailed;
-    constructor(readonly errorMessage: string) {}
+    constructor(public payload: { errorMessage: string}) {}
 }
 
 export class SetStatusToClosedForOSSAction implements Action {
     readonly type = MonitoringServiceStatusActionTypes.SetStatusToClosedForOSS;
 }
 
-export type MonitoringServiceStatusAction =
-    GetServiceStatusAction
-    | SetStatusToFailedAction
-    | SetStatusToAvailableAction
-    | SetStatusToClosedForOSSAction;
+export type MonitoringServiceStatusAction = SetStatusToFailedAction |
+ SetStatusToClosedForOSSAction |
+ GetServiceStatusAction |
+ SetStatusToAvailableAction;

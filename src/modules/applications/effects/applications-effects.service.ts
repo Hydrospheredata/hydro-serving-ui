@@ -23,7 +23,6 @@ export class ApplicationsEffects {
     .pipe(
         ofType(HydroActions.ApplicationActionTypes.Get),
             switchMap(() => {
-
                 return this.applicationsService
                     .getApplications()
                     .pipe(

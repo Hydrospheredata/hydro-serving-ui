@@ -51,7 +51,7 @@ export function reducer(
             return {
                 ...state,
                 status: ProfilerStatus.FAILED,
-                errorMessage: action.errorMessage,
+                errorMessage: action.payload.errorMessage,
             };
         }
         default: {

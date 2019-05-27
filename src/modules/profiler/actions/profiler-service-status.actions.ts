@@ -26,7 +26,7 @@ export class ProfilerServiceStatusIsClosedForOSS implements Action {
 
 export class ProfilerServiceStatusIsFailed implements Action {
     readonly type = ProfilerServiceStatusActionTypes.SetProfilerServiceStatusToFailed;
-    constructor(public errorMessage: string) {}
+    constructor(public payload: { errorMessage: string }) {}
 }
 
 export type ProfilerServiceStatusActions = GetProfilersServiceStatus

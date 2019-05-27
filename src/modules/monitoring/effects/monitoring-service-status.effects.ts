@@ -8,7 +8,7 @@ import {
 } from '@monitoring/actions';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { switchMap, catchError, mapTo } from 'rxjs/operators';
+import { switchMap, catchError, mapTo, tap, map } from 'rxjs/operators';
 
 @Injectable()
 export class MonitoringServiceStatusEffects {
@@ -21,8 +21,8 @@ export class MonitoringServiceStatusEffects {
                 .monitoringService
                 .getMonitoringServiceStatus()
                 .pipe(
-                    mapTo(() => {
-                        return of(new SetStatusToAvailableAction());
+                    map(() => {
+                        return new SetStatusToAvailableAction();
                     }),
                     catchError(err => {
                         const is501Error = /501/i.test(err);

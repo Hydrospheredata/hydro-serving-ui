@@ -8,12 +8,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'hs-monitoring-page',
-  templateUrl: './monitoring-page.component.html',
-  styleUrls: ['./monitoring-page.component.scss'],
+  selector: 'hs-monitoring-availability',
+  templateUrl: './monitoring-availability.component.html',
+  styleUrls: ['./monitoring-availability.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MonitoringPageComponent implements OnInit {
+export class MonitoringAvailabilityComponent implements OnInit {
   activeTemplate$: Observable<TemplateRef<any>>;
   error$: Observable<string>;
 
