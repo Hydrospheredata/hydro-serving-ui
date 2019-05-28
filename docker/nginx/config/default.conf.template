@@ -31,6 +31,10 @@ upstream reqstore_http {
   server ${REQSTORE_HOST}:${REQSTORE_HTTP_PORT};
 }
 
+upstream timemachine_http {
+  server ${TIMEMACHINE_HOST}:${TIMEMACHINE_HTTP_PORT};
+}
+
 upstream reqstore_grpc {
   zone reqstore_grpc 64k;
   server ${REQSTORE_HOST}:${REQSTORE_GRPC_PORT};
@@ -49,6 +53,10 @@ server {
   grpc_buffer_size 500m;
 
   location /tensorflow.serving. {
+    grpc_pass grpc://gateway_grpc;
+  }
+
+  location /hydrosphere.serving.gateway. {
     grpc_pass grpc://gateway_grpc;
   }
 
@@ -116,6 +124,15 @@ server {
   location /reqstore {
     rewrite /reqstore/(.*) /$1 break;
     proxy_pass http://reqstore_http;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
+
+  location /timemachine {
+    rewrite /timemachine/(.*) /$1 break;
+    proxy_pass http://timemachine_http;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
