@@ -1,0 +1,21 @@
+.nav {
+    display: flex;
+    &__item {
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: 100;
+        padding: 0 12px;
+        cursor: pointer;
+        color: rgb(110, 112, 119);
+        color: #697396;
+        border-radius: 4px;
+        letter-spacing: 1px;
+        margin: 0 4px;
+        &:hover {
+            background: rgba(37, 37, 126, 0.151);
+        }
+        &--active {
+            background: rgba(37, 37, 126, 0.151);
+        }
+    }
+}

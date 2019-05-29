@@ -1,0 +1,23 @@
+<button class='button button--white add-metric-button' (click)='addMetric()'>
+  add metric
+</button>
+
+<div
+  *ngFor="let metric of metrics$ | async"
+  class='metric'>
+  <h5 class='metric__name'>{{ metric.name }}</h5>
+  <span class='metric__id'>{{ metric.id }}</span>
+  <div class='metric__health'>
+    <span class='metric__health-key'>health</span>
+    <span class='metric__health-value'>{{ metric.withHealth }}</span>
+  </div>
+  <div class='metric__config'>
+      <ng-container *ngFor="let item of metric.config | keyvalue">
+        <div class='metric__config-item'>
+          <span class='metric__config-key'>{{ item.key }}</span>
+          <span class='metric__config-value'>{{ item.value }}</span>
+        </div>
+      </ng-container>
+      
+  </div>
+</div>

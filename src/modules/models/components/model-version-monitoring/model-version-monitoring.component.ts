@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { HydroServingState, getAllMetrics } from '@core/reducers';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { DialogService } from '@dialog/dialog.service';
-import { DialogAddMetricComponent, DialogDeleteMetricComponent, METRIC_ID_VALUE } from '@models/components/dialogs';
+import { DialogDeleteMetricComponent, METRIC_ID_VALUE } from '@models/components/dialogs';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { ModelVersion } from '@shared/_index';
@@ -52,17 +52,6 @@ export class ModelVersionMonitoringComponent {
         this.isMonitoringAvailable$ = combineLatest(this.modelVersion$).pipe(
             switchMap(([modelVersion]) => of(!!modelVersion))
         );
-    }
-
-    public openAddMetricDialog(): void {
-        this.dialog.createDialog({
-            component: DialogAddMetricComponent,
-            styles: {
-                'width': '600px',
-                'overflow': 'scroll',
-                'max-height': 'calc(100vh - 48px)',
-            },
-        });
     }
 
     deleteMetric(metricSpecificationProvider): void {

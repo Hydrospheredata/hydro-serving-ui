@@ -17,6 +17,8 @@ import {
 import { ProfilerPageComponent } from '../profiler/containers';
 
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
+import { MetricsComponent } from '@monitoring/containers';
+import { MonitoringPageComponent } from '@monitoring/containers/monitoring-page/monitoring-page.component';
 
 @NgModule({
     imports: [
@@ -63,21 +65,27 @@ import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
                             },
                             {
                                 path: 'monitoring',
-                                component: ModelVersionMonitoringContainerComponent,
+                                component: MonitoringPageComponent,
                                 children: [
                                     {
-                                        path: '',
-                                        component: ModelVersionMonitoringComponent,
-                                    },
-                                    {
-                                        path: 'compare',
-                                        component: CompareComponent,
-                                    },
-                                    {
-                                        path: ':metricId',
-                                        component: ModelVersionMonitoringLogComponent,
+                                        path: 'metrics',
+                                        component: MetricsComponent,
                                     },
                                 ],
+                                // children: [
+                                //     {
+                                //         path: '',
+                                //         component: ModelVersionMonitoringComponent,
+                                //     },
+                                //     {
+                                //         path: 'compare',
+                                //         component: CompareComponent,
+                                //     },
+                                //     {
+                                //         path: ':metricId',
+                                //         component: ModelVersionMonitoringLogComponent,
+                                //     },
+                                // ],
                             },
                         ],
                     },
