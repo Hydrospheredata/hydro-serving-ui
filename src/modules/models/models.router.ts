@@ -5,16 +5,10 @@ import {
     ModelsWrapperComponent,
     ModelDetailsComponent,
     ModelVersionDetailsComponent,
-    ModelVersionMonitoringComponent,
-    CompareComponent,
-    ModelVersionMonitoringLogComponent,
-    ModelVersionMonitoringContainerComponent,
     ModelVersionContainerComponent,
     ReqstoreComponent,
     ModelVersionProfilerComponent
 } from '@models/components';
-
-import { ProfilerPageComponent } from '../profiler/containers';
 
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { MetricsComponent, DashboardComponent } from '@monitoring/containers';
@@ -75,21 +69,12 @@ import { MonitoringPageComponent } from '@monitoring/containers/monitoring-page/
                                         path: 'dashboard',
                                         component: DashboardComponent,
                                     },
+                                    {
+                                        path: '',
+                                        redirectTo: 'dashboard',
+                                        pathMatch: 'full',
+                                    },
                                 ],
-                                // children: [
-                                //     {
-                                //         path: '',
-                                //         component: ModelVersionMonitoringComponent,
-                                //     },
-                                //     {
-                                //         path: 'compare',
-                                //         component: CompareComponent,
-                                //     },
-                                //     {
-                                //         path: ':metricId',
-                                //         component: ModelVersionMonitoringLogComponent,
-                                //     },
-                                // ],
                             },
                         ],
                     },

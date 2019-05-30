@@ -9,7 +9,6 @@ import {
     EventEmitter,
     Input
 } from '@angular/core';
-import { HealthTimelineHistoryService } from '@core/services/health-timeline-history.service';
 import { HealthTimelineService } from '@core/services/health-timeline.service';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { ITimeInterval, IModelVersion } from '@shared/models/_index';
@@ -24,7 +23,7 @@ import { startWith, switchMap, tap, filter } from 'rxjs/operators';
     selector: 'hs-health-timeline',
     templateUrl: './health-timeline.component.html',
     styleUrls: ['./health-timeline.component.scss'],
-    providers: [HealthTimelineService, HealthTimelineHistoryService],
+    providers: [HealthTimelineService],
     encapsulation: ViewEncapsulation.None,
 })
 export class HealthTimelineComponent implements OnInit, OnDestroy {

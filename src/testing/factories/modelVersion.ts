@@ -3,7 +3,7 @@ import { MockHostSelector } from '@testing/factories/hostSelector';
 import { MockImage } from '@testing/factories/image';
 import { MockModel1, MockModel2 } from '@testing/factories/model';
 import { MockRuntime, MockRuntime3, MockRuntime2 } from '@testing/factories/runtime';
-import { MockSignature1, MockCompositeSignature, MockSignature2 } from '@testing/factories/signature';
+import { MockSignature1, MockSignature2 } from '@testing/factories/signature';
 
 export const MockModelContract: IModelContract = {
     modelName: 'ModelName',
