@@ -29,7 +29,6 @@ export interface IModelVersion {
     status: ModelVersionStatus;
     applications: string[];
     metadata: object;
-    metrics: IMetricSpecification[];
 }
 export class ModelVersion implements IModelVersion {
     public id: number;
@@ -44,7 +43,6 @@ export class ModelVersion implements IModelVersion {
     public status: ModelVersionStatus;
     public applications: string[];
     public metadata: object;
-    public metrics: IMetricSpecification[];
 
     constructor(props: any = {}) {
         this.id = props.id;
@@ -59,6 +57,5 @@ export class ModelVersion implements IModelVersion {
         this.status = props.status;
         this.applications = props.applications;
         this.metadata = props.metadata;
-        this.metrics = props.metrics;
     }
 }

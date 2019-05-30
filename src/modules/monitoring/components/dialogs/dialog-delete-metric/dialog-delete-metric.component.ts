@@ -24,7 +24,6 @@ export class DialogDeleteMetricComponent {
     }
 
     public onDelete() {
-        console.log(`deleting ${this.metricId}`);
         this.store.dispatch(new DeleteMetricAction(this.metricId));
         this.onClose();
     }

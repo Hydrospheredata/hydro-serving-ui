@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import {
   DialogAddMetricComponent,
   MetricComponent,
+  DialogDeleteMetricComponent,
 } from '@monitoring/components';
 import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-service-status.effects';
 import { EffectsModule } from '@ngrx/effects';
@@ -22,12 +23,14 @@ import { reducer } from './reducers';
 @NgModule({
   entryComponents: [
     DialogAddMetricComponent,
+    DialogDeleteMetricComponent,
   ],
   declarations: [
     MonitoringAvailabilityComponent,
     MonitoringPageComponent,
     MetricsComponent,
     DialogAddMetricComponent,
+    DialogDeleteMetricComponent,
     DashboardComponent,
     MetricComponent,
   ],

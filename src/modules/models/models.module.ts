@@ -24,7 +24,6 @@ import {
 
 import {
     DialogDeleteModelComponent,
-    DialogDeleteMetricComponent
 } from '@models/components/dialogs';
 import { ModelEffects } from '@models/effects';
 import { reducers } from '@models/reducers';
@@ -58,7 +57,6 @@ import { ProfilerModule } from '../profiler/profiler.module';
         DialogDeleteModelComponent,
         ModelVersionMonitoringContainerComponent,
         ModelVersionMonitoringComponent,
-        DialogDeleteMetricComponent,
         CompareComponent,
         ModelVersionMonitoringLogComponent,
         ModelVersionContainerComponent,
@@ -68,7 +66,6 @@ import { ProfilerModule } from '../profiler/profiler.module';
     ],
     entryComponents: [
         DialogDeleteModelComponent,
-        DialogDeleteMetricComponent,
     ],
     providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
 })

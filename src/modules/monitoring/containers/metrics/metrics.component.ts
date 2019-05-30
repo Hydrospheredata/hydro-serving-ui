@@ -3,7 +3,7 @@ import { GetMetricsAction } from '@core/actions/monitoring.actions';
 import { HydroServingState, getSelectedMetrics } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
 import { getSelectedModelVersion } from '@models/reducers';
-import { DialogAddMetricComponent } from '@monitoring/components';
+import { DialogAddMetricComponent, DialogDeleteMetricComponent, METRIC_ID_VALUE } from '@monitoring/components';
 import { Store } from '@ngrx/store';
 import { IMetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
@@ -38,7 +38,10 @@ export class MetricsComponent implements OnInit {
 
   deleteMetric(metricId: string) {
     return () => {
-      console.log(metricId);
+      this.dialog.createDialog({
+        component: DialogDeleteMetricComponent,
+        providers: [{provide: METRIC_ID_VALUE, useValue: metricId}],
+      });
     };
   }
 }
