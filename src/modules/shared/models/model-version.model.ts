@@ -1,5 +1,6 @@
 import { HostSelector } from '@shared/models/hostSelector.model';
 import { Image } from '@shared/models/image.model';
+import { IMetricSpecification } from '@shared/models/metric-specification.model';
 import { Runtime } from '@shared/models/runtime.model';
 import { ISignature } from '@shared/models/signature.model';
 import { Model } from './model.model';
@@ -28,6 +29,7 @@ export interface IModelVersion {
     status: ModelVersionStatus;
     applications: string[];
     metadata: object;
+    metrics: IMetricSpecification[];
 }
 export class ModelVersion implements IModelVersion {
     public id: number;
@@ -42,6 +44,7 @@ export class ModelVersion implements IModelVersion {
     public status: ModelVersionStatus;
     public applications: string[];
     public metadata: object;
+    public metrics: IMetricSpecification[];
 
     constructor(props: any = {}) {
         this.id = props.id;
@@ -56,5 +59,6 @@ export class ModelVersion implements IModelVersion {
         this.status = props.status;
         this.applications = props.applications;
         this.metadata = props.metadata;
+        this.metrics = props.metrics;
     }
 }

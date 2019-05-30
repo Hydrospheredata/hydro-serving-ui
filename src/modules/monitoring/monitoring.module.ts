@@ -4,7 +4,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { DialogAddMetricComponent } from '@monitoring/components';
+import {
+  DialogAddMetricComponent,
+  MetricComponent,
+} from '@monitoring/components';
 import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-service-status.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -12,10 +15,10 @@ import { SharedModule } from '@shared/shared.module';
 import {
   MonitoringAvailabilityComponent,
   MetricsComponent,
-  MonitoringPageComponent
+  MonitoringPageComponent,
+  DashboardComponent,
 } from './containers';
 import { reducer } from './reducers';
-
 @NgModule({
   entryComponents: [
     DialogAddMetricComponent,
@@ -25,6 +28,8 @@ import { reducer } from './reducers';
     MonitoringPageComponent,
     MetricsComponent,
     DialogAddMetricComponent,
+    DashboardComponent,
+    MetricComponent,
   ],
   imports: [
     SharedModule,
@@ -40,6 +45,7 @@ import { reducer } from './reducers';
   exports: [
     MonitoringPageComponent,
     MetricsComponent,
+    DashboardComponent,
   ],
 })
 export class MonitoringModule { }

@@ -1,10 +1,10 @@
 import { Action } from '@ngrx/store';
 
 export enum MonitoringServiceStatusActionTypes {
-    GetServiceStatus =      '[Monitoring service] get status',
-    SetStatusToAvailable =  '[Monitoring service] is available',
-    SetStatusToFailed =     '[Monitoring service] is failed',
-    SetStatusToUnknown =    '[Monitoring service] is unknown',
+    GetServiceStatus =        '[Monitoring service] get status',
+    SetStatusToAvailable =    '[Monitoring service] is available',
+    SetStatusToFailed =       '[Monitoring service] is failed',
+    SetStatusToUnknown =      '[Monitoring service] is unknown',
     SetStatusToClosedForOSS = '[Monitoring service] is close for OSS',
 }
 

@@ -2,10 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { GetMetricsAction } from '@core/actions/monitoring.actions';
 import { HydroServingState, getSelectedMetrics } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
+import { getSelectedModelVersion } from '@models/reducers';
 import { DialogAddMetricComponent } from '@monitoring/components';
 import { Store } from '@ngrx/store';
 import { IMetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
+import { tap, switchMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-metrics',
@@ -27,8 +29,16 @@ export class MetricsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new GetMetricsAction('1'));
+    this.metrics$ = this.store.select(getSelectedModelVersion).pipe(
+      filter(_ => !!_),
+      tap(_ => this.store.dispatch(new GetMetricsAction(`${_.id}`))),
+      switchMap(() => this.store.select(getSelectedMetrics))
+    );
+  }
 
-    this.metrics$ = this.store.select(getSelectedMetrics);
+  deleteMetric(metricId: string) {
+    return () => {
+      console.log(metricId);
+    };
   }
 }

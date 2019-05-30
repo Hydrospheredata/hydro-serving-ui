@@ -17,7 +17,7 @@ import {
 import { ProfilerPageComponent } from '../profiler/containers';
 
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
-import { MetricsComponent } from '@monitoring/containers';
+import { MetricsComponent, DashboardComponent } from '@monitoring/containers';
 import { MonitoringPageComponent } from '@monitoring/containers/monitoring-page/monitoring-page.component';
 
 @NgModule({
@@ -70,6 +70,10 @@ import { MonitoringPageComponent } from '@monitoring/containers/monitoring-page/
                                     {
                                         path: 'metrics',
                                         component: MetricsComponent,
+                                    },
+                                    {
+                                        path: 'dashboard',
+                                        component: DashboardComponent,
                                     },
                                 ],
                                 // children: [
