@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { IMetricSpecification } from '@shared/models/metric-specification.model';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
 
 @Component({
   selector: 'hs-metric',
@@ -12,7 +12,7 @@ export class MetricComponent {
   @Input() deleteMetric: () => void;
   @Input() editMetric: () => void;
   @Input()
-  private metric: IMetricSpecification;
+  private metric: MetricSpecification;
 
   get id() {
     return this.metric.id;

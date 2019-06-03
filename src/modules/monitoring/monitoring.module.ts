@@ -13,12 +13,15 @@ import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-s
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
+import { ChartComponent } from './components/chart/chart.component';
 import {
   MonitoringAvailabilityComponent,
   MetricsComponent,
   MonitoringPageComponent,
   DashboardComponent,
+  ChartsComponent,
 } from './containers';
+import { TimemachineComponent } from './containers/timemachine/timemachine.component';
 import { reducer } from './reducers';
 @NgModule({
   entryComponents: [
@@ -33,6 +36,9 @@ import { reducer } from './reducers';
     DialogDeleteMetricComponent,
     DashboardComponent,
     MetricComponent,
+    ChartsComponent,
+    ChartComponent,
+    TimemachineComponent,
   ],
   imports: [
     SharedModule,
@@ -49,6 +55,7 @@ import { reducer } from './reducers';
     MonitoringPageComponent,
     MetricsComponent,
     DashboardComponent,
+    TimemachineComponent,
   ],
 })
 export class MonitoringModule { }

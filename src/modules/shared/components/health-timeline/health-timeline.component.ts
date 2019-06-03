@@ -12,7 +12,7 @@ import {
 import { HealthTimelineService } from '@core/services/health-timeline.service';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { ITimeInterval, IModelVersion } from '@shared/models/_index';
-import { IMetricSpecification } from '@shared/models/metric-specification.model';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { IMonitoringAggregationList, IMonitoringAggregationVM } from '@shared/models/monitoring-aggregation.model';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
 import * as d3 from 'd3';
@@ -39,7 +39,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     @ViewChild('brush', { read: ElementRef })
     brush: ElementRef;
 
-    @Input() metricSpecifications$: Observable<IMetricSpecification[]>;
+    @Input() metricSpecifications$: Observable<MetricSpecification[]>;
     @Input() selectedModelVersion$: Observable<IModelVersion>;
 
     // CANVAS
@@ -77,7 +77,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     manualSelectInterval: BehaviorSubject<ITimeInterval> = new BehaviorSubject(null);
 
     modelVersion: IModelVersion;
-    metricSpecs: IMetricSpecification[];
+    metricSpecs: MetricSpecification[];
 
     loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 

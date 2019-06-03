@@ -11,7 +11,7 @@ import { Params, RouterStateSnapshot } from '@angular/router';
 import * as fromRouter from '@ngrx/router-store';
 import { RouterStateSerializer } from '@ngrx/router-store';
 import { createFeatureSelector } from '@ngrx/store';
-import { IMetricSpecification } from '@shared/models/metric-specification.model';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as fromMonitoring from './monitoring.reducer';
 
 export interface RouterStateUrl {
@@ -72,14 +72,14 @@ export const {
 export const getSelectedMetrics = createSelector(
     getMetricsEntities,
     getRouterState,
-    (metrics, router): IMetricSpecification[] => {
+    (metrics, router): MetricSpecification[] => {
         const {modelVersionId} = router.state.params;
 
         if (modelVersionId === undefined ) { return; }
 
         return Object.entries(metrics)
                 .reduce(
-                    (res: IMetricSpecification[], [_, metricSpec]) => {
+                    (res: MetricSpecification[], [_, metricSpec]) => {
                         if (metricSpec.modelVersionId === +modelVersionId) {
                             res.push(metricSpec);
                         }
@@ -93,7 +93,7 @@ export const getSelectedMetrics = createSelector(
 export const getSelectedMetric = createSelector(
     getMetricsEntities,
     getRouterState,
-    (metrics, router): IMetricSpecification => {
+    (metrics, router): MetricSpecification => {
         return router.state.params.metricId && metrics[router.state.params.metricId];
     }
 );

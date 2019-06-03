@@ -1,13 +1,13 @@
 import { MonitoringActions, MonitoringActionTypes } from '@core/actions/monitoring.actions';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
-import { IMetricSpecification } from '@shared/models/metric-specification.model';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
 
-export interface MState extends EntityState<IMetricSpecification> {
+export interface MState extends EntityState<MetricSpecification> {
     byModel: string[];
 }
 
-export const adapter: EntityAdapter<IMetricSpecification> = createEntityAdapter<IMetricSpecification>({
-    selectId: (metricSettings: IMetricSpecification) => metricSettings.id,
+export const adapter: EntityAdapter<MetricSpecification> = createEntityAdapter<MetricSpecification>({
+    selectId: (metricSettings: MetricSpecification) => metricSettings.id,
 });
 
 export const initialState: MState = adapter.getInitialState({

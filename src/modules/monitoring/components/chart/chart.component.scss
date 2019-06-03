@@ -1,0 +1,44 @@
+.chart {
+    width: 100%;
+    height: 120px;
+    background: white;
+    box-shadow: 0 0 2px -1px grey;
+}
+
+.line {
+    fill: none;
+    stroke: #5786c1;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+  }
+  
+.area {
+fill: #1c67c31c;
+}
+
+.active-line {
+    stroke: rgba(105, 100, 177, 0.24);
+    stroke-width: 1px;
+    stroke-dasharray: 4px;
+}
+
+.active-point {
+    fill: white;
+    stroke: #5786c1;
+    stroke-width: 2px;
+}
+
+.tooltip {
+    position: absolute;
+    border: 1px rgba(70, 99, 162, 0.81) solid;
+    background: white;
+    padding: 4px 8px;
+    left: 0;
+    box-shadow: 0 0 2px -2px;
+    border-radius: 4px;
+    & p {
+        margin: 0;
+        font-size: 8px;
+        line-height: 12px
+    }
+}

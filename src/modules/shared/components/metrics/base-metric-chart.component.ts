@@ -20,15 +20,13 @@ import { Subscription, Subject, Observable, interval, combineLatest } from 'rxjs
 import {
     switchMap,
     tap,
-    startWith,
     takeUntil,
     filter
 } from 'rxjs/operators';
 
-import { InfluxDBService } from '@core/services';
 import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
 import { ITimeInterval } from '@shared/models/_index';
-import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
+import { IMetricSpecificationProvider, MetricSpecification } from '@shared/models/metric-specification.model';
 
 @Component({
     selector: 'hs-base-metric-chart',
@@ -85,8 +83,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private onDestroy$: Subject<any>;
 
     constructor(
-        public metricsService: MonitoringService,
-        public influxdbService: InfluxDBService
+        public metricsService: MonitoringService
     ) {
         this.onDestroy$ = new Subject();
 
@@ -124,7 +121,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         const newThresholds = {};
         const data = Object.entries(this.metricSpecificationProvider.byModelVersionId);
 
-        data.forEach(([modelVerId, metricSpec]: [string, IMetricSpecification]) => {
+        data.forEach(([modelVerId, metricSpec]: [string, MetricSpecification]) => {
             const uniqName = `${modelVerId}_threshold`;
             if (newThresholds[uniqName] === undefined && metricSpec.config.threshold) {
                 newThresholds[uniqName] = metricSpec.config.threshold;

@@ -11,4 +11,5 @@ export const environment = {
     uiUrl: '/ui/v2',
     monitoringUrl: '/monitoring',
     reqstoreUrl: '/reqstore',
+    timemachineUrl: '/timemachine',
 };

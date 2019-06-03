@@ -2,9 +2,10 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
+import { SonarMetricData } from '@shared/_index';
+import { MetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
 import { IMonitoringAggregationList } from '@shared/models/monitoring-aggregation.model';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface IMetricData {
@@ -76,6 +77,26 @@ export class MonitoringService {
     });
   }
 
+  public getDataInRange(
+    metric: MetricSpecification,
+    option: {
+      from?: string;
+      till?: string;
+      columnIndex?: string;
+      health?: string;
+    } = {}
+  ): Observable<SonarMetricData[]>  {
+    try {
+      const {
+        modelVersionId: mv,
+        kind,
+      } = metric;
+      return this.getMetricsInRange(`${mv}`, this.getMetricsBySpecKind(kind), option);
+    } catch (error) {
+      throwError(error);
+    }
+  }
+
   public getMetricsInRange(
     modelVersionId: string,
     metrics: string[],
@@ -85,7 +106,7 @@ export class MonitoringService {
       columnIndex?: string;
       health?: string;
     } = {}
-  ): Observable<IMetricData[]> {
+  ): Observable<SonarMetricData[]> {
     return this.http.get(`${this.baseMonitoringUrl}/metrics/range`, {
       params: {
         modelVersionId,
@@ -133,7 +154,7 @@ export class MonitoringService {
     return dict[metricName];
   }
 
-  public createMetricProviders(metricSpecification: IMetricSpecification): IMetricSpecificationProvider  {
+  public createMetricProviders(metricSpecification: MetricSpecification): IMetricSpecificationProvider  {
     return {
         kind: metricSpecification.kind,
         byModelVersionId: { [metricSpecification.modelVersionId]: metricSpecification },

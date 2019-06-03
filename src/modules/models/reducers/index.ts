@@ -68,6 +68,11 @@ export const getSelectedModelVersion = createSelector(
     fromRoot.getRouterState,
     (entities, router) => router.state && entities[router.state.params.modelVersionId]);
 
+export const getSelectedModelVersionId = createSelector(
+    fromRoot.getRouterState,
+    router => router.state && router.state.params.modelVersionId
+);
+
 export const getModelVersionLoading = createSelector(
     getModelVersionState,
     state => state.loading
@@ -76,6 +81,15 @@ export const getModelVersionLoading = createSelector(
 export const getModelVersionLoaded = createSelector(
     getModelVersionState,
     state => state.loaded
+);
+
+export const getSiblingVersions = createSelector(
+    getModelVersionState,
+    getSelectedModelVersion,
+    (state, modelVersion) => {
+        const ids = state.byModel[modelVersion.model.id].filter(id => id !== modelVersion.id )
+        return ids.map(id => state.entities[id]);
+    }
 );
 
 export const getModelVersionsByModelId = (modelId: number) => createSelector(

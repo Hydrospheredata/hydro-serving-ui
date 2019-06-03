@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { IMetricSpecificationRequest, IMetricSpecification } from '@shared/models/metric-specification.model';
+import { IMetricSpecificationRequest, MetricSpecification } from '@shared/models/metric-specification.model';
 
 export enum MonitoringActionTypes {
     AddMetric = '[Metrics] Add metric',
@@ -20,7 +20,7 @@ export class AddMetricAction implements Action {
 
 export class AddMetricSuccessAction implements Action {
     readonly type = MonitoringActionTypes.AddMetricSuccess;
-    constructor(public payload: IMetricSpecification) { }
+    constructor(public payload: MetricSpecification) { }
 }
 
 export class AddMetricFailAction implements Action {
@@ -35,7 +35,7 @@ export class GetMetricsAction implements Action {
 
 export class GetMetricsSuccessAction implements Action {
     readonly type = MonitoringActionTypes.GetMetricsSuccess;
-    constructor(public payload: IMetricSpecification[]) {}
+    constructor(public payload: MetricSpecification[]) {}
 }
 
 export class GetMetricsFailAction implements Action {

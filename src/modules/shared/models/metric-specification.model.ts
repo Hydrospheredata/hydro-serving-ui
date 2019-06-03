@@ -7,19 +7,11 @@ export interface IMetricSpecificationRequest {
   kind: string;
   withHealth?: boolean;
 }
-export interface IMetricSpecification {
-  id: string;
-  name: string;
-  modelVersionId: number;
-  config: IMetricSpecificationKind;
-  kind: string;
-  withHealth?: boolean;
-}
 
 export interface IMetricSpecificationProvider {
   kind: string;
   byModelVersionId: {
-      [modelVersionId: string]: IMetricSpecification;
+      [modelVersionId: string]: MetricSpecification;
   };
   metrics: string[];
 }
@@ -28,7 +20,7 @@ export interface IMetricSpecificationProviders {
   [metricSpecKind: string]: IMetricSpecificationProvider;
 }
 
-export class MetricSpecification implements IMetricSpecification {
+export class MetricSpecification {
   public id: string;
   public name: string;
   public modelVersionId: number;

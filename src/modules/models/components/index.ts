@@ -10,7 +10,6 @@ export * from './model-version-monitoring-log/model-version-monitoring-log.compo
 export * from './model-versions-table/model-versions-table.component';
 export * from './model-versions-table-row/model-versions-table-row.component';
 
-export * from './model-version-monitoring-container/model-version-monitoring-container.component';
 // dialogs
 export * from './dialogs';
 // reqstore

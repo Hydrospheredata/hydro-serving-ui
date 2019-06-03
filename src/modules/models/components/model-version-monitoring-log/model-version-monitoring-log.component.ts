@@ -5,7 +5,7 @@ import { ReqstoreService } from '@core/services/reqstore.service';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { IModelVersion, ITimeInterval } from '@shared/_index';
-import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
+import { MetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
 import { IReqstoreEntry, IReqstoreLog } from '@shared/models/reqstore.model';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { Observable, BehaviorSubject, Subscription, combineLatest } from 'rxjs';
@@ -38,7 +38,7 @@ interface ILog {
 })
 export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
     errors = true;
-    metricSpecification$: Observable<IMetricSpecification>;
+    metricSpecification$: Observable<MetricSpecification>;
     metricSpecificationProvider$: Observable<IMetricSpecificationProvider>;
     modelVersion$: Observable<IModelVersion>;
 
@@ -148,7 +148,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
     private sonarRequest(
         interval: ITimeInterval,
         modelVersion: IModelVersion,
-        metricSpecifications: IMetricSpecification
+        metricSpecifications: MetricSpecification
     ): Observable<IMetricData[][]> {
         const options: any = {
             from: `${Math.floor(interval.from)}`,

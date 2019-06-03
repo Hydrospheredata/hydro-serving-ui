@@ -5,7 +5,6 @@ import {
     EventEmitter
 } from '@angular/core';
 
-import { InfluxDBService } from '@core/services';
 import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
 import { BaseMetricChartComponent } from '@shared/components/metrics/base-metric-chart.component';
 
@@ -32,10 +31,9 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
     }
 
     constructor(
-        public metricsService: MonitoringService,
-        public influxdbService: InfluxDBService
+        public metricsService: MonitoringService
     ) {
-        super(metricsService, influxdbService);
+        super(metricsService);
     }
 
     get featureList(): string[] {

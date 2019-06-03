@@ -1,6 +1,5 @@
 import { HostSelector } from '@shared/models/hostSelector.model';
 import { Image } from '@shared/models/image.model';
-import { IMetricSpecification } from '@shared/models/metric-specification.model';
 import { Runtime } from '@shared/models/runtime.model';
 import { ISignature } from '@shared/models/signature.model';
 import { Model } from './model.model';

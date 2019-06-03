@@ -7,7 +7,7 @@ import { ReqstoreService } from '@core/services/reqstore.service';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { ITimeInterval, IModelVersion } from '@shared/_index';
-import { IMetricSpecification } from '@shared/models/metric-specification.model';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { IReqstoreEntry, IReqstoreLog } from '@shared/models/reqstore.model';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { Observable, Subject, combineLatest, BehaviorSubject, Subscription } from 'rxjs';
@@ -43,7 +43,7 @@ export class ReqstoreComponent implements OnInit, OnDestroy {
     timeInterval$: Subject<ITimeInterval> = new Subject();
 
     selectedModelVersion$: Observable<IModelVersion>;
-    metricSpecs$: Observable<IMetricSpecification[]>;
+    metricSpecs$: Observable<MetricSpecification[]>;
 
     reqstoreLog: IReqstoreLog;
     sonarData: IMetricData[][];
@@ -126,7 +126,7 @@ export class ReqstoreComponent implements OnInit, OnDestroy {
     private sonarRequest(
         interval: ITimeInterval,
         modelVersion: IModelVersion,
-        metricSpecifications: IMetricSpecification[]
+        metricSpecifications: MetricSpecification[]
     ): Observable<IMetricData[][]> {
         const requests = metricSpecifications
             .map(mS => {

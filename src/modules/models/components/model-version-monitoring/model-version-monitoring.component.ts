@@ -6,7 +6,7 @@ import { DialogService } from '@dialog/dialog.service';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { ModelVersion } from '@shared/_index';
-import { IMetricSpecification, IMetricSpecificationProviders } from '@shared/models/metric-specification.model';
+import { MetricSpecification, IMetricSpecificationProviders } from '@shared/models/metric-specification.model';
 import { Observable, of, combineLatest } from 'rxjs';
 import { filter, switchMap, take} from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ import { filter, switchMap, take} from 'rxjs/operators';
 export class ModelVersionMonitoringComponent {
     isMonitoringAvailable$: Observable<boolean> = of(false);
     modelVersion$: Observable<ModelVersion>;
-    metricSpecifications$: Observable<IMetricSpecification[]>;
+    metricSpecifications$: Observable<MetricSpecification[]>;
     metricSpecificationProviders$: Observable<IMetricSpecificationProviders>;
     chartTimeWidth: number = 1800000;
     chartTimeWidthParams: Array<{ ms: number, text: string }> = [
@@ -43,7 +43,7 @@ export class ModelVersionMonitoringComponent {
         this.metricSpecifications$ = this.store.select(getAllMetrics);
 
         this.metricSpecificationProviders$ = this.metricSpecifications$.pipe(
-            switchMap((mericSpecifications: IMetricSpecification[]) => {
+            switchMap((mericSpecifications: MetricSpecification[]) => {
                 return of(this.createMetricProviders(mericSpecifications));
             })
         );
@@ -61,7 +61,7 @@ export class ModelVersionMonitoringComponent {
     }
 
     private createMetricProviders(
-        metricSpecifications: IMetricSpecification[]
+        metricSpecifications: MetricSpecification[]
     ): IMetricSpecificationProviders  {
 
         const tmp: IMetricSpecificationProviders = {};
