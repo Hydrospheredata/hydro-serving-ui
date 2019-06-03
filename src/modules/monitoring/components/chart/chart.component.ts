@@ -7,14 +7,12 @@ import {
   ViewContainerRef,
   Input,
   ViewChild,
-  ElementRef } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
+  ElementRef,
+} from '@angular/core';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
-import { Store } from '@ngrx/store';
-import { SonarResponse, SonarMetricData } from '@shared/_index';
+import { SonarMetricData } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
-import { ScaleLinear } from 'd3';
 import * as _ from 'lodash';
 import { interval, Subscription} from 'rxjs';
 import { tap, shareReplay, switchMap } from 'rxjs/operators';
@@ -35,10 +33,11 @@ export class ChartComponent implements OnInit, OnDestroy {
   private canvas;
   private canvasWidth: number;
   private canvasHeight: number;
+  private chartWidth: number;
   private xScale;
-  private xAxis: ScaleLinear<number, number>;
-  private xOffset: number = 100;
-  private yScale: ScaleLinear<number, number>;
+  private xAxis: d3.ScaleLinear<number, number>;
+  private xOffset: number = 40;
+  private yScale: d3.ScaleLinear<number, number>;
   private yAxis;
   private line;
   private activeLine;
@@ -90,6 +89,7 @@ export class ChartComponent implements OnInit, OnDestroy {
 
     this.canvasWidth = width;
     this.canvasHeight = height;
+    this.chartWidth = this.canvasWidth - this.xOffset;
 
     this.canvas = d3
       .select(this.chartElementRef.nativeElement)
@@ -100,22 +100,22 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.xAxis = this.canvas
       .append('g')
         .attr('class', 'xAxis')
-        .attr('transform', 'translate(60,100)');
+        .attr('transform', 'translate(25,100)');
 
     this.yAxis = this.canvas
       .append('g')
         .attr('class', 'yAxis')
-        .attr('transform', 'translate(60, 10)');
+        .attr('transform', 'translate(25, 10)');
 
     this.line = this.canvas
       .append('path')
         .attr('class', 'line')
-        .attr('transform', 'translate(60,10)');
+        .attr('transform', 'translate(25,10)');
 
     this.area = this.canvas
       .append('path')
         .attr('class', 'area')
-        .attr('transform', 'translate(60,10)');
+        .attr('transform', 'translate(25,10)');
 
     this.activeLine = this.canvas
         .append('line')
@@ -123,7 +123,7 @@ export class ChartComponent implements OnInit, OnDestroy {
           .attr('x1', 0)
           .attr('y1', 10)
           .attr('x2', 0)
-          .attr('y2', height - 10);
+          .attr('y2', height - 72);
 
     this.activePoint = this.canvas
       .append('circle')
@@ -148,7 +148,7 @@ export class ChartComponent implements OnInit, OnDestroy {
         new Date(timestampMin * 1000),
         new Date(timestampMax * 1000),
       ]
-    ).range([0, this.canvasWidth - this.xOffset]);
+    ).range([0, this.chartWidth]);
     const xAxis = d3.axisBottom(this.xScale);
 
     // yAxis
@@ -195,7 +195,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   private cursorOnChart(posX: number): boolean {
-    return posX > 0 && posX < this.canvasWidth - this.xOffset;
+    return posX > 0 && posX < this.chartWidth;
   }
 
   private onMouseMove() {
@@ -223,15 +223,15 @@ export class ChartComponent implements OnInit, OnDestroy {
         .transition()
           .duration(300)
           .ease(d3.easeLinear)
-        .attr('x1', newXCoordinate + 60)
-        .attr('x2', newXCoordinate + 60)
+        .attr('x1', newXCoordinate + 25)
+        .attr('x2', newXCoordinate + 25)
         .attr('opacity', '1');
 
     this.activePoint
         .transition()
           .duration(300)
           .ease(d3.easeLinear)
-        .attr('cx', newXCoordinate + 60)
+        .attr('cx', newXCoordinate + 25)
         .attr('cy', newYCoordinate + 10)
         .attr('opacity', '1');
 
@@ -240,7 +240,7 @@ export class ChartComponent implements OnInit, OnDestroy {
           .duration(300)
           .ease(d3.easeLinear)
         .style('opacity', '1')
-        .style('transform', `translate(${newXCoordinate + 95}px, 0px)`);
+        .style('transform', `translate(${newXCoordinate + 65}px, 0px)`);
 
     this.tooltip
       .html(this.tooltipHtml(res));

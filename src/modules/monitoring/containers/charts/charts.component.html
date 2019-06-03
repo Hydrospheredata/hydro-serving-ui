@@ -1,4 +1,3 @@
 <div *ngFor="let metric of metrics$ | async">
-  {{ metric.name }}
   <hs-chart [metric]='metric'></hs-chart>
 </div>
