@@ -43,7 +43,6 @@ export class TimemachineService {
     travel(
         params: TimemachineTravelRequest
     ): Observable<TimemachineTravelResponse> {
-        debugger;
         const url = `${this.baseUrl}/travel`;
         return this.http.post(url, params) as Observable<TimemachineTravelResponse>;
     }

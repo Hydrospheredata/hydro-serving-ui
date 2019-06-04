@@ -1,4 +1,4 @@
-import { Directive, OnInit, Input, ElementRef } from '@angular/core';
+import { Directive, Input, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 
 @Directive({
@@ -11,6 +11,7 @@ export class D3AxisDirective {
         const xAxis = d3.axisBottom(scale);
         d3.select(this.el.nativeElement).call(xAxis);
     }
+
     @Input()
     set transform(transform: string) {
         if (transform) {

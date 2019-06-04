@@ -13,6 +13,7 @@ import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-s
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
+import { HsD3Module } from '../hs-d3/hs-d3.module';
 import { ChartComponent } from './components/chart/chart.component';
 import {
   MonitoringAvailabilityComponent,
@@ -48,6 +49,7 @@ import { reducer } from './reducers';
     MdlSelectModule,
     FormsModule,
     ReactiveFormsModule,
+    HsD3Module,
     StoreModule.forFeature('monitoring', reducer),
     EffectsModule.forFeature([MonitoringServiceStatusEffects]),
   ],

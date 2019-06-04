@@ -14,8 +14,11 @@ import { SonarMetricData } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
-import { interval, Subscription} from 'rxjs';
-import { tap, shareReplay, switchMap } from 'rxjs/operators';
+import { interval, Subscription, combineLatest} from 'rxjs';
+import { tap, switchMap } from 'rxjs/operators';
+
+const lineColors = ['#5786c1', '#ffdb89'];
+const areaColors = ['#1c67c31c', '#ffdb8947'];
 
 @Component({
   selector: 'hs-chart',
@@ -26,10 +29,10 @@ import { tap, shareReplay, switchMap } from 'rxjs/operators';
 })
 export class ChartComponent implements OnInit, OnDestroy {
   @ViewChild('chart', { read: ElementRef}) chartElementRef: ElementRef;
-  @Input() metric: MetricSpecification;
+  @Input() metrics: MetricSpecification[];
 
   private initialized: boolean = false;
-  private data: SonarMetricData[];
+  private data: SonarMetricData[][];
   private canvas;
   private canvasWidth: number;
   private canvasHeight: number;
@@ -56,26 +59,23 @@ export class ChartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // TODO: change delay if respons didn't change
 
-    this.log$ = interval(3000)
+    this.log$ = interval(1000)
       .pipe(
         switchMap(() => {
           const from = '0';
           const till = `${Math.floor(new Date().getTime() / 1000)}`;
-          return this.monitiringService.getDataInRange(this.metric, { from, till });
+
+          const observables = this.metrics.map(metric => this.monitiringService.getDataInRange(metric, { from, till }));
+
+          return combineLatest(observables);
         }),
-        tap(() => {
-          if (this.initialized === false) {
-            this.init();
-            this.initialized = true;
-          }
-        }),
+        tap(data => { this.init(data); }),
         tap(data => {
           if (!_.isEqual(this.data, data)) {
             this.data = data;
             this.render(data);
           }
-        }),
-        shareReplay()
+        })
     ).subscribe();
   }
 
@@ -83,7 +83,13 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.log$.unsubscribe();
   }
 
-  init() {
+  init(data) {
+    if (this.initialized === true) {
+      return;
+    }
+
+    this.initialized = true;
+
     const el: HTMLElement = this.vcRef.element.nativeElement;
     const { width, height } = el.getBoundingClientRect();
 
@@ -107,15 +113,19 @@ export class ChartComponent implements OnInit, OnDestroy {
         .attr('class', 'yAxis')
         .attr('transform', 'translate(25, 10)');
 
-    this.line = this.canvas
-      .append('path')
-        .attr('class', 'line')
-        .attr('transform', 'translate(25,10)');
+    data.forEach((d, i) => {
+      this.canvas
+        .append('path')
+          .attr('class', `line line${i}`)
+          .attr('stroke', lineColors[i])
+          .attr('transform', 'translate(25,10)');
 
-    this.area = this.canvas
-      .append('path')
-        .attr('class', 'area')
-        .attr('transform', 'translate(25,10)');
+      this.canvas
+        .append('path')
+          .attr('class', `area area${i}`)
+          .attr('fill', areaColors[i])
+          .attr('transform', 'translate(25,10)');
+    });
 
     this.activeLine = this.canvas
         .append('line')
@@ -138,27 +148,12 @@ export class ChartComponent implements OnInit, OnDestroy {
           .style('opacity', 0);
   }
 
-  render(data: SonarMetricData[]) {
+  render(data: SonarMetricData[][]) {
     if (data.length === 0) { return; }
 
-    const [timestampMin, timestampMax] = d3.extent(data, d => d.timestamp);
-
-    this.xScale = d3.scaleTime().domain(
-      [
-        new Date(timestampMin * 1000),
-        new Date(timestampMax * 1000),
-      ]
-    ).range([0, this.chartWidth]);
+    this.setXScale(data);
     const xAxis = d3.axisBottom(this.xScale);
-
-    // yAxis
-    const [minValue, maxValue] = d3.extent(data, d => d.value);
-
-    this.yScale = d3
-      .scaleLinear()
-      .domain([+maxValue, +minValue])
-      .range([0, 90]);
-
+    this.setYScale(data);
     const yAxis = d3.axisLeft(this.yScale).ticks(5);
 
     // update axis
@@ -169,36 +164,67 @@ export class ChartComponent implements OnInit, OnDestroy {
       .x((d: any) => this.xScale(new Date(d.timestamp * 1000)))
       .y((d: any) => this.yScale(new Date(d.value)));
 
-    this.line
-      .data([data])
-      .transition()
-        .duration(500)
-        .ease(d3.easeLinear)
-      .attr('d', valueline);
-
-    this.canvas.on('mousemove', () => { this.onMouseMove(); });
-
-    this.canvas.on('mouseleave', () => {
-        this.activeLine.attr('opacity', '0');
-        this.tooltip.style('opacity', '0');
-        this.activePoint.attr('opacity', '0');
+    data.forEach((d, i) => {
+      this.canvas.select(`.line${i}`)
+        .data([d])
+        .transition()
+          .duration(500)
+          .ease(d3.easeLinear)
+        .attr('d', valueline);
     });
+
+    // this.canvas.on('mousemove', () => { this.onMouseMove(data); });
+
+    // this.canvas.on('mouseleave', () => {
+    //     this.activeLine.attr('opacity', '0');
+    //     this.tooltip.style('opacity', '0');
+    //     this.activePoint.attr('opacity', '0');
+    // });
 
     const area = d3.area().curve(d3.curveMonotoneX)
       .x((d: any) => this.xScale(new Date(d.timestamp * 1000)))
       .y1((d: any) => this.yScale(new Date(d.value)))
-      .y0(this.yScale(minValue));
+      .y0(this.yScale(this.minValue(data)));
 
-    this.area
-        .data([data])
+    data.forEach((d, i) => {
+      this.canvas.select(`.area${i}`)
+        .data([d])
+        .transition()
+          .duration(500)
+          .ease(d3.easeLinear)
         .attr('d', area);
+    });
+  }
+
+  private minValue(data: SonarMetricData[][]) {
+    return d3.min(_.flatten(data), d => d.value);
+  }
+
+  private setXScale(data: SonarMetricData[][]) {
+    const [timestampMin, timestampMax] = d3.extent(_.flatten(data), d => d.timestamp);
+
+    this.xScale = d3.scaleTime().domain(
+      [
+        new Date(timestampMin * 1000),
+        new Date(timestampMax * 1000),
+      ]
+    ).range([0, this.chartWidth]);
+  }
+
+  private setYScale(data: SonarMetricData[][]) {
+    const [minValue, maxValue] = d3.extent(_.flatten(data), d => d.value);
+
+    this.yScale = d3
+      .scaleLinear()
+      .domain([+maxValue, +minValue])
+      .range([0, 90]);
   }
 
   private cursorOnChart(posX: number): boolean {
     return posX > 0 && posX < this.chartWidth;
   }
 
-  private onMouseMove() {
+  private onMouseMove(data) {
     const [xCoordinate] = d3.mouse(this.line.node());
 
     if (!this.cursorOnChart(xCoordinate)) {
@@ -210,10 +236,10 @@ export class ChartComponent implements OnInit, OnDestroy {
 
     const selectedTime = Math.floor(this.xScale.invert(xCoordinate) / 1000);
     const bisector = d3.bisector((d: SonarMetricData)  => d.timestamp).right;
-    const index = bisector(this.data, selectedTime, 1);
+    const index = bisector(data, selectedTime, 1);
 
-    const a = this.data[index - 1];
-    const b = this.data[index];
+    const a = data[index - 1];
+    const b = data[index];
 
     const res = selectedTime - a.timestamp > b.timestamp - selectedTime ? b : a;
     const newXCoordinate = this.xScale(res.timestamp * 1000);
