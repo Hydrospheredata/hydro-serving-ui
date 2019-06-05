@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { LineComponent } from './components';
+import { D3LineComponent, D3AreaComponent } from './components';
 import { D3AxisDirective } from './directives';
 
 const COMPONENTS = [
-    LineComponent,
+    D3LineComponent,
+    D3AreaComponent,
 ];
 const DIRECTIVES = [
     D3AxisDirective,

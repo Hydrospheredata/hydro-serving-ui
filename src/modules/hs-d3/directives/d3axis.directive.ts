@@ -1,15 +1,27 @@
 import { Directive, Input, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 
+type AxisPosition = 'top' | 'left' | 'bottom' | 'right';
+
 @Directive({
     selector: '[hsD3Axis]',
 })
 export class D3AxisDirective {
+    @Input() position: AxisPosition = 'bottom';
+
     @Input()
     set scale(scale) {
         if (!scale) { return; }
-        const xAxis = d3.axisBottom(scale);
-        d3.select(this.el.nativeElement).call(xAxis);
+        let axis;
+
+        switch (this.position) {
+            case 'left':
+                axis = d3.axisLeft(scale);
+                break;
+            default:
+                axis = d3.axisBottom(scale);
+        }
+        d3.select(this.el.nativeElement).call(axis);
     }
 
     @Input()

@@ -8,6 +8,7 @@ import {
   Input,
   ViewChild,
   ElementRef,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { SonarMetricData } from '@shared/_index';
@@ -16,6 +17,7 @@ import * as d3 from 'd3';
 import * as _ from 'lodash';
 import { interval, Subscription, combineLatest} from 'rxjs';
 import { tap, switchMap } from 'rxjs/operators';
+import { Line } from '../../../hs-d3/model';
 
 const lineColors = ['#5786c1', '#ffdb89'];
 const areaColors = ['#1c67c31c', '#ffdb8947'];
@@ -29,29 +31,32 @@ const areaColors = ['#1c67c31c', '#ffdb8947'];
 })
 export class ChartComponent implements OnInit, OnDestroy {
   @ViewChild('chart', { read: ElementRef}) chartElementRef: ElementRef;
+  // @ViewChild('svg', { read: ElementRef}) svgElementRef: ElementRef;
   @Input() metrics: MetricSpecification[];
+  canvasWidth: number;
+  canvasHeight: number;
+  lines: any; // TODO: type
 
   private initialized: boolean = false;
   private data: SonarMetricData[][];
   private canvas;
-  private canvasWidth: number;
-  private canvasHeight: number;
   private chartWidth: number;
   private xScale;
-  private xAxis: d3.ScaleLinear<number, number>;
+  // private xAxis: d3.ScaleLinear<number, number>;
   private xOffset: number = 40;
   private yScale: d3.ScaleLinear<number, number>;
-  private yAxis;
+  // private yAxis;
   private line;
   private activeLine;
   private activePoint;
   private tooltip;
-  private area;
+  // private area;
 
   private log$: Subscription;
 
   constructor(
     private monitiringService: MonitoringService,
+    private cdRef: ChangeDetectorRef,
     private vcRef: ViewContainerRef
   ) {
   }
@@ -64,7 +69,6 @@ export class ChartComponent implements OnInit, OnDestroy {
         switchMap(() => {
           const from = '0';
           const till = `${Math.floor(new Date().getTime() / 1000)}`;
-
           const observables = this.metrics.map(metric => this.monitiringService.getDataInRange(metric, { from, till }));
 
           return combineLatest(observables);
@@ -97,107 +101,68 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.canvasHeight = height;
     this.chartWidth = this.canvasWidth - this.xOffset;
 
-    this.canvas = d3
-      .select(this.chartElementRef.nativeElement)
-      .append('svg')
-        .attr('width', width)
-        .attr('height', height);
+    this.cdRef.detectChanges();
 
-    this.xAxis = this.canvas
-      .append('g')
-        .attr('class', 'xAxis')
-        .attr('transform', 'translate(25,100)');
+    // this.canvas = d3
+    //   .select(this.chartElementRef.nativeElement)
+    //   .append('svg')
+    //     .attr('width', width)
+    //     .attr('height', height);
 
-    this.yAxis = this.canvas
-      .append('g')
-        .attr('class', 'yAxis')
-        .attr('transform', 'translate(25, 10)');
+    // this.xAxis = this.canvas
+    //   .append('g')
+    //     .attr('class', 'xAxis')
+    //     .attr('transform', 'translate(25,100)');
 
-    data.forEach((d, i) => {
-      this.canvas
-        .append('path')
-          .attr('class', `line line${i}`)
-          .attr('stroke', lineColors[i])
-          .attr('transform', 'translate(25,10)');
+    // this.yAxis = this.canvas
+    //   .append('g')
+    //     .attr('class', 'yAxis')
+    //     .attr('transform', 'translate(25, 10)');
 
-      this.canvas
-        .append('path')
-          .attr('class', `area area${i}`)
-          .attr('fill', areaColors[i])
-          .attr('transform', 'translate(25,10)');
-    });
+    // data.forEach((d, i) => {
+    //   this.canvas
+    //     .append('path')
+    //       .attr('class', `line line${i}`)
+    //       .attr('stroke', lineColors[i])
+    //       .attr('transform', 'translate(25,10)');
 
-    this.activeLine = this.canvas
-        .append('line')
-          .attr('class', 'active-line')
-          .attr('x1', 0)
-          .attr('y1', 10)
-          .attr('x2', 0)
-          .attr('y2', height - 72);
+    //   this.canvas
+    //     .append('path')
+    //       .attr('class', `area area${i}`)
+    //       .attr('fill', areaColors[i])
+    //       .attr('transform', 'translate(25,10)');
+    // });
 
-    this.activePoint = this.canvas
-      .append('circle')
-      .attr('class', 'active-point')
-      .attr('r', 3)
-      .attr('opacity', 0);
+    // this.activeLine = this.canvas
+    //     .append('line')
+    //       .attr('class', 'active-line')
+    //       .attr('x1', 0)
+    //       .attr('y1', 10)
+    //       .attr('x2', 0)
+    //       .attr('y2', height - 72);
 
-    this.tooltip = d3
-        .select(this.chartElementRef.nativeElement)
-        .append('div')
-          .attr('class', 'tooltip')
-          .style('opacity', 0);
+    // this.activePoint = this.canvas
+    //   .append('circle')
+    //   .attr('class', 'active-point')
+    //   .attr('r', 3)
+    //   .attr('opacity', 0);
+
+    // this.tooltip = d3
+    //     .select(this.chartElementRef.nativeElement)
+    //     .append('div')
+    //       .attr('class', 'tooltip')
+    //       .style('opacity', 0);
   }
 
   render(data: SonarMetricData[][]) {
     if (data.length === 0) { return; }
-
     this.setXScale(data);
-    const xAxis = d3.axisBottom(this.xScale);
     this.setYScale(data);
-    const yAxis = d3.axisLeft(this.yScale).ticks(5);
 
-    // update axis
-    this.xAxis.call(xAxis);
-    this.yAxis.call(yAxis);
+    const a = _.flatten(data);
+    this.lines = _.groupBy(a, d => `${d.name}_${d.labels.modelVersionId}`);
 
-    const valueline = d3.line().curve(d3.curveMonotoneX)
-      .x((d: any) => this.xScale(new Date(d.timestamp * 1000)))
-      .y((d: any) => this.yScale(new Date(d.value)));
-
-    data.forEach((d, i) => {
-      this.canvas.select(`.line${i}`)
-        .data([d])
-        .transition()
-          .duration(500)
-          .ease(d3.easeLinear)
-        .attr('d', valueline);
-    });
-
-    // this.canvas.on('mousemove', () => { this.onMouseMove(data); });
-
-    // this.canvas.on('mouseleave', () => {
-    //     this.activeLine.attr('opacity', '0');
-    //     this.tooltip.style('opacity', '0');
-    //     this.activePoint.attr('opacity', '0');
-    // });
-
-    const area = d3.area().curve(d3.curveMonotoneX)
-      .x((d: any) => this.xScale(new Date(d.timestamp * 1000)))
-      .y1((d: any) => this.yScale(new Date(d.value)))
-      .y0(this.yScale(this.minValue(data)));
-
-    data.forEach((d, i) => {
-      this.canvas.select(`.area${i}`)
-        .data([d])
-        .transition()
-          .duration(500)
-          .ease(d3.easeLinear)
-        .attr('d', area);
-    });
-  }
-
-  private minValue(data: SonarMetricData[][]) {
-    return d3.min(_.flatten(data), d => d.value);
+    this.cdRef.detectChanges();
   }
 
   private setXScale(data: SonarMetricData[][]) {

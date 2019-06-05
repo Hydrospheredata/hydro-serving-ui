@@ -2,4 +2,39 @@
     <header class='chart__header'>
         <!-- <div class='chart__metric-name'> {{ metric.name }}</div> -->
     </header>
+    <svg 
+        class='canvas' 
+        [attr.width]='this.canvasWidth' 
+        [attr.height]='canvasHeight' 
+        #svg
+    >
+        <g 
+            hsD3Axis
+            [scale]='xScale'
+            transform='translate(25,100)'
+        ></g>
+        <g 
+            hsD3Axis 
+            [scale]='yScale'
+            position='left'
+            transform='translate(25,10)'
+        ></g>
+        <g 
+            [hsd3line]
+            *ngFor="let data of lines | keyvalue"
+            [data]='data.value'
+            [xScale]='xScale'
+            [yScale]='yScale'
+            transform='translate(25,10)'
+            stroke='black'
+        ></g>
+        <g 
+            [hsd3area]
+            *ngFor="let data of lines | keyvalue"
+            [data]='data.value'
+            [xScale]='xScale'
+            [yScale]='yScale'
+            transform='translate(25,10)'
+        ></g>
+    </svg>
 </div>
