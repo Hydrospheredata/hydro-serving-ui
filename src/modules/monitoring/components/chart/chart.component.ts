@@ -78,7 +78,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     const from = '0';
     const till = `${Math.floor(new Date().getTime() / 1000)}`;
     const observables = this.metrics.map(metric =>
-      this.monitiringService.getDataInRange(metric, {
+      this.monitiringService.getMetricsInRange(metric, {
         from,
         till,
         columnIndex: '0',
