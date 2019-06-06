@@ -16,6 +16,15 @@
     }
 }
 
+.metric {
+    &__name {
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        color: #0d2b4a;
+    }
+}
+
 .line {
     fill: none;
     stroke-width: 2px;

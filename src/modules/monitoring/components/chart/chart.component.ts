@@ -15,13 +15,12 @@ import { SonarMetricData } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
-import { interval, Subscription, combineLatest} from 'rxjs';
-import { tap, switchMap } from 'rxjs/operators';
-import { Line } from '../../../hs-d3/model';
+import { interval, Subscription, combineLatest, Observable } from 'rxjs';
+import { tap, map, switchMap, filter } from 'rxjs/operators';
 
-const lineColors = ['#5786c1', '#ffdb89'];
-const areaColors = ['#1c67c31c', '#ffdb8947'];
-
+interface GroupedData {
+  [uniqname: string]: SonarMetricData[];
+}
 @Component({
   selector: 'hs-chart',
   templateUrl: './chart.component.html',
@@ -30,27 +29,27 @@ const areaColors = ['#1c67c31c', '#ffdb8947'];
   encapsulation: ViewEncapsulation.None,
 })
 export class ChartComponent implements OnInit, OnDestroy {
-  @ViewChild('chart', { read: ElementRef}) chartElementRef: ElementRef;
-  // @ViewChild('svg', { read: ElementRef}) svgElementRef: ElementRef;
+  @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
   @Input() metrics: MetricSpecification[];
   canvasWidth: number;
   canvasHeight: number;
   lines: any; // TODO: type
+  minValue: number;
+
+  lineColors = ['#5786c1', '#ffdb89'];
+  areaColors = ['#1c67c31c', '#ffdb8947'];
 
   private initialized: boolean = false;
-  private data: SonarMetricData[][];
-  private canvas;
+  private data: SonarMetricData[];
+  private groupedData: GroupedData;
   private chartWidth: number;
   private xScale;
-  // private xAxis: d3.ScaleLinear<number, number>;
   private xOffset: number = 40;
   private yScale: d3.ScaleLinear<number, number>;
-  // private yAxis;
   private line;
   private activeLine;
   private activePoint;
   private tooltip;
-  // private area;
 
   private log$: Subscription;
 
@@ -58,80 +57,51 @@ export class ChartComponent implements OnInit, OnDestroy {
     private monitiringService: MonitoringService,
     private cdRef: ChangeDetectorRef,
     private vcRef: ViewContainerRef
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     // TODO: change delay if respons didn't change
 
-    this.log$ = interval(1000)
+    this.log$ = interval(3000)
       .pipe(
-        switchMap(() => {
-          const from = '0';
-          const till = `${Math.floor(new Date().getTime() / 1000)}`;
-          const observables = this.metrics.map(metric => this.monitiringService.getDataInRange(metric, { from, till }));
-
-          return combineLatest(observables);
-        }),
-        tap(data => { this.init(data); }),
+        switchMap(() => this.makeRequest()),
+        filter(data => this.isDifferentData(data)),
         tap(data => {
-          if (!_.isEqual(this.data, data)) {
-            this.data = data;
-            this.render(data);
-          }
+          this.data = data;
+          this.render(data);
         })
-    ).subscribe();
+      )
+      .subscribe();
+  }
+
+  makeRequest(): Observable<SonarMetricData[]> {
+    const from = '0';
+    const till = `${Math.floor(new Date().getTime() / 1000)}`;
+    const observables = this.metrics.map(metric =>
+      this.monitiringService.getDataInRange(metric, {
+        from,
+        till,
+        columnIndex: '0',
+      })
+    );
+
+    return combineLatest(observables).pipe(map(data => _.flatten(data)));
   }
 
   ngOnDestroy() {
     this.log$.unsubscribe();
   }
 
-  init(data) {
-    if (this.initialized === true) {
-      return;
-    }
-
-    this.initialized = true;
-
+  init(): void {
     const el: HTMLElement = this.vcRef.element.nativeElement;
     const { width, height } = el.getBoundingClientRect();
 
     this.canvasWidth = width;
     this.canvasHeight = height;
     this.chartWidth = this.canvasWidth - this.xOffset;
+    this.initialized = true;
 
     this.cdRef.detectChanges();
-
-    // this.canvas = d3
-    //   .select(this.chartElementRef.nativeElement)
-    //   .append('svg')
-    //     .attr('width', width)
-    //     .attr('height', height);
-
-    // this.xAxis = this.canvas
-    //   .append('g')
-    //     .attr('class', 'xAxis')
-    //     .attr('transform', 'translate(25,100)');
-
-    // this.yAxis = this.canvas
-    //   .append('g')
-    //     .attr('class', 'yAxis')
-    //     .attr('transform', 'translate(25, 10)');
-
-    // data.forEach((d, i) => {
-    //   this.canvas
-    //     .append('path')
-    //       .attr('class', `line line${i}`)
-    //       .attr('stroke', lineColors[i])
-    //       .attr('transform', 'translate(25,10)');
-
-    //   this.canvas
-    //     .append('path')
-    //       .attr('class', `area area${i}`)
-    //       .attr('fill', areaColors[i])
-    //       .attr('transform', 'translate(25,10)');
-    // });
 
     // this.activeLine = this.canvas
     //     .append('line')
@@ -154,29 +124,32 @@ export class ChartComponent implements OnInit, OnDestroy {
     //       .style('opacity', 0);
   }
 
-  render(data: SonarMetricData[][]) {
-    if (data.length === 0) { return; }
+  render(data: SonarMetricData[]) {
+    if (this.initialized === false) {
+      this.init();
+    }
+
     this.setXScale(data);
     this.setYScale(data);
+    this.minValue = this.findMinValue(data);
 
-    const a = _.flatten(data);
-    this.lines = _.groupBy(a, d => `${d.name}_${d.labels.modelVersionId}`);
-
+    this.groupedData =  _.groupBy(data, d => `${d.name}_${d.labels.modelVersionId}`);
     this.cdRef.detectChanges();
   }
 
-  private setXScale(data: SonarMetricData[][]) {
-    const [timestampMin, timestampMax] = d3.extent(_.flatten(data), d => d.timestamp);
+  private setXScale(data: SonarMetricData[]) {
+    const [timestampMin, timestampMax] = d3.extent(
+      _.flatten(data),
+      d => d.timestamp
+    );
 
-    this.xScale = d3.scaleTime().domain(
-      [
-        new Date(timestampMin * 1000),
-        new Date(timestampMax * 1000),
-      ]
-    ).range([0, this.chartWidth]);
+    this.xScale = d3
+      .scaleTime()
+      .domain([new Date(timestampMin * 1000), new Date(timestampMax * 1000)])
+      .range([0, this.chartWidth]);
   }
 
-  private setYScale(data: SonarMetricData[][]) {
+  private setYScale(data: SonarMetricData[]) {
     const [minValue, maxValue] = d3.extent(_.flatten(data), d => d.value);
 
     this.yScale = d3
@@ -200,7 +173,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     }
 
     const selectedTime = Math.floor(this.xScale.invert(xCoordinate) / 1000);
-    const bisector = d3.bisector((d: SonarMetricData)  => d.timestamp).right;
+    const bisector = d3.bisector((d: SonarMetricData) => d.timestamp).right;
     const index = bisector(data, selectedTime, 1);
 
     const a = data[index - 1];
@@ -211,30 +184,29 @@ export class ChartComponent implements OnInit, OnDestroy {
     const newYCoordinate = this.yScale(res.value);
 
     this.activeLine
-        .transition()
-          .duration(300)
-          .ease(d3.easeLinear)
-        .attr('x1', newXCoordinate + 25)
-        .attr('x2', newXCoordinate + 25)
-        .attr('opacity', '1');
+      .transition()
+      .duration(300)
+      .ease(d3.easeLinear)
+      .attr('x1', newXCoordinate + 25)
+      .attr('x2', newXCoordinate + 25)
+      .attr('opacity', '1');
 
     this.activePoint
-        .transition()
-          .duration(300)
-          .ease(d3.easeLinear)
-        .attr('cx', newXCoordinate + 25)
-        .attr('cy', newYCoordinate + 10)
-        .attr('opacity', '1');
+      .transition()
+      .duration(300)
+      .ease(d3.easeLinear)
+      .attr('cx', newXCoordinate + 25)
+      .attr('cy', newYCoordinate + 10)
+      .attr('opacity', '1');
 
     this.tooltip
-        .transition()
-          .duration(300)
-          .ease(d3.easeLinear)
-        .style('opacity', '1')
-        .style('transform', `translate(${newXCoordinate + 65}px, 0px)`);
+      .transition()
+      .duration(300)
+      .ease(d3.easeLinear)
+      .style('opacity', '1')
+      .style('transform', `translate(${newXCoordinate + 65}px, 0px)`);
 
-    this.tooltip
-      .html(this.tooltipHtml(res));
+    this.tooltip.html(this.tooltipHtml(res));
   }
 
   private tooltipHtml({ value, timestamp }: SonarMetricData): string {
@@ -242,5 +214,13 @@ export class ChartComponent implements OnInit, OnDestroy {
       <p>Value: ${value}</p>
       <p>Time ${new Date(timestamp * 1000)}</p>
     `;
+  }
+
+  private isDifferentData(newData: SonarMetricData[]): boolean {
+    return !_.isEqual(this.data, newData);
+  }
+
+  private findMinValue(data: SonarMetricData[]) {
+    return d3.min(data, d => d.value);
   }
 }
