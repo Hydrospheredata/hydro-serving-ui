@@ -7,6 +7,7 @@ import {
 
 import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
 import { BaseMetricChartComponent } from '@shared/components/metrics/base-metric-chart.component';
+import { of } from 'rxjs';
 
 @Component({
     selector: 'hs-kolmogorov-smirnov-metric-chart',
@@ -46,12 +47,7 @@ export class KolmogorovSmirnovChartComponent extends BaseMetricChartComponent {
         return features;
     }
 
-    protected getRequestPromise(id, i, metrics): Promise<IMetricData[]> {
-        return this.metricsService.getMetrics(
-            id.toString(),
-            i,
-            metrics,
-            this.sF
-        );
+    protected getRequestPromise(id, i, metrics) {
+        return of([]);
     }
 }

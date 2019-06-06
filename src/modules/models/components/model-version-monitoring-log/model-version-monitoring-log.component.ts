@@ -160,8 +160,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
         }
 
         const request = this.monitoringService.getMetricsInRange(
-            `${modelVersion.id}`,
-            this.monitoringService.getMetricsBySpecKind(metricSpecifications.kind),
+            metricSpecifications,
             options
         );
 

@@ -129,7 +129,7 @@ export class ReqstoreComponent implements OnInit, OnDestroy {
         metricSpecifications: MetricSpecification[]
     ): Observable<IMetricData[][]> {
         const requests = metricSpecifications
-            .map(mS => {
+            .map(metricSpec => {
                 const options: any = {
                     from: `${Math.floor(interval.from / 1000)}`,
                     till: `${Math.floor(interval.to / 1000)}`,
@@ -140,8 +140,7 @@ export class ReqstoreComponent implements OnInit, OnDestroy {
                 }
 
                 return this.monitoringService.getMetricsInRange(
-                    `${modelVersion.id}`,
-                    this.monitoringService.getMetricsBySpecKind(mS.kind),
+                    metricSpec,
                     options
                 );
             });

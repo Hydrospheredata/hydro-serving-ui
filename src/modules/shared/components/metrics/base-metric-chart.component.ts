@@ -16,7 +16,7 @@ import * as moment from 'moment';
 
 import { IChartData } from '@shared/models/application-chart.model';
 
-import { Subscription, Subject, Observable, interval, combineLatest } from 'rxjs';
+import { Subscription, Subject, Observable, interval, combineLatest, of } from 'rxjs';
 import {
     switchMap,
     tap,
@@ -130,13 +130,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         this.thresholds = newThresholds;
     }
 
-    protected getRequestPromise(id, i, metrics): Promise<IMetricData[]> {
-        return this.metricsService.getMetrics(
-            id.toString(),
-            i,
-            metrics,
-            ''
-        );
+    protected getRequestPromise(id, i, metrics): any {
+        return of([]);
     }
 
     private initChart(): void {
