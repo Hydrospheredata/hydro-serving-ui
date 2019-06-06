@@ -1,9 +1,9 @@
-import { IMetricSpecificationKind } from '@shared/models/metric-specification-kind.model';
+import { MetricSpecificationConfig } from '@shared/models/metric-specification-kind.model';
 
 export interface IMetricSpecificationRequest {
   name: string;
   modelVersionId: number;
-  config: IMetricSpecificationKind;
+  config: MetricSpecificationConfig;
   kind: string;
   withHealth?: boolean;
 }
@@ -11,7 +11,7 @@ export interface IMetricSpecificationRequest {
 export interface IMetricSpecificationProvider {
   kind: string;
   byModelVersionId: {
-      [modelVersionId: string]: MetricSpecification;
+    [modelVersionId: string]: MetricSpecification;
   };
   metrics: string[];
 }
@@ -20,12 +20,23 @@ export interface IMetricSpecificationProviders {
   [metricSpecKind: string]: IMetricSpecificationProvider;
 }
 
+export type MetricSpecificationKind =
+  | 'CounterMetricSpec'
+  | 'KSMetricSpec'
+  | 'AEMetricSpec'
+  | 'ImageAEMetricSpec'
+  | 'RFMetricSpec'
+  | 'GANMetricSpec'
+  | 'LatencyMetricSpec'
+  | 'ErrorRateMetricSpec'
+  | 'AccuracyMetricSpec';
+
 export class MetricSpecification {
   public id: string;
   public name: string;
   public modelVersionId: number;
-  public config: IMetricSpecificationKind;
-  public kind: string;
+  public config: MetricSpecificationConfig;
+  public kind: MetricSpecificationKind;
   public withHealth: boolean;
 
   constructor(props: any = {}) {

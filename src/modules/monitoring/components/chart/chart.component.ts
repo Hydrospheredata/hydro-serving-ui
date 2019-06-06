@@ -18,9 +18,6 @@ import * as _ from 'lodash';
 import { interval, Subscription, combineLatest, Observable } from 'rxjs';
 import { tap, map, switchMap, filter } from 'rxjs/operators';
 
-interface GroupedData {
-  [uniqname: string]: SonarMetricData[];
-}
 @Component({
   selector: 'hs-chart',
   templateUrl: './chart.component.html',
@@ -33,19 +30,21 @@ export class ChartComponent implements OnInit, OnDestroy {
   @Input() metrics: MetricSpecification[];
   canvasWidth: number;
   canvasHeight: number;
-  lines: any; // TODO: type
+  groupedData: { [uniqname: string]: SonarMetricData[] };
   minValue: number;
+
+  features: string[];
+  selectedFeature: string = '0';
 
   lineColors = ['#5786c1', '#ffdb89'];
   areaColors = ['#1c67c31c', '#ffdb8947'];
 
   private initialized: boolean = false;
   private data: SonarMetricData[];
-  private groupedData: GroupedData;
   private chartWidth: number;
   private xScale;
   private xOffset: number = 40;
-  private yScale: d3.ScaleLinear<number, number>;
+  private yScale;
   private line;
   private activeLine;
   private activePoint;
@@ -60,8 +59,6 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    // TODO: change delay if respons didn't change
-
     this.log$ = interval(3000)
       .pipe(
         switchMap(() => this.makeRequest()),
@@ -77,13 +74,21 @@ export class ChartComponent implements OnInit, OnDestroy {
   makeRequest(): Observable<SonarMetricData[]> {
     const from = '0';
     const till = `${Math.floor(new Date().getTime() / 1000)}`;
-    const observables = this.metrics.map(metric =>
-      this.monitiringService.getMetricsInRange(metric, {
-        from,
-        till,
-        columnIndex: '0',
-      })
-    );
+
+    const observables = this.metrics.map(metric => {
+      if (this.isKolmogorovSmirnov()) {
+        return this.monitiringService.getMetricsInRange(metric, {
+          from,
+          till,
+          columnIndex: this.selectedFeature,
+        });
+      } else {
+        return this.monitiringService.getMetricsInRange(metric, {
+          from,
+          till,
+        });
+      }
+    });
 
     return combineLatest(observables).pipe(map(data => _.flatten(data)));
   }
@@ -133,8 +138,15 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.setYScale(data);
     this.minValue = this.findMinValue(data);
 
-    this.groupedData =  _.groupBy(data, d => `${d.name}_${d.labels.modelVersionId}`);
+    this.groupedData = _.groupBy(
+      data,
+      d => `${d.name}_${d.labels.modelVersionId}`
+    );
     this.cdRef.detectChanges();
+  }
+
+  isKolmogorovSmirnov(): boolean {
+    return this.metrics[0].kind === 'KSMetricSpec';
   }
 
   private setXScale(data: SonarMetricData[]) {
@@ -222,5 +234,15 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   private findMinValue(data: SonarMetricData[]) {
     return d3.min(data, d => d.value);
+  }
+
+  get featureList(): string[] {
+    const features: string[] = [];
+
+    for (let i = 0; i < 112; i++) {
+      features.push(`${i}`);
+    }
+
+    return features;
   }
 }
