@@ -13,7 +13,7 @@
         <g 
             hsD3Axis
             [scale]='xScale'
-            transform='translate(25,100)'
+            transform='translate(25,134)'
         ></g>
         <g 
             hsD3Axis 
@@ -41,7 +41,7 @@
             transform='translate(25,10)'
         ></g>
     </svg>
-    <div>
+    <div class='chart__footer'>
         <span class='metric__name' *ngFor="let data of groupedData | keyvalue; index as i">
             <span [style.color]="lineColors[i]">-</span>{{ data.key }}
         </span>

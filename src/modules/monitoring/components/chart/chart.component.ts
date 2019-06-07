@@ -59,7 +59,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.log$ = interval(3000)
+    this.log$ = interval(1000)
       .pipe(
         switchMap(() => this.makeRequest()),
         filter(data => this.isDifferentData(data)),
@@ -102,13 +102,13 @@ export class ChartComponent implements OnInit, OnDestroy {
     const { width, height } = el.getBoundingClientRect();
 
     this.canvasWidth = width;
-    this.canvasHeight = height;
+    this.canvasHeight = height - 50;
     this.chartWidth = this.canvasWidth - this.xOffset;
     this.initialized = true;
 
-    this.cdRef.detectChanges();
+    // this.cdRef.detectChanges();
 
-    // this.activeLine = this.canvas
+    // this.activeLine = this.svgElementRef.nativeElement
     //     .append('line')
     //       .attr('class', 'active-line')
     //       .attr('x1', 0)
@@ -116,14 +116,14 @@ export class ChartComponent implements OnInit, OnDestroy {
     //       .attr('x2', 0)
     //       .attr('y2', height - 72);
 
-    // this.activePoint = this.canvas
+    // this.activePoint = this.svgElementRef.nativeElement
     //   .append('circle')
     //   .attr('class', 'active-point')
     //   .attr('r', 3)
     //   .attr('opacity', 0);
 
     // this.tooltip = d3
-    //     .select(this.chartElementRef.nativeElement)
+    //     .select(this.svgElementRef.nativeElement)
     //     .append('div')
     //       .attr('class', 'tooltip')
     //       .style('opacity', 0);
@@ -167,7 +167,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.yScale = d3
       .scaleLinear()
       .domain([+maxValue, +minValue])
-      .range([0, 90]);
+      .range([0, this.canvasHeight-50]);
   }
 
   private cursorOnChart(posX: number): boolean {

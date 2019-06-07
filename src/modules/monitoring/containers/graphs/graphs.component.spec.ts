@@ -1,20 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TimemachineComponent } from './timemachine.component';
+import { GraphsComponent } from './graphs.component';
 
 describe('TimemachineComponent', () => {
-  let component: TimemachineComponent;
-  let fixture: ComponentFixture<TimemachineComponent>;
+  let component: GraphsComponent;
+  let fixture: ComponentFixture<GraphsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TimemachineComponent ]
-    })
-    .compileComponents();
+      declarations: [GraphsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TimemachineComponent);
+    fixture = TestBed.createComponent(GraphsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

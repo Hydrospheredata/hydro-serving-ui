@@ -40,6 +40,9 @@
       "@profiler/*": [
         "modules/profiler/*"
       ],
+      "@timemachine/*": [
+        "modules/timemachine/*"
+      ],
       "@dialog/*": [
         "modules/dialog/*"
       ],

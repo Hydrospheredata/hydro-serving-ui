@@ -12,7 +12,7 @@ import {
 
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { MetricsComponent, DashboardComponent } from '@monitoring/containers';
-import { MonitoringPageComponent, TimemachineComponent } from '@monitoring/containers';
+import { MonitoringPageComponent, GraphsComponent } from '@monitoring/containers';
 
 @NgModule({
     imports: [
@@ -70,8 +70,8 @@ import { MonitoringPageComponent, TimemachineComponent } from '@monitoring/conta
                                         component: DashboardComponent,
                                     },
                                     {
-                                        path: 'timemachine',
-                                        component: TimemachineComponent,
+                                        path: 'graphs',
+                                        component: GraphsComponent,
                                     },
                                     {
                                         path: '',

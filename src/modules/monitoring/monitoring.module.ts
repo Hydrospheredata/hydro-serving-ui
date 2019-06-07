@@ -21,8 +21,8 @@ import {
   MonitoringPageComponent,
   DashboardComponent,
   ChartsComponent,
+  GraphsComponent,
 } from './containers';
-import { TimemachineComponent } from './containers/timemachine/timemachine.component';
 import { reducer } from './reducers';
 @NgModule({
   entryComponents: [
@@ -39,7 +39,7 @@ import { reducer } from './reducers';
     MetricComponent,
     ChartsComponent,
     ChartComponent,
-    TimemachineComponent,
+    GraphsComponent,
   ],
   imports: [
     SharedModule,
@@ -57,7 +57,7 @@ import { reducer } from './reducers';
     MonitoringPageComponent,
     MetricsComponent,
     DashboardComponent,
-    TimemachineComponent,
+    GraphsComponent,
   ],
 })
 export class MonitoringModule { }
