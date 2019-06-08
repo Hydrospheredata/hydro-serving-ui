@@ -15,6 +15,9 @@ export class TimemachineComponent implements OnInit {
   openDialog(): void {
     this.dialogService.createDialog({
       component: DialogAddReplyComponent,
+      styles: {
+        width: '400px',
+      },
     });
   }
 }

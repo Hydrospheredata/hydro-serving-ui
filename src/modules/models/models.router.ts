@@ -6,7 +6,6 @@ import {
     ModelDetailsComponent,
     ModelVersionDetailsComponent,
     ModelVersionContainerComponent,
-    ReqstoreComponent,
     ModelVersionProfilerComponent
 } from '@models/components';
 
@@ -52,10 +51,6 @@ import { MonitoringPageComponent, GraphsComponent } from '@monitoring/containers
                                 path: 'profiler',
                                 component: ModelVersionProfilerComponent,
                                 data: {anim: 'modelVerDetail'},
-                            },
-                            {
-                                path: 'reqstore',
-                                component: ReqstoreComponent,
                             },
                             {
                                 path: 'monitoring',

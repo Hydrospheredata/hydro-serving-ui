@@ -1,5 +1,16 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Line } from '../../../hs-d3/model';
+import { getSelectedMetrics, HydroServingState } from '@core/reducers';
+import { RequestResponseLogService } from '@core/services';
+import {
+  IMetricData,
+  MonitoringService,
+} from '@core/services/metrics/monitoring.service';
+import { getSelectedModelVersion } from '@models/reducers';
+import { Store } from '@ngrx/store';
+import { ModelVersion, TimeInterval } from '@shared/_index';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
+import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
+import { exhaustMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-dashboard',
@@ -8,7 +19,57 @@ import { Line } from '../../../hs-d3/model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit {
-  line: Line = {x1: 0, y1: 0, x2: 30, y2: 30, color: 'red'};
+  metricSpecs$: Observable<MetricSpecification[]>;
+  selectedModelVersion$: Observable<ModelVersion>;
+  timeInterval: TimeInterval;
+
+  onlyFailedReqstoreData: boolean = true;
+  selectedTimeInterval$: BehaviorSubject<TimeInterval> = new BehaviorSubject(
+    null
+  );
+  modelVersion$: any;
+  updateLogButtonClick$: BehaviorSubject<any> = new BehaviorSubject('');
+  logLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  log$: any;
+  constructor(
+    private store: Store<HydroServingState>,
+    private reqResLogService: RequestResponseLogService
+  ) {}
+
   ngOnInit() {
+    this.modelVersion$ = this.store.select(getSelectedModelVersion);
+    this.metricSpecs$ = this.store.select(getSelectedMetrics);
+    this.selectedModelVersion$ = this.store.select(getSelectedModelVersion);
+
+    this.log$ = combineLatest(
+      this.selectedTimeInterval$,
+      this.modelVersion$,
+      this.metricSpecs$,
+      this.updateLogButtonClick$
+    ).pipe(
+      filter(
+        ([timeInterval, _, metricSpecifications]) =>
+          !!timeInterval && !!metricSpecifications
+      ),
+      exhaustMap(
+        ([timeInterval, modelVersion, metricSpecifications]) => {
+          return this.reqResLogService.getLog({
+            timeInterval,
+            modelVersion,
+            metricSpecifications,
+          });
+        }
+      )
+    ).subscribe(
+      _ => {
+        debugger;
+      }
+    );
+  }
+
+  onChangeTimeInterval(timeInterval: TimeInterval) {
+    this.timeInterval = timeInterval;
+    this.selectedTimeInterval$.next(timeInterval);
   }
 }

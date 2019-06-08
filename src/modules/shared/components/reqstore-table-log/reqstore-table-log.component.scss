@@ -1,5 +1,6 @@
 .reqstore {
     position: relative;
+    margin-bottom: 24p;
     &__header {
         display: flex;
         &-ts {
@@ -17,6 +18,38 @@
             color: #8d93a7;
             background: white;
             width: 100%;
+        }
+    }
+    &__options {
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: grey;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        margin-bottom: 4px;
+        &-item {
+            margin-right: 8px;
+        }
+        &-input {
+            border: 1px #9c9c9c solid;
+            line-height: 12px;
+            text-align: right;
+            width: 35px;
+            padding: 2px;
+            background: white;
+        }
+        &-button {
+            font-size: 8px;
+            padding: 4px;
+        }
+        &-interval {
+            width: 100%;
+            &-time {
+                font-size: 10px;
+                color: rgb(14, 14, 14);
+            }
         }
     }
 }

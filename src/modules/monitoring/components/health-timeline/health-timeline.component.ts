@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { HealthTimelineService } from '@core/services/health-timeline.service';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
-import { ITimeInterval, IModelVersion } from '@shared/models/_index';
+import { TimeInterval, IModelVersion } from '@shared/models/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { IMonitoringAggregationList, IMonitoringAggregationVM } from '@shared/models/monitoring-aggregation.model';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
@@ -65,16 +65,16 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     // DATA
     fullLog: IMonitoringAggregationVM;
 
-    brushMove$: Subject<ITimeInterval>;
-    minimapBrushMove$: Subject<ITimeInterval>;
+    brushMove$: Subject<TimeInterval>;
+    minimapBrushMove$: Subject<TimeInterval>;
 
-    brushEnd$: Subject<ITimeInterval>;
-    minimapBrushEnd$: Subject<ITimeInterval>;
+    brushEnd$: Subject<TimeInterval>;
+    minimapBrushEnd$: Subject<TimeInterval>;
 
-    displayedTime: BehaviorSubject<ITimeInterval> = new BehaviorSubject(null);
-    displayedTime$: Observable<ITimeInterval>;
-    selectedTime$: Observable<ITimeInterval>;
-    manualSelectInterval: BehaviorSubject<ITimeInterval> = new BehaviorSubject(null);
+    displayedTime: BehaviorSubject<TimeInterval> = new BehaviorSubject(null);
+    displayedTime$: Observable<TimeInterval>;
+    selectedTime$: Observable<TimeInterval>;
+    manualSelectInterval: BehaviorSubject<TimeInterval> = new BehaviorSubject(null);
 
     modelVersion: IModelVersion;
     metricSpecs: MetricSpecification[];
@@ -85,7 +85,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     detailLogSub: Subscription;
 
     @Output()
-    private timeInterval: EventEmitter<ITimeInterval> = new EventEmitter();
+    private timeInterval: EventEmitter<TimeInterval> = new EventEmitter();
 
     private currentLogData: ITimelineLog;
 
@@ -172,10 +172,10 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
         this.detailLogSub.unsubscribe();
     }
 
-    onMinimapBrushEnd(t: ITimeInterval) {
+    onMinimapBrushEnd(t: TimeInterval) {
         this.minimapBrushEnd$.next(t);
     }
-    onMinimapBrushMove(t: ITimeInterval) {
+    onMinimapBrushMove(t: TimeInterval) {
         this.minimapBrushMove$.next(t);
     }
 
@@ -192,7 +192,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
         return combineLatest(...requests);
     }
 
-    private createRequestsByInterval(timeInterval: ITimeInterval) {
+    private createRequestsByInterval(timeInterval: TimeInterval) {
         const requests = this.metricSpecs
             .map(mS =>
                 this.monitoringService.getAggregation(

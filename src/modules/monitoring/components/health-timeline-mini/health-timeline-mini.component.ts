@@ -11,7 +11,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { HealthTimelineService } from '@core/services/health-timeline.service';
-import { ITimeInterval } from '@shared/models/_index';
+import { TimeInterval } from '@shared/models/_index';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
 import * as d3 from 'd3';
 
@@ -33,11 +33,11 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
     minimapBrush: ElementRef;
 
     @Input() width: number = 840;
-    @Input() currentTimeInterval: ITimeInterval;
+    @Input() currentTimeInterval: TimeInterval;
     @Input() fullLog: ITimelineLog;
 
-    @Output() brushEnd: EventEmitter<ITimeInterval> = new EventEmitter();
-    @Output() brushMove: EventEmitter<ITimeInterval> = new EventEmitter();
+    @Output() brushEnd: EventEmitter<TimeInterval> = new EventEmitter();
+    @Output() brushMove: EventEmitter<TimeInterval> = new EventEmitter();
 
     height: number;
     scale;
@@ -46,7 +46,7 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
 
     brush;
 
-    innerTimeInterval: ITimeInterval;
+    innerTimeInterval: TimeInterval;
 
     constructor(
         public timelineService: HealthTimelineService

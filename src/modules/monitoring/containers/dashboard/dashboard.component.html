@@ -1,11 +1,20 @@
 <div>
+  {{ timeInterval | json }}
+  <hs-health-timeline
+    [metricSpecifications$]="metricSpecs$"
+    [selectedModelVersion$]="selectedModelVersion$"
+    (timeInterval)="onChangeTimeInterval($event)"
+  >
+  </hs-health-timeline>
   <div>
-    timeline
+    <hs-reqstore-table-log
+      [logData]="logData"
+      [modelVersion]="selectedModelVersion$ | async"
+      [loading]="logLoading$ | async"
+    >
+    </hs-reqstore-table-log>
   </div>
-  <div>
-    log
-  </div>
-  <div class='charts'>
+  <div class="charts">
     <hs-charts></hs-charts>
   </div>
 </div>

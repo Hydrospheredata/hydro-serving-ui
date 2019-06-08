@@ -12,5 +12,3 @@ export * from './model-versions-table-row/model-versions-table-row.component';
 
 // dialogs
 export * from './dialogs';
-// reqstore
-export * from './reqstore/reqstore.component';

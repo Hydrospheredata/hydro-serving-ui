@@ -25,7 +25,7 @@ import {
 } from 'rxjs/operators';
 
 import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
-import { ITimeInterval } from '@shared/models/_index';
+import { TimeInterval } from '@shared/models/_index';
 import { IMetricSpecificationProvider, MetricSpecification } from '@shared/models/metric-specification.model';
 
 @Component({
@@ -63,7 +63,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     protected providersSubject: Subject<any> = new Subject<any>();
 
     @Output()
-    private selectPoints: EventEmitter<ITimeInterval> = new EventEmitter<ITimeInterval>();
+    private selectPoints: EventEmitter<TimeInterval> = new EventEmitter<TimeInterval>();
 
     @ViewChild('chartContainer')
     private chartContainerRef: ElementRef;

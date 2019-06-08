@@ -4,27 +4,16 @@ import { MonitoringService, IMetricData } from '@core/services/metrics/monitorin
 import { ReqstoreService } from '@core/services/reqstore.service';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
-import { IModelVersion, ITimeInterval } from '@shared/_index';
+import { IModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
-import { IReqstoreEntry, IReqstoreLog } from '@shared/models/reqstore.model';
+import { ReqstoreEntry, ReqstoreLog } from '@shared/models/reqstore.model';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
-import { Observable, BehaviorSubject, Subscription, combineLatest } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription, combineLatest, of } from 'rxjs';
 import { map, filter, switchMap } from 'rxjs/operators';
 
-type ILogEntry = IReqstoreEntry & {
+type ILogEntry = ReqstoreEntry & {
     failed: boolean;
     metrics: any;
-};
-
-type ILogEntry2 = IReqstoreEntry & {
-    failed: boolean;
-    metrics: {
-        [metricKind: string]: {
-            [columnIndex: string]: {
-                [metricName: string]: any
-            }
-        }
-    };
 };
 
 interface ILog {
@@ -60,7 +49,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
     ];
 
     updateLogSub: Subscription;
-    selectedTimeInterval$: BehaviorSubject<ITimeInterval> = new BehaviorSubject(null);
+    selectedTimeInterval$: BehaviorSubject<TimeInterval> = new BehaviorSubject(null);
 
     // reqstoreOptions
     maxMBytes: string = '1';
@@ -69,7 +58,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
     onlyFailedReqstoreData: boolean = true;
     updateReqstore$: BehaviorSubject<any> = new BehaviorSubject('');
 
-    reqstoreLog: IReqstoreLog;
+    reqstoreLog: ReqstoreLog;
     sonarData: IMetricData[][];
     logLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
     logData: ILog;
@@ -108,9 +97,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
         ).subscribe(
             ([reqstoreLog, sonarData]) => {
                 this.logLoading$.next(false);
-                this.reqstoreLog = reqstoreLog;
                 this.sonarData = sonarData;
-                this.logData = this.mapReqstorAndSonarToLog(reqstoreLog, sonarData);
         });
     }
 
@@ -122,7 +109,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
         this.selectedFeature = feature;
     }
 
-    onSelectPoints(timeInterval: ITimeInterval): void {
+    onSelectPoints(timeInterval: TimeInterval): void {
         if (timeInterval.from && timeInterval.to) {
             this.selectedTimeInterval$.next(timeInterval);
         }
@@ -133,20 +120,11 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
     }
 
     private reqstoreRequest(interval, modelVersion) {
-        return this.reqstore.getData(
-            modelVersion.id,
-            interval.from,
-            interval.to,
-            {
-                maxBytes: `${+this.maxMBytes * 1024 * 1024}`,
-                maxMessages: this.maxMessages,
-                reverse: this.reverse ? 'true' : 'false',
-            }
-        );
+        return of([]);
     }
 
     private sonarRequest(
-        interval: ITimeInterval,
+        interval: TimeInterval,
         modelVersion: IModelVersion,
         metricSpecifications: MetricSpecification
     ): Observable<IMetricData[][]> {
@@ -168,7 +146,7 @@ export class ModelVersionMonitoringLogComponent implements OnInit, OnDestroy {
     }
 
     private mapReqstorAndSonarToLog(
-        reqstoreLog: IReqstoreLog,
+        reqstoreLog: ReqstoreLog,
         sonarData: IMetricData[][]
     ): ILog {
         if (isEmptyObj(reqstoreLog) || sonarData.length === 0) { return {}; }

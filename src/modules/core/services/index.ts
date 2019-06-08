@@ -5,3 +5,4 @@ export * from './profiler.service';
 
 export * from './signatures/_index';
 export * from './runtimes/_index';
+export * from './request-response-log.service';

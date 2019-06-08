@@ -16,7 +16,6 @@ import {
     ModelVersionMonitoringComponent,
     ModelVersionMonitoringLogComponent,
     CompareComponent,
-    ReqstoreComponent,
     ModelVersionsTableRowComponent,
     ModelVersionProfilerComponent,
 } from '@models/components';
@@ -58,7 +57,6 @@ import { ProfilerModule } from '../profiler/profiler.module';
         CompareComponent,
         ModelVersionMonitoringLogComponent,
         ModelVersionContainerComponent,
-        ReqstoreComponent,
         ModelVersionProfilerComponent,
         ModelVersionsTableComponent,
     ],
