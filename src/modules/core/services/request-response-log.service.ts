@@ -9,7 +9,7 @@ import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { ReqstoreLog, ReqstoreEntry } from '@shared/models/reqstore.model';
 import * as _ from 'lodash';
 import { Observable, of, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 type LogEntry = ReqstoreEntry & {
   failed: boolean;
@@ -46,9 +46,9 @@ export class RequestResponseLogService {
       metricSpecifications,
     });
     return combineLatest(reqstoreLog$, sonarData$).pipe(
-      map(([reqstoreLog, sonarData]) => {
-        this.mapReqstorAndSonarToLog(reqstoreLog, sonarData);
-      })
+      map(([reqstoreLog, sonarData]) =>
+        this.mapReqstorAndSonarToLog(reqstoreLog, sonarData)
+      )
     );
   }
 
@@ -83,8 +83,8 @@ export class RequestResponseLogService {
       till: string;
       health?: string;
     } = {
-      from: `${Math.floor(timeInterval.from)}`,
-      till: `${Math.floor(timeInterval.to)}`,
+      from: `${Math.floor(timeInterval.from / 1000)}`,
+      till: `${Math.floor(timeInterval.to / 1000)}`,
     };
 
     if (onlyFailedReqstoreData) {

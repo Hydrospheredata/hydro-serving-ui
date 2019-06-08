@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { exhaustMap, filter } from 'rxjs/operators';
+import { exhaustMap, filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-dashboard',
@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
         ([timeInterval, _, metricSpecifications]) =>
           !!timeInterval && !!metricSpecifications
       ),
-      exhaustMap(
+      switchMap(
         ([timeInterval, modelVersion, metricSpecifications]) => {
           return this.reqResLogService.getLog({
             timeInterval,
@@ -61,10 +61,6 @@ export class DashboardComponent implements OnInit {
           });
         }
       )
-    ).subscribe(
-      _ => {
-        debugger;
-      }
     );
   }
 

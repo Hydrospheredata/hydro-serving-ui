@@ -8,7 +8,7 @@
   </hs-health-timeline>
   <div>
     <hs-reqstore-table-log
-      [logData]="logData"
+      [logData]="log$ | async"
       [modelVersion]="selectedModelVersion$ | async"
       [loading]="logLoading$ | async"
     >
