@@ -8,6 +8,8 @@ import {
   DialogAddMetricComponent,
   MetricComponent,
   DialogDeleteMetricComponent,
+  HealthTimelineComponent,
+  HealthTimelineMiniComponent,
 } from '@monitoring/components';
 import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-service-status.effects';
 import { EffectsModule } from '@ngrx/effects';
@@ -40,6 +42,8 @@ import { reducer } from './reducers';
     ChartsComponent,
     ChartComponent,
     GraphsComponent,
+    HealthTimelineComponent,
+    HealthTimelineMiniComponent,
   ],
   imports: [
     SharedModule,

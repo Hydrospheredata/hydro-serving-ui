@@ -167,7 +167,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.yScale = d3
       .scaleLinear()
       .domain([+maxValue, +minValue])
-      .range([0, this.canvasHeight-50]);
+      .range([0, this.canvasHeight - 50]);
   }
 
   private cursorOnChart(posX: number): boolean {
