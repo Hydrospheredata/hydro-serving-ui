@@ -48,20 +48,6 @@
     fill: #57626b;
 }
 
-.dataset__rect {
-    transition: .3s fill ease;
-    &--s {
-        fill: #3395da80;
-    }
-    &--f {
-        fill: #ef1919d9;
-    }
-    &--u {
-        fill: rgb(128, 128, 128);
-    }
-
-}
-
 .selection {
     fill: #0282f16b;
     stroke: #3556805e;

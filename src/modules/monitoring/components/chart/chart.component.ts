@@ -102,7 +102,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     const { width, height } = el.getBoundingClientRect();
 
     this.canvasWidth = width;
-    this.canvasHeight = height - 50;
+    this.canvasHeight = height - 82;
     this.chartWidth = this.canvasWidth - this.xOffset;
     this.initialized = true;
 

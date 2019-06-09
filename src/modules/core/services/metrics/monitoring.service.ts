@@ -31,20 +31,18 @@ export class MonitoringService {
     this.baseMonitoringUrl = `${environment.monitoringUrl}`;
   }
 
-  public getMetrics(
-    options: {
-      metricSpecification: MetricSpecification;
-      interval: string;
-      columnIndex?: string;
-    }
-  ): Promise<IMetricData[]> {
+  public getMetrics(options: {
+    metricSpecification: MetricSpecification;
+    interval: string;
+    columnIndex?: string;
+  }): Promise<IMetricData[]> {
     const { modelVersionId, kind } = options.metricSpecification;
 
     const params: {
-      modelVersionId: string,
-      interval: string,
-      metrics: string[],
-      columnIndex?: string
+      modelVersionId: string;
+      interval: string;
+      metrics: string[];
+      columnIndex?: string;
     } = {
       modelVersionId: `${modelVersionId}`,
       interval: `${options.interval}`,
@@ -69,20 +67,27 @@ export class MonitoringService {
       .toPromise();
   }
 
-  public getAggregation(
-    modelVersionId: string,
-    metrics: string[],
-    optional: {
-      from?: string;
-      till?: string;
-      steps?: string;
-    } = {}
-  ): Observable<IMonitoringAggregationList> {
+  public getAggregation({
+    metricSpecification,
+    from,
+    till,
+    steps,
+  }: {
+    metricSpecification: MetricSpecification;
+    from?: string;
+    till?: string;
+    steps?: string;
+  }): Observable<IMonitoringAggregationList> {
+    const { modelVersionId, kind } = metricSpecification;
+    const firstMetric = this.getMetricsBySpecKind(kind).slice(0, 1);
+
     return this.http.get(`${this.baseMonitoringUrl}/metrics/aggregation`, {
       params: {
-        modelVersionId,
-        metrics,
-        ...optional,
+        modelVersionId: `${modelVersionId}`,
+        metrics: firstMetric,
+        from,
+        till,
+        steps,
       },
     });
   }
@@ -104,7 +109,9 @@ export class MonitoringService {
         ...optional,
       };
 
-      return this.http.get(`${this.baseMonitoringUrl}/metrics/range`, {params});
+      return this.http.get(`${this.baseMonitoringUrl}/metrics/range`, {
+        params,
+      });
     } catch (error) {
       throwError(error);
     }

@@ -1,3 +1,5 @@
-<div *ngFor="let metric of metrics$ | async">
-  <hs-chart [metrics]='[metric]'></hs-chart>
+<div class="charts">
+  <div class="charts__item" [ngClass]="{'charts__item--odd': odd}" *ngFor="let metric of metrics$ | async; odd as odd">
+    <hs-chart [metrics]="[metric]"></hs-chart>
+  </div>
 </div>

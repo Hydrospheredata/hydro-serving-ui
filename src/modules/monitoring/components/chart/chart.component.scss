@@ -1,12 +1,13 @@
 .chart {
     width: 100%;
-    height: 200px;
+    height: 268px;
     background: white;
     box-shadow: 0 0 2px -1px grey;
     margin-bottom: 24px;
     &__header {
         padding: 0 20px;
         line-height: 32px;
+        min-height: 32px;
     }
     &__metric-name {
         color: #38506d88;

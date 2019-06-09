@@ -1,0 +1,9 @@
+.charts {
+    &__item {
+        display: inline-block;
+        width: calc(50% - 20px);
+        &--odd {
+            margin-left: 20px;
+        }
+    }
+}

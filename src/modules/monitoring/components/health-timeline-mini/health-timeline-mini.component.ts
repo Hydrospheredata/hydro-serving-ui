@@ -32,7 +32,7 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
     @ViewChild('minimapBrush', { read: ElementRef })
     minimapBrush: ElementRef;
 
-    @Input() width: number = 840;
+    @Input() width;
     @Input() currentTimeInterval: TimeInterval;
     @Input() fullLog: ITimelineLog;
 
@@ -56,7 +56,7 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        const { fullLog, currentTimeInterval } = changes;
+        const { fullLog, currentTimeInterval, width } = changes;
 
         if (fullLog && fullLog.currentValue) {
             if (fullLog.currentValue !== fullLog.previousValue) {
@@ -81,21 +81,21 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
     }
 
     render() {
+        this.elementsPositioning();
         this.updateScale();
         this.updateDataset();
-        this.elementsPositioning();
         this.updateBrush();
     }
 
     private updateBrush() {
         const self = this;
         const rowCount = Object.keys(this.fullLog).length;
-        const brush = d3.brushX().extent([[0, 0], [840, rowCount * 12]]);
+        const brush = d3.brushX().extent([[0, 0], [this.width, rowCount * 12]]);
         this.brush = brush;
 
         d3.select(this.minimapBrush.nativeElement)
             .call(brush)
-            .call(brush.move, [0, 840]);
+            .call(brush.move, [0, this.width]);
 
         d3.select(this.minimapBrush.nativeElement).select('.overlay').remove();
 
@@ -120,12 +120,13 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
     private updateScale() {
         this.scale = d3.scaleTime()
             .domain(this.timelineService.getMinimumAndMaximumTimestamps(this.fullLog))
-            .range([0, 840]);
+            .range([0, this.width]);
     }
 
     private elementsPositioning() {
         const rowCount = Object.keys(this.fullLog).length;
         this.xAxisTransform = `translate(0, ${rowCount * 12})`;
+        this.height = rowCount * 12 + 20;
     }
 
     private updateDataset() {
