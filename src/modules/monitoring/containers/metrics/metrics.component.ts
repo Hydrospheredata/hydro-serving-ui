@@ -30,11 +30,9 @@ export class MetricsComponent implements OnInit {
   }
 
   deleteMetric(metricId: string) {
-    return () => {
       this.dialog.createDialog({
         component: DialogDeleteMetricComponent,
         providers: [{provide: METRIC_ID_VALUE, useValue: metricId}],
       });
-    };
   }
 }

@@ -1,14 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { StoreModule } from '@ngrx/store';
+import { ChartComponent } from '@testing/components';
 import { GraphsComponent } from './graphs.component';
 
-describe('TimemachineComponent', () => {
+xdescribe('GraphsComponent', () => {
   let component: GraphsComponent;
   let fixture: ComponentFixture<GraphsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [GraphsComponent],
+      declarations: [GraphsComponent, ChartComponent],
+      imports: [
+        StoreModule.forRoot({}),
+      ],
     }).compileComponents();
   }));
 

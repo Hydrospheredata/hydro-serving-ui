@@ -3,9 +3,6 @@ import {
   OnInit,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { GetMetricsAction } from '@core/actions/monitoring.actions';
-import { HydroServingState } from '@core/reducers';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'hs-graphs',
@@ -31,13 +28,5 @@ export class GraphsComponent implements OnInit {
     },
   ];
 
-  private modelVer;
-
-  constructor(private store: Store<HydroServingState>) {}
-
   ngOnInit() {}
-
-  loadMetrics(): void {
-    this.store.dispatch(new GetMetricsAction(this.modelVer));
-  }
 }

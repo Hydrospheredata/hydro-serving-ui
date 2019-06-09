@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { filter, switchMap, exhaustMap } from 'rxjs/operators';
+import { filter, exhaustMap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-dashboard',

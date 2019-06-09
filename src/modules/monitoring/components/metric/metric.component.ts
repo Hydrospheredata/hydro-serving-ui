@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 
 @Component({
@@ -9,10 +9,10 @@ import { MetricSpecification } from '@shared/models/metric-specification.model';
 })
 export class MetricComponent {
 
-  @Input() deleteMetric: () => void;
+  @Output() deleteMetric = new EventEmitter();
   @Input() editMetric: () => void;
   @Input()
-  private metric: MetricSpecification;
+  metric: MetricSpecification;
 
   get id() {
     return this.metric.id;
@@ -30,4 +30,7 @@ export class MetricComponent {
     return this.metric.config;
   }
 
+  onDeleteMetric() {
+    this.deleteMetric.next(this.id);
+  }
 }

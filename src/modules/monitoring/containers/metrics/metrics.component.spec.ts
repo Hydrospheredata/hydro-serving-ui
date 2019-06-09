@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { DialogService } from '@dialog/dialog.service';
+import { StoreModule } from '@ngrx/store';
+import { MetricComponent } from '@testing/components';
 import { MetricsComponent } from './metrics.component';
+
+const MockDialogService = {};
 
 describe('MetricsComponent', () => {
   let component: MetricsComponent;
@@ -8,9 +13,12 @@ describe('MetricsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MetricsComponent ],
-    })
-    .compileComponents();
+      imports: [StoreModule.forRoot({})],
+      declarations: [MetricsComponent, MetricComponent],
+      providers: [{
+        provide: DialogService, useValue: MockDialogService,
+      }],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -52,8 +52,8 @@ describe('NavbarComponent', () => {
             navigationItems = navigationElement.children;
         });
 
-        it('should has 2 links', () => {
-            expect(navigationItems.length).toBe(2);
+        it('should has 3 links', () => {
+            expect(navigationItems.length).toBe(3);
         });
 
         it('first is /models link', () => {
@@ -64,6 +64,11 @@ describe('NavbarComponent', () => {
         it('second is /applications link', () => {
             const applicationLink = navigationItems[1];
             expect(applicationLink.getAttribute('href')).toBe('/applications');
+        });
+
+        it('third is /timemachine link', () => {
+            const applicationLink = navigationItems[2];
+            expect(applicationLink.getAttribute('href')).toBe('/timemachine');
         });
     });
 });
