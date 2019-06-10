@@ -2,6 +2,7 @@
     margin-top: 24px;
 
     &__header {
+        align-items: center;
         display: flex;
         padding: 12px;
         background: white;
@@ -10,20 +11,14 @@
     }
 }
 
-.time-select {
-    &__label {
-        color: grey;
-        letter-spacing: 1px;
-    }
-    &__select {
-        display: inline-block;
-        width: 160px 
-    }
-}
+.time-select,
+.compare,
+.live-update {
+    margin-right: 24px;
 
-.compare {
     &__label {
-        color: grey;
+        color: #8080809c;
+        text-transform: uppercase;
         letter-spacing: 1px;
     }
 

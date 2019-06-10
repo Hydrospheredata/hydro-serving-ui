@@ -19,6 +19,7 @@ import { Observable } from 'rxjs';
 export class ChartsComponent implements OnInit {
   @Input() selectedTimeInterval: TimeInterval;
   metrics$: Observable<MetricSpecification[]>;
+  liveUpdate: boolean = false;
 
   constructor(private store: Store<HydroServingState>) {}
 

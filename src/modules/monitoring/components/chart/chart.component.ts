@@ -16,7 +16,7 @@ import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
 import { interval, Subscription, combineLatest, Observable, merge } from 'rxjs';
-import { tap, map, switchMap, filter } from 'rxjs/operators';
+import { tap, map, switchMap, filter, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-chart',
@@ -64,7 +64,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const liveUpdate$ = interval(1000).pipe(filter(() => this.liveUpdate));
+    const liveUpdate$ = interval(1000).pipe(filter(() => this.liveUpdate), startWith(''));
 
     this.log$ = merge(liveUpdate$)
       .pipe(

@@ -28,9 +28,10 @@
         </mdl-option>
       </mdl-select>
     </div>
-    <div>
-      Live update:
+    <div class="live-update">
+      <span class='live-update__label'>Live update: </span>
       <input
+        class='live-update__select'
         type="checkbox"
         name="liveUpdate"
         id="liveUpdate"
@@ -44,7 +45,11 @@
       class="chart"
       *ngFor="let item of groupedMetricSpecifications$ | async | keyvalue"
     >
-      <hs-chart [metrics]="item.value" [liveUpdate]="liveUpdate" [timeBoundary]='chartTimeWidth'></hs-chart>
+      <hs-chart
+        [metrics]="item.value"
+        [liveUpdate]="liveUpdate"
+        [timeBoundary]="chartTimeWidth"
+      ></hs-chart>
     </div>
   </div>
 </div>

@@ -1,5 +1,5 @@
 <div class="charts">
   <div class="charts__item" [ngClass]="{'charts__item--odd': odd}" *ngFor="let metric of metrics$ | async; odd as odd">
-    <hs-chart [metrics]="[metric]" [selectedTimeInterval]='selectedTimeInterval'></hs-chart>
+    <hs-chart [metrics]="[metric]" [selectedTimeInterval]='selectedTimeInterval' [liveUpdate]='liveUpdate'></hs-chart>
   </div>
 </div>
