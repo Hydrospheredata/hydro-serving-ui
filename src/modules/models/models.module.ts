@@ -29,6 +29,7 @@ import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilerModule } from '../profiler/profiler.module';
+import { ModelVersionReplyComponent } from './components/model-version-reply/model-version-reply.component';
 
 @NgModule({
     imports: [
@@ -57,6 +58,7 @@ import { ProfilerModule } from '../profiler/profiler.module';
         ModelVersionContainerComponent,
         ModelVersionProfilerComponent,
         ModelVersionsTableComponent,
+        ModelVersionReplyComponent,
     ],
     entryComponents: [
         DialogDeleteModelComponent,

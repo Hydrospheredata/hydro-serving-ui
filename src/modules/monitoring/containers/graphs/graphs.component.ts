@@ -1,8 +1,16 @@
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { HydroServingState, getSelectedMetrics } from '@core/reducers';
+import { MetricSettingsService } from '@core/services/metrics/_index';
+import { getSiblingVersions } from '@models/reducers';
+import { Store } from '@ngrx/store';
+import { ModelVersion } from '@shared/_index';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
+import * as _ from 'lodash';
+import { Observable, Subject, combineLatest, of } from 'rxjs';
 import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+  switchMap,
+  map,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'hs-graphs',
@@ -11,22 +19,54 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GraphsComponent implements OnInit {
-  metrics = [
-    {
-      id: '0ba1b8a1-844f-43ec-9bfb-b1e75488880a',
-      name: 'c',
-      modelVersionId: 1,
-      kind: 'CounterMetricSpec',
-      withHealth: true,
-    },
-    {
-      id: '1f26a809-56aa-40ee-a6e3-329ff8133d7c',
-      name: 'c',
-      modelVersionId: 2,
-      kind: 'CounterMetricSpec',
-      withHealth: true,
-    },
+  siblingModelVersions$: Observable<ModelVersion[]>;
+
+  selectedMetricSpecifications$: Observable<MetricSpecification[]>;
+  comparedModelVersion$: Subject<any> = new Subject();
+  comparedMetricSpecifications$: Observable<MetricSpecification[]>;
+
+  groupedMetricSpecifications$: Observable<_.Dictionary<MetricSpecification[]>>;
+
+  chartTimeWidth: number = 1800000;
+  chartTimeWidthParams: Array<{ ms: number, text: string }> = [
+      { ms: 900000, text: '15 minutes' },
+      { ms: 1800000, text: '30 minutes' },
+      { ms: 3600000, text: '1 hour' },
+      { ms: 7200000, text: '2 hours' },
+      { ms: 14400000, text: '4 hours' },
   ];
 
-  ngOnInit() {}
+  set compareModelVersionId(id) {
+    this.comparedModelVersion$.next(id);
+  }
+
+  liveUpdate: boolean = true;
+  constructor(
+    private store: Store<HydroServingState>,
+    private metricSettingService: MetricSettingsService
+  ) {
+    this.selectedMetricSpecifications$ = this.store.select(getSelectedMetrics);
+    this.siblingModelVersions$ = this.store.select(getSiblingVersions);
+    this.comparedMetricSpecifications$ = this.comparedModelVersion$.pipe(
+      switchMap(id => {
+        if (id) {
+          return this.metricSettingService.getMetricSettings(id);
+        } else {
+          return of([]);
+        }
+      })
+    );
+  }
+
+  ngOnInit() {
+    this.groupedMetricSpecifications$ = combineLatest(
+      this.selectedMetricSpecifications$,
+      this.comparedMetricSpecifications$
+    ).pipe(
+      map(arrays => {
+        const flattenArray = _.flatten(arrays);
+        return _.groupBy(flattenArray, d => d.kind);
+      })
+    );
+  }
 }

@@ -1,0 +1,26 @@
+.replay {
+    display: flex;
+    &__form {
+        width: 240px;
+        background: white;
+        margin-right: 24px;
+        padding: 12px 16px;
+        box-shadow: 0px 2px 6px -4px #2e2e4a;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .button {
+            margin-top: 18px;
+            width: 100%;
+            justify-content: center;
+        }
+        
+    }
+    &__replays {
+        box-shadow: 0px 2px 6px -4px #2e2e4a;
+        background: white;
+        width: 100%;
+        align-self: flex-start;
+        padding: 12px 16px;
+    }
+}

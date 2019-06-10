@@ -93,6 +93,9 @@ export const getSiblingVersions = createSelector(
   getModelVersionState,
   getSelectedModelVersion,
   (state, modelVersion) => {
+    if (!modelVersion) {
+      return;
+    }
     const ids = state.byModel[modelVersion.model.id].filter(
       id => id !== modelVersion.id
     );
@@ -120,17 +123,17 @@ export const getModelVersionsByModelId = (modelId: number) =>
   );
 
 export const getModelsWithAtleastTwoModelVersions = createSelector(
-    getModelEntities,
-    getGroupedModelVersions,
-    (models, groupedModelVersion) => {
-        const ids = [];
-        for (const modelId in groupedModelVersion) {
-            if (groupedModelVersion.hasOwnProperty(modelId)) {
-                if (groupedModelVersion[modelId].length >= 2) {
-                    ids.push(modelId);
-                }
-            }
+  getModelEntities,
+  getGroupedModelVersions,
+  (models, groupedModelVersion) => {
+    const ids = [];
+    for (const modelId in groupedModelVersion) {
+      if (groupedModelVersion.hasOwnProperty(modelId)) {
+        if (groupedModelVersion[modelId].length >= 2) {
+          ids.push(modelId);
         }
-        return ids.map(id => models[id]);
+      }
     }
+    return ids.map(id => models[id]);
+  }
 );

@@ -1,3 +1,50 @@
-<div class='graphs'>
-  <!-- <hs-chart [metrics]='metrics'></hs-chart> -->
+<div class="graphs">
+  <header class="graphs__header">
+    <div class="time-select">
+      <span class="time-select__label">Interval: </span>
+      <mdl-select
+        class="compare__select"
+        [(ngModel)]="chartTimeWidth"
+        label="time interval"
+      >
+        <mdl-option *ngFor="let time of chartTimeWidthParams" [value]="time.ms">
+          {{ time.text }}
+        </mdl-option>
+      </mdl-select>
+    </div>
+    <div class="compare">
+      <span class="compare__label">Compare with: </span>
+      <mdl-select
+        class="compare__select"
+        [(ngModel)]="compareModelVersionId"
+        label="model version"
+      >
+        <mdl-option [value]><em>-- Select a model version --</em></mdl-option>
+        <mdl-option
+          *ngFor="let modelVersion of siblingModelVersions$ | async"
+          [value]="modelVersion.id"
+        >
+          {{ modelVersion.modelVersion }}
+        </mdl-option>
+      </mdl-select>
+    </div>
+    <div>
+      Live update:
+      <input
+        type="checkbox"
+        name="liveUpdate"
+        id="liveUpdate"
+        [(ngModel)]="liveUpdate"
+      />
+    </div>
+  </header>
+
+  <div>
+    <div
+      class="chart"
+      *ngFor="let item of groupedMetricSpecifications$ | async | keyvalue"
+    >
+      <hs-chart [metrics]="item.value" [liveUpdate]="liveUpdate" [timeBoundary]='chartTimeWidth'></hs-chart>
+    </div>
+  </div>
 </div>

@@ -15,7 +15,7 @@ import { SonarMetricData, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
-import { interval, Subscription, combineLatest, Observable } from 'rxjs';
+import { interval, Subscription, combineLatest, Observable, merge } from 'rxjs';
 import { tap, map, switchMap, filter } from 'rxjs/operators';
 
 @Component({
@@ -29,6 +29,9 @@ export class ChartComponent implements OnInit, OnDestroy {
   @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
   @Input() metrics: MetricSpecification[];
   @Input() selectedTimeInterval: TimeInterval;
+  @Input() liveUpdate: boolean = true;
+
+  @Input() timeBoundary: number = null;
 
   canvasWidth: number;
   canvasHeight: number;
@@ -38,8 +41,8 @@ export class ChartComponent implements OnInit, OnDestroy {
   features: string[];
   selectedFeature: string = '0';
 
-  lineColors = ['#5786c1', '#ffdb89'];
-  areaColors = ['#1c67c31c', '#ffdb8947'];
+  lineColors = ['#5786c1', '#ffdb89', '#b86efd', '#7cec7c'];
+  areaColors = ['#1c67c31c', '#ffdb8947', '#b86efd29', '#7cec7c29'];
 
   private initialized: boolean = false;
   private data: SonarMetricData[];
@@ -61,9 +64,13 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.log$ = interval(1000)
+    const liveUpdate$ = interval(1000).pipe(filter(() => this.liveUpdate));
+
+    this.log$ = merge(liveUpdate$)
       .pipe(
-        switchMap(() => this.makeRequest()),
+        switchMap(() => {
+          return this.timeBoundary ? this.makeRequestInBoundary() : this.makeRequest();
+        }),
         filter(data => this.isDifferentData(data)),
         tap(data => {
           this.data = data;
@@ -71,6 +78,26 @@ export class ChartComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  makeRequestInBoundary() {
+    const interva = `${this.timeBoundary}`;
+    const observables = this.metrics.map(metricSpecification => {
+      if (this.isKolmogorovSmirnov()) {
+        return this.monitiringService.getMetrics({
+          metricSpecification,
+          interval: interva,
+          columnIndex: this.selectedFeature,
+        });
+      } else {
+        return this.monitiringService.getMetrics({
+          metricSpecification,
+          interval: interva,
+        });
+      }
+    });
+
+    return combineLatest(observables).pipe(map(data => _.flatten(data))); 
   }
 
   makeRequest(): Observable<SonarMetricData[]> {
