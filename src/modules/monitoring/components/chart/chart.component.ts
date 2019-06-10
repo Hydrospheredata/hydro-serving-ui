@@ -11,7 +11,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
-import { SonarMetricData } from '@shared/_index';
+import { SonarMetricData, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
@@ -28,6 +28,8 @@ import { tap, map, switchMap, filter } from 'rxjs/operators';
 export class ChartComponent implements OnInit, OnDestroy {
   @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
   @Input() metrics: MetricSpecification[];
+  @Input() selectedTimeInterval: TimeInterval;
+
   canvasWidth: number;
   canvasHeight: number;
   groupedData: { [uniqname: string]: SonarMetricData[] };
@@ -72,8 +74,12 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   makeRequest(): Observable<SonarMetricData[]> {
-    const from = '0';
-    const till = `${Math.floor(new Date().getTime() / 1000)}`;
+    let from: string = '0';
+    let till: string = `${Math.floor(new Date().getTime() / 1000)}`;
+    if (this.selectedTimeInterval) {
+      from = `${Math.floor(this.selectedTimeInterval.from / 1000)}`;
+      till = `${Math.floor(this.selectedTimeInterval.to / 1000)}`;
+    }
 
     const observables = this.metrics.map(metric => {
       if (this.isKolmogorovSmirnov()) {

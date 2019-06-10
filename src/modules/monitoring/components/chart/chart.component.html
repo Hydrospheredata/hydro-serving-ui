@@ -1,65 +1,67 @@
-<div class='chart' #chart>
-    <header class='chart__header'>
-        <span *ngIf='isKolmogorovSmirnov()'>
-            <ng-container *ngTemplateOutlet="featureSelector"></ng-container>
-        </span>
-    </header>
-    <svg 
-        class='canvas' 
-        [attr.width]='this.canvasWidth' 
-        [attr.height]='canvasHeight' 
-        #svg
+<div class="chart" #chart>
+  <header class="chart__header">
+    <span *ngIf="isKolmogorovSmirnov()">
+      <ng-container *ngTemplateOutlet="featureSelector"></ng-container>
+    </span>
+  </header>
+  <svg
+    class="canvas"
+    [attr.width]="this.canvasWidth"
+    [attr.height]="canvasHeight"
+    #svg
+  >
+    <g hsD3Axis [scale]="xScale" transform="translate(25,170)"></g>
+    <g
+      hsD3Axis
+      [scale]="yScale"
+      position="left"
+      transform="translate(25,10)"
+    ></g>
+    <g
+      [hs-d3line]
+      *ngFor="let data of groupedData | keyvalue; index as i"
+      [data]="data.value"
+      [xScale]="xScale"
+      [yScale]="yScale"
+      transform="translate(25,10)"
+      [attr.stroke]="lineColors[i]"
+    ></g>
+    <g
+      [hs-d3area]
+      *ngFor="let data of groupedData | keyvalue; index as i"
+      [data]="data.value"
+      [xScale]="xScale"
+      [yScale]="yScale"
+      [y0]="minValue"
+      [attr.fill]="areaColors[i]"
+      transform="translate(25,10)"
+    ></g>
+  </svg>
+  <div class="chart__footer">
+    <span
+      class="metric__name"
+      *ngFor="let data of groupedData | keyvalue; index as i"
     >
-        <g 
-            hsD3Axis
-            [scale]='xScale'
-            transform='translate(25,170)'
-        ></g>
-        <g 
-            hsD3Axis 
-            [scale]='yScale'
-            position='left'
-            transform='translate(25,10)'
-        ></g>
-        <g 
-            [hs-d3line]
-            *ngFor="let data of groupedData | keyvalue; index as i"
-            [data]='data.value'
-            [xScale]='xScale'
-            [yScale]='yScale'
-            transform='translate(25,10)'
-            [attr.stroke]='lineColors[i]'
-        ></g>
-        <g 
-            [hs-d3area]
-            *ngFor="let data of groupedData | keyvalue;index as i"
-            [data]='data.value'
-            [xScale]='xScale'
-            [yScale]='yScale'
-            [y0]='minValue'
-            [attr.fill]='areaColors[i]'
-            transform='translate(25,10)'
-        ></g>
-    </svg>
-    <div class='chart__footer'>
-        <span class='metric__name' *ngFor="let data of groupedData | keyvalue; index as i">
-            <span [style.color]="lineColors[i]">-</span>{{ data.key }}
-        </span>
-    </div>
+      <span [style.color]="lineColors[i]">-</span>{{ data.key }}
+    </span>
+  </div>
 </div>
 
-
 <ng-template #featureSelector>
-    <mdl-select
-        #featureSelect
-        label="Choose feature"
-        [(ngModel)]="selectedFeature"
-        [autocomplete]="true"
-        (keydown.enter)="$event.preventDefault()"
-        class="filter-input">
-        <mdl-option 
-            *ngFor="let feature of featureList | matchSorter:{}:featureSelect.searchQuery" 
-            [value]="feature">{{ feature }}
-        </mdl-option>
-    </mdl-select>
+  <mdl-select
+    #featureSelect
+    label="Choose feature"
+    [(ngModel)]="selectedFeature"
+    [autocomplete]="true"
+    (keydown.enter)="$event.preventDefault()"
+    class="filter-input"
+  >
+    <mdl-option
+      *ngFor="
+        let feature of featureList | matchSorter: {}:featureSelect.searchQuery
+      "
+      [value]="feature"
+      >{{ feature }}
+    </mdl-option>
+  </mdl-select>
 </ng-template>
