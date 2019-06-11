@@ -13,7 +13,10 @@ label.disabled {
 
 .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
+    &__button {
+        margin-left: 8px;
+    }
 }
 
 .row {
