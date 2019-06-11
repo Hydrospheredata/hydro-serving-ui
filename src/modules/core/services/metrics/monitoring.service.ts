@@ -36,17 +36,19 @@ export class MonitoringService {
     interval: string;
     columnIndex?: string;
   }): Promise<IMetricData[]> {
-    const { modelVersionId, kind } = options.metricSpecification;
+    const { modelVersionId, kind, id } = options.metricSpecification;
 
     const params: {
       modelVersionId: string;
       interval: string;
       metrics: string[];
       columnIndex?: string;
+      metricSpecId: string;
     } = {
       modelVersionId: `${modelVersionId}`,
       interval: `${options.interval}`,
       metrics: this.getMetricsBySpecKind(kind),
+      metricSpecId: `${id}`,
     };
 
     if (options.columnIndex) {
@@ -59,7 +61,7 @@ export class MonitoringService {
       .toPromise();
   }
 
-  // TODO: do not work
+ // TODO: do not work
   public getHealth() {
     return this.http
       .get(`${this.baseMonitoringUrl}/health`)
@@ -102,9 +104,10 @@ export class MonitoringService {
     } = {}
   ): Observable<SonarMetricData[]> {
     try {
-      const { modelVersionId: mv, kind } = metric;
+      const { modelVersionId: mv, kind, id } = metric;
       const params = {
         modelVersionId: `${mv}`,
+        metricSpecId: `${id}`,
         metrics: this.getMetricsBySpecKind(kind),
         ...optional,
       };
