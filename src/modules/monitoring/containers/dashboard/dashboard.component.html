@@ -1,19 +1,32 @@
 <div>
-  <hs-health-timeline
-    [metricSpecifications$]="metricSpecs$"
-    [selectedModelVersion$]="selectedModelVersion$"
-    (timeInterval)="onChangeTimeInterval($event)"
-  >
-  </hs-health-timeline>
-  <div>
-    <hs-reqstore-table-log
-      [logData]="log$ | async"
-      [modelVersion]="selectedModelVersion$ | async"
-      [loading]="logLoading$ | async"
-    >
-    </hs-reqstore-table-log>
-  </div>
-  <div class="charts">
-    <hs-charts [selectedTimeInterval] = 'selectedTimeInterval$ | async'></hs-charts>
-  </div>
+  <ng-container *ngIf="metricSpecs$ | async as metricSpecs">
+    <ng-container *ngIf="metricSpecs.length > 0; else emptyMetricList">
+      <hs-health-timeline
+        [metricSpecifications]="metricSpecs"
+        [selectedModelVersion]="selectedModelVersion$ | async"
+        (timeInterval)="onChangeTimeInterval($event)"
+      >
+      </hs-health-timeline>
+      <div>
+        <hs-reqstore-table-log
+          [logData]="log$ | async"
+          [modelVersion]="selectedModelVersion$ | async"
+          [loading]="logLoading$ | async"
+        >
+        </hs-reqstore-table-log>
+      </div>
+      <div class="charts">
+        <hs-charts
+          [selectedTimeInterval]="selectedTimeInterval$ | async"
+          [metricSpecifications]="metricSpecs"
+        ></hs-charts>
+      </div>
+    </ng-container>
+  </ng-container>
 </div>
+<ng-template #emptyMetricList>
+  <hs-alert-message>
+    This model version does not have any metrics. 
+  </hs-alert-message>
+</ng-template>
+

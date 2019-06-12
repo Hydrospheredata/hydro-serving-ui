@@ -11,11 +11,9 @@ import {
 } from '@models/components';
 
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
-import { MetricsComponent, DashboardComponent } from '@monitoring/containers';
-import {
-  MonitoringPageComponent,
-  GraphsComponent,
-} from '@monitoring/containers';
+import { MonitoringPageComponent } from '@monitoring/containers';
+
+import { routes as monitoringRoutes } from '@monitoring/monitoring-routing.module';
 
 @NgModule({
   imports: [
@@ -58,25 +56,7 @@ import {
               {
                 path: 'monitoring',
                 component: MonitoringPageComponent,
-                children: [
-                  {
-                    path: 'metrics',
-                    component: MetricsComponent,
-                  },
-                  {
-                    path: 'dashboard',
-                    component: DashboardComponent,
-                  },
-                  {
-                    path: 'graphs',
-                    component: GraphsComponent,
-                  },
-                  {
-                    path: '',
-                    redirectTo: 'dashboard',
-                    pathMatch: 'full',
-                  },
-                ],
+                children: monitoringRoutes,
               },
               {
                 path: 'replay',

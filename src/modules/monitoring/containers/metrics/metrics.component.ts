@@ -29,7 +29,7 @@ export class MetricsComponent implements OnInit {
     this.metrics$ = this.store.select(getSelectedMetrics);
   }
 
-  deleteMetric(metricId: string) {
+  onDeleteMetric(metricId: string) {
       this.dialog.createDialog({
         component: DialogDeleteMetricComponent,
         providers: [{provide: METRIC_ID_VALUE, useValue: metricId}],

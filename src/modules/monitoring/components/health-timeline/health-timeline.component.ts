@@ -8,10 +8,15 @@ import {
   Output,
   EventEmitter,
   Input,
+  OnChanges,
 } from '@angular/core';
 import { HealthTimelineService } from '@core/services/health-timeline.service';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
-import { TimeInterval, IModelVersion } from '@shared/models/_index';
+import {
+  TimeInterval,
+  IModelVersion,
+  ModelVersion,
+} from '@shared/models/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import {
   IMonitoringAggregationList,
@@ -36,7 +41,7 @@ import { startWith, switchMap, tap, filter } from 'rxjs/operators';
   providers: [HealthTimelineService],
   encapsulation: ViewEncapsulation.None,
 })
-export class HealthTimelineComponent implements OnInit, OnDestroy {
+export class HealthTimelineComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('svgContainer', { read: ElementRef })
   svgContainer: ElementRef;
 
@@ -49,8 +54,8 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
   @ViewChild('brush', { read: ElementRef })
   brush: ElementRef;
 
-  @Input() metricSpecifications$: Observable<MetricSpecification[]>;
-  @Input() selectedModelVersion$: Observable<IModelVersion>;
+  @Input() metricSpecifications: MetricSpecification[];
+  @Input() selectedModelVersion: ModelVersion;
 
   // CANVAS
   scale: d3.ScaleTime<number, number>;
@@ -87,9 +92,6 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
   manualSelectInterval: BehaviorSubject<TimeInterval> = new BehaviorSubject(
     null
   );
-
-  modelVersion: IModelVersion;
-  metricSpecs: MetricSpecification[];
 
   loading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
@@ -129,22 +131,12 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     this.canvasWidth = this.calculateCanvasWidth();
     this.mainMapWidth = this.canvasWidth - 120;
 
-    this.fullLogSub = combineLatest(
-      this.metricSpecifications$,
-      this.selectedModelVersion$
-    )
+    this.fullLogSub = this.getFullAggregation()
       .pipe(
-        filter(([_, mv]) => !!mv),
-        switchMap(([metricSpecs, mv]) => {
-          this.metricSpecs = metricSpecs;
-          this.modelVersion = mv;
-          this.loading$.next(true);
-          return this.getFullAggregation();
-        }),
         tap(res => {
           this.loading$.next(false);
-          const m = this.metricSpecs;
-          const m2 = this.metricSpecs.reduce((acc, cur, idx) => {
+          const m = this.metricSpecifications;
+          const m2 = this.metricSpecifications.reduce((acc, cur, idx) => {
             acc[m[idx].name] = res[idx];
             return acc;
           }, {});
@@ -162,27 +154,21 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
       )
       .subscribe();
 
-    this.detailLogSub = combineLatest(
-      this.selectedTime$,
-      this.metricSpecifications$,
-      this.selectedModelVersion$
-    )
+    this.detailLogSub = this.selectedTime$
       .pipe(
-        filter(([timeInterval, mv]) => !!timeInterval && !!mv),
-        tap(([timeInterval]) => {
+        filter(interval => !!interval && !!interval.from),
+        tap(timeInterval => {
           this.displayedTime.next(timeInterval);
           this.timeInterval.next(timeInterval);
         }),
-        switchMap(([timeInterval, metricSpecs, mv]) => {
-          this.metricSpecs = metricSpecs;
-          this.modelVersion = mv;
+        switchMap(timeInterval => {
           this.loading$.next(true);
           return this.getAggregationInInterval(timeInterval);
         }),
         tap(res => {
           this.loading$.next(false);
-          const m = this.metricSpecs;
-          const m2 = this.metricSpecs.reduce((acc, cur, idx) => {
+          const m = this.metricSpecifications;
+          const m2 = this.metricSpecifications.reduce((acc, _, idx) => {
             acc[m[idx].name] = res[idx];
             return acc;
           }, {});
@@ -191,6 +177,10 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  ngOnChanges(changes): void {
+    console.dir(changes);
   }
 
   showZoomOut(): boolean {
@@ -221,7 +211,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
   }
 
   private getFullAggregation(): Observable<IMonitoringAggregationList> {
-    const requests = this.metricSpecs.map(metricSpecification =>
+    const requests = this.metricSpecifications.map(metricSpecification =>
       this.monitoringService.getAggregation({
         metricSpecification,
         steps: '200',
@@ -231,7 +221,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
   }
 
   private getAggregationInInterval(timeInterval: TimeInterval) {
-    const requests = this.metricSpecs.map(metricSpecification =>
+    const requests = this.metricSpecifications.map(metricSpecification =>
       this.monitoringService.getAggregation({
         metricSpecification,
         from: `${Math.floor(timeInterval.from / 1000)}`,

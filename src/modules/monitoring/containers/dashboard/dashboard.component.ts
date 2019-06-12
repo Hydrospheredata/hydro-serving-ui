@@ -9,8 +9,15 @@ import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { Observable, BehaviorSubject, of, combineLatest } from 'rxjs';
-import { filter, exhaustMap } from 'rxjs/operators';
+import {
+  Observable,
+  BehaviorSubject,
+  of,
+  combineLatest,
+  throwError,
+  Subject,
+} from 'rxjs';
+import { filter, exhaustMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-dashboard',
@@ -24,9 +31,7 @@ export class DashboardComponent implements OnInit {
   timeInterval: TimeInterval;
 
   onlyFailedReqstoreData: boolean = true;
-  selectedTimeInterval$: BehaviorSubject<TimeInterval> = new BehaviorSubject(
-    null
-  );
+  selectedTimeInterval$: Subject<TimeInterval> = new Subject();
   modelVersion$: any;
   updateLogButtonClick$: BehaviorSubject<any> = new BehaviorSubject('');
   logLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -48,24 +53,28 @@ export class DashboardComponent implements OnInit {
       this.metricSpecs$,
       this.updateLogButtonClick$
     ).pipe(
-      filter(
-        ([timeInterval, _, metricSpecifications]) =>
-          !!timeInterval && !!metricSpecifications
-      ),
-      exhaustMap(
-        ([timeInterval, modelVersion, metricSpecifications]) => {
-          return this.reqResLogService.getLog({
+      filter(([mv, metricSpecifications]) => !!metricSpecifications && !!mv),
+      exhaustMap(([timeInterval, modelVersion, metricSpecifications]) => {
+        return this.reqResLogService
+          .getLog({
             timeInterval,
             modelVersion,
             metricSpecifications,
-          });
-        }
-      )
+          })
+          .pipe(
+            catchError(err => {
+              console.error('err');
+              return throwError(err);
+            })
+          );
+      })
     );
   }
 
   onChangeTimeInterval(timeInterval: TimeInterval) {
-    this.timeInterval = timeInterval;
-    this.selectedTimeInterval$.next(timeInterval);
+    if (timeInterval && timeInterval.from && timeInterval.to) {
+      this.timeInterval = timeInterval;
+      this.selectedTimeInterval$.next(timeInterval);
+    }
   }
 }

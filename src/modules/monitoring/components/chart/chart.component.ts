@@ -114,7 +114,11 @@ export class ChartComponent implements OnInit, OnDestroy {
   makeRequest(): Observable<SonarMetricData[]> {
     let from: string = '0';
     let till: string = `${Math.floor(new Date().getTime() / 1000)}`;
-    if (this.selectedTimeInterval) {
+    if (
+      this.selectedTimeInterval &&
+      this.selectedTimeInterval.from &&
+      this.selectedTimeInterval.to
+    ) {
       from = `${Math.floor(this.selectedTimeInterval.from / 1000)}`;
       till = `${Math.floor(this.selectedTimeInterval.to / 1000)}`;
     }

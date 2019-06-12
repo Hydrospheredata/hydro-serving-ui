@@ -9,24 +9,24 @@ import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 @Component({
-    templateUrl: './model-version-container.component.html',
-    styleUrls: ['./model-version-container.component.scss'],
+  templateUrl: './model-version-container.component.html',
+  styleUrls: ['./model-version-container.component.scss'],
 })
 export class ModelVersionContainerComponent {
-    public modelVersion$: Observable<IModelVersion>;
+  public modelVersion$: Observable<IModelVersion>;
 
-    constructor(
-        private store: Store<HydroServingState>,
-        private location: Location
-    ) {
-        // TODO: fix side effect
-        this.modelVersion$ = this.store.select(getSelectedModelVersion).pipe(
-            filter(_ => !!_),
-            tap(_ => this.store.dispatch(new GetMetricsAction(`${_.id}`)))
-        );
-    }
+  constructor(
+    private store: Store<HydroServingState>,
+    private location: Location
+  ) {
+    // TODO: fix side effect
+    this.modelVersion$ = this.store.select(getSelectedModelVersion).pipe(
+      filter(_ => !!_),
+      tap(_ => this.store.dispatch(new GetMetricsAction(`${_.id}`)))
+    );
+  }
 
-    back() {
-        this.location.back();
-    }
+  back() {
+    this.location.back();
+  }
 }

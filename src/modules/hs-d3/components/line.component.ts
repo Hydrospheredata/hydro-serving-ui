@@ -3,7 +3,7 @@ import {
   Input,
   ViewChild,
   ElementRef,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
 import * as d3 from 'd3';
 
