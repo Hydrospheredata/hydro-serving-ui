@@ -1,5 +1,5 @@
 <div class="replay">
-  <div class='replay__form'>
+  <div class="replay__form">
     <div>
       <mdl-select [(ngModel)]="replayableModelVersion" label="reply from">
         <mdl-option
@@ -11,10 +11,16 @@
       </mdl-select>
     </div>
     <footer>
-      <button class='button button--primary' #replyButton>reply</button>
+      <button
+        class="button button--primary"
+        [disabled]="!replayableModelVersion"
+        #replyButton
+      >
+        reply
+      </button>
     </footer>
   </div>
-  <div class='replay__replays'>
+  <div class="replay__replays">
     <header>replays</header>
   </div>
 </div>

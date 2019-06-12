@@ -16,7 +16,6 @@ import { CoreModule } from '@core/core.module';
 import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
 import { SharedModule } from '@shared/shared.module';
-import { TimemachineModule } from '@timemachine/timemachine.module';
 import { MonitoringModule } from 'modules/monitoring/monitoring.module';
 @NgModule({
     declarations: [
@@ -33,7 +32,6 @@ import { MonitoringModule } from 'modules/monitoring/monitoring.module';
         ReactiveFormsModule,
         MomentModule,
         SharedModule,
-        TimemachineModule,
         AppRoutingModule,
         DialogModule,
         MonitoringModule,
