@@ -1,23 +1,13 @@
 import { NgModule } from '@angular/core';
 import { D3LineComponent, D3AreaComponent } from './components';
+import { D3ThresholdComponent } from './components/threshold.component';
 import { D3AxisDirective } from './directives';
 
-const COMPONENTS = [
-    D3LineComponent,
-    D3AreaComponent,
-];
-const DIRECTIVES = [
-    D3AxisDirective,
-];
+const COMPONENTS = [D3LineComponent, D3AreaComponent, D3ThresholdComponent];
+const DIRECTIVES = [D3AxisDirective];
 
 @NgModule({
-    declarations: [
-        ...COMPONENTS,
-        ...DIRECTIVES,
-    ],
-    exports: [
-        ...COMPONENTS,
-        ...DIRECTIVES,
-    ],
+  declarations: [...COMPONENTS, ...DIRECTIVES],
+  exports: [...COMPONENTS, ...DIRECTIVES],
 })
 export class HsD3Module {}

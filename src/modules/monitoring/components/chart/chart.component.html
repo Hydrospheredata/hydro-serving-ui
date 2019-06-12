@@ -36,6 +36,14 @@
       [attr.fill]="areaColors[i]"
       transform="translate(25,10)"
     ></g>
+    <g
+      [hs-d3threshold]='threshold'
+      *ngFor="let threshold of thresholds; index as i"
+      [yScale]="yScale"
+      [attr.stroke]="thresholdColors[i]"
+      stroke-dasharray='10px'
+      transform="translate(25,10)"
+    ></g>
   </svg>
   <div class="chart__footer">
     <span
@@ -45,7 +53,7 @@
       <span [style.color]="lineColors[i]">-</span>{{ data.key }}
     </span>
   </div>
-  <div *ngIf="emptyData" class='chart__empty'>
+  <div *ngIf="emptyData" class="chart__empty">
     No data availabe
   </div>
 </div>

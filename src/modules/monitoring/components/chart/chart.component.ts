@@ -45,6 +45,9 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   lineColors = ['#5786c1', '#ffdb89', '#b86efd', '#7cec7c'];
   areaColors = ['#1c67c31c', '#ffdb8947', '#b86efd29', '#7cec7c29'];
+  thresholdColors = ['red', 'orange'];
+
+  thresholds: string[];
 
   private initialized: boolean = false;
   private data: SonarMetricData[];
@@ -182,6 +185,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       this.init();
     }
 
+    this.setThreshold();
     this.setXScale(data);
     this.setYScale(data);
     this.minValue = this.findMinValue(data);
@@ -195,6 +199,15 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   isKolmogorovSmirnov(): boolean {
     return this.metrics[0].kind === 'KSMetricSpec';
+  }
+
+  private setThreshold() {
+    this.thresholds = this.metrics.reduce((acc, cur) => {
+      if (cur.config.threshold) {
+        acc.push(cur.config.threshold);
+      }
+      return acc;
+    }, []);
   }
 
   private setXScale(data: SonarMetricData[] = []) {
