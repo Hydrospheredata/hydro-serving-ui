@@ -33,6 +33,8 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   @Input() timeBoundary: number = null;
 
+  emptyData: boolean = true;
+
   canvasWidth: number;
   canvasHeight: number;
   groupedData: { [uniqname: string]: SonarMetricData[] };
@@ -64,15 +66,24 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const liveUpdate$ = interval(1000).pipe(filter(() => this.liveUpdate), startWith(''));
+    const liveUpdate$ = interval(1000).pipe(
+      filter(() => this.liveUpdate),
+      startWith('')
+    );
 
     this.log$ = merge(liveUpdate$)
       .pipe(
         switchMap(() => {
-          return this.timeBoundary ? this.makeRequestInBoundary() : this.makeRequest();
+          return this.timeBoundary
+            ? this.makeRequestInBoundary()
+            : this.makeRequest();
         }),
-        filter(data => this.isDifferentData(data)),
+        tap(() => this.setXScale()),
+        filter(data => {
+          return this.isDifferentData(data);
+        }),
         tap(data => {
+          this.emptyData = data.length === 0;
           this.data = data;
           this.render(data);
         })
@@ -97,7 +108,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       }
     });
 
-    return combineLatest(observables).pipe(map(data => _.flatten(data))); 
+    return combineLatest(observables).pipe(map(data => _.flatten(data)));
   }
 
   makeRequest(): Observable<SonarMetricData[]> {
@@ -182,16 +193,25 @@ export class ChartComponent implements OnInit, OnDestroy {
     return this.metrics[0].kind === 'KSMetricSpec';
   }
 
-  private setXScale(data: SonarMetricData[]) {
-    const [timestampMin, timestampMax] = d3.extent(
-      _.flatten(data),
-      d => d.timestamp
-    );
+  private setXScale(data: SonarMetricData[] = []) {
+    if (this.timeBoundary) {
+      const endDate = new Date();
+      const startDate = new Date(endDate.getTime() - this.timeBoundary);
+      this.xScale = d3
+        .scaleTime()
+        .domain([startDate, endDate])
+        .range([0, this.chartWidth]);
+    } else {
+      const [timestampMin, timestampMax] = d3.extent(
+        _.flatten(data),
+        d => d.timestamp
+      );
 
-    this.xScale = d3
-      .scaleTime()
-      .domain([new Date(timestampMin), new Date(timestampMax)])
-      .range([0, this.chartWidth]);
+      this.xScale = d3
+        .scaleTime()
+        .domain([new Date(timestampMin), new Date(timestampMax)])
+        .range([0, this.chartWidth]);
+    }
   }
 
   private setYScale(data: SonarMetricData[]) {

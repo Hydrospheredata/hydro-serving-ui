@@ -45,6 +45,9 @@
       <span [style.color]="lineColors[i]">-</span>{{ data.key }}
     </span>
   </div>
+  <div *ngIf="emptyData" class='chart__empty'>
+    No data availabe
+  </div>
 </div>
 
 <ng-template #featureSelector>

@@ -134,6 +134,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
       this.selectedModelVersion$
     )
       .pipe(
+        filter(([_, mv]) => !!mv),
         switchMap(([metricSpecs, mv]) => {
           this.metricSpecs = metricSpecs;
           this.modelVersion = mv;
@@ -167,7 +168,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
       this.selectedModelVersion$
     )
       .pipe(
-        filter(([timeInterval]) => !!timeInterval),
+        filter(([timeInterval, mv]) => !!timeInterval && !!mv),
         tap(([timeInterval]) => {
           this.displayedTime.next(timeInterval);
           this.timeInterval.next(timeInterval);

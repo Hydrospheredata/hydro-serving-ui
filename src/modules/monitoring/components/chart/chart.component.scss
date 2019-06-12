@@ -4,6 +4,7 @@
     background: white;
     box-shadow: 0 0 2px -1px grey;
     margin-bottom: 24px;
+    position: relative;
     &__header {
         padding: 0 20px;
         line-height: 32px;
@@ -18,6 +19,20 @@
     &__footer {
         padding: 0 12px;
         text-align: center;
+    }
+    &__empty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        color: #6e7c90;
+        background: #6e7c9040;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 }
 
