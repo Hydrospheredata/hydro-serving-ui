@@ -81,18 +81,18 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   makeRequestInBoundary() {
-    const interva = `${this.timeBoundary}`;
+    const i = `${this.timeBoundary}`;
     const observables = this.metrics.map(metricSpecification => {
       if (this.isKolmogorovSmirnov()) {
         return this.monitiringService.getMetrics({
           metricSpecification,
-          interval: interva,
+          interval: i,
           columnIndex: this.selectedFeature,
         });
       } else {
         return this.monitiringService.getMetrics({
           metricSpecification,
-          interval: interva,
+          interval: i,
         });
       }
     });
@@ -190,7 +190,7 @@ export class ChartComponent implements OnInit, OnDestroy {
 
     this.xScale = d3
       .scaleTime()
-      .domain([new Date(timestampMin * 1000), new Date(timestampMax * 1000)])
+      .domain([new Date(timestampMin), new Date(timestampMax)])
       .range([0, this.chartWidth]);
   }
 
@@ -225,7 +225,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     const b = data[index];
 
     const res = selectedTime - a.timestamp > b.timestamp - selectedTime ? b : a;
-    const newXCoordinate = this.xScale(res.timestamp * 1000);
+    const newXCoordinate = this.xScale(res.timestamp);
     const newYCoordinate = this.yScale(res.value);
 
     this.activeLine
@@ -257,7 +257,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   private tooltipHtml({ value, timestamp }: SonarMetricData): string {
     return `
       <p>Value: ${value}</p>
-      <p>Time ${new Date(timestamp * 1000)}</p>
+      <p>Time ${new Date(timestamp)}</p>
     `;
   }
 

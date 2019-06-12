@@ -26,7 +26,7 @@ export class D3LineComponent implements AfterViewInit {
     const valueline = d3
       .line()
       .curve(d3.curveMonotoneX)
-      .x((d: any) => this.xScale(new Date(d.timestamp * 1000)))
+      .x((d: any) => this.xScale(new Date(d.timestamp)))
       .y((d: any) => this.yScale(d.value));
 
     d3.select(this.path.nativeElement)

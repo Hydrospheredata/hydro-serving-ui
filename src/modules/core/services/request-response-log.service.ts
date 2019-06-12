@@ -113,17 +113,7 @@ export class RequestResponseLogService {
       const currentMetricDataArray = sonarData[i];
 
       for (const currentMetricData of currentMetricDataArray) {
-        let traces = [];
-        try {
-          traces = JSON.parse(currentMetricData.labels.traces);
-        } catch (e) {
-          // console.error(e);
-          try {
-            traces = [JSON.parse(currentMetricData.labels.trace)];
-          } catch (e) {
-            console.error(e);
-          }
-        }
+        const traces = currentMetricData.labels.traces;
 
         if (traces.length === 0) {
           continue;
@@ -131,7 +121,7 @@ export class RequestResponseLogService {
 
         traces.forEach(trace => {
           if (trace) {
-            const [ts] = trace.split('_');
+            const {timestamp: ts} = trace;
             if (reqstoreLog[ts] !== undefined) {
               if (log[ts] === undefined) {
                 log[ts] = reqstoreLog[ts][0];

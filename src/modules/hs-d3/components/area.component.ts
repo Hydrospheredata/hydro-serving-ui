@@ -21,7 +21,7 @@ export class D3AreaComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         const area = d3.area().curve(d3.curveMonotoneX)
-            .x((d: any) => this.xScale(new Date(d.timestamp * 1000)))
+            .x((d: any) => this.xScale(new Date(d.timestamp)))
             .y1((d: any) => this.yScale(d.value))
             .y0(this.yScale(this.y0));
 

@@ -10,6 +10,11 @@ import { IMonitoringAggregationList } from '@shared/models/monitoring-aggregatio
 import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+interface Trace {
+  timestamp: number;
+  uid: number;
+}
+
 export interface IMetricData {
   name: string;
   value: number;
@@ -17,7 +22,7 @@ export interface IMetricData {
     columnIndex: string;
     modelVersionId: string;
     trace?: any;
-    traces?: any;
+    traces?: Trace[];
   };
   timestamp: number;
   health: any;
