@@ -35,6 +35,8 @@ export class GraphsComponent implements OnInit {
       { ms: 3600000, text: '1 hour' },
       { ms: 7200000, text: '2 hours' },
       { ms: 14400000, text: '4 hours' },
+      { ms: 86400000, text: '1 day' },
+      { ms: null, text: 'All time'},
   ];
 
   set compareModelVersionId(id) {

@@ -20,8 +20,8 @@ import {
   Subscription,
   combineLatest,
   Observable,
-  merge,
   BehaviorSubject,
+  of,
 } from 'rxjs';
 import { tap, map, filter, startWith, exhaustMap } from 'rxjs/operators';
 
@@ -58,7 +58,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
   @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
   @Input() metrics: MetricSpecification[];
-  @Input() selectedTimeInterval$: Observable<TimeInterval>;
+  @Input() selectedTimeInterval$: Observable<TimeInterval> = of(null);
   @Input() liveUpdate: boolean = true;
 
   @Input() timeBoundary: number = null;
@@ -93,6 +93,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   private tooltip;
 
   private log$: Subscription;
+  private rendered = 1;
 
   constructor(
     private monitiringService: MonitoringService,
@@ -110,17 +111,13 @@ export class ChartComponent implements OnInit, OnDestroy {
       liveUpdate$,
       this.selectedTimeInterval$,
       this.selectedFeatureChanging$
-    )
-      .pipe(
+    ).pipe(
         exhaustMap(([upd, timeInterval]) => {
           return this.timeBoundary
             ? this.makeRequestInBoundary()
             : this.makeRequest(timeInterval);
         }),
         tap(() => this.setXScale()),
-        filter(data => {
-          return this.isDifferentData(data);
-        }),
         tap(data => {
           this.emptyData = data.length === 0;
           this.data = data;
