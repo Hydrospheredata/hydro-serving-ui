@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'hs-charts',
@@ -13,7 +14,7 @@ import { MetricSpecification } from '@shared/models/metric-specification.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartsComponent {
-  @Input() selectedTimeInterval: TimeInterval;
+  @Input() selectedTimeInterval$: Observable<TimeInterval>;
   @Input() metricSpecifications: MetricSpecification;
   liveUpdate: boolean = false;
 }

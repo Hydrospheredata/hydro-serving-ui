@@ -1,4 +1,5 @@
 .charts {
+    display: flex;
     &__item {
         display: inline-block;
         width: calc(50% - 10px);

@@ -15,8 +15,28 @@ import { SonarMetricData, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
-import { interval, Subscription, combineLatest, Observable, merge } from 'rxjs';
-import { tap, map, switchMap, filter, startWith } from 'rxjs/operators';
+import {
+  interval,
+  Subscription,
+  combineLatest,
+  Observable,
+  merge,
+  BehaviorSubject,
+} from 'rxjs';
+import { tap, map, filter, startWith, exhaustMap } from 'rxjs/operators';
+
+interface Bound {
+  from: number;
+  to: number;
+}
+
+interface GroupedBounds {
+  [uniqname: string]: Bound[];
+}
+
+interface GroupedData {
+  [uniqname: string]: SonarMetricData[];
+}
 
 @Component({
   selector: 'hs-chart',
@@ -26,9 +46,19 @@ import { tap, map, switchMap, filter, startWith } from 'rxjs/operators';
   encapsulation: ViewEncapsulation.None,
 })
 export class ChartComponent implements OnInit, OnDestroy {
+
+  get featureList(): string[] {
+    const features: string[] = [];
+
+    for (let i = 0; i < 112; i++) {
+      features.push(`${i}`);
+    }
+
+    return features;
+  }
   @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
   @Input() metrics: MetricSpecification[];
-  @Input() selectedTimeInterval: TimeInterval;
+  @Input() selectedTimeInterval$: Observable<TimeInterval>;
   @Input() liveUpdate: boolean = true;
 
   @Input() timeBoundary: number = null;
@@ -37,17 +67,19 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   canvasWidth: number;
   canvasHeight: number;
-  groupedData: { [uniqname: string]: SonarMetricData[] };
+  groupedData: GroupedData;
   minValue: number;
 
   features: string[];
   selectedFeature: string = '0';
+  selectedFeatureChanging$: BehaviorSubject<string> = new BehaviorSubject('');
 
   lineColors = ['#5786c1', '#ffdb89', '#b86efd', '#7cec7c'];
   areaColors = ['#1c67c31c', '#ffdb8947', '#b86efd29', '#7cec7c29'];
   thresholdColors = ['red', 'orange'];
 
   thresholds: string[];
+  plotBands: GroupedBounds;
 
   private initialized: boolean = false;
   private data: SonarMetricData[];
@@ -69,17 +101,21 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const liveUpdate$ = interval(1000).pipe(
+    const liveUpdate$ = interval(2000).pipe(
       filter(() => this.liveUpdate),
       startWith('')
     );
 
-    this.log$ = merge(liveUpdate$)
+    this.log$ = combineLatest(
+      liveUpdate$,
+      this.selectedTimeInterval$,
+      this.selectedFeatureChanging$
+    )
       .pipe(
-        switchMap(() => {
+        exhaustMap(([upd, timeInterval]) => {
           return this.timeBoundary
             ? this.makeRequestInBoundary()
-            : this.makeRequest();
+            : this.makeRequest(timeInterval);
         }),
         tap(() => this.setXScale()),
         filter(data => {
@@ -114,16 +150,12 @@ export class ChartComponent implements OnInit, OnDestroy {
     return combineLatest(observables).pipe(map(data => _.flatten(data)));
   }
 
-  makeRequest(): Observable<SonarMetricData[]> {
+  makeRequest(timeIntreval: TimeInterval): Observable<SonarMetricData[]> {
     let from: string = '0';
     let till: string = `${Math.floor(new Date().getTime() / 1000)}`;
-    if (
-      this.selectedTimeInterval &&
-      this.selectedTimeInterval.from &&
-      this.selectedTimeInterval.to
-    ) {
-      from = `${Math.floor(this.selectedTimeInterval.from / 1000)}`;
-      till = `${Math.floor(this.selectedTimeInterval.to / 1000)}`;
+    if (timeIntreval && timeIntreval.from && timeIntreval.to) {
+      from = `${Math.floor(timeIntreval.from / 1000)}`;
+      till = `${Math.floor(timeIntreval.to / 1000)}`;
     }
 
     const observables = this.metrics.map(metric => {
@@ -192,13 +224,99 @@ export class ChartComponent implements OnInit, OnDestroy {
 
     this.groupedData = _.groupBy(
       data,
-      d => `${d.name}_${d.labels.modelVersionId}`
+      d => `${d.name}#${d.labels.modelVersionId}`
     );
+
+    this.setBoundaries(this.groupedData);
     this.cdRef.detectChanges();
   }
 
   isKolmogorovSmirnov(): boolean {
     return this.metrics[0].kind === 'KSMetricSpec';
+  }
+
+  onSelectFeature(e) {
+    this.selectedFeatureChanging$.next(e);
+  }
+
+  private setBoundaries(groupedData) {
+    console.log('grouped');
+
+    try {
+      if (_.isEmpty(groupedData)) {
+        this.plotBands = {};
+        return;
+      }
+      const metricSpecificationWithHealth = this.metrics.filter(
+        metricSpec => metricSpec.withHealth === true
+      );
+
+      if (metricSpecificationWithHealth.length === 0) {
+        this.plotBands = {};
+        return;
+      }
+
+      const availableMetricNames = metricSpecificationWithHealth.map(
+        ({ kind }) => this.monitiringService.getMetricsBySpecKind(kind)[0]
+      );
+
+      for (const key in groupedData) {
+        if (groupedData.hasOwnProperty(key)) {
+          const [metricName] = key.split('#');
+
+          if (availableMetricNames.includes(metricName)) {
+            const data: SonarMetricData[] = groupedData[key];
+
+            const newPlotBands = {};
+            let tmpBandObject: any = null;
+
+            for (let i = 0, l = data.length; i < l; i++) {
+              const isLastElement = i === data.length - 1;
+              const currentMetricData = data[i];
+              const {
+                name,
+                health,
+                labels: { modelVersionId },
+              } = currentMetricData;
+              if (health === null) {
+                break;
+              }
+
+              // plotBands
+              const uniqName = `${name}#${modelVersionId}`;
+              if (newPlotBands[uniqName] === undefined) {
+                newPlotBands[uniqName] = [];
+              }
+
+              if (tmpBandObject) {
+                if (health === false) {
+                  tmpBandObject.to = currentMetricData;
+                }
+                if (health === true || isLastElement) {
+                  newPlotBands[uniqName].push(Object.assign({}, tmpBandObject));
+                  tmpBandObject = null;
+                }
+              } else {
+                if (health === true) {
+                  continue;
+                }
+                if (health === false) {
+                  tmpBandObject = {
+                    from: currentMetricData,
+                    to: currentMetricData,
+                  };
+                }
+              }
+            }
+
+            this.plotBands = newPlotBands;
+          }
+        }
+      }
+    } catch (error) {
+      console.warn(error);
+      this.plotBands = {};
+    }
   }
 
   private setThreshold() {
@@ -304,15 +422,5 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   private findMinValue(data: SonarMetricData[]) {
     return d3.min(data, d => d.value);
-  }
-
-  get featureList(): string[] {
-    const features: string[] = [];
-
-    for (let i = 0; i < 112; i++) {
-      features.push(`${i}`);
-    }
-
-    return features;
   }
 }

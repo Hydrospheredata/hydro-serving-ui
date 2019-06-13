@@ -66,7 +66,6 @@ export class GraphsComponent implements OnInit {
     ).pipe(
       filter(([selectedMetricSpecs]) => !!selectedMetricSpecs),
       map(arrays => {
-        console.dir(arrays);
         const flattenArray = _.flatten(arrays);
         return _.groupBy(flattenArray, d => d.kind);
       })

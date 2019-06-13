@@ -18,6 +18,19 @@
       transform="translate(25,10)"
     ></g>
     <g
+      *ngFor="let plotBand of plotBands | keyvalue; let i = index"
+      transform="translate(25,10)"
+    >
+      <g
+        [hs-d3-plot-band]="p"
+        *ngFor="let p of plotBand.value; let i = index"
+        [xScale]="xScale"
+        [height]="canvasHeight - 50"
+        stroke="none"
+        fill="#f539392b"
+      ></g>
+    </g>
+    <g
       [hs-d3line]
       *ngFor="let data of groupedData | keyvalue; index as i"
       [data]="data.value"
@@ -37,11 +50,11 @@
       transform="translate(25,10)"
     ></g>
     <g
-      [hs-d3threshold]='threshold'
+      [hs-d3threshold]="threshold"
       *ngFor="let threshold of thresholds; index as i"
       [yScale]="yScale"
       [attr.stroke]="thresholdColors[i]"
-      stroke-dasharray='10px'
+      stroke-dasharray="10px"
       transform="translate(25,10)"
     ></g>
   </svg>
@@ -63,6 +76,7 @@
     #featureSelect
     label="Choose feature"
     [(ngModel)]="selectedFeature"
+    (change)="onSelectFeature($event)"
     [autocomplete]="true"
     (keydown.enter)="$event.preventDefault()"
     class="filter-input"
