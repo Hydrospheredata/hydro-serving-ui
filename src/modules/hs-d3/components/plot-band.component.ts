@@ -23,7 +23,6 @@ export class D3PlotBandComponent implements OnInit {
   @Input()
   set xScale(scale) {
     if (this['hs-d3-plot-band']) {
-      console.log(this['hs-d3-plot-band']);
       const from = this['hs-d3-plot-band'].from.timestamp;
       const to = this['hs-d3-plot-band'].to.timestamp;
 

@@ -6,7 +6,7 @@
   </header>
   <svg
     class="canvas"
-    [attr.width]="this.canvasWidth"
+    [attr.width]="canvasWidth"
     [attr.height]="canvasHeight"
     #svg
   >
@@ -57,7 +57,40 @@
       stroke-dasharray="10px"
       transform="translate(25,10)"
     ></g>
+    <rect
+      x="0"
+      y="0"
+      [attr.width]="canvasWidth - 40"
+      [attr.height]="canvasHeight - 50"
+      fill="red"
+      opacity="0"
+      transform="translate(25, 10)"
+      #rect
+    ></rect>
   </svg>
+  <div
+    class="tooltip"
+    #tooltip
+    [ngStyle]="{ display: showTooltip ? 'inherit' : 'none' }"
+  >
+    <div class="tooltip__body" *ngIf="tooltipContent">
+      <div
+        class="tooltip__metric"
+        *ngFor="let metric of tooltipContent.metrics"
+      >
+        {{ metric.name }}: {{ metric.value }}
+      </div>
+      <div class="tooltip__timestamp">
+        {{ tooltipContent?.timestamp | moment }}
+      </div>
+    </div>
+  </div>
+  <!-- <div class="active-point" #activePoint></div> -->
+  <div
+    class="active-line"
+    [ngStyle]="{ display: showTooltip ? 'inherit' : 'none' }"
+    #activeLine
+  ></div>
   <div class="chart__footer">
     <span
       class="metric__name"

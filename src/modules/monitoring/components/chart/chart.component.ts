@@ -9,6 +9,7 @@ import {
   ViewChild,
   ElementRef,
   ChangeDetectorRef,
+  Renderer2,
 } from '@angular/core';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { SonarMetricData, TimeInterval } from '@shared/_index';
@@ -38,6 +39,11 @@ interface GroupedData {
   [uniqname: string]: SonarMetricData[];
 }
 
+interface TooltipContent {
+  timestamp: number;
+  metrics: Array<{ name: string; value: number }>;
+}
+
 @Component({
   selector: 'hs-chart',
   templateUrl: './chart.component.html',
@@ -46,7 +52,6 @@ interface GroupedData {
   encapsulation: ViewEncapsulation.None,
 })
 export class ChartComponent implements OnInit, OnDestroy {
-
   get featureList(): string[] {
     const features: string[] = [];
 
@@ -57,6 +62,10 @@ export class ChartComponent implements OnInit, OnDestroy {
     return features;
   }
   @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
+  @ViewChild('rect', { read: ElementRef }) rectRef: ElementRef;
+  @ViewChild('tooltip', { read: ElementRef }) tooltip: ElementRef;
+  @ViewChild('activePoint', { read: ElementRef }) activePoint: ElementRef;
+  @ViewChild('activeLine', { read: ElementRef }) activeLine: ElementRef;
   @Input() metrics: MetricSpecification[];
   @Input() selectedTimeInterval$: Observable<TimeInterval> = of(null);
   @Input() liveUpdate: boolean = true;
@@ -64,6 +73,8 @@ export class ChartComponent implements OnInit, OnDestroy {
   @Input() timeBoundary: number = null;
 
   emptyData: boolean = true;
+  showTooltip: boolean = false;
+  tooltipContent: TooltipContent = null;
 
   canvasWidth: number;
   canvasHeight: number;
@@ -87,18 +98,14 @@ export class ChartComponent implements OnInit, OnDestroy {
   private xScale;
   private xOffset: number = 40;
   private yScale;
-  private line;
-  private activeLine;
-  private activePoint;
-  private tooltip;
 
   private log$: Subscription;
-  private rendered = 1;
 
   constructor(
     private monitiringService: MonitoringService,
     private cdRef: ChangeDetectorRef,
-    private vcRef: ViewContainerRef
+    private vcRef: ViewContainerRef,
+    private renderer2: Renderer2
   ) {}
 
   ngOnInit() {
@@ -111,7 +118,8 @@ export class ChartComponent implements OnInit, OnDestroy {
       liveUpdate$,
       this.selectedTimeInterval$,
       this.selectedFeatureChanging$
-    ).pipe(
+    )
+      .pipe(
         exhaustMap(([upd, timeInterval]) => {
           return this.timeBoundary
             ? this.makeRequestInBoundary()
@@ -125,6 +133,14 @@ export class ChartComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+
+    d3.select(this.rectRef.nativeElement).on('mouseout', () =>
+      this.onMouseOut()
+    );
+
+    d3.select(this.rectRef.nativeElement).on('mousemove', () =>
+      this.onMouseMove()
+    );
   }
 
   makeRequestInBoundary() {
@@ -185,28 +201,6 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.canvasHeight = height - 82;
     this.chartWidth = this.canvasWidth - this.xOffset;
     this.initialized = true;
-
-    // this.cdRef.detectChanges();
-
-    // this.activeLine = this.svgElementRef.nativeElement
-    //     .append('line')
-    //       .attr('class', 'active-line')
-    //       .attr('x1', 0)
-    //       .attr('y1', 10)
-    //       .attr('x2', 0)
-    //       .attr('y2', height - 72);
-
-    // this.activePoint = this.svgElementRef.nativeElement
-    //   .append('circle')
-    //   .attr('class', 'active-point')
-    //   .attr('r', 3)
-    //   .attr('opacity', 0);
-
-    // this.tooltip = d3
-    //     .select(this.svgElementRef.nativeElement)
-    //     .append('div')
-    //       .attr('class', 'tooltip')
-    //       .style('opacity', 0);
   }
 
   render(data: SonarMetricData[]) {
@@ -237,8 +231,6 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   private setBoundaries(groupedData) {
-    console.log('grouped');
-
     try {
       if (_.isEmpty(groupedData)) {
         this.plotBands = {};
@@ -355,66 +347,51 @@ export class ChartComponent implements OnInit, OnDestroy {
       .range([0, this.canvasHeight - 50]);
   }
 
-  private cursorOnChart(posX: number): boolean {
-    return posX > 0 && posX < this.chartWidth;
-  }
+  private onMouseMove() {
+    const data = this.data;
+    const [xCoordinate] = d3.mouse(this.rectRef.nativeElement);
 
-  private onMouseMove(data) {
-    const [xCoordinate] = d3.mouse(this.line.node());
-
-    if (!this.cursorOnChart(xCoordinate)) {
-      this.activeLine.attr('opacity', '0');
-      this.tooltip.attr('opacity', '0');
-      this.activePoint.attr('opacity', '0');
-      return;
-    }
-
-    const selectedTime = Math.floor(this.xScale.invert(xCoordinate) / 1000);
+    const selectedTime = Math.floor(this.xScale.invert(xCoordinate));
     const bisector = d3.bisector((d: SonarMetricData) => d.timestamp).right;
     const index = bisector(data, selectedTime, 1);
-
     const a = data[index - 1];
     const b = data[index];
 
-    const res = selectedTime - a.timestamp > b.timestamp - selectedTime ? b : a;
+    let res;
+
+    if (a === undefined) {
+      res = b;
+    } else if (b === undefined) {
+      res = a;
+    } else {
+      res = selectedTime - a.timestamp > b.timestamp - selectedTime ? b : a;
+    }
     const newXCoordinate = this.xScale(res.timestamp);
     const newYCoordinate = this.yScale(res.value);
 
-    this.activeLine
-      .transition()
-      .duration(300)
-      .ease(d3.easeLinear)
-      .attr('x1', newXCoordinate + 25)
-      .attr('x2', newXCoordinate + 25)
-      .attr('opacity', '1');
+    this.tooltipContent = {
+      timestamp: res.timestamp,
+      metrics: [{ name: res.name, value: res.value }],
+    };
 
-    this.activePoint
-      .transition()
-      .duration(300)
-      .ease(d3.easeLinear)
-      .attr('cx', newXCoordinate + 25)
-      .attr('cy', newYCoordinate + 10)
-      .attr('opacity', '1');
+    this.renderer2.setStyle(
+      this.tooltip.nativeElement,
+      'transform',
+      `translate(${newXCoordinate}px, ${newYCoordinate}px)`
+    );
+    this.renderer2.setStyle(
+      this.activeLine.nativeElement,
+      'transform',
+      `translate(${newXCoordinate}px, 0)`
+    );
 
-    this.tooltip
-      .transition()
-      .duration(300)
-      .ease(d3.easeLinear)
-      .style('opacity', '1')
-      .style('transform', `translate(${newXCoordinate + 65}px, 0px)`);
-
-    this.tooltip.html(this.tooltipHtml(res));
+    this.showTooltip = true;
+    this.cdRef.detectChanges();
   }
 
-  private tooltipHtml({ value, timestamp }: SonarMetricData): string {
-    return `
-      <p>Value: ${value}</p>
-      <p>Time ${new Date(timestamp)}</p>
-    `;
-  }
-
-  private isDifferentData(newData: SonarMetricData[]): boolean {
-    return !_.isEqual(this.data, newData);
+  private onMouseOut(): void {
+    this.showTooltip = false;
+    this.cdRef.detectChanges();
   }
 
   private findMinValue(data: SonarMetricData[]) {
