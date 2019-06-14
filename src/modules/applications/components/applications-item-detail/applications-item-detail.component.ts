@@ -122,6 +122,10 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     }
 
     public isReady(status: string): boolean {
-        return ApplicationStatus.Ready === status;
+        return status === ApplicationStatus.Ready;
+    }
+
+    public isFailed(status: string): boolean {
+        return status === ApplicationStatus.Failed;
     }
 }

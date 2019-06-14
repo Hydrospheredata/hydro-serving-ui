@@ -26,6 +26,7 @@ export class ApplicationBuilder {
             executionGraph: props.executionGraph || [],
             kafkaStreaming: props.kafkaStreaming || [],
             status: props.status && props.status.toLowerCase(),
+            message: props.message,
         });
 
         return application;

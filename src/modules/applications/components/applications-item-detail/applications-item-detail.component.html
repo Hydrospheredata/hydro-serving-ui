@@ -1,104 +1,161 @@
 <div class="application content">
-    <div class="content__header application__header">
-        <div class="application__header-title">
-            {{ application.name }}
+  <div class="content__header application__header">
+    <div class="application__header-title">
+      {{ application.name }}
+    </div>
+    <div
+      class="action-buttons application__header-buttons application__header-buttons--right"
+    >
+      <button
+        class="button button--white button--test action-button"
+        [ngClass]="{ 'button--disabled': !isReady(application.status) }"
+        [disabled]="!isReady(application.status)"
+        (click)="testApplication()"
+      >
+        <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
+        Test
+      </button>
+      <button
+        class="button button--white action-button"
+        (click)="editApplication()"
+      >
+        <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
+        Edit
+      </button>
+      <button
+        class="button button--white button--secondary-remove action-button"
+        (click)="removeApplication()"
+      >
+        <hydro-icon class="button__icon" type="icon-remove"></hydro-icon>
+        remove
+      </button>
+    </div>
+  </div>
+
+  <div class="content__body">
+    <ng-container *ngIf="isFailed(application.status)">
+      <hs-error-message>
+        <div>
+          {{ application.message }}
         </div>
-        <div class="action-buttons application__header-buttons application__header-buttons--right">
-            <button 
-                class="button button--white button--test action-button"
-                [ngClass]="{'button--disabled': !isReady(application.status)}"
-                [disabled]="!isReady(application.status)"
-                (click)="testApplication()">
-                <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
-                Test
-            </button>
-            <button class="button button--white action-button" (click)="editApplication()">
-                <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
-                Edit
-            </button>
-            <button class="button button--white button--secondary-remove action-button" (click)="removeApplication()">
-                <hydro-icon class="button__icon" type="icon-remove"></hydro-icon>
-                remove
-            </button>
-        </div>
+      </hs-error-message>
+    </ng-container>
+    <div class="content-info">
+      <ul class="content-info__list" *ngIf="application.kafkaStreaming?.length">
+        <li class="content-info__list-title">
+          Kafka Info
+        </li>
+        <li
+          class="content-info__list-item"
+          *ngFor="let kafka of application.kafkaStreaming"
+        >
+          <ol class="content-info__sublist">
+            <li
+              class="content-info__sublist-item"
+              *ngFor="let item of kafka | iterateAsArray"
+            >
+              <span class="content-info__sublist-item-title">{{ item }}</span>
+              <span class="content-info__sublist-item-value">{{
+                kafka[item]
+              }}</span>
+            </li>
+          </ol>
+        </li>
+      </ul>
     </div>
 
-    <div class='content__body'>
-        <div class="content-info">
-            <ul class="content-info__list" *ngIf="application.kafkaStreaming?.length">
-                <li class="content-info__list-title">
-                    Kafka Info
-                </li>
-                <li class="content-info__list-item" *ngFor="let kafka of application.kafkaStreaming">
-                    <ol class="content-info__sublist">
-                        <li class="content-info__sublist-item" *ngFor="let item of kafka | iterateAsArray">
-                            <span class="content-info__sublist-item-title">{{ item }}</span>
-                            <span class="content-info__sublist-item-value">{{ kafka[item] }}</span>
-                        </li>
-                    </ol>
-                </li>
-            </ul>
-        </div>
+    <div
+      class=""
+      *ngFor="let stage of application.executionGraph?.stages; let i = index"
+    >
+      <div class="content__cell-title">Stage {{ i + 1 }}</div>
+      <table class="hydro-table hydro-table-models">
+        <colgroup>
+          <col width="300px" />
+          <col />
+          <col width="100px" />
+          <col width="100px" />
+        </colgroup>
+        <thead class="hydro-table-head hydro-table-head--with-border">
+          <tr>
+            <th class="hydro-table-head__cell">Model Variant</th>
+            <th class="hydro-table-head__cell">Runtime</th>
+            <th class="hydro-table-head__cell">Weight</th>
+            <th class="hydro-table-head__cell">Health</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let modelVariant of stage.modelVariants; let j = index"
+            class="hydro-table-body__row"
+          >
+            <td class="hydro-table-body__cell model-variant__cell">
+              <span class="model-variant__version-new tooltip">
+                <hydro-icon
+                  type="icon-upgrade"
+                  class="icon model-variant__version-new-icon"
+                  hsUpdateModelVersion
+                  [modelVersion]="modelVariant.modelVersion"
+                  (handleClick)="updateModelVersionDialog($event, modelVariant)"
+                >
+                </hydro-icon>
+                <span class="tooltiptext">Model has new version</span>
+              </span>
+              <span
+                class="model-variant__version-text cs-text-overflow-ellipsis"
+              >
+                <span
+                  class="model-variant__link"
+                  [routerLink]="[
+                    '../../models',
+                    modelVariant.modelVersion.model.id,
+                    modelVariant.modelVersion.id
+                  ]"
+                >
+                  {{
+                    modelVariant.modelVersion.model.name +
+                      ':v' +
+                      modelVariant.modelVersion.modelVersion
+                  }}</span
+                >
+              </span>
+            </td>
+            <td class="hydro-table-body__cell">
+              <span
+                class="cs-text-overflow-ellipsis cs-text-center"
+                style="max-width: 300px;"
+              >
+                {{
+                  modelVariant.modelVersion.runtime.name
+                    ? modelVariant.modelVersion.runtime.name
+                    : modelVariant.modelVersion.runtime.id
+                }}
+              </span>
+            </td>
 
-        <div class="" *ngFor="let stage of application.executionGraph?.stages; let i = index;">
-            <div class="content__cell-title">
-                Stage {{i + 1}}
-            </div>
-            <table class='hydro-table hydro-table-models'>
-                <colgroup>
-                    <col width="300px">
-                    <col>
-                    <col width='100px'>
-                    <col width='100px'>
-                </colgroup>
-                <thead class="hydro-table-head hydro-table-head--with-border">
-                    <tr>
-                        <th class="hydro-table-head__cell">Model Variant</th>
-                        <th class="hydro-table-head__cell">Runtime</th>
-                        <th class="hydro-table-head__cell">Weight</th>
-                        <th class="hydro-table-head__cell">Health</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let modelVariant of stage.modelVariants; let j = index;" class='hydro-table-body__row'>
-                        <td class="hydro-table-body__cell model-variant__cell">
-                            <span
-                                class="model-variant__version-new tooltip">
-                                <hydro-icon 
-                                    type='icon-upgrade'
-                                    class="icon model-variant__version-new-icon"
-                                    hsUpdateModelVersion
-                                    [modelVersion]="modelVariant.modelVersion"
-                                    (handleClick)="updateModelVersionDialog($event, modelVariant)"
-                                    >
-                                </hydro-icon>
-                                <span class="tooltiptext">Model has new version</span>
-                            </span>
-                            <span class='model-variant__version-text cs-text-overflow-ellipsis'>
-                                <span 
-                                    class="model-variant__link" 
-                                    [routerLink]="[ '../../models', modelVariant.modelVersion.model.id, modelVariant.modelVersion.id]">
-                                    {{ modelVariant.modelVersion.model.name + ':v' + modelVariant.modelVersion.modelVersion}}</span>
-                                </span>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <span class='cs-text-overflow-ellipsis cs-text-center' style="max-width: 300px;">
-                                {{ modelVariant.modelVersion.runtime.name ? modelVariant.modelVersion.runtime.name : modelVariant.modelVersion.runtime.id }}
-                            </span>
-                        </td>
-
-                        <td class="hydro-table-body__cell">
-                            <div class=''>{{ modelVariant.weight }}%</div>
-                        </td>
-                        <td class="hydro-table-body__cell">
-                            <div class='cs-text-bold cs-text-overflow-ellipsis'>
-                                <div [ngClass]="healthStatuses['app' + application.id + 'stage' + i + '_' + modelVariant.modelVersion.id]"
-                                    class="health-status"></div>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <td class="hydro-table-body__cell">
+              <div class="">{{ modelVariant.weight }}%</div>
+            </td>
+            <td class="hydro-table-body__cell">
+              <div class="cs-text-bold cs-text-overflow-ellipsis">
+                <div
+                  [ngClass]="
+                    healthStatuses[
+                      'app' +
+                        application.id +
+                        'stage' +
+                        i +
+                        '_' +
+                        modelVariant.modelVersion.id
+                    ]
+                  "
+                  class="health-status"
+                ></div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </div>
