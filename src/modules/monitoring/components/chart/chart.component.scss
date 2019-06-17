@@ -38,65 +38,65 @@
     text-transform: uppercase;
     letter-spacing: 1px;
   }
-}
 
-.metric {
-  &__name {
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #0d2b4a;
-  }
-}
-
-.line {
-  fill: none;
-  stroke-width: 2px;
-  stroke-linejoin: round;
-}
-
-.area {}
-
-.active-line {
-  display: none;
-  transform: translate(462.703px, 64px);
-  width: 1px;
-  background: rgba(1, 32, 99, 0.24);
-  position: absolute;
-  top: 42px;
-  bottom: 66px;
-  left: 24px;
-  pointer-events: none;
-}
-
-.active-point {
-  width: 6px;
-  height: 6px;
-  border: 4px #313a4405 solid;
-  border-radius: 50%;
-  background: rgba(1, 32, 99, 0.95);
-  position: absolute;
-  top: 38px;
-  left: 20px;
-  z-index: 2;
-}
-
-.tooltip {
-  position: absolute;
-  border: 2px rgba(1, 32, 99, 0.95) solid;
-  background: white;
-  padding: 4px 8px;
-  left: 0;
-  top: 0;
-  box-shadow: 0 0 2px -2px;
-  border-radius: 2px;
-  font-size: 8px;
-  z-index: 2;
-  pointer-events: none;
-
-  & p {
-    margin: 0;
+  &__tooltip {
+    position: absolute;
+    border: 2px rgba(1, 32, 99, 0.95) solid;
+    background: white;
+    padding: 4px 8px;
+    left: 0;
+    top: 0;
+    box-shadow: 0 0 2px -2px;
+    border-radius: 2px;
     font-size: 8px;
-    line-height: 12px
+    z-index: 2;
+    pointer-events: none;
+
+    & p {
+      margin: 0;
+      font-size: 8px;
+      line-height: 12px
+    }
+  }
+
+  .metric {
+    &__name {
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #0d2b4a;
+    }
+  }
+
+  .line {
+    fill: none;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+  }
+
+  .area {}
+
+  .active-line {
+    display: none;
+    transform: translate(462.703px, 64px);
+    width: 1px;
+    background: rgba(1, 32, 99, 0.24);
+    position: absolute;
+    top: 42px;
+    bottom: 66px;
+    left: 24px;
+    pointer-events: none;
+  }
+
+  .active-point {
+    width: 6px;
+    height: 6px;
+    border: 4px #313a4405 solid;
+    border-radius: 50%;
+    background: rgba(1, 32, 99, 0.95);
+    position: absolute;
+    top: 38px;
+    left: 20px;
+    z-index: 2;
   }
 }
