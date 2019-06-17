@@ -37,6 +37,11 @@ export class DashboardComponent implements OnInit {
   logLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   log$: any;
+
+  maxMessages: number = 20;
+  maxMBytes: number = 5;
+  reverse: boolean = true;
+  loadFailed: boolean = true;
   constructor(
     private store: Store<HydroServingState>,
     private reqResLogService: RequestResponseLogService
@@ -60,6 +65,10 @@ export class DashboardComponent implements OnInit {
             timeInterval,
             modelVersion,
             metricSpecifications,
+            maxMBytes: this.maxMBytes,
+            maxMessages: this.maxMessages,
+            reverse: this.reverse,
+            health: this.loadFailed ? 0 : undefined,
           })
           .pipe(
             catchError(err => {
@@ -71,10 +80,14 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  onChangeTimeInterval(timeInterval: TimeInterval) {
+  onChangeTimeInterval(timeInterval: TimeInterval): void {
     if (timeInterval && timeInterval.from && timeInterval.to) {
       this.timeInterval = timeInterval;
       this.selectedTimeInterval$.next(timeInterval);
     }
+  }
+
+  updateReqstore(): void {
+    this.updateLogButtonClick$.next('click');
   }
 }

@@ -39,8 +39,19 @@ export class RequestResponseLogService {
     timeInterval,
     modelVersion,
     metricSpecifications,
+    maxMBytes = 5,
+    maxMessages = 25,
+    reverse = true,
+    health,
   }): Observable<any> {
-    const reqstoreLog$ = this.reqstoreRequest({ timeInterval, modelVersion });
+    const reqstoreLog$ = this.reqstoreRequest({
+      timeInterval,
+      modelVersion,
+      maxMBytes,
+      maxMessages,
+      reverse,
+      health,
+    });
     const sonarData$ = this.sonarRequest({
       timeInterval,
       metricSpecifications,
@@ -55,9 +66,10 @@ export class RequestResponseLogService {
   private reqstoreRequest({
     timeInterval,
     modelVersion,
-    maxMBytes = 1000,
-    maxMessages = 25,
-    reverse = true,
+    maxMBytes,
+    maxMessages,
+    reverse,
+    health,
   }) {
     return this.reqstoreService.getData({
       modelVersionId: modelVersion.id,
@@ -66,6 +78,7 @@ export class RequestResponseLogService {
       maxBytes: `${+maxMBytes * 1024 * 1024}`,
       maxMessages: `${maxMessages}`,
       reverse: reverse ? 'true' : 'false',
+      health,
     });
   }
 
@@ -121,7 +134,7 @@ export class RequestResponseLogService {
 
         traces.forEach(trace => {
           if (trace) {
-            const {timestamp: ts} = trace;
+            const { timestamp: ts } = trace;
             if (reqstoreLog[ts] !== undefined) {
               if (log[ts] === undefined) {
                 log[ts] = reqstoreLog[ts][0];
