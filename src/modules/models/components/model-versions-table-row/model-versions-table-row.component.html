@@ -1,43 +1,67 @@
 <td class="model-version__model-version hydro-table-body__cell text-center">
-    {{ modelVersion.modelVersion }}
+  {{ modelVersion.modelVersion }}
 </td>
 <td class="hydro-table-body__cell">
-    <span class="cs-text-overflow-ellipsis model-version__created-time">{{ modelVersion.created | utcToLocal | amTimeAgo }}</span>
+  {{ modelVersion.runtime.name }}
 </td>
 <td class="hydro-table-body__cell">
-    <span 
-        *ngIf="modelVersion.status"
-        class='cs-text-overflow-ellipsis model-version-status model-version-status--{{modelVersion.status}}' 
-        [status]="modelVersion.status"
-        hsModelVersionStatus>
-        <hydro-icon #statusIcon class="icon"></hydro-icon>
-        <span #statusText class="icon-label"></span>
-    </span>
+  <span class="cs-text-overflow-ellipsis model-version__created-time">{{
+    modelVersion.created | utcToLocal | amTimeAgo
+  }}</span>
+</td>
+<td class="hydro-table-body__cell">
+  <span
+    *ngIf="modelVersion.status"
+    class="cs-text-overflow-ellipsis model-version-status model-version-status--{{
+      modelVersion.status
+    }}"
+    [status]="modelVersion.status"
+    hsModelVersionStatus
+  >
+    <hydro-icon #statusIcon class="icon"></hydro-icon>
+    <span #statusText class="icon-label"></span>
+  </span>
 </td>
 <td class="hydro-table-body__cell model-version__applications">
-    <div *ngIf="modelVersion.applications.length > 0; else emptyApplication">
-        <span class="application" *ngFor="let appName of modelVersion.applications; last as lastItem"
-            [routerLink]="['../../applications', appName]">
-            <span>{{appName}}</span><span *ngIf='!lastItem'>, </span>
-        </span>
-    </div>
-    <ng-template #emptyApplication>
-        <span class='applications-is--empty'>-</span>
-    </ng-template>
+  <div *ngIf="modelVersion.applications.length > 0; else emptyApplication">
+    <span
+      class="application"
+      *ngFor="let appName of modelVersion.applications; last as lastItem"
+      [routerLink]="['../../applications', appName]"
+    >
+      <span>{{ appName }}</span
+      ><span *ngIf="!lastItem">, </span>
+    </span>
+  </div>
+  <ng-template #emptyApplication>
+    <span class="applications-is--empty">-</span>
+  </ng-template>
 </td>
 <td class="hydro-table-body__cell">
-    <div *ngIf='isRealsed()' class="model-version__actions" >
-        <div class="model-version__actions-item"
-            [routerLink]="[modelVersion.id, 'profiler']">
-            <hydro-icon type="profiler" class="model-version__actions-icon"></hydro-icon>
-        </div>
-        <div class="model-version__actions-item"
-            [routerLink]="[modelVersion.id, 'monitoring']">
-            <hydro-icon type="monitoring" class="model-version__actions-icon"></hydro-icon>
-        </div>
-        <div class="model-version__actions-item"
-            [routerLink]="[modelVersion.id]">
-        <hydro-icon type="icon-arrow-right" class="model-version__actions-icon"></hydro-icon>
+  <div *ngIf="isRealsed()" class="model-version__actions">
+    <div
+      class="model-version__actions-item"
+      [routerLink]="[modelVersion.id, 'profiler']"
+    >
+      <hydro-icon
+        type="profiler"
+        class="model-version__actions-icon"
+      ></hydro-icon>
     </div>
+    <div
+      class="model-version__actions-item"
+      [routerLink]="[modelVersion.id, 'monitoring']"
+    >
+      <hydro-icon
+        type="monitoring"
+        class="model-version__actions-icon"
+      ></hydro-icon>
     </div>
+    <div class="model-version__actions-item" [routerLink]="[modelVersion.id]">
+      <hydro-icon
+        type="icon-arrow-right"
+        class="model-version__actions-icon"
+      ></hydro-icon>
+    </div>
+  </div>
 </td>
