@@ -49,7 +49,7 @@ interface TooltipContent {
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.Native,
 })
 export class ChartComponent implements OnInit, OnDestroy {
   get featureList(): string[] {
