@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'hs-reqstore-table-log',
-    template: '',
+    template: '<div></div>',
 })
-export class ReqstoreTableLogComponent {
+export class MockReqstoreTableLogComponent {
     @Input()
     modelVersion;
 

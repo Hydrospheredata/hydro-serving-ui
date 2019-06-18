@@ -12,7 +12,7 @@ describe('ChartsComponent', () => {
   let component: ChartsComponent;
   let fixture: ComponentFixture<ChartsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         ChartsComponent,
@@ -21,7 +21,7 @@ describe('ChartsComponent', () => {
       ],
       imports: [StoreModule.forRoot({}), HsD3Module, MdlSelectModule, SharedModule],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChartsComponent);

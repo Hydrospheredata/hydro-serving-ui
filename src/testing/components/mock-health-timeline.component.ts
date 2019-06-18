@@ -5,6 +5,6 @@ import { Component, Input } from '@angular/core';
     template: '',
 })
 export class HealthTimelineComponent {
-    @Input() metricSpecifications$;
-    @Input() selectedModelVersion$;
+    @Input() metricSpecifications;
+    @Input() selectedModelVersion;
 }

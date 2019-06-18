@@ -28,7 +28,7 @@ describe('MonitoringAvailabilityComponent', () => {
     monitoringServiceStatus: fromMonitoringServiceStatus.reducer,
   });
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule,
@@ -37,7 +37,7 @@ describe('MonitoringAvailabilityComponent', () => {
       declarations: [ MonitoringAvailabilityComponent ],
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MonitoringAvailabilityComponent);

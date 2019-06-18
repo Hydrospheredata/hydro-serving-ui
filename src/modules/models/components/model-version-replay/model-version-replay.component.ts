@@ -16,17 +16,17 @@ import { Observable, fromEvent, Subscription } from 'rxjs';
 import { withLatestFrom, tap, exhaustMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'hs-model-version-reply',
-  templateUrl: './model-version-reply.component.html',
-  styleUrls: ['./model-version-reply.component.scss'],
+  selector: 'hs-model-version-replay',
+  templateUrl: './model-version-replay.component.html',
+  styleUrls: ['./model-version-replay.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ModelVersionReplyComponent implements OnInit, OnDestroy {
+export class ModelVersionReplayComponent implements OnInit, OnDestroy {
   @ViewChild('replyButton', { read: ElementRef }) replyButton: ElementRef;
   siblingsModelVersions$: Observable<IModelVersion[]>;
   replayableModelVersion: number;
-  onReplyClick$: Observable<any>;
-  replyClickSubscribe: Subscription;
+  onReplayClick$: Observable<any>;
+  replayClickSubscribe: Subscription;
 
   constructor(
     private store: Store<HydroServingState>,
@@ -37,7 +37,7 @@ export class ModelVersionReplyComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.onReplyClick$ = fromEvent(
+    this.onReplayClick$ = fromEvent(
       this.replyButton.nativeElement,
       'click'
     ).pipe(
@@ -53,10 +53,10 @@ export class ModelVersionReplyComponent implements OnInit, OnDestroy {
         });
       })
     );
-    this.replyClickSubscribe = this.onReplyClick$.subscribe();
+    this.replayClickSubscribe = this.onReplayClick$.subscribe();
   }
 
   ngOnDestroy(): void {
-    this.replyClickSubscribe.unsubscribe();
+    this.replayClickSubscribe.unsubscribe();
   }
 }

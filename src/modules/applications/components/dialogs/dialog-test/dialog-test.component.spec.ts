@@ -12,7 +12,7 @@ describe('DialogTestComponent', () => {
     let component: DialogTestComponent;
     let fixture: ComponentFixture<DialogTestComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
                 SharedModule,
@@ -30,7 +30,7 @@ describe('DialogTestComponent', () => {
             ],
         })
             .compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DialogTestComponent);

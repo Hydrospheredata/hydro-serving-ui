@@ -7,13 +7,13 @@ describe('MonitoringPageComponent', () => {
   let component: MonitoringPageComponent;
   let fixture: ComponentFixture<MonitoringPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ MonitoringPageComponent ],
       imports: [RouterTestingModule],
     })
     .compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MonitoringPageComponent);

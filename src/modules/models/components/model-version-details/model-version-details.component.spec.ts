@@ -6,9 +6,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SignaturesService } from '@core/services';
 import { HttpService } from '@core/services/http';
 import {
-    ProfilesComparisonHistogramComponent,
-    ProfilesComponent,
-    ProfileStatsComponent,
+  ProfilesComparisonHistogramComponent,
+  ProfilesComponent,
+  ProfileStatsComponent,
 } from '@profiler/components';
 import { SharedModule } from '@shared/shared.module';
 import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
@@ -18,37 +18,31 @@ import { of } from 'rxjs';
 import { ModelVersionDetailsComponent } from './model-version-details.component';
 
 describe('ModelVersionDetailsComponent', () => {
-    let component: ModelVersionDetailsComponent;
-    let fixture: ComponentFixture<ModelVersionDetailsComponent>;
+  let component: ModelVersionDetailsComponent;
+  let fixture: ComponentFixture<ModelVersionDetailsComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            declarations: [
-                ModelVersionDetailsComponent,
-            ],
-            imports: [
-                MdlSelectModule,
-                SharedModule,
-                RouterTestingModule,
-                MomentModule,
-                HttpClientTestingModule,
-            ],
-            providers: [
-                MockStoreProvider,
-                SignaturesService,
-                HttpService,
-            ],
-        }).compileComponents();
-    }));
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ModelVersionDetailsComponent],
+      imports: [
+        MdlSelectModule,
+        SharedModule,
+        RouterTestingModule,
+        MomentModule,
+        HttpClientTestingModule,
+      ],
+      providers: [MockStoreProvider, SignaturesService, HttpService],
+    }).compileComponents();
+  });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(ModelVersionDetailsComponent);
-        component = fixture.componentInstance;
-        component.modelVersion$ = of(MockModelVersion1Model1);
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ModelVersionDetailsComponent);
+    component = fixture.componentInstance;
+    component.modelVersion$ = of(MockModelVersion1Model1);
+    fixture.detectChanges();
+  });
 
-    it('it should be created', () => {
-        expect(component).toBeTruthy();
-    });
+  it('it should be created', () => {
+    expect(component).toBeTruthy();
+  });
 });

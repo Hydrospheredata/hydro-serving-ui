@@ -76,8 +76,8 @@ export class ChartComponent implements OnInit, OnDestroy {
   showTooltip: boolean = false;
   tooltipContent: TooltipContent = null;
 
-  canvasWidth: number;
-  canvasHeight: number;
+  canvasWidth: number = 300;
+  canvasHeight: number = 150;
   groupedData: GroupedData;
   minValue: number;
 
@@ -350,7 +350,6 @@ export class ChartComponent implements OnInit, OnDestroy {
   private onMouseMove() {
     const data = this.data;
     const [xCoordinate] = d3.mouse(this.rectRef.nativeElement);
-
     const selectedTime = Math.floor(this.xScale.invert(xCoordinate));
     const bisector = d3.bisector((d: SonarMetricData) => d.timestamp).right;
     const index = bisector(data, selectedTime, 1);

@@ -19,7 +19,7 @@ describe('DialogAddApplicationComponent', () => {
     let component: DialogAddApplicationComponent;
     let fixture: ComponentFixture<DialogAddApplicationComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
                 SharedModule,
@@ -38,7 +38,7 @@ describe('DialogAddApplicationComponent', () => {
                 CustomValidatorsService,
             ],
         }).compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DialogAddApplicationComponent);

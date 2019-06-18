@@ -8,12 +8,12 @@ describe('MetricComponent', () => {
   let component: MetricComponent;
   let fixture: ComponentFixture<MetricComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MetricComponent],
       imports: [SharedModule],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MetricComponent);

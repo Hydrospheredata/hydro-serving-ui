@@ -13,7 +13,7 @@ describe('ChartComponent', () => {
   let component: ChartComponent;
   let fixture: ComponentFixture<ChartComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ChartComponent],
       imports: [
@@ -23,12 +23,11 @@ describe('ChartComponent', () => {
       ],
       providers: [{provide: MonitoringService, useValue: MockMonitoringService}],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ChartComponent);
     component = fixture.componentInstance;
-
     component.metrics = [MockMetricSpecification];
 
     fixture.detectChanges();

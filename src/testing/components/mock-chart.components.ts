@@ -6,4 +6,6 @@ import { Component, Input } from '@angular/core';
 })
 export class ChartComponent {
   @Input() metrics;
+  @Input() liveUpdate;
+  @Input() timeBoundary;
 }

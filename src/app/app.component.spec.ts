@@ -19,7 +19,7 @@ import { ProfilerModule } from '@profiler/profiler.module';
 import { MomentModule } from 'angular2-moment';
 
 describe('AppComponent', () => {
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [AppComponent],
             imports: [
@@ -42,12 +42,12 @@ describe('AppComponent', () => {
                 { provide: APP_BASE_HREF, useValue: '/' },
             ],
         }).compileComponents();
-    }));
+    });
 
-    it('should create the app', async(() => {
+    it('should create the app', () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
-    }));
+    });
 
 });

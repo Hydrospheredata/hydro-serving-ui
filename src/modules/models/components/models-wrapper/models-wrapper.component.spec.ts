@@ -10,7 +10,7 @@ describe('ModelsWrapperComponent', () => {
     let component: ModelsWrapperComponent;
     let fixture: ComponentFixture<ModelsWrapperComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [ModelsWrapperComponent],
             imports: [
@@ -23,7 +23,7 @@ describe('ModelsWrapperComponent', () => {
             ],
         })
             .compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(ModelsWrapperComponent);

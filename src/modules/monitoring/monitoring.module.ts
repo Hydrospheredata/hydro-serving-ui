@@ -10,6 +10,7 @@ import {
   DialogDeleteMetricComponent,
   HealthTimelineComponent,
   HealthTimelineMiniComponent,
+  ReqstoreTableLogComponent,
 } from '@monitoring/components';
 import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-service-status.effects';
 import { EffectsModule } from '@ngrx/effects';
@@ -44,6 +45,7 @@ import { reducer } from './reducers';
     GraphsComponent,
     HealthTimelineComponent,
     HealthTimelineMiniComponent,
+    ReqstoreTableLogComponent,
   ],
   imports: [
     SharedModule,

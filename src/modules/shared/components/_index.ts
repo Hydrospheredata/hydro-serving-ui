@@ -17,4 +17,3 @@ export * from './predict-response/predict-response.component';
 export * from './tensor-image-list/tensor-image-list.component';
 // dialogs
 export * from './dialogs';
-export * from './reqstore-table-log/reqstore-table-log.component';

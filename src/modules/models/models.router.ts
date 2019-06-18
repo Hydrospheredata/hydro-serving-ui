@@ -7,7 +7,7 @@ import {
   ModelVersionDetailsComponent,
   ModelVersionContainerComponent,
   ModelVersionProfilerComponent,
-  ModelVersionReplyComponent,
+  ModelVersionReplayComponent,
 } from '@models/components';
 
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
@@ -60,7 +60,7 @@ import { routes as monitoringRoutes } from '@monitoring/monitoring-routing.modul
               },
               {
                 path: 'replay',
-                component: ModelVersionReplyComponent,
+                component: ModelVersionReplayComponent,
               },
             ],
           },

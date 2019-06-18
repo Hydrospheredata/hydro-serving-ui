@@ -1,12 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { FormsModule } from '@angular/forms';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { ReqstoreService } from '@core/services/reqstore.service';
 import { StoreModule } from '@ngrx/store';
+import { SharedModule } from '@shared/shared.module';
 import {
   HealthTimelineComponent,
   ChartsComponent,
-  ReqstoreTableLogComponent,
+  MockReqstoreTableLogComponent,
 } from '@testing/components';
 import { DashboardComponent } from './dashboard.component';
 
@@ -17,15 +19,15 @@ describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         DashboardComponent,
         HealthTimelineComponent,
-        ReqstoreTableLogComponent,
+        MockReqstoreTableLogComponent,
         ChartsComponent,
       ],
-      imports: [StoreModule.forRoot({})],
+      imports: [StoreModule.forRoot({}), SharedModule, FormsModule],
       providers: [
         {
           provide: MonitoringService,
@@ -37,7 +39,7 @@ describe('DashboardComponent', () => {
         },
       ],
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);
