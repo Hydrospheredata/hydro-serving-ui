@@ -5,6 +5,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SignaturesService } from '@core/services';
 import { HttpService } from '@core/services/http';
+import { StoreModule } from '@ngrx/store';
 import {
   ProfilesComparisonHistogramComponent,
   ProfilesComponent,
@@ -23,15 +24,18 @@ describe('ModelVersionDetailsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ModelVersionDetailsComponent],
+      declarations: [
+          ModelVersionDetailsComponent,
+      ],
       imports: [
+        StoreModule.forRoot({}),
         MdlSelectModule,
         SharedModule,
         RouterTestingModule,
         MomentModule,
         HttpClientTestingModule,
       ],
-      providers: [MockStoreProvider, SignaturesService, HttpService],
+      providers: [SignaturesService, HttpService],
     }).compileComponents();
   });
 

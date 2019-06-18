@@ -32,7 +32,7 @@ describe('ModelDetailsComponent', () => {
         MomentModule,
         RouterTestingModule,
         StoreModule.forRoot({
-          feature: combineReducers(fromModels.reducers),
+          models: combineReducers(fromModels.reducers),
         }),
       ],
       providers: [MockStoreProvider, DialogService],

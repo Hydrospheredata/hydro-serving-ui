@@ -7,7 +7,9 @@ import { MockMetricSpecification } from '@testing/factories/metric-specification
 import { HsD3Module } from '../../../hs-d3/hs-d3.module';
 import { ChartComponent } from './chart.component';
 
-const MockMonitoringService = {};
+const MockMonitoringService = {
+  getMetricsInRange() { },
+};
 
 describe('ChartComponent', () => {
   let component: ChartComponent;
@@ -33,7 +35,7 @@ describe('ChartComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', async(() => {
     expect(component).toBeTruthy();
-  });
+  }));
 });

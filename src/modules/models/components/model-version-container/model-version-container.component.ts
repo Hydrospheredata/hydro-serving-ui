@@ -5,7 +5,7 @@ import { HydroServingState } from '@core/reducers';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { IModelVersion } from '@shared/_index';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 @Component({

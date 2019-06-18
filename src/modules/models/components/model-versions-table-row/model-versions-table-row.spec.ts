@@ -19,7 +19,10 @@ describe('ModelVersionTableRow component', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ModelVersionsTableRowComponent],
-      imports: [SharedModule, MomentModule, RouterTestingModule],
+      imports: [
+        SharedModule,
+        MomentModule,
+        RouterTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ModelVersionsTableRowComponent);

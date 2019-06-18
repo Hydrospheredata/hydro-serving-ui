@@ -1,54 +1,69 @@
 <div class="mv-details">
-    <section class='content__cell mv-details__information'>
-        <div class='content__cell-title'>Information</div>
-        <div class='content__cell-body'>
-            <ol class="content__body-section content-info__sublist">
-                <li class="content-info__sublist-item">
-                    <span class="content-info__sublist-item-title">Created</span>
-                    <span class="content-info__sublist-item-value">
-                        <div class="status">{{ (modelVersion$ | async)?.created | utcToLocal | amTimeAgo }}</div>
-                    </span>
-                </li>
-                <li class="content-info__sublist-item">
-                    <span class="content-info__sublist-item-title">Version</span>
-                    <span class="content-info__sublist-item-value">
-                        <div class="status">{{ (modelVersion$ | async)?.modelVersion }}</div>
-                    </span>
-                </li>
-                <li class="content-info__sublist-item">
-                    <span class="content-info__sublist-item-title">Status</span>
-                    <ng-container *ngIf="(modelVersion$ | async)?.status;let status">
-                        <span 
-                            class="content-info__sublist-item-value model-build-status--{{status | lowercase}}" 
-                            [status]="status"  
-                            hsModelVersionStatus >
-                            <span #statusText class="status"></span>
-                        </span>
-                    </ng-container>
-                </li>
-                <li class="content-info__sublist-item">
-                    <span class="content-info__sublist-item-title">Applications</span>
-                    <span class="content-info__sublist-item-value">
-                        <span *ngFor="let appName of ((modelVersion$ | async)?.applications);last as isLast"
-                            [routerLink]="['../../../../applications', appName]"
-                            class='application'>
-                            <span class="application-name">{{appName}}</span><span *ngIf='!isLast'>, </span>
-                        </span>
-                    </span>
-                </li>
-            </ol>
-        </div>
-    </section>
-    <section class="content__cell mv-details__metadata">
-        <div class="content__cell-title">Metadata</div>
-        <div class='content__cell-body' >
-            <hs-metadata [metadata]="(modelVersion$ | async).metadata"></hs-metadata>
-        </div>
-    </section>
-    <section class='content__cell mv-details__signatures'>
-        <div class="content__cell-title">Signatures</div>
-        <div class='content__cell-body' >
-            <hydro-signatures [signature]="(modelVersion$ | async)?.modelContract?.predict"></hydro-signatures>
-        </div>
-    </section>
+  <section class="content__cell mv-details__information">
+    <div class="content__cell-title">Information</div>
+    <div class="content__cell-body">
+      <ol class="content__body-section content-info__sublist">
+        <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Created</span>
+          <span class="content-info__sublist-item-value">
+            <div class="status">
+              {{ (modelVersion$ | async)?.created | utcToLocal | amTimeAgo }}
+            </div>
+          </span>
+        </li>
+        <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Version</span>
+          <span class="content-info__sublist-item-value">
+            <div class="status">
+              {{ (modelVersion$ | async)?.modelVersion }}
+            </div>
+          </span>
+        </li>
+        <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Status</span>
+          <ng-container *ngIf="(modelVersion$ | async)?.status; let status">
+            <span
+              class="content-info__sublist-item-value model-build-status--{{
+                status | lowercase
+              }}"
+              [status]="status"
+              hsModelVersionStatus
+            >
+              <span #statusText class="status"></span>
+            </span>
+          </ng-container>
+        </li>
+        <li class="content-info__sublist-item">
+          <span class="content-info__sublist-item-title">Applications</span>
+          <span class="content-info__sublist-item-value">
+            <span
+              *ngFor="
+                let appName of (modelVersion$ | async)?.applications;
+                last as isLast
+              "
+              [routerLink]="['../../../../applications', appName]"
+              class="application"
+            >
+              <span class="application-name">{{ appName }}</span
+              ><span *ngIf="!isLast">, </span>
+            </span>
+          </span>
+        </li>
+      </ol>
+    </div>
+  </section>
+  <section class="content__cell mv-details__metadata">
+    <div class="content__cell-title">Metadata</div>
+    <div class="content__cell-body">
+      <hs-metadata [metadata]="(modelVersion$ | async).metadata"></hs-metadata>
+    </div>
+  </section>
+  <section class="content__cell mv-details__signatures">
+    <div class="content__cell-title">Signatures</div>
+    <div class="content__cell-body">
+      <hydro-signatures
+        [signature]="(modelVersion$ | async)?.modelContract?.predict"
+      ></hydro-signatures>
+    </div>
+  </section>
 </div>
