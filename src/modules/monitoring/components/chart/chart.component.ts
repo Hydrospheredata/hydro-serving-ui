@@ -91,13 +91,13 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   thresholds: string[];
   plotBands: GroupedBounds;
+  xScale;
+  yScale;
 
   private initialized: boolean = false;
   private data: SonarMetricData[];
   private chartWidth: number;
-  private xScale;
   private xOffset: number = 40;
-  private yScale;
 
   private log$: Subscription;
 

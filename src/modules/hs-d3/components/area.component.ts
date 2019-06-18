@@ -22,7 +22,7 @@ export class D3AreaComponent implements AfterViewInit {
   @Input() yScale;
   @Input() y0 = 0;
   @Input() data;
-
+  @Input() stroke;
   ngAfterViewInit(): void {
     const area = d3
       .area()
