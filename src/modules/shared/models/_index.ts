@@ -14,3 +14,4 @@ export * from './influxdb';
 export * from './image.model';
 export * from './hostSelector.model';
 export * from './time-interval.model';
+export * from './sonar-response.model';

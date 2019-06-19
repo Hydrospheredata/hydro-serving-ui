@@ -1,0 +1,70 @@
+<div class="graphs">
+  <ng-container
+    *ngIf="selectedMetricSpecifications$ | async as selectedMetricSpecs"
+  >
+    <ng-container *ngIf="selectedMetricSpecs.length > 0; else emptyMetricList">
+      <header class="graphs__header">
+        <div class="time-select">
+          <span class="time-select__label">Interval: </span>
+          <mdl-select
+            class="compare__select"
+            [(ngModel)]="chartTimeWidth"
+            label="time interval"
+          >
+            <mdl-option
+              *ngFor="let time of chartTimeWidthParams"
+              [value]="time.ms"
+            >
+              {{ time.text }}
+            </mdl-option>
+          </mdl-select>
+        </div>
+        <div class="compare">
+          <span class="compare__label">Compare with: </span>
+          <mdl-select
+            class="compare__select"
+            [(ngModel)]="compareModelVersionId"
+            label="model version"
+          >
+            <mdl-option [value]
+              ><em>-- Select a model version --</em></mdl-option
+            >
+            <mdl-option
+              *ngFor="let modelVersion of siblingModelVersions$ | async"
+              [value]="modelVersion.id"
+            >
+              {{ modelVersion.modelVersion }}
+            </mdl-option>
+          </mdl-select>
+        </div>
+        <div class="live-update">
+          <span class="live-update__label">Live update: </span>
+          <input
+            class="live-update__select"
+            type="checkbox"
+            name="liveUpdate"
+            id="liveUpdate"
+            [(ngModel)]="liveUpdate"
+          />
+        </div>
+      </header>
+      <div>
+        <div
+          class="chart"
+          *ngFor="let item of groupedMetricSpecifications$ | async | keyvalue"
+        >
+          <hs-chart
+            [metrics]="item.value"
+            [liveUpdate]="liveUpdate"
+            [timeBoundary]="chartTimeWidth"
+          ></hs-chart>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+<ng-template #emptyMetricList>
+  <hs-alert-message>
+    This model version does not have any metrics.
+  </hs-alert-message>
+</ng-template>

@@ -1,0 +1,13 @@
+<div class="charts">
+  <div
+    class="charts__item"
+    [ngClass]="{ 'charts__item--odd': odd }"
+    *ngFor="let metricSpec of metricSpecifications; odd as odd"
+  >
+    <hs-chart
+      [metrics]="[metricSpec]"
+      [selectedTimeInterval$]="selectedTimeInterval$"
+      [liveUpdate]="liveUpdate"
+    ></hs-chart>
+  </div>
+</div>

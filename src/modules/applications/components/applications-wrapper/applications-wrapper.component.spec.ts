@@ -12,7 +12,7 @@ describe('ApplicationsWrapperComponent', () => {
     let component: ApplicationsWrapperComponent;
     let fixture: ComponentFixture<ApplicationsWrapperComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [
                 ApplicationsWrapperComponent,
@@ -27,7 +27,7 @@ describe('ApplicationsWrapperComponent', () => {
                 DialogService,
             ],
         }).compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(ApplicationsWrapperComponent);

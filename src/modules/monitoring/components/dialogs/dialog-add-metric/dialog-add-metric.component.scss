@@ -1,0 +1,33 @@
+@import "variables.scss";
+
+label.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.form-actions {
+    &__button {
+        margin-right: 24px;
+    }
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    &__button {
+        margin-left: 8px;
+    }
+}
+
+.row {
+    padding: 10px 0 10px 0;
+}
+
+.input {
+    border: none;
+    font-size: 16px;
+    margin-left: 4px;
+    color: #3c435a;
+    font-weight: bold;
+    letter-spacing: 1px;
+}

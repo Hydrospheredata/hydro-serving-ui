@@ -9,6 +9,9 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "plugins": [
+      {"name": "@angular/language-service"}
+    ],
     "paths": {
       "@environments/*": [
         "environments/*"
@@ -34,8 +37,14 @@
       "@shared/*": [
         "modules/shared/*"
       ],
-      "@profiles/*": [
-        "modules/profiles/*"
+      "@monitoring/*": [
+        "modules/monitoring/*"
+      ],
+      "@profiler/*": [
+        "modules/profiler/*"
+      ],
+      "@timemachine/*": [
+        "modules/timemachine/*"
       ],
       "@dialog/*": [
         "modules/dialog/*"

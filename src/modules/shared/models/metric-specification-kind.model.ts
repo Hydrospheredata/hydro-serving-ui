@@ -1,6 +1,6 @@
-export interface IMetricSpecificationKind {
+export interface MetricSpecificationConfig {
   input?: string;
-  threshold?: number;
+  threshold?: string;
   interval?: number;
   applicationName?: string;
 }

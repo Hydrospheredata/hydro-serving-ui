@@ -1,5 +1,5 @@
 
-export interface ITimeInterval {
+export interface TimeInterval {
     from: number;
     to: number;
 }

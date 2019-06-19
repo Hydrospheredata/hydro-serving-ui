@@ -18,7 +18,7 @@ describe('ApplicationsItemDetailComponent', () => {
     let component: ApplicationsItemDetailComponent;
     let fixture: ComponentFixture<ApplicationsItemDetailComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [
                 ApplicationsItemDetailComponent,
@@ -38,7 +38,7 @@ describe('ApplicationsItemDetailComponent', () => {
             ],
         })
             .compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(ApplicationsItemDetailComponent);

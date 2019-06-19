@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import * as HydroActions from '@applications/actions/applications.actions';
 import * as fromApplications from '@applications/reducers';
 import { HydroServingState } from '@core/reducers';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 
 import { ApplicationsService } from '@applications/services';
@@ -20,10 +20,9 @@ import { switchMap, catchError, withLatestFrom, skip ,  map } from 'rxjs/operato
 export class ApplicationsEffects {
 
     @Effect() getApplications$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ApplicationActionTypes.Get)
-        .pipe(
+    .pipe(
+        ofType(HydroActions.ApplicationActionTypes.Get),
             switchMap(() => {
-
                 return this.applicationsService
                     .getApplications()
                     .pipe(
@@ -37,8 +36,8 @@ export class ApplicationsEffects {
         );
 
     @Effect() addApplication$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ApplicationActionTypes.Add)
-        .pipe(
+    .pipe(
+        ofType(HydroActions.ApplicationActionTypes.Add),
             map((action: HydroActions.AddApplicationAction) => action.application),
             switchMap(application => {
                 return this.applicationsService.addApplication(application)
@@ -65,8 +64,8 @@ export class ApplicationsEffects {
         );
 
     @Effect() updateApplication$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ApplicationActionTypes.Update)
-        .pipe(
+    .pipe(
+            ofType(HydroActions.ApplicationActionTypes.Update),
             map((action: HydroActions.UpdateApplicationAction) => action.application),
             switchMap(application => {
                 return this.applicationsService.updateApplication(application)
@@ -91,8 +90,8 @@ export class ApplicationsEffects {
         );
 
     @Effect() deleteApplication$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ApplicationActionTypes.Delete)
-        .pipe(
+    .pipe(
+            ofType(HydroActions.ApplicationActionTypes.Delete),
             map((action: HydroActions.DeleteApplicationAction) => action.application),
             switchMap(({ name }) => {
                 return this.applicationsService
@@ -118,8 +117,8 @@ export class ApplicationsEffects {
         );
 
     @Effect() generateInputs$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ApplicationActionTypes.GenerateInput)
-        .pipe(
+    .pipe(
+        ofType(HydroActions.ApplicationActionTypes.GenerateInput),
             withLatestFrom(
                 this.store.select(fromApplications.getSelectedApplication)
             ),
@@ -139,8 +138,8 @@ export class ApplicationsEffects {
         );
 
     @Effect() setInputs$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ApplicationActionTypes.SetInput)
-        .pipe(
+    .pipe(
+        ofType(HydroActions.ApplicationActionTypes.SetInput),
             skip(1),
             map((action: HydroActions.SetInputAction) => action.payload),
             withLatestFrom(
@@ -152,8 +151,8 @@ export class ApplicationsEffects {
         );
 
     @Effect() testApplication$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ApplicationActionTypes.Test)
-        .pipe(
+    .pipe(
+            ofType(HydroActions.ApplicationActionTypes.Test),
             withLatestFrom(
                 this.store.select(fromApplications.getSelectedApplicationInput),
                 this.store.select(fromApplications.getSelectedApplication)

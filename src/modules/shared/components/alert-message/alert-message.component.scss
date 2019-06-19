@@ -1,0 +1,9 @@
+.alert {
+    padding: 8px 14px;
+    text-align: center;
+    background: #FCE588;
+    color: #ad6f13;
+    & a {
+        color: #3a3a79 !important; 
+    }
+}

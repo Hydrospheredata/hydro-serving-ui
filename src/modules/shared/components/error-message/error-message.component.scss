@@ -1,0 +1,9 @@
+.error {
+    padding: 8px 14px;
+    text-align: center;
+    background: #FF9B9B;
+    color: #8A041A;
+    & a {
+        color: #3a3a79 !important; 
+    }
+}

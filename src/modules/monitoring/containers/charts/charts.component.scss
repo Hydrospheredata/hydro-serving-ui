@@ -1,0 +1,13 @@
+.charts {
+  display: flex;
+  flex-wrap: wrap;
+
+  &__item {
+    display: inline-block;
+    width: calc(50% - 10px);
+
+    &--odd {
+      margin-left: 20px;
+    }
+  }
+}

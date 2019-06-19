@@ -1,0 +1,95 @@
+.metric {
+    background: white;
+    height: 150px;
+    width: calc((100% / 4) - 12px);
+    box-shadow: 0 0 4px -2px grey;
+    margin-bottom: 12px;
+    // padding: 12px 14px;
+    display: inline-flex;
+    margin-right: 12px;
+    &__information {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 10px;
+    }
+    &__actions {
+        width: 40px;
+        border-left: 1px solid #403f6921;
+        display: flex;
+        flex-direction: column;
+    }
+    &__action {
+        height: 100%;
+        border-bottom: 1px solid #403f6921;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: .3s ease all;
+        &-icon {
+            width: 16px;
+            height: 16px;
+            margin: 0;
+            color: #4b499494;
+        }
+        &--last {
+            border: none;
+        }
+        &:hover {
+            background: #23226605;
+        }
+        &:hover &-icon {
+            color: #4b4994;
+        }
+    }
+    &__name {
+        text-transform: uppercase;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: #53526d;
+        margin: 0;
+    }
+    &__id {
+        font-size: 8px;
+        color: #9191a09c;
+        font-weight: 100;
+    }
+    &__health {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        &-key {
+            font-size: 12px;
+            text-transform: capitalize;
+            letter-spacing: 1px;
+            font-weight: 100;
+            line-height: 16px;
+        }
+        &-value {
+            font-size: 12px;
+            color: #9191a09c;
+            letter-spacing: 1px;
+            line-height: 16px;
+        }
+    }
+    &__config {
+        &-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        &-key {
+            font-size: 12px;
+            text-transform: capitalize;
+            letter-spacing: 1px;
+            font-weight: 100;
+            line-height: 16px;
+        }
+        &-value {
+            font-size: 12px;
+            color: #9191a09c;
+            letter-spacing: 1px;
+            line-height: 16px;
+        }
+    }
+}

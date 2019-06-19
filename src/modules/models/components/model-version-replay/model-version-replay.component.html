@@ -1,0 +1,26 @@
+<div class="replay">
+  <div class="replay__form">
+    <div>
+      <mdl-select [(ngModel)]="replayableModelVersion" label="replay from">
+        <mdl-option
+          *ngFor="let modelVersion of siblingsModelVersions$ | async"
+          [value]="modelVersion.id"
+        >
+          {{ modelVersion.modelVersion }}
+        </mdl-option>
+      </mdl-select>
+    </div>
+    <footer>
+      <button
+        class="button button--primary"
+        [disabled]="!replayableModelVersion"
+        #replyButton
+      >
+        replay
+      </button>
+    </footer>
+  </div>
+  <div class="replay__replays">
+    <header>replays</header>
+  </div>
+</div>

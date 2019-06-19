@@ -49,20 +49,22 @@ export interface IApplication {
     testStatus?: TestStatus;
     status: string;
     error?: string;
+    message?: string;
 }
 
 export class Application implements IApplication {
-    public id?: number;
-    public signature?: ISignature;
-    public name: string;
-    public executionGraph: IExecutionGraph;
-    public namespace?: string;
-    public kafkaStreaming?: IKafkaStreaming[];
-    public input: string;
-    public output: string;
-    public testStatus?: TestStatus;
-    public error?: string;
-    public status: string;
+    id?: number;
+    signature?: ISignature;
+    name: string;
+    executionGraph: IExecutionGraph;
+    namespace?: string;
+    kafkaStreaming?: IKafkaStreaming[];
+    input: string;
+    output: string;
+    testStatus?: TestStatus;
+    error?: string;
+    status: string;
+    message?: string;
 
     constructor(props: any = {}) {
         if (props.id) { this.id = props.id; }
@@ -77,5 +79,6 @@ export class Application implements IApplication {
         this.error = props.error || '';
         this.testStatus = props.testStatus || TestStatus.Undefined;
         this.status = props.status;
+        this.message = props.message;
     }
 }

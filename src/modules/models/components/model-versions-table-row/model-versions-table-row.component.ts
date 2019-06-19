@@ -1,6 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { IModelVersion, ModelVersionStatus } from '@shared/_index';
-import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
 
 @Component({
     selector: '[hs-model-versions-table-row]',

@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import { IMetricSpecificationRequest, IMetricSpecification } from '@shared/models/metric-specification.model';
+import { IMetricSpecificationRequest, MetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
@@ -16,7 +16,7 @@ export class MetricSettingsService {
     this.baseMonitoringSettingsUrl = `${environment.monitoringUrl}/metricspec`;
   }
 
-  public getMetricSettings(modelVersionId: string): Observable<IMetricSpecification[]> {
+  public getMetricSettings(modelVersionId: string): Observable<MetricSpecification[]> {
     const url = `${this.baseMonitoringSettingsUrl}/modelversion/${modelVersionId}`;
     return this.http.get(url).pipe(
       map((res: Response): any => res),
@@ -25,8 +25,6 @@ export class MetricSettingsService {
   }
 
   public addMetricSettings(metricSpecification: IMetricSpecificationRequest): Observable<object> {
-    console.log(`metricSpecification: ${metricSpecification}`);
-
     return this.http.post(this.baseMonitoringSettingsUrl, metricSpecification).pipe(
       map((res: Response): any => {
         return res;

@@ -6,7 +6,7 @@ import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { getModelVersionsByModelId, getSelectedModelId, getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { IModelVersion } from '@shared/_index';
-import { IMetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
+import { MetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
 import { Observable, Subject, combineLatest, BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, tap, takeUntil } from 'rxjs/operators';
 
@@ -21,7 +21,7 @@ export class CompareComponent implements OnInit, OnDestroy {
     modelVersionList$: Observable<IModelVersion[]>;
     secondModelVersionsList$: Observable<IModelVersion[]>;
 
-    metricSpecificationsSubject: BehaviorSubject<IMetricSpecification[]> = new BehaviorSubject([]);
+    metricSpecificationsSubject: BehaviorSubject<MetricSpecification[]> = new BehaviorSubject([]);
 
     metricKindList$: Observable<string[]>;
     metricProvider$: Subject<IMetricSpecificationProvider> = new Subject();
@@ -83,7 +83,7 @@ export class CompareComponent implements OnInit, OnDestroy {
             tap(([
                 primaryMericSpecifications,
                 secondaryMetricSpecifications,
-            ]: IMetricSpecification[][]) => {
+            ]: MetricSpecification[][]) => {
                 this.metricSpecificationsSubject.next(
                     [...primaryMericSpecifications, ...secondaryMetricSpecifications]
                 );
@@ -133,7 +133,7 @@ export class CompareComponent implements OnInit, OnDestroy {
     }
 
     private createMetricProviders(
-            metricSpecifications: IMetricSpecification[],
+            metricSpecifications: MetricSpecification[],
             kind
     ): IMetricSpecificationProvider  {
         const tmp: IMetricSpecificationProvider = {

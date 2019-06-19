@@ -15,11 +15,11 @@ import { CoreModule } from '@core/core.module';
 import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
 import { Store } from '@ngrx/store';
-import { ProfilesModule } from '@profiles/profiles.module';
+import { ProfilerModule } from '@profiler/profiler.module';
 import { MomentModule } from 'angular2-moment';
 
 describe('AppComponent', () => {
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [AppComponent],
             imports: [
@@ -33,7 +33,7 @@ describe('AppComponent', () => {
                 ReactiveFormsModule,
                 MomentModule,
                 SharedModule,
-                ProfilesModule,
+                ProfilerModule,
                 AppRoutingModule,
                 DialogModule,
             ],
@@ -42,12 +42,12 @@ describe('AppComponent', () => {
                 { provide: APP_BASE_HREF, useValue: '/' },
             ],
         }).compileComponents();
-    }));
+    });
 
-    it('should create the app', async(() => {
+    it('should create the app', () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.debugElement.componentInstance;
         expect(app).toBeTruthy();
-    }));
+    });
 
 });

@@ -1,0 +1,92 @@
+# upstreams
+
+upstream manager_grpc {
+  zone manager_grpc 64k;
+  server ${MANAGER_HOST}:${MANAGER_GRPC_PORT};
+}
+
+upstream gateway_grpc {
+  zone gateway_grpc 64k;
+  server ${GATEWAY_HOST}:${GATEWAY_GRPC_PORT};
+}
+
+upstream manager_http {
+  server ${MANAGER_HOST}:${MANAGER_HTTP_PORT};
+}
+
+upstream gateway_http {
+  server ${GATEWAY_HOST}:${GATEWAY_HTTP_PORT};
+}
+
+
+# GRPC
+
+server {
+  listen 9090 http2;
+
+  client_max_body_size 4000M;
+  grpc_connect_timeout 1d;
+  grpc_read_timeout 1d;
+  grpc_send_timeout 1d;
+  grpc_buffer_size 500m;
+
+  location /tensorflow.serving. {
+    grpc_pass grpc://gateway_grpc;
+  }
+
+  location /hydrosphere.manager. {
+    grpc_pass grpc://manager_grpc;
+  }
+}
+
+# HTTP
+server {
+  listen 80 default_server;
+
+  client_max_body_size 1G;
+  root   /usr/share/nginx/html;
+  index  index.html index.htm;
+  include /etc/nginx/mime.types;
+
+  error_page 404 =200 /index.html;
+
+  location /health {
+    return 200 'no content';
+  }
+
+  location /monitoring {
+    default_type text/plain;
+    add_header Access-Control-Allow-Origin  * always;
+    return 501 "Monitoring is not available in OSS version";
+  }
+
+  location /reqstore {
+    default_type text/plain;
+    add_header Access-Control-Allow-Origin  * always;
+    return 501 "Reqstore is not available is OSS version";
+  }
+
+  location /api {
+    proxy_pass http://manager_http;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
+
+  location /swagger {
+    proxy_pass http://manager_http;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
+
+  location /gateway {
+    proxy_pass http://gateway_http;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
+}

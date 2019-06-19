@@ -1,23 +1,42 @@
-<header class='hydro-navbar'>
-    <span class="hydro-navbar__logo" [routerLink]="['/']">
-        <hydro-icon type='logo' class="hydro-navbar__logo-icon"></hydro-icon>
-    </span>
-    <nav class="hydro-navbar__menu">
-        <a class="hydro-navbar__menu-item" [routerLink]="['/models']" routerLinkActive='__active'>
-            <hydro-icon [type]="'icon-models'" class="hydro-navbar__icon hydro-navbar__icon--models"></hydro-icon>
-            <span class="models-link-label">Models</span>
-        </a>
-        <a class="hydro-navbar__menu-item" [routerLink]="['/applications']" routerLinkActive='__active'>
-            <hydro-icon [type]="'icon-applications'" class="hydro-navbar__icon hydro-navbar__icon--applications"></hydro-icon>
-            <span class="services-link-label">Applications</span>
-        </a>
-    </nav>
-    <div class='hydro-navbar__support-info'>
-        <a class="hydro-navbar__documentation" target="_blank" rel="noopener noreferrer" href="https://hydrosphere.io/serving-docs">
-            documentation
-        </a>
-        <a class="hydro-navbar__build-info" hsBuildInformation>
-            build information
-        </a>
-    </div>
+<header class="hydro-navbar">
+  <span class="hydro-navbar__logo" [routerLink]="['/']">
+    <hydro-icon type="logo" class="hydro-navbar__logo-icon"></hydro-icon>
+  </span>
+  <nav class="hydro-navbar__menu">
+    <a
+      class="hydro-navbar__menu-item"
+      [routerLink]="['/models']"
+      routerLinkActive="__active"
+    >
+      <hydro-icon
+        [type]="'icon-models'"
+        class="hydro-navbar__icon hydro-navbar__icon--models"
+      ></hydro-icon>
+      <span class="models-link-label">Models</span>
+    </a>
+    <a
+      class="hydro-navbar__menu-item"
+      [routerLink]="['/applications']"
+      routerLinkActive="__active"
+    >
+      <hydro-icon
+        [type]="'icon-applications'"
+        class="hydro-navbar__icon hydro-navbar__icon--applications"
+      ></hydro-icon>
+      <span class="services-link-label">Applications</span>
+    </a>
+  </nav>
+  <div class="hydro-navbar__support-info">
+    <a
+      class="hydro-navbar__documentation"
+      target="_blank"
+      rel="noopener noreferrer"
+      href="https://hydrosphere.io/serving-docs"
+    >
+      documentation
+    </a>
+    <a class="hydro-navbar__build-info" hsBuildInformation>
+      build information
+    </a>
+  </div>
 </header>

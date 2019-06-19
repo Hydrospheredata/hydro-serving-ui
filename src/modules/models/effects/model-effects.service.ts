@@ -1,6 +1,6 @@
 
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { of as observableOf,  Observable } from 'rxjs';
 
@@ -15,8 +15,8 @@ import { flatMap, map, catchError, switchMap } from 'rxjs/operators';
 export class ModelEffects {
 
     @Effect() getAllModels$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ModelActionTypes.Get)
         .pipe(
+            ofType(HydroActions.ModelActionTypes.Get),
             flatMap(() => this.modelsService
                 .getModels()
                 .pipe(
@@ -32,8 +32,8 @@ export class ModelEffects {
         );
 
     @Effect() getAllVersions$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ModelVersionActionTypes.GetModelVersions)
         .pipe(
+            ofType(HydroActions.ModelVersionActionTypes.GetModelVersions),
             flatMap(() => this.modelsService
                 .getAllVersions()
                 .pipe(
@@ -47,8 +47,8 @@ export class ModelEffects {
         );
 
     @Effect() deleteModel$: Observable<Action> = this.actions$
-        .ofType(HydroActions.ModelActionTypes.Delete)
         .pipe(
+            ofType(HydroActions.ModelActionTypes.Delete),
             map((action: HydroActions.DeleteModelAction) => action.modelId),
             switchMap(modelId => {
                 return this.modelsService

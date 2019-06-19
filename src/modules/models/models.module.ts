@@ -12,27 +12,24 @@ import {
     ModelDetailsComponent,
     ModelVersionsTableComponent,
     ModelVersionDetailsComponent,
-    ProfilerComponent,
     ModelVersionContainerComponent,
-    ModelVersionMonitoringContainerComponent,
     ModelVersionMonitoringComponent,
-    ModelVersionMonitoringLogComponent,
     CompareComponent,
-    ReqstoreComponent,
     ModelVersionsTableRowComponent,
+    ModelVersionProfilerComponent,
 } from '@models/components';
+
 import {
     DialogDeleteModelComponent,
-    DialogAddMetricComponent,
-    DialogDeleteMetricComponent
 } from '@models/components/dialogs';
 import { ModelEffects } from '@models/effects';
 import { reducers } from '@models/reducers';
 import { ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
+import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ProfilesModule } from '@profiles/profiles.module';
-import { HsD3Module } from '../hs-d3/hs-d3.module';
+import { ProfilerModule } from '../profiler/profiler.module';
+import { ModelVersionReplayComponent } from './components/model-version-replay/model-version-replay.component';
 
 @NgModule({
     imports: [
@@ -46,7 +43,8 @@ import { HsD3Module } from '../hs-d3/hs-d3.module';
         ReactiveFormsModule,
         StoreModule.forFeature('models', reducers),
         EffectsModule.forFeature([ModelEffects]),
-        ProfilesModule,
+        ProfilerModule,
+        MonitoringModule,
     ],
     declarations: [
         ModelsWrapperComponent,
@@ -55,20 +53,15 @@ import { HsD3Module } from '../hs-d3/hs-d3.module';
         ModelVersionsTableRowComponent,
         ModelVersionDetailsComponent,
         DialogDeleteModelComponent,
-        DialogAddMetricComponent,
-        ProfilerComponent,
-        ModelVersionMonitoringContainerComponent,
         ModelVersionMonitoringComponent,
-        DialogDeleteMetricComponent,
         CompareComponent,
-        ModelVersionMonitoringLogComponent,
         ModelVersionContainerComponent,
-        ReqstoreComponent,
+        ModelVersionProfilerComponent,
+        ModelVersionsTableComponent,
+        ModelVersionReplayComponent,
     ],
     entryComponents: [
         DialogDeleteModelComponent,
-        DialogAddMetricComponent,
-        DialogDeleteMetricComponent,
     ],
     providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
 })

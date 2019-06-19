@@ -1,9 +1,9 @@
-export interface IReqstoreEntry {
+export interface ReqstoreEntry {
     uid: string;
     request: any;
     response: any;
 }
 
-export interface IReqstoreLog {
-    [timestamp: string]: IReqstoreEntry[];
+export interface ReqstoreLog {
+    [timestamp: string]: ReqstoreEntry[];
 }

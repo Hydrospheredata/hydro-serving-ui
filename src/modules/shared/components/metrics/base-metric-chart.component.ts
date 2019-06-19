@@ -16,19 +16,17 @@ import * as moment from 'moment';
 
 import { IChartData } from '@shared/models/application-chart.model';
 
-import { Subscription, Subject, Observable, interval, combineLatest } from 'rxjs';
+import { Subscription, Subject, Observable, interval, combineLatest, of } from 'rxjs';
 import {
     switchMap,
     tap,
-    startWith,
     takeUntil,
     filter
 } from 'rxjs/operators';
 
-import { InfluxDBService } from '@core/services';
 import { MonitoringService, IMetricData } from '@core/services/metrics/monitoring.service';
-import { ITimeInterval } from '@shared/models/_index';
-import { IMetricSpecificationProvider, IMetricSpecification } from '@shared/models/metric-specification.model';
+import { TimeInterval } from '@shared/models/_index';
+import { IMetricSpecificationProvider, MetricSpecification } from '@shared/models/metric-specification.model';
 
 @Component({
     selector: 'hs-base-metric-chart',
@@ -65,7 +63,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     protected providersSubject: Subject<any> = new Subject<any>();
 
     @Output()
-    private selectPoints: EventEmitter<ITimeInterval> = new EventEmitter<ITimeInterval>();
+    private selectPoints: EventEmitter<TimeInterval> = new EventEmitter<TimeInterval>();
 
     @ViewChild('chartContainer')
     private chartContainerRef: ElementRef;
@@ -85,8 +83,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
     private onDestroy$: Subject<any>;
 
     constructor(
-        public metricsService: MonitoringService,
-        public influxdbService: InfluxDBService
+        public metricsService: MonitoringService
     ) {
         this.onDestroy$ = new Subject();
 
@@ -124,7 +121,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         const newThresholds = {};
         const data = Object.entries(this.metricSpecificationProvider.byModelVersionId);
 
-        data.forEach(([modelVerId, metricSpec]: [string, IMetricSpecification]) => {
+        data.forEach(([modelVerId, metricSpec]: [string, MetricSpecification]) => {
             const uniqName = `${modelVerId}_threshold`;
             if (newThresholds[uniqName] === undefined && metricSpec.config.threshold) {
                 newThresholds[uniqName] = metricSpec.config.threshold;
@@ -133,13 +130,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
         this.thresholds = newThresholds;
     }
 
-    protected getRequestPromise(id, i, metrics): Promise<IMetricData[]> {
-        return this.metricsService.getMetrics(
-            id.toString(),
-            i,
-            metrics,
-            ''
-        );
+    protected getRequestPromise(id, i, metrics): any {
+        return of([]);
     }
 
     private initChart(): void {
