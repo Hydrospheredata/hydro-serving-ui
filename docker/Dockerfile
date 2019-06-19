@@ -18,7 +18,7 @@ ENV TIMEMACHINE_HTTP_PORT=9090
 
 EXPOSE 80
 
-ADD nginx/blocked/default.conf.template /etc/nginx/conf.d/default.conf.template
+ADD nginx/config/default.conf.template /etc/nginx/conf.d/default.conf.template
 COPY hydro-serving-ui /usr/share/nginx/html
 
 CMD envsubst '${MANAGER_HOST} ${GATEWAY_HOST} ${MONITORING_HOST} ${REQSTORE_HOST} ${MANAGER_HTTP_PORT} ${MANAGER_GRPC_PORT} ${GATEWAY_HTTP_PORT} ${GATEWAY_GRPC_PORT} ${MONITORING_HTTP_PORT} ${MONITORING_GRPC_PORT} ${REQSTORE_HTTP_PORT} ${REQSTORE_GRPC_PORT} ${TIMEMACHINE_HOST} ${TIMEMACHINE_HTTP_PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf \
