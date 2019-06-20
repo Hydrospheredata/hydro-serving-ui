@@ -1,69 +1,67 @@
-
 .dialog {
-    &__layout {
-        will-change: transform;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.24);
-        height: 100%;
-        box-sizing: border-box;
-        position: absolute;
-        top: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    }
-    &__container {
-        position: relative;
-        background: white;
-        padding: 24px;
-        box-shadow: 0px 0px 40px -10px black;
-        max-height: calc(100% - 48px);
-    }
+  &__layout {
+    will-change: transform;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.24);
+    height: 100%;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
 
-    &__close-icon {
-        cursor: pointer;
-        color: black;
-        position: absolute;
-        right: 0;
-        top:0;
-        height: 16px;
-        width: 16px;
-    }
+  &__container {
+    position: relative;
+    background: white;
+    padding: 24px;
+    box-shadow: 0px 0px 40px -10px black;
+    max-height: calc(100% - 48px);
+  }
 
-    &__header {
+  &__close-icon {
+    cursor: pointer;
+    color: black;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 16px;
+    width: 16px;
+  }
 
-    }
+  &__header {}
 
-    &__content {
-        &--question {
-            display: inline-block;
-            font-size: 24px;
-            line-height: 32px;
-            max-width: 300px;
-            text-align: center;
-            margin-bottom: 4px;
-        }
+  &__content {
+    &--question {
+      display: inline-block;
+      font-size: 24px;
+      line-height: 32px;
+      max-width: 300px;
+      text-align: center;
+      margin-bottom: 4px;
     }
+  }
 
-    &__text {
-        &--is-alert {
-            font-weight: 900;
-            font-size: 20px;
-            color: #f3755e;
-            text-transform: uppercase;
-            text-align: center;
-        }
+  &__text {
+    &--is-alert {
+      font-weight: 900;
+      font-size: 20px;
+      color: #f3755e;
+      text-transform: uppercase;
+      text-align: center;
     }
+  }
 
-    &__footer {
-        border-top: 1px grey solid;
-        padding-top: 8px;
-    }
+  &__footer {
+    border-top: 1px grey solid;
+    padding-top: 8px;
+  }
 
-    &__buttons {
-        margin-top: 12px;
-        display: flex;
-        justify-content: space-between;
-    }
+  &__buttons {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
 }

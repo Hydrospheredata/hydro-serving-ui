@@ -29,6 +29,7 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
 
   @HostListener('click')
   onclick() {
+    event.stopPropagation();
     if (this.latestModelVersionId) {
       this.handleClick.emit(this.latestModelVersionId);
     }
