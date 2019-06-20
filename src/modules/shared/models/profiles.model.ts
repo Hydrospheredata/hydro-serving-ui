@@ -76,7 +76,53 @@ class Histogram {
   }
 }
 
-export class DoubleProfile {
+class TextStatistics {
+  public meanCharacterLength: number;
+  public meanDepTreeDepth: number;
+  public meanLanguageProba: object;
+  public meanPOSProba: object;
+  public meanSentimentScore: object;
+  public meanTokenLength: number;
+  public meanUniqueLemmaRatio: number;
+
+  constructor(props: any = {}) {
+    this.meanCharacterLength = props.meanCharacterLength;
+    this.meanDepTreeDepth = props.meanDepTreeDepth;
+    this.meanLanguageProba = props.meanLanguageProba;
+    this.meanPOSProba = props.meanPOSProba;
+    this.meanSentimentScore = props.meanSentimentScore;
+    this.meanTokenLength = props.meanTokenLength;
+    this.meanUniqueLemmaRatio = props.meanUniqueLemmaRatio;
+  }
+}
+
+export interface Profile {
+  kind: string;
+  name: string;
+  modelVersionId: number;
+  timestamp: number;
+}
+
+export class TextProfile implements Profile {
+  public kind: string;
+  public name: string;
+  public modelVersionId: number;
+  public timestamp: number;
+  public commonStatistics: CommonStatistics;
+  public textStatistics: TextStatistics;
+
+  constructor(props: any = {}) {
+    this.kind = props.kind;
+    this.name = props.name;
+    this.modelVersionId = props.modelVersionId;
+    this.timestamp = props.timestamp;
+    this.commonStatistics = new CommonStatistics(props.commonStatistics);
+    this.textStatistics = new TextStatistics(props.textStatistics);
+  }
+}
+
+export class DoubleProfile implements Profile {
+  public kind: string;
   public name: string;
   public modelVersionId: number;
   public timestamp: number;
@@ -86,6 +132,7 @@ export class DoubleProfile {
   public histogram: Histogram;
 
   constructor(props: any = {}) {
+    this.kind = props.kind;
     this.name = props.name;
     this.modelVersionId = props.modelVersionId;
     this.timestamp = props.timestamp;
@@ -97,11 +144,25 @@ export class DoubleProfile {
 }
 
 export class Profiles {
-  public trainingProfile: DoubleProfile | null;
-  public productionProfile: DoubleProfile | null;
+  public trainingProfile: Profile | null;
+  public productionProfile: Profile | null;
 
   constructor(props: any = {}) {
-    this.trainingProfile = props.training ? new DoubleProfile(props.training) : null;
-    this.productionProfile = props.production ? new DoubleProfile(props.production) : null;
+    this.trainingProfile = null;
+    if (props.training) {
+      if (props.training.kind === 'NumericalProfile') {
+        this.trainingProfile = new DoubleProfile(props.training);
+      } else if (props.training.kind === 'TextProfile') {
+        this.trainingProfile = new TextProfile(props.training);
+      }
+    }
+    this.productionProfile = null;
+    if (props.production) {
+      if (props.production.kind === 'NumericalProfile') {
+        this.productionProfile = new DoubleProfile(props.production);
+      } else if (props.production.kind === 'TextProfile') {
+        this.productionProfile = new TextProfile(props.production);
+      }
+    }
   }
 }

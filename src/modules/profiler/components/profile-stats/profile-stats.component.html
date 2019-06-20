@@ -36,6 +36,8 @@
       </li>
   </ol>
   <div class="hr"></div>
+
+  <div *ngIf="profile.kind==='NumericalProfile'">
   <h5 class="stats-header">Quantile statistics</h5>
   <ol class="content-info__sublist">
       <li class="content-info__sublist-item">
@@ -92,10 +94,10 @@
               <div class="status">{{ profile.quantileStatistics.max.toFixed(3) }}</div>
           </span>
       </li>
-  </ol>
-  <div class="hr"></div>
-  <h5 class="stats-header">Descriptive statistics</h5>
-  <ol class="content-info__sublist">
+    </ol>
+    <div class="hr"></div>
+    <h5 class="stats-header">Descriptive statistics</h5>
+    <ol class="content-info__sublist">
       <li class="content-info__sublist-item">
           <span class="content-info__sublist-item-title">Standard&nbsp;deviation</span>
           <span class="content-info__sublist-item-value">
@@ -134,4 +136,50 @@
       </li>
   </ol>
   <div class="hr"></div>
+  </div>
+  <div *ngIf="profile.kind==='TextProfile'">
+    <h5 class="stats-header">Text statistics</h5>
+    <ol class="content-info__sublist">
+        <li class="content-info__sublist-item">
+            <span class="content-info__sublist-item-title">Mean Character Length</span>
+            <span class="content-info__sublist-item-value">
+                <div class="status">{{ profile.textStatistics.meanCharacterLength }}</div>
+            </span>
+        </li>
+        <li class="content-info__sublist-item">
+            <span class="content-info__sublist-item-title">Mean Dep Tree Depth</span>
+            <span class="content-info__sublist-item-value">
+                <div class="status">{{ profile.textStatistics.meanDepTreeDepth }}</div>
+            </span>
+        </li>
+        <li class="content-info__sublist-item">
+            <span class="content-info__sublist-item-title">Mean Sentiment Score</span>
+            <span class="content-info__sublist-item-value">
+                <div class="status">{{ profile.textStatistics.meanSentimentScore }}</div>
+            </span>
+        </li>
+        <li class="content-info__sublist-item">
+            <span class="content-info__sublist-item-title">Mean Token Length</span>
+            <span class="content-info__sublist-item-value">
+                <div class="status">{{ profile.textStatistics.meanTokenLength }}</div>
+            </span>
+        </li>
+        <li class="content-info__sublist-item">
+            <span class="content-info__sublist-item-title">Mean Unique Lemma Ratio</span>
+            <span class="content-info__sublist-item-value">
+                <div class="status">{{ profile.textStatistics.meanUniqueLemmaRatio }}</div>
+            </span>
+        </li>
+    </ol>
+    <div class="hr"></div>
+    <h5 class="stats-header">PoS Statistics</h5>
+    <ol class="content-info__sublist">
+        <li *ngFor="let item of profile.textStatistics.meanPOSProba | keyvalue" class="content-info__sublist-item">
+            <span class="content-info__sublist-item-title">{{ dictionary[item.key] }}</span>
+            <span class="content-info__sublist-item-value">
+                <div class="status">{{ item.value }}</div>
+            </span>
+        </li>
+    </ol>
+  </div>
 </div>

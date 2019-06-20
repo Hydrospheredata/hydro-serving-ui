@@ -12,6 +12,7 @@
 .content-info__sublist-item-title {
   width: inherit;
   max-width: calc(100% - 100px);
+  white-space: nowrap;
 }
 
 .stats-header {
