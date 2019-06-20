@@ -1,4 +1,4 @@
-<button class="button button--primary add-metric-button" (click)="addMetric()">
+<button class="button button--primary add-metric-button" (click)="onAddMetric()">
   add metric
 </button>
 
@@ -7,6 +7,7 @@
     <hs-metric
       [metric]="metric"
       (deleteMetric)="onDeleteMetric($event)"
+      (editMetric)="onEditMetric($event)"
     ></hs-metric>
   </ng-container>
 </div>

@@ -1,6 +1,7 @@
 import { MetricSpecificationConfig } from '@shared/models/metric-specification-kind.model';
 
 export interface IMetricSpecificationRequest {
+  id?: string;
   name: string;
   modelVersionId: number;
   config: MetricSpecificationConfig;

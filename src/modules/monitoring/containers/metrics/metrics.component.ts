@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { HydroServingState, getSelectedMetrics } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
-import { DialogAddMetricComponent, DialogDeleteMetricComponent, METRIC_ID_VALUE } from '@monitoring/components';
+import {
+  DialogMetricComponent,
+  DialogDeleteMetricComponent,
+  METRIC_ID_VALUE,
+  metricSpec,
+} from '@monitoring/components';
 import { Store } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
@@ -19,9 +24,9 @@ export class MetricsComponent implements OnInit {
     private dialog: DialogService
   ) {}
 
-  addMetric() {
+  onAddMetric() {
     this.dialog.createDialog({
-      component: DialogAddMetricComponent,
+      component: DialogMetricComponent,
     });
   }
 
@@ -30,9 +35,16 @@ export class MetricsComponent implements OnInit {
   }
 
   onDeleteMetric(metricId: string) {
-      this.dialog.createDialog({
-        component: DialogDeleteMetricComponent,
-        providers: [{provide: METRIC_ID_VALUE, useValue: metricId}],
-      });
+    this.dialog.createDialog({
+      component: DialogDeleteMetricComponent,
+      providers: [{ provide: METRIC_ID_VALUE, useValue: metricId }],
+    });
+  }
+
+  onEditMetric(metricSpecification: MetricSpecification) {
+    this.dialog.createDialog({
+      component: DialogMetricComponent,
+      providers: [{ provide: metricSpec, useValue: metricSpecification }],
+    });
   }
 }

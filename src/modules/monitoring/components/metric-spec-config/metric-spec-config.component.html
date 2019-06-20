@@ -1,0 +1,45 @@
+<div [formGroup]="parent">
+  <div formGroupName="config" *ngIf="parent.get('config')">
+    <div class="row" *ngIf="parent.get('config').get('input')">
+      <mdl-select
+        [formControl]="parent.get('config').get('input')"
+        label="Choose input"
+      >
+        <mdl-option *ngFor="let source of sources" [value]="source">{{
+          source
+        }}</mdl-option>
+      </mdl-select>
+    </div>
+
+    <div class="row" *ngIf="parent.get('config').get('applicationName')">
+      <label for="application">Application: </label>
+      <mdl-select
+        name="application"
+        [formControl]="parent.get('config').get('applicationName')"
+        label="Choose application"
+      >
+        <mdl-option
+          *ngFor="let application of applications"
+          [value]="application.name"
+          >{{ application.name }}</mdl-option
+        >
+      </mdl-select>
+    </div>
+    <div class="row" *ngIf="parent.get('config').get('threshold')">
+      <hydro-input-text
+        name="threshold"
+        label="Threshold"
+        [formControl]="parent.get('config').get('threshold')"
+      >
+      </hydro-input-text>
+    </div>
+    <div class="row" *ngIf="parent.get('config').get('interval')">
+      <hydro-input-text
+        name="interval"
+        label="interval"
+        [formControl]="parent.get('config').get('interval')"
+      >
+      </hydro-input-text>
+    </div>
+  </div>
+</div>
