@@ -73,13 +73,17 @@
     background: white;
     padding: 12px;
     width: 200px;
-    border: 2px #566b8c solid;
+    border: 2px #788aa7 solid;
     border-radius: 6px;
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-
+    transition: .3s ease linear;
+    cursor: pointer;
+    &:hover {
+      border-color:#435673;
+    }
     &-weight {
       text-align: right;
       font-size: 10px;

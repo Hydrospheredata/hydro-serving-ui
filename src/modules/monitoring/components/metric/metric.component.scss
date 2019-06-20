@@ -7,6 +7,11 @@
     // padding: 12px 14px;
     display: inline-flex;
     margin-right: 12px;
+    border: 1px #d6d6dc solid;
+    border-radius: 5px;
+    &:hover {
+        border-color: #c2c2c5; 
+    }
     &__information {
         display: flex;
         flex-direction: column;
@@ -65,6 +70,7 @@
             letter-spacing: 1px;
             font-weight: 100;
             line-height: 16px;
+            color: #53526d;
         }
         &-value {
             font-size: 12px;
@@ -84,6 +90,7 @@
             letter-spacing: 1px;
             font-weight: 100;
             line-height: 16px;
+            color: #53526d;
         }
         &-value {
             font-size: 12px;

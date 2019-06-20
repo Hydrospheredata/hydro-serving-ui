@@ -74,14 +74,18 @@
           <div
             class="application__model-variant"
             *ngFor="let modelVariant of stage.modelVariants; let j = index"
+            [routerLink]="[ '/models', modelVariant.modelVersion.model.id, modelVariant.modelVersion.id ]"
           >
-            <div class="application__model-variant-update tooltip">
+            <div
+              class="application__model-variant-update tooltip"
+              hsUpdateModelVersion
+              [modelVersion]="modelVariant.modelVersion"
+              (handleClick)="updateModelVersionDialog($event, modelVariant)"
+            >
               <hydro-icon
                 type="icon-upgrade"
                 class="icon model-variant__version-new-icon"
-                hsUpdateModelVersion
-                [modelVersion]="modelVariant.modelVersion"
-                (handleClick)="updateModelVersionDialog($event, modelVariant)"
+
               >
               </hydro-icon>
               <span class="tooltiptext">Model has new version</span>
