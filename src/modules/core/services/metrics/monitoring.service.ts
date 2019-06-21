@@ -11,7 +11,7 @@ import { Observable, throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 interface Trace {
-  timestamp: number;
+  ts: number;
   uid: number;
 }
 

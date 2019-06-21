@@ -134,7 +134,7 @@ export class RequestResponseLogService {
 
         traces.forEach(trace => {
           if (trace) {
-            const { timestamp: ts } = trace;
+            const { ts } = trace;
             if (reqstoreLog[ts] !== undefined) {
               if (log[ts] === undefined) {
                 log[ts] = reqstoreLog[ts][0];
