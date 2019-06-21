@@ -1,26 +1,32 @@
-<div class='metric'>
-  <div class='metric__information'>
-    <h5 class='metric__name'>{{ name }}</h5>
-    <span class='metric__id'>{{ id }}</span>
-    <div class='metric__health'>
-      <span class='metric__health-key'>health</span>
-      <span class='metric__health-value'>{{ withHealth }}</span>
+<div class="metric">
+  <div class="metric__information">
+    <h5 class="metric__name">{{ name }}</h5>
+    <span class="metric__id">{{ id }}</span>
+    <div class="metric__health">
+      <span class="metric__health-key">health</span>
+      <span class="metric__health-value">{{ withHealth }}</span>
     </div>
-    <div class='metric__config'>
-        <ng-container *ngFor="let item of config | keyvalue">
-          <div class='metric__config-item'>
-            <span class='metric__config-key'>{{ item.key }}</span>
-            <span class='metric__config-value'>{{ item.value }}</span>
-          </div>
-        </ng-container>
+    <div class="metric__config">
+      <ng-container *ngFor="let item of config | keyvalue">
+        <div class="metric__config-item">
+          <span class="metric__config-key">{{ item.key }}</span>
+          <span class="metric__config-value">{{ item.value }}</span>
+        </div>
+      </ng-container>
     </div>
   </div>
-  <div class='metric__actions'>
-    <div class='metric__action'>
-      <hydro-icon class="button__icon metric__action-icon" type="icon-edit"></hydro-icon>
+  <div class="metric__actions">
+    <div class="metric__action" (click)="onEditMetric()">
+      <hydro-icon
+        class="button__icon metric__action-icon"
+        type="icon-edit"
+      ></hydro-icon>
     </div>
-    <div class='metric__action metric__action--last' (click)="onDeleteMetric()">
-      <hydro-icon class="button__icon metric__action-icon " type="icon-remove" ></hydro-icon>
+    <div class="metric__action metric__action--last" (click)="onDeleteMetric()">
+      <hydro-icon
+        class="button__icon metric__action-icon "
+        type="icon-remove"
+      ></hydro-icon>
     </div>
   </div>
 </div>

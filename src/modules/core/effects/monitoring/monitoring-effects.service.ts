@@ -40,6 +40,31 @@ export class MonitoringEffects {
     })
   );
 
+  @Effect() editMetric$: Observable<Action> = this.actions$.pipe(
+    ofType(HydroActions.MonitoringActionTypes.EditMetric),
+    map((action: HydroActions.AddMetricAction) => action.aggregation),
+    switchMap(aggregation => {
+      return this.metricService.editMetricSettings(aggregation).pipe(
+        map(response => {
+          this.mdlSnackbarService.showSnackbar({
+            message: 'Metric was successfully edit',
+            timeout: 5000,
+          });
+          return new HydroActions.EditMetricSuccessAction(
+            new MetricSpecification(response)
+          );
+        }),
+        catchError(error => {
+          this.mdlSnackbarService.showSnackbar({
+            message: `Error: ${error}`,
+            timeout: 5000,
+          });
+          return observableOf(new HydroActions.EditMetricFailAction(error));
+        })
+      );
+    })
+  );
+
   @Effect() getMetrics$: Observable<Action> = this.actions$.pipe(
     ofType(HydroActions.MonitoringActionTypes.GetMetrics),
     map((action: HydroActions.GetMetricsAction) => action.modelVersionId),

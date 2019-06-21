@@ -1,6 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { reducers } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
 import { StoreModule } from '@ngrx/store';
 import { MetricComponent } from '@testing/components';

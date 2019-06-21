@@ -23,7 +23,11 @@ export function reducer(state = initialState, action: MonitoringActions) {
   switch (action.type) {
     case MonitoringActionTypes.AddMetricSuccess:
       return adapter.addOne(action.payload, state);
-
+    case MonitoringActionTypes.EditMetricSuccess:
+      return adapter.updateOne(
+        { id: action.payload.id, changes: action.payload },
+        state
+      );
     case MonitoringActionTypes.GetMetricsFail:
       return action.error;
 

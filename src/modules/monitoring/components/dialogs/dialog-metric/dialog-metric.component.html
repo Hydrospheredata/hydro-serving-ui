@@ -1,0 +1,45 @@
+<form [formGroup]="form">
+  <hydro-input-text
+    name="metricName"
+    label="Metric Name"
+    formControlName="name"
+  >
+  </hydro-input-text>
+  <div class="row">
+    <mdl-select formControlName="kind" label="Choose metric">
+      <mdl-option
+        *ngFor="let kind of metricSpecificationKinds"
+        [value]="kind.className"
+        >{{ kind.name }}</mdl-option
+      >
+    </mdl-select>
+  </div>
+  <div class="row">
+    <label class="hydro-checkbox">
+      Use this metric for health checks
+      <input type="checkbox" formControlName="withHealth" />
+      <span></span>
+    </label>
+  </div>
+  <div>
+    <hs-metric-spec-config
+      class='config'
+      [parent]="form"
+      [applications]="applications$ | async"
+      [sources]="sources$ | async"
+    >
+    </hs-metric-spec-config>
+  </div>
+  <div class="buttons">
+    <button class="button button--flat buttons__button" (click)="onClose()">
+      CANCEL
+    </button>
+    <button
+      class="button button--primary buttons__button"
+      [disabled]="!form.valid"
+      (click)="onSubmit()"
+    >
+      {{ actionName }} Metric
+    </button>
+  </div>
+</form>

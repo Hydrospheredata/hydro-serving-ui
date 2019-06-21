@@ -5,12 +5,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import {
-  DialogAddMetricComponent,
+  DialogMetricComponent,
   MetricComponent,
   DialogDeleteMetricComponent,
   HealthTimelineComponent,
   HealthTimelineMiniComponent,
   ReqstoreTableLogComponent,
+  MetricSpecConfigComponent,
 } from '@monitoring/components';
 import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-service-status.effects';
 import { EffectsModule } from '@ngrx/effects';
@@ -29,14 +30,14 @@ import {
 import { reducer } from './reducers';
 @NgModule({
   entryComponents: [
-    DialogAddMetricComponent,
+    DialogMetricComponent,
     DialogDeleteMetricComponent,
   ],
   declarations: [
     MonitoringAvailabilityComponent,
     MonitoringPageComponent,
     MetricsComponent,
-    DialogAddMetricComponent,
+    DialogMetricComponent,
     DialogDeleteMetricComponent,
     DashboardComponent,
     MetricComponent,
@@ -46,6 +47,7 @@ import { reducer } from './reducers';
     HealthTimelineComponent,
     HealthTimelineMiniComponent,
     ReqstoreTableLogComponent,
+    MetricSpecConfigComponent,
   ],
   imports: [
     SharedModule,
