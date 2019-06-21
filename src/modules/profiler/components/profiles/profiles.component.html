@@ -17,7 +17,7 @@
       <hs-profile-stats [profile]="profiles.productionProfile"></hs-profile-stats>
     </div>
 
-    <div *ngIf="profiles.trainingProfile || profiles.productionProfile" class="comparison_histogram">
+    <div *ngIf="(profiles.trainingProfile && profiles.trainingProfile.kind === 'NumericalProfile') || (profiles.productionProfile  && profiles.productionProfile.kind === 'NumericalProfile')" class="comparison_histogram">
       <hs-profiles-comparison-histogram
         [trainingProfile]="profiles.trainingProfile" 
         [productionProfile]="profiles.productionProfile">
