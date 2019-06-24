@@ -19,7 +19,7 @@ export class ModelVersionBuilder {
             model: props.model,
             hostSelector: props.hostSelector,
             status: (props.status && props.status.toLowerCase()) || ModelVersionStatus.Undefined,
-            applications: props.applications,
+            applications: props.applications || [],
             metadata: props.metadata || {},
         });
     }

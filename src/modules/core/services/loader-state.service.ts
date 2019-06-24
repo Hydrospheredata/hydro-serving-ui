@@ -7,18 +7,19 @@ export interface LoaderState {
 
 @Injectable()
 export class LoaderStateService {
-    private loaderSubject: BehaviorSubject<LoaderState> = new BehaviorSubject<LoaderState>({show: false});
+  private loaderSubject: BehaviorSubject<LoaderState> = new BehaviorSubject<
+    LoaderState
+  >({ show: false });
 
-    get loaderState() {
-        return this.loaderSubject.asObservable();
-    }
+  get loaderState() {
+    return this.loaderSubject.asObservable();
+  }
 
-    showLoader() {
-        this.loaderSubject.next({show: true} as LoaderState);
-    }
+  showLoader() {
+    this.loaderSubject.next({ show: true } as LoaderState);
+  }
 
-    hideLoader() {
-        this.loaderSubject.next({show: false} as LoaderState);
-    }
-
+  hideLoader() {
+    this.loaderSubject.next({ show: false } as LoaderState);
+  }
 }

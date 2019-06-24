@@ -9,33 +9,24 @@ import { SharedModule } from '@shared/shared.module';
 import { MockStoreProvider } from '@testing/mocks';
 
 describe('ApplicationsWrapperComponent', () => {
-    let component: ApplicationsWrapperComponent;
-    let fixture: ComponentFixture<ApplicationsWrapperComponent>;
+  let component: ApplicationsWrapperComponent;
+  let fixture: ComponentFixture<ApplicationsWrapperComponent>;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            declarations: [
-                ApplicationsWrapperComponent,
-            ],
-            imports: [
-                SharedModule,
-                RouterTestingModule,
-                NoopAnimationsModule,
-            ],
-            providers: [
-                MockStoreProvider,
-                DialogService,
-            ],
-        }).compileComponents();
-    });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ApplicationsWrapperComponent],
+      imports: [SharedModule, RouterTestingModule, NoopAnimationsModule],
+      providers: [MockStoreProvider, DialogService],
+    }).compileComponents();
+  });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(ApplicationsWrapperComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ApplicationsWrapperComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it('should be created', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+  });
 });
