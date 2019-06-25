@@ -1,23 +1,24 @@
 <section class="model-details content">
-    <header class="model-details__header content__header">
-        <div class="model-details__header-title">{{ (model$ | async)?.name }}</div>
-        <div class="model-details__header-buttons">
-            <button 
-                class="button button--white button--primary-remove" 
-                (click)="removeModel()">
-                <hydro-icon class="button__icon" [type]="'icon-remove'"></hydro-icon>
-                remove
-            </button>
-        </div>
-    </header>
-    <div class="content__body">
-        <div class='content__cell'>
-            <div class='content__cell-title'>Versions</div>
-            <div class='versions'>
-                <hs-model-versions-table [modelVersions]="modelVersions$ | async"></hs-model-versions-table>
-            </div>
-        </div>
+  <header class="model-details__header content__header">
+    <div class="model-details__header-title">{{ (model$ | async)?.name }}</div>
+    <div class="model-details__header-buttons">
+      <button
+        class="button button--white button--primary-remove"
+        (click)="removeModel()"
+      >
+        <hydro-icon class="button__icon" [type]="'icon-remove'"></hydro-icon>
+        remove
+      </button>
     </div>
+  </header>
+  <div class="content__body">
+    <div class="content__cell">
+      <div class="content__cell-title">Versions</div>
+      <div class="versions">
+        <hs-model-versions-table
+          [modelVersions]="modelVersions$ | async"
+        ></hs-model-versions-table>
+      </div>
+    </div>
+  </div>
 </section>
-
-
