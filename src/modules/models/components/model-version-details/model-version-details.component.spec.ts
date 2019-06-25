@@ -12,8 +12,8 @@ import {
   ProfileStatsComponent,
 } from '@profiler/components';
 import { SharedModule } from '@shared/shared.module';
+import { ModelVersionLogComponent } from '@testing/components';
 import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
-import { MockStoreProvider } from '@testing/mocks';
 import { MomentModule } from 'angular2-moment';
 import { of } from 'rxjs';
 import { ModelVersionDetailsComponent } from './model-version-details.component';
@@ -24,9 +24,7 @@ describe('ModelVersionDetailsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [
-          ModelVersionDetailsComponent,
-      ],
+      declarations: [ModelVersionDetailsComponent, ModelVersionLogComponent],
       imports: [
         StoreModule.forRoot({}),
         MdlSelectModule,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ModelVersion, ModelVersionStatus, IModelVersion } from '@shared/models/_index';
+import { ModelVersion, ModelVersionStatus } from '@shared/models/_index';
 
 @Injectable()
 export class ModelVersionBuilder {
@@ -7,7 +7,7 @@ export class ModelVersionBuilder {
         return this.toModelVersion(props);
     }
 
-    private toModelVersion(props): IModelVersion {
+    private toModelVersion(props): ModelVersion {
         return new ModelVersion({
             id: props.id,
             image: props.image,
@@ -19,7 +19,7 @@ export class ModelVersionBuilder {
             model: props.model,
             hostSelector: props.hostSelector,
             status: (props.status && props.status.toLowerCase()) || ModelVersionStatus.Undefined,
-            applications: props.applications,
+            applications: props.applications || [],
             metadata: props.metadata || {},
         });
     }

@@ -11,7 +11,7 @@ import { HydroServingState } from '@core/reducers';
 import { TimemachineService } from '@core/services/timemachine.service';
 import { getSiblingVersions, getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
-import { IModelVersion, ModelVersion } from '@shared/_index';
+import { ModelVersion } from '@shared/_index';
 import { Observable, fromEvent, Subscription } from 'rxjs';
 import { withLatestFrom, tap, exhaustMap } from 'rxjs/operators';
 
@@ -23,15 +23,14 @@ import { withLatestFrom, tap, exhaustMap } from 'rxjs/operators';
 })
 export class ModelVersionReplayComponent implements OnInit, OnDestroy {
   @ViewChild('replyButton', { read: ElementRef }) replyButton: ElementRef;
-  siblingsModelVersions$: Observable<IModelVersion[]>;
+  siblingsModelVersions$: Observable<ModelVersion[]>;
   replayableModelVersion: number;
   onReplayClick$: Observable<any>;
   replayClickSubscribe: Subscription;
 
   constructor(
     private store: Store<HydroServingState>,
-    private timemachine: TimemachineService,
-    private snackbar: MdlSnackbarService
+    private timemachine: TimemachineService
   ) {
     this.siblingsModelVersions$ = this.store.select(getSiblingVersions);
   }

@@ -18,7 +18,7 @@ describe('Dialog component', () => {
     let debugElement: DebugElement;
     let dialogService: DialogService;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [ NoopAnimationsModule],
             declarations: [DialogComponent],
@@ -41,7 +41,7 @@ describe('Dialog component', () => {
 
         component.isAnimationDisabled = true;
         fixture.detectChanges();
-    }));
+    });
 
     it('should be created', () => {
         expect(component).toBeDefined();

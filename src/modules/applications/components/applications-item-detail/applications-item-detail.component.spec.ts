@@ -1,10 +1,11 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
 import { ApplicationsItemDetailComponent } from './applications-item-detail.component';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { UpdateModelVersionDirective } from '@applications/directives';
 import { InfluxDBService } from '@core/services';
 import { HttpService } from '@core/services/http';
@@ -28,6 +29,7 @@ describe('ApplicationsItemDetailComponent', () => {
                 SharedModule,
                 RouterModule,
                 HttpClientTestingModule,
+                RouterTestingModule,
             ],
             providers: [
                 MockStoreProvider,

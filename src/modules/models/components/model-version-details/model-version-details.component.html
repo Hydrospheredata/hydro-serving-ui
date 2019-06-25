@@ -23,7 +23,7 @@
           <span class="content-info__sublist-item-title">Status</span>
           <ng-container *ngIf="(modelVersion$ | async)?.status; let status">
             <span
-              class="content-info__sublist-item-value model-build-status--{{
+              class="content-info__sublist-item-value model-version-status model-version-status--{{
                 status | lowercase
               }}"
               [status]="status"
@@ -31,7 +31,19 @@
             >
               <span #statusText class="status"></span>
             </span>
+            <button
+              class="button button--flat show-log-button"
+              (click)="toggleLog()"
+            >
+              {{ showLog ? "hide log" : "show log"  }}
+            </button>
           </ng-container>
+        </li>
+        <li>
+          <hs-model-version-log
+            *ngIf="showLog"
+            [modelVersion]="modelVersion$ | async"
+          ></hs-model-version-log>
         </li>
         <li class="content-info__sublist-item">
           <span class="content-info__sublist-item-title">Applications</span>

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { PredictResponse} from '@shared/components/metrics/req';
-import { IModelVersion } from '@shared/models/_index';
+import { ModelVersion } from '@shared/models/_index';
 import { getFiledNameByTensorDataType } from '@shared/utils/field-name-by-tensor-data-type';
 import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
 @Component({
@@ -14,7 +14,7 @@ export class PredictResponseComponent implements OnInit {
     response: PredictResponse;
 
     @Input()
-    modelVersion: IModelVersion;
+    modelVersion: ModelVersion;
 
     ngOnInit(): void {
     }

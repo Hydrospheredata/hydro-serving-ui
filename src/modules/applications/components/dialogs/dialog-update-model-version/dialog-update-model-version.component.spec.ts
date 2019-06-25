@@ -8,7 +8,7 @@ describe('DialogUpdateModelVersionComponent', () => {
     let component: DialogUpdateModelVersionComponent;
     let fixture: ComponentFixture<DialogUpdateModelVersionComponent>;
 
-    beforeEach(async(() => {
+    beforeEach(() => {
         TestBed.configureTestingModule({
             declarations: [DialogUpdateModelVersionComponent],
             providers: [
@@ -20,7 +20,7 @@ describe('DialogUpdateModelVersionComponent', () => {
             ],
         })
             .compileComponents();
-    }));
+    });
 
     beforeEach(() => {
         fixture = TestBed.createComponent(DialogUpdateModelVersionComponent);

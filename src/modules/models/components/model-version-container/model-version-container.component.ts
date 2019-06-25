@@ -4,8 +4,8 @@ import { GetMetricsAction } from '@core/actions/monitoring.actions';
 import { HydroServingState } from '@core/reducers';
 import { getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
-import { IModelVersion } from '@shared/_index';
-import { Observable, of } from 'rxjs';
+import { ModelVersion } from '@shared/_index';
+import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 @Component({
@@ -13,7 +13,7 @@ import { filter, tap } from 'rxjs/operators';
   styleUrls: ['./model-version-container.component.scss'],
 })
 export class ModelVersionContainerComponent {
-  public modelVersion$: Observable<IModelVersion>;
+  public modelVersion$: Observable<ModelVersion>;
 
   constructor(
     private store: Store<HydroServingState>,

@@ -7,7 +7,7 @@ import {
   OnChanges,
 } from '@angular/core';
 import { IMetricData } from '@core/services/metrics/monitoring.service';
-import { IModelVersion } from '@shared/models/_index';
+import { ModelVersion } from '@shared/models/_index';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 
 @Component({
@@ -17,7 +17,7 @@ import { isEmptyObj } from '@shared/utils/is-empty-object';
 })
 export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   @Input()
-  modelVersion: IModelVersion;
+  modelVersion: ModelVersion;
 
   @Input()
   logData: any;

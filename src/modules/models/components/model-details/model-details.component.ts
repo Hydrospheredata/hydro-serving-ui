@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { HydroServingState } from '@core/reducers';
-import { Model, ModelVersion, IModel, IModelVersion } from '@shared/models/_index';
+import { IModel, ModelVersion } from '@shared/models/_index';
 
 import * as fromModels from '@models/reducers';
 import { Observable } from 'rxjs';
@@ -18,7 +18,7 @@ import { switchMap, filter } from 'rxjs/operators';
 })
 export class ModelDetailsComponent {
     public model$: Observable<IModel>;
-    public modelVersions$: Observable<IModelVersion[]>;
+    public modelVersions$: Observable<ModelVersion[]>;
 
     constructor(
         private store: Store<HydroServingState>,

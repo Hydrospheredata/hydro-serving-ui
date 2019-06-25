@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IModelVersion } from '@shared/_index';
+import { ModelVersion } from '@shared/_index';
 
 @Component({
     selector: 'hs-model-versions-table',
@@ -8,5 +8,5 @@ import { IModelVersion } from '@shared/_index';
 })
 export class ModelVersionsTableComponent {
     @Input()
-    modelVersions: IModelVersion[];
+    modelVersions: ModelVersion[];
 }

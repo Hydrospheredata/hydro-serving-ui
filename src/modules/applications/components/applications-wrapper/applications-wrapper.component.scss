@@ -1,26 +1,27 @@
 :host {
-    width: 100%;
-    display: flex;
+  width: 100%;
+  display: flex;
 }
 
 .sidebar {
-    z-index: 2;
+  z-index: 2;
 }
 
 .container {
-    width: 100%;
-    overflow: scroll;
+  width: 100%;
+  overflow: scroll;
 }
 
 .add-application {
-   &__button{
+  &__button {
     margin-bottom: 16px;
     width: 100%;
     display: flex;
     justify-content: center;
-   }
-   &__icon{
-        height: 10px;
-        width: 10px;
-   }
+  }
+
+  &__icon {
+    height: 10px;
+    width: 10px;
+  }
 }

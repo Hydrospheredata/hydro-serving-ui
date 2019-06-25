@@ -1,0 +1,17 @@
+.log {
+  background: #00013c;
+  max-height: 360px;
+  min-height: 180px;
+  overflow: scroll;
+
+  &__item {
+    &-index {
+      color: grey;
+      padding-right: 8px;
+    }
+
+    &-text {
+      color: white;
+    }
+  }
+}

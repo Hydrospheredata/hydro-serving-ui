@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { IModelVersion, ModelVersionStatus } from '@shared/_index';
+import { ModelVersion, ModelVersionStatus } from '@shared/_index';
 
 @Component({
     selector: '[hs-model-versions-table-row]',
@@ -9,7 +9,7 @@ import { IModelVersion, ModelVersionStatus } from '@shared/_index';
 })
 export class ModelVersionsTableRowComponent {
      @Input()
-     modelVersion: IModelVersion;
+     modelVersion: ModelVersion;
 
      isRealsed(): boolean {
         return this.modelVersion.status === ModelVersionStatus.Released;
