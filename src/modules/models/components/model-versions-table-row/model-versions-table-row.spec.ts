@@ -44,11 +44,6 @@ describe('ModelVersionTableRow component', () => {
       const statusElement = element.querySelector('.model-version-status');
       expect(statusElement.textContent).toEqual(ModelVersionStatus.Failed);
     });
-
-    it('does NOT show actions', () => {
-      const actionsElement = element.querySelector('.model-version__actions');
-      expect(actionsElement).toBeFalsy();
-    });
   });
 
   describe('with ASSEMBLING model version', () => {
@@ -60,11 +55,6 @@ describe('ModelVersionTableRow component', () => {
     it('shows right model version status', () => {
       const statusElement = element.querySelector('.model-version-status');
       expect(statusElement.textContent).toEqual(ModelVersionStatus.Assembling);
-    });
-
-    it('does NOT show actions', () => {
-      const actionsElement = element.querySelector('.model-version__actions');
-      expect(actionsElement).toBeFalsy();
     });
   });
 

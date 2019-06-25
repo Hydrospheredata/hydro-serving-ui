@@ -1,0 +1,8 @@
+<section class="content__cell log" #container>
+  <div class="content__cell-body">
+    <div class="log__item" *ngFor="let item of log$ | async; index as i">
+      <span class="log__item-index">{{ i }}</span
+      ><span class="log__item-text">{{ item }}</span>
+    </div>
+  </div>
+</section>

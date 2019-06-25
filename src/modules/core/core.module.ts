@@ -14,27 +14,27 @@ import { NavbarComponent, PageNotFoundComponent } from './_index';
 
 // Services
 import {
-    FormsService,
-    SignaturesService,
-    RuntimesService,
-    InfluxDBService,
-    SvgSpriteService
+  FormsService,
+  SignaturesService,
+  RuntimesService,
+  InfluxDBService,
+  SvgSpriteService,
 } from '@core/services';
 import { HttpService } from '@core/services/http';
 
 // Effects
 import {
-    RuntimesEffects,
-    SignaturesEffects,
-    MonitoringEffects,
+  RuntimesEffects,
+  SignaturesEffects,
+  MonitoringEffects,
 } from '@core/effects/_index';
 
 // Builders
 import {
-    ModelBuilder,
-    ModelVersionBuilder,
-    ModelBuildBuilder,
-    RuntimeBuilder
+  ModelBuilder,
+  ModelVersionBuilder,
+  ModelBuildBuilder,
+  RuntimeBuilder,
 } from '@core/builders/_index';
 
 import { StoreModule } from '@ngrx/store';
@@ -45,72 +45,66 @@ import { reducers, CustomRouterStateSerializer } from '@core/reducers';
 import { BuildInformationService } from '@core/services/build-information.service';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { ReqstoreService } from '@core/services/reqstore.service';
-import { RouterStateSerializer, StoreRouterConnectingModule } from '@ngrx/router-store';
+import {
+  RouterStateSerializer,
+  StoreRouterConnectingModule,
+} from '@ngrx/router-store';
 import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
-    entryComponents: [
-        BuildInformationDialogComponent,
-    ],
-    imports: [
-        CommonModule,
-        RouterModule,
-        MdlModule,
-        MdlSelectModule,
-        CodemirrorModule,
-        HttpClientModule,
-        SharedModule,
-        StoreModule.forRoot(reducers,
-            {
-                initialState: {
-                    router: {
-                        state: {
-                            url: '/',
-                            params: {},
-                            queryParams: {},
-                        },
-                        navigationId: 0,
-                    },
-                },
-            }
-        ),
-        StoreDevtoolsModule.instrument(),
-        EffectsModule.forRoot([
-            RuntimesEffects,
-            SignaturesEffects,
-            MonitoringEffects,
-        ]),
-        StoreRouterConnectingModule.forRoot({
-            stateKey: 'router',
-        }),
-    ],
-    exports: [
-        NavbarComponent,
-        MdlModule,
-        MdlSelectModule,
-        CodemirrorModule,
-    ],
-    declarations: [
-        NavbarComponent,
-        PageNotFoundComponent,
-        BuildInformationDialogComponent,
-    ],
-    providers: [
-        ModelBuilder,
-        ModelVersionBuilder,
-        ModelBuildBuilder,
-        RuntimeBuilder,
-        FormsService,
-        SignaturesService,
-        RuntimesService,
-        InfluxDBService,
-        MetricSettingsService,
-        MonitoringService,
-        HttpService,
-        { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
-        SvgSpriteService,
-        ReqstoreService,
-        BuildInformationService,
-    ],
+  entryComponents: [BuildInformationDialogComponent],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MdlModule,
+    MdlSelectModule,
+    CodemirrorModule,
+    HttpClientModule,
+    SharedModule,
+    StoreModule.forRoot(reducers, {
+      initialState: {
+        router: {
+          state: {
+            url: '/',
+            params: {},
+            queryParams: {},
+          },
+          navigationId: 0,
+        },
+      },
+    }),
+    StoreDevtoolsModule.instrument(),
+    EffectsModule.forRoot([
+      RuntimesEffects,
+      SignaturesEffects,
+      MonitoringEffects,
+    ]),
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router',
+    }),
+  ],
+  exports: [NavbarComponent, MdlModule, MdlSelectModule, CodemirrorModule],
+  declarations: [
+    NavbarComponent,
+    PageNotFoundComponent,
+    BuildInformationDialogComponent,
+  ],
+  providers: [
+    ModelBuilder,
+    ModelVersionBuilder,
+    ModelBuildBuilder,
+    RuntimeBuilder,
+    FormsService,
+    SignaturesService,
+    RuntimesService,
+    InfluxDBService,
+    MetricSettingsService,
+    MonitoringService,
+    HttpService,
+    { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
+    SvgSpriteService,
+    ReqstoreService,
+    BuildInformationService,
+  ],
 })
-export class CoreModule { }
+export class CoreModule {}

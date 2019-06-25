@@ -5,7 +5,7 @@ import { MetricSettingsService } from '@core/services/metrics/_index';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import { getModelVersionsByModelId, getSelectedModelId, getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
-import { IModelVersion } from '@shared/_index';
+import { ModelVersion } from '@shared/_index';
 import { MetricSpecification, IMetricSpecificationProvider } from '@shared/models/metric-specification.model';
 import { Observable, Subject, combineLatest, BehaviorSubject } from 'rxjs';
 import { filter, switchMap, map, tap, takeUntil } from 'rxjs/operators';
@@ -17,9 +17,9 @@ import { filter, switchMap, map, tap, takeUntil } from 'rxjs/operators';
 })
 export class CompareComponent implements OnInit, OnDestroy {
     selectedModelId$: Observable<number>;
-    selectedModelVersion$: Observable<IModelVersion>;
-    modelVersionList$: Observable<IModelVersion[]>;
-    secondModelVersionsList$: Observable<IModelVersion[]>;
+    selectedModelVersion$: Observable<ModelVersion>;
+    modelVersionList$: Observable<ModelVersion[]>;
+    secondModelVersionsList$: Observable<ModelVersion[]>;
 
     metricSpecificationsSubject: BehaviorSubject<MetricSpecification[]> = new BehaviorSubject([]);
 

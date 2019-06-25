@@ -1,9 +1,11 @@
 .mv-details {
-    &__metadata, &__signatures {
-        margin-top: 24px;
-    }
+
+  &__metadata,
+  &__signatures {
+    margin-top: 24px;
+  }
 }
 
 .application {
-    cursor: pointer;
+  cursor: pointer;
 }

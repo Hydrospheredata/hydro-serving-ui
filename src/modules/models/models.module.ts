@@ -29,6 +29,7 @@ import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilerModule } from '../profiler/profiler.module';
+import { ModelVersionLogComponent } from './components/model-version-log/model-version-log.component';
 import { ModelVersionReplayComponent } from './components/model-version-replay/model-version-replay.component';
 
 @NgModule({
@@ -59,6 +60,7 @@ import { ModelVersionReplayComponent } from './components/model-version-replay/m
         ModelVersionProfilerComponent,
         ModelVersionsTableComponent,
         ModelVersionReplayComponent,
+        ModelVersionLogComponent,
     ],
     entryComponents: [
         DialogDeleteModelComponent,

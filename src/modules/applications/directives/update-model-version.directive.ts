@@ -11,15 +11,15 @@ import {
 import { HydroServingState } from '@core/reducers';
 import { getModelVersionsByModelId } from '@models/reducers';
 import { Store } from '@ngrx/store';
-import { IModelVersion, ModelVersionStatus } from '@shared/_index';
+import { ModelVersion, ModelVersionStatus } from '@shared/_index';
 import { Subscription } from 'rxjs';
-import { tap, filter, first } from 'rxjs/operators';
+import { tap, filter } from 'rxjs/operators';
 
 @Directive({
   selector: '[hsUpdateModelVersion]',
 })
 export class UpdateModelVersionDirective implements OnInit, OnDestroy {
-  @Input() modelVersion: IModelVersion;
+  @Input() modelVersion: ModelVersion;
   @Output() handleClick: EventEmitter<any> = new EventEmitter();
 
   private latestModelVersionId: number;
@@ -44,7 +44,7 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
       .select(getModelVersionsByModelId(this.modelVersion.model.id))
       .pipe(
         filter(modelVersions => !!modelVersions),
-        tap((modelVersions: IModelVersion[]) => {
+        tap((modelVersions: ModelVersion[]) => {
           const latestModelVersions = modelVersions.filter(modelVer => {
             return (
               modelVer.model.id === id &&

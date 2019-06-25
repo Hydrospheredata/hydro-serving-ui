@@ -11,31 +11,17 @@ export enum ModelVersionStatus {
     Undefined = 'undefined',
 }
 
-export interface IModelContract {
+export interface ModelContract {
     modelName: string;
     predict: ISignature;
 }
-export interface IModelVersion {
-    id: number;
-    image: Image;
-    created: Date;
-    finished: Date;
-    modelVersion: number;
-    modelContract: IModelContract;
-    runtime: Runtime;
-    model: Model;
-    hostSelector: HostSelector;
-    status: ModelVersionStatus;
-    applications: string[];
-    metadata: object;
-}
-export class ModelVersion implements IModelVersion {
+export class ModelVersion {
     public id: number;
     public image: Image;
     public created: Date;
     public finished: Date;
     public modelVersion: number;
-    public modelContract: IModelContract;
+    public modelContract: ModelContract;
     public runtime: Runtime;
     public model: Model;
     public hostSelector: HostSelector;

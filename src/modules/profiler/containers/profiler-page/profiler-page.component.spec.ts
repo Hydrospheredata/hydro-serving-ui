@@ -22,7 +22,7 @@ describe('ProfilerPageComponent', () => {
   let fixture: ComponentFixture<ProfilerPageComponent>;
   let store: MockStore<fromProfiler.ProfilerState>;
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule,
@@ -35,7 +35,7 @@ describe('ProfilerPageComponent', () => {
 
     store = TestBed.get(Store);
     spyOn(store, 'dispatch').and.callThrough();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfilerPageComponent);

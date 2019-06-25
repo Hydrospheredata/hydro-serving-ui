@@ -32,7 +32,7 @@ import { Store } from '@ngrx/store';
 
 import { FormsService } from '@core/services';
 import { DialogService } from '@dialog/dialog.service';
-import { IModelVersion, ModelVersion } from '@shared/_index';
+import { ModelVersion } from '@shared/_index';
 import { MetricSpecificationConfig } from '@shared/models/metric-specification-kind.model';
 import {
   IMetricSpecificationRequest,
@@ -218,7 +218,7 @@ export class DialogMetricComponent implements OnInit {
     }
   }
 
-  getInputNames(modelVersion: IModelVersion): string[] {
+  getInputNames(modelVersion: ModelVersion): string[] {
     if (!modelVersion) {
       return [];
     }

@@ -14,7 +14,6 @@ import { HealthTimelineService } from '@core/services/health-timeline.service';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import {
   TimeInterval,
-  IModelVersion,
   ModelVersion,
 } from '@shared/models/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
