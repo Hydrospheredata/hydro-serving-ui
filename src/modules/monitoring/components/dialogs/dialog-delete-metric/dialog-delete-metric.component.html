@@ -1,7 +1,20 @@
-<div class="dialog__content dialog__content--question dialog__content--center">
+<div class="wrapper">
+  <div class="wrapper__text">
     <span>Remove metric?</span>
-</div>
-<div class="dialog__buttons">
-    <button class="button button--flat dialog__button" (click)="onClose()" type="button">cancel</button>
-    <button class="button button--primary button--primary-remove dialog__button" (click)="onDelete()">Remove</button>
+  </div>
+  <div class="wrapper__buttons">
+    <button
+      class="button button--flat wrapper__button"
+      (click)="onClose()"
+      type="button"
+    >
+      cancel
+    </button>
+    <button
+      class="button button--primary button--primary-remove wrapper__button"
+      (click)="onDelete()"
+    >
+      Remove
+    </button>
+  </div>
 </div>

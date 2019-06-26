@@ -5,14 +5,15 @@ import {
   IMetricData,
   MonitoringService,
 } from '@core/services/metrics/monitoring.service';
+import { DialogService } from '@dialog/dialog.service';
 import { getSelectedModelVersion } from '@models/reducers';
+import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { Store } from '@ngrx/store';
 import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import {
   Observable,
   BehaviorSubject,
-  of,
   combineLatest,
   throwError,
   Subject,
@@ -44,7 +45,8 @@ export class DashboardComponent implements OnInit {
   loadFailed: boolean = true;
   constructor(
     private store: Store<HydroServingState>,
-    private reqResLogService: RequestResponseLogService
+    private reqResLogService: RequestResponseLogService,
+    private dialogService: DialogService
   ) {}
 
   ngOnInit() {
@@ -89,5 +91,15 @@ export class DashboardComponent implements OnInit {
 
   updateReqstore(): void {
     this.updateLogButtonClick$.next('click');
+  }
+
+  openSettings() {
+    this.dialogService.createDialog({
+      component: MetricsComponent,
+      styles: {
+        width: '600px',
+        padding: '0px',
+      },
+    });
   }
 }

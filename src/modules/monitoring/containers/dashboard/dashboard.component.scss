@@ -38,3 +38,29 @@
     }
   }
 }
+
+.dashboard {
+  &__header {
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  &__settings {
+    &-icon {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      color: #cecece;
+      transition: .3s ease all;
+      &:hover {
+        color: #3a3763;
+      }
+    }
+  }
+  &__alert {
+    font-weight: bold;
+    color: #80520e;
+    cursor: pointer;
+  }
+}

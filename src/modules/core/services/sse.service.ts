@@ -29,10 +29,18 @@ export class SseService {
   ) {}
 
   createConnection() {
-    const { host, apiUrl } = environment;
-    this.eventSource = new EventSource(`${host}${apiUrl}/events`, {
-      withCredentials: true,
-    });
+    const { host, apiUrl, production } = environment;
+    const { protocol, port, hostname } = window.location;
+
+    if (production) {
+      this.eventSource = new EventSource(`${protocol}//${hostname}:${port}${apiUrl}/events`, {
+        withCredentials: true,
+      });
+    } else {
+      this.eventSource = new EventSource(`${host}${apiUrl}/events`, {
+        withCredentials: true,
+      });
+    }
 
     for (const item of this.dict) {
       this.addEventHandler(item);
