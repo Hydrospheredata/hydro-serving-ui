@@ -41,7 +41,7 @@
 
 .dashboard {
   &__header {
-    line-height: 32px;
+    line-height: 42px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -51,7 +51,7 @@
       width: 24px;
       height: 24px;
       cursor: pointer;
-      color: #cecece;
+      color: #0e4a82;
       transition: .3s ease all;
       &:hover {
         color: #3a3763;

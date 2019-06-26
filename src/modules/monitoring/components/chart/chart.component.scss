@@ -51,6 +51,7 @@
     font-size: 8px;
     z-index: 2;
     pointer-events: none;
+    transition: .3s all ease;
 
     & p {
       margin: 0;

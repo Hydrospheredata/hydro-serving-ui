@@ -74,7 +74,11 @@
           <div
             class="application__model-variant"
             *ngFor="let modelVariant of stage.modelVariants; let j = index"
-            [routerLink]="[ '/models', modelVariant.modelVersion.model.id, modelVariant.modelVersion.id ]"
+            [routerLink]="[
+              '/models',
+              modelVariant.modelVersion.model.id,
+              modelVariant.modelVersion.id
+            ]"
           >
             <div
               class="application__model-variant-update tooltip"
@@ -85,96 +89,23 @@
               <hydro-icon
                 type="icon-upgrade"
                 class="icon model-variant__version-new-icon"
-
               >
               </hydro-icon>
               <span class="tooltiptext">Model has new version</span>
             </div>
-            <div class="application__model-variant-model-version">
-              {{ modelVariant.modelVersion.model.name }}:{{
-                modelVariant.modelVersion.modelVersion
-              }}
+            <div class="application__model-variant-model-version model-version">
+              <span class="model-version__name">
+                {{ modelVariant.modelVersion.model.name }}
+              </span>
+              <span class="model-version__version">
+                v:{{ modelVariant.modelVersion.modelVersion }}
+              </span>
             </div>
             <div class="application__model-variant-weight">
               {{ modelVariant.weight }}%
             </div>
           </div>
         </div>
-        <!-- <table class="hydro-table hydro-table-models">
-          <colgroup>
-            <col width="300px" />
-            <col />
-            <col width="100px" />
-            <col width="100px" />
-          </colgroup>
-          <thead class="hydro-table-head hydro-table-head--with-border">
-            <tr>
-              <th class="hydro-table-head__cell">Model Variant</th>
-              <th class="hydro-table-head__cell">Weight</th>
-              <th class="hydro-table-head__cell">Health</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              *ngFor="let modelVariant of stage.modelVariants; let j = index"
-              class="hydro-table-body__row"
-            >
-              <td class="hydro-table-body__cell model-variant__cell">
-                <span class="model-variant__version-new tooltip">
-                  <hydro-icon
-                    type="icon-upgrade"
-                    class="icon model-variant__version-new-icon"
-                    hsUpdateModelVersion
-                    [modelVersion]="modelVariant.modelVersion"
-                    (handleClick)="
-                      updateModelVersionDialog($event, modelVariant)
-                    "
-                  >
-                  </hydro-icon>
-                  <span class="tooltiptext">Model has new version</span>
-                </span>
-                <span
-                  class="model-variant__version-text cs-text-overflow-ellipsis"
-                >
-                  <span
-                    class="model-variant__link"
-                    [routerLink]="[
-                      '../../models',
-                      modelVariant.modelVersion.model.id,
-                      modelVariant.modelVersion.id
-                    ]"
-                  >
-                    {{
-                      modelVariant.modelVersion.model.name +
-                        ':v' +
-                        modelVariant.modelVersion.modelVersion
-                    }}</span
-                  >
-                </span>
-              </td>
-              <td class="hydro-table-body__cell">
-                <div class="">{{ modelVariant.weight }}%</div>
-              </td>
-              <td class="hydro-table-body__cell">
-                <div class="cs-text-bold cs-text-overflow-ellipsis">
-                  <div
-                    [ngClass]="
-                      healthStatuses[
-                        'app' +
-                          application.id +
-                          'stage' +
-                          i +
-                          '_' +
-                          modelVariant.modelVersion.id
-                      ]
-                    "
-                    class="health-status"
-                  ></div>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table> -->
       </div>
     </div>
   </div>

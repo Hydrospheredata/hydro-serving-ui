@@ -8,14 +8,11 @@ import {
   Output,
   EventEmitter,
   Input,
-  OnChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { HealthTimelineService } from '@core/services/health-timeline.service';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
-import {
-  TimeInterval,
-  ModelVersion,
-} from '@shared/models/_index';
+import { TimeInterval, ModelVersion } from '@shared/models/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import {
   IMonitoringAggregationList,
@@ -40,7 +37,7 @@ import { startWith, switchMap, tap, filter } from 'rxjs/operators';
   providers: [HealthTimelineService],
   encapsulation: ViewEncapsulation.None,
 })
-export class HealthTimelineComponent implements OnInit, OnDestroy, OnChanges {
+export class HealthTimelineComponent implements OnInit, OnDestroy {
   @ViewChild('svgContainer', { read: ElementRef })
   svgContainer: ElementRef;
 
@@ -97,7 +94,6 @@ export class HealthTimelineComponent implements OnInit, OnDestroy, OnChanges {
   fullLogSub: Subscription;
   detailLogSub: Subscription;
 
-  // TODO: new things
   labels: string[] = [];
   mainMapWidth: number;
 
@@ -108,7 +104,8 @@ export class HealthTimelineComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private timelineService: HealthTimelineService,
-    private monitoringService: MonitoringService
+    private monitoringService: MonitoringService,
+    private cdr: ChangeDetectorRef
   ) {
     this.brushEnd$ = new Subject();
     this.brushMove$ = new Subject();
@@ -176,10 +173,6 @@ export class HealthTimelineComponent implements OnInit, OnDestroy, OnChanges {
         })
       )
       .subscribe();
-  }
-
-  ngOnChanges(changes): void {
-    console.dir(changes);
   }
 
   showZoomOut(): boolean {
@@ -283,6 +276,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy, OnChanges {
     this.updateYTitle();
     this.updateDataset();
     this.updateBrush();
+    this.cdr.detectChanges();
   }
 
   private updateScale() {

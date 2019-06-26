@@ -76,7 +76,6 @@
     border: 2px #788aa7 solid;
     border-radius: 6px;
     position: relative;
-    display: flex;
     justify-content: space-between;
     align-items: flex-end;
     transition: .3s ease linear;
@@ -85,18 +84,26 @@
       border-color:#435673;
     }
     &-weight {
-      text-align: right;
+      display: inline-block;
+      position: absolute;
+      text-align: center;
       font-size: 10px;
       font-weight: 100;
-      color: #b5b5b5;
+      color: #59557f;
+      font-style: italic;
       line-height: 10px;
-      margin-bottom: 8px;
-
+      margin-top: 8px;
+      bottom: -16px;
+      left: calc(50% - 20px);
+      width: 40px;
+      text-align: center;
     }
 
     &-model-version {
       text-transform: uppercase;
-      letter-spacing: 1px
+      letter-spacing: 1px;
+      display: flex;
+      font-size: 12px;
     }
 
     &-update {
@@ -123,6 +130,20 @@
     left: -14px;
     height: 1px;
     background: #5e6ca03d;
+  }
+}
+
+.model-version {
+  &__name {
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__version {
+    font-weight: 900;
   }
 }
 

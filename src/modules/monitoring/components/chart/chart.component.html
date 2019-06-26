@@ -39,7 +39,7 @@
       transform="translate(25,10)"
       [attr.stroke]="lineColors[i]"
     ></g>
-    <g
+    <!-- <g
       [hs-d3area]
       *ngFor="let data of groupedData | keyvalue; index as i"
       [data]="data.value"
@@ -48,7 +48,7 @@
       [y0]="minValue"
       [attr.fill]="areaColors[i]"
       transform="translate(25,10)"
-    ></g>
+    ></g> -->
     <g
       [hs-d3threshold]="threshold"
       *ngFor="let threshold of thresholds; index as i"

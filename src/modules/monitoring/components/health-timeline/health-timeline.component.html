@@ -1,7 +1,5 @@
 <div class="reqstore_chart" #wrapper>
-  <div *ngIf="loading$ | async" class="reqstore_chart__loader">
-    loading
-  </div>
+  <ng-container *ngIf='displayedTime$ | async;else noDataAvailable'>
   <div class="reqstore_chart__header">
     <div class="selected-time">
       {{ (displayedTime$ | async)?.from | utcToLocal }} -
@@ -44,4 +42,11 @@
     (brushMove)="onMinimapBrushMove($event)"
   >
   </hs-health-timeline-minimap>
+  </ng-container>
 </div>
+
+<ng-template #noDataAvailable>
+  <div class='noDataAvailable'>
+    No data available
+  </div>
+</ng-template>
