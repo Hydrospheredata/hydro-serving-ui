@@ -11,13 +11,24 @@ export class ModelVersionLogService {
   getLog(modelVersionId) {
 
     const myObservable = new Observable(subscribe => {
-      const { host, apiUrl } = environment;
-      const eventSource = new EventSource(
-        `${host}${apiUrl}/model/version/${modelVersionId}/logs`,
-        {
-          withCredentials: true,
-        }
-      );
+      const { host, apiUrl, production } = environment;
+      const { protocol, port, hostname } = window.location;
+      let eventSource;
+      if (production) {
+        eventSource = new EventSource(
+          `${protocol}//${hostname}:${port}${apiUrl}/model/version/${modelVersionId}/logs`,
+          {
+            withCredentials: true,
+          }
+        );
+      } else {
+        eventSource = new EventSource(
+          `${host}${apiUrl}/model/version/${modelVersionId}/logs`,
+          {
+            withCredentials: true,
+          }
+        );
+      }
 
       eventSource.addEventListener('Log', (message: MessageEvent) => {
         subscribe.next(message.data);

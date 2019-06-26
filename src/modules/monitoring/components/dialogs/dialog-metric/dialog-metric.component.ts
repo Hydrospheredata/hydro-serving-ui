@@ -254,6 +254,10 @@ export class DialogMetricComponent implements OnInit {
     this.onClose();
   }
 
+  onClose() {
+    this.closed.next();
+  }
+
   private createForm(metricSpecification?: Partial<MetricSpecification>) {
     const defaultMetricSpecification: Partial<MetricSpecification> = {
       name: '',
@@ -275,9 +279,5 @@ export class DialogMetricComponent implements OnInit {
 
   private removeConfig(): void {
     this.form.removeControl('config');
-  }
-
-  private onClose() {
-    this.closed.next();
   }
 }
