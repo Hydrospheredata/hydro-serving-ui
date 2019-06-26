@@ -1,0 +1,44 @@
+:host-context {
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+
+.wrapper {
+  position: absolute;
+  left: calc(50% - 142px);
+  top: 0;
+  width: 284px;
+  padding: 24px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  animation: dropDown .3s ease-in forwards;
+  box-shadow: 0 2px 4px -2px black;
+  &__text {
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  &__button {
+    justify-content: center;
+    padding: 12px;
+  }
+
+  &__button + &__button {
+    margin-top: 4px;
+  }
+}
+
+@keyframes dropDown {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0%);}
+}

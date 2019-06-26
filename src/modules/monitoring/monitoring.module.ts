@@ -32,6 +32,7 @@ import { reducer } from './reducers';
   entryComponents: [
     DialogMetricComponent,
     DialogDeleteMetricComponent,
+    MetricsComponent,
   ],
   declarations: [
     MonitoringAvailabilityComponent,

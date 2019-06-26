@@ -1,13 +1,10 @@
 import { Observable, of } from 'rxjs';
 import {
   switchMap,
-  take,
   tap,
   startWith,
-  withLatestFrom,
   filter,
   publish,
-  share,
   refCount,
 } from 'rxjs/operators';
 
@@ -17,10 +14,16 @@ import {
   Component,
   OnInit,
   InjectionToken,
-  Optional,
-  Inject,
+  Input,
+  Output,
+  EventEmitter,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 
 import { MdlSnackbarService } from '@angular-mdl/core';
 
@@ -54,6 +57,8 @@ interface IMetricSpecificationKind {
   styleUrls: ['./dialog-metric.component.scss'],
 })
 export class DialogMetricComponent implements OnInit {
+  @Input() metricSpecification: MetricSpecification;
+  @Output() closed: EventEmitter<any> = new EventEmitter();
   form: FormGroup;
   applications$: Observable<Application[]>;
   sources$: Observable<string[]>;
@@ -75,12 +80,8 @@ export class DialogMetricComponent implements OnInit {
   private modelVersion$: Observable<ModelVersion>;
 
   constructor(
-    public fb: FormBuilder,
-    public dialog: DialogService,
-    public formsService: FormsService,
-    public mdlSnackbarService: MdlSnackbarService,
-    public store: Store<HydroServingState>,
-    @Optional() @Inject(metricSpec) private metricSpecification
+    private fb: FormBuilder,
+    private store: Store<HydroServingState>
   ) {
     this.modelVersion$ = this.store
       .select(fromModels.getSelectedModelVersion)
@@ -253,10 +254,6 @@ export class DialogMetricComponent implements OnInit {
     this.onClose();
   }
 
-  public onClose(): void {
-    this.dialog.closeDialog();
-  }
-
   private createForm(metricSpecification?: Partial<MetricSpecification>) {
     const defaultMetricSpecification: Partial<MetricSpecification> = {
       name: '',
@@ -278,5 +275,9 @@ export class DialogMetricComponent implements OnInit {
 
   private removeConfig(): void {
     this.form.removeControl('config');
+  }
+
+  private onClose() {
+    this.closed.next();
   }
 }

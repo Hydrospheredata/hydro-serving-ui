@@ -2,3 +2,30 @@
   margin: 8px 0;
   display: block;
 }
+
+.a {
+  padding: 24px;
+  height: 480px;
+  overflow: scroll;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.layout {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #3c4344ab; 
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  .button {
+    padding: 12px;
+  }
+}

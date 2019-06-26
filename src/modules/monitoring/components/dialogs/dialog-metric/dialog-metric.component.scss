@@ -1,4 +1,27 @@
 @import "variables.scss";
+:host-context {
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+
+.dform {
+  padding: 24px;
+  background: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 9999;
+  transform: translateY(-100%);
+  animation: dropDown .4s ease-in forwards;
+  box-shadow: 0px 0px 10px 0px black;
+}
+
+@keyframes dropDown {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0%);}
+}
 
 label.disabled {
   opacity: 0.5;

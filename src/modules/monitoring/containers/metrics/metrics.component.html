@@ -1,13 +1,26 @@
-<button class="button button--primary add-metric-button" (click)="onAddMetric()">
-  add metric
-</button>
+<div class="a">
+  <div class="layout" *ngIf="layout"></div>
+  <ng-container #container></ng-container>
 
-<div class="metrics">
-  <ng-container *ngFor="let metric of metrics$ | async">
-    <hs-metric
-      [metric]="metric"
-      (deleteMetric)="onDeleteMetric($event)"
-      (editMetric)="onEditMetric($event)"
-    ></hs-metric>
-  </ng-container>
+  <div class="metrics">
+    <button
+      class="button button--primary add-metric-button"
+      (click)="onAddMetric()"
+    >
+      add metric
+    </button>
+    <div class="metrics__list">
+      <ng-container *ngFor="let metric of metrics$ | async">
+        <hs-metric
+          [metric]="metric"
+          (deleteMetric)="onDeleteMetric($event)"
+          (editMetric)="onEditMetric($event)"
+        ></hs-metric>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="button button--flat" (click)="onClose()">close</button>
+  </div>
 </div>

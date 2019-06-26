@@ -1,6 +1,15 @@
-<div>
+<div class="dashboard">
   <ng-container *ngIf="metricSpecs$ | async as metricSpecs">
     <ng-container *ngIf="metricSpecs.length > 0; else emptyMetricList">
+      <header class="dashboard__header">
+        <span class="dashboard__settings" (click)="openSettings()">
+          <hydro-icon
+            class="icon dashboard__settings-icon"
+            type="icon-settings"
+          ></hydro-icon>
+        </span>
+      </header>
+
       <hs-health-timeline
         [metricSpecifications]="metricSpecs"
         [selectedModelVersion]="selectedModelVersion$ | async"
@@ -53,5 +62,9 @@
 <ng-template #emptyMetricList>
   <hs-alert-message>
     This model version does not have any metrics.
+    <span class="dashboard__alert" (click)="openSettings()">
+      <hydro-icon class="icon" type="icon-settings"></hydro-icon>
+      <span> Settings </span>
+    </span>
   </hs-alert-message>
 </ng-template>
