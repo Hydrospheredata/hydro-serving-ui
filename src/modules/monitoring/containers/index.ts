@@ -4,3 +4,4 @@ export * from './monitoring-page/monitoring-page.component';
 export * from './dashboard/dashboard.component';
 export * from './charts/charts.component';
 export * from './graphs/graphs.component';
+export * from './req-res-logs/req-res-logs.component';

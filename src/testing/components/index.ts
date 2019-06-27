@@ -6,3 +6,4 @@ export * from './mock-charts.component';
 export * from './mock-chart.components';
 export * from './mock-reqstore-table-log.component';
 export * from './mock-model-version-log.component';
+export * from './mock-req-res-logs.component';

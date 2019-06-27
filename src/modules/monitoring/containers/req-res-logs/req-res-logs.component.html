@@ -1,0 +1,36 @@
+<div>
+  <div>
+    <div class="reqstore__options">
+      <div class="reqstore__options-item">
+        Maximum
+        <input class="reqstore__options-input" [(ngModel)]="maxMessages" />
+        messages
+      </div>
+      <div class="reqstore__options-item">
+        Maximum
+        <input class="reqstore__options-input" [(ngModel)]="maxMBytes" />
+        MB
+      </div>
+      <div class="reqstore__options-item">
+        Load last records
+        <input type="checkbox" [(ngModel)]="reverse" />
+      </div>
+      <div class="reqstore__options-item">
+        Load only failed
+        <input type="checkbox" [(ngModel)]="loadFailed" />
+      </div>
+      <button
+        class="button button--white reqstore__options-button"
+        (click)="updateReqstore()"
+      >
+        update log
+      </button>
+    </div>
+    <hs-reqstore-table-log
+      [logData]="log$ | async"
+      [modelVersion]="modelVersion$ | async"
+      [loading]="logLoading$ | async"
+    >
+    </hs-reqstore-table-log>
+  </div>
+</div>

@@ -1,6 +1,52 @@
-<div class='nav'>
-  <div class='nav__item' [routerLink]="['dashboard']" routerLinkActive="nav__item--active">dashboard</div>
-  <!-- <div class='nav__item' [routerLink]="['metrics']" routerLinkActive="nav__item--active">settings</div> -->
-  <div class='nav__item' [routerLink]="['graphs']" routerLinkActive="nav__item--active">graphs</div>
+<div class="monitoring">
+  <div
+    *ngIf="metricsNotEmpty$ | async; else metricsEmpty"
+    clas="monitoring__body"
+  >
+    <div
+      class="monitoring__live"
+      [ngClass]="{ 'monitoring__live--is-active': live }"
+    >
+      <input class="monitoring__live-input" type="checkbox" id='live' [(ngModel)]="live">
+      <label class="monitoring__live-label" for="live" >{{ live ? 'online' : 'offline' }}</label>
+    </div>
+    <header class="monitoring__header">
+      <span class="monitoring__settings" (click)="openSettings()">
+        <hydro-icon
+          class="icon monitoring__settings-icon"
+          type="icon-settings"
+        ></hydro-icon>
+      </span>
+    </header>
+    <hs-health-timeline
+      [metricSpecifications]="selectedMetricSpecifications$ | async"
+      [selectedModelVersion]="selectedModelVersion$ | async"
+      (timeInterval)="onChangeTimeInterval($event)"
+      (stopped)="onStopLive()"
+      (started)="onStartLive()"
+      [live]="live"
+    >
+    </hs-health-timeline>
+    <hs-req-res-logs
+      [modelVersion$]="selectedModelVersion$"
+      [timeInterval$]="timeIntervalChange$"
+      [metricSpecs$]="selectedMetricSpecifications$"
+    ></hs-req-res-logs>
+    <div class="charts">
+      <hs-charts
+        [selectedTimeInterval$]="timeIntervalChange$"
+        [metricSpecifications]="selectedMetricSpecifications$ | async"
+      ></hs-charts>
+    </div>
+  </div>
 </div>
-<router-outlet></router-outlet>
+
+<ng-template #metricsEmpty>
+  <hs-alert-message>
+    This model version does not have any metrics.
+    <span class="monitoring__alert" (click)="openSettings()">
+      <hydro-icon class="icon" type="icon-settings"></hydro-icon>
+      <span> Settings </span>
+    </span>
+  </hs-alert-message>
+</ng-template>

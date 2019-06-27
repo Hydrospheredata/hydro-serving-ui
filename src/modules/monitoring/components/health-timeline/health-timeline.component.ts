@@ -27,8 +27,9 @@ import {
   combineLatest,
   BehaviorSubject,
   Subscription,
+  interval,
 } from 'rxjs';
-import { startWith, switchMap, tap, filter } from 'rxjs/operators';
+import { startWith, switchMap, tap, filter, exhaustMap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-health-timeline',
@@ -52,6 +53,10 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
   @Input() metricSpecifications: MetricSpecification[];
   @Input() selectedModelVersion: ModelVersion;
+  @Input() live: boolean;
+
+  @Output() stopped: EventEmitter<boolean> = new EventEmitter();
+  @Output() started: EventEmitter<boolean> = new EventEmitter();
 
   // CANVAS
   scale: d3.ScaleTime<number, number>;
@@ -136,15 +141,14 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
             acc[m[idx].name] = res[idx];
             return acc;
           }, {});
-          if (this.fullLog === undefined) {
-            this.fullLog = m2;
-          }
+
+          this.fullLog = m2;
           this.currentLogData = m2;
 
-          const interval = this.timelineService.getMinimumAndMaximumTimestamps(
+          const int = this.timelineService.getMinimumAndMaximumTimestamps(
             this.currentLogData
           );
-          const i = { from: interval[0], to: interval[1] };
+          const i = { from: int[0], to: int[1] };
           this.manualSelectInterval.next(i);
         })
       )
@@ -152,7 +156,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
     this.detailLogSub = this.selectedTime$
       .pipe(
-        filter(interval => !!interval && !!interval.from),
+        filter(int => !!int && !!int.from),
         tap(timeInterval => {
           this.displayedTime.next(timeInterval);
           this.timeInterval.next(timeInterval);
@@ -184,6 +188,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
       this.fullLog
     );
     this.brushEnd$.next({ from, to });
+    this.started.next();
   }
 
   ngOnDestroy(): void {
@@ -209,7 +214,9 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
         steps: '200',
       })
     );
-    return combineLatest(...requests);
+    return merge(interval(5000).pipe(filter(() => this.live))).pipe(
+      exhaustMap(() => combineLatest(...requests))
+    );
   }
 
   private getAggregationInInterval(timeInterval: TimeInterval) {
@@ -248,6 +255,8 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
       to: this.scale.invert(evt.selection[1]).getTime(),
     });
     d3.select(this.brush.nativeElement).call(brush.move, null);
+
+    this.stopped.next();
   }
 
   private onBrushed() {
