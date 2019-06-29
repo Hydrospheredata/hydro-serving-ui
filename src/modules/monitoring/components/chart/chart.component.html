@@ -1,5 +1,22 @@
 <div class="chart" #chart>
   <header class="chart__header">
+    <div class="chart__header-name">{{ metrics[0].name }}</div>
+    <div class="compare" *ngIf="siblingModelVersions$ | async">
+      <span class="compare__label">compare with:</span>
+      <mdl-select
+        class="compare__select"
+        [(ngModel)]="comparedModelVerId"
+        label="model version"
+      >
+        <mdl-option [value]><em>model version</em></mdl-option>
+        <mdl-option
+          *ngFor="let modelVersion of siblingModelVersions$ | async"
+          [value]="modelVersion.id"
+        >
+          {{ modelVersion.modelVersion }}
+        </mdl-option>
+      </mdl-select>
+    </div>
     <span *ngIf="isKolmogorovSmirnov()">
       <ng-container *ngTemplateOutlet="featureSelector"></ng-container>
     </span>
@@ -92,12 +109,18 @@
     #activeLine
   ></div>
   <div class="chart__footer">
-    <span
-      class="metric__name"
-      *ngFor="let data of groupedData | keyvalue; index as i"
-    >
-      <span [style.color]="lineColors[i]">-</span>{{ data.key }}
-    </span>
+    <div class="metric__legend">
+      <div
+        class="metric__name"
+        *ngFor="let data of groupedData | keyvalue; index as i"
+      >
+        <div
+          [style.backgroundColor]="lineColors[i]"
+          class="metric__legend-line"
+        ></div>
+        <span>{{ data.key }}</span>
+      </div>
+    </div>
   </div>
   <div *ngIf="emptyData" class="chart__empty">
     No data availabe
@@ -105,21 +128,24 @@
 </div>
 
 <ng-template #featureSelector>
-  <mdl-select
-    #featureSelect
-    label="Choose feature"
-    [(ngModel)]="selectedFeature"
-    (change)="onSelectFeature($event)"
-    [autocomplete]="true"
-    (keydown.enter)="$event.preventDefault()"
-    class="filter-input"
-  >
-    <mdl-option
-      *ngFor="
-        let feature of featureList | matchSorter: {}:featureSelect.searchQuery
-      "
-      [value]="feature"
-      >{{ feature }}
-    </mdl-option>
-  </mdl-select>
+  <div class='feature'>
+    <span class='feature__label'>feature</span>
+    <mdl-select
+      #featureSelect
+      label="Choose feature"
+      [(ngModel)]="selectedFeature"
+      (change)="onSelectFeature($event)"
+      [autocomplete]="true"
+      (keydown.enter)="$event.preventDefault()"
+      class="filter-input feature__select"
+    >
+      <mdl-option
+        *ngFor="
+          let feature of featureList | matchSorter: {}:featureSelect.searchQuery
+        "
+        [value]="feature"
+        >{{ feature }}
+      </mdl-option>
+    </mdl-select>
+  </div>
 </ng-template>

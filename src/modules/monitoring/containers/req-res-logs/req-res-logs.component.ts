@@ -3,7 +3,7 @@ import { RequestResponseLogService } from '@core/services';
 import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { combineLatest, Observable, BehaviorSubject, throwError } from 'rxjs';
-import { filter, exhaustMap, catchError } from 'rxjs/operators';
+import { filter, exhaustMap, catchError, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-req-res-logs',
@@ -44,6 +44,7 @@ export class ReqResLogsComponent implements OnInit {
             health: this.loadFailed ? 0 : undefined,
           })
           .pipe(
+            tap(console.dir),
             catchError(err => {
               console.error('err');
               return throwError(err);

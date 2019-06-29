@@ -8,7 +8,7 @@ import {
 } from '@shared/models/metric-specification.model';
 import { IMonitoringAggregationList } from '@shared/models/monitoring-aggregation.model';
 import { Observable, throwError } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 interface Trace {
   ts: number;

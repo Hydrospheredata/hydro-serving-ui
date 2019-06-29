@@ -50,64 +50,6 @@
       }
     }
   }
-  &__live {
-    display: flex;
-    width: 80px;
-    align-items: center;
-    line-height: 14px;
-    top: 127px;
-    position: fixed;
-    right: 0;
-    padding: 6px 12px;
-    background: #080850b5;
-    color: rgba(255, 255, 255, 0.438);
-    z-index: 2;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    text-transform: uppercase;
-    font-size: 10px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    &:before {
-      content: "";
-      display: inline-block;
-      width: 12px;
-      height: 12px;
-      background-color: rgba(255, 255, 255, 0.438);
-      border-radius: 50%;
-      margin-right: 4px;
-    }
-    &--is-active {
-      color: white;
-      &:before {
-        animation: blink 2s ease infinite alternate;
-      }
-      & .monitoring__live-label {
-        color: white;
-      }
-    }
-    &-input {
-      display: none;
-    }
-    &-label {
-      position: absolute;
-      font-size: 10px;
-      top: 0;
-      margin: 0;
-      z-index: 2;
-      cursor: pointer;
-      left: 0;
-      right: 0;
-      border: 0;
-      display: inline-block;
-      height: 100%;
-      padding-left: 30px;
-      padding-top: 5px;
-    }
-  }
+
 }
 
-@keyframes blink {
-  0% { background: rgba(255, 0, 0, 0.726); }
-  100% { background: rgba(255, 0, 0, 0.253); }
-}

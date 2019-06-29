@@ -52,20 +52,20 @@ export class ReqstoreService {
       .pipe(
         map((_: any) => {
           const x = new Uint8Array(_);
-          const y = decodeTsRecord(x);
+          const tsRecords = decodeTsRecord(x);
           const parsedLog: ReqstoreLog = {};
 
-          y.reduce((log, tsRecord) => {
-            if (log[tsRecord.ts] === undefined) {
-              log[tsRecord.ts] = [];
-            }
-
+          tsRecords.reduce((log, tsRecord) => {
+            const { ts } = tsRecord;
             tsRecord.entries.forEach(({ uid, data }) => {
+              if (log[uid] === undefined) {
+                log[uid] = [];
+              }
               const reqRes = asServingReqRes(data);
               const request = reqRes.req;
               const response = reqRes.resp;
-              parsedLog[tsRecord.ts].push({
-                uid,
+              parsedLog[uid].push({
+                ts,
                 request,
                 response,
               });

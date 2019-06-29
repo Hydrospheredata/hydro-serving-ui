@@ -3,13 +3,6 @@
     *ngIf="metricsNotEmpty$ | async; else metricsEmpty"
     clas="monitoring__body"
   >
-    <div
-      class="monitoring__live"
-      [ngClass]="{ 'monitoring__live--is-active': live }"
-    >
-      <input class="monitoring__live-input" type="checkbox" id='live' [(ngModel)]="live">
-      <label class="monitoring__live-label" for="live" >{{ live ? 'online' : 'offline' }}</label>
-    </div>
     <header class="monitoring__header">
       <span class="monitoring__settings" (click)="openSettings()">
         <hydro-icon

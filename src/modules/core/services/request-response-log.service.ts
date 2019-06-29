@@ -108,7 +108,7 @@ export class RequestResponseLogService {
       this.monitoringService.getMetricsInRange(metricSpec, options)
     );
 
-    return combineLatest(requests);
+    return combineLatest(requests).pipe();
   }
 
   private mapReqstorAndSonarToLog(
@@ -134,23 +134,23 @@ export class RequestResponseLogService {
 
         traces.forEach(trace => {
           if (trace) {
-            const { ts } = trace;
-            if (reqstoreLog[ts] !== undefined) {
-              if (log[ts] === undefined) {
-                log[ts] = reqstoreLog[ts][0];
-                log[ts].failed = false;
-                log[ts].metrics = {};
+            const { uid } = trace;
+            if (reqstoreLog[uid] !== undefined) {
+              if (log[uid] === undefined) {
+                log[uid] = reqstoreLog[uid][0];
+                log[uid].failed = false;
+                log[uid].metrics = {};
               }
 
               const metricKind = this.monitoringService.getSpecKindByMetricName(
                 currentMetricData.name
               );
 
-              if (log[ts].metrics[metricKind] === undefined) {
-                log[ts].metrics[metricKind] = {};
+              if (log[uid].metrics[metricKind] === undefined) {
+                log[uid].metrics[metricKind] = {};
               }
 
-              const metricsByKind = log[ts].metrics[metricKind];
+              const metricsByKind = log[uid].metrics[metricKind];
               const columnIndex = +currentMetricData.labels.columnIndex || 0;
               metricsByKind[columnIndex] = metricsByKind[columnIndex] || {};
 
@@ -163,7 +163,7 @@ export class RequestResponseLogService {
               }
 
               if (currentMetricData.health === false) {
-                log[ts].failed = true;
+                log[uid].failed = true;
               }
             }
           }
