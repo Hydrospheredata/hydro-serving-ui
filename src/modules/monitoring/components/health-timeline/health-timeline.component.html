@@ -2,10 +2,8 @@
   <ng-container *ngIf="displayedTime$ | async; else noDataAvailable">
     <div class="reqstore_chart__header">
       <div *ngIf="live; else timeBadge">
-        <div
-          class="live-badge"
-        >
-        live
+        <div class="live-badge">
+          live
         </div>
       </div>
 
@@ -28,7 +26,7 @@
           <text
             class="y-title"
             *ngFor="let item of labels; let i = index"
-            [attr.y]="12"
+            [attr.y]="8"
             [attr.transform]="getYLabelTranslate(i)"
           >
             {{ item }}
@@ -37,6 +35,22 @@
         <g #brush style="transform:translate(0, 0)"></g>
         <g #dataContainer></g>
         <g hsD3Axis [transform]="xAxisTransform" [scale]="scale"></g>
+        <line
+          *ngFor="let x of xSublines"
+          [attr.x1]="x"
+          y1="0"
+          [attr.x2]="x"
+          [attr.y2]="canvasHeight - 30"
+          style="stroke:rgba(38, 39, 41, 0.068);stroke-width:1"
+        />
+        <line
+          *ngFor="let y of ySublines"
+          x1="0"
+          [attr.y1]="y"
+          [attr.x2]="canvasWidth - 120"
+          [attr.y2]="y"
+          style="stroke:rgba(38, 39, 41, 0.068);stroke-width:1"
+        />
       </g>
     </svg>
     <hs-health-timeline-minimap
@@ -53,7 +67,7 @@
   <div class="selected-time" (click)="zoomOut()">
     {{ (displayedTime$ | async)?.from | utcToLocal }} -
     {{ (displayedTime$ | async)?.to | utcToLocal }}
-    <hydro-icon class="button__icon" type="icon-close"></hydro-icon> 
+    <hydro-icon class="button__icon" type="icon-close"></hydro-icon>
   </div>
 </ng-template>
 

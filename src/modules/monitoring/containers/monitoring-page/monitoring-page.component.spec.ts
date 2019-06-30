@@ -79,7 +79,6 @@ fdescribe('MonitoringPageComponent', () => {
       fixture.detectChanges();
     });
     it('shows HealthTimelineComponent', () => {
-      component.selectedMetricSpecifications$.subscribe(console.dir);
       const alertEl = fixture.debugElement.query(
         By.directive(HealthTimelineComponent)
       );

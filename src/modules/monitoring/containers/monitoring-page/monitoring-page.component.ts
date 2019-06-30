@@ -31,14 +31,15 @@ export class MonitoringPageComponent implements OnInit {
       .select(getSelectedModelVersion)
       .pipe(filter(mv => !!mv));
 
-    this.selectedMetricSpecifications$ = this.store.select(getSelectedMetrics);
+    this.selectedMetricSpecifications$ = this.store
+      .select(getSelectedMetrics)
+      .pipe(filter(_ => !!_));
     this.metricsNotEmpty$ = this.selectedMetricSpecifications$.pipe(
       switchMap(metrics => of(metrics.length > 0))
     );
   }
 
   ngOnInit() {
-    console.log('onInit');
   }
 
   onChangeTimeInterval(timeInterval: TimeInterval): void {
@@ -59,11 +60,9 @@ export class MonitoringPageComponent implements OnInit {
   }
 
   onStopLive() {
-    console.log('stopped');
     this.live = false;
   }
   onStartLive() {
-    console.log('started');
     this.live = true;
   }
 }

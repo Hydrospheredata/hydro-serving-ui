@@ -7,7 +7,7 @@ export class HealthTimelineService {
   currentData: BehaviorSubject<ITimelineLog> = new BehaviorSubject(null);
 
   getMinimumAndMaximumTimestamps(d: ITimelineLog): [number, number] {
-    const logItems = Object.values(d).filter(arr => arr.length > 0);
+    const logItems = Object.values(d).filter(arr => arr && arr.length > 0);
     let minTimestamp: number;
     let maxTimestamp: number;
 

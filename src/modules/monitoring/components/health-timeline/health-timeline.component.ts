@@ -20,6 +20,7 @@ import {
 } from '@shared/models/monitoring-aggregation.model';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
 import * as d3 from 'd3';
+import * as _ from 'lodash';
 import {
   Subject,
   merge,
@@ -66,6 +67,9 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
   xAxisTransform = 'translate(0,0)';
   mimimapTransform = 'translate(0,0)';
+
+  xSublines: number[];
+  ySublines: number[];
 
   readonly MARGIN = {
     top: 20,
@@ -142,14 +146,18 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
             return acc;
           }, {});
 
-          this.fullLog = m2;
-          this.currentLogData = m2;
+          const sameData = _.isEqual(this.fullLog, m2);
 
-          const int = this.timelineService.getMinimumAndMaximumTimestamps(
-            this.currentLogData
-          );
-          const i = { from: int[0], to: int[1] };
-          this.manualSelectInterval.next(i);
+          if (!sameData) {
+            this.fullLog = m2;
+            this.currentLogData = m2;
+            const int = this.timelineService.getMinimumAndMaximumTimestamps(
+              this.currentLogData
+            );
+
+            const i = { from: int[0], to: int[1] };
+            this.manualSelectInterval.next(i);
+          }
         })
       )
       .subscribe();
@@ -172,6 +180,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
             acc[m[idx].name] = res[idx];
             return acc;
           }, {});
+
           this.currentLogData = m2;
           this.render();
         })
@@ -204,7 +213,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
   }
 
   getYLabelTranslate(index: number): string {
-    return `translate(0, ${index * this.LINE_HEIGHT + 4})`;
+    return `translate(0, ${index * this.LINE_HEIGHT + 2})`;
   }
 
   private getFullAggregation(): Observable<IMonitoringAggregationList> {
@@ -214,7 +223,10 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
         steps: '200',
       })
     );
-    return merge(interval(5000).pipe(filter(() => this.live))).pipe(
+
+    return interval(5000).pipe(
+      startWith('first tick'),
+      filter(() => this.live),
       exhaustMap(() => combineLatest(...requests))
     );
   }
@@ -285,7 +297,17 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     this.updateYTitle();
     this.updateDataset();
     this.updateBrush();
+    this.updateSublines();
     this.cdr.detectChanges();
+  }
+
+  private updateSublines() {
+    this.xSublines = this.scale.ticks(10).map(this.scale);
+    this.ySublines = this.labels
+      .slice(0, this.labels.length - 1)
+      .map((_, i) => {
+        return 24 + 32 * i;
+      });
   }
 
   private updateScale() {

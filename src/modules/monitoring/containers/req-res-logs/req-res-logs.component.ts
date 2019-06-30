@@ -44,7 +44,6 @@ export class ReqResLogsComponent implements OnInit {
             health: this.loadFailed ? 0 : undefined,
           })
           .pipe(
-            tap(console.dir),
             catchError(err => {
               console.error('err');
               return throwError(err);

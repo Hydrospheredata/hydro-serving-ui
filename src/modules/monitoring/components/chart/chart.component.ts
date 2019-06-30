@@ -72,6 +72,7 @@ export class ChartComponent implements OnInit, OnDestroy {
 
     return features;
   }
+  @ViewChild('chart', { read: ElementRef }) chartRef: ElementRef;
   @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
   @ViewChild('rect', { read: ElementRef }) rectRef: ElementRef;
   @ViewChild('tooltip', { read: ElementRef }) tooltip: ElementRef;
@@ -106,6 +107,9 @@ export class ChartComponent implements OnInit, OnDestroy {
   xScale;
   yScale;
 
+  xSublines: any[];
+  ySublines: any[];
+
   siblingModelVersions$: Observable<ModelVersion[]>;
   compareWithModelVersionId: number;
 
@@ -137,7 +141,6 @@ export class ChartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.siblingModelVersions$ = this.store
       .select(getSiblingVersions)
-      .pipe(tap(console.dir));
 
     const liveUpdate$ = interval(2000).pipe(
       filter(() => this.liveUpdate),
@@ -285,6 +288,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     );
 
     this.setBoundaries(this.groupedData);
+    this.setSubLines();
     this.cdRef.detectChanges();
   }
 
@@ -294,6 +298,11 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   onSelectFeature(e) {
     this.selectedFeatureChanging$.next(e);
+  }
+
+  private setSubLines() {
+    this.ySublines = this.yScale.ticks().map(this.yScale);
+    this.xSublines = this.xScale.ticks().map(this.xScale);
   }
 
   private setBoundaries(groupedData) {
@@ -414,43 +423,56 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   private onMouseMove() {
-    const data = this.data;
+    const data = this.groupedData;
+    const entries = Object.entries(data);
     const [xCoordinate] = d3.mouse(this.rectRef.nativeElement);
     const selectedTime = Math.floor(this.xScale.invert(xCoordinate));
-    const bisector = d3.bisector((d: SonarMetricData) => d.timestamp).right;
-    const index = bisector(data, selectedTime, 1);
-    const a = data[index - 1];
-    const b = data[index];
 
-    let res;
+    let newXCoordinate;
+    let newYCoordinate;
+    let etalon: SonarMetricData;
 
-    if (a === undefined) {
-      res = b;
-    } else if (b === undefined) {
-      res = a;
-    } else {
-      res = selectedTime - a.timestamp > b.timestamp - selectedTime ? b : a;
+    // TODO: RENAME DATASS
+    if (entries.length === 0) {
+      return;
     }
-    const newXCoordinate = this.xScale(res.timestamp);
-    const newYCoordinate = this.yScale(res.value);
+    const foundedElements = entries.map(([metricName, datass]) => {
+      const bisector = d3.bisector((d: SonarMetricData) => d.timestamp).right;
+      const index = bisector(datass, selectedTime, 1);
+      const a = datass[index - 1];
+      const b = datass[index];
+      let res;
 
-    this.tooltipContent = {
-      timestamp: res.timestamp,
-      metrics: [{ name: res.name, value: res.value }],
-    };
+      if (a === undefined) {
+        res = b;
+      } else if (b === undefined) {
+        res = a;
+      } else {
+        res = selectedTime - a.timestamp > b.timestamp - selectedTime ? b : a;
+      }
+      if (etalon) {
+        if (etalon.timestamp === res.timestamp) {
+          return res;
+        } else {
+          return null;
+        }
+      } else {
+        etalon = res;
+      }
+      return res;
+    }).filter(a => !!a);
 
-    this.renderer2.setStyle(
-      this.tooltip.nativeElement,
-      'transform',
-      `translate(${newXCoordinate}px, ${newYCoordinate}px)`
-    );
+    newXCoordinate = this.xScale(foundedElements[0].timestamp);
+    newYCoordinate = this.yScale(foundedElements[0].value);
+
+    this.showTooltips(foundedElements);
+
     this.renderer2.setStyle(
       this.activeLine.nativeElement,
       'transform',
       `translate(${newXCoordinate}px, 0)`
     );
 
-    this.showTooltip = true;
     this.cdRef.detectChanges();
   }
 
@@ -461,5 +483,35 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   private findMinValue(data: SonarMetricData[]) {
     return d3.min(data, d => d.value);
+  }
+
+  private showTooltips(res: SonarMetricData[]) {
+    const chartWidth = this.chartRef.nativeElement.getBoundingClientRect()
+      .width;
+    const tooltipWidth = this.tooltip.nativeElement.getBoundingClientRect()
+      .width;
+    const newYCoordinate = this.yScale(res[0].value);
+    let newXCoordinate = this.xScale(res[0].timestamp) + this.xOffset;
+
+    const metrics = res.map( r => ({ name: r.name, value: r.value }));
+
+    this.tooltipContent = {
+      timestamp: res[0].timestamp,
+      metrics,
+    };
+
+    if (newXCoordinate + tooltipWidth > chartWidth) {
+      newXCoordinate = newXCoordinate - tooltipWidth;
+    } else {
+      newXCoordinate = this.xScale(res[0].timestamp);
+    }
+
+    this.renderer2.setStyle(
+      this.tooltip.nativeElement,
+      'transform',
+      `translate(${newXCoordinate}px, ${newYCoordinate}px)`
+    );
+
+    this.showTooltip = true;
   }
 }
