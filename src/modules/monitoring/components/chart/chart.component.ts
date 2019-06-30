@@ -140,7 +140,7 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.siblingModelVersions$ = this.store
-      .select(getSiblingVersions)
+      .select(getSiblingVersions);
 
     const liveUpdate$ = interval(2000).pipe(
       filter(() => this.liveUpdate),

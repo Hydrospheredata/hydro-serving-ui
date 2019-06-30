@@ -24,7 +24,7 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   logData: any;
 
   @Input()
-  loading: any;
+  loading: any = false;
 
   uid: string;
   ngOnChanges(changes: SimpleChanges): void {
@@ -63,7 +63,7 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
     b: KeyValue<number, string>
   ): number => {
     return a.key - b.key;
-  };
+  }
 
   metricHasManyFeatures(metric) {
     const features = Object.values(metric);

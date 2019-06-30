@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 export class HealthTimelineComponent {
     @Input() metricSpecifications;
     @Input() selectedModelVersion;
+    @Input() live;
 }

@@ -176,7 +176,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
         tap(res => {
           this.loading$.next(false);
           const m = this.metricSpecifications;
-          const m2 = this.metricSpecifications.reduce((acc, _, idx) => {
+          const m2 = this.metricSpecifications.reduce((acc, cur, idx) => {
             acc[m[idx].name] = res[idx];
             return acc;
           }, {});
@@ -305,7 +305,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     this.xSublines = this.scale.ticks(10).map(this.scale);
     this.ySublines = this.labels
       .slice(0, this.labels.length - 1)
-      .map((_, i) => {
+      .map((el, i) => {
         return 24 + 32 * i;
       });
   }
@@ -360,7 +360,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
             update => update,
             exit => exit.remove()
           )
-          .call(_ => self.drawRect(_));
+          .call(d => self.drawRect(d));
       });
   }
 
