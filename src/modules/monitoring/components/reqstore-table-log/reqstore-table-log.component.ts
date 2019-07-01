@@ -5,6 +5,8 @@ import {
   OnInit,
   SimpleChanges,
   OnChanges,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { IMetricData } from '@core/services/metrics/monitoring.service';
 import { ModelVersion } from '@shared/models/_index';
@@ -25,6 +27,9 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
 
   @Input()
   loading: any = false;
+
+  @Output()
+  clickedGetExplanation: EventEmitter<any> = new EventEmitter();
 
   uid: string;
   ngOnChanges(changes: SimpleChanges): void {
@@ -86,5 +91,9 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   isFailedFeature(feature: { [columnIndex: string]: IMetricData }) {
     const metrics: IMetricData[] = Object.values(feature);
     return metrics.some(metricData => metricData.health === false);
+  }
+
+  getExplanation(): void {
+    this.clickedGetExplanation.next();
   }
 }

@@ -17,25 +17,25 @@ import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
 import { SharedModule } from '@shared/shared.module';
 import { MonitoringModule } from 'modules/monitoring/monitoring.module';
+import { RootCauseModule } from 'modules/root-cause/root-cause.module';
 @NgModule({
-    declarations: [
-        AppComponent,
-    ],
-    imports: [
-        RouterModule,
-        BrowserModule,
-        BrowserAnimationsModule,
-        CoreModule,
-        ModelsModule,
-        ApplicationsModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MomentModule,
-        SharedModule,
-        AppRoutingModule,
-        DialogModule,
-        MonitoringModule,
-    ],
-    bootstrap: [ AppComponent ],
+  declarations: [AppComponent],
+  imports: [
+    RouterModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    CoreModule,
+    ModelsModule,
+    ApplicationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MomentModule,
+    SharedModule,
+    AppRoutingModule,
+    DialogModule,
+    MonitoringModule,
+    RootCauseModule,
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
