@@ -1,4 +1,5 @@
 <section class="reqstore">
+  {{ uid }}
   <div class="reqstore__header">
     <div class="reqstore__header-ts">Timestamps</div>
     <div class="reqstore__header-details">Details</div>
@@ -15,9 +16,9 @@
             'log__timestamps-item--selected': selectedLogItem === logItem.value
           }"
           *ngFor="let logItem of logData | keyvalue"
-          (click)="selectLogItem(logItem.value)"
+          (click)="selectLogItem(logItem.key)"
         >
-          <span>{{ logItem.key / 1000000 | moment }}</span>
+          <span>{{ logItem.value.ts / 1000000 | moment }}</span>
           <span>
             <span
               *ngIf="logItem.value.failed"

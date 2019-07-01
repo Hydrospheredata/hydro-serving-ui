@@ -120,7 +120,6 @@ export class ApplicationsEffects {
     ofType(HydroActions.ApplicationActionTypes.GenerateInput),
     withLatestFrom(this.store.select(fromApplications.getSelectedApplication)),
     switchMap(([action, { name: applicationName }]) => {
-      console.log(action, applicationName);
       return this.applicationsService.generateInputs(applicationName).pipe(
         map(input => {
           const payload = {
@@ -155,7 +154,6 @@ export class ApplicationsEffects {
       this.store.select(fromApplications.getSelectedApplication)
     ),
     switchMap(([action, inputs, application]) => {
-      console.log(action, inputs);
       return this.applicationsService
         .serveService(JSON.parse(inputs), application.name)
         .pipe(

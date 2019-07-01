@@ -20,6 +20,7 @@ import {
 } from '@shared/models/monitoring-aggregation.model';
 import { ITimelineLog } from '@shared/models/timeline-log.model';
 import * as d3 from 'd3';
+import * as _ from 'lodash';
 import {
   Subject,
   merge,
@@ -27,8 +28,9 @@ import {
   combineLatest,
   BehaviorSubject,
   Subscription,
+  interval,
 } from 'rxjs';
-import { startWith, switchMap, tap, filter } from 'rxjs/operators';
+import { startWith, switchMap, tap, filter, exhaustMap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-health-timeline',
@@ -52,6 +54,10 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
   @Input() metricSpecifications: MetricSpecification[];
   @Input() selectedModelVersion: ModelVersion;
+  @Input() live: boolean;
+
+  @Output() stopped: EventEmitter<boolean> = new EventEmitter();
+  @Output() started: EventEmitter<boolean> = new EventEmitter();
 
   // CANVAS
   scale: d3.ScaleTime<number, number>;
@@ -61,6 +67,9 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
   xAxisTransform = 'translate(0,0)';
   mimimapTransform = 'translate(0,0)';
+
+  xSublines: number[];
+  ySublines: number[];
 
   readonly MARGIN = {
     top: 20,
@@ -136,23 +145,26 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
             acc[m[idx].name] = res[idx];
             return acc;
           }, {});
-          if (this.fullLog === undefined) {
-            this.fullLog = m2;
-          }
-          this.currentLogData = m2;
 
-          const interval = this.timelineService.getMinimumAndMaximumTimestamps(
-            this.currentLogData
-          );
-          const i = { from: interval[0], to: interval[1] };
-          this.manualSelectInterval.next(i);
+          const sameData = _.isEqual(this.fullLog, m2);
+
+          if (!sameData) {
+            this.fullLog = m2;
+            this.currentLogData = m2;
+            const int = this.timelineService.getMinimumAndMaximumTimestamps(
+              this.currentLogData
+            );
+
+            const i = { from: int[0], to: int[1] };
+            this.manualSelectInterval.next(i);
+          }
         })
       )
       .subscribe();
 
     this.detailLogSub = this.selectedTime$
       .pipe(
-        filter(interval => !!interval && !!interval.from),
+        filter(int => !!int && !!int.from),
         tap(timeInterval => {
           this.displayedTime.next(timeInterval);
           this.timeInterval.next(timeInterval);
@@ -164,10 +176,11 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
         tap(res => {
           this.loading$.next(false);
           const m = this.metricSpecifications;
-          const m2 = this.metricSpecifications.reduce((acc, _, idx) => {
+          const m2 = this.metricSpecifications.reduce((acc, cur, idx) => {
             acc[m[idx].name] = res[idx];
             return acc;
           }, {});
+
           this.currentLogData = m2;
           this.render();
         })
@@ -184,6 +197,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
       this.fullLog
     );
     this.brushEnd$.next({ from, to });
+    this.started.next();
   }
 
   ngOnDestroy(): void {
@@ -199,7 +213,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
   }
 
   getYLabelTranslate(index: number): string {
-    return `translate(0, ${index * this.LINE_HEIGHT + 4})`;
+    return `translate(0, ${index * this.LINE_HEIGHT + 2})`;
   }
 
   private getFullAggregation(): Observable<IMonitoringAggregationList> {
@@ -209,7 +223,12 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
         steps: '200',
       })
     );
-    return combineLatest(...requests);
+
+    return interval(5000).pipe(
+      startWith('first tick'),
+      filter(() => this.live),
+      exhaustMap(() => combineLatest(...requests))
+    );
   }
 
   private getAggregationInInterval(timeInterval: TimeInterval) {
@@ -248,6 +267,8 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
       to: this.scale.invert(evt.selection[1]).getTime(),
     });
     d3.select(this.brush.nativeElement).call(brush.move, null);
+
+    this.stopped.next();
   }
 
   private onBrushed() {
@@ -276,7 +297,17 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     this.updateYTitle();
     this.updateDataset();
     this.updateBrush();
+    this.updateSublines();
     this.cdr.detectChanges();
+  }
+
+  private updateSublines() {
+    this.xSublines = this.scale.ticks(10).map(this.scale);
+    this.ySublines = this.labels
+      .slice(0, this.labels.length - 1)
+      .map((el, i) => {
+        return 24 + 32 * i;
+      });
   }
 
   private updateScale() {
@@ -329,7 +360,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
             update => update,
             exit => exit.remove()
           )
-          .call(_ => self.drawRect(_));
+          .call(d => self.drawRect(d));
       });
   }
 

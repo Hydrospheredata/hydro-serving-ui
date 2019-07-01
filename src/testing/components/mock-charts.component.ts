@@ -8,6 +8,6 @@ import { Observable } from 'rxjs';
   template: '',
 })
 export class ChartsComponent {
-    @Input() selectedTimeInterval$: Observable<TimeInterval>;
-    @Input() metricSpecifications: MetricSpecification[];
+  @Input() selectedTimeInterval$: Observable<TimeInterval>;
+  @Input() metricSpecifications: MetricSpecification;
 }

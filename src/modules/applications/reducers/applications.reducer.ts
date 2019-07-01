@@ -42,7 +42,6 @@ export function reducer(
       return adapter.upsertOne(action.payload, state);
     case ApplicationActionTypes.SetInputSuccess:
     case ApplicationActionTypes.GenerateInputSuccess:
-      console.log(action.payload);
       return adapter.updateOne(
         {
           id: action.payload.name,

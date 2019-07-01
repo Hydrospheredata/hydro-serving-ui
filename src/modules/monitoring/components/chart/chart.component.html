@@ -1,5 +1,22 @@
 <div class="chart" #chart>
   <header class="chart__header">
+    <div class="chart__header-name">{{ metrics[0].name }}</div>
+    <div class="compare" *ngIf="siblingModelVersions$ | async">
+      <span class="compare__label">compare with:</span>
+      <mdl-select
+        class="compare__select"
+        [(ngModel)]="comparedModelVerId"
+        label="model version"
+      >
+        <mdl-option [value]><em>model version</em></mdl-option>
+        <mdl-option
+          *ngFor="let modelVersion of siblingModelVersions$ | async"
+          [value]="modelVersion.id"
+        >
+          {{ modelVersion.modelVersion }}
+        </mdl-option>
+      </mdl-select>
+    </div>
     <span *ngIf="isKolmogorovSmirnov()">
       <ng-container *ngTemplateOutlet="featureSelector"></ng-container>
     </span>
@@ -10,6 +27,16 @@
     [attr.height]="canvasHeight"
     #svg
   >
+    <defs>
+      <clipPath id="my-clip">
+        <rect
+          x="26"
+          y="10"
+          [attr.width]="canvasWidth - 40"
+          [attr.height]="canvasHeight - 50"
+        ></rect>
+      </clipPath>
+    </defs>
     <g hsD3Axis [scale]="xScale" transform="translate(25,170)"></g>
     <g
       hsD3Axis
@@ -50,13 +77,31 @@
       transform="translate(25,10)"
     ></g> -->
     <g
+      clip-path="url(#my-clip)"
       [hs-d3threshold]="threshold"
       *ngFor="let threshold of thresholds; index as i"
       [yScale]="yScale"
       [attr.stroke]="thresholdColors[i]"
       stroke-dasharray="10px"
-      transform="translate(25,10)"
     ></g>
+    <line
+      *ngFor="let y of ySublines"
+      x1="0"
+      [attr.y1]="y"
+      [attr.x2]="canvasWidth - 40"
+      [attr.y2]="y"
+      style="stroke:rgba(38, 39, 41, 0.068);stroke-width:1"
+      transform="translate(25,10)"
+    />
+    <line
+      *ngFor="let x of xSublines"
+      [attr.x1]="x"
+      y1="0"
+      [attr.x2]="x"
+      [attr.y2]="canvasHeight - 50"
+      style="stroke:rgba(38, 39, 41, 0.068);stroke-width:1"
+      transform="translate(25,10)"
+    />
     <rect
       x="0"
       y="0"
@@ -92,12 +137,18 @@
     #activeLine
   ></div>
   <div class="chart__footer">
-    <span
-      class="metric__name"
-      *ngFor="let data of groupedData | keyvalue; index as i"
-    >
-      <span [style.color]="lineColors[i]">-</span>{{ data.key }}
-    </span>
+    <div class="metric__legend">
+      <div
+        class="metric__name"
+        *ngFor="let data of groupedData | keyvalue; index as i"
+      >
+        <div
+          [style.backgroundColor]="lineColors[i]"
+          class="metric__legend-line"
+        ></div>
+        <span>{{ data.key }}</span>
+      </div>
+    </div>
   </div>
   <div *ngIf="emptyData" class="chart__empty">
     No data availabe
@@ -105,21 +156,24 @@
 </div>
 
 <ng-template #featureSelector>
-  <mdl-select
-    #featureSelect
-    label="Choose feature"
-    [(ngModel)]="selectedFeature"
-    (change)="onSelectFeature($event)"
-    [autocomplete]="true"
-    (keydown.enter)="$event.preventDefault()"
-    class="filter-input"
-  >
-    <mdl-option
-      *ngFor="
-        let feature of featureList | matchSorter: {}:featureSelect.searchQuery
-      "
-      [value]="feature"
-      >{{ feature }}
-    </mdl-option>
-  </mdl-select>
+  <div class="feature">
+    <span class="feature__label">feature</span>
+    <mdl-select
+      #featureSelect
+      label="Choose feature"
+      [(ngModel)]="selectedFeature"
+      (change)="onSelectFeature($event)"
+      [autocomplete]="true"
+      (keydown.enter)="$event.preventDefault()"
+      class="filter-input feature__select"
+    >
+      <mdl-option
+        *ngFor="
+          let feature of featureList | matchSorter: {}:featureSelect.searchQuery
+        "
+        [value]="feature"
+        >{{ feature }}
+      </mdl-option>
+    </mdl-select>
+  </div>
 </ng-template>

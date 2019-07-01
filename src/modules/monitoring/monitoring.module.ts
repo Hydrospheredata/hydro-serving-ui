@@ -26,6 +26,7 @@ import {
   DashboardComponent,
   ChartsComponent,
   GraphsComponent,
+  ReqResLogsComponent,
 } from './containers';
 import { reducer } from './reducers';
 @NgModule({
@@ -49,6 +50,7 @@ import { reducer } from './reducers';
     HealthTimelineMiniComponent,
     ReqstoreTableLogComponent,
     MetricSpecConfigComponent,
+    ReqResLogsComponent,
   ],
   imports: [
     SharedModule,

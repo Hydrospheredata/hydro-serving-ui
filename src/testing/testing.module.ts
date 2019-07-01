@@ -7,7 +7,8 @@ import {
   ChartsComponent,
   ChartComponent,
   MockReqstoreTableLogComponent,
-  ModelVersionLogComponent
+  ModelVersionLogComponent,
+  ReqResLogsComponent
 } from '@testing/components';
 import { ProfilesComponent } from '@testing/components/mock-profiles';
 
@@ -21,6 +22,7 @@ const COMPONENTS = [
   ChartComponent,
   MockReqstoreTableLogComponent,
   ModelVersionLogComponent,
+  ReqResLogsComponent,
 ];
 
 @NgModule({

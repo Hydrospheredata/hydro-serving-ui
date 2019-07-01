@@ -41,7 +41,6 @@ export class ModelVersionReplayComponent implements OnInit, OnDestroy {
       'click'
     ).pipe(
       withLatestFrom(this.store.select(getSelectedModelVersion)),
-      tap(console.dir),
       exhaustMap(([_, modelVersionTo]: [any, ModelVersion]) => {
         return this.timemachine.travel({
           modelNameTo: `${modelVersionTo.model.name}`,

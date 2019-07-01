@@ -15,7 +15,6 @@ export class ProfilerEffects {
     @Effect()
     getProfilerServiceStatus$ = this.actions$.pipe(
         ofType(ProfilerServiceStatusActionTypes.GetProfilerServiceStatus),
-        tap(_ => console.log()),
         switchMap( _ => this.profilerService.getProfilerServiceStatus().pipe(
             map(() => new ProfilerServiceStatusIsAvailable()),
             catchError((err: string) => {

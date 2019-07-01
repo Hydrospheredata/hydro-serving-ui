@@ -29,7 +29,6 @@ export class ProfilesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(`ngOnInit with id: ${this.modelVersionId} and store: ${this.store}`);
     this.store.dispatch(new GetFieldsAction(this.modelVersionId));
     this.fieldsSub = this.store.select(getFieldsEntitiesState).subscribe(state => {
       this.isLoading = false;
@@ -62,7 +61,6 @@ export class ProfilesComponent implements OnInit, OnDestroy {
   }
 
   onFieldSelect(selectedField) {
-    console.log(selectedField);
     this.isLoading = true;
     this.currentField = selectedField;
     this.store.dispatch(new GetProfilesAction(this.modelVersionId, selectedField));
