@@ -19,7 +19,7 @@ const MockMonitoringService = {
   getMetricsInRange() {},
 };
 
-describe('ChartComponent', () => {
+xdescribe('ChartComponent', () => {
   let component: ChartComponent;
   let fixture: ComponentFixture<ChartComponent>;
   let store: MockStore<fromModels.State>;
