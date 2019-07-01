@@ -1,5 +1,4 @@
 <section class="reqstore">
-  {{ uid }}
   <div class="reqstore__header">
     <div class="reqstore__header-ts">Timestamps</div>
     <div class="reqstore__header-details">Details</div>
@@ -29,6 +28,11 @@
         </div>
       </div>
       <div class="log__details">
+        <div class="log__details-header">
+          <button class="button button--primary explanation-button" (click)="getExplanation()">
+            GET EXPLANATION
+          </button>
+        </div>
         <div class="log__details-container">
           <ng-container *ngIf="selectedLogItem">
             <div class="log__details-item">

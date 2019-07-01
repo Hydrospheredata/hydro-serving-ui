@@ -1,0 +1,37 @@
+<div class="explanation">
+  <ng-container
+    *ngIf="
+      error$ | async as error;
+      else (isLoading$ | async) ? loading : explanation
+    "
+  >
+    <hs-error-message> {{ error }} </hs-error-message>
+  </ng-container>
+
+  <ng-template #loading>
+    loading...
+  </ng-template>
+  <ng-template #explanation>
+    <div *ngIf="explanation$ | async as explanation">
+      <div class="explanation__item">
+        <div class="explanation__item-key">coverage</div>
+        <div class="explanation__item-value">{{ explanation.coverage }}</div>
+      </div>
+      <div class="explanation__item">
+        <div class="explanation__item-key">explanation</div>
+        <div class="explanation__item-value">
+          <div *ngFor="let item of explanation.explanation">
+            {{ item }}
+          </div>
+        </div>
+      </div>
+      <div class="explanation__item">
+        <div class="explanation__item-key">precision</div>
+        <div class="explanation__item-value">{{ explanation.precision }}</div>
+      </div>
+    </div>
+  </ng-template>
+  <div class="explanation__buttons">
+    <button class="button button--primary" (click)="close()">CLOSE</button>
+  </div>
+</div>

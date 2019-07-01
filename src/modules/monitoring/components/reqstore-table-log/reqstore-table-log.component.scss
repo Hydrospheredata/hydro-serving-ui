@@ -106,6 +106,10 @@
     background: white;
     font-size: 12px;
 
+    &-header {
+      padding: 8px 8px;
+    }
+
     &-container {
       padding: 0px 8px;
     }
@@ -239,4 +243,15 @@
   color: #8a8a8a;
   font-style: italic;
 
+}
+
+.explanation-button {
+  padding: 8px;
+  background-color: #3c447d;
+  color: white;
+  font-size: 10px;
+  letter-spacing: 1px;
+  &:hover {
+    background-color: #2e3361; 
+  }
 }

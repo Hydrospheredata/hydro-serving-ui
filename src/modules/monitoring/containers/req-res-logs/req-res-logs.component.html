@@ -29,6 +29,7 @@
     <hs-reqstore-table-log
       [logData]="log$ | async"
       [modelVersion]="modelVersion$ | async"
+      (clickedGetExplanation)="getExplanation()"
     >
     </hs-reqstore-table-log>
   </div>
