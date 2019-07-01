@@ -33,6 +33,6 @@ const rootCauseReducer = createReducer(
   }))
 );
 
-export const reducer = (state: State, action: Action): State => {
+export function reducer(state: State, action: Action): State {
   return rootCauseReducer(state, action);
-};
+}
