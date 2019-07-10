@@ -16,41 +16,40 @@ import { MockStoreProvider } from '@testing/mocks';
 import { of } from 'rxjs';
 
 describe('ApplicationsItemDetailComponent', () => {
-    let component: ApplicationsItemDetailComponent;
-    let fixture: ComponentFixture<ApplicationsItemDetailComponent>;
+  let component: ApplicationsItemDetailComponent;
+  let fixture: ComponentFixture<ApplicationsItemDetailComponent>;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            declarations: [
-                ApplicationsItemDetailComponent,
-                UpdateModelVersionDirective,
-            ],
-            imports: [
-                SharedModule,
-                RouterModule,
-                HttpClientTestingModule,
-                RouterTestingModule,
-            ],
-            providers: [
-                MockStoreProvider,
-                DialogService,
-                MonitoringService,
-                InfluxDBService,
-                HttpService,
-            ],
-        })
-            .compileComponents();
-    });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        ApplicationsItemDetailComponent,
+        UpdateModelVersionDirective,
+      ],
+      imports: [
+        SharedModule,
+        RouterModule,
+        HttpClientTestingModule,
+        RouterTestingModule,
+      ],
+      providers: [
+        MockStoreProvider,
+        DialogService,
+        MonitoringService,
+        InfluxDBService,
+        HttpService,
+      ],
+    }).compileComponents();
+  });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(ApplicationsItemDetailComponent);
-        component = fixture.componentInstance;
-        component.application$ = of(MockApplication);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ApplicationsItemDetailComponent);
+    component = fixture.componentInstance;
+    component.application$ = of(MockApplication);
 
-        fixture.detectChanges();
-    });
+    fixture.detectChanges();
+  });
 
-    it('should be created', () => {
-        expect(component).toBeTruthy();
-    });
+  it('should be created', () => {
+    expect(component).toBeTruthy();
+  });
 });

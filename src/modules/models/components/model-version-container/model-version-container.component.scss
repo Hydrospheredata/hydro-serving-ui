@@ -1,3 +1,5 @@
+@import 'variables';
+
 .mv {
   &__header {
     display: flex;
@@ -30,8 +32,8 @@
   &__model-version {
     cursor: pointer;
     padding: 4px 5px;
-    background: #3a3a79;
-    color: white;
+    background: $neutral-color-900;
+    color: $neutral-color-100;
     vertical-align: bottom;
     font-size: 14px;
     border-radius: 4px;
@@ -44,25 +46,23 @@
   position: absolute;
   right: 24px;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, .4);
+  color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
-
   &__item {
     outline: none;
     font-size: 10px;
     letter-spacing: 1px;
     margin: 0 12px;
-    transition: .6s ease all;
+    transition: 0.6s ease all;
+    font-family: $font-family-light;
 
     &:hover {
-      color: #5d5988;
+      color: $neutral-color-900;
     }
 
     &--is-active {
-      color: #5d5988;
-      box-shadow: inset 0 -2px #5d5988;
+      color: $neutral-color-900;
+      box-shadow: inset 0 -2px $neutral-color-900;
     }
   }
 }
-
-.metric-data {}

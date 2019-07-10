@@ -1,0 +1,24 @@
+<table class="hydro-table servables-table">
+  <tr class="hydro-table-head servables-table__head">
+    <th class="hydro-table-head__cell">name</th>
+    <th class="hydro-table-head__cell">status</th>
+    <th class="hydro-table-head__cell">message</th>
+    <th class="hydro-table-head__cell">actions</th>
+  </tr>
+  <tr
+    class="servables-table__row"
+    *ngFor="let servable of servables"
+  >
+    <td class="hydro-table-body__cell">{{ servable.fullName }}</td>
+    <td class="hydro-table-body__cell">{{ servable.status.status }}</td>
+    <td class="hydro-table-body__cell">{{ servable.status.msg }}</td>
+    <td class="hydro-table-body__cell">
+      <button class="button button--secondary" (click)="onShowLog(servable.fullName)">
+        show logs
+      </button>
+      <button class="button button--secondary-remove" (click)="onDelete(servable)">
+        delete
+      </button>
+    </td>
+  </tr>
+</table>

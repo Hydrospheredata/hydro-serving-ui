@@ -16,10 +16,6 @@ $color--blue: #539ae9;
 $border-color: #f1f3f7;
 $secondary-color: #e6e9ed;
 
-$error-container-border-color: #da3d3d;
-$error-container-background-color: #da3d3d;
-$error-text-color: #ff4040;
-
 // FONT
 // Font family
 $font-family-light: 'Museo Sans Light',  sans-serif;
@@ -39,3 +35,88 @@ $label-color: #818994;
 // 18px
 $label-font-size: 1.125rem;
 $input-font-size: 1.125rem;
+
+// COLORS
+//accent color pallete
+$accent-color-blue-100: #DCEEFB;
+$accent-color-blue-200: #B6E0FE;
+$accent-color-blue-300: #84C5F4;
+$accent-color-blue-400: #62B0E8;
+$accent-color-blue-500: #4098D7;
+$accent-color-blue-600: #2680C2;
+$accent-color-blue-700: #186FAF;
+$accent-color-blue-800: #0F609B;
+$accent-color-blue-900: #0A558C;
+$accent-color-blue-1000: #003E6B;
+
+$accent-color-orange-100: #FFFBEA;
+$accent-color-orange-200: #FFF3C4 ;
+$accent-color-orange-300: #FCE588;
+$accent-color-orange-400: #FADB5F;
+$accent-color-orange-500: #F7C948;
+$accent-color-orange-600: #F0B429;
+$accent-color-orange-700: #DE911D;
+$accent-color-orange-800: #CB6E17;
+$accent-color-orange-900: #B44D12;
+$accent-color-orange-1000: #8D2B0B;
+
+// neutrals color palette 
+$neutral-color-100: #F0F4F8;
+$neutral-color-200: #D9E2EC;
+$neutral-color-300: #BCCCDC;
+$neutral-color-400: #9FB3C8;
+$neutral-color-500: #829AB1;
+$neutral-color-600: #627D98;
+$neutral-color-700: #486581;
+$neutral-color-800: #334E68;
+$neutral-color-900: #243B53;
+$neutral-color-1000: #102A43;
+
+// supportive color pallete
+$supportive-color-cyan-100: #E0FCFF;
+$supportive-color-cyan-200: #BEF8FD;
+$supportive-color-cyan-300: #87EAF2;
+$supportive-color-cyan-400: #54D1DB;
+$supportive-color-cyan-500: #38BEC9;
+$supportive-color-cyan-600: #2CB1BC;
+$supportive-color-cyan-700: #14919B;
+$supportive-color-cyan-800: #0E7C86;
+$supportive-color-cyan-900: #0A6C74;
+$supportive-color-cyan-1000: #044E54;
+
+$supportive-color-green-100: #EFFCF6;
+$supportive-color-green-200: #C6F7E2;
+$supportive-color-green-300: #8EEDC7;
+$supportive-color-green-400: #65D6AD;
+$supportive-color-green-500: #3EBD93;
+$supportive-color-green-600: #27AB83;
+$supportive-color-green-700: #199473;
+$supportive-color-green-800: #147D64;
+$supportive-color-green-900: #0C6B58;
+$supportive-color-green-1000: #014D40;
+
+$supportive-color-red-100: #FFE3E3;
+$supportive-color-red-200: #FFBDBD;
+$supportive-color-red-300: #FF9B9B;
+$supportive-color-red-400: #F86A6A;
+$supportive-color-red-500: #EF4E4E;
+$supportive-color-red-600: #E12D39;
+$supportive-color-red-700: #CF1124;
+$supportive-color-red-800: #AB091E;
+$supportive-color-red-900: #8A041A;
+$supportive-color-red-1000: #610316;
+
+
+// text colors
+$neutral-text-color: $neutral-color-1000;
+$secondary-text-color: $neutral-color-300;
+
+//error colors
+$error-container-border-color: $supportive-color-red-100;
+$error-container-background-color: $supportive-color-red-100;
+$error-text-color: $supportive-color-red-700;
+
+
+// status badges
+$status-success-background-color: $supportive-color-green-100;
+$status-success-text-color: $supportive-color-green-700;

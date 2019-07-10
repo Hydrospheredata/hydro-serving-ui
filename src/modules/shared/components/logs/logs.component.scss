@@ -1,0 +1,51 @@
+@import "variables";
+
+.log {
+  height: 100%;
+  width: 100%;
+  &__header {
+    font-family: $font-family-light;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: $neutral-color-800;
+    font-size: 14px;
+  }
+  &__body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    background: $neutral-color-1000;
+    min-height: 60px;
+    overflow: scroll;
+    height: calc(100% - 152px);
+    width: 100%;
+  }
+  &__item {
+    white-space: pre-wrap;
+    &-index {
+      color: $neutral-color-400;
+      padding-right: 8px;
+    }
+
+    &-text {
+      color: $neutral-color-100;
+    }
+  }
+  &__scroller {
+    position: relative;
+    top: -32px;
+    padding: 4px;
+    background: #94afc13b;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.466);
+    cursor: pointer;
+    &-icon {
+      height: 24px;
+      width: 24px;
+    }
+    &:hover {
+      color: $neutral-color-100
+    }
+  }
+}

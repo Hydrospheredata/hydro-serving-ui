@@ -1,0 +1,9 @@
+:host {
+  display: flex;
+  overflow: scroll;
+  width: 100%;
+}
+.log-wrapper {
+  max-height: calc(100% - 20px);
+  overflow: hidden;
+}

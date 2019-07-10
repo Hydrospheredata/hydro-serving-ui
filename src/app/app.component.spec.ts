@@ -19,35 +19,31 @@ import { ProfilerModule } from '@profiler/profiler.module';
 import { MomentModule } from 'angular2-moment';
 
 describe('AppComponent', () => {
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            declarations: [AppComponent],
-            imports: [
-                RouterModule,
-                BrowserModule,
-                BrowserAnimationsModule,
-                CoreModule,
-                ModelsModule,
-                ApplicationsModule,
-                FormsModule,
-                ReactiveFormsModule,
-                MomentModule,
-                SharedModule,
-                ProfilerModule,
-                AppRoutingModule,
-                DialogModule,
-            ],
-            providers: [
-                Store,
-                { provide: APP_BASE_HREF, useValue: '/' },
-            ],
-        }).compileComponents();
-    });
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [AppComponent],
+      imports: [
+        RouterModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        CoreModule,
+        ModelsModule,
+        ApplicationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MomentModule,
+        SharedModule,
+        ProfilerModule,
+        AppRoutingModule,
+        DialogModule,
+      ],
+      providers: [Store, { provide: APP_BASE_HREF, useValue: '/' }],
+    }).compileComponents();
+  });
 
-    it('should create the app', () => {
-        const fixture = TestBed.createComponent(AppComponent);
-        const app = fixture.debugElement.componentInstance;
-        expect(app).toBeTruthy();
-    });
-
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  });
 });

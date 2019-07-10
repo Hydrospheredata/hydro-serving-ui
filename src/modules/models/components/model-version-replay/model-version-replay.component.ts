@@ -45,7 +45,7 @@ export class ModelVersionReplayComponent implements OnInit, OnDestroy {
         return this.timemachine.travel({
           modelNameTo: `${modelVersionTo.model.name}`,
           modelVersionFrom: `${this.replayableModelVersion}`,
-          versionTo: `${modelVersionTo.id}`,
+          versionTo: `${modelVersionTo.modelVersion}`,
           from: '0',
           till: '8559030671000000000',
         });

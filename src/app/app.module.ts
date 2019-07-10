@@ -18,6 +18,7 @@ import { ModelsModule } from '@models/models.module';
 import { SharedModule } from '@shared/shared.module';
 import { MonitoringModule } from 'modules/monitoring/monitoring.module';
 import { RootCauseModule } from 'modules/root-cause/root-cause.module';
+import { ServablesModule } from 'modules/servables/servables.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -31,10 +32,11 @@ import { RootCauseModule } from 'modules/root-cause/root-cause.module';
     ReactiveFormsModule,
     MomentModule,
     SharedModule,
-    AppRoutingModule,
     DialogModule,
     MonitoringModule,
     RootCauseModule,
+    ServablesModule,
+    AppRoutingModule,
   ],
   bootstrap: [AppComponent],
 })

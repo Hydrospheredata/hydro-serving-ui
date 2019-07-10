@@ -9,7 +9,6 @@ export class ModelVersionLogService {
   eventSource: EventSource;
 
   getLog(modelVersionId) {
-
     const myObservable = new Observable(subscribe => {
       const { host, apiUrl, production } = environment;
       const { protocol, port, hostname } = window.location;

@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <div class="wrapper__text">
+    <span>Remove servable?</span>
+    <div class="wrapper__servable-name">
+      {{ servableName }}
+    </div>
+  </div>
+  <div class="wrapper__buttons">
+    <button
+      class="button button--flat wrapper__button"
+      (click)="onClose()"
+      type="button"
+    >
+      cancel
+    </button>
+    <button
+      class="button button--primary button--primary-remove wrapper__button"
+      (click)="onDelete()"
+    >
+      Remove
+    </button>
+  </div>
+</div>

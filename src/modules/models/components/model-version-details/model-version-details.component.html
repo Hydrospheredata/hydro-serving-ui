@@ -1,29 +1,29 @@
 <div class="mv-details">
-  <section class="content__cell mv-details__information">
+  <section class="content__cell mv-details__information" *ngIf="modelVersion$ | async as modelVersion">
     <div class="content__cell-title">Information</div>
     <div class="content__cell-body">
-      <ol class="content__body-section content-info__sublist">
-        <li class="content-info__sublist-item">
-          <span class="content-info__sublist-item-title">Created</span>
-          <span class="content-info__sublist-item-value">
+      <ol class="information">
+        <li class="information__item">
+          <span class="information__item-title">Created</span>
+          <span class="information__item-value">
             <div class="status">
-              {{ (modelVersion$ | async)?.created | utcToLocal | amTimeAgo }}
+              {{ modelVersion.created | utcToLocal | amTimeAgo }}
             </div>
           </span>
         </li>
-        <li class="content-info__sublist-item">
-          <span class="content-info__sublist-item-title">Version</span>
-          <span class="content-info__sublist-item-value">
+        <li class="information__item">
+          <span class="information__item-title">Version</span>
+          <span class="information__item-value">
             <div class="status">
-              {{ (modelVersion$ | async)?.modelVersion }}
+              {{ modelVersion.modelVersion }}
             </div>
           </span>
         </li>
-        <li class="content-info__sublist-item">
-          <span class="content-info__sublist-item-title">Status</span>
-          <ng-container *ngIf="(modelVersion$ | async)?.status; let status">
+        <li class="information__item">
+          <span class="information__item-title">Status</span>
+          <ng-container *ngIf="modelVersion.status; let status">
             <span
-              class="content-info__sublist-item-value model-version-status model-version-status--{{
+              class="model-version-status model-version-status--{{
                 status | lowercase
               }}"
               [status]="status"
@@ -33,9 +33,9 @@
             </span>
             <button
               class="button button--flat show-log-button"
-              (click)="toggleLog()"
+              (click)="showBuildLog(modelVersion.id)"
             >
-              {{ showLog ? "hide logs" : "show logs"  }}
+              {{ showLog ? 'hide build logs' : 'show build logs' }}
             </button>
           </ng-container>
         </li>
@@ -45,9 +45,9 @@
             [modelVersion]="modelVersion$ | async"
           ></hs-model-version-log>
         </li>
-        <li class="content-info__sublist-item">
-          <span class="content-info__sublist-item-title">Applications</span>
-          <span class="content-info__sublist-item-value">
+        <li class="information__item">
+          <span class="information__item-title">Applications</span>
+          <span class="information__item-value">
             <span
               *ngFor="
                 let appName of (modelVersion$ | async)?.applications;
@@ -78,4 +78,18 @@
       ></hydro-signatures>
     </div>
   </section>
+  <section class="content__cell mv-details__servables">
+    <div class="content__cell-title">Servables</div>
+    <div class="content__cell-body">
+      <hs-servables-table [servables]="servables$ | async" (showedLog)="showServableLogs($event)">
+      </hs-servables-table>
+    </div>
+  </section>
+  
+  <div class="log" [ngClass]="{'log--is-visible': globalLog}">
+    <div class="log__layout" (click)="toggleGlobalLog()"></div>
+    <div class="log__content">
+      <ng-container #logContainer></ng-container>
+    </div>
+  </div>
 </div>

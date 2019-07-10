@@ -14,76 +14,68 @@ import { ApplicationsEffects } from '@applications/effects/_index';
 import { reducers } from '@applications/reducers';
 
 import {
-    ApplicationsWrapperComponent,
-    ApplicationsItemDetailComponent,
-    ApplicationFormComponent,
-    KafkaFormComponent,
-    ModelVariantFormComponent,
-    DialogAddApplicationComponent,
-    DialogDeleteApplicationComponent,
-    DialogTestComponent,
-    DialogUpdateApplicationComponent,
-    DialogUpdateModelVersionComponent
+  ApplicationsWrapperComponent,
+  ApplicationsItemDetailComponent,
+  ApplicationFormComponent,
+  KafkaFormComponent,
+  ModelVariantFormComponent,
+  DialogAddApplicationComponent,
+  DialogDeleteApplicationComponent,
+  DialogTestComponent,
+  DialogUpdateApplicationComponent,
+  DialogUpdateModelVersionComponent,
 } from '@applications/components';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UpdateModelVersionDirective } from '@applications/directives';
 import {
-    ApplicationsService,
-    ApplicationsGuard,
-    ApplicationFormService
+  ApplicationsService,
+  ApplicationsGuard,
+  ApplicationFormService,
 } from '@applications/services';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 
 const DIALOGS = [
-    DialogDeleteApplicationComponent,
-    DialogAddApplicationComponent,
-    DialogUpdateApplicationComponent,
-    DialogUpdateModelVersionComponent,
-    DialogTestComponent,
+  DialogDeleteApplicationComponent,
+  DialogAddApplicationComponent,
+  DialogUpdateApplicationComponent,
+  DialogUpdateModelVersionComponent,
+  DialogTestComponent,
 ];
 
 const PRIVATE_COMPONENTS = [
-    ApplicationsWrapperComponent,
-    ApplicationsItemDetailComponent,
-    ApplicationFormComponent,
-    KafkaFormComponent,
-    ModelVariantFormComponent,
+  ApplicationsWrapperComponent,
+  ApplicationsItemDetailComponent,
+  ApplicationFormComponent,
+  KafkaFormComponent,
+  ModelVariantFormComponent,
 ];
 
-const DIRECTIVES = [
-    UpdateModelVersionDirective,
-];
+const DIRECTIVES = [UpdateModelVersionDirective];
 @NgModule({
-    imports: [
-        SharedModule,
-        CommonModule,
-        MdlModule,
-        MdlSelectModule,
-        ApplicationsRoutingModule,
-        FormsModule,
-        ChartsModule,
-        StoreModule.forFeature('applications', reducers),
-        EffectsModule.forFeature([ApplicationsEffects]),
-        ReactiveFormsModule,
-        CodemirrorModule,
-        BrowserAnimationsModule,
-    ],
-    declarations: [
-        ...PRIVATE_COMPONENTS,
-        ...DIALOGS,
-        ...DIRECTIVES,
-    ],
-    entryComponents: [
-        ...DIALOGS,
-    ],
-    providers: [
-        ApplicationsService,
-        ApplicationBuilder,
-        ApplicationsGuard,
-        ApplicationFormService,
-        CustomValidatorsService,
-    ],
+  imports: [
+    SharedModule,
+    CommonModule,
+    MdlModule,
+    MdlSelectModule,
+    ApplicationsRoutingModule,
+    FormsModule,
+    ChartsModule,
+    StoreModule.forFeature('applications', reducers),
+    EffectsModule.forFeature([ApplicationsEffects]),
+    ReactiveFormsModule,
+    CodemirrorModule,
+    BrowserAnimationsModule,
+  ],
+  declarations: [...PRIVATE_COMPONENTS, ...DIALOGS, ...DIRECTIVES],
+  entryComponents: [...DIALOGS],
+  providers: [
+    ApplicationsService,
+    ApplicationBuilder,
+    ApplicationsGuard,
+    ApplicationFormService,
+    CustomValidatorsService,
+  ],
 })
-export class ApplicationsModule { }
+export class ApplicationsModule {}

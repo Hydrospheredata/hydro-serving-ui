@@ -12,4 +12,5 @@ export const environment = {
     monitoringUrl: '/monitoring',
     reqstoreUrl: '/reqstore',
     timemachineUrl: '/timemachine',
+    servableUrl: '/servable',
 };
