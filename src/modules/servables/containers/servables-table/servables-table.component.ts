@@ -36,4 +36,8 @@ export class ServablesTableComponent {
   onShowLog(servableName: string) {
     this.showedLog.next(servableName);
   }
+
+  get isEmpty(): boolean {
+    return this.servables && this.servables.length === 0;
+  }
 }

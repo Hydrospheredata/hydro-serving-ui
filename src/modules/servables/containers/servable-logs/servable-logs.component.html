@@ -1,6 +1,4 @@
 <hs-error-message *ngIf="error">
   {{ error }}
 </hs-error-message>
-<div class="log-wrapper">
-  <hs-logs [logs]="logs$ | async" header="Servable's logs"></hs-logs>
-</div>
+<hs-logs [logs]="logs$ | async" header="Servable's logs"></hs-logs>

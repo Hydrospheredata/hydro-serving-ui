@@ -14,7 +14,7 @@ import {
 })
 export class LogsComponent implements AfterViewChecked, AfterViewInit {
   @Input() set logs(logs: string[]) {
-    this.currentLogs = logs;
+    this.currentLogs = logs || [];
   }
   @ViewChild('logBody', { read: ElementRef }) logBody: ElementRef;
   @Input() header: string = 'Logs';
@@ -30,6 +30,10 @@ export class LogsComponent implements AfterViewChecked, AfterViewInit {
     if (this.logBody && this.autoScroll) {
       this.scrollDown();
     }
+  }
+
+  get isEmptyLog(): boolean {
+    return this.currentLogs.length === 0;
   }
 
   private scrollDown() {

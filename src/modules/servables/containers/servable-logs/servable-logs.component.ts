@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { exhaustMap, filter, scan, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { getLogs } from '../../actions';
-import { selectCurrentServable } from '../../selectors';
 import { ServablesService } from '../../services';
 import { State } from '../../state';
 
@@ -13,7 +12,7 @@ import { State } from '../../state';
   styleUrls: ['./servable-logs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ServableLogsComponent implements OnInit, OnDestroy {
+export class ServableLogsComponent implements OnInit {
   sub: Subscription;
   logs$: any;
   logStream$: any;
@@ -30,8 +29,5 @@ export class ServableLogsComponent implements OnInit, OnDestroy {
     this.logs$ = this.servablesService.getLogs(this.servableName).pipe(
       tap(_ => this.cdr.detectChanges())
     );
-  }
-
-  ngOnDestroy() {
   }
 }

@@ -2,13 +2,19 @@
   <div class="log__header">
     {{ header }}
   </div>
-  <div class="log__body" #logBody>
+  <div *ngIf="isEmptyLog" class="log--is-empty">
+    Log is empty
+  </div>
+  <div class="log__body" #logBody [hidden]="isEmptyLog">
     <div class="log__item" *ngFor="let item of currentLogs; index as i">
       <span class="log__item-index">{{ i }}</span
       ><span class="log__item-text">{{ item }}</span>
     </div>
   </div>
   <div class="log__scroller" *ngIf="!autoScroll" (click)="scrollDown()">
-    <hydro-icon class='icon log__scroller-icon' type="icon-arrow-down"></hydro-icon>
+    <hydro-icon
+      class="icon log__scroller-icon"
+      type="icon-arrow-down"
+    ></hydro-icon>
   </div>
 </section>
