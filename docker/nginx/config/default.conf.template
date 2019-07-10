@@ -163,15 +163,6 @@ server {
     proxy_http_version 1.1;
   }
 
-  location ~ ^/api/v2/servable/(.*?)/logs {
-    proxy_pass http://manager_http;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_set_header X-Scheme $scheme;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_http_version 1.1;
-    proxy_send_timeout 3600s;
-    proxy_read_timeout 3600s;
-  }
 #  location /ui/v1 {
 #    proxy_pass http://${MANAGER_HOST};
 #    proxy_set_header X-Real-IP $remote_addr;
