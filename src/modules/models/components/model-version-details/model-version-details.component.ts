@@ -4,6 +4,7 @@ import {
   ViewContainerRef,
   ComponentFactory,
   ComponentFactoryResolver,
+  ComponentRef,
 } from '@angular/core';
 import { HydroServingState } from '@core/reducers';
 import { ModelVersionLogComponent } from '@models/components/model-version-log/model-version-log.component';
@@ -14,7 +15,7 @@ import { ServableLogsComponent } from '@servables/containers';
 import { Servable } from '@servables/models';
 import { selectServablesByModelVersionId } from '@servables/selectors';
 import { ModelVersion } from '@shared/models/_index';
-import { Observable, merge } from 'rxjs';
+import { Observable } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'hydro-model-version-details',
@@ -55,6 +56,7 @@ export class ModelVersionDetailsComponent {
     const component = this.logContainer.createComponent(factory);
 
     component.instance.modelVersion = modelVersionId;
+    component.instance.closed.subscribe(_ => this.closeGlobalLog(component));
     component.changeDetectorRef.detectChanges();
     this.toggleGlobalLog();
   }
@@ -67,12 +69,16 @@ export class ModelVersionDetailsComponent {
 
     const component = this.logContainer.createComponent(factory);
     component.instance.servableName = servableName;
+    component.instance.closed.subscribe(_ => this.closeGlobalLog(component));
     component.changeDetectorRef.detectChanges();
     this.toggleGlobalLog();
   }
 
-  toggleLog(): void {
-    this.showLog = !this.showLog;
+  closeGlobalLog(
+    ref: ComponentRef<ModelVersionLogComponent | ServableLogsComponent>
+  ): void {
+    ref.destroy();
+    this.globalLog = false;
   }
 
   toggleGlobalLog(): void {

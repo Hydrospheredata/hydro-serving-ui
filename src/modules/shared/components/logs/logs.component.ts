@@ -5,6 +5,8 @@ import {
   ElementRef,
   AfterViewChecked,
   AfterViewInit,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 
 @Component({
@@ -18,6 +20,8 @@ export class LogsComponent implements AfterViewChecked, AfterViewInit {
   }
   @ViewChild('logBody', { read: ElementRef }) logBody: ElementRef;
   @Input() header: string = 'Logs';
+
+  @Output() closed: EventEmitter<any> = new EventEmitter<any>();
 
   currentLogs: string[] = [];
   autoScroll: boolean = true;
@@ -34,6 +38,10 @@ export class LogsComponent implements AfterViewChecked, AfterViewInit {
 
   get isEmptyLog(): boolean {
     return this.currentLogs.length === 0;
+  }
+
+  onClose(): void {
+    this.closed.emit();
   }
 
   private scrollDown() {

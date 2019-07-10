@@ -1,4 +1,11 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -13,6 +20,7 @@ import { State } from '../../state';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServableLogsComponent implements OnInit {
+  @Output() closed: EventEmitter<any> = new EventEmitter();
   sub: Subscription;
   logs$: any;
   logStream$: any;
@@ -26,8 +34,12 @@ export class ServableLogsComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(getLogs());
-    this.logs$ = this.servablesService.getLogs(this.servableName).pipe(
-      tap(_ => this.cdr.detectChanges())
-    );
+    this.logs$ = this.servablesService
+      .getLogs(this.servableName)
+      .pipe(tap(_ => this.cdr.detectChanges()));
+  }
+
+  onClose(): void {
+    this.closed.emit();
   }
 }

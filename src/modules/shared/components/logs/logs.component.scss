@@ -7,7 +7,7 @@
 .log {
   height: 100%;
   width: 100%;
-
+  position: relative;
   &__header {
     font-family: $font-family-light;
     text-transform: uppercase;
@@ -15,6 +15,7 @@
     margin-bottom: 8px;
     color: $neutral-color-800;
     font-size: 14px;
+    position: relative;
   }
 
   &__body {
@@ -67,5 +68,19 @@
     color: $neutral-color-500;
     font-family: $font-family-light;
     font-style: italic;
+  }
+
+  &__close-icon {
+    position: absolute;
+    top: calc(50% - 58px);
+    left: -28px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    color: $neutral-color-600;
+    transition: .3s ease all;
+    &:hover {
+      color: $neutral-color-1000;
+    }
   }
 }

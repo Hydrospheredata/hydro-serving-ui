@@ -2,10 +2,9 @@ import {
   Component,
   OnInit,
   Input,
-  ViewChild,
-  ElementRef,
-  AfterViewChecked,
   ChangeDetectorRef,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { ModelVersionLogService } from '@models/services/model-version-log.service';
 import { ModelVersion } from '@shared/_index';
@@ -19,8 +18,10 @@ import { catchError } from 'rxjs/operators';
 })
 export class ModelVersionLogComponent implements OnInit  {
   @Input() modelVersion: number;
+  @Output() closed: EventEmitter<any> = new EventEmitter();
   log$: Observable<string[]>;
   error: string;
+
   constructor(
     private logService: ModelVersionLogService,
     private cdr: ChangeDetectorRef
@@ -34,5 +35,9 @@ export class ModelVersionLogComponent implements OnInit  {
         return of([]);
       })
     );
+  }
+
+  onClose() {
+    this.closed.emit();
   }
 }

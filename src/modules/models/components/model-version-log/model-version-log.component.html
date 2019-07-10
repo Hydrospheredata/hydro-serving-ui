@@ -2,4 +2,5 @@
   {{ error }}
 </hs-error-message>
 
-<hs-logs [logs]="log$ | async" header="build logs"> </hs-logs>
+<hs-logs [logs]="log$ | async" header="build logs" (closed)="onClose()">
+</hs-logs>
