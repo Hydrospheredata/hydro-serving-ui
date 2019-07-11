@@ -2,97 +2,103 @@
 @import "hydro_input.scss";
 
 .application-name {
-    display: flex;
-    flex-direction: column;
-    margin: 16px 0 9px;
-    position: relative;
-    &__label {
-        font-size: 18px;
-        line-height: 24px;
+  display: flex;
+  flex-direction: column;
+  margin: 16px 0 9px;
+  position: relative;
+  &__label {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  &__input {
+    font-size: 16px;
+    padding: 4px;
+    border: 2px solid $neutral-color-700;
+
+    &:focus {
+      border-color: $primary-color-500;
     }
-    &__input {
-        font-size: 16px;
-        padding: 4px;
-        border: 2px solid gray;
-        &:focus {
-            border-color: $color--light-blue;
-        }
-    }
+  }
 }
 
 .application-form {
-    height: calc(100% - 36px);
-    overflow: scroll;
+  height: calc(100% - 36px);
+  overflow: scroll;
 }
 
-.application__kafka{
-    display: block;
-    margin-bottom: 20px;
+.application__kafka {
+  display: block;
+  margin-bottom: 20px;
 }
 
 .stages {
-    &__label {
-        font-size: 24px;
-        line-height: 36px;
-    } 
+  &__label {
+    font-size: 20px;
+    line-height: 36px;
+  }
 }
 
 .stage {
+  position: relative;
+  margin-bottom: 24px;
+
+  &__header {
+    align-items: center;
+    background-color: $neutral-color-700;
+    color: $neutral-color-100;
     position: relative;
-    margin-bottom: 24px;
-    &__header {
-        align-items: center;
-        background-color: #11254e;
-        color: white;
-        position: relative;
-        text-align: center
+    text-align: center
+  }
+
+  &__name {
+    font-size: 18px;
+    line-height: 36px;
+    padding: 0 8px;
+  }
+
+  &__remove {
+    cursor: pointer;
+    display: inline-block;
+    position: absolute;
+    top: 12px;
+  }
+
+  &__add-model-variant-button {
+    border-radius: 0;
+    color: white;
+    justify-content: center;
+    width: 100%;
+    &:hover {
+      color: white;
     }
-    &__name {
-        font-size: 20px;
-        line-height: 44px;
-        padding: 0 8px;
-    }
-    &__remove {
-        cursor: pointer;
-        display: inline-block;
-        position: absolute;
-        top: 12px;
-    }
-    &__add-service-button {
-        border-radius: 0;
-        background-color: #7abbf3;
-        color: white;
-        justify-content: center;
-        width: 100%;
-        &:hover {
-            color: white;
-        }
-    }
+  }
 }
 
 .services {
-    &__list {
-        background-color: #f8f9fb;
+  &__list {
+    background-color: #f8f9fb;
+  }
+
+  &__item {
+    border-bottom: 1px lightgrey solid;
+
+    &--isLast {
+      border-bottom: none;
+      margin-bottom: 0;
     }
-    &__item {
-        border-bottom: 1px lightgrey solid;
-        &--isLast {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-    }
+  }
 }
 
 .add-stage-button {
-    display: inline-block;
-    font-size: 14px;
-    margin-bottom: 8px;
+  display: inline-block;
+  font-size: 14px;
+  margin-bottom: 8px;
 }
 
 .error {
-    font-size: 12px;
-    color: $error-text-color;
-    position: relative;
-    min-width: 120px;
+  font-size: 12px;
+  color: $error-text-color;
+  position: relative;
+  min-width: 120px;
 }
-

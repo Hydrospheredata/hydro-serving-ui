@@ -1,6 +1,5 @@
-<div class='dform'>
-
-  <form [formGroup]="form"class='form'>
+<div class="dform">
+  <form [formGroup]="form" class="form">
     <hydro-input-text
       name="metricName"
       label="Metric Name"
@@ -25,7 +24,7 @@
     </div>
     <div>
       <hs-metric-spec-config
-        class='config'
+        class="config"
         [parent]="form"
         [applications]="applications$ | async"
         [sources]="sources$ | async"
@@ -33,11 +32,13 @@
       </hs-metric-spec-config>
     </div>
     <div class="buttons">
-      <button class="button button--flat buttons__button" (click)="onClose()">
-        CANCEL
+      <button hs-button (click)="onClose()">
+        cancel
       </button>
       <button
-        class="button button--primary buttons__button"
+        hs-button
+        kind="flat"
+        color="accent"
         [disabled]="!form.valid"
         (click)="onSubmit()"
       >

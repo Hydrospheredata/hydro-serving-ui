@@ -56,12 +56,12 @@
   }
 
   &--assembling {
-    background: #B3ECFF;
-    color: #2BB0ED;
+    background: $neutral-color-100;
+    color: $neutral-color-700;
   }
 
   &--failed {
-    background: #FFBDBD;
-    color: #E12D39;
+    background: $supportive-color-red-100;
+    color: $supportive-color-red-700;
   }
 }

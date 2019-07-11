@@ -1,16 +1,21 @@
 @import "variables.scss";
 
 .notify {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    &__text {
-        font-size: 2rem;
-        line-height: 2.5rem;
-        margin-bottom: 2.7rem;
-    }
-    &__link {
-        color: $color--blue;
-        text-decoration: none;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__text {
+    letter-spacing: 1px;
+    margin-bottom: 32px;
+  }
+
+  &__link {
+    color: $primary-color-600;
+    text-decoration: none;
+  }
+
+  &__button {
+    width: 100%;
+  }
 }

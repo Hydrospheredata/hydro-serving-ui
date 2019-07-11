@@ -18,10 +18,14 @@ $secondary-color: #e6e9ed;
 
 // FONT
 // Font family
-$font-family-light: 'Museo Sans Light',  sans-serif;
-$font-family-regular: 'Museo Sans Regular',  sans-serif;
-$font-family-bold: 'Museo Sans Bold',  sans-serif;
-$font-family-ultrabold: 'Museo Sans UltraBold',  sans-serif;
+$font-family-light: 'Museo Sans Light',
+sans-serif;
+$font-family-regular: 'Museo Sans Regular',
+sans-serif;
+$font-family-bold: 'Museo Sans Bold',
+sans-serif;
+$font-family-ultrabold: 'Museo Sans UltraBold',
+sans-serif;
 
 // Font size
 $base-font-size: $base-size * 2;
@@ -37,28 +41,30 @@ $label-font-size: 1.125rem;
 $input-font-size: 1.125rem;
 
 // COLORS
-//accent color pallete
-$accent-color-blue-100: #DCEEFB;
-$accent-color-blue-200: #B6E0FE;
-$accent-color-blue-300: #84C5F4;
-$accent-color-blue-400: #62B0E8;
-$accent-color-blue-500: #4098D7;
-$accent-color-blue-600: #2680C2;
-$accent-color-blue-700: #186FAF;
-$accent-color-blue-800: #0F609B;
-$accent-color-blue-900: #0A558C;
-$accent-color-blue-1000: #003E6B;
+// primary color palette
+$primary-color-100: #DCEEFB;
+$primary-color-200: #B6E0FE;
+$primary-color-300: #84C5F4;
+$primary-color-400: #62B0E8;
+$primary-color-500: #4098D7;
+$primary-color-600: #2680C2;
+$primary-color-700: #186FAF;
+$primary-color-800: #0F609B;
+$primary-color-900: #0A558C;
+$primary-color-1000: #003E6B;
 
-$accent-color-orange-100: #FFFBEA;
-$accent-color-orange-200: #FFF3C4 ;
-$accent-color-orange-300: #FCE588;
-$accent-color-orange-400: #FADB5F;
-$accent-color-orange-500: #F7C948;
-$accent-color-orange-600: #F0B429;
-$accent-color-orange-700: #DE911D;
-$accent-color-orange-800: #CB6E17;
-$accent-color-orange-900: #B44D12;
-$accent-color-orange-1000: #8D2B0B;
+//accent color pallete
+
+$accent-color-100: #FFFBEA;
+$accent-color-200: #FFF3C4;
+$accent-color-300: #FCE588;
+$accent-color-400: #FADB5F;
+$accent-color-500: #F7C948;
+$accent-color-600: #F0B429;
+$accent-color-700: #DE911D;
+$accent-color-800: #CB6E17;
+$accent-color-900: #B44D12;
+$accent-color-1000: #8D2B0B;
 
 // neutrals color palette 
 $neutral-color-100: #F0F4F8;

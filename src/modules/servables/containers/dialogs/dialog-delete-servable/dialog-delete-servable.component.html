@@ -1,22 +1,13 @@
-<div class="wrapper">
-  <div class="wrapper__text">
-    <span>Remove servable?</span>
-    <div class="wrapper__servable-name">
-      {{ servableName }}
-    </div>
+<div class="dialog__content">
+  <span class="dialog__content--question">Remove servable?</span>
+  <div class="dialog__text">
+    {{ servableName }}
   </div>
-  <div class="wrapper__buttons">
-    <button
-      class="button button--flat wrapper__button"
-      (click)="onClose()"
-      type="button"
-    >
+  <div class="dialog__buttons dialog__buttons--column">
+    <button hs-button (click)="onClose()">
       cancel
     </button>
-    <button
-      class="button button--primary button--primary-remove wrapper__button"
-      (click)="onDelete()"
-    >
+    <button hs-button kind="flat" color="warning" (click)="onDelete()">
       Remove
     </button>
   </div>

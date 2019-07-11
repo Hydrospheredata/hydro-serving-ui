@@ -7,8 +7,9 @@
       class="action-buttons application__header-buttons application__header-buttons--right"
     >
       <button
-        class="button button--white button--test action-button"
-        [ngClass]="{ 'button--disabled': !isReady(application.status) }"
+        hs-button
+        kind="stroked"
+        color="primary"
         [disabled]="!isReady(application.status)"
         (click)="testApplication()"
       >
@@ -16,14 +17,14 @@
         Test
       </button>
       <button
-        class="button button--white action-button"
+        hs-button
         (click)="editApplication()"
       >
         <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
         Edit
       </button>
       <button
-        class="button button--white button--secondary-remove action-button"
+        hs-button
         (click)="removeApplication()"
       >
         <hydro-icon class="button__icon" type="icon-remove"></hydro-icon>

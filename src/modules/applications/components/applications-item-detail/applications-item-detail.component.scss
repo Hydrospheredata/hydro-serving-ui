@@ -15,7 +15,9 @@
 
     &-buttons {
       position: absolute;
-
+      button + button {
+        margin-left: 8px;
+      }
       &--right {
         right: 24px;
       }
