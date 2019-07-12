@@ -6,7 +6,7 @@ import { of } from 'rxjs';
 import { ServableLogsComponent } from './servable-logs.component';
 
 const servableService = {
-  getLogs() { return of([]); },
+  getLog() { return of([]); },
 };
 
 describe('ServableLogsComponent', () => {
