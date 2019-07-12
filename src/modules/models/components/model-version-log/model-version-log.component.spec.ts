@@ -28,7 +28,7 @@ describe('ModelVersionLogComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ModelVersionLogComponent);
     component = fixture.componentInstance;
-    component.modelVersion = MockModelVersion1Model1;
+    component.modelVersion = MockModelVersion1Model1.id;
     fixture.detectChanges();
   });
 

@@ -1,60 +1,67 @@
 .status {
-    position: relative;
-    &-label {
-        margin-left: 10px;
-        background-color: #f28a03;
-        border-radius: 2px;
-        color: #fff;
-        font-size: 12px;
-        padding: 0 7px;
-    }
-    &.__new-version {
-      color: #f28a03;
-      &::after {
-        content: '˚';
-        position: absolute;
-        top: 0;
-        right: -5px;
-      }
-    }
-    &.__unbuilded {
-        color: #e1e4eb;
-        > svg {
-            fill: #e1e4eb;
-        }
-    }
-    &.__successed {
-        color: $color--success;
-        .icon {
-            fill: $color--success;
-        }
-    }
+  position: relative;
 
-    &.__failed {
-        color: #818994;
-        .icon {
-            fill: #e1e4eb;
-        }
-    }
-}
+  &-label {
+    margin-left: 10px;
+    background-color: #f28a03;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 12px;
+    padding: 0 7px;
+  }
 
-.application-status {
-    
+  &.__new-version {
+    color: #f28a03;
+
+    &::after {
+      content: '˚';
+      position: absolute;
+      top: 0;
+      right: -5px;
+    }
+  }
+
+  &.__unbuilded {
+    color: #e1e4eb;
+
+    >svg {
+      fill: #e1e4eb;
+    }
+  }
+
+  &.__successed {
+    color: $color--success;
+
+    .icon {
+      fill: $color--success;
+    }
+  }
+
+  &.__failed {
+    color: #818994;
+
+    .icon {
+      fill: #e1e4eb;
+    }
+  }
 }
 
 .model-version-status {
-    padding: 2px 8px;
-    border-radius: 12px;
-    &--released {
-        background: #C6F7E2;
-        color: #27AB83;
-    }
-    &--assembling {
-        background: #B3ECFF;
-        color: #2BB0ED; 
-    }
-    &--failed {
-        background: #FFBDBD;
-        color: #E12D39;
-    }
+  padding: 2px 8px;
+  border-radius: 2px;
+
+  &--released {
+    background: $status-success-background-color;
+    color: $status-success-text-color;
+  }
+
+  &--assembling {
+    background: $neutral-color-100;
+    color: $neutral-color-700;
+  }
+
+  &--failed {
+    background: $supportive-color-red-100;
+    color: $supportive-color-red-700;
+  }
 }

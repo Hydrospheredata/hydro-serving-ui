@@ -1,94 +1,111 @@
 .content {
-    position: relative;
-    height: 100%;
-    &-wrapper {
+  position: relative;
+  height: 100%;
+
+  &-wrapper {
+    display: flex;
+    flex-direction: row;
+    min-height: 100%;
+    width: 100%;
+
+    >hydro-sidebar {
+    }
+
+    >hs-applications-item-detail,
+    hs-model-details,
+    hydro-model-version-details,
+    hydro-sources-item-detail,
+    hydro-applications-stage-detail {
+      height: 100%;
+      flex: 1 1 75%;
+      overflow-y: scroll;
+    }
+  }
+
+  &__header {
+    background: white;
+    box-shadow: 0 1px 6px -6px black;
+    line-height: 54px;
+    padding: 0 24px;
+    position: fixed;
+    left: 250px;
+    right: 0;
+    z-index: 2;
+  }
+
+  &__body {
+    padding: 80px 24px 24px;
+    max-width: 1200px;
+    background: #f9f9f9;
+    min-height: 100%;
+  }
+
+  &-info {
+    margin-bottom: $base-size * 3;
+
+    &__list,
+    &__sublist {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    &__list {
+      &-item {
+        margin-bottom: $base-size * 2;
+      }
+    }
+
+    &__sublist {
+      &-item {
         display: flex;
-        flex-direction: row;
-        min-height: 100%;
-        width: 100%;
-        > hydro-sidebar {
-            flex-basis: 25%;
+        align-items: center;
+        font-size: 16px;
+
+        &:not(:last-child) {
+          margin-bottom: 6px;
         }
-        > hs-applications-item-detail,
-          hs-model-details,
-          hydro-model-version-details,
-          hydro-sources-item-detail,
-          hydro-applications-stage-detail  {
-            height: 100%;
-            flex: 1 1 75%;
-            overflow-y: scroll;
-        }
-    }
-    &__header {
-        background: white;
-        box-shadow: 0 1px 6px -6px black;
-        line-height: 54px;
-        padding: 0 24px;
-        position: fixed;
-        left: calc(20%);
-        right: 0;
-        z-index: 2;
-    }
-    &__body {
-        padding: 80px 24px 24px;
-        max-width: 1200px;
-        background: #f9f9f9;
-        min-height: 100%;
-    }
-    &-info {
-        margin-bottom: $base-size * 3;
-        &__list,
-        &__sublist {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        &__list {
-            &-item {
-                margin-bottom: $base-size * 2;
-            }
-        }
-        &__sublist {
-            &-item {
-                display: flex;
-                align-items: center;
-                font-size: 16px;
-                &:not(:last-child) {
-                    margin-bottom: 6px;
-                }
-                &-title {
-                    max-width: 250px;
-                    width: 250px;
-                    overflow-x: hidden;
-                    color: #808080;
-                    font-size: 16px;
-                    font-family: "Museo Sans Light";
-                    text-transform: capitalize;
-                    &:after {
-                        content: '.........................................................................................................';
-                        margin-left: 6px;
-                    }
-                }
-                &-value {
-                    margin-left: 6px;
-                    display: flex;
-                }
-            }
-        }
-    }
-    // new 
-    &__cell {
-        background: white;
-        box-shadow: 0 0 4px -2px hsla(200,50,20, .5);
-        border-radius: 2px;
+
         &-title {
-            padding: 8px 16px;
-            background: #dbe2e8;
-            color: #647e94;
-            text-transform: uppercase;
+          max-width: 250px;
+          width: 250px;
+          overflow-x: hidden;
+          color: #808080;
+          font-size: 16px;
+          font-family: "Museo Sans Light";
+          text-transform: capitalize;
+
+          &:after {
+            content: '.........................................................................................................';
+            margin-left: 6px;
+          }
         }
-        &-body {
-            padding: 8px 16px;
+
+        &-value {
+          margin-left: 6px;
+          display: flex;
         }
+      }
     }
+  }
+
+  // new 
+  &__cell {
+    background: white;
+    box-shadow: 0 0 4px -2px hsla(200, 50, 20, .5);
+    border-radius: 2px;
+
+    &-title {
+      padding: 8px 16px;
+      background: $neutral-color-100;
+      color: $neutral-color-500;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    &-body {
+      padding: 8px 16px;
+    }
+  }
 }

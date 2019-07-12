@@ -1,13 +1,14 @@
 .app {
-    &-container {
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        height: 100%;
-    }
-    &-body {
-        display: flex;
-        height: 100%;
-        overflow: scroll;
-    }
+  &-container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  &-body {
+    display: flex;
+    height: 100%;
+    overflow: scroll;
+  }
 }

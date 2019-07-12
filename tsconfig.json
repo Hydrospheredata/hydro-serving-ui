@@ -10,57 +10,24 @@
     "experimentalDecorators": true,
     "target": "es5",
     "downlevelIteration": true,
-    "plugins": [
-      {"name": "@angular/language-service"}
-    ],
+    "plugins": [{ "name": "@angular/language-service" }],
     "paths": {
-      "@environments/*": [
-        "environments/*"
-      ],
-      "@app/*": [
-        "app/*"
-      ],
-      "@components/*": [
-        "app/components/*"
-      ],
-      "@node_modules/*": [
-        "../node_modules/*"
-      ],
-      "@applications/*": [
-        "modules/applications/*"
-      ],
-      "@models/*": [
-        "modules/models/*"
-      ],
-      "@core/*": [
-        "modules/core/*"
-      ],
-      "@shared/*": [
-        "modules/shared/*"
-      ],
-      "@monitoring/*": [
-        "modules/monitoring/*"
-      ],
-      "@profiler/*": [
-        "modules/profiler/*"
-      ],
-      "@timemachine/*": [
-        "modules/timemachine/*"
-      ],
-      "@dialog/*": [
-        "modules/dialog/*"
-      ],
-      "@testing/*": [
-        "testing/*"
-      ]
+      "@environments/*": ["environments/*"],
+      "@app/*": ["app/*"],
+      "@components/*": ["app/components/*"],
+      "@node_modules/*": ["../node_modules/*"],
+      "@applications/*": ["modules/applications/*"],
+      "@models/*": ["modules/models/*"],
+      "@core/*": ["modules/core/*"],
+      "@shared/*": ["modules/shared/*"],
+      "@monitoring/*": ["modules/monitoring/*"],
+      "@profiler/*": ["modules/profiler/*"],
+      "@timemachine/*": ["modules/timemachine/*"],
+      "@dialog/*": ["modules/dialog/*"],
+      "@servables/*": ["modules/servables/*"],
+      "@testing/*": ["testing/*"]
     },
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2015",
-      "es2017",
-      "dom"
-    ]
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2015", "es2017", "dom"]
   }
 }

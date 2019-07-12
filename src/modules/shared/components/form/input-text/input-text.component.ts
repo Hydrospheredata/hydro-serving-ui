@@ -1,33 +1,42 @@
 // tslint:disable:variable-name
-import { Component, Input, forwardRef, Output, EventEmitter } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
+import {
+  Component,
+  Input,
+  forwardRef,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NgModel,
+} from '@angular/forms';
 
 const noop = (_?: any) => {};
 
 @Component({
-    selector: 'hydro-input-text',
-    templateUrl: './input-text.component.html',
-    styleUrls: ['./input-text.component.scss'],
-    providers: [
-        {
-            provide: NG_VALUE_ACCESSOR,
-            // tslint:disable-next-line:no-forward-ref
-            useExisting: forwardRef(() => InputTextComponent),
-            multi: true,
-        },
-    ],
+  selector: 'hydro-input-text',
+  templateUrl: './input-text.component.html',
+  styleUrls: ['./input-text.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      // tslint:disable-next-line:no-forward-ref
+      useExisting: forwardRef(() => InputTextComponent),
+      multi: true,
+    },
+  ],
 })
 export class InputTextComponent implements ControlValueAccessor {
-
   get value(): any {
-      return this._value;
+    return this._value;
   }
 
   set value(value: any) {
-      if (value !== this._value) {
-          this._value = value;
-          this.onChange(value);
-      }
+    if (value !== this._value) {
+      this._value = value;
+      this.onChange(value);
+    }
   }
 
   @Input() public inputClass: string = '';
@@ -42,7 +51,7 @@ export class InputTextComponent implements ControlValueAccessor {
   /**
    * true show icon next to input
    * false show icon over on input
-  **/
+   **/
   @Input() public iconAsSibling: boolean;
   @Input() public placeholder: string;
   @Input() public errors: any;
@@ -54,25 +63,24 @@ export class InputTextComponent implements ControlValueAccessor {
   protected onTouched: () => void = noop;
 
   public iconClickHandle(model: NgModel) {
-      this.iconClick.emit(model);
+    this.iconClick.emit(model);
   }
 
   public writeValue(value: any) {
-      if (value !== this._value) {
-          this._value = value;
-      }
+    if (value !== this._value) {
+      this._value = value;
+    }
   }
 
   public registerOnChange(fn: (_: any) => void) {
-      this.onChange = fn;
+    this.onChange = fn;
   }
 
   public registerOnTouched(fn: () => void) {
-      this.onTouched = fn;
+    this.onTouched = fn;
   }
 
   public hasErrors(input: NgModel): boolean {
-      return input.touched && this.errors != null;
+    return input.touched && this.errors != null;
   }
-
 }

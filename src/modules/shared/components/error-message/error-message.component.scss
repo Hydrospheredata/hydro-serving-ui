@@ -1,8 +1,10 @@
+@import "variables";
+
 .error {
     padding: 8px 14px;
     text-align: center;
-    background: #FF9B9B;
-    color: #8A041A;
+    background: $error-container-background-color;
+    color: $error-text-color;
     & a {
         color: #3a3a79 !important; 
     }

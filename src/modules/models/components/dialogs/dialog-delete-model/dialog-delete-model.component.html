@@ -1,8 +1,20 @@
 <div class="dialog__content">
-    <span class="dialog__content--question">Remove model?</span>
-    <p class="dialog__text dialog__text--is-alert">{{ name }}</p>
-    <div class="dialog__buttons">
-        <button class="button button--flat button--large dialog__button" (click)="onClose()" type="button">cancel</button>
-        <button class="button button--primary button--primary-remove button--large dialog__button" (click)="onDelete()">Remove</button>
-    </div>
+  <span class="dialog__content--question">Remove model?</span>
+  <p class="dialog__text dialog__text--is-alert">{{ name }}</p>
+  <div class="dialog__buttons dialog__buttons--column">
+    <button
+      hs-button
+      (click)="onClose()"
+    >
+      cancel
+    </button>
+    <button
+      hs-button
+      kind="flat"
+      color="warning"
+      (click)="onDelete()"
+    >
+      Remove
+    </button>
+  </div>
 </div>

@@ -7,108 +7,154 @@ $remove: #ff7a7a;
 $remove-hover: #ff7a7a;
 
 .button {
-    border: none;
-    border-radius: 2px;
-    background-color: transparent;
-    cursor: pointer;
-    display: inline-flex;
-    padding: 8px 12px;
-    text-transform: uppercase;
-    font-size: 12px;
-    line-height: 12px;
-    &--primary {
-        padding: 12px;
-        background-color: #4d9bf1;
-        color: white;
-        &:not([disabled]):hover {
-            background-color: #468dda;
-        }
-        &[disabled] {
-            background-color: #d6d8da;
-            color: #a29e9e;
-            cursor: auto;
-        }
-    }
-    &--secondary {
-        color: #4d9bf1;
-        border: 1px solid grey;
-        &:not([disabled]):hover {
-            background-color: #4d9bf1;
-            border-color: #4d9bf1;
-            color: white;
-        }
-        &[disabled]{
-            border-color: #d6d8da;
-            color: #a29e9e;
-            cursor: auto;
-        }
-    }
-    &--flat {
-        padding: 9px;
-        color: #4d9bf1;
-        &:not([disabled]):hover {
-            color: #3280d6;
-        }
-        &[disabled] {
-            color: #a29e9e;
-        cursor: auto;
-        }
-    }
+  display: inline-flex;
+  padding: 8px 12px;
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 12px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  transition: $transition-type;
 
-    &--large {
-        font-size: 16px;
-        line-height: 18px;
-    }
+  &--primary {
+    background-color: $primary-color-700;
+    color: $neutral-color-100;
 
-    &--primary-remove {
-        background-color: $remove;
-        &:not([disabled]):hover {
-            background-color: $remove-hover;
-            color: white;
-        }
-    }
-
-    &--secondary-remove {
-        color: $remove;
-        &:not([disabled]):hover {
-            background-color: $remove;
-            border-color: $remove;
-            color: white;
-        }
-    }
-
-    &--test {
-        background-color: #63bf8c;
-        &:not([disabled]):hover {
-            background-color: #85dcac;
-            color: #f7fffa;
-        }
-    }
-
-    &__icon {
-        width: 12px;
-        height: 12px;
-        line-height: 10px;
-        margin-right: 4px;
-    }
     &[disabled] {
-        background: #a29e9e;
-        color: black;
-        background: #dcdcdc;
-        color: #bbbbbb;
-        cursor: not-allowed;
+      background-color: #d6d8da;
+      color: #a29e9e;
+      cursor: auto;
+    }
+  }
+
+  &--secondary {
+    color: #4d9bf1;
+    border: 1px solid grey;
+
+    &:not([disabled]):hover {
+      background-color: #4d9bf1;
+      border-color: #4d9bf1;
+      color: white;
     }
 
-    &--white {
-        background: white;
-        color: rgba(41, 41, 104, 0.651);
-        border-radius: 4px;
-        box-shadow: 0px 0px 4px -2px rgb(60, 59, 110);
+    &[disabled] {
+      border-color: #d6d8da;
+      color: #a29e9e;
+      cursor: auto;
     }
+  }
+
+  &--flat {
+    padding: 9px;
+    color: #4d9bf1;
+
+    &:not([disabled]):hover {
+      color: #3280d6;
+    }
+
+    &[disabled] {
+      color: #a29e9e;
+      cursor: auto;
+    }
+  }
+
+  &--large {
+    font-size: 16px;
+    line-height: 18px;
+  }
+
+  &--primary-remove {
+    background-color: $remove;
+
+    &:not([disabled]):hover {
+      background-color: $remove-hover;
+      color: white;
+    }
+  }
+
+  &--secondary-remove {
+    color: $remove;
+
+    &:not([disabled]):hover {
+      background-color: $remove;
+      border-color: $remove;
+      color: white;
+    }
+  }
+
+  &--test {
+    background-color: #63bf8c;
+
+    &:not([disabled]):hover {
+      background-color: #85dcac;
+      color: #f7fffa;
+    }
+  }
+
+  &__icon {
+    width: 12px;
+    height: 12px;
+    line-height: 10px;
+    margin-right: 4px;
+  }
+
+  &[disabled] {
+    background: #a29e9e;
+    color: black;
+    background: #dcdcdc;
+    color: #bbbbbb;
+    cursor: not-allowed;
+  }
+
+  &--white {
+    background: white;
+    color: rgba(41, 41, 104, 0.651);
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px -2px rgb(60, 59, 110);
+  }
 }
 
 .buttons-group {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
-      
+
+// new structure
+// <button class="button"></button>
+// <button class="button button--primary button--accent"></button>
+// <button class="button button--flat button--warning"></button>
+// <button class="button button--seco button--accent"></button>
+// <button class="button button--primary button--accent"></button>
+
+// .button {
+//   display: inline-flex;
+//   padding: 8px 12px;
+//   text-transform: uppercase;
+//   font-size: 12px;
+//   line-height: 12px;
+//   cursor: pointer;
+//   background: transparent;
+//   border: none;
+//   border-radius: 4px;
+//   transition: $transition-type;
+
+//   &--primary {
+//     .button--accent {}
+
+//     .button--warning {}
+//   }
+
+//   &--stroked {
+//     .button--accent {}
+
+//     .button--warning {}
+//   }
+
+//   &--flat {
+//     .button--accent {}
+
+//     .button--warning {}
+//   }
+// }

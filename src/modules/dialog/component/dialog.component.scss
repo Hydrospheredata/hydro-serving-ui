@@ -1,3 +1,5 @@
+@import "variables";
+
 .dialog {
   &__layout {
     will-change: transform;
@@ -36,32 +38,38 @@
   &__content {
     &--question {
       display: inline-block;
-      font-size: 24px;
-      line-height: 32px;
+      line-height: 18px;
       max-width: 300px;
+      min-width: 240px;
       text-align: center;
-      margin-bottom: 4px;
     }
   }
 
   &__text {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    color: $neutral-color-400;
     &--is-alert {
-      font-weight: 900;
-      font-size: 20px;
-      color: #f3755e;
-      text-transform: uppercase;
-      text-align: center;
+      color: $supportive-color-red-700;
     }
   }
 
   &__footer {
     border-top: 1px grey solid;
-    padding-top: 8px;
   }
 
   &__buttons {
     margin-top: 12px;
     display: flex;
     justify-content: space-between;
+    &--column {
+      width: 100%;
+      flex-direction: column;
+      button + button {
+        margin-top: 8px;
+      }
+    }
   }
 }

@@ -1,12 +1,20 @@
-<hs-application-form (submitHandle)="onSubmit($event)" #form></hs-application-form>
+<hs-application-form
+  (submitHandle)="onSubmit($event)"
+  #form
+></hs-application-form>
 <div class="dialog__footer">
-    <div class="buttons-group">
-        <div class="button button--flat button--large" (click)="onClose()">cancel</div>
-        <button 
-            class="button button--primary button--large" 
-            [disabled]="!form.applicationForm.valid"
-            (click)="form.submit()">
-            add application
-        </button>
-    </div>
+  <div class="dialog__buttons">
+    <button hs-button (click)="onClose()">
+      cancel
+    </button>
+    <button
+      hs-button
+      kind="flat"
+      color="primary"
+      [disabled]="!form.applicationForm.valid"
+      (click)="form.submit()"
+    >
+      add application
+    </button>
+  </div>
 </div>

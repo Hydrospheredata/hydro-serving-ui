@@ -10,8 +10,4 @@ import { ModelVersion, ModelVersionStatus } from '@shared/_index';
 export class ModelVersionsTableRowComponent {
      @Input()
      modelVersion: ModelVersion;
-
-     isRealsed(): boolean {
-        return this.modelVersion.status === ModelVersionStatus.Released;
-     }
 }

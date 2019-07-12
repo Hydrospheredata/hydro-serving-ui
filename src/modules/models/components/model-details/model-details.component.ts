@@ -8,35 +8,40 @@ import * as fromModels from '@models/reducers';
 import { Observable } from 'rxjs';
 
 import { DialogService } from '@dialog/dialog.service';
-import { DialogDeleteModelComponent, SELECTED_MODEL$ } from '@models/components/dialogs';
+import {
+  DialogDeleteModelComponent,
+  SELECTED_MODEL$,
+} from '@models/components/dialogs';
 import { switchMap, filter } from 'rxjs/operators';
 @Component({
-    selector: 'hs-model-details',
-    templateUrl: './model-details.component.html',
-    styleUrls: ['./model-details.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'hs-model-details',
+  templateUrl: './model-details.component.html',
+  styleUrls: ['./model-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModelDetailsComponent {
-    public model$: Observable<IModel>;
-    public modelVersions$: Observable<ModelVersion[]>;
+  public model$: Observable<IModel>;
+  public modelVersions$: Observable<ModelVersion[]>;
 
-    constructor(
-        private store: Store<HydroServingState>,
-        private dialog: DialogService
-    ) {
-        this.model$ = this.store.select(fromModels.getSelectedModel).pipe(
-            filter(model => !!model)
-        );
+  constructor(
+    private store: Store<HydroServingState>,
+    private dialog: DialogService
+  ) {
+    this.model$ = this.store
+      .select(fromModels.getSelectedModel)
+      .pipe(filter(model => !!model));
 
-        this.modelVersions$ = this.model$.pipe(
-            switchMap(({id}) => this.store.select(fromModels.getModelVersionsByModelId(id)))
-        );
-    }
+    this.modelVersions$ = this.model$.pipe(
+      switchMap(({ id }) =>
+        this.store.select(fromModels.getModelVersionsByModelId(id))
+      )
+    );
+  }
 
-    public removeModel() {
-        this.dialog.createDialog({
-            component: DialogDeleteModelComponent,
-            providers: [{ provide: SELECTED_MODEL$, useValue: this.model$} ],
-        });
-    }
+  public removeModel() {
+    this.dialog.createDialog({
+      component: DialogDeleteModelComponent,
+      providers: [{ provide: SELECTED_MODEL$, useValue: this.model$ }],
+    });
+  }
 }

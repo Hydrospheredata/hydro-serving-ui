@@ -1,8 +1,6 @@
-<ul class="metadata">
-    <li *ngFor="let item of metadata | keyvalue"
-        class="metadata__item"
-    >
-    <span class="metadata__key">{{ item.key }} : </span>
-    <span class="metadata__value">{{ item.value }}</span>
-    </li>
-</ul>
+<table class="metadata">
+  <tr class="metadata__item" *ngFor="let item of metadata | keyvalue">
+    <td class="metadata__key">{{ item.key }} : </td>
+    <td class="metadata__value">{{ item.value }}</td>
+  </tr>
+</table>

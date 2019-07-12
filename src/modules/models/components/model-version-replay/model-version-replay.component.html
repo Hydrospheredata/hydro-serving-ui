@@ -4,7 +4,7 @@
       <mdl-select [(ngModel)]="replayableModelVersion" label="replay from">
         <mdl-option
           *ngFor="let modelVersion of siblingsModelVersions$ | async"
-          [value]="modelVersion.id"
+          [value]="modelVersion.modelVersion"
         >
           {{ modelVersion.modelVersion }}
         </mdl-option>
@@ -12,7 +12,9 @@
     </div>
     <footer>
       <button
-        class="button button--primary"
+        hs-button
+        kind="stroked"
+        class="replay__form-button"
         [disabled]="!replayableModelVersion"
         #replyButton
       >

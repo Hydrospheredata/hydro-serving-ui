@@ -1,11 +1,101 @@
+@import 'variables.scss';
+
 .mv-details {
 
   &__metadata,
-  &__signatures {
+  &__signatures,
+  &__servables {
     margin-top: 24px;
   }
 }
 
 .application {
   cursor: pointer;
+}
+
+.information {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    align-items: center;
+
+    &-title {
+      display: inline-block;
+      font-family: $font-family-light;
+      color: $neutral-text-color;
+      display: flex;
+      width: 250px;
+      align-items: baseline;
+
+      &:after {
+        content: "";
+        display: block;
+        width: 100%;
+        border-bottom: 1px dotted $secondary-text-color;
+        margin: 0 4px;
+      }
+    }
+
+    &-value {
+      color: $neutral-text-color;
+    }
+  }
+}
+
+.log {
+  top: 122px;
+  left: 250px;
+  position: fixed;
+  right: 0;
+  height: 100%;
+  right: 0;
+  visibility: hidden;
+
+  &__layout {
+    background: #000000b5;
+    top: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    right: 0;
+    opacity: 0;
+    transition: .4s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+  }
+
+  &__content {
+    display: flex;
+    opacity: 0;
+    background: #e2e4ea;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    width: 60%;
+    right: 0;
+    padding: 24px 38px 24px;
+    transform: translateX(360px);
+    transition: .4s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+  }
+
+  &--is-visible {
+    visibility: visible;
+
+    .log__content {
+      opacity: 1;
+      transform: translateX(0);
+      transition: .6s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+
+    }
+
+    .log__layout {
+      opacity: 1;
+      transition: .6s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+    }
+  }
+}
+.show-log-button {
+  margin-left: 8px;
 }

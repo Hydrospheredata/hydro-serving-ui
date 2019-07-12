@@ -1,3 +1,4 @@
+@import 'variables';
 $default-color: #475f9e;
 $active-color: white;
 
@@ -60,6 +61,7 @@ $active-color: white;
   &__support-info {
     position: absolute;
     right: 24px;
+    font-family: $font-family-light;
   }
   &__documentation, &__build-info {
     cursor: pointer;

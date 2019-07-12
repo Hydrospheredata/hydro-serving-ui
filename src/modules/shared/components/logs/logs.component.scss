@@ -1,0 +1,86 @@
+@import "variables";
+
+:host {
+  width: 100%;
+}
+
+.log {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  &__header {
+    font-family: $font-family-light;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    color: $neutral-color-800;
+    font-size: 14px;
+    position: relative;
+  }
+
+  &__body {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    background: $neutral-color-1000;
+    min-height: 60px;
+    overflow: scroll;
+    height: calc(100% - 152px);
+    width: 100%;
+  }
+
+  &__item {
+    white-space: pre-wrap;
+
+    &-index {
+      color: $neutral-color-400;
+      padding-right: 8px;
+    }
+
+    &-text {
+      color: $neutral-color-100;
+    }
+  }
+
+  &__scroller {
+    position: relative;
+    top: -32px;
+    padding: 4px;
+    background: #94afc13b;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.466);
+    cursor: pointer;
+
+    &-icon {
+      height: 24px;
+      width: 24px;
+    }
+
+    &:hover {
+      color: $neutral-color-100
+    }
+  }
+
+  &--is-empty {
+    text-align: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: $neutral-color-500;
+    font-family: $font-family-light;
+    font-style: italic;
+  }
+
+  &__close-icon {
+    position: absolute;
+    top: calc(50% - 58px);
+    left: -28px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    color: $neutral-color-600;
+    transition: .3s ease all;
+    &:hover {
+      color: $neutral-color-1000;
+    }
+  }
+}

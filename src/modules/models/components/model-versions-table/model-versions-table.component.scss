@@ -1,17 +1,8 @@
 .model-versions {
-    &__header {
-        background: #e6e9ed;
-        padding: 2px 16px;
-        border-top-left-radius:2px; 
-        border-top-right-radius:2px;
-        text-align: center;
-    }
-}
-
-.application {
-    cursor: pointer;
-}
-
-.applications-is--empty {
-    color: #e6e9ed;
+  &__header {
+    padding: 2px 16px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    text-align: center;
+  }
 }

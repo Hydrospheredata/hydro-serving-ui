@@ -8,9 +8,10 @@ import { ApplicationBuilder } from '@core/builders/application.builder';
 import { HydroServingState } from '@core/reducers';
 import * as fromModels from '@models/actions';
 import { Store } from '@ngrx/store';
+import * as fromServables from '@servables/actions';
+import { Servable } from '@servables/models';
 import { Application, ModelVersion } from '@shared/_index';
 import { environment } from 'environments/environment';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -19,7 +20,12 @@ export class SseService {
     ['ModelRemove', modelVersionId => this.deleteModelVerions(modelVersionId)],
     ['ModelUpdate', modelVersion => this.updateModelVersion(modelVersion)],
     ['ApplicationUpdate', application => this.updateApplication(application)],
-    ['ApplicationRemove', applicationName => this.deleteApplication(applicationName)],
+    [
+      'ApplicationRemove',
+      applicationName => this.deleteApplication(applicationName),
+    ],
+    ['ServableUpdate', servable => this.updateServable(servable)],
+    ['ServableRemove', servableName => this.deleteServable(servableName)],
   ]);
   private eventSource: EventSource;
   constructor(
@@ -33,9 +39,12 @@ export class SseService {
     const { protocol, port, hostname } = window.location;
 
     if (production) {
-      this.eventSource = new EventSource(`${protocol}//${hostname}:${port}${apiUrl}/events`, {
-        withCredentials: true,
-      });
+      this.eventSource = new EventSource(
+        `${protocol}//${hostname}:${port}${apiUrl}/events`,
+        {
+          withCredentials: true,
+        }
+      );
     } else {
       this.eventSource = new EventSource(`${host}${apiUrl}/events`, {
         withCredentials: true,
@@ -58,11 +67,19 @@ export class SseService {
 
   private updateModelVersion(data: ModelVersion) {
     const modelVersion = this.modelVersionBuilder.build(data);
-    return new fromModels.AddModelVersionSuccessAction({modelVersion});
+    return new fromModels.AddModelVersionSuccessAction({ modelVersion });
   }
 
   private deleteModelVerions(modelVersionId: number) {
     return new fromModels.DeleteModelAction(modelVersionId);
+  }
+
+  private updateServable(servable: Servable) {
+    return fromServables.updateServable({ servable });
+  }
+
+  private deleteServable(name: string) {
+    return fromServables.deleteServableSuccess({name});
   }
 
   private addEventHandler(item: [string, any]) {

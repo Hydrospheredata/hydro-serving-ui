@@ -9,16 +9,18 @@ $table-padding: 14px;
   border-collapse: collapse;
   width: 100%;
   &-head {
+    color: $secondary-text-color;
+    font-size: 10px;
+    font-family: $font-family-light;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     &__cell {
       @extend .cell;
-      font-size: 10px;
-      color: #abafb2;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       text-align: left;
     }
   }
   &-body {
+    color: $neutral-text-color;
     &__row {
       outline: none;
       [class$="services"] & {

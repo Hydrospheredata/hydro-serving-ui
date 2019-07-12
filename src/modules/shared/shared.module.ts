@@ -44,7 +44,9 @@ import {
     PredictRequestComponent,
     PredictResponseComponent,
     TensorImageListComponent,
-    AlertMessageComponent
+    AlertMessageComponent,
+    LogsComponent,
+    ButtonComponent
 } from './components/_index';
 
 // Directives
@@ -96,6 +98,8 @@ const COMPONENTS = [
     TensorImageListComponent,
     AlertMessageComponent,
     ErrorMessageComponent,
+    LogsComponent,
+    ButtonComponent,
 ];
 
 const DIRECTIVES = [

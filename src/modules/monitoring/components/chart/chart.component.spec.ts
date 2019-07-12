@@ -24,6 +24,7 @@ xdescribe('ChartComponent', () => {
   let fixture: ComponentFixture<ChartComponent>;
   let store: MockStore<fromModels.State>;
   let modelVers: MemoizedSelector<fromModels.State, ModelVersion[]>;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ChartComponent],

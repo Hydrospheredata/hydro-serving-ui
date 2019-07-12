@@ -1,11 +1,6 @@
-<section class="content__cell log" #container>
-  <div class="content__cell-body">
-    <hs-error-message *ngIf='error'>
-      {{ error }}
-    </hs-error-message>
-    <div class="log__item" *ngFor="let item of log$ | async; index as i">
-      <span class="log__item-index">{{ i }}</span
-      ><span class="log__item-text">{{ item }}</span>
-    </div>
-  </div>
-</section>
+<hs-error-message *ngIf="error">
+  {{ error }}
+</hs-error-message>
+
+<hs-logs [logs]="log$ | async" header="build logs" (closed)="onClose()">
+</hs-logs>

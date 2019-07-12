@@ -1,35 +1,37 @@
 <div class="model-versions">
-    <ng-container *ngIf="modelVersions; let modelVersions">
-        <ng-container *ngIf="modelVersions.length; else emptyModelVersions">
-            <table class='hydro-table hydro-table-models versions__table'>
-                <colgroup>
-                    <col width="100px">
-                    <col>
-                    <col>
-                    <col>
-                    <col width="80px">
-                </colgroup>
-                <thead class="hydro-table-head">
-                    <th class="hydro-table-head__cell">Version</th>
-                    <th class="hydro-table-head__cell">Runtime</th>
-                    <th class="hydro-table-head__cell">Created</th>
-                    <th class="hydro-table-head__cell">Status</th>
-                    <th class="hydro-table-head__cell">Applications</th>
-                    <th class="hydro-table-head__cell"></th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let modelVersion of modelVersions"
-                        hs-model-versions-table-row
-                        [modelVersion]='modelVersion'
-                    ></tr>
-                </tbody>
-            </table>
-        </ng-container>
+  <ng-container *ngIf="modelVersions; let modelVersions">
+    <ng-container *ngIf="modelVersions.length; else emptyModelVersions">
+      <table class="hydro-table hydro-table-models versions__table">
+        <colgroup>
+          <col width="100px" />
+          <col />
+          <col />
+          <col />
+          <col width="80px" />
+        </colgroup>
+        <thead class="hydro-table-head">
+          <th class="hydro-table-head__cell">Version</th>
+          <th class="hydro-table-head__cell">Runtime</th>
+          <th class="hydro-table-head__cell">Created</th>
+          <th class="hydro-table-head__cell">Status</th>
+          <th class="hydro-table-head__cell">Applications</th>
+          <th class="hydro-table-head__cell"></th>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let modelVersion of modelVersions"
+            hs-model-versions-table-row
+            [modelVersion]="modelVersion"
+          ></tr>
+        </tbody>
+      </table>
     </ng-container>
+  </ng-container>
 </div>
 
 <ng-template #emptyModelVersions>
-    <span class="alert">
-        <span class="alert__ancor">Ooops!</span> It looks like API does not return any builds for this model. Please check model.
-    </span>
+  <span class="alert">
+    <span class="alert__ancor">Ooops!</span> It looks like API does not return
+    any builds for this model. Please check model.
+  </span>
 </ng-template>

@@ -8,6 +8,7 @@ import { SvgSpriteService } from '@core/services';
 import { SseService } from '@core/services/sse.service';
 import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
 import { Store } from '@ngrx/store';
+import * as fromServables from 'modules/servables/actions';
 
 @Component({
   selector: 'hs-root',
@@ -32,5 +33,6 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new GetModelsAction());
     this.store.dispatch(new GetApplicationsAction());
     this.store.dispatch(new GetModelVersionsAction());
+    this.store.dispatch(fromServables.getAll());
   }
 }
