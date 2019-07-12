@@ -7,7 +7,6 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { ModelVersionLogService } from '@models/services/model-version-log.service';
-import { ModelVersion } from '@shared/_index';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 

@@ -2,40 +2,46 @@ import {
   Component,
   OnInit,
   ChangeDetectorRef,
-  ChangeDetectionStrategy,
   Output,
   EventEmitter,
+  OnDestroy,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Subscription, of, Subject } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { ServablesService } from '../../services';
 
 @Component({
   selector: 'hs-servable-logs',
   templateUrl: './servable-logs.component.html',
   styleUrls: ['./servable-logs.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ServableLogsComponent implements OnInit {
+export class ServableLogsComponent implements OnInit, OnDestroy {
   @Output() closed: EventEmitter<any> = new EventEmitter();
   sub: Subscription;
   logs$: any;
-  logStream$: any;
   servableName: string;
   error: string = '';
 
-  constructor(
-    private servablesService: ServablesService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  destroy = new Subject();
+  constructor(private servablesService: ServablesService) {}
 
   ngOnInit() {
-    this.logs$ = this.servablesService
-      .getLogs(this.servableName)
-      .pipe(tap(_ => this.cdr.detectChanges()));
+    this.logs$ = this.servablesService.getLog(this.servableName).pipe(
+      takeUntil(this.destroy),
+      catchError(_ => {
+        this.error = 'No logs available';
+        return of([]);
+      })
+    );
   }
 
   onClose(): void {
     this.closed.emit();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
+    this.destroy = null;
   }
 }
