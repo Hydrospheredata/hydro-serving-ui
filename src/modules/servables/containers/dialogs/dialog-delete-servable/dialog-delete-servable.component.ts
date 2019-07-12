@@ -11,11 +11,14 @@ export const SERVABLE_NAME_TOKEN = new InjectionToken('servable full name');
   styleUrls: ['./dialog-delete-servable.component.scss'],
 })
 export class DialogDeleteServableComponent {
+  servableName: string;
   constructor(
     private dialogService: DialogService,
-    @Inject(SERVABLE_NAME_TOKEN) private servableName: string,
+    @Inject(SERVABLE_NAME_TOKEN) servableName: string,
     private store: Store<State>
-  ) {}
+  ) {
+    this.servableName = servableName;
+  }
 
   onDelete() {
     this.store.dispatch(deleteServable({ name: this.servableName }));
