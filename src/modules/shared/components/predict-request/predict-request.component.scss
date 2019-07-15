@@ -1,27 +1,30 @@
 .request {
-    max-width: 100%;
-    overflow: scroll;
-    padding-bottom: 14px;
-    &__inputs {
-        margin-left: 8px;
-        &-title {
-            text-transform: uppercase;
-            font-size: 10px;
-            letter-spacing: 1px;
-            margin-left: 0px;
-            margin-top: 4px;
-            color: #b3b3b3
-        }
-        &-list{
-            font-size: 12px;
-            white-space: nowrap;
-        }
+  max-width: 100%;
+  overflow: scroll;
+  padding-bottom: 14px;
+
+  &__inputs {
+    margin-left: 8px;
+
+    &-title {
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: 1px;
+      margin-left: 0px;
+      margin-top: 4px;
+      color: #b3b3b3
     }
 
-    &__input {
-        &-name {
-            color: grey;
-            padding-right: 8px;
-        }
+    &-list {
+      font-size: 12px;
+      white-space: nowrap;
     }
+  }
+
+  &__input {
+    &-name {
+      color: grey;
+      padding-right: 8px;
+    }
+  }
 }

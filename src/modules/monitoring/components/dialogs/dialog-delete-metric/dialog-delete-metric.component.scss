@@ -17,25 +17,6 @@
   align-items: center;
   animation: dropDown .3s ease-in forwards;
   box-shadow: 0 2px 4px -2px black;
-  &__text {
-    font-size: 14px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  &__buttons {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  &__button {
-    justify-content: center;
-    padding: 12px;
-  }
-
-  &__button + &__button {
-    margin-top: 4px;
-  }
 }
 
 @keyframes dropDown {

@@ -1,6 +1,7 @@
 <div [formGroup]="parent">
   <div formGroupName="config" *ngIf="parent.get('config')">
     <div class="row" *ngIf="parent.get('config').get('input')">
+      <label for="input">Input: </label>
       <mdl-select
         [formControl]="parent.get('config').get('input')"
         label="Choose input"
@@ -36,7 +37,8 @@
     <div class="row" *ngIf="parent.get('config').get('interval')">
       <hydro-input-text
         name="interval"
-        label="interval"
+        label="Interval"
+        postfix="sec"
         [formControl]="parent.get('config').get('interval')"
       >
       </hydro-input-text>

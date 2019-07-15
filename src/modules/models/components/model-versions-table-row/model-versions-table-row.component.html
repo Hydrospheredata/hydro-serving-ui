@@ -43,25 +43,29 @@
       class="model-version__actions-item"
       [routerLink]="[modelVersion.id, 'profiler']"
     >
-      <hydro-icon
-        type="profiler"
-        class="model-version__actions-icon"
-      ></hydro-icon>
+      <span hs-tooltip="Profiler">
+        <hydro-icon type="profiler" class="model-version__actions-icon">
+        </hydro-icon>
+    </span>
     </div>
     <div
       class="model-version__actions-item"
       [routerLink]="[modelVersion.id, 'monitoring']"
     >
-      <hydro-icon
-        type="monitoring"
-        class="model-version__actions-icon"
-      ></hydro-icon>
+      <span hs-tooltip="Monitoring">
+        <hydro-icon
+          type="monitoring"
+          class="model-version__actions-icon"
+        ></hydro-icon>
+      </span>
     </div>
     <div class="model-version__actions-item" [routerLink]="[modelVersion.id]">
-      <hydro-icon
-        type="icon-arrow-right"
-        class="model-version__actions-icon"
-      ></hydro-icon>
+      <span hs-tooltip="Details">
+        <hydro-icon
+          type="icon-arrow-right"
+          class="model-version__actions-icon"
+        ></hydro-icon>
+      </span>
     </div>
   </div>
 </td>

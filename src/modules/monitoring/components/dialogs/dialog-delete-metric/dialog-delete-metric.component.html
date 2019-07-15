@@ -1,19 +1,12 @@
-<div class="wrapper">
-  <div class="wrapper__text">
+<div class="dialog__content wrapper">
+  <div class="doalog__question">
     <span>Remove metric?</span>
   </div>
-  <div class="wrapper__buttons">
-    <button
-      class="button button--flat wrapper__button"
-      (click)="onClose()"
-      type="button"
-    >
+  <div class="dialog__buttons dialog__buttons--column">
+    <button hs-button (click)="onClose()" type="button">
       cancel
     </button>
-    <button
-      class="button button--primary button--primary-remove wrapper__button"
-      (click)="onDelete()"
-    >
+    <button hs-button kind="flat" color="warning" (click)="onDelete()">
       Remove
     </button>
   </div>

@@ -25,16 +25,12 @@ import {
   AbstractControl,
 } from '@angular/forms';
 
-import { MdlSnackbarService } from '@angular-mdl/core';
-
 import * as fromApplications from '@applications/reducers';
 import * as HydroActions from '@core/actions/monitoring.actions';
 import { HydroServingState } from '@core/reducers';
 import * as fromModels from '@models/reducers';
 import { Store } from '@ngrx/store';
 
-import { FormsService } from '@core/services';
-import { DialogService } from '@dialog/dialog.service';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecificationConfig } from '@shared/models/metric-specification-kind.model';
 import {
@@ -191,7 +187,7 @@ export class DialogMetricComponent implements OnInit {
       case 'ErrorRateMetricSpec':
       case 'LatencyMetricSpec':
         controls = {
-          interval: this.fb.control(interval),
+          interval: this.fb.control(interval, [Validators.required]),
         };
 
         if (withHealth) {
@@ -204,7 +200,7 @@ export class DialogMetricComponent implements OnInit {
         this.form.setControl(
           'config',
           this.fb.group({
-            interval: this.fb.control(interval),
+            interval: this.fb.control(interval, [Validators.required]),
           })
         );
         break;

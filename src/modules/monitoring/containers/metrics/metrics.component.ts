@@ -10,7 +10,6 @@ import { DialogService } from '@dialog/dialog.service';
 import {
   DialogMetricComponent,
   DialogDeleteMetricComponent,
-  METRIC_ID_VALUE,
 } from '@monitoring/components';
 import { Store } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';

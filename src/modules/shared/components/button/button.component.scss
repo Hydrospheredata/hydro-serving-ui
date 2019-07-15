@@ -6,8 +6,8 @@
   border-radius: 3px;
   font-size: 14px;
   font-weight: 500;
-  text-transform: capitalize;
   padding: 6px 12px;
+  text-transform: capitalize;
   transition: .3s all cubic-bezier(0.075, 0.82, 0.165, 1);
   cursor: pointer;
   &[disabled] {

@@ -56,11 +56,11 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
           const el: HTMLElement = this.el.nativeElement;
           if (latestModelVersions.length) {
             const { id: latestModelVersionId } = latestModelVersions[0];
-            el.classList.add('tooltip--is-visible');
+            el.style.display = '';
             this.latestModelVersionId = latestModelVersionId;
           } else {
             this.latestModelVersionId = undefined;
-            el.classList.remove('tooltip--is-visible');
+            el.style.display = 'none';
           }
         })
       )

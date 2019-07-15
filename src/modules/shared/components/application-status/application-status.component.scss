@@ -1,19 +1,24 @@
+@import "variables";
+
 .status {
-    display: inline-block;
-    font-size: 12px;
-    padding: 0 6px;
-    vertical-align: bottom;
-    border-radius: 2px;
-    &--failed {
-        background: #FFBDBD;
-        color: #E12D39;
-    }
-    &--assembling {
-        background: #B3ECFF;
-        color: #2BB0ED; 
-    }
-    &--ready {
-        background: #C6F7E2;
-        color: #27AB83;
-    }
+  display: inline-block;
+  font-size: 12px;
+  padding: 0 6px;
+  vertical-align: bottom;
+  border-radius: 2px;
+
+  &--ready {
+    background: $status-success-background-color;
+    color: $status-success-text-color;
+  }
+
+  &--assembling {
+    background: $neutral-color-100;
+    color: $neutral-color-700;
+  }
+
+  &--failed {
+    background: $supportive-color-red-100;
+    color: $supportive-color-red-700;
+  }
 }
