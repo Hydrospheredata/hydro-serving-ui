@@ -105,7 +105,7 @@ const includeModelVersion = (
   }
 
   if (!newMap[modelId].includes(modelVersion.id)) {
-      newMap[modelId].push(modelVersion.id);
+    newMap[modelId].push(modelVersion.id);
   }
 
   return newMap;

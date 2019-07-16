@@ -106,6 +106,17 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
   labels: string[] = [];
   mainMapWidth: number;
 
+  timeBound$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  chartTimeWidthParams: Array<{ ms: number; text: string }> = [
+    { ms: 900000, text: '15 minutes' },
+    { ms: 1800000, text: '30 minutes' },
+    { ms: 3600000, text: '1 hour' },
+    { ms: 7200000, text: '2 hours' },
+    { ms: 14400000, text: '4 hours' },
+    { ms: 0, text: 'All time' },
+  ];
+  chartTimeWidth: number = 0;
+
   @Output()
   private timeInterval: EventEmitter<TimeInterval> = new EventEmitter();
 
@@ -132,33 +143,54 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     ).pipe(startWith());
   }
 
+  changeTimeBound(timeBound): void {
+    this.timeBound$.next(timeBound);
+    this.started.emit();
+  }
+
   ngOnInit(): void {
     this.canvasWidth = this.calculateCanvasWidth();
     this.mainMapWidth = this.canvasWidth - 120;
 
-    this.fullLogSub = this.getFullAggregation()
+    this.fullLogSub = this.timeBound$
       .pipe(
-        tap(res => {
-          this.loading$.next(false);
-          const m = this.metricSpecifications;
-          const m2 = this.metricSpecifications.reduce((acc, cur, idx) => {
-            acc[m[idx].name] = res[idx];
-            return acc;
-          }, {});
+        switchMap(timeBound =>
+          this.getFullAggregation(timeBound).pipe(
+            tap(res => {
+              this.loading$.next(false);
+              const aggregation: IMonitoringAggregationVM = this.metricSpecifications.reduce(
+                (acc, cur, idx, arr) => {
+                  acc[arr[idx].name] = res[idx];
+                  return acc;
+                },
+                {}
+              );
+              if (timeBound) {
+                this.fullLog = aggregation;
+                this.currentLogData = aggregation;
 
-          const sameData = _.isEqual(this.fullLog, m2);
+                const to = new Date().getTime();
+                const from = to - timeBound;
 
-          if (!sameData) {
-            this.fullLog = m2;
-            this.currentLogData = m2;
-            const int = this.timelineService.getMinimumAndMaximumTimestamps(
-              this.currentLogData
-            );
+                const i = { from, to };
+                this.manualSelectInterval.next(i);
+              } else {
+                const sameData = _.isEqual(this.fullLog, aggregation);
+                if (!sameData) {
+                  this.fullLog = aggregation;
+                  this.currentLogData = aggregation;
 
-            const i = { from: int[0], to: int[1] };
-            this.manualSelectInterval.next(i);
-          }
-        })
+                  const int = this.timelineService.getMinimumAndMaximumTimestamps(
+                    this.currentLogData
+                  );
+
+                  const i = { from: int[0], to: int[1] };
+                  this.manualSelectInterval.next(i);
+                }
+              }
+            })
+          )
+        )
       )
       .subscribe();
 
@@ -207,6 +239,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
   onMinimapBrushEnd(t: TimeInterval) {
     this.minimapBrushEnd$.next(t);
+    this.stopped.emit();
   }
   onMinimapBrushMove(t: TimeInterval) {
     this.minimapBrushMove$.next(t);
@@ -216,18 +249,38 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     return `translate(0, ${index * this.LINE_HEIGHT + 2})`;
   }
 
-  private getFullAggregation(): Observable<IMonitoringAggregationList> {
-    const requests = this.metricSpecifications.map(metricSpecification =>
-      this.monitoringService.getAggregation({
-        metricSpecification,
-        steps: '200',
-      })
-    );
+  private getFullAggregation(
+    timeBound: number
+  ): Observable<IMonitoringAggregationList> {
+    const createRequests = () => {
+      let requests;
 
-    return interval(5000).pipe(
+      if (this.chartTimeWidth === 0) {
+        requests = this.metricSpecifications.map(metricSpecification =>
+          this.monitoringService.getAggregation({
+            metricSpecification,
+            steps: '200',
+          })
+        );
+      } else {
+        const tillInMs = new Date().getTime();
+        const fromInMs = tillInMs - timeBound;
+        requests = this.metricSpecifications.map(metricSpecification =>
+          this.monitoringService.getAggregation({
+            metricSpecification,
+            steps: '200',
+            from: `${Math.floor(fromInMs / 1000)}`,
+            till: `${Math.floor(tillInMs / 1000)}`,
+          })
+        );
+      }
+      return requests;
+    };
+
+    return merge(interval(5000), this.timeBound$).pipe(
       startWith('first tick'),
       filter(() => this.live),
-      exhaustMap(() => combineLatest(...requests))
+      exhaustMap(() => combineLatest(...createRequests()))
     );
   }
 

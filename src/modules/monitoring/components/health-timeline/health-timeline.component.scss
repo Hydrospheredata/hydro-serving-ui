@@ -30,6 +30,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .time-interval {
+      &__select {
+        display: inline-block;
+      }
+    }
   }
 }
 
