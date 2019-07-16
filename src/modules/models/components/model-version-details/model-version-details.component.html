@@ -32,10 +32,13 @@
               [status]="status"
               hsModelVersionStatus
             >
+              <hydro-icon #statusIcon class="icon"></hydro-icon>
               <span #statusText class="status"></span>
             </span>
             <button
-              hs-button kind="flat" color="primary"
+              hs-button
+              kind="flat"
+              color="primary"
               class="show-log-button"
               (click)="showBuildLog(modelVersion.id)"
             >

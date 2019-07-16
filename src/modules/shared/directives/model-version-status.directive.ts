@@ -28,7 +28,7 @@ export class ModelVersionStatusDirective {
 
     switch (status) {
       case ModelVersionStatus.Assembling:
-        iconType = 'icon-arrow';
+        iconType = 'icon-circle';
         break;
       case ModelVersionStatus.Released:
         iconType = 'icon-done';

@@ -19,6 +19,12 @@
       height: 24px;
     }
   }
+
+  &-status {
+    .icon {
+      margin-right: 4px;
+    }
+  }
 }
 .application {
   cursor: pointer;
@@ -26,3 +32,5 @@
 .applications-is-empty {
   color: $secondary-text-color;
 }
+
+
