@@ -1,6 +1,7 @@
-<hs-error-message *ngIf="error">
-  {{ error }}
-</hs-error-message>
-
-<hs-logs [logs]="log$ | async" header="build logs" (closed)="onClose()">
+<hs-logs
+  [error]="error"
+  [logs]="log$ | async"
+  header="build logs"
+  (closed)="onClose()"
+>
 </hs-logs>

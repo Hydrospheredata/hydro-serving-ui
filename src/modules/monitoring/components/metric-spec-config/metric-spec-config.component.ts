@@ -5,6 +5,7 @@ import { Application } from '@shared/_index';
 @Component({
   selector: 'hs-metric-spec-config',
   templateUrl: 'metric-spec-config.component.html',
+  styleUrls: ['./metric-spec-config.component.scss'],
 })
 export class MetricSpecConfigComponent {
   @Input()

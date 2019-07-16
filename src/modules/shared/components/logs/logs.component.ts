@@ -20,6 +20,7 @@ export class LogsComponent implements AfterViewChecked, AfterViewInit {
   }
   @ViewChild('logBody', { read: ElementRef }) logBody: ElementRef;
   @Input() header: string = 'Logs';
+  @Input() error: string = '';
 
   @Output() closed: EventEmitter<any> = new EventEmitter<any>();
 

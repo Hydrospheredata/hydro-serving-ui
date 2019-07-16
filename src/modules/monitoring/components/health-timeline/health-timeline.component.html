@@ -1,20 +1,28 @@
 <div class="reqstore_chart" #wrapper>
-  <ng-container *ngIf="displayedTime$ | async; else noDataAvailable">
-    <div class="reqstore_chart__header">
-      <div *ngIf="live; else timeBadge">
-        <div class="live-badge">
-          live
-        </div>
+  <div class="reqstore_chart__header">
+    <div *ngIf="live; else timeBadge">
+      <div class="live-badge">
+        live
       </div>
-
-      <!-- <div
-        class="button button--white zoom-out"
-        *ngIf="showZoomOut()"
-        (click)="zoomOut()"
-      >
-        Zoom out
-      </div> -->
     </div>
+    <div class="time-interval">
+        <label class="time-interval__label">Time interval: </label>
+        <mdl-select
+          class="time-interval__select"
+          label="Chart time window"
+          [(ngModel)]="chartTimeWidth"
+          (change)="changeTimeBound($event)"
+        >
+          <mdl-option
+            *ngFor="let param of chartTimeWidthParams"
+            [value]="param.ms"
+            >{{ param.text }}</mdl-option
+          >
+        </mdl-select>
+      </div>
+  </div>
+  
+  <ng-container *ngIf="displayedTime$ | async; else noDataAvailable">
     <svg [attr.width]="canvasWidth" [attr.height]="canvasHeight" #svgContainer>
       <g style="transform:translate(100px, 0)">
         <defs>
@@ -32,7 +40,6 @@
             {{ item }}
           </text>
         </g>
-        <g #brush style="transform:translate(0, 0)"></g>
         <g #dataContainer></g>
         <g hsD3Axis [transform]="xAxisTransform" [scale]="scale"></g>
         <line
@@ -51,6 +58,7 @@
           [attr.y2]="y"
           style="stroke:rgba(38, 39, 41, 0.068);stroke-width:1"
         />
+        <g #brush style="transform:translate(0, 0)"></g>
       </g>
     </svg>
     <hs-health-timeline-minimap

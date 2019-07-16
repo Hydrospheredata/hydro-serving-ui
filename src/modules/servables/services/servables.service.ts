@@ -90,7 +90,6 @@ export class ServablesService {
       publish(),
       refCount(),
       finalize(() => {
-        console.log('closed stream');
         eventSource.close();
       }),
       startWith([])

@@ -137,3 +137,10 @@ export const getModelsWithAtleastTwoModelVersions = createSelector(
     return ids.map(id => models[id]);
   }
 );
+
+export const getVersionByModelVersionId = (modelVersionId: number) => createSelector(
+  getModelVersionState,
+  state => {
+    return state && state.entities[modelVersionId].modelVersion;
+  }
+);

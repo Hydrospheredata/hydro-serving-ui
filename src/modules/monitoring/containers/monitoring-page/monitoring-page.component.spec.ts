@@ -58,7 +58,6 @@ describe('MonitoringPageComponent', () => {
   });
 
   it('should create', () => {
-    console.log(component.selectedMetricSpecifications$);
     expect(component).toBeTruthy();
   });
 

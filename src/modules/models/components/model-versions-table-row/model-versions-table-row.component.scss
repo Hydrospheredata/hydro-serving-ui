@@ -8,15 +8,21 @@
       cursor: pointer;
       transform: 0.3s ease color;
       margin-left: 8px;
-
+      color: $neutral-color-900;
       &:hover {
-        color: #35469c;
+        color: $primary-color-900;
       }
     }
 
     &-icon {
       width: 24px;
       height: 24px;
+    }
+  }
+
+  &-status {
+    .icon {
+      margin-right: 4px;
     }
   }
 }
@@ -26,3 +32,5 @@
 .applications-is-empty {
   color: $secondary-text-color;
 }
+
+

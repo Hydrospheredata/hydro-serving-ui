@@ -41,6 +41,7 @@ export class InputTextComponent implements ControlValueAccessor {
 
   @Input() public inputClass: string = '';
   @Input() public label: string;
+  @Input() public postfix: string = '';
   @Input() public name: string;
   @Input() public iconName: string;
   @Input() public iconClass: string;

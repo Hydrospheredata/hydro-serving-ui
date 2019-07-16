@@ -14,7 +14,10 @@ import {
 import { HydroServingState } from '@core/reducers';
 import { MetricSettingsService } from '@core/services/metrics/_index';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
-import { getSiblingVersions } from '@models/reducers';
+import {
+  getSiblingVersions,
+  getVersionByModelVersionId,
+} from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { SonarMetricData, TimeInterval, ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
@@ -72,6 +75,15 @@ export class ChartComponent implements OnInit, OnDestroy {
 
     return features;
   }
+
+  get comparedModelVerId() {
+    return this.compareWithModelVersionId;
+  }
+
+  set comparedModelVerId(id) {
+    this.compareWithModelVersionId = id;
+    this.comparedMetricChanging$.next('');
+  }
   @ViewChild('chart', { read: ElementRef }) chartRef: ElementRef;
   @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
   @ViewChild('rect', { read: ElementRef }) rectRef: ElementRef;
@@ -113,19 +125,10 @@ export class ChartComponent implements OnInit, OnDestroy {
   siblingModelVersions$: Observable<ModelVersion[]>;
   compareWithModelVersionId: number;
 
-  get comparedModelVerId() {
-    return this.compareWithModelVersionId;
-  }
-
-  set comparedModelVerId(id) {
-    this.compareWithModelVersionId = id;
-    this.comparedMetricChanging$.next('');
-  }
-
   private initialized: boolean = false;
   private data: SonarMetricData[];
   private chartWidth: number;
-  private xOffset: number = 40;
+  private xOffset: number = 60;
 
   private log$: Subscription;
 
@@ -139,8 +142,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.siblingModelVersions$ = this.store
-      .select(getSiblingVersions);
+    this.siblingModelVersions$ = this.store.select(getSiblingVersions);
 
     const liveUpdate$ = interval(2000).pipe(
       filter(() => this.liveUpdate),
@@ -234,7 +236,7 @@ export class ChartComponent implements OnInit, OnDestroy {
             }
           });
         }),
-        switchMap(msx => {
+        switchMap(() => {
           return combineLatest(observables).pipe(map(data => _.flatten(data)));
         })
       );
@@ -298,6 +300,12 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   onSelectFeature(e) {
     this.selectedFeatureChanging$.next(e);
+  }
+  modelVersion(str: string) {
+    const [name, id] = str.split('#');
+    return this.store.select(getVersionByModelVersionId(+id)).pipe(
+      map( version => `${name}_v${version}`)
+    );
   }
 
   private setSubLines() {
@@ -426,41 +434,42 @@ export class ChartComponent implements OnInit, OnDestroy {
     const data = this.groupedData;
     const entries = Object.entries(data);
     const [xCoordinate] = d3.mouse(this.rectRef.nativeElement);
-    const selectedTime = Math.floor(this.xScale.invert(xCoordinate));
+    const selectedTime = Math.floor(this.xScale.invert(xCoordinate - 20));
 
     let newXCoordinate;
     let newYCoordinate;
     let etalon: SonarMetricData;
 
-    // TODO: RENAME DATASS
     if (entries.length === 0) {
       return;
     }
-    const foundedElements = entries.map(([metricName, datass]) => {
-      const bisector = d3.bisector((d: SonarMetricData) => d.timestamp).right;
-      const index = bisector(datass, selectedTime, 1);
-      const a = datass[index - 1];
-      const b = datass[index];
-      let res;
+    const foundedElements = entries
+      .map(([metricName, cur]) => {
+        const bisector = d3.bisector((d: SonarMetricData) => d.timestamp).right;
+        const index = bisector(cur, selectedTime, 1);
+        const a = cur[index - 1];
+        const b = cur[index];
+        let res;
 
-      if (a === undefined) {
-        res = b;
-      } else if (b === undefined) {
-        res = a;
-      } else {
-        res = selectedTime - a.timestamp > b.timestamp - selectedTime ? b : a;
-      }
-      if (etalon) {
-        if (etalon.timestamp === res.timestamp) {
-          return res;
+        if (a === undefined) {
+          res = b;
+        } else if (b === undefined) {
+          res = a;
         } else {
-          return null;
+          res = selectedTime - a.timestamp > b.timestamp - selectedTime ? b : a;
         }
-      } else {
-        etalon = res;
-      }
-      return res;
-    }).filter(a => !!a);
+        if (etalon) {
+          if (etalon.timestamp === res.timestamp) {
+            return res;
+          } else {
+            return null;
+          }
+        } else {
+          etalon = res;
+        }
+        return res;
+      })
+      .filter(a => !!a);
 
     newXCoordinate = this.xScale(foundedElements[0].timestamp);
     newYCoordinate = this.yScale(foundedElements[0].value);
@@ -493,7 +502,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     const newYCoordinate = this.yScale(res[0].value);
     let newXCoordinate = this.xScale(res[0].timestamp) + this.xOffset;
 
-    const metrics = res.map( r => ({ name: r.name, value: r.value }));
+    const metrics = res.map(r => ({ name: r.name, value: r.value }));
 
     this.tooltipContent = {
       timestamp: res[0].timestamp,

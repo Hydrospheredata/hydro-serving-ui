@@ -8,7 +8,7 @@
     >
       <button
         hs-button
-        kind="stroked"
+        kind="flat"
         color="primary"
         [disabled]="!isReady(application.status)"
         (click)="testApplication()"
@@ -16,17 +16,11 @@
         <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
         Test
       </button>
-      <button
-        hs-button
-        (click)="editApplication()"
-      >
+      <button hs-button (click)="editApplication()">
         <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
         Edit
       </button>
-      <button
-        hs-button
-        (click)="removeApplication()"
-      >
+      <button hs-button (click)="removeApplication()">
         <hydro-icon class="button__icon" type="icon-remove"></hydro-icon>
         remove
       </button>
@@ -64,7 +58,6 @@
         </li>
       </ul>
     </div>
-
     <div class="application__stages">
       <div
         class="application__stage"
@@ -87,12 +80,13 @@
               [modelVersion]="modelVariant.modelVersion"
               (handleClick)="updateModelVersionDialog($event, modelVariant)"
             >
-              <hydro-icon
-                type="icon-upgrade"
-                class="icon model-variant__version-new-icon"
-              >
-              </hydro-icon>
-              <span class="tooltiptext">Model has new version</span>
+              <span hs-tooltip="Model has new version">
+                <hydro-icon
+                  type="icon-upgrade"
+                  class="icon model-variant__version-new-icon"
+                >
+                </hydro-icon>
+              </span>
             </div>
             <div class="application__model-variant-model-version model-version">
               <span class="model-version__name">

@@ -2,9 +2,9 @@
   class="input-text form-group {{ wrapClassName }}"
   [class.has-error]="formErrors"
 >
-  <label *ngIf="label" class="control-label" [attr.for]="name">{{
-    label
-  }}</label>
+  <label *ngIf="label" class="control-label" [attr.for]="name"
+    >{{ label }}<span *ngIf="postfix" class="control-label__postfix">{{ postfix }}</span>
+  </label>
   <div
     class="cs-relative"
     [ngClass]="{

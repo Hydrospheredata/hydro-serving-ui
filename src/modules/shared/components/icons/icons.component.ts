@@ -1,12 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 @Component({
-    selector: 'hydro-icon',
-    templateUrl: './icons.template.html',
-    styleUrls: ['./icons.component.scss'],
+  selector: 'hydro-icon',
+  templateUrl: './icons.template.html',
+  styleUrls: ['./icons.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
-
 export class IconComponent {
-    @Input() type: string;
-    @Input() title: string;
+  @Input() type: string;
+  @Input() title: string;
 }

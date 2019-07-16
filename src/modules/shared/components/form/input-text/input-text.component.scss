@@ -1,14 +1,32 @@
 @import "variables.scss";
 
+.control {
+  &-label {
+    &__postfix {
+      font-size: 12px;
+      font-family: $font-family-light;
+      font-style: italic;
+      color: $neutral-color-400;
+
+      &:before {
+        content: ", ";
+        display: inline;
+      }
+    }
+  }
+}
+
 .input-text {
   &__error {
     color: $error-text-color;
   }
+
   &--copy-link {
     .input-text__input {
       height: 30px;
       border-width: 1px;
     }
+
     hydro-icon.input-icon {
       top: 20%;
       font-size: 20px;
@@ -20,18 +38,22 @@
   display: flex;
   flex-wrap: wrap;
   flex-flow: row;
+
   &.reverse {
     flex-flow: row-reverse;
   }
+
   input.form-control {
     &.sibling {
       &.left {
         margin-left: 0.5rem;
       }
+
       &.right {
         margin-right: 0.5rem;
       }
     }
+
     flex-direction: column;
     display: flex;
     justify-content: flex-start;
@@ -56,15 +78,18 @@ input.form-control {
   box-shadow: none;
   background-color: transparent;
   border: 1px solid #d4d7d9;
+
   &.input-icon {
 
     &.left {
       padding-left: 3rem;
     }
+
     &.right {
       padding-right: 3rem;
     }
   }
+
   &.sibling {
     width: 84%;
   }
@@ -72,6 +97,7 @@ input.form-control {
   &:after {
     clear: both;
   }
+
   &.__modelWeight {
     border-color: #f2f2f2;
     max-width: 60px;
@@ -79,6 +105,7 @@ input.form-control {
     height: 36px;
     text-align: right;
   }
+
   &.__kafkaInput {
     border: none;
     padding: 7px 12px;
@@ -87,6 +114,7 @@ input.form-control {
     color: #04143c;
     height: 28px;
   }
+
   &.__small {
     height: 36px;
   }
@@ -96,16 +124,20 @@ input.form-control {
   display: flex;
   flex-direction: column;
   position: relative;
+
   &__inline {
     flex-direction: row;
     align-items: center;
     padding: 0 10px;
-    > .control-label {
+
+    >.control-label {
       margin: 0;
       margin-right: 8px;
-      font-family: 'Consolas', monospace;
+
+      // font-family: 'Consolas', monospace;
     }
-    > .cs-relative {
+
+    >.cs-relative {
       flex: 1;
     }
   }
@@ -114,11 +146,13 @@ input.form-control {
 hydro-icon.input-icon {
   width: 24px;
   height: 24px;
+
   &.right {
     right: 1rem;
     position: absolute;
     top: 27%;
   }
+
   &.left {
     left: 1rem;
     position: absolute;

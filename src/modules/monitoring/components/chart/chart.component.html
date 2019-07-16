@@ -30,23 +30,23 @@
     <defs>
       <clipPath id="my-clip">
         <rect
-          x="26"
+          x="46"
           y="10"
           [attr.width]="canvasWidth - 40"
           [attr.height]="canvasHeight - 50"
         ></rect>
       </clipPath>
     </defs>
-    <g hsD3Axis [scale]="xScale" transform="translate(25,170)"></g>
+    <g hsD3Axis [scale]="xScale" transform="translate(45,170)"></g>
     <g
       hsD3Axis
       [scale]="yScale"
       position="left"
-      transform="translate(25,10)"
+      transform="translate(45,10)"
     ></g>
     <g
       *ngFor="let plotBand of plotBands | keyvalue; let i = index"
-      transform="translate(25,10)"
+      transform="translate(45,10)"
     >
       <g
         [hs-d3-plot-band]="p"
@@ -63,19 +63,9 @@
       [data]="data.value"
       [xScale]="xScale"
       [yScale]="yScale"
-      transform="translate(25,10)"
+      transform="translate(45,10)"
       [attr.stroke]="lineColors[i]"
     ></g>
-    <!-- <g
-      [hs-d3area]
-      *ngFor="let data of groupedData | keyvalue; index as i"
-      [data]="data.value"
-      [xScale]="xScale"
-      [yScale]="yScale"
-      [y0]="minValue"
-      [attr.fill]="areaColors[i]"
-      transform="translate(25,10)"
-    ></g> -->
     <g
       clip-path="url(#my-clip)"
       [hs-d3threshold]="threshold"
@@ -88,10 +78,10 @@
       *ngFor="let y of ySublines"
       x1="0"
       [attr.y1]="y"
-      [attr.x2]="canvasWidth - 40"
+      [attr.x2]="canvasWidth - 60"
       [attr.y2]="y"
       style="stroke:rgba(38, 39, 41, 0.068);stroke-width:1"
-      transform="translate(25,10)"
+      transform="translate(45,10)"
     />
     <line
       *ngFor="let x of xSublines"
@@ -100,14 +90,13 @@
       [attr.x2]="x"
       [attr.y2]="canvasHeight - 50"
       style="stroke:rgba(38, 39, 41, 0.068);stroke-width:1"
-      transform="translate(25,10)"
+      transform="translate(45,10)"
     />
     <rect
-      x="0"
+      x="20"
       y="0"
-      [attr.width]="canvasWidth - 40"
+      [attr.width]="canvasWidth - 60"
       [attr.height]="canvasHeight - 50"
-      fill="red"
       opacity="0"
       transform="translate(25, 10)"
       #rect
@@ -130,7 +119,6 @@
       </div>
     </div>
   </div>
-  <!-- <div class="active-point" #activePoint></div> -->
   <div
     class="active-line"
     [ngStyle]="{ display: showTooltip ? 'inherit' : 'none' }"
@@ -146,7 +134,7 @@
           [style.backgroundColor]="lineColors[i]"
           class="metric__legend-line"
         ></div>
-        <span>{{ data.key }}</span>
+        <span>{{ modelVersion(data.key) | async }}</span>
       </div>
     </div>
   </div>

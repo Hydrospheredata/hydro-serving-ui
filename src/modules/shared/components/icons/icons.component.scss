@@ -1,4 +1,26 @@
+@import "variables";
+
 .hydro-icon {
-    width: inherit;
-    height: inherit;
+  width: inherit;
+  height: inherit;
+}
+
+[data-class="spinner"] {
+  fill: none;
+  stroke: $neutral-color-600;
+  stroke-width: 2;
+  stroke-dasharray: 2px 36px;
+  stroke-linecap: round;
+  animation: spin 2s linear infinite;
+  transform-origin: 50%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
