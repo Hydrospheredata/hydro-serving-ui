@@ -13,8 +13,6 @@ import {
   ModelVersionsTableComponent,
   ModelVersionDetailsComponent,
   ModelVersionContainerComponent,
-  ModelVersionMonitoringComponent,
-  CompareComponent,
   ModelVersionsTableRowComponent,
   ModelVersionProfilerComponent,
 } from '@models/components';
@@ -58,8 +56,6 @@ import { ModelVersionReplayComponent } from './components/model-version-replay/m
     ModelVersionsTableRowComponent,
     ModelVersionDetailsComponent,
     DialogDeleteModelComponent,
-    ModelVersionMonitoringComponent,
-    CompareComponent,
     ModelVersionContainerComponent,
     ModelVersionProfilerComponent,
     ModelVersionsTableComponent,

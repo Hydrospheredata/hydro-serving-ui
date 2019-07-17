@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   MetricsComponent,
   DashboardComponent,
-  GraphsComponent,
 } from '@monitoring/containers';
 
 export const routes: Routes = [
@@ -14,10 +13,6 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: DashboardComponent,
-  },
-  {
-    path: 'graphs',
-    component: GraphsComponent,
   },
   {
     path: '',

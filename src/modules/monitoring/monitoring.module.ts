@@ -25,7 +25,6 @@ import {
   MonitoringPageComponent,
   DashboardComponent,
   ChartsComponent,
-  GraphsComponent,
   ReqResLogsComponent,
 } from './containers';
 import { reducer } from './reducers';
@@ -45,7 +44,6 @@ import { reducer } from './reducers';
     MetricComponent,
     ChartsComponent,
     ChartComponent,
-    GraphsComponent,
     HealthTimelineComponent,
     HealthTimelineMiniComponent,
     ReqstoreTableLogComponent,
@@ -68,7 +66,6 @@ import { reducer } from './reducers';
     MonitoringPageComponent,
     MetricsComponent,
     DashboardComponent,
-    GraphsComponent,
   ],
 })
 export class MonitoringModule { }
