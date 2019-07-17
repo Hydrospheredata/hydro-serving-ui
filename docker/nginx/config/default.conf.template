@@ -40,6 +40,10 @@ upstream reqstore_grpc {
   server ${REQSTORE_HOST}:${REQSTORE_GRPC_PORT};
 }
 
+upstream rootcause_http {
+  server ${ROOTCAUSE_HOST}:${ROOTCAUSE_HTTP_PORT};
+}
+
 
 # GRPC
 
@@ -189,6 +193,15 @@ server {
 
   location /gateway {
     proxy_pass http://gateway_http;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Scheme $scheme;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_http_version 1.1;
+  }
+
+  location /rootcause {
+    rewrite /rootcause/(.*) /$1  break;
+    proxy_pass http://rootcause_http;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Scheme $scheme;
     proxy_set_header Upgrade $http_upgrade;
