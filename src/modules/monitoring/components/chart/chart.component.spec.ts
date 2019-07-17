@@ -8,7 +8,6 @@ import { Store, MemoizedSelector } from '@ngrx/store';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { ModelVersion } from '@shared/_index';
 import { SharedModule } from '@shared/shared.module';
-import { MockMetricSpecification } from '@testing/factories/metric-specification';
 import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
 import { HsD3Module } from '../../../hs-d3/hs-d3.module';
 import { ChartComponent } from './chart.component';
@@ -46,8 +45,6 @@ xdescribe('ChartComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ChartComponent);
     component = fixture.componentInstance;
-    component.metrics = [MockMetricSpecification];
-
     fixture.detectChanges();
   });
 
