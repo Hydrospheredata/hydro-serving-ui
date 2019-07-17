@@ -12,21 +12,23 @@ import {
   Renderer2,
 } from '@angular/core';
 import { HydroServingState } from '@core/reducers';
-import { MetricSettingsService } from '@core/services/metrics/_index';
-import { MonitoringService } from '@core/services/metrics/monitoring.service';
 import {
   getSiblingVersions,
   getVersionByModelVersionId,
 } from '@models/reducers';
+import {
+  TooltipContent,
+  GroupedData,
+  GroupedBounds,
+} from '@monitoring/components/chart/chart.interfaces';
+import { ChartService } from '@monitoring/components/chart/chart.service';
 import { Store } from '@ngrx/store';
 import { SonarMetricData, TimeInterval, ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
 import {
-  interval,
   Subscription,
-  combineLatest,
   Observable,
   BehaviorSubject,
   of,
@@ -34,29 +36,7 @@ import {
 import {
   tap,
   map,
-  filter,
-  startWith,
-  exhaustMap,
-  switchMap,
 } from 'rxjs/operators';
-
-interface Bound {
-  from: number;
-  to: number;
-}
-
-interface GroupedBounds {
-  [uniqname: string]: Bound[];
-}
-
-interface GroupedData {
-  [uniqname: string]: SonarMetricData[];
-}
-
-interface TooltipContent {
-  timestamp: number;
-  metrics: Array<{ name: string; value: number }>;
-}
 
 @Component({
   selector: 'hs-chart',
@@ -64,16 +44,11 @@ interface TooltipContent {
   styleUrls: ['./chart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  providers: [ChartService],
 })
 export class ChartComponent implements OnInit, OnDestroy {
   get featureList(): string[] {
-    const features: string[] = [];
-
-    for (let i = 0; i < 112; i++) {
-      features.push(`${i}`);
-    }
-
-    return features;
+    return this.chartService.featureList;
   }
 
   get comparedModelVerId() {
@@ -82,7 +57,7 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   set comparedModelVerId(id) {
     this.compareWithModelVersionId = id;
-    this.comparedMetricChanging$.next('');
+    this.chartService.onComparedModelVersionIdChange(id);
   }
   @ViewChild('chart', { read: ElementRef }) chartRef: ElementRef;
   @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
@@ -90,13 +65,24 @@ export class ChartComponent implements OnInit, OnDestroy {
   @ViewChild('tooltip', { read: ElementRef }) tooltip: ElementRef;
   @ViewChild('activePoint', { read: ElementRef }) activePoint: ElementRef;
   @ViewChild('activeLine', { read: ElementRef }) activeLine: ElementRef;
-  @Input() metrics: MetricSpecification[];
+
+  // @Input() metrics: MetricSpecification[];
   @Input() selectedTimeInterval$: Observable<TimeInterval> = of(null);
   @Input() liveUpdate: boolean = true;
 
-  @Input() timeBoundary: number = null;
+  msSpec: MetricSpecification;
+  @Input() set metricSpecification(metricSpec: MetricSpecification) {
+    this.msSpec = metricSpec;
+    this.chartService.onMetricSpecificationChange(metricSpec);
+  }
+  @Input() set selectedTimeInterval(ti: TimeInterval) {
+    this.chartService.onTimeIntervalChange(ti);
+  }
 
+  mainData: GroupedData;
+  comparedData: GroupedData;
   emptyData: boolean = true;
+
   showTooltip: boolean = false;
   tooltipContent: TooltipContent = null;
 
@@ -107,18 +93,16 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   features: string[];
   selectedFeature: string = '0';
-  selectedFeatureChanging$: BehaviorSubject<string> = new BehaviorSubject('');
-  comparedMetricChanging$: BehaviorSubject<string> = new BehaviorSubject('');
 
-  lineColors = ['#5786c1', '#ffdb89', '#b86efd', '#7cec7c'];
+  mainLineColors = ['#5786c1', '#ffdb89'];
+  comparedLineColors = ['#b86efd', '#7cec7c'];
   areaColors = ['#1c67c31c', '#ffdb8947', '#b86efd29', '#7cec7c29'];
-  thresholdColors = ['red', 'orange'];
+  thresholdColors = ['red'];
 
   thresholds: string[];
   plotBands: GroupedBounds;
   xScale;
   yScale;
-
   xSublines: any[];
   ySublines: any[];
 
@@ -133,42 +117,33 @@ export class ChartComponent implements OnInit, OnDestroy {
   private log$: Subscription;
 
   constructor(
-    private monitiringService: MonitoringService,
     private cdRef: ChangeDetectorRef,
     private vcRef: ViewContainerRef,
     private renderer2: Renderer2,
     private store: Store<HydroServingState>,
-    private metricSettingService: MetricSettingsService
+    private chartService: ChartService
   ) {}
 
   ngOnInit() {
     this.siblingModelVersions$ = this.store.select(getSiblingVersions);
 
-    const liveUpdate$ = interval(2000).pipe(
-      filter(() => this.liveUpdate),
-      startWith('')
-    );
-
-    this.log$ = combineLatest(
-      liveUpdate$,
-      this.selectedTimeInterval$,
-      this.selectedFeatureChanging$,
-      this.comparedMetricChanging$
-    )
+    this.log$ = this.chartService
+      .getData()
       .pipe(
-        exhaustMap(([upd, timeInterval]) => {
-          return this.timeBoundary
-            ? this.makeRequestInBoundary()
-            : this.makeRequest(timeInterval);
-        }),
         tap(() => this.setXScale()),
         tap(data => {
-          this.emptyData = data.length === 0;
-          this.data = data;
-          this.render(data);
+          this.emptyData = data.flattenData.length === 0;
+          this.mainData = data.mainData;
+          this.comparedData = data.comparedData;
+          this.data = data.flattenData;
+          this.render(data.flattenData);
         })
       )
       .subscribe();
+
+    if (this.isKolmogorovSmirnov()) {
+      this.chartService.feature.next(0);
+    }
 
     d3.select(this.rectRef.nativeElement).on('mouseout', () =>
       this.onMouseOut()
@@ -179,85 +154,16 @@ export class ChartComponent implements OnInit, OnDestroy {
     );
   }
 
-  makeRequestInBoundary() {
-    const i = `${this.timeBoundary}`;
-    const observables = this.metrics.map(metricSpecification => {
-      if (this.isKolmogorovSmirnov()) {
-        return this.monitiringService.getMetrics({
-          metricSpecification,
-          interval: i,
-          columnIndex: this.selectedFeature,
-        });
-      } else {
-        return this.monitiringService.getMetrics({
-          metricSpecification,
-          interval: i,
-        });
-      }
-    });
-
-    return combineLatest(observables).pipe(map(data => _.flatten(data)));
+  get chartName() {
+    try {
+      return this.mainMetric.name;
+    } catch {
+      return 'n/a';
+    }
   }
 
-  makeRequest(timeIntreval: TimeInterval): Observable<SonarMetricData[]> {
-    let from: string = '0';
-    let till: string = `${Math.floor(new Date().getTime() / 1000)}`;
-
-    const m = [...this.metrics];
-    let observables: Array<Observable<SonarMetricData[]>>;
-    if (timeIntreval && timeIntreval.from && timeIntreval.to) {
-      from = `${Math.floor(timeIntreval.from / 1000)}`;
-      till = `${Math.floor(timeIntreval.to / 1000)}`;
-    }
-
-    if (this.compareWithModelVersionId) {
-      const id = `${this.compareWithModelVersionId}`;
-      return this.metricSettingService.getMetricSettings(id).pipe(
-        map(ms => {
-          return ms.filter(
-            (metricSpec: MetricSpecification) =>
-              metricSpec.kind === this.metrics[0].kind
-          );
-        }),
-        map(ms => {
-          const x = [...m, ...ms];
-          observables = x.map(metric => {
-            if (this.isKolmogorovSmirnov()) {
-              return this.monitiringService.getMetricsInRange(metric, {
-                from,
-                till,
-                columnIndex: this.selectedFeature,
-              });
-            } else {
-              return this.monitiringService.getMetricsInRange(metric, {
-                from,
-                till,
-              });
-            }
-          });
-        }),
-        switchMap(() => {
-          return combineLatest(observables).pipe(map(data => _.flatten(data)));
-        })
-      );
-    } else {
-      observables = m.map(metric => {
-        if (this.isKolmogorovSmirnov()) {
-          return this.monitiringService.getMetricsInRange(metric, {
-            from,
-            till,
-            columnIndex: this.selectedFeature,
-          });
-        } else {
-          return this.monitiringService.getMetricsInRange(metric, {
-            from,
-            till,
-          });
-        }
-      });
-    }
-
-    return combineLatest(observables).pipe(map(data => _.flatten(data)));
+  get mainMetric() {
+    return this.msSpec;
   }
 
   ngOnDestroy() {
@@ -269,7 +175,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     const { width, height } = el.getBoundingClientRect();
 
     this.canvasWidth = width;
-    this.canvasHeight = height - 82;
+    this.canvasHeight = height - 102;
     this.chartWidth = this.canvasWidth - this.xOffset;
     this.initialized = true;
   }
@@ -283,29 +189,24 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.setXScale(data);
     this.setYScale(data);
     this.minValue = this.findMinValue(data);
-
-    this.groupedData = _.groupBy(
-      data,
-      d => `${d.name}#${d.labels.modelVersionId}`
-    );
-
-    this.setBoundaries(this.groupedData);
+    this.setBoundaries();
     this.setSubLines();
     this.cdRef.detectChanges();
   }
 
   isKolmogorovSmirnov(): boolean {
-    return this.metrics[0].kind === 'KSMetricSpec';
+    return this.chartService.isKolmogorovSmirnov(this.mainMetric);
   }
 
   onSelectFeature(e) {
-    this.selectedFeatureChanging$.next(e);
+    this.chartService.onFeatureChange(e);
   }
+
   modelVersion(str: string) {
     const [name, id] = str.split('#');
-    return this.store.select(getVersionByModelVersionId(+id)).pipe(
-      map( version => `${name}_v${version}`)
-    );
+    return this.store
+      .select(getVersionByModelVersionId(+id))
+      .pipe(map(version => `${name}_v${version}`));
   }
 
   private setSubLines() {
@@ -313,24 +214,20 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.xSublines = this.xScale.ticks().map(this.xScale);
   }
 
-  private setBoundaries(groupedData) {
+  private setBoundaries() {
+    const groupedData = this.mainData;
     try {
       if (_.isEmpty(groupedData)) {
         this.plotBands = {};
         return;
       }
-      const metricSpecificationWithHealth = this.metrics.filter(
-        metricSpec => metricSpec.withHealth === true
-      );
 
-      if (metricSpecificationWithHealth.length === 0) {
+      if (this.mainMetric.withHealth === false) {
         this.plotBands = {};
         return;
       }
 
-      const availableMetricNames = metricSpecificationWithHealth.map(
-        ({ kind }) => this.monitiringService.getMetricsBySpecKind(kind)[0]
-      );
+      const availableMetricNames = this.chartService.getMetricsBySpecKind(this.mainMetric);
 
       for (const key in groupedData) {
         if (groupedData.hasOwnProperty(key)) {
@@ -380,7 +277,6 @@ export class ChartComponent implements OnInit, OnDestroy {
                 }
               }
             }
-
             this.plotBands = newPlotBands;
           }
         }
@@ -392,33 +288,23 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   private setThreshold() {
-    this.thresholds = this.metrics.reduce((acc, cur) => {
-      if (cur.config.threshold) {
-        acc.push(cur.config.threshold);
-      }
-      return acc;
-    }, []);
+    if (this.mainMetric.config.threshold !== undefined) {
+      this.thresholds = [this.mainMetric.config.threshold];
+    } else {
+      this.thresholds = [];
+    }
   }
 
   private setXScale(data: SonarMetricData[] = []) {
-    if (this.timeBoundary) {
-      const endDate = new Date();
-      const startDate = new Date(endDate.getTime() - this.timeBoundary);
-      this.xScale = d3
-        .scaleTime()
-        .domain([startDate, endDate])
-        .range([0, this.chartWidth]);
-    } else {
-      const [timestampMin, timestampMax] = d3.extent(
-        _.flatten(data),
-        d => d.timestamp
-      );
+    const [timestampMin, timestampMax] = d3.extent(
+      _.flatten(data),
+      d => d.timestamp
+    );
 
-      this.xScale = d3
-        .scaleTime()
-        .domain([new Date(timestampMin), new Date(timestampMax)])
-        .range([0, this.chartWidth]);
-    }
+    this.xScale = d3
+      .scaleTime()
+      .domain([new Date(timestampMin), new Date(timestampMax)])
+      .range([0, this.chartWidth]);
   }
 
   private setYScale(data: SonarMetricData[]) {
@@ -431,7 +317,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   private onMouseMove() {
-    const data = this.groupedData;
+    const data = this.mainData;
     const entries = Object.entries(data);
     const [xCoordinate] = d3.mouse(this.rectRef.nativeElement);
     const selectedTime = Math.floor(this.xScale.invert(xCoordinate - 20));
@@ -458,6 +344,7 @@ export class ChartComponent implements OnInit, OnDestroy {
         } else {
           res = selectedTime - a.timestamp > b.timestamp - selectedTime ? b : a;
         }
+
         if (etalon) {
           if (etalon.timestamp === res.timestamp) {
             return res;

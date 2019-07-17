@@ -1,6 +1,6 @@
 <div class="chart" #chart>
   <header class="chart__header">
-    <div class="chart__header-name">{{ metrics[0].name }}</div>
+    <div class="chart__header-name">{{ chartName }}</div>
     <div class="compare" *ngIf="siblingModelVersions$ | async">
       <span class="compare__label">compare with:</span>
       <mdl-select
@@ -59,12 +59,21 @@
     </g>
     <g
       [hs-d3line]
-      *ngFor="let data of groupedData | keyvalue; index as i"
+      *ngFor="let data of mainData | keyvalue; index as i"
       [data]="data.value"
       [xScale]="xScale"
       [yScale]="yScale"
       transform="translate(45,10)"
-      [attr.stroke]="lineColors[i]"
+      [attr.stroke]="mainLineColors[i]"
+    ></g>
+    <g
+      [hs-d3line]
+      *ngFor="let data of comparedData | keyvalue; index as i"
+      [data]="data.value"
+      [xScale]="xScale"
+      [yScale]="yScale"
+      transform="translate(45,10)"
+      [attr.stroke]="comparedLineColors[i]"
     ></g>
     <g
       clip-path="url(#my-clip)"
@@ -128,10 +137,20 @@
     <div class="metric__legend">
       <div
         class="metric__name"
-        *ngFor="let data of groupedData | keyvalue; index as i"
+        *ngFor="let data of mainData | keyvalue; index as i"
       >
         <div
-          [style.backgroundColor]="lineColors[i]"
+          [style.backgroundColor]="mainLineColors[i]"
+          class="metric__legend-line"
+        ></div>
+        <span>{{ modelVersion(data.key) | async }}</span>
+      </div>
+      <div
+        class="metric__name"
+        *ngFor="let data of comparedData | keyvalue; index as i"
+      >
+        <div
+          [style.backgroundColor]="comparedLineColors[i]"
           class="metric__legend-line"
         ></div>
         <span>{{ modelVersion(data.key) | async }}</span>
