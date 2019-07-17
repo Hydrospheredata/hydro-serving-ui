@@ -1,9 +1,15 @@
-
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { HydroServingState } from '@core/reducers';
 import { Store } from '@ngrx/store';
-import { GetFieldsAction, GetProfilesAction, CleanProfilesAction} from '@profiler/actions';
-import { getFieldsEntitiesState, getProfilesEntitiesState} from '@profiler/selectors';
+import {
+  GetFieldsAction,
+  GetProfilesAction,
+  CleanProfilesAction,
+} from '@profiler/actions';
+import {
+  getFieldsEntitiesState,
+  getProfilesEntitiesState,
+} from '@profiler/selectors';
 import { Profiles } from '@shared/models/_index';
 import { Subscription } from 'rxjs';
 
@@ -14,7 +20,6 @@ import { Subscription } from 'rxjs';
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProfilesComponent implements OnInit, OnDestroy {
-
   @Input() modelVersionId: number;
   public fields: string[] = [];
   public isLoading: boolean = true;
@@ -25,24 +30,29 @@ export class ProfilesComponent implements OnInit, OnDestroy {
   private currentField: string;
   private intervalId: any;
 
-  constructor(private store: Store<HydroServingState>) {
-  }
+  constructor(private store: Store<HydroServingState>) {}
 
   ngOnInit() {
     this.store.dispatch(new GetFieldsAction(this.modelVersionId));
-    this.fieldsSub = this.store.select(getFieldsEntitiesState).subscribe(state => {
-      this.isLoading = false;
-      this.fields = state.fields;
-    });
-    this.profilesSub = this.store.select(getProfilesEntitiesState).subscribe(state => {
-      if (state.profiles != null) {
+    this.fieldsSub = this.store
+      .select(getFieldsEntitiesState)
+      .subscribe(state => {
         this.isLoading = false;
-        this.profiles = state.profiles;
-      }
-    });
+        this.fields = state.fields;
+      });
+    this.profilesSub = this.store
+      .select(getProfilesEntitiesState)
+      .subscribe(state => {
+        if (state.profiles != null) {
+          this.isLoading = false;
+          this.profiles = state.profiles;
+        }
+      });
     this.intervalId = setInterval(() => {
       if (this.currentField) {
-        this.store.dispatch(new GetProfilesAction(this.modelVersionId, this.currentField));
+        this.store.dispatch(
+          new GetProfilesAction(this.modelVersionId, this.currentField)
+        );
       }
     }, 5000);
   }
@@ -63,6 +73,8 @@ export class ProfilesComponent implements OnInit, OnDestroy {
   onFieldSelect(selectedField) {
     this.isLoading = true;
     this.currentField = selectedField;
-    this.store.dispatch(new GetProfilesAction(this.modelVersionId, selectedField));
+    this.store.dispatch(
+      new GetProfilesAction(this.modelVersionId, selectedField)
+    );
   }
 }

@@ -1,33 +1,19 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { HydroServingState } from '@core/reducers';
-import { getSelectedModelVersion } from '@models/reducers';
+import { getSelectedModelVersionId } from '@models/reducers';
 import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
-    selector: 'hs-profiler',
-    templateUrl: './model-version-profiler.component.html',
+  selector: 'hs-profiler',
+  templateUrl: './model-version-profiler.component.html',
 })
-export class ModelVersionProfilerComponent implements OnDestroy {
-    public modelVersionId: number;
-    private selectedModelVersionSub: Subscription;
-
-    constructor(
-        private store: Store<HydroServingState>
-    ) {
-        this.selectedModelVersionSub = this.store.select(getSelectedModelVersion).pipe(
-            tap(modelVersion => {
-                if (modelVersion) {
-                    this.modelVersionId = modelVersion.id;
-                } else {
-                    this.modelVersionId = undefined;
-                }
-            })
-        ).subscribe();
-    }
-
-    ngOnDestroy(): void {
-        this.selectedModelVersionSub.unsubscribe();
-    }
+export class ModelVersionProfilerComponent {
+  modelVersionId$: Observable<number>;
+  constructor(private store: Store<HydroServingState>) {
+    this.modelVersionId$ = this.store
+      .select(getSelectedModelVersionId)
+      .pipe(filter(id => id));
+  }
 }
