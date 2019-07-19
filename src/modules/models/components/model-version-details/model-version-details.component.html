@@ -23,6 +23,14 @@
           </span>
         </li>
         <li class="information__item">
+          <span class="information__item-title">Runtime</span>
+          <span class="information__item-value">
+            <div class="runtime">
+              {{ modelVersion.runtime.name }}
+            </div>
+          </span>
+        </li>
+        <li class="information__item">
           <span class="information__item-title">Status</span>
           <ng-container *ngIf="modelVersion.status; let status">
             <span

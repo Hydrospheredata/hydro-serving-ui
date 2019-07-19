@@ -6,17 +6,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SignaturesService } from '@core/services';
 import { HttpService } from '@core/services/http';
 import * as fromModels from '@models/reducers';
-import { MemoizedSelector, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import {
   ProfilesComparisonHistogramComponent,
   ProfilesComponent,
   ProfileStatsComponent,
 } from '@profiler/components';
-import { Servable } from '@servables/models';
-import { selectServablesByModelVersionId } from '@servables/selectors';
-import { State as servableState} from '@servables/state';
-import { ModelVersion } from '@shared/_index';
 import { SharedModule } from '@shared/shared.module';
 import { ModelVersionLogComponent } from '@testing/components';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';

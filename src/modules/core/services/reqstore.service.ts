@@ -17,7 +17,6 @@ interface ReqstoreRequestParams {
   maxBytes?: string;
   maxMessages?: string;
   reverse?: string;
-  health?: string;
 }
 
 @Injectable()
@@ -35,13 +34,11 @@ export class ReqstoreService {
     maxBytes,
     maxMessages,
     reverse,
-    health,
   }: ReqstoreRequestParams): Observable<any> {
     const f = this.fromSecondsToMicroseconds(from);
     const t = this.fromSecondsToMicroseconds(till);
-
     const params: HttpParams = new HttpParams({
-      fromObject: { maxBytes, maxMessages, reverse, health },
+      fromObject: { maxBytes, maxMessages, reverse },
     });
 
     return this.http

@@ -13,7 +13,6 @@ import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
   selector: 'hs-predict-request',
   templateUrl: './predict-request.component.html',
   styleUrls: ['./predict-request.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PredictRequestComponent implements OnInit {
   @Input()
@@ -36,6 +35,10 @@ export class PredictRequestComponent implements OnInit {
       getFiledNameByTensorDataType(tensorProto.dtype)
     );
     const data = tensorProto[field];
-    return data;
+    try {
+      return data.join(', ');
+    } catch {
+      return data;
+    }
   }
 }

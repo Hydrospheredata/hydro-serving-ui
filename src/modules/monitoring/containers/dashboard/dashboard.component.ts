@@ -70,7 +70,7 @@ export class DashboardComponent implements OnInit {
             maxMBytes: this.maxMBytes,
             maxMessages: this.maxMessages,
             reverse: this.reverse,
-            health: this.loadFailed ? 0 : undefined,
+            loadOnlyFailed: this.loadFailed ? 0 : undefined,
           })
           .pipe(
             catchError(err => {

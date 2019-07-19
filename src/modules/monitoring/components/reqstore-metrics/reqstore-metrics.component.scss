@@ -1,0 +1,110 @@
+@import "variables";
+
+.metrics {
+  &__title {
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin-left: 0px;
+    margin-top: 4px;
+    color: $neutral-color-700;
+  }
+
+  &__list {
+    margin-left: 8px;
+  }
+
+  &__table {
+    border-collapse: collapse;
+
+    &-cell {
+      padding: 0 8px;
+      color: $neutral-color-600;
+      vertical-align: top;
+      &--accent {
+        color: $neutral-color-800;
+      }
+
+      &--failed {
+        color: $supportive-color-red-700;
+      }
+    }
+  }
+
+  &__item {
+    &-features {
+      text-transform: uppercase;
+      font-size: 10px;
+      color: #bfbfbf;
+
+      &-count {
+        color: black;
+
+        &--is-failed {
+          color: #ff5151;
+        }
+      }
+    }
+
+    &-name {
+      color: grey;
+      margin-right: 8px;
+      width: 100%;
+    }
+
+    &-key {
+      color: grey;
+      margin-right: 4px;
+    }
+
+    &-value {
+      &--is-false {
+        color: #ff5151;
+      }
+    }
+  }
+}
+
+.feature {
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__item {
+    font-size: 10px;
+    display: flex;
+    margin-bottom: 12px;
+    background: whitesmoke;
+    margin-right: 4px;
+
+    &-index {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: $neutral-color-100;
+      min-width: 24px;
+
+      &--failed {
+        background: $supportive-color-red-100;
+        color: $supportive-color-red-700;
+      }
+    }
+
+    &-data {
+      line-height: 12px;
+      width: 100%;
+      padding: 0px 4px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      &-keys {
+        color: $neutral-color-600;
+        font-family: $font-family-light;
+      }
+
+      &-values {}
+    }
+  }
+}

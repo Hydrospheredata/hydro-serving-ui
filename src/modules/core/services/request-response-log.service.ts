@@ -42,7 +42,7 @@ export class RequestResponseLogService {
     maxMBytes = 5,
     maxMessages = 25,
     reverse = true,
-    health,
+    loadOnlyFailed,
   }): Observable<any> {
     const reqstoreLog$ = this.reqstoreRequest({
       timeInterval,
@@ -50,11 +50,11 @@ export class RequestResponseLogService {
       maxMBytes,
       maxMessages,
       reverse,
-      health,
     });
     const sonarData$ = this.sonarRequest({
       timeInterval,
       metricSpecifications,
+      loadOnlyFailed,
     });
     return combineLatest(reqstoreLog$, sonarData$).pipe(
       map(([reqstoreLog, sonarData]) =>
@@ -69,7 +69,6 @@ export class RequestResponseLogService {
     maxMBytes,
     maxMessages,
     reverse,
-    health,
   }) {
     return this.reqstoreService.getData({
       modelVersionId: modelVersion.id,
@@ -78,18 +77,17 @@ export class RequestResponseLogService {
       maxBytes: `${+maxMBytes * 1024 * 1024}`,
       maxMessages: `${maxMessages}`,
       reverse: reverse ? 'true' : 'false',
-      health,
     });
   }
 
   private sonarRequest({
     timeInterval,
     metricSpecifications,
-    onlyFailedReqstoreData = false,
+    loadOnlyFailed,
   }: {
     timeInterval: TimeInterval;
     metricSpecifications: MetricSpecification[];
-    onlyFailedReqstoreData?: boolean;
+    loadOnlyFailed?: boolean;
   }): Observable<IMetricData[][]> {
     const options: {
       from: string;
@@ -100,7 +98,7 @@ export class RequestResponseLogService {
       till: `${Math.floor(timeInterval.to / 1000)}`,
     };
 
-    if (onlyFailedReqstoreData) {
+    if (loadOnlyFailed !== undefined ) {
       options.health = '0';
     }
 
@@ -118,7 +116,6 @@ export class RequestResponseLogService {
     if (_.isEmpty(reqstoreLog) || sonarData.length === 0) {
       return {};
     }
-
     const log = {};
     const metricsCount = sonarData.length;
 
@@ -127,7 +124,6 @@ export class RequestResponseLogService {
 
       for (const currentMetricData of currentMetricDataArray) {
         const traces = currentMetricData.labels.traces;
-
         if (traces.length === 0) {
           continue;
         }

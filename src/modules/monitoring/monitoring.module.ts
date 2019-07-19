@@ -12,6 +12,7 @@ import {
   HealthTimelineMiniComponent,
   ReqstoreTableLogComponent,
   MetricSpecConfigComponent,
+  ReqstoreMetricsComponent,
 } from '@monitoring/components';
 import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-service-status.effects';
 import { EffectsModule } from '@ngrx/effects';
@@ -49,6 +50,7 @@ import { reducer } from './reducers';
     ReqstoreTableLogComponent,
     MetricSpecConfigComponent,
     ReqResLogsComponent,
+    ReqstoreMetricsComponent,
   ],
   imports: [
     SharedModule,

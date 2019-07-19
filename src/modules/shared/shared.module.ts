@@ -61,7 +61,6 @@ import {
     CopyToBufferDirective,
     BuildInformationDirective,
     PixelToCanvasDirective,
-    ExpandableDirective,
 } from './directives/_index';
 
 const PIPES = [
@@ -111,7 +110,6 @@ const DIRECTIVES = [
     CopyToBufferDirective,
     BuildInformationDirective,
     PixelToCanvasDirective,
-    ExpandableDirective,
 ];
 
 @NgModule({

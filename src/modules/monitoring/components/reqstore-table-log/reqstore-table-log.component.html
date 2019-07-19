@@ -4,6 +4,7 @@
     <div class="reqstore__header-details">Details</div>
   </div>
   <div *ngIf="loading" class="log__loader">
+    <hydro-icon type="icon-circle" class="icon log__loader-icon"></hydro-icon>
     loading
   </div>
   <ng-container *ngIf="logNotEmpty(); else emptyLog">
@@ -21,7 +22,7 @@
           <span>
             <span
               *ngIf="logItem.value.failed"
-              class="log__timestamps-item-failed-count"
+              class="log__timestamps-item-failed"
               >!</span
             >
           </span>
@@ -29,7 +30,13 @@
       </div>
       <div class="log__details">
         <div class="log__details-header">
-          <button hs-button kind="flat" color="primary" (click)="getExplanation()">
+          <button
+            hs-button
+            kind="flat"
+            color="primary"
+            (click)="getExplanation()"
+            disabled
+          >
             Get explanation
           </button>
         </div>
@@ -37,117 +44,21 @@
           <ng-container *ngIf="selectedLogItem">
             <div class="log__details-item">
               <div class="log__details-item-request">
-                <div class="log__details-item-title">request</div>
                 <hs-predict-request
                   [request]="selectedLogItem.request"
                   [modelVersion]="modelVersion"
                 ></hs-predict-request>
               </div>
               <div class="log__details-item-response">
-                <div class="log__details-item-title">response</div>
                 <hs-predict-response
                   [response]="selectedLogItem.response"
                   [modelVersion]="modelVersion"
                 ></hs-predict-response>
               </div>
-              <div class="metrics log__details-item-metrics">
-                <div class="metrics__title">Metrics</div>
-                <div class="metrics__list">
-                  <div
-                    class="metrics__item"
-                    *ngFor="let metric of selectedLogItem.metrics | keyvalue"
-                  >
-                    <div
-                      *ngIf="
-                        metricHasManyFeatures(metric.value);
-                        else singleFeature
-                      "
-                    >
-                      <div class="expandable" hsExpandable>
-                        <div class="expandable__header" #expandableHeader>
-                          <span class="metrics__item-name">
-                            {{ metric.key }}
-                          </span>
-                          <span class="metrics__item-features">
-                            Features:
-                            <span class="metrics__item-features-count">{{
-                              featuresCount(metric.value)
-                            }}</span>
-                            Failed:
-                            <span
-                              class="metrics__item-features-count"
-                              [ngClass]="{
-                                'metrics__item-features-count--is-failed':
-                                  failedCount(metric.value) > 0
-                              }"
-                              >{{ failedCount(metric.value) }}</span
-                            >
-                          </span>
-                          <span class="expandable__text" #expandableText></span>
-                        </div>
-                        <div class="feature__list" #expandableBody>
-                          <div
-                            class="feature__item"
-                            *ngFor="
-                              let columnIndex of metric.value
-                                | keyvalue: valueAscOrder
-                            "
-                          >
-                            <div
-                              [ngClass]="{
-                                'feature__item-index--failed': isFailedFeature(
-                                  columnIndex.value
-                                )
-                              }"
-                              class="feature__item-index"
-                            >
-                              {{ columnIndex.key }}
-                            </div>
-                            <div
-                              class="feature__item-data feature__item-data-keys"
-                            >
-                              <div
-                                *ngFor="
-                                  let item of columnIndex.value | keyvalue
-                                "
-                              >
-                                {{ item.key }}
-                              </div>
-                            </div>
-                            <div
-                              class="feature__item-data feature__item-data-values"
-                            >
-                              <div
-                                *ngFor="
-                                  let item of columnIndex.value | keyvalue
-                                "
-                              >
-                                {{ item.value.value }}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <ng-template #singleFeature>
-                      <div
-                        class="metrics__item"
-                        *ngFor="let item of metric.value[0] | keyvalue"
-                      >
-                        <span class="metrics__item-key">{{ item.key }}</span>
-                        <span
-                          [ngClass]="{
-                            'metrics__item-value--is-false':
-                              item.value.health === false
-                          }"
-                          class="metrics__item-value"
-                        >
-                          {{ item.value.value }}
-                        </span>
-                      </div>
-                    </ng-template>
-                  </div>
-                </div>
+              <div class="log__details-item-metrics">
+                <hs-reqstore-metrics
+                  [metrics]="selectedLogItem.metrics"
+                ></hs-reqstore-metrics>
               </div>
             </div>
           </ng-container>
