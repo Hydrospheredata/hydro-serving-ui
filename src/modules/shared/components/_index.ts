@@ -18,5 +18,6 @@ export * from './predict-response/predict-response.component';
 export * from './tensor-image-list/tensor-image-list.component';
 export * from './logs/logs.component';
 export * from './tooltip/tooltip.component';
+export * from './expander/expander.component';
 // dialogs
 export * from './dialogs';

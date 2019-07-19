@@ -47,7 +47,8 @@ import {
     AlertMessageComponent,
     LogsComponent,
     ButtonComponent,
-    TooltipComponent
+    TooltipComponent,
+    ExpanderComponent,
 } from './components/_index';
 
 // Directives
@@ -102,6 +103,7 @@ const COMPONENTS = [
     LogsComponent,
     ButtonComponent,
     TooltipComponent,
+    ExpanderComponent,
 ];
 
 const DIRECTIVES = [
