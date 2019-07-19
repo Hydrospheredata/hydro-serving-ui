@@ -1,3 +1,5 @@
+@import "variables";
+
 .reqstore {
   background: white;
   position: relative;
@@ -11,16 +13,16 @@
       max-width: 200px;
       padding: 8px;
       font-weight: bold;
-      color: #8d93a7;
-      background: #efefef;
+      color: $neutral-color-700;
+      background:  white;
       width: 100%;
     }
 
     &-details {
       padding: 8px;
       font-weight: bold;
-      color: #8d93a7;
-      background: white;
+      color: $neutral-color-700;
+      background:  white;
       width: 100%;
     }
   }
@@ -60,15 +62,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #404690;
+    color: $neutral-color-700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    ;
+    &-icon {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   &__timestamps {
     min-width: 200px;
-    background: #efefef;
+    background: white;
     max-height: 400px;
     overflow: scroll;
     font-size: 12px;
@@ -79,21 +84,14 @@
       justify-content: space-between;
       transition: .3s color ease;
       cursor: pointer;
-      color: #ababab;
-
-      &-count,
-      &-failed-count {
-        color: #3024809c;
+      color: $neutral-color-200;
+      &-failed {
+        color: $supportive-color-red-700;
       }
-
-      &-failed-count {
-        color: #ff4141;
-      }
-
       &--selected,
       &:hover {
-        background: white;
-        color: rgb(37, 37, 37);
+        color: $primary-color-500;
+        border-right: 2px $primary-color-500 solid; 
       }
     }
   }
@@ -103,7 +101,7 @@
     max-width: 100%;
     overflow: scroll;
     max-height: 400px;
-    background: white;
+    background:$neutral-color-100;
     font-size: 12px;
 
     &-header {
@@ -121,10 +119,14 @@
       &-response,
       &-metrics {
         margin-bottom: 8px;
+        background: white;
+        border: 2px $neutral-color-200 solid;
+        border-radius: 4px;
+        padding: 4px 8px;
       }
 
       &-title {
-        color: rgb(100, 100, 100);
+        color: $neutral-color-500;
         text-transform: uppercase;
       }
     }
@@ -136,49 +138,7 @@
   max-height: 400px;
 }
 
-.metrics {
-  &__title {
-    color: #646464;
-    text-transform: uppercase;
-  }
 
-  &__list {
-    margin-left: 8px;
-  }
-
-  &__item {
-    &-features {
-      text-transform: uppercase;
-      font-size: 10px;
-      color: #bfbfbf;
-
-      &-count {
-        color: black;
-
-        &--is-failed {
-          color: #ff5151;
-        }
-      }
-    }
-
-    &-name {
-      color: grey;
-      margin-right: 8px;
-      width: 100%;
-    }
-
-    &-key {
-      color: grey;
-      margin-right: 4px;
-    }
-
-    &-value {
-      &--is-false {
-        color: #ff5151;
-      }
-    }
-  }
-}
 
 .time-interval {
   display: flex;
@@ -190,49 +150,6 @@
   &__label {
     line-height: 14px;
     margin-right: 4px;
-  }
-}
-
-.feature {
-  &__list {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  &__item {
-    font-size: 10px;
-    display: flex;
-    margin-bottom: 12px;
-    background: whitesmoke;
-    margin-right: 4px;
-
-    &-index {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #cbd7ff;
-      min-width: 24px;
-
-      &--failed {
-        background: #f9b4b4;
-        color: #ce4c4c;
-      }
-    }
-
-    &-data {
-      line-height: 12px;
-      width: 100%;
-      padding: 0px 4px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-
-      &-keys {
-        color: grey;
-      }
-
-      &-values {}
-    }
   }
 }
 

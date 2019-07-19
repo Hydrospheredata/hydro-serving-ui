@@ -1,0 +1,71 @@
+<div class="metrics log__details-item-metrics">
+  <div class="metrics__title">Metrics</div>
+  <table class="metrics__table">
+    <tr *ngFor="let metric of metrics | keyvalue">
+      <ng-container
+        *ngTemplateOutlet="
+          metricHasManyFeatures(metric.value) ? expandableMetric : simpleMetric;
+          context: { $implicit: metric }
+        "
+      >
+      </ng-container>
+    </tr>
+  </table>
+</div>
+
+<ng-template #simpleMetric let-metric>
+  <td class="metrics__table-cell metrics__table-cell--accent">
+    <div *ngFor="let item of metric.value[0] | keyvalue">
+      {{ item.key }}
+    </div>
+  </td>
+  <td class="metrics__table-cell">
+    <div
+      [ngClass]="{
+        'metrics__table-cell--failed': item.value.health === false
+      }"
+      *ngFor="let item of metric.value[0] | keyvalue"
+    >
+      {{ item.value.value }}
+    </div>
+  </td>
+</ng-template>
+
+<ng-template #expandableMetric let-metric>
+  <td class="metrics__table-cell metrics__table-cell--accent">
+    {{ metric.key }}
+  </td>
+  <td class="metrics__table-cell">
+    <div hs-expander maxHeight="60">
+      <div #expand>
+        <div class="feature__list">
+          <div
+            class="feature__item"
+            *ngFor="let columnIndex of metric.value | keyvalue: valueAscOrder"
+          >
+            <div
+              [ngClass]="{
+                'feature__item-index--failed': isFailedFeature(
+                  columnIndex.value
+                )
+              }"
+              class="feature__item-index"
+            >
+              {{ columnIndex.key }}
+            </div>
+            <div class="feature__item-data feature__item-data-keys">
+              <div *ngFor="let item of columnIndex.value | keyvalue">
+                {{ item.key }}
+              </div>
+            </div>
+            <div class="feature__item-data feature__item-data-values">
+              <div *ngFor="let item of columnIndex.value | keyvalue">
+                {{ item.value.value }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </td>
+</ng-template>

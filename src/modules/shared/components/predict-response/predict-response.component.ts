@@ -35,6 +35,10 @@ export class PredictResponseComponent implements OnInit {
       getFiledNameByTensorDataType(tensorProto.dtype)
     );
     const data = tensorProto[field];
-    return data;
+    try {
+      return data.join(', ');
+    } catch {
+      return data;
+    }
   }
 }

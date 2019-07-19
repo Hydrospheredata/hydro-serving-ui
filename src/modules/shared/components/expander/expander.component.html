@@ -1,0 +1,12 @@
+<div class="expander" #expandBody [style.max-height]="getMaxHeight()">
+  <ng-content></ng-content>
+</div>
+<div [hidden]="!expandable" class="expander__button" #expandButton>
+  <hydro-icon
+    type="icon-arrow-down"
+    class="icon expander__button-icon"
+    [ngClass]="{ 'expander__button-icon--rotate': expanded }"
+  ></hydro-icon>
+
+  {{ buttonTitle }}
+</div>

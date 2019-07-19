@@ -18,6 +18,7 @@ export class ReqResLogsComponent implements OnInit {
   maxMBytes: number = 5;
   reverse: boolean = true;
   loadFailed: boolean = true;
+  loading: boolean = false;
 
   updateLogButtonClick$: BehaviorSubject<any> = new BehaviorSubject('');
   @Input() modelVersion$: Observable<ModelVersion>;
@@ -38,6 +39,7 @@ export class ReqResLogsComponent implements OnInit {
     ).pipe(
       filter(([mv, metricSpecifications]) => !!metricSpecifications && !!mv),
       exhaustMap(([timeInterval, modelVersion, metricSpecifications]) => {
+        this.loading = true;
         return this.reqResLogService
           .getLog({
             timeInterval,
@@ -46,11 +48,13 @@ export class ReqResLogsComponent implements OnInit {
             maxMBytes: this.maxMBytes,
             maxMessages: this.maxMessages,
             reverse: this.reverse,
-            health: this.loadFailed ? 0 : undefined,
+            loadOnlyFailed: this.loadFailed ? 0 : undefined,
           })
           .pipe(
+            tap(() => this.loading = false ),
             catchError(err => {
               console.error('err');
+              this.loading = false;
               return throwError(err);
             })
           );

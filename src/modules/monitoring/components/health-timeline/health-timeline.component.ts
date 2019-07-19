@@ -269,8 +269,8 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
           this.monitoringService.getAggregation({
             metricSpecification,
             steps: '200',
-            from: `${Math.floor(fromInMs / 1000)}`,
-            till: `${Math.floor(tillInMs / 1000)}`,
+            from: `${Math.floor(fromInMs)}`,
+            till: `${Math.floor(tillInMs)}`,
           })
         );
       }
@@ -288,8 +288,8 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
     const requests = this.metricSpecifications.map(metricSpecification =>
       this.monitoringService.getAggregation({
         metricSpecification,
-        from: `${Math.floor(timeInterval.from / 1000)}`,
-        till: `${Math.floor(timeInterval.to / 1000)}`,
+        from: `${Math.floor(timeInterval.from)}`,
+        till: `${Math.floor(timeInterval.to)}`,
         steps: '50',
       })
     );

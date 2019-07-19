@@ -1,24 +1,31 @@
+@import "variables";
 .response {
   max-width: 100%;
   overflow: scroll;
   padding-bottom: 14px;
 
   &__outputs {
-    margin-left: 8px;
-
     &-title {
       text-transform: uppercase;
       font-size: 10px;
       letter-spacing: 1px;
       margin-left: 0px;
       margin-top: 4px;
-      color: #b3b3b3
+      color: $neutral-color-700;
     }
 
-    &-list {
-      font-size: 12px;
-      white-space: nowrap;
+    &-table {
+      &-row {}
+      &-cell {
+        vertical-align: top;
+        padding: 4px 8px;
+        color: $neutral-color-600;
+        &--accent {
+          color: $neutral-color-800;
+        }
+      }
     }
+
   }
 
   &__output {

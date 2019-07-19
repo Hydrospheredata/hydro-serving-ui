@@ -47,7 +47,8 @@ import {
     AlertMessageComponent,
     LogsComponent,
     ButtonComponent,
-    TooltipComponent
+    TooltipComponent,
+    ExpanderComponent,
 } from './components/_index';
 
 // Directives
@@ -60,7 +61,6 @@ import {
     CopyToBufferDirective,
     BuildInformationDirective,
     PixelToCanvasDirective,
-    ExpandableDirective,
 } from './directives/_index';
 
 const PIPES = [
@@ -102,6 +102,7 @@ const COMPONENTS = [
     LogsComponent,
     ButtonComponent,
     TooltipComponent,
+    ExpanderComponent,
 ];
 
 const DIRECTIVES = [
@@ -109,7 +110,6 @@ const DIRECTIVES = [
     CopyToBufferDirective,
     BuildInformationDirective,
     PixelToCanvasDirective,
-    ExpandableDirective,
 ];
 
 @NgModule({
