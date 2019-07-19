@@ -155,8 +155,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                 events: {
                     selection: event => {
                         if (event.xAxis && event.xAxis[0]) {
-                            const from = Math.floor(event.xAxis[0].min / 1000);
-                            const to = Math.ceil(event.xAxis[0].max / 1000);
+                            const from = Math.floor(event.xAxis[0].min);
+                            const to = Math.ceil(event.xAxis[0].max);
                             self.selectPoints.emit({from, to});
                         }
                         return false;
@@ -292,8 +292,8 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
                     const id = `${from.timestamp}_${to.timestamp}`;
                     this.chartBands[metricName].push(id);
                     this.chart.xAxis[0].addPlotBand({
-                        from: from.timestamp * 1000,
-                        to: to.timestamp * 1000,
+                        from: from.timestamp,
+                        to: to.timestamp,
                         color: 'rgba(176, 0, 32, 0.2)',
                         id,
                         events: {
@@ -374,7 +374,7 @@ export class BaseMetricChartComponent implements OnInit, OnChanges, OnDestroy {
             }
 
             newSeries[uniqName].data.push({
-                x: timestamp * 1000,
+                x: timestamp,
                 y: value,
                 name: timestamp,
                 key: currentMetricData,

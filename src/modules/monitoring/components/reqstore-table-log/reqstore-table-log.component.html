@@ -17,7 +17,7 @@
           *ngFor="let logItem of logData | keyvalue"
           (click)="selectLogItem(logItem.key)"
         >
-          <span>{{ logItem.value.ts / 1000000 | moment }}</span>
+          <span>{{ logItem.value.ts | moment }}</span>
           <span>
             <span
               *ngIf="logItem.value.failed"

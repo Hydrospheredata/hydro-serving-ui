@@ -37,15 +37,13 @@ export class ReqstoreService {
     reverse,
     health,
   }: ReqstoreRequestParams): Observable<any> {
-    const f = this.fromSecondsToMicroseconds(from);
-    const t = this.fromSecondsToMicroseconds(till);
 
     const params: HttpParams = new HttpParams({
       fromObject: { maxBytes, maxMessages, reverse, health },
     });
 
     return this.http
-      .get(`${this.baseReqstoreUrl}/${modelVersionId}/get?from=${f}&to=${t}`, {
+      .get(`${this.baseReqstoreUrl}/${modelVersionId}/get?from=${from}&to=${till}`, {
         responseType: 'arraybuffer',
         params,
       })
@@ -76,16 +74,5 @@ export class ReqstoreService {
           return parsedLog;
         })
       );
-  }
-
-  fromSecondsToMicroseconds(timestamp): number {
-    try {
-      const MICROSECONDS_LENGTH = 19;
-      const ts = timestamp + '';
-
-      return +ts * Math.pow(10, MICROSECONDS_LENGTH - ts.length);
-    } catch (e) {
-      throw Error('Cant convert timestamp to microseconds');
-    }
   }
 }
