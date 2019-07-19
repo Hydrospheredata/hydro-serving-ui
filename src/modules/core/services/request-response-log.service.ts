@@ -94,8 +94,8 @@ export class RequestResponseLogService {
       till: string;
       health?: string;
     } = {
-      from: `${Math.floor(timeInterval.from / 1000)}`,
-      till: `${Math.floor(timeInterval.to / 1000)}`,
+      from: `${Math.floor(timeInterval.from)}`,
+      till: `${Math.floor(timeInterval.to)}`,
     };
 
     if (loadOnlyFailed !== undefined ) {

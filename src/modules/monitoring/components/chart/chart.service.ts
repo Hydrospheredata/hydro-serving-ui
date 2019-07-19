@@ -193,8 +193,8 @@ export class ChartService {
     timeInterval: TimeInterval,
     metricSpecification: MetricSpecification
   ): Observable<SonarMetricData[]> {
-    const fromInSeconds = `${Math.floor(timeInterval.from / 1000)}`;
-    const tillInSeconds = `${Math.floor(timeInterval.to / 1000)}`;
+    const fromInSeconds = `${Math.floor(timeInterval.from)}`;
+    const tillInSeconds = `${Math.floor(timeInterval.to)}`;
 
     return this.monitoringService.getMetricsInRange(metricSpecification, {
       from: fromInSeconds,
@@ -206,8 +206,8 @@ export class ChartService {
     metricSpecification: MetricSpecification,
     feature: number
   ): Observable<SonarMetricData[]> {
-    const fromInSeconds = `${Math.floor(timeInterval.from / 1000)}`;
-    const tillInSeconds = `${Math.floor(timeInterval.to / 1000)}`;
+    const fromInSeconds = `${Math.floor(timeInterval.from)}`;
+    const tillInSeconds = `${Math.floor(timeInterval.to)}`;
 
     return this.monitoringService.getMetricsInRange(metricSpecification, {
       from: fromInSeconds,
