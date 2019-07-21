@@ -58,7 +58,6 @@ export class DialogMetricComponent implements OnInit {
   form: FormGroup;
   applications$: Observable<Application[]>;
   sources$: Observable<string[]>;
-  actionName: string = 'Save';
   modelVersion: ModelVersion;
 
   metricSpecificationKinds: IMetricSpecificationKind[] = [
@@ -93,8 +92,6 @@ export class DialogMetricComponent implements OnInit {
     this.sources$ = this.modelVersion$.pipe(
       switchMap(modelVersion => of(this.getInputNames(modelVersion)))
     );
-
-    this.setActionName();
   }
 
   ngOnInit() {
@@ -109,8 +106,8 @@ export class DialogMetricComponent implements OnInit {
     kindChange.subscribe(() => this.kindChanged({}));
   }
 
-  setActionName(): void {
-    this.actionName = this.metricSpecification ? 'Edit' : 'Add';
+  get actionName(): string {
+    return this.metricSpecification ? 'Edit' : 'Add';
   }
 
   withHealthChanged() {

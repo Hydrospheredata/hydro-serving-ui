@@ -1,37 +1,45 @@
 .build-info {
-    &__title {
-        text-transform: uppercase;
-        text-align: center;
-        font-size: 18px;
-        letter-spacing: 1px;
-        color: #35495a;
-        margin-bottom: 24px
-    }
+  &__title {
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #35495a;
+    margin-bottom: 24px
+  }
 
-    &__service-info {
-        margin-bottom: 24px;
-    }
+  &__buttons {
+      display: flex;
+      justify-content: flex-end;
+  }
+  &__service-info {
+    margin-bottom: 24px;
+  }
 }
 
 .service-info {
-    &__title {
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #213f48;
-        font-weight: 700;
-        margin-bottom: 8px
-    }
-    &__container {
-        display: flex;
-    }
-    &__key, &__value {
-        min-height: 24px;
-    }
-    &__key {
-        color: #787d82;
-        font-size: 12px;
-        letter-spacing: 1px;
-        text-align: right;
-        padding-right: 4px;
-    }
+  &__title {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #213f48;
+    font-weight: 700;
+    margin-bottom: 8px
+  }
+
+  &__container {
+    display: flex;
+  }
+
+  &__key,
+  &__value {
+    min-height: 24px;
+  }
+
+  &__key {
+    color: #787d82;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-align: right;
+    padding-right: 4px;
+  }
 }

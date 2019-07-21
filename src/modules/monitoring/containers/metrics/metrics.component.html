@@ -1,4 +1,4 @@
-<div class="a">
+<div class="wrap">
   <div class="layout" *ngIf="layout"></div>
   <ng-container #container></ng-container>
 
@@ -21,6 +21,6 @@
   </div>
 
   <div class="buttons">
-    <button hs-button (click)="onClose()">close</button>
+    <button hs-button (click)="onClose()" hsAutofocused>close</button>
   </div>
 </div>
