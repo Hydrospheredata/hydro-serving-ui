@@ -33,6 +33,9 @@
     </div>
   </form>
   <div class="buttons">
+    <button hs-button (click)="onClose()" hsAutofocused>
+      cancel
+    </button>
     <button
       hs-button
       kind="flat"
@@ -41,9 +44,6 @@
       (click)="onSubmit()"
     >
       {{ actionName }} Metric
-    </button>
-    <button hs-button (click)="onClose()" hsAutofocused>
-      cancel
     </button>
   </div>
 </div>
