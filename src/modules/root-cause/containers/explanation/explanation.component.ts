@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
+import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
-import { Store } from '@ngrx/store';
+import { ExplanationRequestBody } from '@rootcause/interfaces';
+import { RootCauseFacade } from '@rootcause/state/root-cause.facade';
 import { Observable } from 'rxjs';
-import { GetExplanation } from '../../actions';
 import { Explanation } from '../../models';
-import * as rootCauseSelectors from '../../selectors';
+
+export const EXPLANATION_REQUEST_BODY = new InjectionToken<
+  ExplanationRequestBody
+>('');
 @Component({
   templateUrl: 'explanation.component.html',
   styleUrls: ['explanation.component.scss'],
@@ -15,16 +17,16 @@ export class ExplanationComponent implements OnInit {
   isLoading$: Observable<boolean>;
   error$: Observable<string>;
   constructor(
-    private store: Store<HydroServingState>,
-    private dialogService: DialogService
+    private facade: RootCauseFacade,
+    private dialogService: DialogService,
+    @Inject(EXPLANATION_REQUEST_BODY) private requestBody: ExplanationRequestBody
   ) {}
 
   ngOnInit(): void {
-    this.explanation$ = this.store.select(rootCauseSelectors.getExplanation);
-    this.isLoading$ = this.store.select(rootCauseSelectors.isLoading);
-    this.error$ = this.store.select(rootCauseSelectors.getError);
-
-    this.store.dispatch(GetExplanation());
+    this.explanation$ = this.facade.explanation$;
+    this.isLoading$ = this.facade.isLoading$;
+    this.error$ = this.facade.error$;
+    this.facade.getExplanation(this.requestBody);
   }
 
   close() {

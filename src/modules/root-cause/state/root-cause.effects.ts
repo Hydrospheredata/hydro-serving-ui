@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { EMPTY, of } from 'rxjs';
 import { exhaustMap, map, catchError } from 'rxjs/operators';
-import * as rootCauseActions from '../actions';
 import { RootCauseService } from '../services/root-cause.service';
+import * as rootCauseActions from './root-cause.actions';
 
 @Injectable()
 export class RootCauseEffects {
@@ -11,7 +11,7 @@ export class RootCauseEffects {
   getExplanation$ = this.actions$.pipe(
     ofType(rootCauseActions.GetExplanation),
     exhaustMap(action => {
-      return this.rootCause.getExplanation().pipe(
+      return this.rootCause.getExplanation(action.requestBody).pipe(
         map(explanation =>
           rootCauseActions.GetExplanationSuccess({ explanation })
         ),

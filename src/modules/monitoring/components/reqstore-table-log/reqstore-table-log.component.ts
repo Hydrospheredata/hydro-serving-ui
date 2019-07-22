@@ -12,6 +12,7 @@ import { IMetricData } from '@core/services/metrics/monitoring.service';
 import { ModelVersion } from '@shared/models/_index';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 import * as _ from 'lodash';
+import { ExplanationRequestBody } from '@rootcause/interfaces';
 
 @Component({
   selector: 'hs-reqstore-table-log',
@@ -29,7 +30,7 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   loading: any = false;
 
   @Output()
-  clickedGetExplanation: EventEmitter<any> = new EventEmitter();
+  clickedGetExplanation: EventEmitter<ExplanationRequestBody> = new EventEmitter();
 
   uid: string;
   ngOnChanges(changes: SimpleChanges): void {
@@ -64,6 +65,14 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   }
 
   getExplanation(): void {
-    this.clickedGetExplanation.next();
+    const explained_instance = this.selectedLogItem;
+    debugger;
+    this.clickedGetExplanation.next({
+      model: {
+        name: this.modelVersion.model.name,
+        version: `${this.modelVersion.modelVersion}`
+      },
+      explained_instance,
+    });
   }
 }

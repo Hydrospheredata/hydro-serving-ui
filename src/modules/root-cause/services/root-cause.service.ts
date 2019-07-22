@@ -1,25 +1,20 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
-import { Observable, of, throwError } from 'rxjs';
-import { Explanation } from '../models';
+import { environment } from '@environments/environment';
+import { ExplanationRequestBody } from '@rootcause/interfaces';
+import { Observable } from 'rxjs';
+
 @Injectable({
   providedIn: 'root',
 })
 export class RootCauseService {
-  constructor(private http: HttpService) {}
+  private url: string;
+  constructor(private http: HttpService) {
+    this.url = environment.reqstoreUrl;
+  }
 
-  getExplanation(): Observable<Explanation> {
-    return of(
-      new Explanation({
-        coverage: 0.001,
-        explanation:
-          `Hours per week > 36.0 AND
-           Capital Loss == None AND
-           Sex ==  Male AND
-           Education == Prof-School AND
-           Workclass ==  Local-gov`,
-        precision: 1.0,
-      })
-    );
+  getExplanation(body: ExplanationRequestBody): Observable<any> {
+    const url = `${this.url}/rise`;
+    return this.http.post(url, body);
   }
 }

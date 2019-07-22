@@ -13,6 +13,8 @@ import {
   ReqstoreTableLogComponent,
   MetricSpecConfigComponent,
   ReqstoreMetricsComponent,
+  PredictRequestComponent,
+  PredictResponseComponent,
 } from '@monitoring/components';
 import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-service-status.effects';
 import { EffectsModule } from '@ngrx/effects';
@@ -51,6 +53,8 @@ import { reducer } from './reducers';
     MetricSpecConfigComponent,
     ReqResLogsComponent,
     ReqstoreMetricsComponent,
+    PredictRequestComponent,
+    PredictResponseComponent,
   ],
   imports: [
     SharedModule,

@@ -25,6 +25,7 @@
       "@timemachine/*": ["modules/timemachine/*"],
       "@dialog/*": ["modules/dialog/*"],
       "@servables/*": ["modules/servables/*"],
+      "@rootcause/*": ["modules/root-cause/*"],
       "@testing/*": ["testing/*"]
     },
     "typeRoots": ["node_modules/@types"],

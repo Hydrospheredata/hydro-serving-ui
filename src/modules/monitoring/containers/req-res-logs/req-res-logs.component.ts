@@ -5,7 +5,11 @@ import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { combineLatest, Observable, BehaviorSubject, throwError } from 'rxjs';
 import { filter, exhaustMap, catchError, tap } from 'rxjs/operators';
-import { ExplanationComponent } from '../../../root-cause/containers';
+import {
+  ExplanationComponent,
+  EXPLANATION_REQUEST_BODY,
+} from '../../../root-cause/containers';
+import { ExplanationRequestBody } from '@rootcause/interfaces';
 
 @Component({
   selector: 'hs-req-res-logs',
@@ -25,6 +29,7 @@ export class ReqResLogsComponent implements OnInit {
   @Input() timeInterval$: Observable<TimeInterval>;
   @Input() metricSpecs$: Observable<MetricSpecification[]>;
 
+  private modelVersion: ModelVersion;
   constructor(
     private reqResLogService: RequestResponseLogService,
     private dialogService: DialogService
@@ -38,6 +43,9 @@ export class ReqResLogsComponent implements OnInit {
       this.updateLogButtonClick$
     ).pipe(
       filter(([mv, metricSpecifications]) => !!metricSpecifications && !!mv),
+      tap(([_, modelVersion]) => {
+        this.modelVersion = modelVersion;
+      }),
       exhaustMap(([timeInterval, modelVersion, metricSpecifications]) => {
         this.loading = true;
         return this.reqResLogService
@@ -51,7 +59,7 @@ export class ReqResLogsComponent implements OnInit {
             loadOnlyFailed: this.loadFailed ? 0 : undefined,
           })
           .pipe(
-            tap(() => this.loading = false ),
+            tap(() => (this.loading = false)),
             catchError(err => {
               console.error('err');
               this.loading = false;
@@ -66,9 +74,15 @@ export class ReqResLogsComponent implements OnInit {
     this.updateLogButtonClick$.next('click');
   }
 
-  getExplanation(): void {
+  getExplanation(requestBody: ExplanationRequestBody): void {
     this.dialogService.createDialog({
       component: ExplanationComponent,
+      providers: [
+        {
+          provide: EXPLANATION_REQUEST_BODY,
+          useValue: requestBody,
+        },
+      ],
     });
   }
 }

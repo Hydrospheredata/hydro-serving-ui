@@ -1,7 +1,11 @@
 import { createAction, props } from '@ngrx/store';
+import { ExplanationRequestBody } from '@rootcause/interfaces';
 import { Explanation } from '../models';
 
-export const GetExplanation = createAction('[Root cause] get explanation');
+export const GetExplanation = createAction(
+  '[Root cause] get explanation',
+  props<{ requestBody: ExplanationRequestBody }>()
+);
 export const GetExplanationSuccess = createAction(
   '[Root cause] get explanation success',
   props<{ explanation: Explanation }>()

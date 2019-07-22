@@ -1,6 +1,6 @@
 import { createReducer, Action, on } from '@ngrx/store';
-import * as rootCauseActions from '../actions';
 import { Explanation } from '../models';
+import * as rootCauseActions from './root-cause.actions';
 
 export interface State {
   explanation: Explanation;

@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { State } from '../reducer';
+import { State } from './root-cause.reducer';
 const getRootCauseState = createFeatureSelector<State>('rootCause');
 
 export const getExplanation = createSelector(

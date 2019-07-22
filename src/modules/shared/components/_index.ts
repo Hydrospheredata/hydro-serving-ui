@@ -13,8 +13,6 @@ export * from './button/button.component';
 export * from './metrics/base-metric-chart.component';
 export * from './metrics/kolmogorov-smirnov-metric-chart.component';
 
-export * from './predict-request/predict-request.component';
-export * from './predict-response/predict-response.component';
 export * from './tensor-image-list/tensor-image-list.component';
 export * from './logs/logs.component';
 export * from './tooltip/tooltip.component';
