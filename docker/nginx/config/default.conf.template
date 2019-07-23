@@ -67,6 +67,10 @@ server {
   location /hydrosphere.reqstore. {
     grpc_pass grpc://reqstore_grpc;
   }
+  
+  location /timemachine. {
+    grpc_pass grpc://reqstore_grpc;
+  }
 
   location /hydrosphere.manager. {
     grpc_pass grpc://manager_grpc;
