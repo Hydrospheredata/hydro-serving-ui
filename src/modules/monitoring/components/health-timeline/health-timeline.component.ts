@@ -196,7 +196,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
     this.detailLogSub = this.selectedTime$
       .pipe(
-        filter(int => !!int && !!int.from),
+        filter(int => !!int && int.from !== undefined),
         tap(timeInterval => {
           this.displayedTime.next(timeInterval);
           this.timeInterval.next(timeInterval);
