@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 export class RootCauseService {
   private url: string;
   constructor(private http: HttpService) {
-    this.url = environment.reqstoreUrl;
+    this.url = environment.rootCauseUrl;
   }
 
   getExplanation(body: ExplanationRequestBody): Observable<any> {

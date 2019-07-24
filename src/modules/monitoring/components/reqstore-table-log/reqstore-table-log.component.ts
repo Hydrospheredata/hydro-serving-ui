@@ -65,14 +65,13 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   }
 
   getExplanation(): void {
-    const explained_instance = this.selectedLogItem;
-    debugger;
+    const explainedInstance = this.selectedLogItem.request.inputs.imgs.floatVal;
     this.clickedGetExplanation.next({
       model: {
         name: this.modelVersion.model.name,
-        version: `${this.modelVersion.modelVersion}`
+        version: `${this.modelVersion.modelVersion}`,
       },
-      explained_instance,
+      explained_instance: explainedInstance,
     });
   }
 }

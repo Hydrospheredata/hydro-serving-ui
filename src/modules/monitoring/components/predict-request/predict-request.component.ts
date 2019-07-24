@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   Input,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { PredictRequest } from '@shared/components/metrics/req';
 import { ModelVersion } from '@shared/models/_index';

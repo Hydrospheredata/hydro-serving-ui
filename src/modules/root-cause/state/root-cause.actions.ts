@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ExplanationRequestBody } from '@rootcause/interfaces';
+import { ExplanationRequestBody } from '../interfaces';
 import { Explanation } from '../models';
 
 export const GetExplanation = createAction(
