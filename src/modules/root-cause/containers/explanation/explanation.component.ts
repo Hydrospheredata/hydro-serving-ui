@@ -1,7 +1,7 @@
 import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ExplanationRequestBody } from '@rootcause/interfaces';
-import { RootCauseFacade } from '@rootcause/state/root-cause.facade';
+import { RootCauseFacade } from '@rootcause/store/root-cause.facade';
 import { Observable } from 'rxjs';
 import { Explanation } from '../../models';
 
@@ -16,6 +16,7 @@ export class ExplanationComponent implements OnInit {
   explanation$: Observable<Explanation>;
   isLoading$: Observable<boolean>;
   error$: Observable<string>;
+
   constructor(
     private facade: RootCauseFacade,
     private dialogService: DialogService,
@@ -26,6 +27,7 @@ export class ExplanationComponent implements OnInit {
     this.explanation$ = this.facade.explanation$;
     this.isLoading$ = this.facade.isLoading$;
     this.error$ = this.facade.error$;
+
     this.facade.getExplanation(this.requestBody);
   }
 
