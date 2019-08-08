@@ -71,6 +71,7 @@ export class DialogMetricComponent implements OnInit {
     { name: 'Counter', className: 'CounterMetricSpec' },
     { name: 'Error Rate', className: 'ErrorRateMetricSpec' },
     { name: 'Prediction Accuracy', className: 'AccuracyMetricSpec' },
+    { name: 'Custom Model', className: 'CustomModelMetricSpec' },
   ];
 
   private modelVersion$: Observable<ModelVersion>;
@@ -129,6 +130,16 @@ export class DialogMetricComponent implements OnInit {
           config.removeControl('threshold');
         }
         break;
+      case 'CustomModelMetricSpec':
+        const cfg = this.form.get('config') as FormGroup;
+        if (withHealth) {
+          cfg.addControl('threshold', this.fb.control(''));
+          cfg.addControl('thresholdCmpOperator', this.fb.control(''));
+        } else {
+          cfg.removeControl('threshold');
+          cfg.removeControl('thresholdCmpOperator');
+        }
+        break;
     }
   }
 
@@ -138,11 +149,13 @@ export class DialogMetricComponent implements OnInit {
       threshold,
       input,
       interval,
+      thresholdCmpOperator,
     }: Partial<MetricSpecificationConfig> = {
       applicationName: '',
       threshold: '',
       input: '',
       interval: 1,
+      thresholdCmpOperator: {kind: ''},
     }
   ) {
     const withHealth: boolean = this.form.get('withHealth').value;
@@ -212,6 +225,16 @@ export class DialogMetricComponent implements OnInit {
           })
         );
         break;
+      case 'CustomModelMetricSpec':
+        controls = {
+          applicationName: this.fb.control(applicationName),
+        };
+
+        if (withHealth) {
+          controls.threshold = this.fb.control(threshold);
+          controls.thresholdCmpOperator = this.fb.control(thresholdCmpOperator);
+        }
+        this.form.setControl('config', this.fb.group(controls));
     }
   }
 

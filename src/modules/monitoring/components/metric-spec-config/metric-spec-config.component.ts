@@ -16,4 +16,13 @@ export class MetricSpecConfigComponent {
 
   @Input()
   applications: Application[];
+
+  thresholdCmpOperators: object[] = [
+    {kind: 'Eq'},
+    {kind: 'NotEq'},
+    {kind: 'Greater'},
+    {kind: 'Less'},
+    {kind: 'GreaterEq'},
+    {kind: 'LessEq'},
+  ];
 }
