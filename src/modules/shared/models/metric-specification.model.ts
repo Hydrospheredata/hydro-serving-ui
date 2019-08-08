@@ -30,7 +30,8 @@ export type MetricSpecificationKind =
   | 'GANMetricSpec'
   | 'LatencyMetricSpec'
   | 'ErrorRateMetricSpec'
-  | 'AccuracyMetricSpec';
+  | 'AccuracyMetricSpec'
+  | 'CustomModelMetricSpec';
 
 export class MetricSpecification {
   public id: string;

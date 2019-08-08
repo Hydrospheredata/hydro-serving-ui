@@ -3,4 +3,5 @@ export interface MetricSpecificationConfig {
   threshold?: string;
   interval?: number;
   applicationName?: string;
+  thresholdCmpOperator?: {kind: string};
 }

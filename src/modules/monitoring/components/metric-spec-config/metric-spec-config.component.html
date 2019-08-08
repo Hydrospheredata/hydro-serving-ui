@@ -26,6 +26,20 @@
         >
       </mdl-select>
     </div>
+    <div class="row" *ngIf="parent.get('config').get('thresholdCmpOperator')">
+      <label for="application">Comparision operator: </label>
+      <mdl-select
+        name="application"
+        [formControl]="parent.get('config').get('thresholdCmpOperator')"
+        label="Comparision operator"
+      >
+        <mdl-option
+          *ngFor="let operator of thresholdCmpOperators"
+          [value]="operator"
+          >{{ operator.kind }}</mdl-option
+        >
+      </mdl-select>
+    </div>
     <div class="row" *ngIf="parent.get('config').get('threshold')">
       <hydro-input-text
         name="threshold"

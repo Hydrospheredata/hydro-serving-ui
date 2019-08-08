@@ -140,6 +140,7 @@ export class MonitoringService {
       LatencyMetricSpec: ['latency'],
       ErrorRateMetricSpec: ['error_rate'],
       AccuracyMetricSpec: ['accuracy'],
+      CustomModelMetricSpec: ['custom_model_value'],
     };
 
     return dict[spec];

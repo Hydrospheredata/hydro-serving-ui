@@ -10,12 +10,13 @@
       <ng-container *ngFor="let item of config | keyvalue">
         <div class="metric__config-item">
           <span class="metric__config-key">{{ item.key }}</span>
-          <span class="metric__config-value">{{ item.value }}</span>
+          <span class="metric__config-value" *ngIf="item.value && item.value.hasOwnProperty('kind')">{{ item.value.kind }}</span>
+          <span class="metric__config-value" *ngIf="item.value && !item.value.hasOwnProperty('kind')">{{ item.value }}</span>
         </div>
       </ng-container>
     </div>
   </div>
-  <div class="metric__actions">
+  <div class="metric__actions" *ngIf="!id.startsWith('fake-id')">
     <div class="metric__action" (click)="onEditMetric()">
       <hydro-icon
         class="button__icon metric__action-icon"
