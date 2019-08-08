@@ -17,5 +17,6 @@ export * from './tensor-image-list/tensor-image-list.component';
 export * from './logs/logs.component';
 export * from './tooltip/tooltip.component';
 export * from './expander/expander.component';
+export * from './probabilities-list/probabilities-list.component';
 // dialogs
 export * from './dialogs';

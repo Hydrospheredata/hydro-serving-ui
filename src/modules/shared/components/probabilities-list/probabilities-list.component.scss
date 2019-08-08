@@ -1,0 +1,35 @@
+@import "variables";
+
+.probabilities {
+  margin: 0 54px;
+  &__class {
+    font-weight: bold;
+  }
+  &__title {
+    text-transform: uppercase;
+    color: $neutral-color-500;
+  }
+  &__table {
+    margin-bottom: 12px;
+    &-head {
+      &-cell {
+        padding: 0px 18px 4px 0px;
+        text-transform: uppercase;
+        color: $neutral-color-300;
+        letter-spacing: 1px;
+        font-size: 10px;
+      }
+    }
+    &-cell {
+      font-family: $font-family-light;
+      padding: 0px 18px 4px 0px;
+      color: $neutral-color-700;
+      text-align: right;
+      vertical-align: top;
+    }
+  }
+  &__button {
+    margin: auto;
+    display: block;
+  }
+}

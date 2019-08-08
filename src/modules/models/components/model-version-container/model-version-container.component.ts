@@ -19,10 +19,9 @@ export class ModelVersionContainerComponent {
     private store: Store<HydroServingState>,
     private location: Location
   ) {
-    // TODO: fix side effect
     this.modelVersion$ = this.store.select(getSelectedModelVersion).pipe(
-      filter(_ => !!_),
-      tap(_ => this.store.dispatch(new GetMetricsAction(`${_.id}`)))
+      filter(val => val !== undefined),
+      tap(({ id }) => this.store.dispatch(new GetMetricsAction(`${id}`)))
     );
   }
 

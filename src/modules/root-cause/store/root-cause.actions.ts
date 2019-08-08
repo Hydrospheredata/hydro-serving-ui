@@ -1,25 +1,58 @@
 import { createAction, props } from '@ngrx/store';
 import { ExplanationRequestBody } from '../interfaces';
-import { Explanation } from '../models';
+import { Explanation, ExplanationJob, ExplanationType } from '../models';
 
-// get explanation
-// rise
-// - rise success | get explanation fail
-// - - get fetchurl
-// - - - get fetchUrl success | get explanation fail
-// - - - - getExplnationResult
-// - - - - - getExplanationResulSuccess
-
-export const GetExplanation = createAction(
-  '[Root cause] get explanation',
-  props<{ requestBody: ExplanationRequestBody }>()
+export const QueueExplanation = createAction(
+  '[Root cause] queue explanation',
+  props<{
+    uid: string;
+    requestBody: ExplanationRequestBody;
+    explanationType: ExplanationType;
+  }>()
 );
 
-export const GetExplanationSuccess = createAction(
-  '[Root cause] get explanation success',
-  props<{ explanation: Explanation }>()
+export const QueueExplanationSuccess = createAction(
+  '[Root cause] Queue explanation success',
+  props<{ job: ExplanationJob }>()
 );
-export const GetExplanationFailed = createAction(
+
+export const QueueExplanationFailed = createAction(
   '[Root cause] get explanation failed',
-  props<{ error: string }>()
+  props<{ uid: string; error: string }>()
+);
+
+export const JobStatusChanged = createAction(
+  '[Root cause] job status changed',
+  props<{ uid: string; status: string }>()
+);
+
+export const JobPending = createAction(
+  '[Root cause] job pending',
+  props<{ uid: string }>()
+);
+export const JobStarted = createAction(
+  '[Root cause] job started',
+  props<{ uid: string; progress: number }>()
+);
+export const JobFinished = createAction(
+  '[Root cause] job finished',
+  props<{ uid: string; resultId: string, explanationType: ExplanationType }>()
+);
+
+export const JobFailed = createAction(
+  '[Root cause] job failed',
+  props<{ uid: string; error: string }>()
+);
+
+export const GetResult = createAction(
+  '[Root cause] get resul',
+  props<{ job: ExplanationJob }>()
+);
+export const GetResultSuccess = createAction(
+  '[Root cause] get resul success',
+  props<{ uid: string; explanation: Explanation }>()
+);
+export const GetResultFailed = createAction(
+  '[Root cause] get resul failed',
+  props<{ uid: string; error: string }>()
 );

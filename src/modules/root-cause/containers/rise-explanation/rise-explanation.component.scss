@@ -1,0 +1,95 @@
+@import "variables";
+
+.wrapper {
+  align-items: flex-start;
+  display: flex;
+}
+
+.originalImage {
+  &__title {
+    text-transform: uppercase;
+    color: $neutral-color-500;
+    margin-bottom: 8px;
+  }
+}
+
+.probabilities {
+  margin: 0 54px;
+  &__class {
+    font-weight: bold;
+  }
+  &__title {
+    text-transform: uppercase;
+    color: $neutral-color-500;
+  }
+  &__table {
+    margin-bottom: 12px;
+    &-head {
+      &-cell {
+        padding: 0px 18px 4px 0px;
+        text-transform: uppercase;
+        color: $neutral-color-300;
+        letter-spacing: 1px;
+        font-size: 10px;
+      }
+    }
+    &-cell {
+      font-family: $font-family-light;
+      padding: 0px 18px 4px 0px;
+      color: $neutral-color-700;
+      text-align: right;
+      vertical-align: top;
+    }
+  }
+  &__button {
+    margin: auto;
+    display: block;
+  }
+}
+
+.images {
+  &__title {
+    text-transform: uppercase;
+    color: $neutral-color-500;
+  }
+  &__compare {
+    height: 32px;
+    position: relative;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  &__item {
+    opacity: .8;
+    position: absolute;
+    left: 0;
+  }
+}
+
+.request {
+  &__inputs {
+    display: flex;
+  }
+  &__input {
+    margin: 4px;
+    max-width: 150px;
+    &-name {
+      color: $neutral-color-700;
+      font-weight: bold;
+    }
+    &-value {
+      color: $neutral-color-1000;
+    }
+  }
+  &__label {
+    text-transform: uppercase;
+    color: $neutral-color-500;
+    margin-bottom: 6px;
+  }
+}
+
+.footer {
+  padding-top: 12px;
+  text-align: right;
+}

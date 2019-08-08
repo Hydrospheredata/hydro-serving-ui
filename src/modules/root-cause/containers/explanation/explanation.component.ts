@@ -1,35 +1,42 @@
-import { Component, OnInit, InjectionToken, Inject } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  InjectionToken,
+  Inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
-import { ExplanationRequestBody } from '@rootcause/interfaces';
-import { RootCauseFacade } from '@rootcause/store/root-cause.facade';
-import { Observable } from 'rxjs';
-import { Explanation } from '../../models';
+import { ModelVersion } from '@shared/_index';
+import { ReqstoreEntry } from '@shared/models/reqstore.model';
+import { ExplanationJob } from '../../models';
 
-export const EXPLANATION_REQUEST_BODY = new InjectionToken<
-  ExplanationRequestBody
->('');
+export const EXPLANATION_JOB = new InjectionToken<ExplanationJob>(
+  'explanation job'
+);
+export const REQSTORE_ENTRY = new InjectionToken<ReqstoreEntry>(
+  'reqstore item'
+);
+export const MODEL_VERSION = new InjectionToken<ModelVersion>(
+  'model version'
+);
 @Component({
   templateUrl: 'explanation.component.html',
   styleUrls: ['explanation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExplanationComponent implements OnInit {
-  explanation$: Observable<Explanation>;
-  isLoading$: Observable<boolean>;
-  error$: Observable<string>;
+  get isRise(): boolean {
+    return this.explanationJob.explanationType === 'rise';
+  }
 
   constructor(
-    private facade: RootCauseFacade,
     private dialogService: DialogService,
-    @Inject(EXPLANATION_REQUEST_BODY) private requestBody: ExplanationRequestBody
+    @Inject(EXPLANATION_JOB) public explanationJob: ExplanationJob,
+    @Inject(REQSTORE_ENTRY) public reqstoreEntry: ReqstoreEntry,
+    @Inject(MODEL_VERSION) public modelVersion: ModelVersion
   ) {}
 
-  ngOnInit(): void {
-    this.explanation$ = this.facade.explanation$;
-    this.isLoading$ = this.facade.isLoading$;
-    this.error$ = this.facade.error$;
-
-    this.facade.getExplanation(this.requestBody);
-  }
+  ngOnInit(): void {}
 
   close() {
     this.dialogService.closeDialog();

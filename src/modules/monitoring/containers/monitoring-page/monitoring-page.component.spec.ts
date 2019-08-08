@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
-import { getSelectedMetrics } from '@core/reducers';
+import { getSelectedMetrics, isMetricsLoading } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
 import * as fromModels from '@models/reducers';
 import { MemoizedSelector, Store } from '@ngrx/store';
@@ -32,6 +32,7 @@ describe('MonitoringPageComponent', () => {
   let store: MockStore<fromModels.State>;
   let selectedModelVersion: MemoizedSelector<fromModels.State, ModelVersion>;
   let selectedMetricSpecs: MemoizedSelector<{}, MetricSpecification[]>;
+  let isLoading: MemoizedSelector<{}, boolean>;
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -50,6 +51,7 @@ describe('MonitoringPageComponent', () => {
       MockModelVersion1Model1
     );
     selectedMetricSpecs = store.overrideSelector(getSelectedMetrics, []);
+    isLoading = store.overrideSelector(isMetricsLoading, false);
   });
 
   beforeEach(() => {
@@ -71,20 +73,5 @@ describe('MonitoringPageComponent', () => {
       );
       expect(alertEl).toBeTruthy();
     });
-  });
-
-  describe('with metrics', () => {
-    beforeEach(() => {
-      selectedMetricSpecs = store.overrideSelector(getSelectedMetrics, [
-        metricSpec,
-      ]);
-      fixture.detectChanges();
-    });
-    // it('shows HealthTimelineComponent', () => {
-    //   const alertEl = fixture.debugElement.query(
-    //     By.directive(HealthTimelineComponent)
-    //   );
-    //   expect(alertEl).toBeTruthy();
-    // });
   });
 });

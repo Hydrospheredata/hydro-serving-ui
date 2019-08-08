@@ -1,0 +1,83 @@
+@import "variables";
+
+.details {
+  background: white;
+  margin: 8px 0;
+  padding: 8px;
+  overflow: hidden;
+  flex-wrap: wrap;
+  border: 2px #D9E2EC solid;
+  border-radius: 4px;
+  &__footer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+  &__io {
+    display: flex;
+  }
+}
+
+.explanation {
+  text-align: center;
+  width: 160px;
+  &__button {
+    width: 160px;
+    position: relative;
+  }
+  &__progress {
+    font-family: $font-family-light;
+    color: $neutral-color-400;
+    font-style: italic;
+  }
+}
+
+.request {
+  border-right: 1px $neutral-color-100 solid;
+  overflow: scroll;
+  &__inputs {
+    display: flex;
+  }
+  &__input {
+    margin: 4px 12px;
+    max-width: 150px;
+    &-name {
+      color: $neutral-color-700;
+      font-weight: bold;
+    }
+    &-value {
+      color: $neutral-color-1000;
+    }
+  }
+  &__label {
+    margin: 0 12px;
+    text-transform: uppercase;
+    color: $neutral-color-500;
+    
+  }
+}
+.response {
+  &__outputs {
+    display: flex;
+  }
+  &__output {
+    margin: 4px 12px;
+    max-width: 150px;
+    &-name {
+      color: $neutral-color-700;
+      font-weight: bold;
+    }
+    &-value {
+      color: $neutral-color-1000;
+    }
+  }
+
+
+  &__label {
+    margin: 0 12px;
+    text-transform: uppercase;
+    color: $neutral-color-500;
+  }
+}
+
+

@@ -1,20 +1,68 @@
-.explanation {
-  &__buttons {
-    margin-top: 12px;
-    display: flex;
-    justify-content: flex-end;
+@import "variables";
+.wrapper {
+  align-items: flex-start;
+  display: flex;
+}
+
+.originalImage {
+  &__title {
+    text-transform: uppercase;
+    color: $neutral-color-700;
   }
+}
+
+.probabilities {
+  margin: 0 54px;
+  &__title {
+    text-transform: uppercase;
+    color: $neutral-color-700;
+  }
+  &__list {
+    padding: 0;
+    list-style: none;
+    margin: 0 32px;
+    line-height: 28px;
+    color: $neutral-color-700;
+  }
+}
+
+.images {
+  &__title {
+    text-transform: uppercase;
+    color: $neutral-color-700;
+  }
+  &__compare {
+    height: 32px;
+    position: relative;
+  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   &__item {
+    // opacity: .6;
+    position: absolute;
+    left: 0;
+  }
+}
+
+.request {
+  &__inputs {
     display: flex;
-    &-key {
-      text-transform: uppercase;
-      font-size: 12px;
-      width: 100px;
-      font-size: 10px;
-      color: #585858;
+  }
+  &__input {
+    margin: 4px;
+    max-width: 150px;
+    &-name {
+      color: $neutral-color-700;
+      font-weight: bold;
+    }
+    &-value {
+      color: $neutral-color-1000;
     }
   }
-  &__item + &__item {
-    margin-top: 8px;
+  &__label {
+    text-transform: uppercase;
+    color: $neutral-color-500;
   }
 }

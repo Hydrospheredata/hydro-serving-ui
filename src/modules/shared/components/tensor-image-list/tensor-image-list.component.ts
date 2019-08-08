@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ImageHelperService } from '@core/services/image-helper.service';
 import { getFiledNameByTensorDataType } from '@shared/utils/field-name-by-tensor-data-type';
-import { flatArray } from '@shared/utils/flat-array';
 import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
 
 @Component({
@@ -16,6 +16,8 @@ export class TensorImageListComponent implements OnInit {
 
   readonly elementsForRGBA = 4;
 
+  constructor(private imageHelper: ImageHelperService) {}
+
   @Input()
   set tensorProto(tensorProto) {
     let dim;
@@ -26,17 +28,22 @@ export class TensorImageListComponent implements OnInit {
       this.imageWidth = imageWidth.size;
       this.imageHeight = imageHeight.size;
 
-      const allPixels = this.getValue(tensorProto);
+      const pixels = this.getValue(tensorProto);
       let arrayOfRGBAPixels;
 
       try {
-        arrayOfRGBAPixels = this.transformArrayToRGBAPixels(allPixels);
+        arrayOfRGBAPixels = this.imageHelper.transformToRGBA({
+          pixels,
+          imageWidth: this.imageWidth,
+          imageHeight: this.imageHeight,
+          batchSize: this.imagesCount,
+        });
         try {
-          const imagePixels =
+          const RGBAPixels =
             this.imageWidth * this.imageHeight * this.elementsForRGBA;
           this.imagePixelsArray = this.partitionArrayBySize(
             arrayOfRGBAPixels,
-            imagePixels
+            RGBAPixels
           );
         } catch (error) {
           throw Error('Cant split data');
@@ -50,20 +57,6 @@ export class TensorImageListComponent implements OnInit {
   }
 
   ngOnInit(): void {}
-
-  private transformArrayToRGBAPixels(pixels): number[] {
-    const dim =
-      pixels.length / (this.imageWidth * this.imageHeight) / this.imagesCount;
-    switch (dim) {
-      case 1:
-        return this.grayScaleToRGBA(pixels);
-      case 3:
-        return this.fromRGBtoRGBA(pixels);
-      default:
-        throw Error('Cant recognize image type');
-        break;
-    }
-  }
 
   private getValue(tensorProto): any {
     const field = fromSnakeToCamel(
@@ -84,34 +77,5 @@ export class TensorImageListComponent implements OnInit {
     }
 
     return res;
-  }
-
-  private grayScaleToRGBA(array): number[] {
-    const flArray = flatArray(array);
-    const rgb = flArray.reduce((acc, cur) => {
-      const offset = acc.length;
-      acc[offset] = 0;
-      acc[offset + 1] = 0;
-      acc[offset + 2] = 0;
-      acc[offset + 3] = 255 * (1 - cur);
-
-      return acc;
-    }, []);
-    return rgb;
-  }
-
-  private fromRGBtoRGBA(pixels) {
-    const fArray = flatArray(pixels);
-    const arr = [];
-
-    for (let i = 0, l = fArray.length; i < l; i += 3) {
-      const x = arr.length;
-      arr[x] = fArray[i];
-      arr[x + 1] = fArray[i + 1];
-      arr[x + 2] = fArray[i + 2];
-      arr[x + 3] = 255;
-    }
-
-    return arr;
   }
 }

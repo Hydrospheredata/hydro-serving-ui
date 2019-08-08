@@ -47,6 +47,7 @@ import {
   ButtonComponent,
   TooltipComponent,
   ExpanderComponent,
+  ProbabilitiesListComponent,
 } from './components/_index';
 
 // Directives
@@ -98,6 +99,7 @@ const COMPONENTS = [
   ButtonComponent,
   TooltipComponent,
   ExpanderComponent,
+  ProbabilitiesListComponent,
 ];
 
 const DIRECTIVES = [

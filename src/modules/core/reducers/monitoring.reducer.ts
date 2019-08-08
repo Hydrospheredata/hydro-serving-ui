@@ -6,6 +6,8 @@ import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 
 export interface MState extends EntityState<MetricSpecification> {
+  loading: boolean;
+  error: string;
   byModel: string[];
 }
 
@@ -16,6 +18,8 @@ export const adapter: EntityAdapter<MetricSpecification> = createEntityAdapter<
 });
 
 export const initialState: MState = adapter.getInitialState({
+  loading: false,
+  error: null,
   byModel: [],
 });
 
@@ -28,11 +32,13 @@ export function reducer(state = initialState, action: MonitoringActions) {
         { id: action.payload.id, changes: action.payload },
         state
       );
+    case MonitoringActionTypes.GetMetrics:
+      return { ...state, loading: true };
     case MonitoringActionTypes.GetMetricsFail:
-      return action.error;
+      return { ...state, error: action.error, loading: false };
 
     case MonitoringActionTypes.GetMetricsSuccess:
-      return adapter.upsertMany(action.payload, state);
+      return adapter.upsertMany(action.payload, { ...state, loading: false });
 
     case MonitoringActionTypes.DeleteMetricSuccess:
       return adapter.removeOne(action.payload.id, state);

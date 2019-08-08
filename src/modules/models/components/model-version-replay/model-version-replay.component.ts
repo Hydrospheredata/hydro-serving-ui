@@ -1,4 +1,3 @@
-import { MdlSnackbarService } from '@angular-mdl/core';
 import {
   Component,
   OnInit,
@@ -13,7 +12,7 @@ import { getSiblingVersions, getSelectedModelVersion } from '@models/reducers';
 import { Store } from '@ngrx/store';
 import { ModelVersion } from '@shared/_index';
 import { Observable, fromEvent, Subscription } from 'rxjs';
-import { withLatestFrom, tap, exhaustMap } from 'rxjs/operators';
+import { withLatestFrom, exhaustMap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-model-version-replay',

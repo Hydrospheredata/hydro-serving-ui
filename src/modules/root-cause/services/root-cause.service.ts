@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import { ExplanationRequestBody } from '@rootcause/interfaces';
-import { Explanation } from '@rootcause/models';
+import { Explanation, ExplanationType } from '@rootcause/models';
 import { Observable } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -15,28 +15,36 @@ export class RootCauseService {
   constructor(private http: HttpService) {
     this.url = environment.rootCauseUrl;
   }
-  getExplanation(body: ExplanationRequestBody): Observable<string> {
-    const url = `${this.url}/rise`;
+
+  queueExplanation(
+    body: ExplanationRequestBody,
+    explanationType: ExplanationType
+  ): Observable<string> {
+    const url = `${this.url}/${explanationType} `;
     return this.http.post(url, body, { observe: 'response' }).pipe(
       map(response => {
         const resp = response as HttpResponseBase;
-        const rurl =
-          resp.headers.get('Location') ||
-          `http://localhost/status/rise/06fb10cd-5359-45d5-9df1-3f398b32d1bc`;
-
-        return rurl;
+        const rurl = resp.headers.get('Location');
+        const urlArr = rurl.split('/');
+        const jobId = urlArr[urlArr.length - 1];
+        return jobId;
       })
     );
   }
 
-  getStatus(url: string): Observable<{ result: string; state: string }> {
-    const x = url.split('/');
-    const id = '62d2154d-3611-463c-a6eb-607fe6d0c16e';
-
-    return this.http.get(`${this.url}/status/rise/${id}`);
+  getJobStatus(
+    jobId: string,
+    explanationType: ExplanationType
+  ): Observable<{
+    result?: string;
+    state: string;
+    description?: string;
+    progress?: number;
+  }> {
+    return this.http.get(`${this.url}/status/${explanationType}/${jobId}`);
   }
 
-  a(endpoint: string): Observable<Explanation> {
-    return this.http.get(`${this.url}${endpoint}`);
+  getResult(resultId: string, explanationType: ExplanationType): Observable<Explanation> {
+    return this.http.get(`${this.url}/fetch_result/${explanationType}/${resultId}`);
   }
 }

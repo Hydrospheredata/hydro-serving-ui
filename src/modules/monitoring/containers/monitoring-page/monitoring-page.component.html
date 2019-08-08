@@ -1,39 +1,49 @@
-<div class="monitoring">
-  <div
-    *ngIf="metricsNotEmpty$ | async; else metricsEmpty"
-    clas="monitoring__body"
-  >
-    <header class="monitoring__header">
-      <span class="monitoring__settings" (click)="openSettings()">
-        <hydro-icon
-          class="icon monitoring__settings-icon"
-          type="icon-settings"
-        ></hydro-icon>
-      </span>
-    </header>
-    <hs-health-timeline
-      [metricSpecifications]="selectedMetricSpecifications$ | async"
-      [selectedModelVersion]="selectedModelVersion$ | async"
-      (timeInterval)="onChangeTimeInterval($event)"
-      (stopped)="onStopLive()"
-      (started)="onStartLive()"
-      [live]="live"
+<ng-container
+  *ngIf="metricsLoading$ | async; then loader; else body"
+></ng-container>
+
+<ng-template #body>
+  <div class="monitoring">
+    <div
+      *ngIf="metricsNotEmpty$ | async; else metricsEmpty"
+      clas="monitoring__body"
     >
-    </hs-health-timeline>
-    <hs-req-res-logs
-      [modelVersion$]="selectedModelVersion$"
-      [timeInterval$]="timeIntervalChange$"
-      [metricSpecs$]="selectedMetricSpecifications$"
-    ></hs-req-res-logs>
-    <div class="charts">
-      <hs-charts
-        [selectedTimeInterval$]="timeIntervalChange$"
+      <header class="monitoring__header">
+        <span class="monitoring__settings" (click)="openSettings()">
+          <hydro-icon
+            class="icon monitoring__settings-icon"
+            type="icon-settings"
+          ></hydro-icon>
+        </span>
+      </header>
+      <hs-health-timeline
         [metricSpecifications]="selectedMetricSpecifications$ | async"
-      ></hs-charts>
+        [selectedModelVersion]="selectedModelVersion$ | async"
+        (timeInterval)="onChangeTimeInterval($event)"
+        (stopped)="onStopLive()"
+        (started)="onStartLive()"
+        [live]="live"
+      >
+      </hs-health-timeline>
+      <hs-req-res-logs
+        [modelVersion$]="selectedModelVersion$"
+        [timeInterval$]="timeIntervalChange$"
+        [metricSpecs$]="selectedMetricSpecifications$"
+      ></hs-req-res-logs>
+      <div class="charts">
+        <hs-charts
+          [selectedTimeInterval$]="timeIntervalChange$"
+          [metricSpecifications]="selectedMetricSpecifications$ | async"
+        ></hs-charts>
+      </div>
     </div>
   </div>
-</div>
-
+</ng-template>
+<ng-template #loader>
+  <div class="loader">
+    <hydro-icon type="icon-circle" class="icon loader-icon"></hydro-icon>loading
+  </div></ng-template
+>
 <ng-template #metricsEmpty>
   <hs-alert-message>
     This model version does not have any metrics.

@@ -107,3 +107,8 @@ export const getSelectedMetric = createSelector(
     );
   }
 );
+
+export const isMetricsLoading = createSelector(
+  getMetricsState,
+  state => state.loading
+);

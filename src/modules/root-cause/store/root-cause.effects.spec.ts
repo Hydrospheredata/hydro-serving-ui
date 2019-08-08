@@ -1,45 +1,69 @@
+import { MdlSnackbarService } from '@angular-mdl/core';
+import { MdlSelectModule } from '@angular-mdl/select';
 import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
-import { RootCauseEffects } from '@rootcause/state/root-cause.effects';
+import { ExplanationJobBuilder, ExplanationBuilder } from '@rootcause/services';
+import { RootCauseEffects } from '@rootcause/store/root-cause.effects';
 import { cold } from 'jasmine-marbles';
 import { of, Observable, throwError } from 'rxjs';
 import { RootCauseService } from '../services/root-cause.service';
 import * as actions from './root-cause.actions';
 
 const mockRootCauseService = {
-  getExplanation: () => of({ precision: 1, coverage: 1, explanation: [] }),
+  queueExplanation: () => of('job_id'),
 };
 
-fdescribe('RootCause effects', () => {
+const mockSnackbarService = {
+  showSnackbar: ({ message, timeout, closeAfterTimeout }) => {},
+};
+
+describe('RootCause effects', () => {
   let effects: RootCauseEffects;
   let actions$: Observable<any>;
-  let service: RootCauseService;
+  let rootCauseService: RootCauseService;
+  let jobBuilder: ExplanationJobBuilder;
+  let snackbar: MdlSnackbarService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [MdlSelectModule.forRoot()],
       providers: [
+        ExplanationJobBuilder,
+        ExplanationBuilder,
         { provide: RootCauseService, useValue: mockRootCauseService },
         RootCauseEffects,
         provideMockActions(() => actions$),
+        { provide: MdlSnackbarService, useValue: mockSnackbarService },
       ],
     });
 
     effects = TestBed.get(RootCauseEffects);
-    service = TestBed.get(RootCauseService);
+    rootCauseService = TestBed.get(RootCauseService);
+    jobBuilder = TestBed.get(ExplanationJobBuilder);
+    snackbar = TestBed.get(MdlSnackbarService);
   });
 
   describe('getExplanation effect', () => {
     it('with SUCCESS return right action', () => {
-      const s = spyOn(service, 'getExplanation').and.callThrough();
-      const action = actions.GetExplanation({
+      const s = spyOn(rootCauseService, 'queueExplanation').and.callThrough();
+      const action = actions.QueueExplanation({
+        explanationType: 'rise',
+        uid: '1',
         requestBody: {
-          model: { name: '1', version: '1' },
-          explained_instance: '',
+          model: { name: '1', version: 1 },
+          explained_instance: {
+            uid: 1,
+            timestamp: 1,
+          },
         },
       });
 
-      const completed = actions.GetExplanationSuccess({
-        explanation: { precision: 1, coverage: 1, explanation: [] },
+      const completed = actions.QueueExplanationSuccess({
+        job: jobBuilder.build({
+          uid: '1',
+          jobId: 'job_id',
+          explanationType: 'rise',
+        }),
       });
 
       actions$ = cold('---a', { a: action });
@@ -50,17 +74,25 @@ fdescribe('RootCause effects', () => {
     });
 
     it('with FAIL return right action', () => {
-      const s = spyOn(service, 'getExplanation').and.callFake(() =>
-        throwError('error')
+      const rcSpy = spyOn(rootCauseService, 'queueExplanation').and.callFake(
+        () => throwError('error')
       );
-      const action = actions.GetExplanation({
+      const snackbarSpy = spyOn(snackbar, 'showSnackbar').and.callThrough();
+
+      const action = actions.QueueExplanation({
+        explanationType: 'rise',
+        uid: '1',
         requestBody: {
-          model: { name: '1', version: '1' },
-          explained_instance: '',
+          model: { name: '1', version: 1 },
+          explained_instance: {
+            uid: 1,
+            timestamp: 1,
+          },
         },
       });
 
-      const completed = actions.GetExplanationFailed({
+      const completed = actions.QueueExplanationFailed({
+        uid: '1',
         error: 'error',
       });
 
@@ -68,7 +100,12 @@ fdescribe('RootCause effects', () => {
       const expected$ = cold('---b', { b: completed });
 
       expect(effects.getExplanation$).toBeObservable(expected$);
-      expect(s).toHaveBeenCalled();
+      expect(rcSpy).toHaveBeenCalled();
+      expect(snackbarSpy).toHaveBeenCalledWith({
+        message: 'error',
+        timeout: 5000,
+        closeAfterTimeout: true,
+      });
     });
   });
 });

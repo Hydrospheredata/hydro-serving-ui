@@ -29,30 +29,15 @@
         </div>
       </div>
       <div class="log__details">
-        <div class="log__details-header">
-          <button
-            hs-button
-            kind="flat"
-            color="primary"
-            (click)="getExplanation()"
-          >
-            Get explanation
-          </button>
-        </div>
         <div class="log__details-container">
           <ng-container *ngIf="selectedLogItem">
-            <div class="log__details-item">
-              <div class="log__details-item-request">
-                <hs-predict-request
-                  [request]="selectedLogItem.request"
+            <div class="">
+              <div class="result">
+                <hs-input-output
+                  [reqstoreEntry]="selectedLogItem"
                   [modelVersion]="modelVersion"
-                ></hs-predict-request>
-              </div>
-              <div class="log__details-item-response">
-                <hs-predict-response
-                  [response]="selectedLogItem.response"
-                  [modelVersion]="modelVersion"
-                ></hs-predict-response>
+                  (queuedExplanation)="onQueuedExplanation()"
+                ></hs-input-output>
               </div>
               <div class="log__details-item-metrics">
                 <hs-reqstore-metrics

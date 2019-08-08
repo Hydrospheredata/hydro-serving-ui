@@ -1,7 +1,10 @@
 export interface ExplanationRequestBody {
   model: {
-    name: string,
-    version: string,
+    name: string;
+    version: number;
   };
-  explained_instance: any;
+  explained_instance: {
+    uid: number;
+    timestamp: number;
+  };
 }

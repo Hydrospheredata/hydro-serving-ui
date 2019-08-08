@@ -60,7 +60,7 @@
             </div>
             <div class="feature__item-data feature__item-data-values">
               <div *ngFor="let item of columnIndex.value | keyvalue">
-                {{ item.value.value }}
+                {{ item.value.value | number: '1.2-2' }}
               </div>
             </div>
           </div>
