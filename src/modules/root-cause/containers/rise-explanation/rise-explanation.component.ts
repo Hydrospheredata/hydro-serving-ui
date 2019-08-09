@@ -48,9 +48,6 @@ export class RiseExplanationComponent implements OnInit {
     }, [])
   );
 
-  // probs: number[];
-  // masks: number[][];
-  // job: ExplanationJob;
   explanations: RiseExplanations;
 
   @Input() reqstoreEntry: ReqstoreEntry;
@@ -75,56 +72,6 @@ export class RiseExplanationComponent implements OnInit {
   ngOnInit() {
     this.setWidthHeightForImages();
   }
-
-  // get result() {
-  //   try {
-  //     if (this.probs) {
-  //       return this.probs;
-  //     }
-  //     const probs = this.getValue(
-  //       this.reqstoreEntry.response.outputs.probabilities
-  //     )
-  //       .map((value, idx) => ({
-  //         class: idx,
-  //         value,
-  //         color: colorScale.interpolateBlues(value < 0.15 ? 0.15 : value),
-  //       }))
-  //       .sort((a, b) => b.value - a.value);
-
-  //     this.probs = probs;
-  //     return probs;
-  //   } catch {
-  //     console.warn(`outputs doesn't have probability field`);
-  //     return [];
-  //   }
-  // }
-
-  // get explanation(): Explanation {
-  //   return this.job.explanation;
-  // }
-
-  // get probabilities(): number[] {
-  //   try {
-  //     if (this.probs) {
-  //       return this.probs;
-  //     }
-  //     const probs = this.getValue(
-  //       this.reqstoreEntry.response.outputs.probabilities
-  //     )
-  //       .map((value, idx) => ({
-  //         class: idx,
-  //         value,
-  //         color: colorScale.interpolateBlues(value < 0.15 ? 0.15 : value),
-  //       }))
-  //       .sort((a, b) => b.value - a.value);
-
-  //     this.probs = probs;
-  //     return probs;
-  //   } catch {
-  //     console.warn(`outputs doesn't have probability field`);
-  //     return [];
-  //   }
-  // }
 
   showMore() {
     this.showMore$.next('');
@@ -153,23 +100,7 @@ export class RiseExplanationComponent implements OnInit {
     }
   }
 
-  // get masksPixelsArray() {
-  //   try {
-  //     return JSON.parse(this.explanation.result.masks).map(pixels => {
-  //       return this.imageHelper.transformToRGBA({
-  //         pixels: flatArray(pixels),
-  //         imageHeight: this.imageHeight,
-  //         imageWidth: this.imageWidth,
-  //         colormap: 'coldwarm',
-  //       });
-  //     });
-  //   } catch {
-  //     return [];
-  //   }
-  // }
-
   getPixels(arr: any): number[] {
-    // TODO: remove flat! low perf
     return this.imageHelper.transformToRGBA({
       pixels: arr,
       imageHeight: this.imageHeight,
