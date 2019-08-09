@@ -50,7 +50,7 @@
             <ng-template #plainText>
               <div hs-expander maxHeight="170">
                 <div class="response__output-value" #expand>
-                  {{ getValue(output.value) }}
+                  {{ getValueAsText(output.value) }}
                 </div>
               </div>
             </ng-template>
@@ -82,7 +82,7 @@
         </button>
       </ng-container>
       <span class="explanation__progress" *ngIf="job.jobStatus === 'STARTED'">
-        progress: {{ job.progress * 100 | number: '1.0' }}%</span
+        progress: {{ job.progress * 100 | number: '1.2-2' }}%</span
       >
     </div>
   </ng-container>

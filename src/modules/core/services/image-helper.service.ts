@@ -30,7 +30,7 @@ export class ImageHelperService {
     try {
       switch (this.recognizeImageType(imageData)) {
         case ImageType.greyScaleAlpha:
-          return this.grayScaleAlphaToRGBA(imageData.pixels);
+          return this.grayScaleAlphaToRGBA(imageData.pixels, imageData.colormap);
         case ImageType.greyScale255:
           return this.grayScale255ToRGBA(imageData.pixels, imageData.colormap);
         case ImageType.rgb:
@@ -67,16 +67,35 @@ export class ImageHelperService {
       : ImageType.greyScale255;
   }
 
-  private grayScaleAlphaToRGBA(pixels: number[]): number[] {
-    const rgb = pixels.reduce((acc, cur) => {
-      const offset = acc.length;
-      acc[offset] = 0;
-      acc[offset + 1] = 0;
-      acc[offset + 2] = 0;
-      acc[offset + 3] = 255 * (1 - cur);
+  private grayScaleAlphaToRGBA(
+    pixels: number[],
+    colormapType: ColorMapType
+  ): number[] {
+    let rgb;
+    if (colormapType) {
+      rgb = pixels.reduce((acc, cur) => {
+        const offset = acc.length;
+        const [r, g, b] = this.colorMap.getRGB({
+          val: cur,
+          type: colormapType,
+        });
+        acc[offset] = r;
+        acc[offset + 1] = g;
+        acc[offset + 2] = b;
+        acc[offset + 3] = 255;
+        return acc;
+      }, []);
+    } else {
+      rgb = pixels.reduce((acc, cur) => {
+        const offset = acc.length;
+        acc[offset] = 0;
+        acc[offset + 1] = 0;
+        acc[offset + 2] = 0;
+        acc[offset + 3] = 255 * (1 - cur);
 
-      return acc;
-    }, []);
+        return acc;
+      }, []);
+    }
     return rgb;
   }
 

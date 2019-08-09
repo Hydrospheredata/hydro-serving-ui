@@ -27,7 +27,7 @@
     </div>
   </div>
   <div class="probabilities">
-    <ng-container *ngIf="showedProbabilities$ | async as probs">
+    <ng-container *ngIf="showedExplanations$ | async as showedExplanations">
       <div class="probabilities__title">probabilities</div>
       <table class="probabilities__table">
         <tr class="probabilities__table-head-cell">
@@ -37,13 +37,13 @@
         </tr>
         <tr
           class="probabilities__table-row"
-          *ngFor="let item of probs"
+          *ngFor="let item of showedExplanations"
         >
           <td class="probabilities__table-cell probabilities__class" [ngStyle]="{'color': item.color}">
             {{ item.class }}
           </td>
           <td class="probabilities__table-cell" [ngStyle]="{'color': item.color}">
-            {{ item.value | number: '1.5-5' }}
+            {{ item.probability | number: '1.5-5' }}
           </td>
           <td class="probabilities__table-cell">
             <div class="images__compare">
@@ -56,7 +56,7 @@
               <canvas
                 class="images__item"
                 hsPixelToCanvas
-                [pixels]="getPixels(masks[item.class])"
+                [pixels]="getPixels(item.mask)"
                 [width]="imageWidth"
                 [height]="imageHeight"
               ></canvas>
@@ -65,7 +65,7 @@
         </tr>
       </table>
       <button
-        *ngIf="probs.length < masks.length"
+        *ngIf="showedExplanations.length < explanations.length"
         class="probabilities__button"
         kind="stroked"
         color="primary"
