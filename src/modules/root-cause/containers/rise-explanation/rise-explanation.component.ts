@@ -171,7 +171,7 @@ export class RiseExplanationComponent implements OnInit {
   getPixels(arr: any): number[] {
     // TODO: remove flat! low perf
     return this.imageHelper.transformToRGBA({
-      pixels: _.flattenDeep(arr),
+      pixels: arr,
       imageHeight: this.imageHeight,
       imageWidth: this.imageWidth,
       colormap: 'coldwarm',
