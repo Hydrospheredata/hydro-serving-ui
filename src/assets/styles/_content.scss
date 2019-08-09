@@ -35,7 +35,6 @@
 
   &__body {
     padding: 80px 24px 24px;
-    max-width: 1200px;
     background: #f9f9f9;
     min-height: 100%;
   }
@@ -75,10 +74,10 @@
           font-family: "Museo Sans Light";
           text-transform: capitalize;
 
-          &:after {
-            content: '.........................................................................................................';
-            margin-left: 6px;
-          }
+          // &:after {
+          //   content: '.........................................................................................................';
+          //   margin-left: 6px;
+          // }
         }
 
         &-value {

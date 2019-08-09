@@ -13,6 +13,7 @@ import {
   ReqstoreTableLogComponent,
   MetricSpecConfigComponent,
   ReqstoreMetricsComponent,
+  InputOutputComponent,
 } from '@monitoring/components';
 import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-service-status.effects';
 import { EffectsModule } from '@ngrx/effects';
@@ -51,6 +52,7 @@ import { reducer } from './reducers';
     MetricSpecConfigComponent,
     ReqResLogsComponent,
     ReqstoreMetricsComponent,
+    InputOutputComponent,
   ],
   imports: [
     SharedModule,

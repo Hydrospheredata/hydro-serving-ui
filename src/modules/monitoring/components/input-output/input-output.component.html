@@ -1,0 +1,111 @@
+<div class="details">
+  <div class="details__io">
+    <div class="request">
+      <div class="request__label">inputs</div>
+      <div class="request__inputs">
+        <div
+          class="request__input"
+          *ngFor="let input of reqstoreEntry.request.inputs | keyvalue"
+        >
+          <div class="request__input-name">{{ input.key }}</div>
+          <div>
+            <ng-container
+              *ngTemplateOutlet="isImage(input.key) ? image : plainText"
+            ></ng-container>
+            <ng-template #image>
+              <hs-tensor-image-list
+                [tensorProto]="input.value"
+              ></hs-tensor-image-list>
+            </ng-template>
+            <ng-template #plainText>
+              <div class="request__input-value" hs-expander maxHeight="170">
+                <div #expand>
+                  {{ getValueAsText(input.value) }}
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="response">
+      <div class="response__label">outputs</div>
+      <div class="response__outputs">
+        <div
+          class="response__output"
+          *ngFor="let output of reqstoreEntry.response.outputs | keyvalue"
+        >
+          <div class="response__output-name">{{ output.key }}</div>
+          <div>
+            <ng-container
+              *ngTemplateOutlet="
+                showAsList(output.key, output.value) ? asList : plainText
+              "
+            ></ng-container>
+            <ng-template #asList>
+              <hs-probabilities-list
+                [probabilities]="getValue(output.value)"
+              ></hs-probabilities-list>
+            </ng-template>
+            <ng-template #plainText>
+              <div hs-expander maxHeight="170">
+                <div class="response__output-value" #expand>
+                  {{ getValue(output.value) }}
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="details__footer">
+    <ng-container
+      *ngIf="canExplain$ | async; then explainButton"
+    ></ng-container>
+  </div>
+</div>
+<ng-template #explainButton>
+  <ng-container *ngIf="explanationJob$ | async as job; else queueButton">
+    <div class="explanation">
+      <ng-container *ngIf="job.jobStatus !== 'FAILURE'; else failButton">
+        <button
+          hs-button
+          kind="flat"
+          color="primary"
+          class="explanation__button"
+          (click)="showExplanation(job)"
+          [disabled]="disableExplanationButton(job.jobStatus)"
+        >
+          {{ job.jobStatus }}
+        </button>
+      </ng-container>
+      <span class="explanation__progress" *ngIf="job.jobStatus === 'STARTED'">
+        progress: {{ job.progress * 100 | number: '1.0' }}%</span
+      >
+    </div>
+  </ng-container>
+  <ng-template #queueButton>
+    <button
+      hs-button
+      kind="flat"
+      class="explanation__button"
+      color="primary"
+      (click)="queueExplanation()"
+    >
+      Queue explanation
+    </button>
+  </ng-template>
+  <ng-template #failButton>
+      <button
+        hs-button
+        kind="flat"
+        color="warning"
+        class="explanation__button"
+        (click)="queueExplanation()"
+      >
+        Retry
+      </button>
+    </ng-template>
+</ng-template>

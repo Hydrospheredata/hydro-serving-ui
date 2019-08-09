@@ -1,4 +1,3 @@
-import { KeyValue } from '@angular/common';
 import {
   Component,
   Input,
@@ -8,7 +7,6 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { IMetricData } from '@core/services/metrics/monitoring.service';
 import { ModelVersion } from '@shared/models/_index';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 import * as _ from 'lodash';
@@ -29,7 +27,7 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   loading: any = false;
 
   @Output()
-  clickedGetExplanation: EventEmitter<any> = new EventEmitter();
+  queuedExplanation: EventEmitter<any> = new EventEmitter();
 
   uid: string;
   ngOnChanges(changes: SimpleChanges): void {
@@ -63,7 +61,7 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
     return !isEmptyObj(this.logData);
   }
 
-  getExplanation(): void {
-    this.clickedGetExplanation.next();
+  onQueuedExplanation() {
+    this.queuedExplanation.emit();
   }
 }

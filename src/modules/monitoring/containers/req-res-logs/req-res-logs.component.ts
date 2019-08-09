@@ -1,11 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RequestResponseLogService } from '@core/services';
-import { DialogService } from '@dialog/dialog.service';
 import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { combineLatest, Observable, BehaviorSubject, throwError } from 'rxjs';
 import { filter, exhaustMap, catchError, tap } from 'rxjs/operators';
-import { ExplanationComponent } from '../../../root-cause/containers';
 
 @Component({
   selector: 'hs-req-res-logs',
@@ -26,8 +24,7 @@ export class ReqResLogsComponent implements OnInit {
   @Input() metricSpecs$: Observable<MetricSpecification[]>;
 
   constructor(
-    private reqResLogService: RequestResponseLogService,
-    private dialogService: DialogService
+    private reqResLogService: RequestResponseLogService
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +48,7 @@ export class ReqResLogsComponent implements OnInit {
             loadOnlyFailed: this.loadFailed ? 0 : undefined,
           })
           .pipe(
-            tap(() => this.loading = false ),
+            tap(() => (this.loading = false)),
             catchError(err => {
               console.error('err');
               this.loading = false;
@@ -64,11 +61,5 @@ export class ReqResLogsComponent implements OnInit {
 
   updateReqstore(): void {
     this.updateLogButtonClick$.next('click');
-  }
-
-  getExplanation(): void {
-    this.dialogService.createDialog({
-      component: ExplanationComponent,
-    });
   }
 }

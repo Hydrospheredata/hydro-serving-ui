@@ -154,7 +154,7 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
     this.fullLogSub = this.timeBound$
       .pipe(
-        switchMap(timeBound =>
+        exhaustMap(timeBound =>
           this.getFullAggregation(timeBound).pipe(
             tap(res => {
               this.loading$.next(false);

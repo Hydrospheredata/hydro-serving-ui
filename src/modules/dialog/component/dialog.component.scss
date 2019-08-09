@@ -21,6 +21,8 @@
     padding: 24px;
     box-shadow: 0px 0px 40px -10px black;
     max-height: calc(100% - 48px);
+    max-width: calc(100% - 48px);
+    overflow-y: scroll;
   }
 
   &__close-icon {
@@ -51,6 +53,7 @@
     text-transform: uppercase;
     text-align: center;
     color: $neutral-color-400;
+
     &--is-alert {
       color: $supportive-color-red-700;
     }
@@ -64,10 +67,12 @@
     margin-top: 12px;
     display: flex;
     justify-content: space-between;
+
     &--column {
       width: 100%;
       flex-direction: column;
-      button + button {
+
+      button+button {
         margin-top: 8px;
       }
     }

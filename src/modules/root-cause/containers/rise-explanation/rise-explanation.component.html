@@ -1,0 +1,82 @@
+<div class="wrapper">
+  <div class="originalImage">
+    <div class="originalImage__title">inputs</div>
+    <div class="request__inputs">
+      <div
+        class="request__input"
+        *ngFor="let input of reqstoreEntry.request.inputs | keyvalue"
+      >
+        <div>
+          <ng-container
+            *ngTemplateOutlet="isImage(input.key) ? image : plainText"
+          ></ng-container>
+          <ng-template #image>
+            <hs-tensor-image-list
+              [tensorProto]="input.value"
+            ></hs-tensor-image-list>
+          </ng-template>
+          <ng-template #plainText>
+            <div class="request__input-value" hs-expander maxHeight="170">
+              <div #expand>
+                {{ getValueAsText(input.value) }}
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="probabilities">
+    <ng-container *ngIf="showedProbabilities$ | async as probs">
+      <div class="probabilities__title">probabilities</div>
+      <table class="probabilities__table">
+        <tr class="probabilities__table-head-cell">
+          <td class="probabilities__table-head-cell">class</td>
+          <td class="probabilities__table-head-cell">value</td>
+          <td></td>
+        </tr>
+        <tr
+          class="probabilities__table-row"
+          *ngFor="let item of probs"
+        >
+          <td class="probabilities__table-cell probabilities__class" [ngStyle]="{'color': item.color}">
+            {{ item.class }}
+          </td>
+          <td class="probabilities__table-cell" [ngStyle]="{'color': item.color}">
+            {{ item.value | number: '1.5-5' }}
+          </td>
+          <td class="probabilities__table-cell">
+            <div class="images__compare">
+              <canvas
+                hsPixelToCanvas
+                [pixels]="originalImage"
+                [width]="imageWidth"
+                [height]="imageHeight"
+              ></canvas>
+              <canvas
+                class="images__item"
+                hsPixelToCanvas
+                [pixels]="getPixels(masks[item.class])"
+                [width]="imageWidth"
+                [height]="imageHeight"
+              ></canvas>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <button
+        *ngIf="probs.length < masks.length"
+        class="probabilities__button"
+        kind="stroked"
+        color="primary"
+        hs-button
+        (click)="showMore()"
+      >
+        SHOW 5 MORE
+      </button>
+    </ng-container>
+  </div>
+</div>
+<div class="footer">
+  <button hs-button (click)="onClose()">close</button>
+</div>

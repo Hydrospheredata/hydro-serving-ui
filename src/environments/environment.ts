@@ -13,4 +13,5 @@ export const environment = {
     reqstoreUrl: '/reqstore',
     timemachineUrl: '/timemachine',
     servableUrl: '/servable',
+    rootCauseUrl: '/rootcause',
 };

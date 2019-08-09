@@ -61,6 +61,7 @@ export class ReqstoreService {
               const request = reqRes.req;
               const response = reqRes.resp;
               parsedLog[uid].push({
+                uid,
                 ts,
                 request,
                 response,

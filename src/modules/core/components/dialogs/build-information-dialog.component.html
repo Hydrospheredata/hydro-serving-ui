@@ -1,25 +1,36 @@
-<div class='build-info'>
-    <div class='build-info__title'>Build information</div>
-    <div class='service-info build-info__service-info' *ngFor='let serviceInfo of buildInfo$ | async'>
-        <div class='service-info__title'>
-            {{ serviceInfo.name }}
-        </div>
-        <div class='service-info__container'>
-            <div class='service-info__keys'>
-                <div class='service-info__key' *ngFor='let item of serviceInfo | keyvalue'>
-                        <span >{{ item.key }}</span>
-                </div>
-            </div>
-            <div class='service-info__values'>
-                <div class='service-info__value' *ngFor='let item of serviceInfo | keyvalue'>
-                    <ng-container *ngIf='item.value; else na'>
-                        <span >{{ item.value }}</span>
-                    </ng-container>
-                </div>
-            </div>
-        </div>
-
+<div class="build-info">
+  <div class="build-info__title">Build information</div>
+  <div
+    class="service-info build-info__service-info"
+    *ngFor="let serviceInfo of buildInfo$ | async"
+  >
+    <div class="service-info__title">
+      {{ serviceInfo.name }}
     </div>
+    <div class="service-info__container">
+      <div class="service-info__keys">
+        <div
+          class="service-info__key"
+          *ngFor="let item of serviceInfo | keyvalue"
+        >
+          <span>{{ item.key }}</span>
+        </div>
+      </div>
+      <div class="service-info__values">
+        <div
+          class="service-info__value"
+          *ngFor="let item of serviceInfo | keyvalue"
+        >
+          <ng-container *ngIf="item.value; else na">
+            <span>{{ item.value }}</span>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="build-info__buttons">
+      <button hs-button hsAutofocused (click)="onClose()">close</button>
+  </div>
 </div>
 
 <ng-template #na>n/a</ng-template>

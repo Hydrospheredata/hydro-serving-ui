@@ -1,37 +1,16 @@
-<div class="explanation">
-  <ng-container
-    *ngIf="
-      error$ | async as error;
-      else (isLoading$ | async) ? loading : explanation
-    "
-  >
-    <hs-error-message> {{ error }} </hs-error-message>
-  </ng-container>
-
-  <ng-template #loading>
-    loading...
-  </ng-template>
-  <ng-template #explanation>
-    <div *ngIf="explanation$ | async as explanation">
-      <div class="explanation__item">
-        <div class="explanation__item-key">coverage</div>
-        <div class="explanation__item-value">{{ explanation.coverage }}</div>
-      </div>
-      <div class="explanation__item">
-        <div class="explanation__item-key">explanation</div>
-        <div class="explanation__item-value">
-          <div *ngFor="let item of explanation.explanation">
-            {{ item }}
-          </div>
-        </div>
-      </div>
-      <div class="explanation__item">
-        <div class="explanation__item-key">precision</div>
-        <div class="explanation__item-value">{{ explanation.precision }}</div>
-      </div>
-    </div>
-  </ng-template>
-  <div class="explanation__buttons">
-    <button hs-button (click)="close()">Close</button>
-  </div>
-</div>
+<ng-container
+  *ngTemplateOutlet="isRise ? riseTemplate : anchorTemplate"
+></ng-container>
+<ng-template #riseTemplate>
+  <hs-rise-explanation
+    [explanationJob]="explanationJob"
+    [modelVersion]="modelVersion"
+    [reqstoreEntry]="reqstoreEntry"
+  ></hs-rise-explanation>
+</ng-template>
+<ng-template #anchorTemplate>
+  <hs-anchor-explanation
+    [explanationJob]="explanationJob"
+    [reqstoreEntry]="reqstoreEntry"
+  ></hs-anchor-explanation>
+</ng-template>

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HydroServingState, getSelectedMetrics } from '@core/reducers';
+import { HydroServingState, getSelectedMetrics, isMetricsLoading } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
 import { getSelectedModelVersion } from '@models/reducers';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable, of, Subject } from 'rxjs';
@@ -13,7 +13,7 @@ import { filter, switchMap } from 'rxjs/operators';
   templateUrl: './monitoring-page.component.html',
   styleUrls: ['./monitoring-page.component.scss'],
 })
-export class MonitoringPageComponent implements OnInit {
+export class MonitoringPageComponent {
   selectedModelVersion$: Observable<ModelVersion>;
   selectedMetricSpecifications$: Observable<MetricSpecification[]>;
   metricsNotEmpty$: Observable<boolean>;
@@ -22,6 +22,7 @@ export class MonitoringPageComponent implements OnInit {
   timeIntervalChange$: Subject<TimeInterval> = new Subject();
 
   live: boolean = true;
+  metricsLoading$: Observable<boolean>;
 
   constructor(
     private store: Store<HydroServingState>,
@@ -37,9 +38,8 @@ export class MonitoringPageComponent implements OnInit {
     this.metricsNotEmpty$ = this.selectedMetricSpecifications$.pipe(
       switchMap(metrics => of(metrics.length > 0))
     );
-  }
 
-  ngOnInit() {
+    this.metricsLoading$ = this.store.pipe(select(isMetricsLoading));
   }
 
   onChangeTimeInterval(timeInterval: TimeInterval): void {

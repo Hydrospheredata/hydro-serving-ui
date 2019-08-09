@@ -33,6 +33,7 @@ export class MetricsComponent implements OnInit {
   ) {}
 
   onAddMetric() {
+    event.preventDefault();
     try {
       this.layout = true;
       this.vcr.clear();

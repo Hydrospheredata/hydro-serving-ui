@@ -1,31 +1,42 @@
-import { Component, OnInit } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
+import {
+  Component,
+  OnInit,
+  InjectionToken,
+  Inject,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { GetExplanation } from '../../actions';
-import { Explanation } from '../../models';
-import * as rootCauseSelectors from '../../selectors';
+import { ModelVersion } from '@shared/_index';
+import { ReqstoreEntry } from '@shared/models/reqstore.model';
+import { ExplanationJob } from '../../models';
+
+export const EXPLANATION_JOB = new InjectionToken<ExplanationJob>(
+  'explanation job'
+);
+export const REQSTORE_ENTRY = new InjectionToken<ReqstoreEntry>(
+  'reqstore item'
+);
+export const MODEL_VERSION = new InjectionToken<ModelVersion>(
+  'model version'
+);
 @Component({
   templateUrl: 'explanation.component.html',
   styleUrls: ['explanation.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExplanationComponent implements OnInit {
-  explanation$: Observable<Explanation>;
-  isLoading$: Observable<boolean>;
-  error$: Observable<string>;
+  get isRise(): boolean {
+    return this.explanationJob.explanationType === 'rise';
+  }
+
   constructor(
-    private store: Store<HydroServingState>,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    @Inject(EXPLANATION_JOB) public explanationJob: ExplanationJob,
+    @Inject(REQSTORE_ENTRY) public reqstoreEntry: ReqstoreEntry,
+    @Inject(MODEL_VERSION) public modelVersion: ModelVersion
   ) {}
 
-  ngOnInit(): void {
-    this.explanation$ = this.store.select(rootCauseSelectors.getExplanation);
-    this.isLoading$ = this.store.select(rootCauseSelectors.isLoading);
-    this.error$ = this.store.select(rootCauseSelectors.getError);
-
-    this.store.dispatch(GetExplanation());
-  }
+  ngOnInit(): void {}
 
   close() {
     this.dialogService.closeDialog();

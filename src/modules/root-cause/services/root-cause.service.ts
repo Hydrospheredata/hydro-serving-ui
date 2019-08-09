@@ -1,25 +1,50 @@
+import { HttpResponseBase } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
-import { Observable, of, throwError } from 'rxjs';
-import { Explanation } from '../models';
+import { environment } from '@environments/environment';
+import { ExplanationRequestBody } from '@rootcause/interfaces';
+import { Explanation, ExplanationType } from '@rootcause/models';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root',
 })
 export class RootCauseService {
-  constructor(private http: HttpService) {}
+  private url: string;
+  constructor(private http: HttpService) {
+    this.url = environment.rootCauseUrl;
+  }
 
-  getExplanation(): Observable<Explanation> {
-    return of(
-      new Explanation({
-        coverage: 0.001,
-        explanation:
-          `Hours per week > 36.0 AND
-           Capital Loss == None AND
-           Sex ==  Male AND
-           Education == Prof-School AND
-           Workclass ==  Local-gov`,
-        precision: 1.0,
+  queueExplanation(
+    body: ExplanationRequestBody,
+    explanationType: ExplanationType
+  ): Observable<string> {
+    const url = `${this.url}/${explanationType} `;
+    return this.http.post(url, body, { observe: 'response' }).pipe(
+      map(response => {
+        const resp = response as HttpResponseBase;
+        const rurl = resp.headers.get('Location');
+        const urlArr = rurl.split('/');
+        const jobId = urlArr[urlArr.length - 1];
+        return jobId;
       })
     );
+  }
+
+  getJobStatus(
+    jobId: string,
+    explanationType: ExplanationType
+  ): Observable<{
+    result?: string;
+    state: string;
+    description?: string;
+    progress?: number;
+  }> {
+    return this.http.get(`${this.url}/status/${explanationType}/${jobId}`);
+  }
+
+  getResult(resultId: string, explanationType: ExplanationType): Observable<Explanation> {
+    return this.http.get(`${this.url}/fetch_result/${explanationType}/${resultId}`);
   }
 }

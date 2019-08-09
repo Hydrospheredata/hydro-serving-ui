@@ -1,123 +1,128 @@
 import { Injectable } from '@angular/core';
-import {
-    FormArray,
-    FormBuilder,
-    FormGroup,
-} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { ModelVariantFormService, IModelVariantFormData } from '@applications/services/model-variant-form.service';
+import {
+  ModelVariantFormService,
+  IModelVariantFormData,
+} from '@applications/services/model-variant-form.service';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { IApplication } from '@shared/_index';
 
 export interface StageFormData {
-    modelVariants: IModelVariantFormData[];
+  modelVariants: IModelVariantFormData[];
 }
 
 interface ExecutionGraphFormData {
-    stages: StageFormData[];
+  stages: StageFormData[];
 }
 
 export interface FormData {
-    name?: string;
-    executionGraph: ExecutionGraphFormData;
+  name?: string;
+  executionGraph: ExecutionGraphFormData;
 }
 
 @Injectable()
 export class ApplicationFormService {
-    private form: FormGroup;
+  private form: FormGroup;
 
-    constructor(
-        private fb: FormBuilder,
-        private modelVariantFormService: ModelVariantFormService,
-        private customValidators: CustomValidatorsService
-    ) {}
+  constructor(
+    private fb: FormBuilder,
+    private modelVariantFormService: ModelVariantFormService,
+    private customValidators: CustomValidatorsService
+  ) {}
 
-    public initForm(application: IApplication): FormGroup {
-        let data: FormData;
+  public initForm(application: IApplication): FormGroup {
+    let data: FormData;
 
-        if (application) {
-            data = this.applicationToFormData(application);
-        } else {
-            data = this.defaultFormData();
-        }
-        this.form = this.fb.group({
-            applicationName: [
-                data.name,
-                [
-                    this.customValidators.required(),
-                    this.customValidators.uniqNameValidation(data.name),
-                    this.customValidators.applicationNameformat(),
-                ],
-            ],
-            kafkaStreaming: this.fb.array([]),
-            stages: this.fb.array(this.getStagesArray(data.executionGraph.stages)),
-        });
-
-        return this.form;
+    if (application) {
+      data = this.applicationToFormData(application);
+    } else {
+      data = this.defaultFormData();
     }
+    this.form = this.fb.group({
+      applicationName: [
+        data.name,
+        [
+          this.customValidators.required(),
+          this.customValidators.uniqNameValidation(data.name),
+          this.customValidators.applicationNameformat(),
+          this.customValidators.lengthValidation(128),
+        ],
+      ],
+      kafkaStreaming: this.fb.array([]),
+      stages: this.fb.array(this.getStagesArray(data.executionGraph.stages)),
+    });
 
-    public applicationToFormData(application: IApplication): FormData {
-        const stages = application.executionGraph.stages.map(
-            stage => {
-                const modelVariants: IModelVariantFormData[] = stage.modelVariants.map(
-                    this.modelVariantFormService.modelVariantToModelVariantFormData,
-                    this.modelVariantFormService
-                );
-                return { ...stage, modelVariants };
-            }
+    return this.form;
+  }
+
+  public applicationToFormData(application: IApplication): FormData {
+    const stages = application.executionGraph.stages.map(stage => {
+      const modelVariants: IModelVariantFormData[] = stage.modelVariants.map(
+        this.modelVariantFormService.modelVariantToModelVariantFormData,
+        this.modelVariantFormService
+      );
+      return { ...stage, modelVariants };
+    });
+
+    return {
+      name: application.name,
+      executionGraph: {
+        stages,
+      },
+    };
+  }
+
+  public get stages(): FormArray {
+    return this.form.get('stages') as FormArray;
+  }
+
+  public addStageControl(stage = this.defaultStageData()): void {
+    this.stages.push(this.buildStageGroup(stage));
+  }
+
+  public addModelVariantToStage(stageControl: FormGroup): void {
+    const modelVariants = stageControl.get('modelVariants') as FormArray;
+    modelVariants.push(
+      this.modelVariantFormService.buildModelVariantFormGroup()
+    );
+  }
+
+  private buildStageGroup(stage): FormGroup {
+    const modelVariants = stage.modelVariants.map(
+      (modelVariant: IModelVariantFormData) => {
+        return this.modelVariantFormService.buildModelVariantFormGroup(
+          modelVariant
         );
+      }
+    );
 
-        return {
-            name: application.name,
-            executionGraph: {
-                stages,
-            },
-        };
-    }
+    return this.fb.group({
+      modelVariants: this.fb.array(
+        modelVariants,
+        this.customValidators.weightValidation()
+      ),
+    });
+  }
 
-    public get stages(): FormArray {
-        return this.form.get('stages') as FormArray;
-    }
+  private getStagesArray(stages: any[] = []): FormGroup[] {
+    return stages.map(stage => this.buildStageGroup(stage));
+  }
 
-    public addStageControl(stage = this.defaultStageData()): void {
-        this.stages.push(this.buildStageGroup(stage));
-    }
+  private defaultStageData(): StageFormData {
+    return {
+      modelVariants: [
+        this.modelVariantFormService.defaultModelVariantFormData(),
+      ],
+    };
+  }
 
-    public addModelVariantToStage(stageControl: FormGroup): void {
-        const modelVariants = stageControl.get('modelVariants') as FormArray;
-        modelVariants.push(this.modelVariantFormService.buildModelVariantFormGroup());
-    }
-
-    private buildStageGroup(stage): FormGroup {
-        const modelVariants = stage.modelVariants.map(
-            (modelVariant: IModelVariantFormData) => {
-                return this.modelVariantFormService.buildModelVariantFormGroup(modelVariant);
-            }
-        );
-
-        return this.fb.group({
-            modelVariants: this.fb.array(modelVariants, this.customValidators.weightValidation()),
-        });
-    }
-
-    private getStagesArray(stages: any[] = []): FormGroup[] {
-        return stages.map(stage => this.buildStageGroup(stage));
-    }
-
-    private defaultStageData(): StageFormData {
-        return {
-            modelVariants: [
-                this.modelVariantFormService.defaultModelVariantFormData(),
-            ],
-        };
-    }
-
-    private defaultFormData(): FormData {
-        return {
-            name: '',
-            executionGraph: {
-                stages: [this.defaultStageData()],
-            },
-        };
-    }
+  private defaultFormData(): FormData {
+    return {
+      name: '',
+      executionGraph: {
+        stages: [this.defaultStageData()],
+      },
+    };
+  }
 }

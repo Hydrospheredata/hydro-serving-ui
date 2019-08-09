@@ -68,7 +68,8 @@
                 hs-button
                 kind="flat"
                 color="primary"
-                [disabled]="!isValidInput(application.input)"
+                [disabled]="!isValidInput(application.input) || application.testStatus === 'pending'"
+                hsAutofocused
               >
                 test app
               </button>
