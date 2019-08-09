@@ -79,12 +79,17 @@
       </ol>
     </div>
   </section>
-  <section class="content__cell mv-details__metadata">
-    <div class="content__cell-title">Metadata</div>
-    <div class="content__cell-body">
-      <hs-metadata [metadata]="(modelVersion$ | async).metadata"></hs-metadata>
-    </div>
-  </section>
+  <ng-container *ngIf="(modelVersion$ | async).metadata as meta">
+    <section *ngIf="!isEmpty(meta)" class="content__cell mv-details__metadata">
+      <div class="content__cell-title">Metadata</div>
+      <div class="content__cell-body">
+        <hs-metadata
+          [metadata]="meta"
+        ></hs-metadata>
+      </div>
+    </section>
+  </ng-container>
+
   <section class="content__cell mv-details__signatures">
     <div class="content__cell-title">Signatures</div>
     <div class="content__cell-body">
