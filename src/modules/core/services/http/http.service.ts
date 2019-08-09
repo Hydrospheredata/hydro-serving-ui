@@ -70,11 +70,11 @@ export class HttpService {
     } else {
       const status: number = error.status;
 
-      let err: string = '';
-      let information: string = '';
+      let err: string = error.name;
+      let information: string = error.message;
       if (error.error) {
         err = error.error.error || error.name || '';
-        information = error.error.information || error.message || '';
+        information = error.error.information || error.error.message || '';
       }
 
       message = `status: ${status}, error: ${err}, message: ${information} `;
