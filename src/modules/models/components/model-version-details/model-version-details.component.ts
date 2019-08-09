@@ -15,6 +15,7 @@ import { ServableLogsComponent } from '@servables/containers';
 import { Servable } from '@servables/models';
 import { selectServablesByModelVersionId } from '@servables/selectors';
 import { ModelVersion } from '@shared/models/_index';
+import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { filter, switchMap } from 'rxjs/operators';
 @Component({
@@ -83,5 +84,9 @@ export class ModelVersionDetailsComponent {
 
   toggleGlobalLog(): void {
     this.globalLog = !this.globalLog;
+  }
+
+  isEmpty(obj: object): boolean {
+    return _.isEmpty(obj);
   }
 }

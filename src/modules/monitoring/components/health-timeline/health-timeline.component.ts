@@ -154,8 +154,8 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
 
     this.fullLogSub = this.timeBound$
       .pipe(
-        exhaustMap(timeBound =>
-          this.getFullAggregation(timeBound).pipe(
+        switchMap(timeBound => {
+          return this.getFullAggregation(timeBound).pipe(
             tap(res => {
               this.loading$.next(false);
               const aggregation: IMonitoringAggregationVM = this.metricSpecifications.reduce(
@@ -189,8 +189,8 @@ export class HealthTimelineComponent implements OnInit, OnDestroy {
                 }
               }
             })
-          )
-        )
+          );
+        })
       )
       .subscribe();
 
