@@ -13,8 +13,16 @@ import { getFiledNameByTensorDataType } from '@shared/utils/field-name-by-tensor
 import { flatArray } from '@shared/utils/flat-array';
 import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
 import * as colorScale from 'd3-scale-chromatic';
+import * as _ from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { scan } from 'rxjs/operators';
+
+type RiseExplanations = Array<{
+  mask: number[];
+  class: number;
+  probability: number;
+  color: string;
+}>;
 
 @Component({
   selector: 'hs-rise-explanation',
@@ -28,27 +36,32 @@ export class RiseExplanationComponent implements OnInit {
   originalImage: number[];
 
   showMore$: BehaviorSubject<any> = new BehaviorSubject('');
-  showedProbabilities$: Observable<number[]> = this.showMore$.pipe(
-    scan(acc => {
+  showedExplanations$: Observable<RiseExplanations> = this.showMore$.pipe(
+    scan(showed => {
       const STEP = 5;
-      const accLength = acc.length;
+      const accLength = showed.length;
       const res = [
-        ...acc,
-        ...this.probabilities.slice(accLength, accLength + STEP),
+        ...showed,
+        ...this.explanations.slice(accLength, accLength + STEP),
       ];
       return res;
     }, [])
   );
 
-  probs: number[];
-  masks: number[][];
-  job: ExplanationJob;
+  explanations: RiseExplanations;
 
   @Input() reqstoreEntry: ReqstoreEntry;
   @Input() modelVersion: ModelVersion;
   @Input() set explanationJob(job: ExplanationJob) {
-    this.job = job;
-    this.masks = JSON.parse(job.explanation.result.masks);
+    this.explanations = (job.explanation.result as RiseExplanations)
+      .map(item => ({
+        ...item,
+        color: colorScale.interpolateBlues(
+          item.probability < 0.15 ? 0.15 : item.probability
+        ),
+      }))
+      .sort((a, b) => b.probability - a.probability);
+
   }
 
   constructor(
@@ -58,33 +71,6 @@ export class RiseExplanationComponent implements OnInit {
 
   ngOnInit() {
     this.setWidthHeightForImages();
-  }
-
-  get explanation(): Explanation {
-    return this.job.explanation;
-  }
-
-  get probabilities(): number[] {
-    try {
-      if (this.probs) {
-        return this.probs;
-      }
-      const probs = this.getValue(
-        this.reqstoreEntry.response.outputs.probabilities
-      )
-        .map((value, idx) => ({
-          class: idx,
-          value,
-          color: colorScale.interpolateBlues(value < 0.15 ? 0.15 : value),
-        }))
-        .sort((a, b) => b.value - a.value);
-
-      this.probs = probs;
-      return probs;
-    } catch {
-      console.warn(`outputs doesn't have probability field`);
-      return [];
-    }
   }
 
   showMore() {
@@ -100,7 +86,7 @@ export class RiseExplanationComponent implements OnInit {
       const pixels = this.getValue(tensorProto);
 
       const dim = tensorProto.tensorShape.dim;
-      const [_, imageWidth, imageHeight] = dim;
+      const [, imageWidth, imageHeight] = dim;
       this.imageWidth = imageWidth.size;
       this.imageHeight = imageHeight.size;
 
@@ -114,24 +100,9 @@ export class RiseExplanationComponent implements OnInit {
     }
   }
 
-  get masksPixelsArray() {
-    try {
-      return JSON.parse(this.explanation.result.masks).map(pixels => {
-        return this.imageHelper.transformToRGBA({
-          pixels: flatArray(pixels),
-          imageHeight: this.imageHeight,
-          imageWidth: this.imageWidth,
-          colormap: 'coldwarm',
-        });
-      });
-    } catch {
-      return [];
-    }
-  }
-
   getPixels(arr: any): number[] {
     return this.imageHelper.transformToRGBA({
-      pixels: flatArray(arr),
+      pixels: arr,
       imageHeight: this.imageHeight,
       imageWidth: this.imageWidth,
       colormap: 'coldwarm',

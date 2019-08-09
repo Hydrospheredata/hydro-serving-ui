@@ -57,7 +57,7 @@ export class ModelVersionDetailsComponent {
     const component = this.logContainer.createComponent(factory);
 
     component.instance.modelVersion = modelVersionId;
-    component.instance.closed.subscribe(_ => this.closeGlobalLog(component));
+    component.instance.closed.subscribe(() => this.closeGlobalLog(component));
     component.changeDetectorRef.detectChanges();
     this.toggleGlobalLog();
   }
@@ -70,7 +70,7 @@ export class ModelVersionDetailsComponent {
 
     const component = this.logContainer.createComponent(factory);
     component.instance.servableName = servableName;
-    component.instance.closed.subscribe(_ => this.closeGlobalLog(component));
+    component.instance.closed.subscribe(() => this.closeGlobalLog(component));
     component.changeDetectorRef.detectChanges();
     this.toggleGlobalLog();
   }
