@@ -15,7 +15,7 @@ import {
   ReqstoreMetricsComponent,
   InputOutputComponent,
 } from '@monitoring/components';
-import { MonitoringServiceStatusEffects } from '@monitoring/effects/monitoring-service-status.effects';
+import { reducer, MonitoringServiceStatusEffects } from '@monitoring/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
@@ -29,7 +29,6 @@ import {
   ChartsComponent,
   ReqResLogsComponent,
 } from './containers';
-import { reducer } from './reducers';
 @NgModule({
   entryComponents: [
     DialogMetricComponent,
