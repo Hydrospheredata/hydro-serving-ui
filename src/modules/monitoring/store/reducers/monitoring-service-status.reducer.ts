@@ -1,8 +1,11 @@
 import { MonitoringServiceStatus } from '@monitoring/models';
 import {
-  MonitoringServiceStatusActionTypes,
-  MonitoringServiceStatusAction,
+  GetServiceStatusAction,
+  SetStatusToFailedAction,
+  SetStatusToAvailableAction,
+  SetStatusToClosedForOSSAction,
 } from '@monitoring/store/actions';
+import { createReducer, on, Action } from '@ngrx/store';
 
 export interface State {
   status: MonitoringServiceStatus;
@@ -10,44 +13,32 @@ export interface State {
 }
 
 const initialState: State = {
-  status: MonitoringServiceStatus.AVAILABLE,
+  status: MonitoringServiceStatus.UNKNOWN,
   error: null,
 };
 
-export function reducer(
-  state: State = initialState,
-  action: MonitoringServiceStatusAction
-): State {
-  switch (action.type) {
-    case MonitoringServiceStatusActionTypes.GetServiceStatus: {
-      return {
-        ...state,
-        status: MonitoringServiceStatus.UNKNOWN,
-        error: null,
-      };
-    }
-    case MonitoringServiceStatusActionTypes.SetStatusToFailed: {
-      return {
-        ...state,
-        status: MonitoringServiceStatus.FAILED,
-        error: action.payload.errorMessage,
-      };
-    }
-    case MonitoringServiceStatusActionTypes.SetStatusToAvailable: {
-      return {
-        ...state,
-        status: MonitoringServiceStatus.AVAILABLE,
-        error: null,
-      };
-    }
-    case MonitoringServiceStatusActionTypes.SetStatusToClosedForOSS: {
-      return {
-        ...state,
-        status: MonitoringServiceStatus.CLOSED_FOR_OSS,
-        error: null,
-      };
-    }
-    default:
-      return state;
-  }
+const monitoringStatusReducer = createReducer(
+  initialState,
+  on(GetServiceStatusAction, state => ({
+    ...state,
+    error: null,
+    status: MonitoringServiceStatus.UNKNOWN,
+  })),
+  on(SetStatusToFailedAction, (state, action) => ({
+    ...state,
+    status: MonitoringServiceStatus.FAILED,
+    error: action.error,
+  })),
+  on(SetStatusToAvailableAction, state => ({
+    ...state,
+    status: MonitoringServiceStatus.AVAILABLE,
+  })),
+  on(SetStatusToClosedForOSSAction, state => ({
+    ...state,
+    status: MonitoringServiceStatus.CLOSED_FOR_OSS,
+  }))
+);
+
+export function reducer(state: State, action: Action): State {
+  return monitoringStatusReducer(state, action);
 }
