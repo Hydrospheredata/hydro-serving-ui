@@ -2,10 +2,11 @@ import {
   Component,
   ChangeDetectionStrategy,
   Input,
+  Output,
+  EventEmitter,
 } from '@angular/core';
-import { TimeInterval } from '@shared/_index';
-import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { Observable } from 'rxjs';
+import { ChartsViewModel, ChartViewModel } from '@monitoring/interfaces';
+import { ModelVersion, TimeInterval } from '@shared/_index';
 
 @Component({
   selector: 'hs-charts',
@@ -14,7 +15,18 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChartsComponent {
-  @Input() selectedTimeInterval$: Observable<TimeInterval>;
-  @Input() metricSpecifications: MetricSpecification;
-  liveUpdate: boolean = false;
+  @Input() timeInterval: TimeInterval;
+  @Input() detailedCharts: ChartsViewModel;
+  @Input() siblingModelVersions: ModelVersion[];
+  @Output() addedModelVersionIdToCompare: EventEmitter<
+    any
+  > = new EventEmitter();
+
+  trackByMetricSpecId(chart: ChartViewModel) {
+    return chart.metricSpecId;
+  }
+
+  onAddModelVersionIdToCompare(params) {
+    this.addedModelVersionIdToCompare.next(params);
+  }
 }

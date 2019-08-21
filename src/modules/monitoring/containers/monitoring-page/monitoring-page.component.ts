@@ -1,51 +1,126 @@
-import { Component, OnInit } from '@angular/core';
-import { HydroServingState, getSelectedMetrics, isMetricsLoading } from '@core/reducers';
+import { Component, OnDestroy } from '@angular/core';
+import {
+  HydroServingState,
+  getSelectedMetrics,
+  isMetricsLoading,
+} from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
-import { getSelectedModelVersion } from '@models/reducers';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
-import { Store, select } from '@ngrx/store';
-import { ModelVersion, TimeInterval } from '@shared/_index';
-import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { Observable, of, Subject } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { TimeInterval } from '@shared/_index';
+import * as _ from 'lodash';
+import { combineLatest, EMPTY, timer, Subscription } from 'rxjs';
+import { filter, switchMap, tap, pairwise, timeout } from 'rxjs/operators';
+
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
   styleUrls: ['./monitoring-page.component.scss'],
 })
-export class MonitoringPageComponent {
-  selectedModelVersion$: Observable<ModelVersion>;
-  selectedMetricSpecifications$: Observable<MetricSpecification[]>;
-  metricsNotEmpty$: Observable<boolean>;
+export class MonitoringPageComponent implements OnDestroy {
+  selectedModelVersion$ = this.monitoringPageFacade.selectedModelVersion$;
+  metrics$ = this.monitoringPageFacade.metrics$;
+  fullAggregation$ = this.monitoringPageFacade.fullAggregation$;
+  detailedAggregation$ = this.monitoringPageFacade.detailedAggregation$;
+  timeInterval$ = this.monitoringPageFacade.timeInterval$;
+  detailedTimeInterval$ = this.monitoringPageFacade.detailedTimeInterval$;
+  sonarData$ = this.monitoringPageFacade.sonarData$;
+  detailedCharts$ = this.monitoringPageFacade.detailedCharts$;
+  reqResLog$ = this.monitoringPageFacade.reqResLog$;
+  isLive$ = this.monitoringPageFacade.isLive$;
+  siblingModelVersions$ = this.monitoringPageFacade.siblingModelVersions$;
+  comparedMetricSpecs$ = this.monitoringPageFacade
+    .comparedMetrocSpecifications$;
+  timeBound$ = this.monitoringPageFacade.timeBound$;
 
-  timeInterval: TimeInterval;
-  timeIntervalChange$: Subject<TimeInterval> = new Subject();
-
-  live: boolean = true;
-  metricsLoading$: Observable<boolean>;
+  s1: Subscription;
+  s2: Subscription;
+  s3: Subscription;
+  s4: Subscription;
+  s5: Subscription;
 
   constructor(
-    private store: Store<HydroServingState>,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private monitoringPageFacade: MonitoringPageFacade
   ) {
-    this.selectedModelVersion$ = this.store
-      .select(getSelectedModelVersion)
-      .pipe(filter(mv => !!mv));
+    this.s1 = this.selectedModelVersion$
+      .pipe(tap(({ id }) => this.monitoringPageFacade.loadMetrics(id)))
+      .subscribe();
 
-    this.selectedMetricSpecifications$ = this.store
-      .select(getSelectedMetrics)
-      .pipe(filter(_ => !!_));
-    this.metricsNotEmpty$ = this.selectedMetricSpecifications$.pipe(
-      switchMap(metrics => of(metrics.length > 0))
-    );
+    this.s2 = combineLatest(this.metrics$, this.isLive$, this.timeBound$)
+      .pipe(
+        filter(([metrics]) => {
+          return metrics !== undefined && metrics.length > 0;
+        }),
+        switchMap(([, isLive, timeBound]) => {
+          if (isLive && timeBound === 0) {
+            return timer(0, 5000).pipe(
+              tap(() => {
+                this.monitoringPageFacade.loadFullAggregation({
+                  timeBoundary: 0,
+                });
+              })
+            );
+          } else {
+            return EMPTY;
+          }
+        })
+      )
+      .subscribe();
 
-    this.metricsLoading$ = this.store.pipe(select(isMetricsLoading));
+    this.s3 = this.fullAggregation$
+      .pipe(
+        pairwise(),
+        filter(([prevLog, newLog]) => {
+          const recievedNewData = !_.isEqual(prevLog, newLog);
+          return recievedNewData;
+        })
+      )
+      .subscribe(([, newLog]) => {
+        const [
+          from,
+          to,
+        ] = this.monitoringPageFacade.getMinimumAndMaximumTimestamps(newLog);
+        this.monitoringPageFacade.setTimeInterval({ from, to });
+      });
+
+    this.timeInterval$.subscribe(timeInterval => {
+      this.monitoringPageFacade.loadSonarData();
+      this.monitoringPageFacade.loadDetailedAggregation({ timeInterval });
+    });
+
+    this.detailedTimeInterval$.subscribe(timeInterval => {
+      this.monitoringPageFacade.loadDetailedAggregation({ timeInterval });
+    });
+
+    this.s4 = this.comparedMetricSpecs$
+      .pipe(
+        switchMap(() => timer(0, 10000)),
+        tap(() => this.monitoringPageFacade.loadComparedSonarData())
+      )
+      .subscribe();
+
+    this.s5 = this.timeBound$
+      .pipe(
+        switchMap(timeBound => {
+          if (timeBound) {
+            return timer(0, 10000).pipe(tap(() => {
+              const to = new Date().getTime();
+              const from = to - timeBound;
+              this.monitoringPageFacade.setTimeInterval({ from, to});
+            }));
+          } else {
+            return EMPTY;
+          }
+        })
+      )
+      .subscribe();
   }
 
   onChangeTimeInterval(timeInterval: TimeInterval): void {
     if (timeInterval && timeInterval.from && timeInterval.to) {
-      this.timeInterval = timeInterval;
-      this.timeIntervalChange$.next(timeInterval);
+      const { from, to } = timeInterval;
+      this.monitoringPageFacade.setDetailedTimeInterval({ from, to });
     }
   }
 
@@ -60,9 +135,37 @@ export class MonitoringPageComponent {
   }
 
   onStopLive() {
-    this.live = false;
+    this.monitoringPageFacade.stopAutoUpdate();
   }
   onStartLive() {
-    this.live = true;
+    this.monitoringPageFacade.startAutoUpdate();
+  }
+
+  setTimeBound(timeBound: number) {
+    this.monitoringPageFacade.setTimeBound({ timeBound });
+  }
+
+  loadReqstore(params: {
+    maxMBytes: number;
+    maxMessages: number;
+    reverse: boolean;
+  }) {
+    this.monitoringPageFacade.loadReqstoreData(params);
+  }
+
+  addModelVersionIdToCompare(params: {
+    modelVersionId: number;
+    metricSpecId: string;
+    metricSpecKind: string;
+  }) {
+    this.monitoringPageFacade.addModelVersionIdToCompare(params);
+  }
+
+  ngOnDestroy() {
+    this.s1.unsubscribe();
+    this.s2.unsubscribe();
+    this.s3.unsubscribe();
+    this.s4.unsubscribe();
+    this.monitoringPageFacade.clear();
   }
 }

@@ -1,4 +1,27 @@
-<ng-container
+<hs-health-timeline
+  [timeInterval]="timeInterval$ | async"
+  [isLive]="isLive$ | async"
+  [detailedAggregation]="detailedAggregation$ | async"
+  [fullAggregation]="fullAggregation$ | async"
+  [timeBound]="timeBound$ | async"
+  (stopped)="onStopLive()"
+  (started)="onStartLive()"
+  (timeIntervalChanged)="onChangeTimeInterval($event)"
+  (timeBoundChanged)="setTimeBound($event)"
+>
+</hs-health-timeline>
+<hs-req-res-logs
+  [log]="reqResLog$ | async"
+  [modelVersion]="selectedModelVersion$ | async"
+></hs-req-res-logs>
+<hs-charts
+  [timeInterval]="timeInterval$ | async"
+  [detailedCharts]="detailedCharts$ | async"
+  [siblingModelVersions]="siblingModelVersions$ | async"
+  (addedModelVersionIdToCompare)="addModelVersionIdToCompare($event)"
+></hs-charts>
+
+<!-- <ng-container
   *ngIf="metricsLoading$ | async; then loader; else body"
 ></ng-container>
 
@@ -52,4 +75,5 @@
       <span> Settings </span>
     </span>
   </hs-alert-message>
-</ng-template>
+</ng-template> -->
+<!-- </hs-health-timeline> -->

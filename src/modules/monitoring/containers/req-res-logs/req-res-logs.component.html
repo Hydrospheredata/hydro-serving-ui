@@ -1,6 +1,6 @@
 <div>
   <div>
-    <div class="reqstore__options">
+    <!-- <div class="reqstore__options">
       <div class="reqstore__options-item">
         Maximum
         <input class="reqstore__options-input" [(ngModel)]="maxMessages" />
@@ -27,11 +27,11 @@
       >
         update log
       </button>
-    </div>
+    </div> -->
     <hs-reqstore-table-log
       [loading]="loading"
-      [logData]="log$ | async"
-      [modelVersion]="modelVersion$ | async"
+      [logData]="log"
+      [modelVersion]="modelVersion"
     >
     </hs-reqstore-table-log>
   </div>

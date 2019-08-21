@@ -2,13 +2,17 @@
   <div
     class="charts__item"
     [ngClass]="{ 'charts__item--odd': odd }"
-    *ngFor="let metricSpec of metricSpecifications; odd as odd"
+    *ngFor="
+      let chart of detailedCharts;
+      odd as odd;
+      trackBy: trackByMetricSpecId
+    "
   >
     <hs-chart
-      [selectedTimeInterval$]="selectedTimeInterval$"
-      [liveUpdate]="liveUpdate"
-      [metricSpecification]="metricSpec"
-      [selectedTimeInterval]="selectedTimeInterval$ | async"
+      [timeInterval]="timeInterval"
+      [chartConfig]="chart"
+      [siblingModelVersions]="siblingModelVersions"
+      (addedModelVersionIdToCompare)="onAddModelVersionIdToCompare($event)"
     ></hs-chart>
   </div>
 </div>

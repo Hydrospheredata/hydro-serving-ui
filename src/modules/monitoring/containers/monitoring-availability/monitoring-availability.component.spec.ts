@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { By } from '@angular/platform-browser';
-import * as actions from '@monitoring/actions';
+import * as actions from '@monitoring/store/actions';
 import {
   SetStatusToAvailableAction,
   SetStatusToFailedAction,
-  SetStatusToClosedForOSSAction
-} from '@monitoring/actions';
-import * as fromMonitoring from '@monitoring/reducers';
-import * as fromMonitoringServiceStatus from '@monitoring/reducers/monitoring-service-status.reducer';
+  SetStatusToClosedForOSSAction,
+} from '@monitoring/store/actions';
+import * as fromMonitoring from '@monitoring/store/reducers';
+import * as fromMonitoringServiceStatus from '@monitoring/store/reducers/monitoring-service-status.reducer';
 import { Store, StoreModule, combineReducers } from '@ngrx/store';
 import { AlertMessageComponent } from '@shared/_index';
 import { ErrorMessageComponent } from '@shared/components/error-message/error-message.component';
@@ -16,7 +16,7 @@ import { SharedModule } from '@shared/shared.module';
 import { MonitoringAvailabilityComponent } from './monitoring-availability.component';
 
 interface MockState {
-  'monitoring': fromMonitoring.State;
+  monitoring: fromMonitoring.State;
 }
 
 describe('MonitoringAvailabilityComponent', () => {
@@ -30,13 +30,9 @@ describe('MonitoringAvailabilityComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        SharedModule,
-        StoreModule.forRoot({monitoring: reducers}),
-      ],
-      declarations: [ MonitoringAvailabilityComponent ],
-    })
-    .compileComponents();
+      imports: [SharedModule, StoreModule.forRoot({ monitoring: reducers })],
+      declarations: [MonitoringAvailabilityComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
@@ -54,7 +50,9 @@ describe('MonitoringAvailabilityComponent', () => {
 
   describe('onInit', () => {
     it('dispatch getMonitoringServiceStatus action', () => {
-      expect(store.dispatch).toHaveBeenCalledWith(new actions.GetServiceStatusAction());
+      expect(store.dispatch).toHaveBeenCalledWith(
+        actions.GetServiceStatusAction()
+      );
     });
 
     it('show loading message', () => {
@@ -66,7 +64,7 @@ describe('MonitoringAvailabilityComponent', () => {
 
   describe('if service status is AVAILABLE', () => {
     beforeEach(() => {
-      store.dispatch(new SetStatusToAvailableAction());
+      store.dispatch(SetStatusToAvailableAction());
       fixture.detectChanges();
     });
 
@@ -83,11 +81,12 @@ describe('MonitoringAvailabilityComponent', () => {
     const errorMessage = 'Fail';
 
     beforeEach(() => {
-      store.dispatch(new SetStatusToFailedAction({errorMessage}));
+      store.dispatch(SetStatusToFailedAction({ error: errorMessage }));
       fixture.detectChanges();
 
-      errorMessageComponent = fixture.debugElement.query(By.directive(ErrorMessageComponent));
-
+      errorMessageComponent = fixture.debugElement.query(
+        By.directive(ErrorMessageComponent)
+      );
     });
 
     it('ErrorComponent is shown', () => {
@@ -95,7 +94,9 @@ describe('MonitoringAvailabilityComponent', () => {
     });
 
     it('ErrorComponent has error message', () => {
-      expect(errorMessageComponent.nativeElement.textContent).toContain(errorMessage);
+      expect(errorMessageComponent.nativeElement.textContent).toContain(
+        errorMessage
+      );
     });
   });
 
@@ -103,10 +104,12 @@ describe('MonitoringAvailabilityComponent', () => {
     let alertMessageComponent;
 
     beforeEach(() => {
-      store.dispatch(new SetStatusToClosedForOSSAction());
+      store.dispatch(SetStatusToClosedForOSSAction());
       fixture.detectChanges();
 
-      alertMessageComponent = fixture.debugElement.query(By.directive(AlertMessageComponent));
+      alertMessageComponent = fixture.debugElement.query(
+        By.directive(AlertMessageComponent)
+      );
     });
 
     it('MonitoringComponent is shown', () => {
@@ -114,8 +117,11 @@ describe('MonitoringAvailabilityComponent', () => {
     });
 
     it('MonitoringComponent is shown', () => {
-      const alertText = 'Monitoring isn\'t available in OSS yet. But you can make request for a demo';
-      expect(alertMessageComponent.nativeElement.textContent).toContain(alertText);
+      const alertText =
+        "Monitoring isn't available in OSS yet. But you can make request for a demo";
+      expect(alertMessageComponent.nativeElement.textContent).toContain(
+        alertText
+      );
     });
   });
 });

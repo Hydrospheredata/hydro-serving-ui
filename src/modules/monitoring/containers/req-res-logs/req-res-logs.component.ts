@@ -18,48 +18,50 @@ export class ReqResLogsComponent implements OnInit {
   loadFailed: boolean = true;
   loading: boolean = false;
 
-  updateLogButtonClick$: BehaviorSubject<any> = new BehaviorSubject('');
-  @Input() modelVersion$: Observable<ModelVersion>;
-  @Input() timeInterval$: Observable<TimeInterval>;
-  @Input() metricSpecs$: Observable<MetricSpecification[]>;
+  @Input() log: any;
+  @Input() modelVersion: ModelVersion;
+
+  // updateLogButtonClick$: BehaviorSubject<any> = new BehaviorSubject('');
+  // @Input() timeInterval$: Observable<TimeInterval>;
+  // @Input() metricSpecs$: Observable<MetricSpecification[]>;
 
   constructor(
-    private reqResLogService: RequestResponseLogService
+    // private reqResLogService: RequestResponseLogService
   ) {}
 
   ngOnInit(): void {
-    this.log$ = combineLatest(
-      this.timeInterval$,
-      this.modelVersion$,
-      this.metricSpecs$,
-      this.updateLogButtonClick$
-    ).pipe(
-      filter(([mv, metricSpecifications]) => !!metricSpecifications && !!mv),
-      exhaustMap(([timeInterval, modelVersion, metricSpecifications]) => {
-        this.loading = true;
-        return this.reqResLogService
-          .getLog({
-            timeInterval,
-            modelVersion,
-            metricSpecifications,
-            maxMBytes: this.maxMBytes,
-            maxMessages: this.maxMessages,
-            reverse: this.reverse,
-            loadOnlyFailed: this.loadFailed ? 0 : undefined,
-          })
-          .pipe(
-            tap(() => (this.loading = false)),
-            catchError(err => {
-              console.error('err');
-              this.loading = false;
-              return throwError(err);
-            })
-          );
-      })
-    );
+    // this.log$ = combineLatest(
+    //   this.timeInterval$,
+    //   this.modelVersion$,
+    //   this.metricSpecs$,
+    //   this.updateLogButtonClick$
+    // ).pipe(
+    //   filter(([mv, metricSpecifications]) => !!metricSpecifications && !!mv),
+    //   exhaustMap(([timeInterval, modelVersion, metricSpecifications]) => {
+    //     this.loading = true;
+    //     return this.reqResLogService
+    //       .getLog({
+    //         timeInterval,
+    //         modelVersion,
+    //         metricSpecifications,
+    //         maxMBytes: this.maxMBytes,
+    //         maxMessages: this.maxMessages,
+    //         reverse: this.reverse,
+    //         loadOnlyFailed: this.loadFailed ? 0 : undefined,
+    //       })
+    //       .pipe(
+    //         tap(() => (this.loading = false)),
+    //         catchError(err => {
+    //           console.error('err');
+    //           this.loading = false;
+    //           return throwError(err);
+    //         })
+    //       );
+    //   })
+    // );
   }
 
   updateReqstore(): void {
-    this.updateLogButtonClick$.next('click');
+    // this.updateLogButtonClick$.next('click');
   }
 }

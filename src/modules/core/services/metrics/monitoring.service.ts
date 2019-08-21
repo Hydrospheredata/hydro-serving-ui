@@ -6,9 +6,9 @@ import {
   MetricSpecification,
   IMetricSpecificationProvider,
 } from '@shared/models/metric-specification.model';
-import { IMonitoringAggregationList } from '@shared/models/monitoring-aggregation.model';
+import { MonitoringAggregationItem } from '@shared/models/monitoring-aggregation.model';
 import { Observable, throwError } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 interface Trace {
   ts: number;
@@ -36,7 +36,7 @@ export class MonitoringService {
     this.baseMonitoringUrl = `${environment.monitoringUrl}`;
   }
 
-  public getMetrics(options: {
+  getMetrics(options: {
     metricSpecification: MetricSpecification;
     interval: string;
     columnIndex?: string;
@@ -66,15 +66,7 @@ export class MonitoringService {
       .toPromise();
   }
 
- // TODO: do not work
-  public getHealth() {
-    return this.http
-      .get(`${this.baseMonitoringUrl}/health`)
-      .pipe(map((res: Response): any => res))
-      .toPromise();
-  }
-
-  public getAggregation({
+  getAggregation({
     metricSpecification,
     from,
     till,
@@ -84,7 +76,7 @@ export class MonitoringService {
     from?: string;
     till?: string;
     steps?: string;
-  }): Observable<IMonitoringAggregationList> {
+  }): Observable<MonitoringAggregationItem[]> {
     const { modelVersionId, kind } = metricSpecification;
     const firstMetric = this.getMetricsBySpecKind(kind).slice(0, 1);
 
@@ -99,7 +91,7 @@ export class MonitoringService {
     });
   }
 
-  public getMetricsInRange(
+  getMetricsInRange(
     metric: MetricSpecification,
     optional: {
       from?: string;

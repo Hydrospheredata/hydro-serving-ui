@@ -1,4 +1,4 @@
-export interface IMonitoringAggregationItem {
+export interface MonitoringAggregationItem {
     meanValue: number | null;
     meanHealth: number | null;
     from: number;
@@ -8,8 +8,6 @@ export interface IMonitoringAggregationItem {
     maxValue: null;
 }
 
-export type IMonitoringAggregationList = IMonitoringAggregationItem[];
-
-export interface IMonitoringAggregationVM {
-    [metricSpecificationName: string]: IMonitoringAggregationList;
+export interface MonitoringAggregation {
+    [metricSpecificationId: string]: MonitoringAggregationItem[];
 }

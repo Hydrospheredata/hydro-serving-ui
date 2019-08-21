@@ -16,6 +16,7 @@ import {
   InputOutputComponent,
 } from '@monitoring/components';
 import { reducer, MonitoringServiceStatusEffects } from '@monitoring/store';
+import { MonitoringPageEffects } from '@monitoring/store/effects/monitoring-page.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
@@ -25,7 +26,6 @@ import {
   MonitoringAvailabilityComponent,
   MetricsComponent,
   MonitoringPageComponent,
-  DashboardComponent,
   ChartsComponent,
   ReqResLogsComponent,
 } from './containers';
@@ -41,7 +41,6 @@ import {
     MetricsComponent,
     DialogMetricComponent,
     DialogDeleteMetricComponent,
-    DashboardComponent,
     MetricComponent,
     ChartsComponent,
     ChartComponent,
@@ -63,12 +62,11 @@ import {
     ReactiveFormsModule,
     HsD3Module,
     StoreModule.forFeature('monitoring', reducer),
-    EffectsModule.forFeature([MonitoringServiceStatusEffects]),
+    EffectsModule.forFeature([
+      MonitoringServiceStatusEffects,
+      MonitoringPageEffects,
+    ]),
   ],
-  exports: [
-    MonitoringPageComponent,
-    MetricsComponent,
-    DashboardComponent,
-  ],
+  exports: [MonitoringPageComponent, MetricsComponent],
 })
-export class MonitoringModule { }
+export class MonitoringModule {}

@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  OnDestroy,
   ChangeDetectionStrategy,
   ViewEncapsulation,
   ViewContainerRef,
@@ -10,33 +9,25 @@ import {
   ElementRef,
   ChangeDetectorRef,
   Renderer2,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { HydroServingState } from '@core/reducers';
-import {
-  getSiblingVersions,
-  getVersionByModelVersionId,
-} from '@models/reducers';
+import { getVersionByModelVersionId } from '@models/reducers';
 import {
   TooltipContent,
   GroupedData,
   GroupedBounds,
 } from '@monitoring/components/chart/chart.interfaces';
 import { ChartService } from '@monitoring/components/chart/chart.service';
+import { ChartViewModel } from '@monitoring/interfaces';
 import { Store } from '@ngrx/store';
-import { SonarMetricData, TimeInterval, ModelVersion } from '@shared/_index';
+import { SonarMetricData, ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
-import {
-  Subscription,
-  Observable,
-  BehaviorSubject,
-  of,
-} from 'rxjs';
-import {
-  tap,
-  map,
-} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { timeInterval } from 'd3';
 
 @Component({
   selector: 'hs-chart',
@@ -46,7 +37,7 @@ import {
   encapsulation: ViewEncapsulation.None,
   providers: [ChartService],
 })
-export class ChartComponent implements OnInit, OnDestroy {
+export class ChartComponent implements OnInit {
   get featureList(): string[] {
     return this.chartService.featureList;
   }
@@ -57,8 +48,13 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   set comparedModelVerId(id) {
     this.compareWithModelVersionId = id;
-    this.chartService.onComparedModelVersionIdChange(id);
+    this.addedModelVersionIdToCompare.next({
+      modelVersionId: id,
+      metricSpecId: this.mainMetric.id,
+      metricSpecKind: this.mainMetric.kind,
+    });
   }
+
   @ViewChild('chart', { read: ElementRef }) chartRef: ElementRef;
   @ViewChild('svg', { read: ElementRef }) svgElementRef: ElementRef;
   @ViewChild('rect', { read: ElementRef }) rectRef: ElementRef;
@@ -66,20 +62,28 @@ export class ChartComponent implements OnInit, OnDestroy {
   @ViewChild('activePoint', { read: ElementRef }) activePoint: ElementRef;
   @ViewChild('activeLine', { read: ElementRef }) activeLine: ElementRef;
 
-  // @Input() metrics: MetricSpecification[];
-  @Input() selectedTimeInterval$: Observable<TimeInterval> = of(null);
-  @Input() liveUpdate: boolean = true;
-
-  msSpec: MetricSpecification;
-  @Input() set metricSpecification(metricSpec: MetricSpecification) {
-    this.msSpec = metricSpec;
-    this.chartService.onMetricSpecificationChange(metricSpec);
+  @Input() set chartConfig(chart: ChartViewModel) {
+    this.emptyData = chart.sonarData.length === 0;
+    this.mainMetric = chart.metricSpecification;
+    this.data = chart.sonarData;
+    this.mainData = this.groupedDataByMetric(chart.sonarData);
+    if (chart.comparedSonarData) {
+      this.comparedData = this.groupedDataByMetric(chart.comparedSonarData);
+    } else {
+      this.comparedData = {};
+    }
+    this.render(this.data);
   }
-  @Input() set selectedTimeInterval(ti: TimeInterval) {
-    this.chartService.onTimeIntervalChange(ti);
-  }
+  @Input() siblingModelVersions: ModelVersion[];
+  @Input() timeInterval: TimeInterval;
+  @Output() addedModelVersionIdToCompare: EventEmitter<
+    any
+  > = new EventEmitter();
 
+  mainMetric: MetricSpecification;
   mainData: GroupedData;
+  data: any;
+
   comparedData: GroupedData;
   emptyData: boolean = true;
 
@@ -101,20 +105,17 @@ export class ChartComponent implements OnInit, OnDestroy {
 
   thresholds: string[];
   plotBands: GroupedBounds;
+
   xScale;
   yScale;
   xSublines: any[];
   ySublines: any[];
 
-  siblingModelVersions$: Observable<ModelVersion[]>;
   compareWithModelVersionId: number;
 
   private initialized: boolean = false;
-  private data: SonarMetricData[];
   private chartWidth: number;
   private xOffset: number = 60;
-
-  private log$: Subscription;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -125,30 +126,12 @@ export class ChartComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.siblingModelVersions$ = this.store.select(getSiblingVersions);
-
-    this.log$ = this.chartService
-      .getData()
-      .pipe(
-        tap(() => this.setXScale()),
-        tap(data => {
-          this.emptyData = data.flattenData.length === 0;
-          this.mainData = data.mainData;
-          this.comparedData = data.comparedData;
-          this.data = data.flattenData;
-          this.render(data.flattenData);
-        })
-      )
-      .subscribe();
-
     if (this.isKolmogorovSmirnov()) {
       this.chartService.feature.next(0);
     }
-
     d3.select(this.rectRef.nativeElement).on('mouseout', () =>
       this.onMouseOut()
     );
-
     d3.select(this.rectRef.nativeElement).on('mousemove', () =>
       this.onMouseMove()
     );
@@ -160,14 +143,6 @@ export class ChartComponent implements OnInit, OnDestroy {
     } catch {
       return 'n/a';
     }
-  }
-
-  get mainMetric() {
-    return this.msSpec;
-  }
-
-  ngOnDestroy() {
-    this.log$.unsubscribe();
   }
 
   init(): void {
@@ -227,7 +202,9 @@ export class ChartComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const availableMetricNames = this.chartService.getMetricsBySpecKind(this.mainMetric);
+      const availableMetricNames = this.chartService.getMetricsBySpecKind(
+        this.mainMetric
+      );
 
       for (const key in groupedData) {
         if (groupedData.hasOwnProperty(key)) {
@@ -296,15 +273,21 @@ export class ChartComponent implements OnInit, OnDestroy {
   }
 
   private setXScale(data: SonarMetricData[] = []) {
-    const [timestampMin, timestampMax] = d3.extent(
-      _.flatten(data),
-      d => d.timestamp
-    );
-
-    this.xScale = d3
+    // TODO: here time intreval from store
+    let xScale;
+    if(this.timeInterval) {
+      xScale = d3
       .scaleTime()
-      .domain([new Date(timestampMin), new Date(timestampMax)])
+      .domain([new Date(this.timeInterval.from), new Date(this.timeInterval.to)])
       .range([0, this.chartWidth]);
+    } else {
+      xScale = d3
+      .scaleTime()
+      .domain([new Date(), new Date()])
+      .range([0, this.chartWidth]);
+    }
+
+    this.xScale = xScale;
   }
 
   private setYScale(data: SonarMetricData[]) {
@@ -409,5 +392,20 @@ export class ChartComponent implements OnInit, OnDestroy {
     );
 
     this.showTooltip = true;
+  }
+
+  private groupedDataByMetric(
+    data: SonarMetricData[]
+  ): { [uniqName: string]: SonarMetricData[] } {
+    return data.reduce((acc, cur) => {
+      const uniqName = `${cur.name}#${cur.labels.modelVersionId}`;
+      if (acc[uniqName] === undefined) {
+        acc[uniqName] = [];
+      }
+
+      acc[uniqName].push(cur);
+
+      return acc;
+    }, {});
   }
 }

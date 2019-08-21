@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { HealthTimelineService } from '@core/services/health-timeline.service';
 import { TimeInterval } from '@shared/models/_index';
-import { ITimelineLog } from '@shared/models/timeline-log.model';
+import { TimelineLog } from '@shared/models/timeline-log.model';
 import * as d3 from 'd3';
 
 @Component({
@@ -34,7 +34,7 @@ export class HealthTimelineMiniComponent implements OnInit, OnChanges {
 
   @Input() width;
   @Input() currentTimeInterval: TimeInterval;
-  @Input() fullLog: ITimelineLog;
+  @Input() fullLog: TimelineLog;
 
   @Output() brushEnd: EventEmitter<TimeInterval> = new EventEmitter();
   @Output() brushMove: EventEmitter<TimeInterval> = new EventEmitter();

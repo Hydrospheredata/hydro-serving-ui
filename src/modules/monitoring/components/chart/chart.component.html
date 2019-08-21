@@ -1,7 +1,7 @@
 <div class="chart" #chart>
   <header class="chart__header">
     <div class="chart__header-name">{{ chartName }}</div>
-    <div class="compare" *ngIf="siblingModelVersions$ | async">
+    <div class="compare" *ngIf="siblingModelVersions">
       <span class="compare__label">compare with:</span>
       <mdl-select
         class="compare__select"
@@ -10,16 +10,17 @@
       >
         <mdl-option [value]><em>model version</em></mdl-option>
         <mdl-option
-          *ngFor="let modelVersion of siblingModelVersions$ | async"
+          *ngFor="let modelVersion of siblingModelVersions"
           [value]="modelVersion.id"
         >
           {{ modelVersion.modelVersion }}
         </mdl-option>
       </mdl-select>
     </div>
+    <!-- 
     <span *ngIf="isKolmogorovSmirnov()">
       <ng-container *ngTemplateOutlet="featureSelector"></ng-container>
-    </span>
+    </span> -->
   </header>
   <svg
     class="canvas"
@@ -44,7 +45,7 @@
       position="left"
       transform="translate(45,10)"
     ></g>
-    <g
+    <!-- <g
       *ngFor="let plotBand of plotBands | keyvalue; let i = index"
       transform="translate(45,10)"
     >
@@ -56,7 +57,7 @@
         stroke="none"
         fill="#f539392b"
       ></g>
-    </g>
+    </g> -->
     <g
       [hs-d3line]
       *ngFor="let data of mainData | keyvalue; index as i"
@@ -133,7 +134,7 @@
     [ngStyle]="{ display: showTooltip ? 'inherit' : 'none' }"
     #activeLine
   ></div>
-  <div class="chart__footer">
+  <!-- <div class="chart__footer">
     <div class="metric__legend">
       <div
         class="metric__name"
@@ -156,13 +157,13 @@
         <span>{{ modelVersion(data.key) | async }}</span>
       </div>
     </div>
-  </div>
+  </div> -->
   <div *ngIf="emptyData" class="chart__empty">
     No data availabe
   </div>
 </div>
 
-<ng-template #featureSelector>
+<!-- <ng-template #featureSelector>
   <div class="feature">
     <span class="feature__label">feature</span>
     <mdl-select
@@ -183,4 +184,4 @@
       </mdl-option>
     </mdl-select>
   </div>
-</ng-template>
+</ng-template> -->

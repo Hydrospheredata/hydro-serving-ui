@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { ITimelineLog } from '@shared/models/timeline-log.model';
+import { TimelineLog } from '@shared/models/timeline-log.model';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class HealthTimelineService {
-  currentData: BehaviorSubject<ITimelineLog> = new BehaviorSubject(null);
-
-  getMinimumAndMaximumTimestamps(d: ITimelineLog): [number, number] {
-    const logItems = Object.values(d).filter(arr => arr && arr.length > 0);
+  getMinimumAndMaximumTimestamps(log: TimelineLog): [number, number] {
+    const logItems = Object.values(log).filter(arr => arr && arr.length > 0);
     let minTimestamp: number;
     let maxTimestamp: number;
 

@@ -8,8 +8,8 @@ import { TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { ReqstoreLog, ReqstoreEntry } from '@shared/models/reqstore.model';
 import * as _ from 'lodash';
-import { Observable, of, combineLatest } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 type LogEntry = ReqstoreEntry & {
   failed: boolean;
