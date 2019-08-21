@@ -9,6 +9,7 @@
         <td class="fields-table__cell">input_field_name</td>
         <td class="fields-table__cell">input_data_type</td>
         <td class="fields-table__cell">input_shape</td>
+        <td class="fields-table__cell">input_profile</td>
       </tr>
       <ng-container *ngFor="let field of signature.inputs">
         <ng-container
@@ -19,6 +20,7 @@
         <td class="fields-table__cell">output_field_name</td>
         <td class="fields-table__cell">output_data_type</td>
         <td class="fields-table__cell">output_shape</td>
+        <td class="fields-table__cell">output_profile</td>
       </tr>
       <ng-container *ngFor="let field of signature.outputs">
         <ng-container
@@ -34,11 +36,13 @@
     let-dtype="dtype"
     let-shape="shape"
     let-subfields="subfields"
+    let-profile="profile"
   >
     <tr class="fields-table__row">
       <td class="fields-table__cell">{{ name }}</td>
       <td class="fields-table__cell">{{ dtype }}</td>
       <td class="fields-table__cell">{{ shape | fieldShape }}</td>
+      <td class="fields-table__cell">{{ profile }}</td>
     </tr>
     <ng-container *ngIf="subfields && subfields.length > 0">
       <ng-container *ngFor="let subfield of subfields">
