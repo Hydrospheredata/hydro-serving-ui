@@ -3,7 +3,14 @@ import { RequestResponseLogService } from '@core/services';
 import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { combineLatest, Observable, BehaviorSubject, throwError } from 'rxjs';
-import { filter, exhaustMap, catchError, tap } from 'rxjs/operators';
+import {
+  filter,
+  exhaustMap,
+  catchError,
+  tap,
+  take,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'hs-req-res-logs',
@@ -23,19 +30,15 @@ export class ReqResLogsComponent implements OnInit {
   @Input() timeInterval$: Observable<TimeInterval>;
   @Input() metricSpecs$: Observable<MetricSpecification[]>;
 
-  constructor(
-    private reqResLogService: RequestResponseLogService
-  ) {}
+  constructor(private reqResLogService: RequestResponseLogService) {}
 
   ngOnInit(): void {
-    this.log$ = combineLatest(
-      this.timeInterval$,
-      this.modelVersion$,
-      this.metricSpecs$,
-      this.updateLogButtonClick$
-    ).pipe(
-      filter(([mv, metricSpecifications]) => !!metricSpecifications && !!mv),
-      exhaustMap(([timeInterval, modelVersion, metricSpecifications]) => {
+    this.log$ = this.updateLogButtonClick$.pipe(
+      withLatestFrom(this.timeInterval$, this.modelVersion$, this.metricSpecs$),
+      filter(
+        ([, , mv, metricSpecifications]) => !!metricSpecifications && !!mv
+      ),
+      exhaustMap(([, timeInterval, modelVersion, metricSpecifications]) => {
         this.loading = true;
         return this.reqResLogService
           .getLog({
