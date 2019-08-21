@@ -1,0 +1,21 @@
+@import "variables";
+
+.contract {
+  text-align: center;
+  line-height: 32px;
+  font-size: 14px;
+  &__label {
+    font-family: $font-family-light;
+    color: $neutral-color-500;
+    text-transform: lowercase;
+  }
+  &__status {
+    font-weight: bolder;
+    &--is-equal {
+      color: $supportive-color-green-700;
+    }
+    &--is-different {
+      color: $supportive-color-red-700;
+    }
+  }
+}
