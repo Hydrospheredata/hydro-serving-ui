@@ -22,7 +22,7 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
   @Input() modelVersion: ModelVersion;
   @Output() handleClick: EventEmitter<any> = new EventEmitter();
 
-  private latestModelVersionId: number;
+  private latestModelVersion: ModelVersion;
   private modelVersionSub: Subscription;
 
   constructor(public el: ElementRef, private store: Store<HydroServingState>) {}
@@ -30,8 +30,8 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
   @HostListener('click')
   onclick() {
     event.stopPropagation();
-    if (this.latestModelVersionId) {
-      this.handleClick.emit(this.latestModelVersionId);
+    if (this.latestModelVersion) {
+      this.handleClick.emit(this.latestModelVersion);
     }
   }
 
@@ -43,7 +43,7 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
     this.modelVersionSub = this.store
       .select(getModelVersionsByModelId(this.modelVersion.model.id))
       .pipe(
-        filter(modelVersions => !!modelVersions),
+        filter(modelVersions => modelVersions !== undefined),
         tap((modelVersions: ModelVersion[]) => {
           const latestModelVersions = modelVersions.filter(modelVer => {
             return (
@@ -55,11 +55,10 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
           });
           const el: HTMLElement = this.el.nativeElement;
           if (latestModelVersions.length) {
-            const { id: latestModelVersionId } = latestModelVersions[0];
             el.style.display = '';
-            this.latestModelVersionId = latestModelVersionId;
+            this.latestModelVersion = latestModelVersions[0];
           } else {
-            this.latestModelVersionId = undefined;
+            this.latestModelVersion = undefined;
             el.style.display = 'none';
           }
         })

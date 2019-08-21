@@ -1,11 +1,15 @@
 <div class="dialog__content">
-  <span class="dialog__question">Are you sure you want to update this model?</span>
+  <span class="dialog__question"
+    >Are you sure you want to update this model?</span
+  >
+  <div class="contract">
+    <span class="contract__label">Contracts: </span>
+    <span class="contract__status contract__status--is-{{ contractEqual ? 'equal' : 'different'}}">{{
+      contractEqual ? 'equal' : 'different'
+    }}</span>
+  </div>
   <div class="dialog__buttons dialog__buttons--column">
-    <button
-      hs-button
-      (click)="onClose()"
-      type="button"
-    >
+    <button hs-button (click)="onClose()" type="button">
       cancel
     </button>
     <button

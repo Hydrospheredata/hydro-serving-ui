@@ -2,13 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { RequestResponseLogService } from '@core/services';
 import { ModelVersion, TimeInterval } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { combineLatest, Observable, BehaviorSubject, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import {
   filter,
   exhaustMap,
   catchError,
   tap,
-  take,
   withLatestFrom,
 } from 'rxjs/operators';
 

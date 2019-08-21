@@ -24,7 +24,7 @@ import {
   SELECTED_UPD_APPLICATION$,
   DialogTestComponent,
   SELECTED_APPLICATION$,
-  LATEST_MODEL_VERSION_ID,
+  LATEST_MODEL_VERSION,
   SELECTED_DEL_APPLICATION$,
 } from '@applications/components/dialogs';
 
@@ -51,12 +51,12 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
-  public updateModelVersionDialog(lastModelVersionId, modelVariant) {
+  public updateModelVersionDialog(lastModelVersion, modelVariant) {
     this.dialog.createDialog({
       component: DialogUpdateModelVersionComponent,
       providers: [
         { provide: SELECTED_MODEL_VARIANT, useValue: modelVariant },
-        { provide: LATEST_MODEL_VERSION_ID, useValue: lastModelVersionId },
+        { provide: LATEST_MODEL_VERSION, useValue: lastModelVersion },
       ],
     });
   }
