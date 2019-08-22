@@ -3,10 +3,25 @@
     >Are you sure you want to update this model?</span
   >
   <div class="contract">
-    <span class="contract__label">Contracts: </span>
-    <span class="contract__status contract__status--is-{{ contractEqual ? 'equal' : 'different'}}">{{
-      contractEqual ? 'equal' : 'different'
-    }}</span>
+    <div class="contract__label">Contracts:</div>
+    <div class="contract__field">
+      inputs:
+      <span
+        class="contract__status contract__status--is-{{
+          inputsEqual ? 'equal' : 'different'
+        }}"
+        >{{ inputsEqual ? 'equal' : 'different' }}</span
+      >
+    </div>
+    <div class="contract__field">
+      outputs:
+      <span
+        class="contract__status contract__status--is-{{
+          outputsEqual ? 'equal' : 'different'
+        }}"
+        >{{ outputsEqual ? 'equal' : 'different' }}</span
+      >
+    </div>
   </div>
   <div class="dialog__buttons dialog__buttons--column">
     <button hs-button (click)="onClose()" type="button">
