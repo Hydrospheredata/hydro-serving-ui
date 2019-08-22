@@ -28,7 +28,7 @@
   </div>
   <div class="application__signature">
     <ng-container
-      *ngTemplateOutlet="signature; context: application"
+      *ngTemplateOutlet="signature; context: {signature: application.signature}"
     ></ng-container>
   </div>
 
