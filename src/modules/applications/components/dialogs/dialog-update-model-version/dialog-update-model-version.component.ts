@@ -69,7 +69,7 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
   get outputsEqual(): boolean {
     const oldOutputs = this.selectedModelVariant.modelVersion.modelContract
       .predict.outputs;
-    const newOutputs = {...this.latestModelVersion.modelContract.predict.outputs, a: 1 };
+    const newOutputs = this.latestModelVersion.modelContract.predict.outputs;
     return isEqual(oldOutputs, newOutputs);
   }
 
