@@ -26,6 +26,11 @@
       </button>
     </div>
   </div>
+  <div class="application__signature">
+    <ng-container
+      *ngTemplateOutlet="signature; context: application"
+    ></ng-container>
+  </div>
 
   <div class="content__body">
     <ng-container *ngIf="isFailed(application.status)">
@@ -105,3 +110,43 @@
     </div>
   </div>
 </div>
+
+<ng-template #signature let-signature="signature">
+  <div class="signature">
+    <div class="signature__header">
+      <span class="signature__title">Signature </span>
+      <span class="signature__name">{{ signature.signatureName }}</span>
+    </div>
+    <div class="signature__io">
+      <div class="signature__io-field">
+        <div class="signature__io-field-title">inputs</div>
+        <div
+          class="signature__io-field-item"
+          *ngFor="let input of signature.inputs"
+        >
+          <div class="signature__io-field-name">{{ input.name }}</div>
+          <div class="signature__io-field-additional-info">
+            {{ input.profile }} :
+            {{ input.dtype }}
+          </div>
+        </div>
+      </div>
+      <div class="signature__io-separator"></div>
+      <div class="signature__io-field">
+        <div class="signature__io-field-title">outputs</div>
+        <div
+          class="signature__io-field-item"
+          *ngFor="let output of signature.outputs"
+        >
+          <div class="signature__io-field-name">
+            {{ output.name }}
+          </div>
+          <div class="signature__io-field-additional-info">
+            {{ output.profile }} :
+            {{ output.dtype }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

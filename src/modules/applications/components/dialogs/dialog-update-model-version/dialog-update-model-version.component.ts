@@ -59,10 +59,18 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     this.destroySubscriptions.complete();
   }
 
-  get contractEqual(): boolean {
-    const oldContract = this.selectedModelVariant.modelVersion.modelContract;
-    const newContract = this.latestModelVersion.modelContract;
-    return isEqual(oldContract, newContract);
+  get inputsEqual(): boolean {
+    const oldInputs = this.selectedModelVariant.modelVersion.modelContract
+      .predict.inputs;
+    const newInputs = this.latestModelVersion.modelContract.predict.inputs;
+    return isEqual(oldInputs, newInputs);
+  }
+
+  get outputsEqual(): boolean {
+    const oldOutputs = this.selectedModelVariant.modelVersion.modelContract
+      .predict.outputs;
+    const newOutputs = {...this.latestModelVersion.modelContract.predict.outputs, a: 1 };
+    return isEqual(oldOutputs, newOutputs);
   }
 
   private updateImmediatly(): void {
