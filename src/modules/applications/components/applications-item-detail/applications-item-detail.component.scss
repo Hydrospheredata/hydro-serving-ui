@@ -2,9 +2,23 @@
 
 .application {
   &__signature {
+    height: calc(100% - 40px);
+    overflow: scroll;
+  }
+  &__error {
+    overflow: scroll;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
     position: absolute;
-    top: 80px;
-    left: 24px;
+    z-index: 2;
+    max-height: 80px;
+
+  }
+  &__body {
+    display: flex;
+    height: 100%;
   }
   &__header {
     display: flex;
@@ -38,10 +52,9 @@
   }
 
   &__stages {
-    margin: auto;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
   }
 
@@ -250,12 +263,13 @@
 }
 
 .signature {
-  max-width: 240px;
+  width: 240px;
   overflow: scroll;
   padding: 8px;
   background-color: $neutral-color-100;
   border: 2px $neutral-color-200 solid;
   border-radius: 4px;
+  max-height: 100%;
   &__header {
     line-height: 28px;
   }
