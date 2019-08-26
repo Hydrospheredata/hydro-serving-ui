@@ -8,9 +8,9 @@ import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { TimeInterval } from '@shared/_index';
-import * as _ from 'lodash';
+import { isEqual } from 'lodash';
 import { combineLatest, EMPTY, timer, Subscription } from 'rxjs';
-import { filter, switchMap, tap, pairwise, timeout } from 'rxjs/operators';
+import { filter, switchMap, tap, pairwise } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-monitoring-page',
@@ -72,7 +72,7 @@ export class MonitoringPageComponent implements OnDestroy {
       .pipe(
         pairwise(),
         filter(([prevLog, newLog]) => {
-          const recievedNewData = !_.isEqual(prevLog, newLog);
+          const recievedNewData = !isEqual(prevLog, newLog);
           return recievedNewData;
         })
       )
