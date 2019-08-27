@@ -80,6 +80,19 @@
   margin: 0 20px;
 }
 
+.titles {
+  width: 100px;
+  position: absolute;
+  &__item {
+    font-size: 12px;
+    line-height: 16px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: $font-family-light;
+  }
+}
+
 .y-title {
   font-size: 12px;
   letter-spacing: 1px;

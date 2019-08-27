@@ -85,7 +85,7 @@ export class HealthTimelineComponent implements OnInit {
     bottom: 20,
     left: 20,
   };
-  readonly LINE_HEIGHT = 32;
+  readonly LINE_HEIGHT = 16;
   readonly MINIMAP_LINE_HEIGHT = 10;
   readonly Y_TITLE_WIDTH = 100;
   readonly X_AXIS_HEIGHT = 10;
@@ -185,7 +185,7 @@ export class HealthTimelineComponent implements OnInit {
     const rowCount = Object.keys(this.currentLogData).length;
     const brush = d3
       .brushX()
-      .extent([[0, 0], [this.canvasWidth - 120, 32 * rowCount]]);
+      .extent([[0, 0], [this.canvasWidth - 120, this.LINE_HEIGHT * rowCount]]);
 
     d3.select(this.brush.nativeElement).call(brush);
 
@@ -243,7 +243,7 @@ export class HealthTimelineComponent implements OnInit {
     this.ySublines = this.labels
       .slice(0, this.labels.length - 1)
       .map((el, i) => {
-        return 24 + 32 * i;
+        return this.LINE_HEIGHT * (i + 1);
       });
   }
 
@@ -282,7 +282,7 @@ export class HealthTimelineComponent implements OnInit {
         updateRow => updateRow,
         exit => exit.remove()
       )
-      .attr('transform', (d, idx) => `translate(0, ${idx * 32})`)
+      .attr('transform', (d, idx) => `translate(0, ${idx * this.LINE_HEIGHT})`)
       .each(function(data, index) {
         d3.select(this)
           .selectAll('rect')
@@ -312,11 +312,11 @@ export class HealthTimelineComponent implements OnInit {
         d => d.meanHealth !== null && d.meanHealth < 1
       )
       .classed('dataset-m__rect--u', d => d.meanHealth === null)
-      .attr('height', 14)
+      .attr('height', this.LINE_HEIGHT)
       .attr('x', d => this.scale(new Date(d.from)))
       .attr(
         'width',
-        d => this.scale(new Date(d.till)) - this.scale(new Date(d.from))
+        d => 16
       );
   }
 

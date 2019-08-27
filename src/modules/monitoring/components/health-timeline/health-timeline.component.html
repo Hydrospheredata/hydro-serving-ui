@@ -22,6 +22,11 @@
     </div>
   </div>
 
+  <div class="titles">
+    <div class="titles__item" *ngFor="let item of labels; let i = index">
+      {{ item }}
+    </div>
+  </div>
   <!-- <ng-container *ngIf="displayedTime$ | async; else noDataAvailable"> -->
   <svg [attr.width]="canvasWidth" [attr.height]="canvasHeight" #svgContainer>
     <g style="transform:translate(100px, 0)">
@@ -30,16 +35,6 @@
           <rect x="0" y="0" [attr.width]="mainMapWidth" height="64"></rect>
         </clipPath>
       </defs>
-      <g style="transform:translate(-100px, 0)">
-        <text
-          class="y-title"
-          *ngFor="let item of labels; let i = index"
-          [attr.y]="8"
-          [attr.transform]="getYLabelTranslate(i)"
-        >
-          {{ item }}
-        </text>
-      </g>
       <g #dataContainer></g>
       <g hsD3Axis [transform]="xAxisTransform" [scale]="scale"></g>
       <line
@@ -47,7 +42,7 @@
         [attr.x1]="x"
         y1="0"
         [attr.x2]="x"
-        [attr.y2]="canvasHeight - 30"
+        [attr.y2]="canvasHeight - MARGIN.bottom - X_AXIS_HEIGHT"
         style="stroke:rgba(38, 39, 41, 0.068);stroke-width:1"
       />
       <line
