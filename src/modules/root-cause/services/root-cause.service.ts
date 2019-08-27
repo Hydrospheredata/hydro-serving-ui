@@ -47,4 +47,8 @@ export class RootCauseService {
   getResult(resultId: string, explanationType: ExplanationType): Observable<Explanation> {
     return this.http.get(`${this.url}/fetch_result/${explanationType}/${resultId}`);
   }
+
+  getStatus(body): Observable<any> {
+    return this.http.request('GET', `${this.url}/status`);
+  }
 }

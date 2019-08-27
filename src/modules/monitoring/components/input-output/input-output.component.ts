@@ -62,6 +62,11 @@ export class InputOutputComponent implements OnInit, OnChanges {
 
       this.canExplain$.next(true);
       this.uidChanged$.next(`${uid}_${ts}`);
+
+      this.rootCauseFacade.getStatus({
+        modelVersion: this.modelVersion,
+        reqstoreEntry: this.reqstoreEntry,
+      });
     }
   }
 

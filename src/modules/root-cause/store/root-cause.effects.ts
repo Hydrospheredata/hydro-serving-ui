@@ -1,6 +1,6 @@
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
-import { Effect, Actions, ofType } from '@ngrx/effects';
+import { Effect, Actions, ofType, createEffect } from '@ngrx/effects';
 import { ExplanationJobStatus } from '@rootcause/models';
 import { ExplanationJobBuilder } from '@rootcause/services/explanation-job.builder';
 import { of, interval } from 'rxjs';
@@ -17,6 +17,24 @@ import * as rootCauseActions from './root-cause.actions';
 
 @Injectable()
 export class RootCauseEffects {
+  @Effect()
+  getStatus$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(rootCauseActions.GetStatus),
+      mergeMap(body => this.rootCause.getStatus(body).pipe(
+        map( result => rootCauseActions.GetStatusSuccess({ result })),
+        catchError(error => {
+          this.snackbar.showSnackbar({
+            message: error,
+            timeout: 5000,
+            closeAfterTimeout: true,
+          });
+          return of(rootCauseActions.GetStatusFailed({ error }));
+        })
+      ))
+    )
+  );
+
   @Effect()
   getExplanation$ = this.actions$.pipe(
     ofType(rootCauseActions.QueueExplanation),

@@ -11,6 +11,19 @@ export const QueueExplanation = createAction(
   }>()
 );
 
+export const GetStatus = createAction(
+  '[Root cause] get status',
+  props<{ body: ExplanationRequestBody}>()
+);
+export const GetStatusSuccess = createAction(
+  '[Root cause] get status success',
+  props<{ result: any }>()
+);
+export const GetStatusFailed = createAction(
+  '[Root cause] get status failed',
+  props<{ error: any }>()
+);
+
 export const QueueExplanationSuccess = createAction(
   '[Root cause] Queue explanation success',
   props<{ job: ExplanationJob }>()
