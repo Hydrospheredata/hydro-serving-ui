@@ -8,8 +8,14 @@ import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { TimeInterval } from '@shared/_index';
-import { isEqual } from 'lodash';
-import { combineLatest, EMPTY, timer, Subscription, BehaviorSubject } from 'rxjs';
+import { isEqual, isEmpty } from 'lodash';
+import {
+  combineLatest,
+  EMPTY,
+  timer,
+  Subscription,
+  BehaviorSubject,
+} from 'rxjs';
 import { filter, switchMap, tap, pairwise } from 'rxjs/operators';
 
 @Component({
@@ -45,15 +51,15 @@ export class MonitoringPageComponent implements OnDestroy {
     private dialogService: DialogService,
     private monitoringPageFacade: MonitoringPageFacade
   ) {
+    // metrics
     this.s1 = this.selectedModelVersion$
       .pipe(tap(({ id }) => this.monitoringPageFacade.loadMetrics(id)))
       .subscribe();
 
+    // full aggregation polling;
     this.s2 = combineLatest(this.metrics$, this.isLive$, this.timeBound$)
       .pipe(
-        filter(([metrics]) => {
-          return metrics !== undefined && metrics.length > 0;
-        }),
+        filter(([metrics]) => !isEmpty(metrics)),
         switchMap(([, isLive, timeBound]) => {
           if (isLive && timeBound === 0) {
             return timer(0, 5000).pipe(
@@ -86,10 +92,11 @@ export class MonitoringPageComponent implements OnDestroy {
         this.monitoringPageFacade.setTimeInterval({ from, to });
       });
 
-    this.timeInterval$.subscribe(timeInterval => {
-      this.monitoringPageFacade.loadSonarData();
-      this.monitoringPageFacade.loadDetailedAggregation({ timeInterval });
-    });
+    this.timeInterval$
+      .subscribe(timeInterval => {
+        this.monitoringPageFacade.loadSonarData();
+        this.monitoringPageFacade.loadDetailedAggregation({ timeInterval });
+      });
 
     this.detailedTimeInterval$.subscribe(timeInterval => {
       this.monitoringPageFacade.loadDetailedAggregation({ timeInterval });
@@ -106,11 +113,13 @@ export class MonitoringPageComponent implements OnDestroy {
       .pipe(
         switchMap(timeBound => {
           if (timeBound) {
-            return timer(0, 10000).pipe(tap(() => {
-              const to = new Date().getTime();
-              const from = to - timeBound;
-              this.monitoringPageFacade.setTimeInterval({ from, to});
-            }));
+            return timer(0, 10000).pipe(
+              tap(() => {
+                const to = new Date().getTime();
+                const from = to - timeBound;
+                this.monitoringPageFacade.setTimeInterval({ from, to });
+              })
+            );
           } else {
             return EMPTY;
           }

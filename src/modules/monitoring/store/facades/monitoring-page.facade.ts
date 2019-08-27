@@ -17,7 +17,6 @@ import {
 } from '@monitoring/store/actions';
 import { State } from '@monitoring/store/reducers';
 import {
-  getMetrics,
   selectFullAggregation,
   selectTimeInterval,
   selectSonarData,
@@ -28,6 +27,8 @@ import {
   selectDetailedTimeInterval,
   selectComparedMetricSpecifications,
   selectTimeBound,
+  selectMetricSpecsNames,
+  selectMetricSpecs,
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
 import { TimeInterval, ModelVersion, ModelVersionStatus } from '@shared/_index';
@@ -45,20 +46,24 @@ export class MonitoringPageFacade {
     filter(val => !!val)
   );
   metrics$: Observable<MetricSpecification[]> = this.store.pipe(
-    select(getMetrics)
+    select(selectMetricSpecs)
   );
+  metricNames$: Observable<string[]> = this.store.pipe(
+    select(selectMetricSpecsNames)
+  )
   fullAggregation$: Observable<any> = this.store.pipe(
     select(selectFullAggregation)
   );
   detailedAggregation$: Observable<any> = this.store.pipe(
     select(selectDetailedAggregation)
   );
-  timeInterval$: Observable<any> = this.store.pipe(
+  timeInterval$: Observable<TimeInterval> = this.store.pipe(
     select(selectTimeInterval),
-    filter(val => val !== undefined)
+    filter(val => val !== undefined && val.from !== undefined && val.to !== undefined)
   );
   detailedTimeInterval$: Observable<TimeInterval> = this.store.pipe(
-    select(selectDetailedTimeInterval)
+    select(selectDetailedTimeInterval),
+    filter(val => val !== undefined && val.from !== undefined && val.to !== undefined)
   );
   sonarData$: Observable<any> = this.store.pipe(select(selectSonarData));
   detailedCharts$: Observable<any> = this.store.pipe(
@@ -70,6 +75,7 @@ export class MonitoringPageFacade {
   isLive$: Observable<boolean> = this.store.pipe(select(selectIsLive));
   siblingModelVersions$: Observable<ModelVersion[]> = this.store.pipe(
     select(getSiblingVersions),
+    filter(modelVersions => modelVersions !== undefined),
     map(modelVersions => {
       return modelVersions.filter(
         mv => mv.status === ModelVersionStatus.Released
@@ -79,9 +85,7 @@ export class MonitoringPageFacade {
   comparedMetrocSpecifications$ = this.store.pipe(
     select(selectComparedMetricSpecifications)
   );
-  timeBound$ = this.store.pipe(
-    select(selectTimeBound)
-  );
+  timeBound$ = this.store.pipe(select(selectTimeBound));
   constructor(private store: Store<State>) {}
 
   clear(): void {

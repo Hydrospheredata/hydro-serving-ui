@@ -4,9 +4,13 @@ import { SonarMetricData } from '@shared/_index';
 import * as _ from 'lodash';
 import * as fromFeature from '../reducers';
 
-export const getMetrics = createSelector(
+export const selectMetricSpecs = createSelector(
   fromFeature.getMonitoringPageState,
   state => state.metricSpecifications
+);
+export const selectMetricSpecsNames = createSelector(
+  selectMetricSpecs,
+  metrics => metrics.map(({name}) => name || 'n/a')
 );
 export const selectFullAggregation = createSelector(
   fromFeature.getMonitoringPageState,
@@ -83,7 +87,7 @@ export const selectDetailedCharts = createSelector(
 export const selectDetailedChartsWithData = createSelector(
   selectDetailedCharts,
   selectSonarDataInDetailedInterval,
-  getMetrics,
+  selectMetricSpecs,
   selectComparedMetricSpecifications,
   selectComparedSonarData,
   (charts, sonarData, metrics, cMetricSpecs, cSonarData) => {
@@ -134,7 +138,7 @@ export const selectDetailedChartsWithData = createSelector(
 );
 
 export const selectRequestResponseLog = createSelector(
-  getMetrics,
+  selectMetricSpecs,
   selectSonarDataInDetailedInterval,
   selectReqstoreData,
   (metrics, sonarData, reqstoreData) => {

@@ -28,10 +28,10 @@ import {
 } from '@monitoring/store/actions';
 import { State } from '@monitoring/store/reducers';
 import {
-  getMetrics,
   selectTimeInterval,
   selectSonarData,
   selectComparedMetricSpecifications,
+  selectMetricSpecs
 } from '@monitoring/store/selectors';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
@@ -61,7 +61,7 @@ export class MonitoringPageEffects {
   loadFullAggregation$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LoadFullAggregation),
-      withLatestFrom(this.store.pipe(select(getMetrics))),
+      withLatestFrom(this.store.pipe(select(selectMetricSpecs))),
       switchMap(([, metricSpecifications]) => {
         return this.monitoringPageService
           .loadAggregation({ metricSpecifications, timeBoundary: 0 })
@@ -77,7 +77,7 @@ export class MonitoringPageEffects {
   loadDetailedAggregation$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LoadDetailedAggreagation),
-      withLatestFrom(this.store.pipe(select(getMetrics))),
+      withLatestFrom(this.store.pipe(select(selectMetricSpecs))),
       switchMap(([action, metricSpecifications]) => {
         return this.monitoringPageService
           .loadDetailedAggregation({
@@ -127,7 +127,7 @@ export class MonitoringPageEffects {
     this.actions$.pipe(
       ofType(LoadSonarData),
       withLatestFrom(
-        this.store.pipe(select(getMetrics)),
+        this.store.pipe(select(selectMetricSpecs)),
         this.store.pipe(select(selectSonarData)),
         this.store.pipe(select(selectTimeInterval))
       ),
