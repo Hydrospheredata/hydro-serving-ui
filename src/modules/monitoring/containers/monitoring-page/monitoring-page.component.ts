@@ -9,7 +9,7 @@ import { MetricsComponent } from '@monitoring/containers/metrics/metrics.compone
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { TimeInterval } from '@shared/_index';
 import { isEqual } from 'lodash';
-import { combineLatest, EMPTY, timer, Subscription } from 'rxjs';
+import { combineLatest, EMPTY, timer, Subscription, BehaviorSubject } from 'rxjs';
 import { filter, switchMap, tap, pairwise } from 'rxjs/operators';
 
 @Component({
@@ -31,7 +31,9 @@ export class MonitoringPageComponent implements OnDestroy {
   siblingModelVersions$ = this.monitoringPageFacade.siblingModelVersions$;
   comparedMetricSpecs$ = this.monitoringPageFacade
     .comparedMetrocSpecifications$;
+
   timeBound$ = this.monitoringPageFacade.timeBound$;
+  updateLogButtonClick$: BehaviorSubject<any> = new BehaviorSubject('');
 
   s1: Subscription;
   s2: Subscription;
@@ -145,10 +147,11 @@ export class MonitoringPageComponent implements OnDestroy {
     this.monitoringPageFacade.setTimeBound({ timeBound });
   }
 
-  loadReqstore(params: {
+  updateReqstore(params: {
     maxMBytes: number;
     maxMessages: number;
     reverse: boolean;
+    loadFailed: boolean;
   }) {
     this.monitoringPageFacade.loadReqstoreData(params);
   }

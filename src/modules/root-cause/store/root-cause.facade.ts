@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { ExplanationRequestBody } from '@rootcause/interfaces';
 import { ExplanationJob, ExplanationType } from '@rootcause/models';
 import { ModelVersion } from '@shared/_index';
 import { ReqstoreEntry } from '@shared/models/reqstore.model';

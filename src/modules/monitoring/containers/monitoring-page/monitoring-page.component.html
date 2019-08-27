@@ -13,6 +13,7 @@
 <hs-req-res-logs
   [log]="reqResLog$ | async"
   [modelVersion]="selectedModelVersion$ | async"
+  (clickedUpdateReqstore)="updateReqstore($event)"
 ></hs-req-res-logs>
 <hs-charts
   [timeInterval]="timeInterval$ | async"
