@@ -84,8 +84,9 @@
   width: 100px;
   position: absolute;
   &__item {
+    color: $neutral-color-800;
     font-size: 12px;
-    line-height: 16px;
+    line-height: 18px;
     white-space: nowrap; 
     overflow: hidden;
     text-overflow: ellipsis;

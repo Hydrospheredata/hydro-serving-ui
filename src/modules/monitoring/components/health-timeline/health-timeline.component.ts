@@ -85,7 +85,7 @@ export class HealthTimelineComponent implements OnInit {
     bottom: 20,
     left: 20,
   };
-  readonly LINE_HEIGHT = 16;
+  readonly LINE_HEIGHT = 18;
   readonly MINIMAP_LINE_HEIGHT = 10;
   readonly Y_TITLE_WIDTH = 100;
   readonly X_AXIS_HEIGHT = 10;
@@ -316,7 +316,7 @@ export class HealthTimelineComponent implements OnInit {
       .attr('x', d => this.scale(new Date(d.from)))
       .attr(
         'width',
-        d => 16
+        d => this.LINE_HEIGHT + 1
       );
   }
 
