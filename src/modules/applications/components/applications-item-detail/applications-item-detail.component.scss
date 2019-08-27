@@ -1,4 +1,25 @@
+@import "variables";
+
 .application {
+  &__signature {
+    height: calc(100% - 40px);
+    overflow: scroll;
+  }
+  &__error {
+    overflow: scroll;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    z-index: 2;
+    max-height: 80px;
+
+  }
+  &__body {
+    display: flex;
+    height: 100%;
+  }
   &__header {
     display: flex;
     justify-content: center;
@@ -15,9 +36,11 @@
 
     &-buttons {
       position: absolute;
-      button + button {
+
+      button+button {
         margin-left: 8px;
       }
+
       &--right {
         right: 24px;
       }
@@ -29,10 +52,9 @@
   }
 
   &__stages {
-    margin: auto;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
   }
 
@@ -82,9 +104,11 @@
     align-items: flex-end;
     transition: .3s ease linear;
     cursor: pointer;
+
     &:hover {
-      border-color:#435673;
+      border-color: #435673;
     }
+
     &-weight {
       display: inline-block;
       position: absolute;
@@ -142,6 +166,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   &__version {
     font-weight: 900;
   }
@@ -234,5 +259,60 @@
       display: inline-block;
       width: 100%;
     }
+  }
+}
+
+.signature {
+  width: 240px;
+  overflow: scroll;
+  padding: 8px;
+  background-color: $neutral-color-100;
+  border: 2px $neutral-color-200 solid;
+  border-radius: 4px;
+  max-height: 100%;
+  &__header {
+    line-height: 28px;
+  }
+  &__title {
+    color: $neutral-color-500;
+    font-family: $font-family-light;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+  &__label {
+    color: $neutral-color-600;
+    font-family: $font-family-light;
+  }
+  &__name {
+    color: $neutral-color-600;
+    text-transform: none;
+  }
+  &__io {
+    display: flex;
+    &-field {
+      &-title {
+        font-size: 10px;
+        font-family: $font-family-light;
+        color: $neutral-color-500;
+        text-transform: uppercase;
+      }
+      &-name {
+        color: $neutral-color-600;
+      }
+      &-additional-info {
+        font-style: italic;
+        color: $neutral-color-400;
+        font-size: 8px;
+        font-style: $font-family-light;
+        line-height: 10px;
+      }
+      &-item {
+        margin-bottom: 4px;
+      }
+    }
+    &-separator {
+      margin: 0 12px;
+    }
+
   }
 }
