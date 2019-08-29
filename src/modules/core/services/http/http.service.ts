@@ -61,32 +61,6 @@ export class HttpService {
       .pipe(catchError(err => this.handleError(err)));
   }
 
-  request(method: string, url: string, options?: IHydroHttpOptions) {
-    // const req = new HttpRequest('GET', 'http://localhost/rootcause/status', {
-    //   model: { name: 'adult_columnar', version: 1 },
-    //   explained_instance: { uid: 70, timestamp: 1566815847421 },
-    // }, {
-    //   headers: new HttpHeaders({'Content-Type' : 'application/json' }),
-    // });
-
-    // return this.http.request(req);
-
-    return this.http
-      .request(method, this.getFullUrl(url), {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json',
-          'Content-Length': 104,
-        }),
-        observe: 'body',
-        withCredentials: true,
-        body: JSON.stringify({
-          model: { name: 'adult_columnar', version: 1 },
-          explained_instance: { uid: 70, timestamp: 1566815847421 },
-        }),
-      })
-      .pipe(catchError(err => this.handleError(err)));
-  }
-
   private getFullUrl(url: string): string {
     return `${this.baseUrl}${url}`;
   }

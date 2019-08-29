@@ -4,65 +4,16 @@
   display: flex;
 }
 
-.originalImage {
-  &__title {
-    text-transform: uppercase;
+.explanation__meta {
+  padding: 8px 0;
+  font-family: $font-family-light;
+  color: $neutral-color-400;
+  margin-bottom: 12px;
+  font-size: 12px;
+  &-item {
+    line-height: 14px;
+  }
+  &-value {
     color: $neutral-color-700;
-  }
-}
-
-.probabilities {
-  margin: 0 54px;
-  &__title {
-    text-transform: uppercase;
-    color: $neutral-color-700;
-  }
-  &__list {
-    padding: 0;
-    list-style: none;
-    margin: 0 32px;
-    line-height: 28px;
-    color: $neutral-color-700;
-  }
-}
-
-.images {
-  &__title {
-    text-transform: uppercase;
-    color: $neutral-color-700;
-  }
-  &__compare {
-    height: 32px;
-    position: relative;
-  }
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  &__item {
-    // opacity: .6;
-    position: absolute;
-    left: 0;
-  }
-}
-
-.request {
-  &__inputs {
-    display: flex;
-  }
-  &__input {
-    margin: 4px;
-    max-width: 150px;
-    &-name {
-      color: $neutral-color-700;
-      font-weight: bold;
-    }
-    &-value {
-      color: $neutral-color-1000;
-    }
-  }
-  &__label {
-    text-transform: uppercase;
-    color: $neutral-color-500;
   }
 }

@@ -9,7 +9,6 @@ import {
   RiseExplanationComponent,
 } from './containers';
 
-import { ExplanationJobBuilder, ExplanationBuilder } from '@rootcause/services';
 import { RootCauseEffects } from './store/root-cause.effects';
 import { RootCauseFacade } from './store/root-cause.facade';
 import { reducer } from './store/root-cause.reducer';
@@ -26,7 +25,7 @@ import { reducer } from './store/root-cause.reducer';
     EffectsModule.forFeature([RootCauseEffects]),
     SharedModule,
   ],
-  providers: [ExplanationJobBuilder, ExplanationBuilder, RootCauseFacade],
+  providers: [RootCauseFacade],
   exports: [ExplanationComponent],
 })
 export class RootCauseModule {}

@@ -1,79 +1,135 @@
-import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { createReducer, Action, on } from '@ngrx/store';
-import { ExplanationJob, ExplanationJobStatus } from '@rootcause/models';
-import * as rootCauseActions from './root-cause.actions';
+import { createReducer, Action, on, createFeatureSelector } from '@ngrx/store';
+import { ExplanationJobStatus } from '@rootcause/interfaces';
+import { ExplanationTask } from '@rootcause/models';
+import {
+  GetStatusesSuccess,
+  CreateExplanationTaskSuccess,
+  GetResultSuccess,
+  JobPending,
+  JobStarted,
+  JobFinished,
+  CreateExplanationTaskFailed,
+} from './root-cause.actions';
+export interface State {
+  [uid: string]: ExplanationTask[];
+}
 
-export interface State extends EntityState<ExplanationJob> {}
-
-const adapter: EntityAdapter<ExplanationJob> = createEntityAdapter({
-  selectId: job => job.uid,
-});
-const initialState = adapter.getInitialState();
+const initialState: State = {};
 
 const rootCauseReducer = createReducer(
   initialState,
-  on(rootCauseActions.QueueExplanationSuccess, (state, { job }) => {
-    return adapter.upsertOne(job, state);
+  on(GetStatusesSuccess, (state, { uid, tasks }) => ({
+    ...state,
+    [uid]: tasks,
+  })),
+  on(CreateExplanationTaskSuccess, (state, { uid, method, taskId }) => {
+    if (state[uid] === undefined) {
+      return state;
+    }
+
+    return {
+      ...state,
+      [uid]: state[uid].map(task => {
+        if (task.method === method) {
+          const status = {
+            ...task.status,
+            task_id: taskId,
+            state: ExplanationJobStatus.pending,
+          };
+          return {
+            ...task,
+            status,
+          };
+        } else {
+          return task;
+        }
+      }),
+    };
   }),
-  on(rootCauseActions.JobPending, (state, {uid}) => {
-    return adapter.updateOne({
-      id: uid,
-      changes: {
-        jobStatus: ExplanationJobStatus.pending,
-      },
-    }, state);
+  on(CreateExplanationTaskFailed, (state, { uid, method, error }) => {
+    if (state[uid] === undefined) {
+      return state;
+    }
+    return {
+      ...state,
+      [uid]: state[uid].map(task => {
+        if (task.method === method) {
+          return {
+            ...task,
+            error,
+          };
+        } else {
+          return task;
+        }
+      }),
+    };
   }),
-  on(rootCauseActions.JobStarted, (state, {uid, progress}) => {
-    return adapter.updateOne({
-      id: uid,
-      changes: {
-        jobStatus: ExplanationJobStatus.started,
-        progress,
-      },
-    }, state);
+  on(GetResultSuccess, (state, { uid, method, explanation }) => {
+    return {
+      ...state,
+      [uid]: state[uid].map(task => {
+        if (task.method === method) {
+          return {
+            ...task,
+            explanation,
+          };
+        } else {
+          return task;
+        }
+      }),
+    };
   }),
-  on(rootCauseActions.JobFinished, (state, { uid, resultId }) => {
-    return adapter.updateOne(
-      {
-        id: uid,
-        changes: {
-          resultId,
-          jobStatus: ExplanationJobStatus.success,
-        },
-      },
-      state
-    );
+  on(JobPending, (state, { uid, method }) => {
+    return {
+      ...state,
+      [uid]: state[uid].map(task => {
+        if (task.method === method) {
+          const status = {...task.status, state: ExplanationJobStatus.pending };
+          return {
+            ...task,
+            status,
+          };
+        } else {
+          return task;
+        }
+      }),
+    };
   }),
-  on(rootCauseActions.JobFailed, (state, { uid, error }) => {
-    return adapter.updateOne(
-      {
-        id: uid,
-        changes: {
-          jobStatus: ExplanationJobStatus.failure,
-          error,
-        },
-      },
-      state
-    );
+  on(JobFinished, (state, { uid, result, method }) => {
+    return {
+      ...state,
+      [uid]: state[uid].map(task => {
+        if (task.method === method) {
+          const status = {...task.status, state: ExplanationJobStatus.success, result};
+          return {
+            ...task,
+            status,
+          };
+        } else {
+          return task;
+        }
+      }),
+    };
   }),
-  on(rootCauseActions.GetResultSuccess, (state, action) => {
-    return adapter.updateOne(
-      {
-        id: action.uid,
-        changes: {
-          explanation: action.explanation,
-        },
-      },
-      state
-    );
+  on(JobStarted, (state, { uid, progress, method }) => {
+    return {
+      ...state,
+      [uid]: state[uid].map(task => {
+        if (task.method === method) {
+          const status = {...task.status, state: ExplanationJobStatus.started, progress };
+          return {
+            ...task,
+            status,
+          };
+        } else {
+          return task;
+        }
+      }),
+    };
   })
 );
 
 export function reducer(state: State, action: Action): State {
   return rootCauseReducer(state, action);
 }
-
-const { selectAll, selectEntities } = adapter.getSelectors();
-
-export const selectAllExplanationJobs = selectAll;
-export const selectExplanationJobsEntities = selectEntities;
+export const selectRootCauseState = createFeatureSelector('rootCause');

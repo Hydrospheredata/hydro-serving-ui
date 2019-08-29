@@ -1,9 +1,8 @@
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
 import { Effect, Actions, ofType, createEffect } from '@ngrx/effects';
-import { ExplanationJobStatus } from '@rootcause/models';
-import { ExplanationJobBuilder } from '@rootcause/services/explanation-job.builder';
-import { of, interval } from 'rxjs';
+import { ExplanationJobStatus } from '@rootcause/interfaces';
+import { of, timer } from 'rxjs';
 import {
   exhaustMap,
   map,
@@ -12,82 +11,96 @@ import {
   mergeMap,
   takeWhile,
 } from 'rxjs/operators';
-import { RootCauseService, ExplanationBuilder } from '../services';
-import * as rootCauseActions from './root-cause.actions';
+import { RootCauseService } from '../services';
+import * as fromFeature from './root-cause.actions';
 
 @Injectable()
 export class RootCauseEffects {
   @Effect()
-  getStatus$ = createEffect(() =>
+  getAllStatuses$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(rootCauseActions.GetStatus),
-      mergeMap(body => this.rootCause.getStatus(body).pipe(
-        map( result => rootCauseActions.GetStatusSuccess({ result })),
-        catchError(error => {
-          this.snackbar.showSnackbar({
-            message: error,
-            timeout: 5000,
-            closeAfterTimeout: true,
-          });
-          return of(rootCauseActions.GetStatusFailed({ error }));
-        })
-      ))
+      ofType(fromFeature.GetStatuses),
+      mergeMap(({ params }) =>
+        this.rootCause.getAllStatuses(params).pipe(
+          map(tasks =>
+            fromFeature.GetStatusesSuccess({ uid: params.uid, tasks })
+          ),
+          catchError(error => {
+            this.snackbar.showSnackbar({
+              message: error,
+              timeout: 5000,
+              closeAfterTimeout: true,
+            });
+            return of(
+              fromFeature.GetStatusesFailed({ uid: params.uid, error })
+            );
+          })
+        )
+      )
     )
   );
 
   @Effect()
-  getExplanation$ = this.actions$.pipe(
-    ofType(rootCauseActions.QueueExplanation),
-    switchMap(({ uid, requestBody, explanationType }) => {
-      return this.rootCause.queueExplanation(requestBody, explanationType).pipe(
-        map(jobId => {
-          return rootCauseActions.QueueExplanationSuccess({
-            job: this.builder.build({
+  createExplanationTask$ = this.actions$.pipe(
+    ofType(fromFeature.CreateExplanationTask),
+    switchMap(({ uid, requestBody, method }) => {
+      return this.rootCause
+        .createExplanationTask({ requestBody, method })
+        .pipe(
+          map(taskId => {
+            return fromFeature.CreateExplanationTaskSuccess({
               uid,
-              jobId,
-              explanationType,
-            }),
-          });
-        }),
-        catchError(error => {
-          this.snackbar.showSnackbar({
-            message: error,
-            timeout: 5000,
-            closeAfterTimeout: true,
-          });
-          return of(rootCauseActions.QueueExplanationFailed({ uid, error }));
-        })
-      );
+              taskId,
+              method,
+            });
+          }),
+          catchError(error => {
+            this.snackbar.showSnackbar({
+              message: error,
+              timeout: 5000,
+              closeAfterTimeout: true,
+            });
+            return of(
+              fromFeature.CreateExplanationTaskFailed({
+                uid,
+                method,
+                error,
+              })
+            );
+          })
+        );
     })
   );
 
   @Effect()
   queuedSuccess$ = this.actions$.pipe(
-    ofType(rootCauseActions.QueueExplanationSuccess),
-    mergeMap(({ job: { uid, jobId, explanationType } }) =>
-      interval(2000).pipe(
+    ofType(fromFeature.CreateExplanationTaskSuccess),
+    mergeMap(({ uid, taskId, method }) =>
+      timer(0, 2000).pipe(
         exhaustMap(() =>
-          this.rootCause.getJobStatus(jobId, explanationType).pipe(
+          this.rootCause.getJobStatus({ taskId, method }).pipe(
             map(response => {
               switch (response.state) {
                 case ExplanationJobStatus.success:
-                  return rootCauseActions.JobFinished({
+                  return fromFeature.JobFinished({
                     uid,
-                    resultId: response.result,
-                    explanationType,
+                    result: response.result,
+                    method,
                   });
                 case ExplanationJobStatus.started:
-                  return rootCauseActions.JobStarted({
+                  return fromFeature.JobStarted({
                     uid,
                     progress: response.progress,
+                    method,
                   });
                 case ExplanationJobStatus.failure:
-                  return rootCauseActions.JobFailed({
+                  return fromFeature.JobFailed({
                     uid,
                     error: response.description,
+                    method,
                   });
                 default:
-                  return rootCauseActions.JobPending({ uid });
+                  return fromFeature.JobPending({ uid, method });
               }
             }),
             catchError(error => {
@@ -96,7 +109,7 @@ export class RootCauseEffects {
                 timeout: 5000,
                 closeAfterTimeout: true,
               });
-              return of(rootCauseActions.JobFailed({ uid, error }));
+              return of(fromFeature.JobFailed({ uid, error, method }));
             })
           )
         ),
@@ -112,32 +125,38 @@ export class RootCauseEffects {
 
   @Effect()
   getResult$ = this.actions$.pipe(
-    ofType(rootCauseActions.JobFinished),
-    mergeMap(({ uid, resultId, explanationType }) =>
-      this.rootCause.getResult(resultId, explanationType).pipe(
-        map(_ =>
-          rootCauseActions.GetResultSuccess({
-            uid,
-            explanation: this.explanationBuilder.build(_),
-          })
-        ),
-        catchError(error => {
-          this.snackbar.showSnackbar({
-            message: error,
-            timeout: 5000,
-            closeAfterTimeout: true,
-          });
-          return of(rootCauseActions.GetResultFailed({ uid, error }));
+    ofType(fromFeature.GetResult, fromFeature.JobFinished),
+    mergeMap(({ uid, result, method }) =>
+      this.rootCause
+        .getResult({
+          result,
+          method,
         })
-      )
+        .pipe(
+          map(explanation =>
+            fromFeature.GetResultSuccess({
+              uid,
+              explanation,
+              method,
+            })
+          ),
+          catchError(error => {
+            this.snackbar.showSnackbar({
+              message: error,
+              timeout: 5000,
+              closeAfterTimeout: true,
+            });
+            return of(
+              fromFeature.GetResultFailed({ uid, error, method })
+            );
+          })
+        )
     )
   );
 
   constructor(
     private actions$: Actions,
     private rootCause: RootCauseService,
-    private builder: ExplanationJobBuilder,
-    private explanationBuilder: ExplanationBuilder,
     private snackbar: MdlSnackbarService
   ) {}
 }
