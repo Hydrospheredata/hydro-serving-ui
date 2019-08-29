@@ -9,6 +9,7 @@ import {
   JobStarted,
   JobFinished,
   CreateExplanationTaskFailed,
+  JobFailed,
 } from './root-cause.actions';
 export interface State {
   [uid: string]: ExplanationTask[];
@@ -117,6 +118,22 @@ const rootCauseReducer = createReducer(
       [uid]: state[uid].map(task => {
         if (task.method === method) {
           const status = {...task.status, state: ExplanationJobStatus.started, progress };
+          return {
+            ...task,
+            status,
+          };
+        } else {
+          return task;
+        }
+      }),
+    };
+  }),
+  on(JobFailed, (state, { uid, error, method }) => {
+    return {
+      ...state,
+      [uid]: state[uid].map(task => {
+        if (task.method === method) {
+          const status = {...task.status, state: ExplanationJobStatus.failure, error };
           return {
             ...task,
             status,
