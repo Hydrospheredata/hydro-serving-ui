@@ -26,8 +26,8 @@ import {
 import { ReqstoreEntry } from '@shared/models/reqstore.model';
 import { getFiledNameByTensorDataType } from '@shared/utils/field-name-by-tensor-data-type';
 import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { filter, switchMap, tap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { filter, switchMap, tap, take, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-input-output',
@@ -44,12 +44,11 @@ export class InputOutputComponent implements OnChanges {
   @Input()
   modelVersion: ModelVersion;
 
-  @Output() createdExplanationTask: EventEmitter<
-    any
-  > = new EventEmitter();
+  @Output() createdExplanationTask: EventEmitter<any> = new EventEmitter();
 
   selectedUid$: BehaviorSubject<string> = new BehaviorSubject(undefined);
   explanationTasks$: Observable<ExplanationTask[]>;
+  fetchExplanations: Subscription;
   constructor(
     private rootCauseFacade: RootCauseFacade,
     private dialog: DialogService
@@ -57,21 +56,36 @@ export class InputOutputComponent implements OnChanges {
     this.explanationTasks$ = this.selectedUid$.pipe(
       filter(val => val !== undefined),
       switchMap(uid =>
-        this.rootCauseFacade.getTasks(uid).pipe(
-          filter(val => val !== undefined),
-          tap(tasks => {
-            tasks.forEach(task => {
-              if (
-                task.status.state === ExplanationJobStatus.success &&
-                task.explanation === undefined
-              ) {
-                this.rootCauseFacade.getResult({ uid, task });
-              }
-            });
-          })
-        )
+        this.rootCauseFacade
+          .getTasks(uid)
+          .pipe(filter(val => val !== undefined))
       )
     );
+    this.fetchExplanations = this.explanationTasks$.pipe(
+      take(1),
+      withLatestFrom(this.selectedUid$),
+      tap(([tasks, uid]) => {
+        tasks.forEach(task => {
+          if (
+            task.status.state === ExplanationJobStatus.success &&
+            task.explanation === undefined
+          ) {
+            this.rootCauseFacade.getResult({ uid, task });
+          }
+          if (
+            (task.status.state === ExplanationJobStatus.pending ||
+              task.status.state === ExplanationJobStatus.started) &&
+            task.status.task_id !== undefined
+          ) {
+            this.rootCauseFacade.fetchExplanation({
+              uid,
+              taskId: task.status.task_id,
+              method: task.method,
+            });
+          }
+        });
+      })
+    ).subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {

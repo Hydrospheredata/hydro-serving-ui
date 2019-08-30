@@ -17,64 +17,61 @@ import * as fromFeature from './root-cause.actions';
 @Injectable()
 export class RootCauseEffects {
   @Effect()
-  getAllStatuses$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(fromFeature.GetStatuses),
-      mergeMap(({ params }) =>
-        this.rootCause.getAllStatuses(params).pipe(
-          map(tasks =>
-            fromFeature.GetStatusesSuccess({ uid: params.uid, tasks })
-          ),
-          catchError(error => {
-            this.snackbar.showSnackbar({
-              message: error,
-              timeout: 5000,
-              closeAfterTimeout: true,
-            });
-            return of(
-              fromFeature.GetStatusesFailed({ uid: params.uid, error })
-            );
-          })
-        )
-      )
-    )
+  getAllStatuses$ = this.actions$.pipe(
+    ofType(fromFeature.GetStatuses),
+    switchMap(({ params }) => {
+      return this.rootCause.getAllStatuses(params).pipe(
+        map(tasks =>
+          fromFeature.GetStatusesSuccess({ uid: params.uid, tasks })
+        ),
+        catchError(error => {
+          this.snackbar.showSnackbar({
+            message: error,
+            timeout: 5000,
+            closeAfterTimeout: true,
+          });
+          return of(fromFeature.GetStatusesFailed({ uid: params.uid, error }));
+        })
+      );
+    })
   );
 
   @Effect()
   createExplanationTask$ = this.actions$.pipe(
     ofType(fromFeature.CreateExplanationTask),
     switchMap(({ uid, requestBody, method }) => {
-      return this.rootCause
-        .createExplanationTask({ requestBody, method })
-        .pipe(
-          map(taskId => {
-            return fromFeature.CreateExplanationTaskSuccess({
+      return this.rootCause.createExplanationTask({ requestBody, method }).pipe(
+        map(taskId => {
+          return fromFeature.CreateExplanationTaskSuccess({
+            uid,
+            taskId,
+            method,
+          });
+        }),
+        catchError(error => {
+          this.snackbar.showSnackbar({
+            message: error,
+            timeout: 5000,
+            closeAfterTimeout: true,
+          });
+          return of(
+            fromFeature.CreateExplanationTaskFailed({
               uid,
-              taskId,
               method,
-            });
-          }),
-          catchError(error => {
-            this.snackbar.showSnackbar({
-              message: error,
-              timeout: 5000,
-              closeAfterTimeout: true,
-            });
-            return of(
-              fromFeature.CreateExplanationTaskFailed({
-                uid,
-                method,
-                error,
-              })
-            );
-          })
-        );
+              error,
+            })
+          );
+        })
+      );
     })
   );
 
   @Effect()
   queuedSuccess$ = this.actions$.pipe(
-    ofType(fromFeature.CreateExplanationTaskSuccess),
+    ofType(
+      fromFeature.CreateExplanationTaskSuccess,
+      fromFeature.ContinuePollingExplanationTask
+    ),
     mergeMap(({ uid, taskId, method }) =>
       timer(0, 2000).pipe(
         exhaustMap(() =>
@@ -146,9 +143,7 @@ export class RootCauseEffects {
               timeout: 5000,
               closeAfterTimeout: true,
             });
-            return of(
-              fromFeature.GetResultFailed({ uid, error, method })
-            );
+            return of(fromFeature.GetResultFailed({ uid, error, method }));
           })
         )
     )

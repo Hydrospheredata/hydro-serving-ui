@@ -9,6 +9,7 @@ import {
   GetStatuses,
   CreateExplanationTask,
   GetResult,
+  ContinuePollingExplanationTask,
 } from './root-cause.actions';
 import { State } from './root-cause.reducer';
 import * as rootCauseSelectors from './root-cause.selectors';
@@ -41,9 +42,7 @@ export class RootCauseFacade {
         timestamp: +reqstoreEntry.ts,
       },
     };
-    this.store.dispatch(
-      CreateExplanationTask({ uid, requestBody, method })
-    );
+    this.store.dispatch(CreateExplanationTask({ uid, requestBody, method }));
   }
 
   getResult({ uid, task }: { uid: string; task: ExplanationTask }) {
@@ -54,5 +53,19 @@ export class RootCauseFacade {
 
   getAllStatuses({ params }: { params: GetAllStatusesParams }): void {
     this.store.dispatch(GetStatuses({ params }));
+  }
+
+  fetchExplanation({
+    uid,
+    taskId,
+    method,
+  }: {
+    uid: string;
+    taskId: string;
+    method: string;
+  }): void {
+    this.store.dispatch(
+      ContinuePollingExplanationTask({ uid, taskId, method })
+    );
   }
 }

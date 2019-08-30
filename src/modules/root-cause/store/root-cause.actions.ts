@@ -82,3 +82,8 @@ export const GetResultFailed = createAction(
   '[Root cause] get resul failed',
   props<{ uid: string; error: string; method: string }>()
 );
+
+export const ContinuePollingExplanationTask = createAction(
+  '[Root cause] continue polling task',
+  props<{ uid: string; taskId: string; method: string }>()
+);

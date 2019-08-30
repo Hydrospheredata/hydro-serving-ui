@@ -16,7 +16,7 @@ const mockSnackbarService = {
   showSnackbar: ({ message, timeout, closeAfterTimeout }) => {},
 };
 
-fdescribe('RootCause effects', () => {
+describe('RootCause effects', () => {
   let effects: RootCauseEffects;
   let actions$: Observable<any>;
   let rootCauseService: RootCauseService;
