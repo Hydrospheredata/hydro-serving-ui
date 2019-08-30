@@ -2,12 +2,19 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { DialogService } from '@dialog/dialog.service';
 import {
+  MockModelVersion1Model1,
+  MockModelVersion2Model1,
+} from '@testing/factories/modelVersion';
+import {
   MockStoreProvider,
   MockSelectedModelVariantProvider,
   MockLatestModelVersionId,
 } from '@testing/mocks';
-import { DialogUpdateModelVersionComponent, SELECTED_MODEL_VARIANT, LATEST_MODEL_VERSION } from './dialog-update-model-version.component';
-import { MockModelVersion1Model1, MockModelVersion2Model1 } from '@testing/factories/modelVersion';
+import {
+  DialogUpdateModelVersionComponent,
+  SELECTED_MODEL_VARIANT,
+  LATEST_MODEL_VERSION,
+} from './dialog-update-model-version.component';
 
 describe('DialogUpdateModelVersionComponent', () => {
   let component: DialogUpdateModelVersionComponent;
@@ -23,7 +30,10 @@ describe('DialogUpdateModelVersionComponent', () => {
         MockSelectedModelVariantProvider,
         MockLatestModelVersionId,
         { provide: LATEST_MODEL_VERSION, useValue: MockModelVersion2Model1 },
-        { provide: SELECTED_MODEL_VARIANT, useValue: {modelVersion: MockModelVersion1Model1} },
+        {
+          provide: SELECTED_MODEL_VARIANT,
+          useValue: { modelVersion: MockModelVersion1Model1 },
+        },
       ],
     }).compileComponents();
   });

@@ -1,16 +1,30 @@
+<div class="explanation__meta">
+  <div class="explanation__meta-item">
+    <span class="explanation__meta-key">method: </span>
+    <span class="explanation__meta-value">{{ method }}</span>
+  </div>
+  <div class="explanation__meta-item">
+    <span class="explanation__meta-key">started_at: </span>
+    <span class="explanation__meta-value">{{ started_at }}</span>
+  </div>
+  <div class="explanation__meta-item">
+    <span class="explanation__meta-key">completed_at: </span>
+    <span class="explanation__meta-value">{{ completed_at }}</span>
+  </div>
+</div>
 <ng-container
   *ngTemplateOutlet="isRise ? riseTemplate : anchorTemplate"
 ></ng-container>
 <ng-template #riseTemplate>
   <hs-rise-explanation
-    [explanationJob]="explanationJob"
+    [explanation]="explanation"
     [modelVersion]="modelVersion"
     [reqstoreEntry]="reqstoreEntry"
   ></hs-rise-explanation>
 </ng-template>
 <ng-template #anchorTemplate>
   <hs-anchor-explanation
-    [explanationJob]="explanationJob"
+    [explanation]="explanation"
     [reqstoreEntry]="reqstoreEntry"
   ></hs-anchor-explanation>
 </ng-template>

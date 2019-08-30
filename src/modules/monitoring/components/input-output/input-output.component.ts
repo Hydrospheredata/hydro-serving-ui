@@ -3,7 +3,6 @@ import {
   Input,
   Output,
   EventEmitter,
-  OnInit,
   SimpleChanges,
   OnChanges,
   ChangeDetectionStrategy,
@@ -11,11 +10,13 @@ import {
 import { DialogService } from '@dialog/dialog.service';
 import {
   ExplanationComponent,
-  EXPLANATION_JOB,
+  EXPLANATION,
   REQSTORE_ENTRY,
   MODEL_VERSION,
+  METHOD,
 } from '@rootcause/containers';
-import { ExplanationJob, ExplanationJobStatus } from '@rootcause/models';
+import { ExplanationJobStatus } from '@rootcause/interfaces';
+import { ExplanationTask } from '@rootcause/models';
 import { RootCauseFacade } from '@rootcause/store/root-cause.facade';
 import { ModelVersion } from '@shared/_index';
 import {
@@ -25,8 +26,8 @@ import {
 import { ReqstoreEntry } from '@shared/models/reqstore.model';
 import { getFiledNameByTensorDataType } from '@shared/utils/field-name-by-tensor-data-type';
 import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { filter, switchMap, tap, take, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-input-output',
@@ -34,42 +35,65 @@ import { filter, switchMap } from 'rxjs/operators';
   styleUrls: ['input-output.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InputOutputComponent implements OnInit, OnChanges {
+export class InputOutputComponent implements OnChanges {
   get uid(): string {
-    return this.reqstoreEntry.uid + '_' + this.reqstoreEntry.ts;
+    return this.reqstoreEntry.uid;
   }
   @Input()
   reqstoreEntry: ReqstoreEntry;
   @Input()
   modelVersion: ModelVersion;
 
-  @Output() queuedExplanation: EventEmitter<any> = new EventEmitter();
+  @Output() createdExplanationTask: EventEmitter<any> = new EventEmitter();
 
-  uidChanged$: BehaviorSubject<string> = new BehaviorSubject(undefined);
-  explanationJob$: Observable<ExplanationJob>;
-  canExplain$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  selectedUid$: BehaviorSubject<string> = new BehaviorSubject(undefined);
+  explanationTasks$: Observable<ExplanationTask[]>;
+  fetchExplanations: Subscription;
   constructor(
     private rootCauseFacade: RootCauseFacade,
     private dialog: DialogService
-  ) {}
+  ) {
+    this.explanationTasks$ = this.selectedUid$.pipe(
+      filter(val => val !== undefined),
+      switchMap(uid =>
+        this.rootCauseFacade
+          .getTasks(uid)
+          .pipe(filter(val => val !== undefined))
+      )
+    );
+    this.fetchExplanations = this.explanationTasks$.pipe(
+      take(1),
+      withLatestFrom(this.selectedUid$),
+      tap(([tasks, uid]) => {
+        tasks.forEach(task => {
+          if (
+            task.status.state === ExplanationJobStatus.success &&
+            task.explanation === undefined
+          ) {
+            this.rootCauseFacade.getResult({ uid, task });
+          }
+          if (
+            (task.status.state === ExplanationJobStatus.pending ||
+              task.status.state === ExplanationJobStatus.started) &&
+            task.status.task_id !== undefined
+          ) {
+            this.rootCauseFacade.fetchExplanation({
+              uid,
+              taskId: task.status.task_id,
+              method: task.method,
+            });
+          }
+        });
+      })
+    ).subscribe();
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes.reqstoreEntry) {
       return;
     }
-    if (this.canBeExplain()) {
-      const { uid, ts } = changes.reqstoreEntry.currentValue;
-
-      this.canExplain$.next(true);
-      this.uidChanged$.next(`${uid}_${ts}`);
-    }
-  }
-
-  ngOnInit() {
-    this.explanationJob$ = this.uidChanged$.pipe(
-      filter(val => val !== undefined),
-      switchMap(uid => this.rootCauseFacade.getExplanationJob(uid))
-    );
+    this.selectedUid$.next(changes.reqstoreEntry.currentValue.uid);
+    this.getAllMethods();
   }
 
   isImage(inputName: string): boolean {
@@ -106,20 +130,21 @@ export class InputOutputComponent implements OnInit, OnChanges {
     return false;
   }
 
-  queueExplanation(): void {
-    this.rootCauseFacade.createExplanationJob({
+  createExplanationTask(method: string): void {
+    this.rootCauseFacade.createExplanationTask({
       modelVersion: this.modelVersion,
       reqstoreEntry: this.reqstoreEntry,
+      method,
     });
   }
 
-  showExplanation(job: ExplanationJob) {
+  showExplanation({ explanation, method }: ExplanationTask) {
     this.dialog.createDialog({
       component: ExplanationComponent,
       providers: [
         {
-          provide: EXPLANATION_JOB,
-          useValue: job,
+          provide: EXPLANATION,
+          useValue: explanation,
         },
         {
           provide: REQSTORE_ENTRY,
@@ -128,6 +153,10 @@ export class InputOutputComponent implements OnInit, OnChanges {
         {
           provide: MODEL_VERSION,
           useValue: this.modelVersion,
+        },
+        {
+          provide: METHOD,
+          useValue: method,
         },
       ],
     });
@@ -144,7 +173,23 @@ export class InputOutputComponent implements OnInit, OnChanges {
     }
   }
 
-  private canBeExplain(): boolean {
-    return this.rootCauseFacade.canBeExplain(this.modelVersion);
+  private getAllMethods() {
+    const {
+      modelVersion: {
+        model: { name },
+        modelVersion,
+      },
+      reqstoreEntry: { ts, uid },
+    } = this;
+    const params = {
+      model_name: name,
+      model_version: `${modelVersion}`,
+      ts,
+      uid,
+    };
+
+    this.rootCauseFacade.getAllStatuses({
+      params,
+    });
   }
 }

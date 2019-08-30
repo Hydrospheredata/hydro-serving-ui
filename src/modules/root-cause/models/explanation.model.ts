@@ -1,8 +1,10 @@
-export class Explanation {
-  completedAt: string;
-  createdAt: string;
-  startedAt: string;
-  explainedInstance: {
+import { ExplanationTaskStatus } from '@rootcause/interfaces';
+
+interface Explanation {
+  celery_task_id: string;
+  completed_at: string;
+  created_at: string;
+  explained_instance: {
     timestamp: number;
     uid: number;
   };
@@ -10,14 +12,28 @@ export class Explanation {
     name: string;
     version: number;
   };
-  result: any;
+  started_at: string;
+}
+export interface AnchorExplanationResult {
+  coverage: number;
+  explanation: string[];
+  precision: number;
+}
+export type RiseExplanationResult = Array<{
+  class: string | number;
+  mask: any;
+  probability: number;
+  color?: any;
+}>;
 
-  constructor(props) {
-    this.completedAt = props.completedAt;
-    this.createdAt = props.createdAt;
-    this.startedAt = props.startedAt;
-    this.explainedInstance = props.explainedInstance;
-    this.model = props.model;
-    this.result = props.result;
-  }
+export type AnchorExplanation = Explanation & {
+  result: AnchorExplanationResult;
+};
+export type RiseExplanation = Explanation & { result: RiseExplanationResult };
+
+export class ExplanationTask {
+  method: string;
+  status: ExplanationTaskStatus;
+  explanation: any;
+  error: string;
 }

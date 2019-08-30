@@ -2,8 +2,10 @@ import { HttpResponseBase } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import { ExplanationRequestBody } from '@rootcause/interfaces';
-import { Explanation, ExplanationType } from '@rootcause/models';
+import {
+  ExplanationRequestBody,
+  GetAllStatusesParams,
+} from '@rootcause/interfaces';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -16,35 +18,60 @@ export class RootCauseService {
     this.url = environment.rootCauseUrl;
   }
 
-  queueExplanation(
-    body: ExplanationRequestBody,
-    explanationType: ExplanationType
-  ): Observable<string> {
-    const url = `${this.url}/${explanationType} `;
-    return this.http.post(url, body, { observe: 'response' }).pipe(
+  createExplanationTask({
+    requestBody,
+    method,
+  }: {
+    requestBody: ExplanationRequestBody;
+    method: string;
+  }): Observable<string> {
+    const url = `${this.url}/${method} `;
+    return this.http.post(url, requestBody, { observe: 'response' }).pipe(
       map(response => {
         const resp = response as HttpResponseBase;
         const rurl = resp.headers.get('Location');
         const urlArr = rurl.split('/');
-        const jobId = urlArr[urlArr.length - 1];
-        return jobId;
+        const taskId = urlArr[urlArr.length - 1];
+        return taskId;
       })
     );
   }
 
-  getJobStatus(
-    jobId: string,
-    explanationType: ExplanationType
-  ): Observable<{
+  getJobStatus({
+    taskId,
+    method,
+  }: {
+    taskId: string;
+    method: string;
+  }): Observable<{
     result?: string;
     state: string;
     description?: string;
     progress?: number;
   }> {
-    return this.http.get(`${this.url}/status/${explanationType}/${jobId}`);
+    return this.http.get(`${this.url}/task_status/${method}/${taskId}`);
   }
 
-  getResult(resultId: string, explanationType: ExplanationType): Observable<Explanation> {
-    return this.http.get(`${this.url}/fetch_result/${explanationType}/${resultId}`);
+  getResult({
+    result,
+    method,
+  }: {
+    result: string;
+    method: string;
+  }): Observable<any> {
+    return this.http.get(
+      `${this.url}/fetch_result/${method}/${result}`
+    );
+  }
+
+  getAllStatuses({
+    model_name,
+    model_version,
+    ts,
+    uid,
+  }: GetAllStatusesParams): Observable<any> {
+    return this.http.get(`${this.url}/status`, {
+      params: { model_name, model_version, ts, uid },
+    });
   }
 }
