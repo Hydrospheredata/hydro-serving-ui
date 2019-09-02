@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RGBColor } from 'd3';
 import * as d3 from 'd3';
 import * as colorScaleChromatic from 'd3-scale-chromatic';
-export type ColorMapType = 'coldwarm';
+export type ColorMapType = 'coldwarm' | 'interpolateRdYlBu';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +23,8 @@ export class ColorMapService {
       switch (type) {
         case 'coldwarm':
           return this.coldwarm(val);
+        case 'interpolateRdYlBu':
+          return this.interpolateRdYlBu(val);
         default:
           throw Error('Unknow colormap type');
       }
@@ -35,6 +37,14 @@ export class ColorMapService {
   private coldwarm(val): [number, number, number] {
     const {r, g, b} = d3.color(
       colorScaleChromatic.interpolatePuBu(val)
+    ) as RGBColor;
+
+    return [r, g, b];
+  }
+
+  private interpolateRdYlBu(val): [number, number, number] {
+    const {r, g, b} = d3.color(
+      colorScaleChromatic.interpolateRdYlBu(1 - val)
     ) as RGBColor;
 
     return [r, g, b];

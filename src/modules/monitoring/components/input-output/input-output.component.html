@@ -2,8 +2,40 @@
   <div class="details__io">
     <div class="request">
       <div class="request__label">inputs</div>
-      <div class="request__inputs">
-        <div
+      <table class="request__inputs">
+        <tr class="request__inputs-header">
+          <td
+            class="request__input-cell"
+            *ngFor="let input of reqstoreEntry.request.inputs | keyvalue"
+          >
+            <span class="request__input-name"> {{ input.key }}</span>
+          </td>
+        </tr>
+        <tr>
+          <td
+            class="request__input-cell"
+            *ngFor="let input of reqstoreEntry.request.inputs | keyvalue"
+          >
+            <ng-container
+              *ngTemplateOutlet="isImage(input.key) ? image : plainText"
+            ></ng-container>
+            <ng-template #image>
+              <hs-tensor-image-list
+                [tensorProto]="input.value"
+              ></hs-tensor-image-list>
+            </ng-template>
+            <ng-template #plainText>
+              <div class="request__input-value" hs-expander maxHeight="170">
+                <div #expand>
+                  {{ getValueAsText(input.value) }}
+                </div>
+              </div>
+            </ng-template>
+          </td>
+        </tr>
+      </table>
+
+      <!-- <div
           class="request__input"
           *ngFor="let input of reqstoreEntry.request.inputs | keyvalue"
         >
@@ -25,8 +57,7 @@
               </div>
             </ng-template>
           </div>
-        </div>
-      </div>
+        </div> -->
     </div>
     <div class="response">
       <div class="response__label">outputs</div>
@@ -81,7 +112,7 @@
           class="explanation__button"
           (click)="createExplanationTask(task.method)"
         >
-          {{ task.method }}
+          EXPLAIN
         </button>
         <button
           *ngSwitchCase="'SUCCESS'"
@@ -102,15 +133,16 @@
           [disabled]="true"
         >
           {{ task.status.state }}
+          <div
+            *ngIf="task.status.state === 'STARTED'"
+            class="explanation__progress"
+            [ngStyle]="{
+              transform:
+                'translateX(-' + (100 - task.status.progress * 100) + '%'
+            }"
+          ></div>
         </button>
       </span>
-      <span
-        class="explanation__progress"
-        *ngIf="task.status.state === 'STARTED'"
-      >
-        progress:
-        {{ task.status.progress * 100 | number: '1.2-2' }}%</span
-      >
     </div>
   </div>
 </div>

@@ -5,11 +5,11 @@
   display: flex;
 }
 
-.originalImage {
+.original-image {
   &__title {
     text-transform: uppercase;
     color: $neutral-color-500;
-    margin-bottom: 8px;
+    margin-bottom: 32px;
   }
 }
 
@@ -24,21 +24,24 @@
   }
   &__table {
     margin-bottom: 12px;
+    border-collapse: collapse;
     &-head {
       &-cell {
-        padding: 0px 18px 4px 0px;
+        padding: 4px 0px;
+        color: #486581;
         text-transform: uppercase;
-        color: $neutral-color-300;
+        color: $neutral-color-500;
         letter-spacing: 1px;
         font-size: 10px;
       }
     }
     &-cell {
       font-family: $font-family-light;
-      padding: 0px 18px 4px 0px;
+      padding: 8px 24px;
       color: $neutral-color-700;
       text-align: right;
       vertical-align: top;
+      border: 1px $neutral-color-100 solid;
     }
   }
   &__button {
@@ -53,7 +56,8 @@
     color: $neutral-color-500;
   }
   &__compare {
-    height: 32px;
+    min-width: 100px;
+    min-height: 100px;
     position: relative;
   }
   display: flex;
@@ -61,7 +65,7 @@
   align-items: center;
   flex-direction: column;
   &__item {
-    opacity: .8;
+    opacity: .6;
     position: absolute;
     left: 0;
   }

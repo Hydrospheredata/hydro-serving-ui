@@ -1,3 +1,4 @@
+@import "variables";
 
 .explanation {
   &__buttons {
@@ -12,7 +13,10 @@
       font-size: 12px;
       width: 100px;
       font-size: 10px;
-      color: #585858;
+      color: $neutral-color-500;
+    }
+    &-value {
+      color: $neutral-color-700;
     }
   }
   &__item + &__item {
