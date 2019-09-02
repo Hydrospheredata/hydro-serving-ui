@@ -12,7 +12,6 @@ import { ReqstoreEntry } from '@shared/models/reqstore.model';
 import { getFiledNameByTensorDataType } from '@shared/utils/field-name-by-tensor-data-type';
 import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
 import * as colorScale from 'd3-scale-chromatic';
-import * as _ from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { scan } from 'rxjs/operators';
 
@@ -43,7 +42,6 @@ export class RiseExplanationComponent implements OnInit {
   );
 
   explanations;
-
   @Input() reqstoreEntry: ReqstoreEntry;
   @Input() modelVersion: ModelVersion;
   @Input() set explanation(explanation: RiseExplanation) {
@@ -98,7 +96,7 @@ export class RiseExplanationComponent implements OnInit {
       pixels: arr,
       imageHeight: this.imageHeight,
       imageWidth: this.imageWidth,
-      colormap: 'coldwarm',
+      colormap: 'interpolateRdYlBu',
     });
   }
 

@@ -59,6 +59,7 @@ import {
   BuildInformationDirective,
   PixelToCanvasDirective,
   AutofocusedDirective,
+  ScaleImageDirective
 } from './directives/_index';
 
 const PIPES = [
@@ -123,8 +124,8 @@ const DIRECTIVES = [
     SelectModule,
     HsD3Module,
   ],
-  declarations: [...PIPES, ...COMPONENTS, ...DIRECTIVES],
+  declarations: [...PIPES, ...COMPONENTS, ...DIRECTIVES, ScaleImageDirective],
   entryComponents: [DialogModelsEmptyComponent],
-  exports: [...PIPES, ...COMPONENTS, ...DIRECTIVES],
+  exports: [...PIPES, ...COMPONENTS, ...DIRECTIVES, ScaleImageDirective],
 })
 export class SharedModule {}

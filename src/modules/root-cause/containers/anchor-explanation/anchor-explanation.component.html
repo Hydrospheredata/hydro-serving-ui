@@ -1,8 +1,3 @@
-
-<div class="explanation__item">
-  <div class="explanation__item-key">coverage</div>
-  <div class="explanation__item-value">{{ coverage }}</div>
-</div>
 <div class="explanation__item">
   <div class="explanation__item-key">explanation</div>
   <div class="explanation__item-value">
@@ -12,6 +7,10 @@
   </div>
 </div>
 <div class="explanation__item">
+  <div class="explanation__item-key">coverage</div>
+  <div class="explanation__item-value">{{ coverage < 0.01 ? '< 0.01%' : coverage | percent }}</div>
+</div>
+<div class="explanation__item">
   <div class="explanation__item-key">precision</div>
-  <div class="explanation__item-value">{{ precision }}</div>
+  <div class="explanation__item-value">{{ precision < 0.01 ? '0.01%' : precision | percent }}</div>
 </div>

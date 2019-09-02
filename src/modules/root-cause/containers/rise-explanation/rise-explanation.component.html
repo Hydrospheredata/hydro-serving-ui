@@ -1,6 +1,6 @@
 <div class="wrapper">
-  <div class="originalImage">
-    <div class="originalImage__title">inputs</div>
+  <div class="original-image">
+    <div class="original-image__title">inputs</div>
     <div class="request__inputs">
       <div
         class="request__input"
@@ -39,16 +39,26 @@
           class="probabilities__table-row"
           *ngFor="let item of showedExplanations"
         >
-          <td class="probabilities__table-cell probabilities__class" [ngStyle]="{'color': item.color}">
+          <td
+            class="probabilities__table-cell probabilities__class"
+            [ngStyle]="{ color: item.color }"
+          >
             {{ item.class }}
           </td>
-          <td class="probabilities__table-cell" [ngStyle]="{'color': item.color}">
+          <td
+            class="probabilities__table-cell"
+            [ngStyle]="{ color: item.color }"
+          >
             {{ item.probability | number: '1.5-5' }}
           </td>
           <td class="probabilities__table-cell">
-            <div class="images__compare">
+            <div
+              class="images__compare"
+            >
               <canvas
+                class="images__item"
                 hsPixelToCanvas
+                hsScaleImage
                 [pixels]="originalImage"
                 [width]="imageWidth"
                 [height]="imageHeight"
@@ -56,6 +66,7 @@
               <canvas
                 class="images__item"
                 hsPixelToCanvas
+                hsScaleImage
                 [pixels]="getPixels(item.mask)"
                 [width]="imageWidth"
                 [height]="imageHeight"
@@ -64,6 +75,7 @@
           </td>
         </tr>
       </table>
+
       <button
         *ngIf="showedExplanations.length < explanations.length"
         class="probabilities__button"

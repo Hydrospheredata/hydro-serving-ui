@@ -20,15 +20,20 @@
 
 .explanation {
   text-align: center;
-  width: 160px;
+  width: 190px;
   &__button {
-    width: 160px;
+    width: 190px;
     position: relative;
+    overflow: hidden;
   }
   &__progress {
-    font-family: $font-family-light;
-    color: $neutral-color-400;
-    font-style: italic;
+    position: absolute;
+    bottom: 0;
+    height: 4px;
+    background: $supportive-color-green-500;
+    width: 190px;
+    left: 0;
+    transition: .6 all ease;
   }
 }
 
@@ -36,11 +41,14 @@
   border-right: 1px $neutral-color-100 solid;
   overflow: scroll;
   &__inputs {
-    display: flex;
+    &-header {
+      vertical-align: top
+    }
   }
   &__input {
-    margin: 4px 12px;
-    max-width: 150px;
+    &-cell {
+      padding: 4px 12px;
+    }
     &-name {
       color: $neutral-color-700;
       font-weight: bold;
@@ -50,7 +58,7 @@
     }
   }
   &__label {
-    margin: 0 12px;
+    margin: 0 4px;
     text-transform: uppercase;
     color: $neutral-color-500;
     
