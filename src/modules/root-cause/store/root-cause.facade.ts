@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { ExplanationJob, ExplanationType } from '@rootcause/models';
+import { GetAllStatusesParams } from '@rootcause/interfaces';
+import { ExplanationTask } from '@rootcause/models';
 import { ModelVersion } from '@shared/_index';
 import { ReqstoreEntry } from '@shared/models/reqstore.model';
 import { Observable } from 'rxjs';
-import { QueueExplanation } from './root-cause.actions';
+import {
+  GetStatuses,
+  CreateExplanationTask,
+  GetResult,
+  ContinuePollingExplanationTask,
+} from './root-cause.actions';
 import { State } from './root-cause.reducer';
 import * as rootCauseSelectors from './root-cause.selectors';
 
@@ -12,20 +18,20 @@ import * as rootCauseSelectors from './root-cause.selectors';
 export class RootCauseFacade {
   constructor(private store: Store<State>) {}
 
-  getExplanationJob(uid: string): Observable<ExplanationJob> {
-    return this.store.pipe(
-      select(rootCauseSelectors.getExplanationJobById(uid))
-    );
+  getTasks(uid: string): Observable<ExplanationTask[]> {
+    return this.store.pipe(select(rootCauseSelectors.selectEntryMethods(uid)));
   }
 
-  createExplanationJob({
+  createExplanationTask({
     modelVersion,
     reqstoreEntry,
+    method,
   }: {
     modelVersion: ModelVersion;
     reqstoreEntry: ReqstoreEntry;
+    method: string;
   }): void {
-    const uid = reqstoreEntry.uid + '_' + reqstoreEntry.ts;
+    const uid = reqstoreEntry.uid;
     const requestBody = {
       model: {
         name: modelVersion.model.name,
@@ -36,20 +42,30 @@ export class RootCauseFacade {
         timestamp: +reqstoreEntry.ts,
       },
     };
-    const explanationType: ExplanationType = 'rise';
+    this.store.dispatch(CreateExplanationTask({ uid, requestBody, method }));
+  }
+
+  getResult({ uid, task }: { uid: string; task: ExplanationTask }) {
     this.store.dispatch(
-      QueueExplanation({ uid, requestBody, explanationType })
+      GetResult({ uid, method: task.method, result: task.status.result })
     );
   }
 
-  canBeExplain(modelVersion: ModelVersion): boolean {
-    try {
-      const isImageOrNumerical = modelVersion.modelContract.predict.inputs.some(
-        p => p.profile === 'IMAGE'
-      );
-      return isImageOrNumerical;
-    } catch (error) {
-      return false;
-    }
+  getAllStatuses({ params }: { params: GetAllStatusesParams }): void {
+    this.store.dispatch(GetStatuses({ params }));
+  }
+
+  fetchExplanation({
+    uid,
+    taskId,
+    method,
+  }: {
+    uid: string;
+    taskId: string;
+    method: string;
+  }): void {
+    this.store.dispatch(
+      ContinuePollingExplanationTask({ uid, taskId, method })
+    );
   }
 }

@@ -2,6 +2,8 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpParams,
+  HttpHeaders,
+  HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
@@ -87,10 +89,12 @@ export class HttpService {
       return {};
     }
 
-    return {
+    const res = {
       ...options,
       params: this.createHttpParams(options.params),
     };
+
+    return res;
   }
 
   private createHttpParams(

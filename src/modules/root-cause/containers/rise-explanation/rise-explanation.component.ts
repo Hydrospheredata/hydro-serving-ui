@@ -6,23 +6,14 @@ import {
 } from '@angular/core';
 import { ImageHelperService } from '@core/services/image-helper.service';
 import { DialogService } from '@dialog/dialog.service';
-import { ExplanationJob, Explanation } from '@rootcause/models';
+import { RiseExplanation, RiseExplanationResult } from '@rootcause/models';
 import { ModelVersion } from '@shared/_index';
 import { ReqstoreEntry } from '@shared/models/reqstore.model';
 import { getFiledNameByTensorDataType } from '@shared/utils/field-name-by-tensor-data-type';
-import { flatArray } from '@shared/utils/flat-array';
 import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
 import * as colorScale from 'd3-scale-chromatic';
-import * as _ from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { scan } from 'rxjs/operators';
-
-type RiseExplanations = Array<{
-  mask: number[];
-  class: number;
-  probability: number;
-  color: string;
-}>;
 
 @Component({
   selector: 'hs-rise-explanation',
@@ -36,7 +27,9 @@ export class RiseExplanationComponent implements OnInit {
   originalImage: number[];
 
   showMore$: BehaviorSubject<any> = new BehaviorSubject('');
-  showedExplanations$: Observable<RiseExplanations> = this.showMore$.pipe(
+  showedExplanations$: Observable<
+    RiseExplanationResult[]
+  > = this.showMore$.pipe(
     scan(showed => {
       const STEP = 5;
       const accLength = showed.length;
@@ -48,12 +41,11 @@ export class RiseExplanationComponent implements OnInit {
     }, [])
   );
 
-  explanations: RiseExplanations;
-
+  explanations;
   @Input() reqstoreEntry: ReqstoreEntry;
   @Input() modelVersion: ModelVersion;
-  @Input() set explanationJob(job: ExplanationJob) {
-    this.explanations = (job.explanation.result as RiseExplanations)
+  @Input() set explanation(explanation: RiseExplanation) {
+    this.explanations = explanation.result
       .map(item => ({
         ...item,
         color: colorScale.interpolateBlues(
@@ -61,7 +53,6 @@ export class RiseExplanationComponent implements OnInit {
         ),
       }))
       .sort((a, b) => b.probability - a.probability);
-
   }
 
   constructor(
@@ -105,7 +96,7 @@ export class RiseExplanationComponent implements OnInit {
       pixels: arr,
       imageHeight: this.imageHeight,
       imageWidth: this.imageWidth,
-      colormap: 'coldwarm',
+      colormap: 'interpolateRdYlBu',
     });
   }
 

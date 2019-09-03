@@ -1,19 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import {
-  State,
-  selectExplanationJobsEntities,
+  selectRootCauseState,
 } from './root-cause.reducer';
-const getRootCauseState = createFeatureSelector<State>('rootCause');
 
-const getEntities = createSelector(
-  getRootCauseState,
-  selectExplanationJobsEntities
-);
-
-export const getExplanationJobById = (uid: string) =>
+export const selectEntryMethods = (uid: string) =>
   createSelector(
-    getEntities,
-    entities => {
-      return entities[uid];
+    selectRootCauseState,
+    state => {
+      return state[uid];
     }
   );

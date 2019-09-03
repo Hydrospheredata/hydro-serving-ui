@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ExplanationJob, Explanation } from '@rootcause/models';
+import { AnchorExplanation, AnchorExplanationResult } from '@rootcause/models';
 import { ReqstoreEntry } from '@shared/models/reqstore.model';
 
 @Component({
@@ -9,11 +9,21 @@ import { ReqstoreEntry } from '@shared/models/reqstore.model';
 })
 export class AnchorExplanationComponent implements OnInit {
   @Input() reqstoreEntry: ReqstoreEntry;
-  @Input() explanationJob: ExplanationJob;
+  @Input() explanation: AnchorExplanation;
 
   ngOnInit() {}
 
-  get explanation(): Explanation {
-    return this.explanationJob.explanation;
+  get result(): AnchorExplanationResult {
+    return this.explanation.result;
+  }
+
+  get coverage(): number {
+    return this.result.coverage;
+  }
+  get explanations(): string[] {
+    return this.result.explanation;
+  }
+  get precision(): number {
+    return this.result.precision;
   }
 }

@@ -4,8 +4,6 @@ import {
   OnInit,
   SimpleChanges,
   OnChanges,
-  Output,
-  EventEmitter,
 } from '@angular/core';
 import { ModelVersion } from '@shared/models/_index';
 import { isEqual, isEmpty } from 'lodash';
@@ -24,9 +22,6 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
 
   @Input()
   loading: any = false;
-
-  @Output()
-  queuedExplanation: EventEmitter<any> = new EventEmitter();
 
   uid: string;
   ngOnChanges(changes: SimpleChanges): void {
@@ -58,9 +53,5 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
 
   logNotEmpty(): boolean {
     return !isEmpty(this.logData);
-  }
-
-  onQueuedExplanation() {
-    this.queuedExplanation.emit();
   }
 }
