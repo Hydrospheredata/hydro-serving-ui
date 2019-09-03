@@ -14,6 +14,7 @@ import {
   MetricSpecConfigComponent,
   ReqstoreMetricsComponent,
   InputOutputComponent,
+  TimeIntervalSelectComponent,
 } from '@monitoring/components';
 import { reducer, MonitoringServiceStatusEffects } from '@monitoring/store';
 import { MonitoringPageEffects } from '@monitoring/store/effects/monitoring-page.effects';
@@ -51,6 +52,7 @@ import {
     ReqResLogsComponent,
     ReqstoreMetricsComponent,
     InputOutputComponent,
+    TimeIntervalSelectComponent,
   ],
   imports: [
     SharedModule,

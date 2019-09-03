@@ -1,19 +1,23 @@
+@import "variables";
+
 .mdl-list {
     .mdl-select & {
         box-shadow: none;
-        background-color: #e9ecf2;
+        background-color: $neutral-color-100;
     }
+
     &__item {
         .mdl-select & {
             padding: 6px 14px;
             min-height: auto;
             font-family: 'Museo Sans Regular';
-            color: #04143c;
+            color: $neutral-color-300;
+
             &.is-active,
             &:hover,
             &:focus {
                 background-color: transparent;
-                color: #539ae9;
+                color: $primary-color-700;
             }
         }
     }

@@ -3,35 +3,43 @@
 .mdl-textfield {
     width: 100%;
     padding: 0;
+
     &__label {
         left: 10px;
         top: 4px;
+        color: $neutral-color-200;
+        font-style: italic;
         &:after {
             display: none;
         }
     }
+
     &__input {
         border: none;
-        padding: 4px 8px;
+        padding: 4px 6px;
         border-radius: 0px;
-        border-bottom: 2px grey solid;
-        color: #04143c;
+        border-bottom: 1px $neutral-color-300 solid;
+        color: $neutral-color-700;
+
         &:focus {
-            border-bottom: 2px $color--blue solid;
+            border-bottom: 1px $primary-color-600 solid;
         }
+
         &.ng-invalid {
-            border-color: tomato;
+            border-color: $supportive-color-red-700;
         }
     }
 }
+
 // hack for dialog-model-build
-.runtime-select > .mdl-textfield {
-  width:60%;
-}
-.runtime-select-name > .mdl-textfield {
-  width: 50%;
+.runtime-select>.mdl-textfield {
+    width: 60%;
 }
 
-.runtime-select-version > .mdl-textfield {
-  width: 15%;
+.runtime-select-name>.mdl-textfield {
+    width: 50%;
+}
+
+.runtime-select-version>.mdl-textfield {
+    width: 15%;
 }

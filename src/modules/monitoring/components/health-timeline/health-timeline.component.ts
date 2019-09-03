@@ -47,6 +47,7 @@ export class HealthTimelineComponent implements OnInit {
   @Input() set fullAggregation(aggr: any) {
     this.fullLog = aggr;
   }
+
   @Input() set detailedAggregation(aggr: any) {
     this.detailedLog = aggr;
     this.currentLogData = aggr;
@@ -115,14 +116,6 @@ export class HealthTimelineComponent implements OnInit {
   labels: string[] = [];
   mainMapWidth: number;
 
-  chartTimeWidthParams: Array<{ ms: number; text: string }> = [
-    { ms: 900000, text: '15 minutes' },
-    { ms: 1800000, text: '30 minutes' },
-    { ms: 3600000, text: '1 hour' },
-    { ms: 7200000, text: '2 hours' },
-    { ms: 14400000, text: '4 hours' },
-    { ms: 0, text: 'All time' },
-  ];
   chartTimeWidth: number = 0;
 
   constructor(
@@ -139,7 +132,7 @@ export class HealthTimelineComponent implements OnInit {
     );
   }
 
-  changeTimeBound(timeBound): void {
+  changeTimeBound(timeBound: number): void {
     this.chartTimeWidth = timeBound;
     this.timeBoundChanged.emit(timeBound);
     this.started.emit();

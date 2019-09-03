@@ -1,0 +1,11 @@
+@import 'variables';
+
+.time-interval {
+  &__label {
+    margin: 0;
+    font-size: 12px;
+    font-style: italic;
+    font-family: $font-family-light;
+    color: $neutral-color-500;
+  }
+}

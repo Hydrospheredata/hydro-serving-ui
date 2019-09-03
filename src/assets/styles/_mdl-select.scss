@@ -1,9 +1,12 @@
+@import "variables";
+
 .mdl-select {
     &__toggle {
         margin-top: -1.95rem;
         margin-right: 0.3rem;
+        color: $neutral-color-500;
     }
     & .mdl-textfield.is-focused .mdl-select__toggle {
-        color: #539ae9;
+        color: $primary-color-700;
     } 
 }
