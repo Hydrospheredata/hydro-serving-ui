@@ -1,19 +1,29 @@
 @import 'variables.scss';
 
 .model-version {
+  &__model-version {
+    color: $neutral-color-700;
+  }
+  &__runtime {
+    color: $neutral-color-700;
+    font-family: $font-family-light;
+  }
+  &__created-time {
+    color: $neutral-color-700;
+    font-family: $font-family-light;
+    font-size: 12px;
+  }
   &__actions {
     display: flex;
-
     &-item {
       cursor: pointer;
       transform: 0.3s ease color;
       margin-left: 8px;
-      color: $neutral-color-900;
+      color: $neutral-color-500;
       &:hover {
         color: $primary-color-900;
       }
     }
-
     &-icon {
       width: 24px;
       height: 24px;
@@ -28,6 +38,16 @@
 }
 .application {
   cursor: pointer;
+  color: $neutral-color-500;
+  transition: .3s all ease;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 150px;
+  font-size: 12px;
+  font-family: $font-family-light;
+  &:hover {
+    color: $neutral-color-900;
+  }
 }
 .applications-is-empty {
   color: $secondary-text-color;
