@@ -41,6 +41,7 @@
   color: $neutral-color-500;
   transition: .3s all ease;
   text-overflow: ellipsis;
+  overflow: hidden;
   white-space: nowrap;
   max-width: 150px;
   font-size: 12px;
