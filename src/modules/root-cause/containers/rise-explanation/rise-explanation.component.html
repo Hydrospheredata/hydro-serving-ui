@@ -52,11 +52,8 @@
             {{ item.probability | number: '1.5-5' }}
           </td>
           <td class="probabilities__table-cell">
-            <div
-              class="images__compare"
-            >
-              <canvas
-                class="images__item"
+            <div class="images__compare">
+                <canvas
                 hsPixelToCanvas
                 hsScaleImage
                 [pixels]="originalImage"
@@ -64,14 +61,16 @@
                 [height]="imageHeight"
               ></canvas>
               <canvas
-                class="images__item"
                 hsPixelToCanvas
                 hsScaleImage
+                class="images__mask"
                 [pixels]="getPixels(item.mask)"
                 [width]="imageWidth"
                 [height]="imageHeight"
+                [ngStyle]="{'transform': 'translateX(-' + imageWidth + ')'}"
               ></canvas>
             </div>
+
           </td>
         </tr>
       </table>

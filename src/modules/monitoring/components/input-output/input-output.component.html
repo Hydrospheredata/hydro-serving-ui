@@ -121,6 +121,7 @@
           color="primary"
           class="explanation__button"
           (click)="showExplanation(task)"
+          [disabled]="!task.explanation" 
         >
           SHOW EXPLANATION
         </button>

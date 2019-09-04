@@ -25,11 +25,7 @@ export class RootCauseEffects {
           fromFeature.GetStatusesSuccess({ uid: params.uid, tasks })
         ),
         catchError(error => {
-          this.snackbar.showSnackbar({
-            message: error,
-            timeout: 5000,
-            closeAfterTimeout: true,
-          });
+          this.showError(error);
           return of(fromFeature.GetStatusesFailed({ uid: params.uid, error }));
         })
       );
@@ -49,11 +45,7 @@ export class RootCauseEffects {
           });
         }),
         catchError(error => {
-          this.snackbar.showSnackbar({
-            message: error,
-            timeout: 5000,
-            closeAfterTimeout: true,
-          });
+          this.showError(error);
           return of(
             fromFeature.CreateExplanationTaskFailed({
               uid,
@@ -101,11 +93,7 @@ export class RootCauseEffects {
               }
             }),
             catchError(error => {
-              this.snackbar.showSnackbar({
-                message: error,
-                timeout: 5000,
-                closeAfterTimeout: true,
-              });
+              this.showError(error);
               return of(fromFeature.JobFailed({ uid, error, method }));
             })
           )
@@ -138,11 +126,7 @@ export class RootCauseEffects {
             })
           ),
           catchError(error => {
-            this.snackbar.showSnackbar({
-              message: error,
-              timeout: 5000,
-              closeAfterTimeout: true,
-            });
+            this.showError(error);
             return of(fromFeature.GetResultFailed({ uid, error, method }));
           })
         )
@@ -154,4 +138,12 @@ export class RootCauseEffects {
     private rootCause: RootCauseService,
     private snackbar: MdlSnackbarService
   ) {}
+
+  private showError(message: string): void {
+    this.snackbar.showSnackbar({
+      message,
+      timeout: 5000,
+      closeAfterTimeout: true,
+    });
+  }
 }

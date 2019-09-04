@@ -30,7 +30,7 @@ export class ProbabilitiesListComponent {
       .map((value, idx) => ({
         class: idx,
         value,
-        color: colorScale.interpolateBlues(value < .15 ? .15 : value),
+        color: colorScale.interpolateBlues(value < .5 ? .5 : value),
       }))
       .sort((a, b) => b.value - a.value);
   }
