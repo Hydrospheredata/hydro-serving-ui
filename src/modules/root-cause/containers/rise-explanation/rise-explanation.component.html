@@ -64,12 +64,13 @@
                 [height]="imageHeight"
               ></canvas>
               <canvas
-                class="images__item"
+                class="images__item images__mask"
                 hsPixelToCanvas
                 hsScaleImage
                 [pixels]="getPixels(item.mask)"
                 [width]="imageWidth"
                 [height]="imageHeight"
+                [ngStyle]="{'transform': 'translateX(-' + imageWidth + ')'}"
               ></canvas>
             </div>
           </td>
