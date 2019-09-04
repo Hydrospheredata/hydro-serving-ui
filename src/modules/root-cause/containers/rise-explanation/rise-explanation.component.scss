@@ -39,7 +39,6 @@
       font-family: $font-family-light;
       padding: 8px 24px;
       color: $neutral-color-700;
-      text-align: right;
       vertical-align: top;
       border: 1px $neutral-color-100 solid;
     }
@@ -60,11 +59,9 @@
     min-height: 100px;
     position: relative;
   }
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   &__item {
+  }  
+  &__mask {
     opacity: .6;
     position: absolute;
     left: 0;
@@ -77,7 +74,6 @@
   }
   &__input {
     margin: 4px;
-    max-width: 150px;
     &-name {
       color: $neutral-color-700;
       font-weight: bold;

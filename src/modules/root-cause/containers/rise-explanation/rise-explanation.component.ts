@@ -49,7 +49,7 @@ export class RiseExplanationComponent implements OnInit {
       .map(item => ({
         ...item,
         color: colorScale.interpolateBlues(
-          item.probability < 0.15 ? 0.15 : item.probability
+          item.probability < .5 ? .5 : item.probability
         ),
       }))
       .sort((a, b) => b.probability - a.probability);

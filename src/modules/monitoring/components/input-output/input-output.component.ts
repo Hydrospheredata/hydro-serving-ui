@@ -61,31 +61,38 @@ export class InputOutputComponent implements OnChanges {
           .pipe(filter(val => val !== undefined))
       )
     );
-    this.fetchExplanations = this.explanationTasks$.pipe(
-      take(1),
-      withLatestFrom(this.selectedUid$),
-      tap(([tasks, uid]) => {
-        tasks.forEach(task => {
-          if (
-            task.status.state === ExplanationJobStatus.success &&
-            task.explanation === undefined
-          ) {
-            this.rootCauseFacade.getResult({ uid, task });
-          }
-          if (
-            (task.status.state === ExplanationJobStatus.pending ||
-              task.status.state === ExplanationJobStatus.started) &&
-            task.status.task_id !== undefined
-          ) {
-            this.rootCauseFacade.fetchExplanation({
-              uid,
-              taskId: task.status.task_id,
-              method: task.method,
-            });
-          }
-        });
-      })
-    ).subscribe();
+
+    this.fetchExplanations = this.selectedUid$
+      .pipe(
+        switchMap(uid =>
+          this.explanationTasks$.pipe(
+            tap(tasks => {
+              tasks.forEach(task => {
+                if (
+                  task.status.state === ExplanationJobStatus.success
+                ) {
+                  this.rootCauseFacade.getResult({ uid, task });
+                }
+                if (
+                  (
+                    task.status.state === ExplanationJobStatus.pending ||
+                    task.status.state === ExplanationJobStatus.started
+                  ) &&
+                    task.status.task_id !== undefined
+                ) {
+                  this.rootCauseFacade.fetchExplanation({
+                    uid,
+                    taskId: task.status.task_id,
+                    method: task.method,
+                  });
+                }
+              });
+            }),
+            take(1)
+          )
+        )
+      )
+      .subscribe();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
