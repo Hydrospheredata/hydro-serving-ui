@@ -1,8 +1,8 @@
 <td class="model-version__model-version hydro-table-body__cell text-center">
   {{ modelVersion.modelVersion }}
 </td>
-<td class="hydro-table-body__cell">
-  {{ modelVersion.runtime.name }}
+<td class="hydro-table-body__cell model-version__runtime">
+  {{ modelVersion.runtime?.name }}
 </td>
 <td class="hydro-table-body__cell">
   <span class="cs-text-overflow-ellipsis model-version__created-time">{{
@@ -24,14 +24,13 @@
 </td>
 <td class="hydro-table-body__cell model-version__applications">
   <div *ngIf="modelVersion.applications.length > 0; else emptyApplication">
-    <span
+    <div
       class="application"
       *ngFor="let appName of modelVersion.applications; last as lastItem"
       [routerLink]="['../../applications', appName]"
     >
-      <span>{{ appName }}</span
-      ><span *ngIf="!lastItem">, </span>
-    </span>
+      {{ appName }}
+  </div>
   </div>
   <ng-template #emptyApplication>
     <span class="applications-is-empty">-</span>

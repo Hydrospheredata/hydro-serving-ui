@@ -111,21 +111,4 @@ describe('ModelVersionTableRow component', () => {
       });
     });
   });
-
-  describe('model version with applications', () => {
-    beforeEach(() => {
-      component.modelVersion = MockModelVersion2Model1;
-      fixture.detectChanges();
-    });
-
-    it('shows applications names through semilicon', () => {
-      const applicationsElement = element.querySelector(
-        '.model-version__applications'
-      );
-      const applications = MockModelVersion2Model1.applications.join(', ');
-
-      expect(applicationsElement).toBeTruthy();
-      expect(applicationsElement.textContent).toBe(applications);
-    });
-  });
 });
