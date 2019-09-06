@@ -1,33 +1,41 @@
 @import 'variables.scss';
 
 .mdl-textfield {
-    width: 100%;
-    padding: 0;
-    &__label {
-        left: 10px;
-        top: 4px;
-        &:after {
-            display: none;
-        }
+  width: 100%;
+  padding: 0;
+
+  &__label {
+    left: 10px;
+    top: 4px;
+    color: $neutral-color-400;
+
+    &:after {
+      display: none;
     }
-    &__input {
-        border: none;
-        padding: 4px 8px;
-        border-radius: 0px;
-        border-bottom: 2px grey solid;
-        color: #04143c;
-        &:focus {
-            border-bottom: 2px $color--blue solid;
-        }
-        &.ng-invalid {
-            border-color: tomato;
-        }
+  }
+
+  &__input {
+    border: none;
+    padding: 4px 8px;
+    border-radius: 0px;
+    border-bottom: 1px $neutral-color-500 solid;
+    color: $neutral-color-800;
+
+    &:focus {
+      border-bottom: 1px $primary-color-700 solid;
     }
+
+    &.ng-invalid {
+      border-color: $supportive-color-red-500;
+    }
+  }
 }
+
 // hack for dialog-model-build
 .runtime-select > .mdl-textfield {
-  width:60%;
+  width: 60%;
 }
+
 .runtime-select-name > .mdl-textfield {
   width: 50%;
 }

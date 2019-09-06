@@ -2,9 +2,11 @@
 
 .control {
   &-label {
+    color: $neutral-color-500;
+    font-size: 14px;
+    font-family: $font-family-light;
     &__postfix {
       font-size: 12px;
-      font-family: $font-family-light;
       font-style: italic;
       color: $neutral-color-400;
 
@@ -73,14 +75,26 @@
   }
 }
 
-input.form-control {
+.form-control {
   height: 40px;
   box-shadow: none;
   background-color: transparent;
-  border: 1px solid #d4d7d9;
+  border: none;
+  border-bottom: 1px solid $neutral-color-200;
+  color:$neutral-color-800;
+  &::placeholder {
+    color: $neutral-color-500;
+    letter-spacing: 1px;
+    font-family: $font-family-light;
+    font-size: 14px;
+  }
+
+  &--is-bordered {
+    border: 1px solid $neutral-color-200;  
+  }
+  
 
   &.input-icon {
-
     &.left {
       padding-left: 3rem;
     }
@@ -98,20 +112,12 @@ input.form-control {
     clear: both;
   }
 
-  &.__modelWeight {
-    border-color: #f2f2f2;
-    max-width: 60px;
-    width: 60px;
-    height: 36px;
-    text-align: right;
-  }
-
   &.__kafkaInput {
     border: none;
     padding: 7px 12px;
     border-radius: 2px;
-    border: 2px grey solid;
-    color: #04143c;
+    border: 1px $neutral-color-200 solid;
+    color: $neutral-color-800;
     height: 28px;
   }
 
@@ -133,8 +139,6 @@ input.form-control {
     >.control-label {
       margin: 0;
       margin-right: 8px;
-
-      // font-family: 'Consolas', monospace;
     }
 
     >.cs-relative {
@@ -146,7 +150,7 @@ input.form-control {
 hydro-icon.input-icon {
   width: 24px;
   height: 24px;
-
+  color: $neutral-color-500;
   &.right {
     right: 1rem;
     position: absolute;
