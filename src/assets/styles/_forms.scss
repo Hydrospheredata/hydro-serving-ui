@@ -1,53 +1,62 @@
 .hydro-form {
-    &-group {
-        margin-bottom: 72px;
-    }
+  &-group {
+    margin-bottom: 72px;
+  }
 }
 
 .hydro-checkbox {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  cursor: pointer;
+
+  &__label {
+    color: $neutral-color-500;
+    font-family: $font-family-light;
+    font-size: 14px;
+  }
+
+  input[type='checkbox'] {
+    position: absolute;
+    z-index: -1000;
+    left: -1000px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
     padding: 0;
-    flex-direction: row-reverse;
-    justify-content: flex-end;
-    margin-bottom: 16px;
-    cursor: pointer;
+    border: 0;
 
-    input[type=checkbox] {
-        position: absolute;
-        z-index: -1000;
-        left: -1000px;
-        overflow: hidden;
-        clip: rect(0 0 0 0);
-        height: 1px;
-        width: 1px;
-        margin: -1px;
-        padding: 0;
-        border: 0;
-    
-        & + span {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 20px;
-            width: 20px;
-            margin-right: 8px;
-            border: 1px solid #818994;
-            &:after {
-                content: '';
-                display: none;
-                width: 6px;
-                height: 11px;
-                border: solid #818994;
-                border-width: 0 2px 2px 0;
-                -webkit-transform: rotate(45deg);
-                transform: rotate(45deg);
-                margin-top: -2px;
-            }
-        }
 
-        &:checked + span:after {
-            display: block;
-        }
+
+    & + span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 20px;
+      width: 20px;
+      margin-right: 8px;
+      border: 1px solid $neutral-color-200;
+
+      &:after {
+        content: '';
+        display: none;
+        width: 6px;
+        height: 11px;
+        border: solid $primary-color-500;
+        border-width: 0 2px 2px 0;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        margin-top: -2px;
+      }
     }
+
+    &:checked + span:after {
+      display: block;
+    }
+  }
 }

@@ -1,16 +1,12 @@
 <ng-template #addButton>
   <button
     hs-button
-    kind="flat"
+    kind="stroked"
     color="primary"
     class="add-application__button"
     (click)="addApplication($event)"
     title="Add new app"
   >
-    <hydro-icon
-      class="button__icon add-application__icon"
-      [type]="'icon-plus'"
-    ></hydro-icon>
     add new application
   </button>
 </ng-template>

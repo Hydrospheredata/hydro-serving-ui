@@ -7,17 +7,19 @@
   margin: 16px 0 9px;
   position: relative;
   &__label {
-    font-size: 16px;
+    font-size: 14px;
+    color:  $neutral-color-700;
+    font-family: $font-family-light;
     line-height: 24px;
   }
 
   &__input {
     font-size: 16px;
     padding: 4px;
-    border: 2px solid $neutral-color-700;
+    border: 1px solid $neutral-color-200;
 
     &:focus {
-      border-color: $primary-color-500;
+      border-color: $primary-color-700;
     }
   }
 }
@@ -77,11 +79,11 @@
 
 .services {
   &__list {
-    background-color: #f8f9fb;
+    background-color: $neutral-color-100;
   }
 
   &__item {
-    border-bottom: 1px lightgrey solid;
+    border-bottom: 1px $neutral-color-300 solid;
 
     &--isLast {
       border-bottom: none;
@@ -94,11 +96,4 @@
   display: inline-block;
   font-size: 14px;
   margin-bottom: 8px;
-}
-
-.error {
-  font-size: 12px;
-  color: $error-text-color;
-  position: relative;
-  min-width: 120px;
 }

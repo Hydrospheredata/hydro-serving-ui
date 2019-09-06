@@ -15,7 +15,7 @@
   z-index: 9999;
   transform: translateY(-100%);
   animation: dropDown .4s ease-in forwards;
-  box-shadow: 0px 0px 10px 0px black;
+  box-shadow: 0px 0px 10px 0px $neutral-color-700;
 }
 
 @keyframes dropDown {
@@ -45,14 +45,14 @@ label.disabled {
 }
 
 .row {
-  padding: 10px 0 10px 0;
+  padding: 10px 0;
 }
 
 .input {
   border: none;
   font-size: 16px;
   margin-left: 4px;
-  color: #3c435a;
+  // color: #3c435a;
   font-weight: bold;
   letter-spacing: 1px;
 }

@@ -1,23 +1,23 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RouterTestingModule } from '@angular/router/testing';
 import { IconComponent } from '@shared/_index';
-import { NavbarComponent } from './navbar.component';
+import { HeaderComponent } from './header.component';
 
 describe('NavbarComponent', () => {
-  let component: NavbarComponent;
-  let fixture: ComponentFixture<NavbarComponent>;
+  let component: HeaderComponent;
+  let fixture: ComponentFixture<HeaderComponent>;
   let element: HTMLElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [NavbarComponent, IconComponent],
+      declarations: [HeaderComponent, IconComponent],
       imports: [RouterTestingModule],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NavbarComponent);
+    fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
     fixture.detectChanges();

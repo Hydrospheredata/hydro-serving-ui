@@ -1,7 +1,7 @@
 <div [formGroup]="parent">
   <div formGroupName="config" *ngIf="parent.get('config')">
     <div class="row" *ngIf="parent.get('config').get('input')">
-      <label for="input">Input: </label>
+      <label class="label" for="input">Input: </label>
       <mdl-select
         [formControl]="parent.get('config').get('input')"
         label="Choose input"
@@ -13,7 +13,7 @@
     </div>
 
     <div class="row" *ngIf="parent.get('config').get('applicationName')">
-      <label for="application">Application: </label>
+      <label class="label" for="application">Application: </label>
       <mdl-select
         name="application"
         [formControl]="parent.get('config').get('applicationName')"
@@ -27,7 +27,7 @@
       </mdl-select>
     </div>
     <div class="row" *ngIf="parent.get('config').get('thresholdCmpOperator')">
-      <label for="application">Comparision operator: </label>
+      <label class="label" for="application">Comparision operator: </label>
       <mdl-select
         name="application"
         [formControl]="parent.get('config').get('thresholdCmpOperator')"
@@ -45,6 +45,7 @@
         name="threshold"
         label="Threshold"
         [formControl]="parent.get('config').get('threshold')"
+        bordered="true"
       >
       </hydro-input-text>
     </div>
@@ -54,6 +55,7 @@
         label="Interval"
         postfix="sec"
         [formControl]="parent.get('config').get('interval')"
+        bordered="true"
       >
       </hydro-input-text>
     </div>

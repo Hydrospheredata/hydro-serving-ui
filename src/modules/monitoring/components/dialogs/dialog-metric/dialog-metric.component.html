@@ -1,9 +1,11 @@
 <div class="dform">
   <form [formGroup]="form" class="form">
     <hydro-input-text
+      class="metric__name"
       name="metricName"
       label="Metric Name"
       formControlName="name"
+      bordered="true"
     >
     </hydro-input-text>
     <div class="row">
@@ -17,7 +19,7 @@
     </div>
     <div class="row">
       <label class="hydro-checkbox">
-        Use this metric for health checks
+        <span class="hydro-checkbox__label">Use this metric for health checks</span>
         <input type="checkbox" formControlName="withHealth" />
         <span></span>
       </label>

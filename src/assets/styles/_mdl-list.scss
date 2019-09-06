@@ -1,20 +1,24 @@
+@import 'variables';
+
 .mdl-list {
+  .mdl-select & {
+    box-shadow: none;
+    background-color: white;
+  }
+
+  &__item {
     .mdl-select & {
-        box-shadow: none;
-        background-color: #e9ecf2;
+      padding: 6px 14px;
+      min-height: auto;
+      font-family: 'Museo Sans Regular';
+      color: $neutral-color-400;
+
+      &.is-active,
+      &:hover,
+      &:focus {
+        background-color: transparent;
+        color: $neutral-color-800;
+      }
     }
-    &__item {
-        .mdl-select & {
-            padding: 6px 14px;
-            min-height: auto;
-            font-family: 'Museo Sans Regular';
-            color: #04143c;
-            &.is-active,
-            &:hover,
-            &:focus {
-                background-color: transparent;
-                color: #539ae9;
-            }
-        }
-    }
+  }
 }
