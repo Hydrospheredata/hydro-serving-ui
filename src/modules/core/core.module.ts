@@ -10,7 +10,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { CodemirrorModule } from 'ng2-codemirror';
 
 // Components
-import { NavbarComponent, PageNotFoundComponent } from './_index';
+import {
+  HeaderComponent,
+  PageNotFoundComponent,
+  BuildInformationDialogComponent,
+} from './components';
 
 // Services
 import {
@@ -40,7 +44,6 @@ import {
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { BuildInformationDialogComponent } from '@core/components/_index';
 import { reducers, CustomRouterStateSerializer } from '@core/reducers';
 import { BuildInformationService } from '@core/services/build-information.service';
 import { MonitoringService } from '@core/services/metrics/monitoring.service';
@@ -83,9 +86,9 @@ import { SharedModule } from '@shared/shared.module';
       stateKey: 'router',
     }),
   ],
-  exports: [NavbarComponent, MdlModule, MdlSelectModule, CodemirrorModule],
+  exports: [HeaderComponent, MdlModule, MdlSelectModule, CodemirrorModule],
   declarations: [
-    NavbarComponent,
+    HeaderComponent,
     PageNotFoundComponent,
     BuildInformationDialogComponent,
   ],

@@ -1,135 +1,160 @@
-@import "variables.scss";
+@import 'variables.scss';
 
 .service {
+  display: flex;
+  min-width: 716px;
+  position: relative;
+  justify-content: space-between;
+
+  &__index {
+    align-items: center;
     display: flex;
-    min-width: 716px;
+    justify-content: center;
+    width: 32px;
+    color: $neutral-color-700;
+  }
+
+  &__inputs {
+    flex-grow: 1;
+    padding: 12px;
+  }
+
+  &__row {
+    display: flex;
+    margin-bottom: 12px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    margin-right: 12px;
     position: relative;
-    justify-content: space-between;
-    &__index {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        width: 32px;
-    }
-    &__inputs {
-        flex-grow: 1;
-        padding: 12px;
-    }
-    &__row {
-        display: flex;
-        margin-bottom: 12px;
-    }
-    &__field {
-        display: flex;
-        flex-direction: column;
-        margin-right: 12px;
-        position: relative;
-        width: 160px;
-        &-label {
-            font-size: 12px;
-            line-height: 12px;
-            margin-bottom: 5px;
-            color: #818994;
-            font-weight: 500;
-        }
-        &-input {
-            padding: 4px 8px;
-            font-size: 14px;
-            line-height: 16px;           
-            border: 2px grey solid;
-            &:focus {
-                border-color: $color--blue;
-            }
-            &.ng-invalid {
-                border-color: tomato;
-            }
-            &--weight {
-                text-align: right;
-            }
-        }
-        &--model-name {
-            width: 368px;
-        }
-        &--model-version {
-            width: 80px;
-        }
-        &--runtime {
-            width: 368px;
-        }
-        &--is-last {
-            margin-right: 0;
-        }
-        &--hostSelector {
-            width: 80px;
-        }
-        &--weight {
-            width: 50px;
-            &::after{
-                content: "%";
-                display: block;
-                position: absolute;
-                left:54px;
-                font-size: 14px;
-                top: 22px;
-            }
-        }
-    }
-    &__remove {
-        &-container {
-            align-items: center;
-            color: #04143c;
-            cursor: pointer;
-            display: flex;
-            transition: .3s all ease-in;
-            transition: .0s color ease-in;
-            justify-content: center;
-            width: 24px;
-            &:hover {
-                background: #da3d3d;
-                color: white; 
-            }
-        }
-        &-icon {
-            line-height: 14px;
-            right: 0px;
-            top: 0px;
-            width: 14px;
-            height: 14px;
-        }
+    width: 160px;
 
+    &-label {
+      font-size: 12px;
+      line-height: 12px;
+      margin-bottom: 5px;
+      color: $neutral-color-700;
+      font-family: $font-family-light;
     }
 
+    &-input {
+      padding: 4px 8px;
+      font-size: 14px;
+      line-height: 16px;
+      border: 1px $neutral-color-500 solid;
+      color: $neutral-color-800;
+
+      &:focus {
+        border-color: $primary-color-700;
+      }
+
+      &.ng-invalid {
+        border-color: $supportive-color-red-500;
+      }
+
+      &--weight {
+        text-align: right;
+      }
+    }
+
+    &--model-name {
+      width: 368px;
+    }
+
+    &--model-version {
+      width: 80px;
+    }
+
+    &--runtime {
+      width: 368px;
+    }
+
+    &--is-last {
+      margin-right: 0;
+    }
+
+    &--hostSelector {
+      width: 80px;
+    }
+
+    &--weight {
+      width: 50px;
+
+      &::after {
+        content: '%';
+        color: $neutral-color-700;
+        display: block;
+        position: absolute;
+        left: 54px;
+        font-size: 14px;
+        top: 22px;
+      }
+    }
+  }
+
+  &__remove {
+    &-container {
+      align-items: center;
+      color: $neutral-color-800;
+      cursor: pointer;
+      display: flex;
+      transition: 0.3s all ease-in;
+      transition: 0s color ease-in;
+      justify-content: center;
+      width: 24px;
+
+      &:hover {
+        background: $supportive-color-red-400;
+        color: white;
+      }
+    }
+
+    &-icon {
+      line-height: 14px;
+      right: 0px;
+      top: 0px;
+      width: 14px;
+      height: 14px;
+    }
+  }
 }
 
 .form-group {
-    display: flex;
+  display: flex;
 }
 
 .hydro-select {
-    & .mdl-select .mdl-textfield__input {
-        border-radius: 0; 
-    }
+  & .mdl-select .mdl-textfield__input {
+    border-radius: 0;
+  }
 }
 
 .docker-image {
-    &__name {
-        flex: 1;
-    }
+  color: $neutral-color-800;
+  &__name {
+    flex: 1;
+  }
 
-    &__tag {
-        color: #5e5e5e;
-    }
+  &__tag {
+    color: $neutral-color-600;
+  }
 }
 
 .docker-image__name {
 }
 
 /deep/ .mdl-list__item:hover {
-    .docker-image__version, .docker-image__repository {
-        color: #04143c;
-    }
+  .docker-image__version,
+  .docker-image__repository {
+    color: $neutral-color-800;
+  }
 }
 
-/deep/ .parameters__field.parameters__row-field-runtime .mdl-select .mdl-popover {
-    min-width: 200% !important;
+/deep/
+  .parameters__field.parameters__row-field-runtime
+  .mdl-select
+  .mdl-popover {
+  min-width: 200% !important;
 }

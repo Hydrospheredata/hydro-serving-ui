@@ -58,6 +58,7 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() public errors: any;
   /** left of right */
   @Input() public iconDirection: string;
+  @Input() public bordered: boolean = false;
   @Output() iconClick = new EventEmitter<NgModel>();
   protected _value: any;
   protected onChange: (_: any) => void = noop;

@@ -30,6 +30,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    .time-interval {
+      &__label {
+        font-size: 12px;
+        font-family: $font-family-light;
+        color: $neutral-color-700;
+      }
+      &__select {
+        display: inline-block;
+      }
+    }
   }
 }
 

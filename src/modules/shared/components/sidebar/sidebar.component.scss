@@ -8,7 +8,7 @@
 
 .sidebar {
   width: 250px;
-  background-color: #f2f4f7;
+  background-color: $neutral-color-100;
   min-height: 100%;
   &-header {
     padding: 16px 24px;
@@ -38,15 +38,18 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid $secondary-color;
       padding: 0 24px;
       cursor: pointer;
       outline: none;
       line-height: 36px;
+      color: $neutral-color-400;
+      transition: .3s all ease;
       &.__active,
       &:hover,
       &:focus {
-        background-color: $secondary-color;
+        background: white;
+        box-shadow: inset -2px 0px $primary-color-800;
+        color: $primary-color-1000;
       }
       &-status {
         line-height: 24px;
@@ -54,7 +57,6 @@
       &-name {
         line-break: strict;
         font-size: 16px;
-        color: #04143c;
         display: block;
         width: 70%;
         white-space: nowrap;
@@ -68,10 +70,11 @@
   }
   &__empty-message {
     text-align: center;
-    color: #7a8996;
+    color: $neutral-color-500;
     text-transform: uppercase;
-    font-weight: 100;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     font-size: 12px;
+    font-style: italic;
+    font-family: $font-family-light;
   }
 }
