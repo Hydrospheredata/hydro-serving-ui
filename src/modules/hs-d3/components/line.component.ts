@@ -3,41 +3,43 @@ import {
   Input,
   ViewChild,
   ElementRef,
-  AfterViewInit,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import * as d3 from 'd3';
+import { line, select, easeLinear } from 'd3';
 
 @Component({
   selector: '[hs-d3line]',
   template: `
     <svg:path #path></svg:path>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class D3LineComponent implements AfterViewInit {
+export class D3LineComponent {
   @ViewChild('path', { read: ElementRef })
   path: ElementRef;
-
   @Input() 'hs-d3line';
   @Input() xScale;
   @Input() yScale;
-  @Input() data;
+  @Input() set data(data: number[][]) {
+    if (data === undefined) {
+      return;
+    }
 
-  ngAfterViewInit(): void {
-    const valueline = d3
-      .line()
-      .curve(d3.curveMonotoneX)
-      .x((d: any) => {
-        return this.xScale(new Date(d.timestamp));
-      })
-      .y((d: any) => this.yScale(d.value));
+    if (data.some(([x, y]) => x === undefined || y === undefined)) {
+      return;
+    }
 
-    d3.select(this.path.nativeElement)
-      .data([this.data])
+    const valueline = line()
+      .x(d => this.xScale(d[0]))
+      .y(d => this.yScale(d[1]));
+
+    select(this.path.nativeElement)
+      .data([data])
       .transition()
       .duration(500)
-      .ease(d3.easeLinear)
+      .ease(easeLinear)
       .attr('d', valueline)
-      .attr('stroke-width', '2px')
+      .attr('stroke-width', '1px')
       .attr('fill', 'none');
   }
 }

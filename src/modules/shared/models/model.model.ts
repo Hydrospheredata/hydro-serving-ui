@@ -1,14 +1,11 @@
-export interface IModel {
+export class Model {
   id: number;
   name: string;
-}
-
-export class Model {
-  public id: number;
-  public name: string;
+  modelVersions: string[];
 
   constructor(props: any = {}) {
     this.id = props.id;
     this.name = props.name;
+    this.modelVersions = [];
   }
 }

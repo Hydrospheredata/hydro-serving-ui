@@ -1,51 +1,30 @@
-import { Component, OnInit, InjectionToken, Inject, OnDestroy } from '@angular/core';
-
-import { Store } from '@ngrx/store';
-
-import * as HydroActions from '@applications/actions/applications.actions';
-import { HydroServingState } from '@core/reducers';
-import { Application } from '@shared/models/_index';
-import { Observable ,  Subscription } from 'rxjs';
-
+import { Component, InjectionToken, Inject } from '@angular/core';
+import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
+import { Application } from '@shared/models/_index';
 
-export let SELECTED_UPD_APPLICATION$ = new InjectionToken<Observable<Application>>('selectedApplication');
+export let SELECTED_UPD_APPLICATION = new InjectionToken<Application>(
+  'selectedApplication'
+);
 
 @Component({
-    templateUrl: './dialog-update-application.component.html',
+  templateUrl: './dialog-update-application.component.html',
 })
-export class DialogUpdateApplicationComponent implements OnInit, OnDestroy {
-    public application$: Observable<Application>;
-    public applicationSub: Subscription;
-    public application: Application;
+export class DialogUpdateApplicationComponent {
+  constructor(
+    @Inject(SELECTED_UPD_APPLICATION)
+    public application: Application,
+    public facade: ApplicationsFacade,
+    public dialog: DialogService
+  ) {}
 
-    constructor(
-        @Inject(SELECTED_UPD_APPLICATION$) application: Observable<Application>,
-        public store: Store<HydroServingState>,
-        public dialog: DialogService
-    ) {
-        this.application$ = application;
-    }
+  public onClose(): void {
+    this.dialog.closeDialog();
+  }
 
-    ngOnInit(): void {
-        this.applicationSub = this.application$.subscribe(application => {
-            this.application = application;
-        });
-    }
-
-    public onClose(): void {
-        this.dialog.closeDialog();
-    }
-
-    public onSubmit(formData) {
-        formData.id = this.application.id;
-        const application = new Application(formData);
-        this.store.dispatch(new HydroActions.UpdateApplicationAction(application));
-
-        this.onClose();
-    }
-
-    ngOnDestroy(): void {
-        this.applicationSub.unsubscribe();
-    }
+  public onSubmit(formData) {
+    formData.id = this.application.id;
+    this.facade.editApplication(new Application(formData));
+    this.onClose();
+  }
 }

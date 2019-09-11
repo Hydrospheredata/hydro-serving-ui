@@ -1,12 +1,10 @@
 import { MdlDialogOutletService } from '@angular-mdl/core';
 import { Component, ViewContainerRef, OnInit } from '@angular/core';
-import { GetApplicationsAction } from '@applications/actions';
-
-import * as Actions from '@core/actions';
-import { HydroServingState } from '@core/reducers';
+import * as fromApplications from '@applications/store';
 import { SvgSpriteService } from '@core/services';
 import { SseService } from '@core/services/sse.service';
-import { GetModelsAction, GetModelVersionsAction } from '@models/actions';
+import { HydroServingState } from '@core/store';
+import * as fromModels from '@models/store';
 import { Store } from '@ngrx/store';
 import * as fromServables from 'modules/servables/actions';
 
@@ -28,11 +26,10 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.sse.createConnection();
-
     this.svgSprite.loadSvgSprite();
-    this.store.dispatch(new GetModelsAction());
-    this.store.dispatch(new GetApplicationsAction());
-    this.store.dispatch(new GetModelVersionsAction());
+    this.store.dispatch(fromModels.GetModels());
+    this.store.dispatch(fromModels.GetModelVersions());
+    this.store.dispatch(fromApplications.Get());
     this.store.dispatch(fromServables.getAll());
   }
 }

@@ -6,15 +6,16 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { GetProfilersServiceStatus } from '@profiler/actions';
 import { ProfilerStatus } from '@profiler/models';
-import { ProfilerState } from '@profiler/reducers';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import {
+  ProfilerState,
+  GetProfilerServiceStatus,
   selectProfilerServiceStatus,
   selectErrorMessage,
-} from '../../selectors';
+} from '@profiler/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 @Component({
   selector: 'hs-profiler-page',
   templateUrl: './profiler-page.component.html',
@@ -45,7 +46,7 @@ export class ProfilerPageComponent implements OnInit {
 
   ngOnInit() {
     this.error$ = this.store.select(selectErrorMessage);
-    this.store.dispatch(new GetProfilersServiceStatus());
+    this.store.dispatch(GetProfilerServiceStatus());
 
     this.activeTemplate$ = this.store
       .select(selectProfilerServiceStatus)

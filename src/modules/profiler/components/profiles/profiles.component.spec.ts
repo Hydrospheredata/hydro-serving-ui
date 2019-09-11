@@ -7,7 +7,7 @@ import { ProfileStatsComponent } from '@profiler/components/profile-stats/profil
 import {
   ProfilesComparisonHistogramComponent
 } from '@profiler/components/profiles-comparison-histogram/profiles-comparison-histogram.component';
-import * as fromProfiler from '@profiler/reducers';
+import * as fromProfiler from '@profiler/store';
 import { SharedModule } from '@shared/shared.module';
 import { ProfilesComponent } from './profiles.component';
 

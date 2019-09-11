@@ -1,0 +1,49 @@
+@import "variables";
+
+
+.column {
+  opacity: .5;
+  cursor: pointer;
+  transition: .1s all ease;
+
+  &:hover,
+  &--active {
+    opacity: 1;
+  }
+}
+
+.aggregation {
+  padding: 8px;
+  border: 2px $neutral-color-100 solid;
+  width: 766px;
+  margin-right: 12px;
+  &__body {
+    display: flex;
+  }
+  &__header {
+    font-size: 12px;
+    line-height: 14px;
+    margin-bottom: 8px;
+    font-family: $font-family-light;
+    color: $neutral-color-400;
+    &-count {
+      font-family: $font-family-regular;
+    }
+  }
+  &__labels {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-right: 8px;
+
+    &-item {
+      font-family: $font-family-light;
+      line-height: 12px;
+      font-size: 10px;
+      margin-bottom: 2px;
+      color: $neutral-color-700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}

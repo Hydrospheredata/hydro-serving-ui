@@ -7,10 +7,7 @@ import {
   Self,
 } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-
-import { HydroServingState } from '@core/reducers';
-import { getAllModels } from '@models/reducers';
-import { Store } from '@ngrx/store';
+import { ModelsFacade } from '@models/store';
 
 import { ModelVariantFormService } from '@applications/services';
 import { Model, ModelVersion } from '@shared/_index';
@@ -31,7 +28,7 @@ export class ModelVariantFormComponent implements OnInit {
   @Output() delete = new EventEmitter();
 
   data;
-  models$: Observable<Model[]> = this.store.select(getAllModels);
+  models$: Observable<Model[]> = this.modelsFacade.allModels$;
   modelVersions$: Observable<any>;
   selectedModelVersion$: Observable<ModelVersion>;
 
@@ -48,7 +45,7 @@ export class ModelVariantFormComponent implements OnInit {
   }
 
   constructor(
-    private store: Store<HydroServingState>,
+    private modelsFacade: ModelsFacade,
     @Self() private modelVariantFormService: ModelVariantFormService
   ) {
     this.modelVersions$ = this.modelVariantFormService.getModelVersions();

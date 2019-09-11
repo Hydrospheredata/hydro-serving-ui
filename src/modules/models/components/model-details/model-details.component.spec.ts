@@ -1,25 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { RouterTestingModule } from '@angular/router/testing';
-import { HydroServingState } from '@core/reducers';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DialogService } from '@dialog/dialog.service';
-import * as fromModels from '@models/reducers';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { ModelsFacade } from '@models/store';
 import { SharedModule } from '@shared/shared.module';
+import * as mockComponents from '@testing/components';
 import { MockModel1 } from '@testing/factories/model';
-import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
-import { MockStoreProvider } from '@testing/mocks';
-import { MomentModule } from 'angular2-moment';
 import { of } from 'rxjs';
 import { ModelDetailsComponent } from './model-details.component';
 
-import * as fromModelsActions from '@models/actions';
-import * as mockComponents from '@testing/components';
 describe('ModelDetailsComponent', () => {
   let component: ModelDetailsComponent;
   let fixture: ComponentFixture<ModelDetailsComponent>;
   let element: HTMLElement;
-  let store: Store<HydroServingState>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,15 +18,16 @@ describe('ModelDetailsComponent', () => {
         ModelDetailsComponent,
         mockComponents.ModelVersionsTableComponent,
       ],
-      imports: [
-        SharedModule,
-        MomentModule,
-        RouterTestingModule,
-        StoreModule.forRoot({
-          models: combineReducers(fromModels.reducers),
-        }),
+      imports: [SharedModule],
+      providers: [
+        DialogService,
+        {
+          provide: ModelsFacade,
+          useValue: {
+            selectedModel$: of(MockModel1),
+          },
+        },
       ],
-      providers: [MockStoreProvider, DialogService],
     }).compileComponents();
   });
 
@@ -43,18 +35,6 @@ describe('ModelDetailsComponent', () => {
     fixture = TestBed.createComponent(ModelDetailsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
-
-    store = TestBed.get(Store);
-
-    spyOn(store, 'dispatch').and.callThrough();
-    store.dispatch(
-      new fromModelsActions.GetModelVersionsSuccessAction([
-        MockModelVersion1Model1,
-      ])
-    );
-
-    component.model$ = of(MockModel1);
-
     fixture.detectChanges();
   });
 

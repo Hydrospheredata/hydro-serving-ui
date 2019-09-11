@@ -14,7 +14,7 @@ export class ProfilerService {
     this.baseAPIUrl = `${environment.monitoringUrl}`;
   }
 
-  public getFields(modelVersionId: number) {
+  public getFields(modelVersionId: string) {
     return this.http
         .get(`${this.baseAPIUrl}/fields/${modelVersionId}`)
         .pipe(

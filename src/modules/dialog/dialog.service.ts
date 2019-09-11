@@ -19,7 +19,9 @@ interface DialogOptions {
     styles?: {[key: string]: string};
 }
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class DialogService {
 
     get show$(): Observable<boolean> {

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MonitoringService } from '@core/services/metrics/monitoring.service';
+import { MonitoringService } from '@monitoring/services';
 import {
   GetServiceStatusAction,
   SetStatusToAvailableAction,

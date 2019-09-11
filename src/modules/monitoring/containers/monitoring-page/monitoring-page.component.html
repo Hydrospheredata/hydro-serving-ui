@@ -1,80 +1,25 @@
-<hs-health-timeline
-  [timeInterval]="timeInterval$ | async"
-  [isLive]="isLive$ | async"
-  [detailedAggregation]="detailedAggregation$ | async"
-  [fullAggregation]="fullAggregation$ | async"
-  [timeBound]="timeBound$ | async"
-  (stopped)="onStopLive()"
-  (started)="onStartLive()"
-  (timeIntervalChanged)="onChangeTimeInterval($event)"
-  (timeBoundChanged)="setTimeBound($event)"
->
-</hs-health-timeline>
-<hs-req-res-logs
-  [log]="reqResLog$ | async"
-  [modelVersion]="selectedModelVersion$ | async"
-  (clickedUpdateReqstore)="updateReqstore($event)"
-></hs-req-res-logs>
-<hs-charts
-  [timeInterval]="timeInterval$ | async"
-  [detailedCharts]="detailedCharts$ | async"
-  [siblingModelVersions]="siblingModelVersions$ | async"
-  (addedModelVersionIdToCompare)="addModelVersionIdToCompare($event)"
-></hs-charts>
-
-<!-- <ng-container
-  *ngIf="metricsLoading$ | async; then loader; else body"
-></ng-container>
-
-<ng-template #body>
-  <div class="monitoring">
-    <div
-      *ngIf="metricsNotEmpty$ | async; else metricsEmpty"
-      clas="monitoring__body"
-    >
-      <header class="monitoring__header">
-        <span class="monitoring__settings" (click)="openSettings()">
-          <hydro-icon
-            class="icon monitoring__settings-icon"
-            type="icon-settings"
-          ></hydro-icon>
-        </span>
-      </header>
-      <hs-health-timeline
-        [metricSpecifications]="selectedMetricSpecifications$ | async"
-        [selectedModelVersion]="selectedModelVersion$ | async"
-        (timeInterval)="onChangeTimeInterval($event)"
-        (stopped)="onStopLive()"
-        (started)="onStartLive()"
-        [live]="live"
-      >
-      </hs-health-timeline>
-      <hs-req-res-logs
-        [modelVersion$]="selectedModelVersion$"
-        [timeInterval$]="timeIntervalChange$"
-        [metricSpecs$]="selectedMetricSpecifications$"
-      ></hs-req-res-logs>
-      <div class="charts">
-        <hs-charts
-          [selectedTimeInterval$]="timeIntervalChange$"
-          [metricSpecifications]="selectedMetricSpecifications$ | async"
-        ></hs-charts>
-      </div>
-    </div>
-  </div>
-</ng-template>
-<ng-template #loader>
-  <div class="loader">
-    <hydro-icon type="icon-circle" class="icon loader-icon"></hydro-icon>loading
-  </div></ng-template
->
-<ng-template #metricsEmpty>
-  <hs-alert-message>
-    This model version does not have any metrics.
-    <span class="monitoring__alert" (click)="openSettings()">
-      <hydro-icon class="icon" type="icon-settings"></hydro-icon>
-      <span> Settings </span>
-    </span>
-  </hs-alert-message>
-</ng-template> -->
-<!-- </hs-health-timeline> -->
+<div class="monitoring__aggregation">
+  <hs-aggregation
+    class="monitoring__aggregation-item"
+    [aggregation]="checksAggreagation$ | async"
+    (changedSelectedColumn)="onSelectedAggregationColumn($event)"
+  >
+  </hs-aggregation>
+  <hs-requests-information
+    [aggregation]="selectedAggregationColumn$ | async"
+    [latency]="latency$ | async"
+    [errors]="errors$ | async"
+    class="monitoring__aggregation-item"
+  >
+  </hs-requests-information>
+</div>
+<hs-log
+  [checks]="checks$ | async"
+  [modelVersion]="modelVersion$ | async"
+></hs-log>
+<header class="monitoring__header">
+  <span class="monitoring__settings" (click)="openSettings()">
+    <button color="primary" hs-button>metric settings</button>
+  </span>
+</header>
+<hs-custom-checks [customChecks]="customChecks$ | async"></hs-custom-checks>

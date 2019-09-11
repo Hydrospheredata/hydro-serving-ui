@@ -1,15 +1,13 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
+import { HydroServingState } from '@core/store';
 import { Store } from '@ngrx/store';
 import {
-  GetFieldsAction,
-  GetProfilesAction,
-  CleanProfilesAction,
-} from '@profiler/actions';
-import {
-  getFieldsEntitiesState,
-  getProfilesEntitiesState,
-} from '@profiler/selectors';
+  GetFields,
+  selectFieldsEntitiesState,
+  selectProfilesEntitiesState,
+  GetProfiles,
+  CleanProfiles,
+} from '@profiler/store';
 import { Profiles } from '@shared/models/_index';
 import { Subscription } from 'rxjs';
 
@@ -33,15 +31,17 @@ export class ProfilesComponent implements OnInit, OnDestroy {
   constructor(private store: Store<HydroServingState>) {}
 
   ngOnInit() {
-    this.store.dispatch(new GetFieldsAction(this.modelVersionId));
+    this.store.dispatch(
+      GetFields({ modelVersionId: `${this.modelVersionId}` })
+    );
     this.fieldsSub = this.store
-      .select(getFieldsEntitiesState)
+      .select(selectFieldsEntitiesState)
       .subscribe(state => {
         this.isLoading = false;
         this.fields = state.fields;
       });
     this.profilesSub = this.store
-      .select(getProfilesEntitiesState)
+      .select(selectProfilesEntitiesState)
       .subscribe(state => {
         if (state.profiles != null) {
           this.isLoading = false;
@@ -51,14 +51,17 @@ export class ProfilesComponent implements OnInit, OnDestroy {
     this.intervalId = setInterval(() => {
       if (this.currentField) {
         this.store.dispatch(
-          new GetProfilesAction(this.modelVersionId, this.currentField)
+          GetProfiles({
+            modelVersionId: this.modelVersionId,
+            fieldName: this.currentField,
+          })
         );
       }
     }, 5000);
   }
 
   ngOnDestroy() {
-    this.store.dispatch(new CleanProfilesAction());
+    this.store.dispatch(CleanProfiles());
     if (this.fieldsSub) {
       this.fieldsSub.unsubscribe();
     }
@@ -74,7 +77,10 @@ export class ProfilesComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.currentField = selectedField;
     this.store.dispatch(
-      new GetProfilesAction(this.modelVersionId, selectedField)
+      GetProfiles({
+        modelVersionId: this.modelVersionId,
+        fieldName: selectedField,
+      })
     );
   }
 }

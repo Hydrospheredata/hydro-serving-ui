@@ -1,0 +1,37 @@
+@import 'variables';
+
+.log {
+  display: flex;
+  margin-bottom: 12px;
+  background: white;
+  border: 2px solid $neutral-color-100;
+  &__ids {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: $neutral-color-100;
+
+    &-item {
+      padding: 8px 12px;
+      color: $neutral-color-800;
+      cursor: pointer;
+      font-family: $font-family-light;
+      font-size: 12px;
+      opacity: .7;
+      &:hover {
+        opacity: 1;
+      }
+      &--selected {
+        opacity: 1;
+        background: white;
+      }
+      &--failed {
+        color: $supportive-color-red-800;
+      }
+    }
+  }
+
+  &__detailed {
+    padding: 8px 12px;
+  }
+}

@@ -8,10 +8,19 @@ import {
   ChartComponent,
   MockReqstoreTableLogComponent,
   ModelVersionLogComponent,
-  ReqResLogsComponent
+  ReqResLogsComponent,
+  ApplicationFormComponent,
+  AggregationComponent,
+  RequestsInformationComponent,
+  LogComponent,
+  CustomCheckComponent,
+  CustomChecksComponent,
+  LatencyCheckComponent,
+  ErrorCheckComponent,
 } from '@testing/components';
 import { ProfilesComponent } from '@testing/components/mock-profiles';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
+import { UpdateModelVersionDirective } from '@testing/directives/test-update-model-version.directive';
 
 const COMPONENTS = [
   ProfilesComponent,
@@ -25,7 +34,17 @@ const COMPONENTS = [
   ModelVersionLogComponent,
   ReqResLogsComponent,
   ServablesTableComponent,
+  ApplicationFormComponent,
+  AggregationComponent,
+  RequestsInformationComponent,
+  LogComponent,
+  CustomCheckComponent,
+  CustomChecksComponent,
+  LatencyCheckComponent,
+  ErrorCheckComponent,
 ];
+
+const DIRECTIVES = [UpdateModelVersionDirective];
 
 @NgModule({
   declarations: [...COMPONENTS],

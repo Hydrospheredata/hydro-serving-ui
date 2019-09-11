@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 import {
   ModelVariantFormService,
   IModelVariantFormData,
 } from '@applications/services/model-variant-form.service';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
-import { IApplication } from '@shared/_index';
+import { Application } from '@shared/_index';
 
 export interface StageFormData {
   modelVariants: IModelVariantFormData[];
@@ -31,7 +31,7 @@ export class ApplicationFormService {
     private customValidators: CustomValidatorsService
   ) {}
 
-  public initForm(application: IApplication): FormGroup {
+  public initForm(application: Application): FormGroup {
     let data: FormData;
 
     if (application) {
@@ -56,7 +56,7 @@ export class ApplicationFormService {
     return this.form;
   }
 
-  public applicationToFormData(application: IApplication): FormData {
+  public applicationToFormData(application: Application): FormData {
     const stages = application.executionGraph.stages.map(stage => {
       const modelVariants: IModelVariantFormData[] = stage.modelVariants.map(
         this.modelVariantFormService.modelVariantToModelVariantFormData,

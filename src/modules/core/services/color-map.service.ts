@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RGBColor } from 'd3';
 import * as d3 from 'd3';
 import * as colorScaleChromatic from 'd3-scale-chromatic';
-export type ColorMapType = 'coldwarm' | 'interpolateRdYlBu';
+export type ColorMapType = 'coldwarm' | 'interpolateRdYlBu' | 'redToGreen';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +24,8 @@ export class ColorMapService {
         case 'coldwarm':
           return this.coldwarm(val);
         case 'interpolateRdYlBu':
+          return this.interpolateRdYlBu(val);
+        case 'redToGreen':
           return this.interpolateRdYlBu(val);
         default:
           throw Error('Unknow colormap type');

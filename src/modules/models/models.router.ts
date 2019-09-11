@@ -13,7 +13,6 @@ import {
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { MonitoringPageComponent } from '@monitoring/containers';
 
-
 @NgModule({
   imports: [
     RouterModule.forChild([

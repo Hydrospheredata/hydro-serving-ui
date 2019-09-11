@@ -1,74 +1,89 @@
-import { MdlModule } from '@angular-mdl/core';
-import { MdlSelectModule } from '@angular-mdl/select';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import {
   DialogMetricComponent,
   MetricComponent,
   DialogDeleteMetricComponent,
-  HealthTimelineComponent,
-  HealthTimelineMiniComponent,
   ReqstoreTableLogComponent,
   MetricSpecConfigComponent,
   ReqstoreMetricsComponent,
   InputOutputComponent,
   TimeIntervalSelectComponent,
+  ReqResLogsComponent,
+  CustomChecksComponent,
+  LatencyCheckComponent,
+  ErrorCheckComponent,
+  CustomCheckComponent,
+  LogComponent,
+  LogDetailComponent,
+  RequestsInformationComponent,
+  CheckChartComponent,
+  DialogRequestsErrorsComponent,
 } from '@monitoring/components';
-import { reducer, MonitoringServiceStatusEffects } from '@monitoring/store';
-import { MonitoringPageEffects } from '@monitoring/store/effects/monitoring-page.effects';
+import { CheckIdToTimePipe } from '@monitoring/pipes';
+import { MonitoringService } from '@monitoring/services';
+import { MetricsService } from '@monitoring/services/api/metrics.service';
+import {
+  reducer,
+  MonitoringServiceStatusEffects,
+  MetricsEffects,
+} from '@monitoring/store';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
-import { HsD3Module } from '../hs-d3/hs-d3.module';
-import { ChartComponent } from './components/chart/chart.component';
 import {
   MonitoringAvailabilityComponent,
   MetricsComponent,
   MonitoringPageComponent,
-  ChartsComponent,
-  ReqResLogsComponent,
+  AggregationComponent,
 } from './containers';
 @NgModule({
   entryComponents: [
-    DialogMetricComponent,
     DialogDeleteMetricComponent,
+    DialogMetricComponent,
     MetricsComponent,
+    DialogRequestsErrorsComponent,
   ],
   declarations: [
+    AggregationComponent,
+    CustomChecksComponent,
+    CustomCheckComponent,
+    DialogDeleteMetricComponent,
+    DialogMetricComponent,
+    DialogRequestsErrorsComponent,
+    ErrorCheckComponent,
+    InputOutputComponent,
+    LatencyCheckComponent,
+    MetricComponent,
+    MetricsComponent,
+    MetricSpecConfigComponent,
     MonitoringAvailabilityComponent,
     MonitoringPageComponent,
-    MetricsComponent,
-    DialogMetricComponent,
-    DialogDeleteMetricComponent,
-    MetricComponent,
-    ChartsComponent,
-    ChartComponent,
-    HealthTimelineComponent,
-    HealthTimelineMiniComponent,
-    ReqstoreTableLogComponent,
-    MetricSpecConfigComponent,
     ReqResLogsComponent,
     ReqstoreMetricsComponent,
-    InputOutputComponent,
+    ReqstoreTableLogComponent,
     TimeIntervalSelectComponent,
+    LogComponent,
+    LogDetailComponent,
+    CheckIdToTimePipe,
+    RequestsInformationComponent,
+    CheckChartComponent,
   ],
   imports: [
     SharedModule,
-    CommonModule,
-    RouterModule,
-    MdlModule,
-    MdlSelectModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HsD3Module,
     StoreModule.forFeature('monitoring', reducer),
     EffectsModule.forFeature([
       MonitoringServiceStatusEffects,
-      MonitoringPageEffects,
+      MetricsEffects,
     ]),
   ],
   exports: [MonitoringPageComponent, MetricsComponent],
+  providers: [
+    MetricsFacade,
+    MetricsService,
+    MonitoringPageFacade,
+    MonitoringService,
+  ],
 })
 export class MonitoringModule {}

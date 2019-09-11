@@ -1,2 +1,2 @@
 export * from './monitoring-service-status.effects';
-export * from './monitoring-page.effects';
+export * from './metrics.effects';

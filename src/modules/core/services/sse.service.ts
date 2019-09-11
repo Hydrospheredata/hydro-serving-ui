@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
-  UpdateApplicationSuccessAction,
-  DeleteApplicationSuccessAction,
-} from '@applications/actions';
+  UpdateSuccess,
+  DeleteSuccess,
+} from '@applications/store';
 import { ModelVersionBuilder } from '@core/builders/_index';
 import { ApplicationBuilder } from '@core/builders/application.builder';
-import { HydroServingState } from '@core/reducers';
-import * as fromModels from '@models/actions';
+import { HydroServingState } from '@core/store';
+import * as fromModels from '@models/store/actions';
 import { Store } from '@ngrx/store';
 import * as fromServables from '@servables/actions';
 import { Servable } from '@servables/models';
@@ -57,21 +57,21 @@ export class SseService {
   }
 
   private updateApplication(data: Application) {
-    const app = this.applicationBuilder.build(data);
-    return new UpdateApplicationSuccessAction(app);
+    const application = this.applicationBuilder.build(data);
+    return UpdateSuccess({payload: application});
   }
 
   private deleteApplication(applicationName: string) {
-    return new DeleteApplicationSuccessAction(applicationName);
+    return DeleteSuccess({ applicationName });
   }
 
   private updateModelVersion(data: ModelVersion) {
     const modelVersion = this.modelVersionBuilder.build(data);
-    return new fromModels.AddModelVersionSuccessAction({ modelVersion });
+    return fromModels.AddModelVersionSuccess({ modelVersion });
   }
 
   private deleteModelVerions(modelVersionId: number) {
-    return new fromModels.DeleteModelAction(modelVersionId);
+    return fromModels.DeleteModelVersionSuccess({ modelVersionId });
   }
 
   private updateServable(servable: Servable) {

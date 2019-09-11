@@ -5,10 +5,7 @@ import {
   ValidationErrors,
   FormControl,
 } from '@angular/forms';
-import { Store } from '@ngrx/store';
-
-import { getAllApplications } from '@applications/reducers';
-import { HydroServingState } from '@core/reducers';
+import { ApplicationsFacade } from '@applications/store';
 
 @Injectable()
 export class CustomValidatorsService {
@@ -53,8 +50,8 @@ export class CustomValidatorsService {
     },
   };
 
-  constructor(private store: Store<HydroServingState>) {
-    this.store.select(getAllApplications).subscribe(applications => {
+  constructor(private applicationsFacade: ApplicationsFacade) {
+    this.applicationsFacade.allApplications$.subscribe(applications => {
       this.applicationNames = applications.map(app => app.name);
     });
   }
@@ -73,12 +70,12 @@ export class CustomValidatorsService {
 
   public lengthValidation(length: number): ValidatorFn {
     return (control: FormControl): ValidationErrors => {
-        const currentApplicationName = control.value;
+      const currentApplicationName = control.value;
 
-        if (currentApplicationName.length > length) {
-            return { uniq: `Max length ${length}` };
-        }
-        return null;
+      if (currentApplicationName.length > length) {
+        return { uniq: `Max length ${length}` };
+      }
+      return null;
     };
   }
 

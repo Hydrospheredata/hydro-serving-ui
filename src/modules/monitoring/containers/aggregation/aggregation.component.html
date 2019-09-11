@@ -1,0 +1,37 @@
+<div class="aggregation">
+  <div class="aggregation__header">
+    <div>
+      Showed: <span class="aggregation__header-count">{{ countRequests }}</span>
+    </div>
+    <div>
+      <span>{{ firstId | checkIdToTime | moment }}</span> -
+      <span>{{ lastId | checkIdToTime | moment }}</span>
+    </div>
+  </div>
+  <div class="aggregation__body" *ngIf="featureNames">
+    <ul class="aggregation__labels" [ngStyle]="{ 'width.px': labelsWidth }">
+      <li class="aggregation__labels-item" *ngFor="let label of featureNames">
+        {{ label }}
+      </li>
+    </ul>
+    <div class="aggregation__checks">
+      <svg [attr.width]="canvasWidth" [attr.height]="canvasHeight">
+        <g
+          *ngFor="let column of aggregation; let columnIndex = index"
+          class="column"
+          [attr.transform]="columnTranslate(columnIndex)"
+          (click)="changeActiveColumn(columnIndex)"
+          [ngClass]="{ 'column--active': selectedColumn === columnIndex }"
+        >
+          <rect
+            *ngFor="let featureName of featureNames; let rowIndex = index"
+            [attr.width]="CELL_SIZE"
+            [attr.height]="CELL_SIZE"
+            [attr.fill]="cellColor(column, featureName)"
+            [attr.transform]="rowTranslate(rowIndex)"
+          ></rect>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>

@@ -5,14 +5,12 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
 import { MonitoringServiceStatus } from '@monitoring/models/monitoring-service-status';
-import { GetServiceStatusAction } from '@monitoring/store/actions';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 import {
   getMonitoringServiceStatus,
   getMonitoringServiceError,
 } from '@monitoring/store/selectors';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -24,22 +22,20 @@ import { map } from 'rxjs/operators';
 })
 export class MonitoringAvailabilityComponent implements OnInit {
   activeTemplate$: Observable<TemplateRef<any>>;
-  error$: Observable<string>;
+  error$ = this.facade.serviceStatusError$;
 
   @ViewChild('loadingTemplate', { read: TemplateRef }) loadingTemplate;
   @ViewChild('errorTemplate', { read: TemplateRef }) errorTemplate;
   @ViewChild('alertTemplate', { read: TemplateRef }) alertTemplate;
   @ViewChild('contentTemplate', { read: TemplateRef }) contentTemplate;
 
-  constructor(private store: Store<HydroServingState>) {}
+  constructor(private facade: MonitoringPageFacade) {}
 
   ngOnInit() {
-    this.store.dispatch(GetServiceStatusAction());
-    this.error$ = this.store.select(getMonitoringServiceError);
-
-    this.activeTemplate$ = this.store
-      .select(getMonitoringServiceStatus)
+    this.activeTemplate$ = this.facade.serviceStatus$
       .pipe(map(status => this.statusToTemplate(status)));
+
+    this.facade.getServiceStatus();
   }
 
   private statusToTemplate(status: MonitoringServiceStatus): TemplateRef<any> {

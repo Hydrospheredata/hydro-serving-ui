@@ -6,20 +6,13 @@ import {
   query,
   group,
 } from '@angular/animations';
-import { Component, OnDestroy } from '@angular/core';
-
-import * as fromApplications from '@applications/reducers';
-import * as fromModels from '@models/reducers';
-import { Store } from '@ngrx/store';
-
-import { DialogModelsEmptyComponent } from '@shared/components/dialogs';
-import { IApplication, ModelVersionStatus } from '@shared/models/_index';
-
+import { Component } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
-import { Subscription, Observable } from 'rxjs';
 
 import { RouterOutlet } from '@angular/router';
 import { DialogAddApplicationComponent } from '@applications/components/dialogs';
+import { ApplicationsFacade } from '@applications/store';
+import { ModelsFacade } from '@models/store';
 
 @Component({
   selector: 'hs-applications-wrapper',
@@ -66,45 +59,22 @@ import { DialogAddApplicationComponent } from '@applications/components/dialogs'
     ]),
   ],
 })
-export class ApplicationsWrapperComponent implements OnDestroy {
-  public applications: Observable<IApplication[]>;
-  private someModelVersionIsFinished: boolean = false;
-  private modelsVersionSub: Subscription;
+export class ApplicationsWrapperComponent {
+  applications$ = this.facade.allApplications$;
+  someModelVersionIsReleased$ = this.modelsFacade.someModelVersionIsReleased$;
 
   constructor(
-    private storeApp: Store<fromApplications.State>,
-    private storeModels: Store<fromModels.State>,
+    private facade: ApplicationsFacade,
+    private modelsFacade: ModelsFacade,
     private dialog: DialogService
-  ) {
-    this.applications = this.storeApp.select(
-      fromApplications.getAllApplications
-    );
-
-    this.modelsVersionSub = this.storeModels
-      .select(fromModels.getAllModelVersions)
-      .subscribe(modelVersions => {
-        this.someModelVersionIsFinished = modelVersions.some(modelVersion => {
-          return modelVersion.status === ModelVersionStatus.Released;
-        });
-      });
-  }
+  ) {}
 
   public addApplication(): void {
-    this.someModelVersionIsFinished
-      ? this.showAddApplicationDialog()
-      : this.showAlert();
+    this.showAddApplicationDialog();
   }
 
   prepare(outlet: RouterOutlet) {
     return outlet.activatedRouteData && outlet.activatedRouteData.anim;
-  }
-
-  ngOnDestroy(): void {
-    this.modelsVersionSub.unsubscribe();
-  }
-
-  private showAlert(): void {
-    this.dialog.createDialog({ component: DialogModelsEmptyComponent });
   }
 
   private showAddApplicationDialog(): void {

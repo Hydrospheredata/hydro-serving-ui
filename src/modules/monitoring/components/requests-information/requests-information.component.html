@@ -1,0 +1,16 @@
+<div class="requests__info" *ngIf="aggregation">
+  <div class="requests__info-requests">
+    Selected requests:
+    <span class="requests__info-requests-count">{{ requests }}</span>
+  </div>
+  <div class="requests__info-dates">
+    <span>{{ firstId | checkIdToTime | moment }}</span> -
+    <span>{{ lastId | checkIdToTime | moment }}</span>
+  </div>
+  <div>
+    <hs-latency-check [data]="latency"></hs-latency-check>
+  </div>
+  <div>
+    <hs-error-check [data]="errors"></hs-error-check>
+  </div>
+</div>

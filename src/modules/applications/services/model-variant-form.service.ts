@@ -1,16 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-
-import { Store } from '@ngrx/store';
-
-import { HydroServingState } from '@core/reducers';
-import {
-  getAllModelVersions,
-  getModelVersionsByModelId,
-  getAllModels,
-} from '@models/reducers';
-
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
+import { ModelsFacade } from '@models/store';
 import {
   ModelVersion,
   Model,
@@ -30,25 +21,23 @@ export interface IModelVariantFormData {
 export class ModelVariantFormService implements OnDestroy {
   private allModelVersions: ModelVersion[];
   private allModelVersionsSub: Subscription;
-  private modelVersions = new BehaviorSubject<any[]>([]);
+  private modelVersions = new BehaviorSubject<ModelVersion[]>([]);
   private models: Model[];
   private modelsSub: Subscription;
 
-  private currentModelVersion = new BehaviorSubject<any>({});
+  private currentModelVersion = new BehaviorSubject<ModelVersion>(undefined);
 
   constructor(
-    private store: Store<HydroServingState>,
+    private modelsFacade: ModelsFacade,
     private customValidators: CustomValidatorsService
   ) {
-    this.allModelVersionsSub = this.store
-      .select(getAllModelVersions)
-      .subscribe(
-        allModelVersions => (this.allModelVersions = allModelVersions)
-      );
+    this.allModelVersionsSub = this.modelsFacade.allModelVersions$.subscribe(
+      allModelVersions => (this.allModelVersions = allModelVersions)
+    );
 
-    this.modelsSub = store
-      .select(getAllModels)
-      .subscribe(models => (this.models = models));
+    this.modelsSub = this.modelsFacade.allModels$.subscribe(
+      models => (this.models = models)
+    );
   }
 
   public getModelVersions(): Observable<any> {
@@ -56,8 +45,8 @@ export class ModelVariantFormService implements OnDestroy {
   }
 
   public updateModelVersionList(modelId: number): void {
-    this.store
-      .select(getModelVersionsByModelId(modelId))
+    this.modelsFacade
+      .modelVersionsByModelId(modelId)
       .pipe(
         take(1),
         map(modelVersions =>

@@ -2,22 +2,15 @@ import {
   Component,
   ViewChild,
   ViewContainerRef,
-  ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
 } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
 import { ModelVersionLogComponent } from '@models/components/model-version-log/model-version-log.component';
-import * as fromModels from '@models/reducers';
 import { ModelVersionLogService } from '@models/services/model-version-log.service';
-import { Store } from '@ngrx/store';
+import { ModelsFacade } from '@models/store';
 import { ServableLogsComponent } from '@servables/containers';
-import { Servable } from '@servables/models';
-import { selectServablesByModelVersionId } from '@servables/selectors';
-import { ModelVersion } from '@shared/models/_index';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+
 @Component({
   selector: 'hydro-model-version-details',
   templateUrl: './model-version-details.component.html',
@@ -28,25 +21,16 @@ export class ModelVersionDetailsComponent {
   @ViewChild('logContainer', { read: ViewContainerRef })
   logContainer: ViewContainerRef;
 
-  modelVersion$: Observable<ModelVersion>;
+  modelVersion$ = this.modelsFacade.selectedModelVersion$;
+  servables$ = this.modelsFacade.selectedServables$;
   showLog: boolean = false;
-  servables$: Observable<Servable[]>;
 
   globalLog: boolean = false;
 
   constructor(
-    private store: Store<HydroServingState>,
+    private modelsFacade: ModelsFacade,
     private resolver: ComponentFactoryResolver
   ) {
-    this.modelVersion$ = this.store
-      .select(fromModels.getSelectedModelVersion)
-      .pipe(filter(mv => !!mv));
-
-    this.servables$ = this.modelVersion$.pipe(
-      switchMap(({ id }) =>
-        this.store.select(selectServablesByModelVersionId(id))
-      )
-    );
   }
 
   showBuildLog(modelVersionId: number) {

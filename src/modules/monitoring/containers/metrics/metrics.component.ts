@@ -5,13 +5,12 @@ import {
   ViewContainerRef,
   ComponentFactoryResolver,
 } from '@angular/core';
-import { HydroServingState, getSelectedMetrics } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
 import {
   DialogMetricComponent,
   DialogDeleteMetricComponent,
 } from '@monitoring/components';
-import { Store } from '@ngrx/store';
+import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
 @Component({
@@ -27,9 +26,9 @@ export class MetricsComponent implements OnInit {
   private vcr: ViewContainerRef;
 
   constructor(
-    private store: Store<HydroServingState>,
     private dialog: DialogService,
-    private resolver: ComponentFactoryResolver
+    private resolver: ComponentFactoryResolver,
+    private metricsFacade: MetricsFacade
   ) {}
 
   onAddMetric() {
@@ -51,7 +50,7 @@ export class MetricsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.metrics$ = this.store.select(getSelectedMetrics);
+    this.metrics$ = this.metricsFacade.selectedMetrics$;
   }
 
   onDeleteMetric(metricId: string) {

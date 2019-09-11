@@ -1,4 +1,4 @@
-<div class="test-application" *ngIf="application$ | async; let application">
+<div class="test-application">
   <hydro-icon
     type="icon-close"
     class="icon test-application__close-icon"
@@ -8,21 +8,21 @@
     <label>Application: </label>"{{ application.name }}"
   </p>
 
-  <div class="test-application__content">
-    <mdl-tabs mdl-ripple mdl-tab-active-index="0">
+  <div class="test-application__content" *ngIf="state$ | async;let dialogState">
+    <mdl-tabs (mdl-tab-active-changed)="tabChanged($event)" mdl-ripple mdl-tab-active-index="0">
       <mdl-tab-panel mdl-tab-panel-title="web">
         <form (ngSubmit)="onSubmit()">
           <div>
             <div class="test-fields">
               <div
                 class="test-fields__item __input"
-                *ngIf="application.input; let input"
+                *ngIf="dialogState.input; let input"
               >
                 <label>Input</label>
                 <codemirror
                   #inputCodeMirror
                   name="input"
-                  [ngModel]="application.input"
+                  [ngModel]="input"
                   [config]="inputOptions"
                   (change)="onChange($event)"
                 ></codemirror>
@@ -31,16 +31,16 @@
                 <div class="test-fields__item-header">
                   <label>Output</label>
                   <span
-                    *ngIf="application.testStatus; let testStatus"
+                    *ngIf="dialogState.status; let status"
                     class="status"
                   >
                     status
-                    <span class="status__text status__text--{{ testStatus }}">
-                      {{ testStatus }}
+                    <span class="status__text status__text--{{ status }}">
+                      {{ status }}
                     </span>
                   </span>
                 </div>
-                <ng-container *ngIf="application.output; let output">
+                <ng-container *ngIf="dialogState.output; let output">
                   <codemirror
                     #outputCodeMirror
                     [ngModel]="output"
@@ -50,16 +50,16 @@
                   </codemirror>
                 </ng-container>
 
-                <ng-container *ngIf="isFailedTest(application.testStatus)">
+                <ng-container *ngIf="dialogState.error; let error">
                   <hs-error-message>
-                    {{ application.error }}
+                    {{ error }}
                   </hs-error-message>
                 </ng-container>
               </div>
             </div>
             <div
               class="error-container"
-              *ngIf="!isValidInput(application.input)"
+              *ngIf="!(inputValid$ | async)"
             >
               Wrong input's format. JSON validation error
             </div>
@@ -68,7 +68,7 @@
                 hs-button
                 kind="flat"
                 color="primary"
-                [disabled]="!isValidInput(application.input) || application.testStatus === 'pending'"
+                [disabled]="!(inputValid$ | async) || isPending(dialogState)"
                 hsAutofocused
               >
                 test app
@@ -81,7 +81,7 @@
         <hydro-command-template
           type="curl"
           [application]="application"
-          [isValidInput]="isValidInput(application.input)"
+          [isValidInput]="inputValid$ | async"
         >
         </hydro-command-template>
       </mdl-tab-panel>
@@ -89,7 +89,7 @@
         <hydro-command-template
           type="grpc"
           [application]="application"
-          [isValidInput]="isValidInput(application.input)"
+          [isValidInput]="inputValid$ | async"
         >
         </hydro-command-template>
       </mdl-tab-panel>

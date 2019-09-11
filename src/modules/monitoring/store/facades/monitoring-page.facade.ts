@@ -1,183 +1,149 @@
 import { Injectable } from '@angular/core';
-import { getSelectedModelVersion, getSiblingVersions } from '@models/reducers';
+import { ModelsFacade } from '@models/store';
+import { ComparingChartParams, Check } from '@monitoring/interfaces';
+import { MonitoringService } from '@monitoring/services';
 import {
   LoadMetrics,
-  LoadFullAggregation,
-  SetTimeInterval,
-  LoadReqstoreData,
-  LoadSonarData,
-  LoadDetailedAggreagation,
-  StopAutoUpdate,
-  StartAutoUpdate,
-  SetDetailedTimeInterval,
-  addComparedModelVersionId,
-  LoadComparedSonarData,
-  ClearPage,
-  SetTimeBound,
+  DeleteMetric,
+  AddMetric,
+  EditMetric,
+  GetServiceStatusAction,
 } from '@monitoring/store/actions';
 import { State } from '@monitoring/store/reducers';
 import {
-  selectFullAggregation,
-  selectTimeInterval,
-  selectSonarData,
-  selectDetailedChartsWithData,
-  selectRequestResponseLog,
-  selectDetailedAggregation,
-  selectIsLive,
-  selectDetailedTimeInterval,
-  selectComparedMetricSpecifications,
-  selectTimeBound,
-  selectMetricSpecsNames,
-  selectMetricSpecs,
+  getMonitoringServiceError,
+  getMonitoringServiceStatus,
+  selectSelectedMetrics,
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
-import { TimeInterval, ModelVersion, ModelVersionStatus } from '@shared/_index';
-import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { TimelineLog } from '@shared/models/timeline-log.model';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { isNumber, isEmpty } from 'lodash';
+import { Subject, timer, combineLatest, interval } from 'rxjs';
+import {
+  filter,
+  switchMap,
+  share,
+  tap,
+  takeUntil,
+  map,
+  exhaustMap,
+} from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MonitoringPageFacade {
-  selectedModelVersion$ = this.store.pipe(
-    select(getSelectedModelVersion),
-    filter(val => !!val)
+  siblingModelVersions$ = this.modelsFacade.siblingModelVersions$;
+  serviceStatus$ = this.store.pipe(select(getMonitoringServiceStatus));
+  serviceStatusError$ = this.store.pipe(select(getMonitoringServiceError));
+  modelVersion$ = this.modelsFacade.selectedModelVersion$;
+  selectedMetrics$ = this.store.pipe(select(selectSelectedMetrics));
+
+  checksAggreagtions$ = this.modelVersion$.pipe(
+    filter(val => val !== undefined),
+    switchMap(modelVersion => {
+      // return timer(0, 5000).pipe(
+      // return exhaustMap(() => {
+      return this.monitoring.getChecksAggregation({
+        modelVersionId: modelVersion.id,
+      });
+      // });
+      // );
+    }),
+    tap(console.dir),
+    share()
   );
-  metrics$: Observable<MetricSpecification[]> = this.store.pipe(
-    select(selectMetricSpecs)
+
+  selectedColumnIndex$ = new Subject<number>();
+  selectedAggregation$ = combineLatest(
+    this.checksAggreagtions$,
+    this.selectedColumnIndex$
+  ).pipe(
+    map(([agg, idx]) => agg[idx]),
+    share()
   );
-  metricNames$: Observable<string[]> = this.store.pipe(
-    select(selectMetricSpecsNames)
-  )
-  fullAggregation$: Observable<any> = this.store.pipe(
-    select(selectFullAggregation)
-  );
-  detailedAggregation$: Observable<any> = this.store.pipe(
-    select(selectDetailedAggregation)
-  );
-  timeInterval$: Observable<TimeInterval> = this.store.pipe(
-    select(selectTimeInterval),
-    filter(val => val !== undefined && val.from !== undefined && val.to !== undefined)
-  );
-  detailedTimeInterval$: Observable<TimeInterval> = this.store.pipe(
-    select(selectDetailedTimeInterval),
-    filter(val => val !== undefined && val.from !== undefined && val.to !== undefined)
-  );
-  sonarData$: Observable<any> = this.store.pipe(select(selectSonarData));
-  detailedCharts$: Observable<any> = this.store.pipe(
-    select(selectDetailedChartsWithData)
-  );
-  reqResLog$: Observable<any> = this.store.pipe(
-    select(selectRequestResponseLog)
-  );
-  isLive$: Observable<boolean> = this.store.pipe(select(selectIsLive));
-  siblingModelVersions$: Observable<ModelVersion[]> = this.store.pipe(
-    select(getSiblingVersions),
-    filter(modelVersions => modelVersions !== undefined),
-    map(modelVersions => {
-      return modelVersions.filter(
-        mv => mv.status === ModelVersionStatus.Released
-      );
-    })
-  );
-  comparedMetrocSpecifications$ = this.store.pipe(
-    select(selectComparedMetricSpecifications)
-  );
-  timeBound$ = this.store.pipe(select(selectTimeBound));
-  constructor(private store: Store<State>) {}
 
-  clear(): void {
-    this.store.dispatch(ClearPage());
-  }
-  loadFullAggregation({ timeBoundary }): void {
-    this.store.dispatch(LoadFullAggregation({ timeBoundary }));
-  }
+  checks$ = this.selectedAggregation$.pipe(
+    exhaustMap(aggregation => {
+      const {
+        _hs_first_id: from,
+        _hs_last_id: to,
+        _hs_model_version_id: modelVersionId,
+      } = aggregation;
 
-  loadDetailedAggregation({
-    timeInterval,
-  }: {
-    timeInterval: TimeInterval;
-  }): void {
-    this.store.dispatch(LoadDetailedAggreagation({ timeInterval }));
-  }
-
-  loadMetrics(modelVersionId: number): void {
-    this.store.dispatch(LoadMetrics({ modelVersionId }));
-  }
-
-  loadReqstoreData(params: {
-    maxMBytes: number;
-    maxMessages: number;
-    reverse: boolean;
-  }): void {
-    this.store.dispatch(LoadReqstoreData(params));
-  }
-
-  loadSonarData() {
-    this.store.dispatch(LoadSonarData());
-  }
-
-  loadComparedSonarData() {
-    this.store.dispatch(LoadComparedSonarData());
-  }
-
-  setTimeInterval(timeInterval: TimeInterval): void {
-    this.store.dispatch(SetTimeInterval({ timeInterval }));
-  }
-  setDetailedTimeInterval(timeInterval: TimeInterval): void {
-    this.store.dispatch(SetDetailedTimeInterval({ timeInterval }));
-  }
-
-  getMinimumAndMaximumTimestamps(log: TimelineLog): [number, number] {
-    const logItems = Object.values(log).filter(arr => arr && arr.length > 0);
-    let minTimestamp: number;
-    let maxTimestamp: number;
-
-    for (let i = 0, l = logItems.length; i < l; i++) {
-      const firstElement = logItems[i][0];
-      const lastElement = logItems[i][logItems[i].length - 1];
-
-      if (minTimestamp === undefined || firstElement.from < minTimestamp) {
-        minTimestamp = firstElement.from;
-      }
-
-      if (maxTimestamp === undefined || lastElement.till > maxTimestamp) {
-        maxTimestamp = lastElement.till;
-      }
-    }
-
-    return [minTimestamp, maxTimestamp];
-  }
-
-  addModelVersionIdToCompare({
-    modelVersionId,
-    metricSpecId,
-    metricSpecKind,
-  }: {
-    modelVersionId: number;
-    metricSpecId: string;
-    metricSpecKind: string;
-  }) {
-    this.store.dispatch(
-      addComparedModelVersionId({
+      return this.monitoring.getChecks({
         modelVersionId,
-        metricSpecId,
-        metricSpecKind,
-      })
-    );
+        from,
+        to,
+      });
+    }),
+    tap(console.dir),
+    share()
+  );
+
+  latency$ = this.checks$.pipe(
+    map(checks => {
+      const getLatencyField = (check: Check) => check._hs_latency;
+      return checks.map(getLatencyField).filter(isNumber);
+    }),
+    share()
+  );
+  errors$ = this.checks$.pipe(
+    map(checks => {
+      const getErrorField = (check: Check) => check._hs_error;
+      return checks.map(getErrorField) || [];
+    }),
+    filter(val => val !== undefined),
+    share()
+  );
+  customChecks$ = this.checks$.pipe(
+    map(checks => {
+      const dict = checks.reduce((acc, check) => {
+        const overall = check._hs_raw_checks.overall;
+        if (isEmpty(overall.filter(el => !isEmpty(el)))) {
+          return acc;
+        }
+
+        overall.forEach(rawCheck => {
+          if (acc[rawCheck.metricSpecId] === undefined) {
+            acc[rawCheck.metricSpecId] = {
+              data: [],
+              threshold: rawCheck.threshold,
+              name: rawCheck.description,
+            };
+          }
+          acc[rawCheck.metricSpecId].data.push(rawCheck.value);
+        });
+
+        return acc;
+      }, {});
+
+      return Object.values(dict);
+    }),
+    share()
+  );
+
+  constructor(
+    private store: Store<State>,
+    private modelsFacade: ModelsFacade,
+    private monitoring: MonitoringService
+  ) {}
+  loadMetrics(): void {
+    this.store.dispatch(LoadMetrics());
   }
 
-  setTimeBound({ timeBound }: { timeBound: number }) {
-    this.store.dispatch(SetTimeBound({ timeBound }));
+  deleteMetric(id: string) {
+    this.store.dispatch(DeleteMetric({ id }));
+  }
+  editMetric(metric: any) {
+    this.store.dispatch(EditMetric({ aggregation: metric }));
+  }
+  addMetric(metric: any) {
+    this.store.dispatch(AddMetric({ aggreagation: metric }));
   }
 
-  stopAutoUpdate(): void {
-    this.store.dispatch(StopAutoUpdate());
+  getServiceStatus() {
+    this.store.dispatch(GetServiceStatusAction());
   }
 
-  startAutoUpdate(): void {
-    this.store.dispatch(StartAutoUpdate());
+  selectAggregationColumn(index: number) {
+    this.selectedColumnIndex$.next(index);
   }
 }

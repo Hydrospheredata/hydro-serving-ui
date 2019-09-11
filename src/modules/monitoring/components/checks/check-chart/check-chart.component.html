@@ -1,0 +1,58 @@
+<div class="check-chart">
+  <svg [attr.height]="chartHeight" [attr.width]="chartWidth" #svgContainer>
+    <defs>
+      <clipPath [attr.id]="name">
+        <rect
+          x="0"
+          y="0"
+          [attr.width]="viewWidth"
+          [attr.height]="viewHeight"
+          [attr.transform]="dataTranslate"
+        ></rect>
+      </clipPath>
+    </defs>
+    <g
+      hsD3Axis
+      [scale]="yScale"
+      position="left"
+      [attr.transform]="yAxisTranslate"
+    ></g>
+    <g hsD3Axis [scale]="xScale" [attr.transform]="xAxisTranslate"></g>
+    <g
+      [hs-d3line]
+      [data]="mappedData"
+      [xScale]="xScale"
+      [yScale]="yScale"
+      [attr.transform]="dataTranslate"
+      stroke="#14919B"
+    ></g>
+    <rect
+      [attr.width]="viewWidth"
+      [attr.height]="viewHeight"
+      opacity="0"
+      [attr.transform]="dataTranslate"
+      #trackableRect
+    ></rect>
+    <g
+      *ngIf="threshold"
+      [attr.clip-path]="clipUrl"
+      [hs-d3threshold]="threshold"
+      [yScale]="yScale"
+    ></g>
+    <circle
+      [ngStyle]="{ display: mouseIn ? 'block' : 'none' }"
+      [attr.cx]="dotXPosition"
+      [attr.cy]="dotYPosition"
+      r="4"
+      class="check-chart__dot"
+    />
+  </svg>
+  <div
+    class="check-chart__tooltip"
+    [attr.transform]="tooltipTranslate"
+    [ngStyle]="{ display: mouseIn ? 'block' : 'none' }"
+    #tooltip
+  >
+  {{ tooltipText }}
+  </div>
+</div>

@@ -1,11 +1,8 @@
 import { Observable, of } from 'rxjs';
 import {
   switchMap,
-  tap,
   startWith,
-  filter,
-  publish,
-  refCount,
+  tap,
 } from 'rxjs/operators';
 
 import { Application } from '@shared/models/application.model';
@@ -24,13 +21,9 @@ import {
   Validators,
   AbstractControl,
 } from '@angular/forms';
-
-import * as fromApplications from '@applications/reducers';
-import * as HydroActions from '@core/actions/monitoring.actions';
-import { HydroServingState } from '@core/reducers';
-import * as fromModels from '@models/reducers';
-import { Store } from '@ngrx/store';
-
+import { ApplicationsFacade } from '@applications/store';
+import { ModelsFacade } from '@models/store';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecificationConfig } from '@shared/models/metric-specification-kind.model';
 import {
@@ -55,10 +48,11 @@ interface IMetricSpecificationKind {
 export class DialogMetricComponent implements OnInit {
   @Input() metricSpecification: MetricSpecification;
   @Output() closed: EventEmitter<any> = new EventEmitter();
-  form: FormGroup;
+
   applications$: Observable<Application[]>;
-  sources$: Observable<string[]>;
+  form: FormGroup;
   modelVersion: ModelVersion;
+  sources$: Observable<string[]>;
 
   metricSpecificationKinds: IMetricSpecificationKind[] = [
     { name: 'Kolmogorov-Smirnov', className: 'KSMetricSpec' },
@@ -77,18 +71,14 @@ export class DialogMetricComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<HydroServingState>
+    private facade: MonitoringPageFacade,
+    private applicationsFacade: ApplicationsFacade,
+    private modelsFacade: ModelsFacade
   ) {
-    this.modelVersion$ = this.store
-      .select(fromModels.getSelectedModelVersion)
-      .pipe(
-        filter(mv => !!mv),
-        tap(modelVersion => (this.modelVersion = modelVersion)),
-        publish(),
-        refCount()
-      );
-
-    this.applications$ = this.store.select(fromApplications.getAllApplications);
+    this.modelVersion$ = this.modelsFacade.selectedModelVersion$.pipe(
+      tap( mv => this.modelVersion = mv )
+    );
+    this.applications$ = this.applicationsFacade.allApplications$;
 
     this.sources$ = this.modelVersion$.pipe(
       switchMap(modelVersion => of(this.getInputNames(modelVersion)))
@@ -152,7 +142,7 @@ export class DialogMetricComponent implements OnInit {
       threshold: '',
       input: '',
       interval: 1,
-      thresholdCmpOperator: {kind: ''},
+      thresholdCmpOperator: { kind: '' },
     }
   ) {
     const withHealth: boolean = this.form.get('withHealth').value;
@@ -263,9 +253,9 @@ export class DialogMetricComponent implements OnInit {
 
     if (this.metricSpecification) {
       params.id = this.metricSpecification.id;
-      this.store.dispatch(new HydroActions.EditMetricAction(params));
+      this.facade.editMetric( params );
     } else {
-      this.store.dispatch(new HydroActions.AddMetricAction(params));
+      this.facade.addMetric( params);
     }
     this.onClose();
   }

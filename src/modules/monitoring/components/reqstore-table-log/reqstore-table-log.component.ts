@@ -5,6 +5,7 @@ import {
   SimpleChanges,
   OnChanges,
 } from '@angular/core';
+import { RequestResponseLog } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/models/_index';
 import { isEqual, isEmpty } from 'lodash';
 
@@ -18,7 +19,7 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   modelVersion: ModelVersion;
 
   @Input()
-  logData: any;
+  logData: RequestResponseLog;
 
   @Input()
   loading: any = false;

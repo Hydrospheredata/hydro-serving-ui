@@ -3,14 +3,28 @@
 .monitoring {
   position: relative;
 
+  &__aggregation {
+    margin-bottom: 12px;
+    display: flex;
+
+    &-item {
+      display: flex;
+    }
+  }
+
   &__alert {
     font-weight: bold;
     color: #80520e;
     cursor: pointer;
   }
 
+  &__log {
+    margin-bottom: 2
+  }
+
   &__header {
     line-height: 24px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     justify-content: flex-end;

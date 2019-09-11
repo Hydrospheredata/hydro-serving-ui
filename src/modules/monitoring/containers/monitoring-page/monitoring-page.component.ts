@@ -1,138 +1,31 @@
-import { Component, OnDestroy } from '@angular/core';
-import {
-  HydroServingState,
-  getSelectedMetrics,
-  isMetricsLoading,
-} from '@core/reducers';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
-import { TimeInterval } from '@shared/_index';
-import { isEqual, isEmpty } from 'lodash';
-import {
-  combineLatest,
-  EMPTY,
-  timer,
-  Subscription,
-  BehaviorSubject,
-} from 'rxjs';
-import { filter, switchMap, tap, pairwise } from 'rxjs/operators';
-
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
   styleUrls: ['./monitoring-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MonitoringPageComponent implements OnDestroy {
-  selectedModelVersion$ = this.monitoringPageFacade.selectedModelVersion$;
-  metrics$ = this.monitoringPageFacade.metrics$;
-  fullAggregation$ = this.monitoringPageFacade.fullAggregation$;
-  detailedAggregation$ = this.monitoringPageFacade.detailedAggregation$;
-  timeInterval$ = this.monitoringPageFacade.timeInterval$;
-  detailedTimeInterval$ = this.monitoringPageFacade.detailedTimeInterval$;
-  sonarData$ = this.monitoringPageFacade.sonarData$;
-  detailedCharts$ = this.monitoringPageFacade.detailedCharts$;
-  reqResLog$ = this.monitoringPageFacade.reqResLog$;
-  isLive$ = this.monitoringPageFacade.isLive$;
-  siblingModelVersions$ = this.monitoringPageFacade.siblingModelVersions$;
-  comparedMetricSpecs$ = this.monitoringPageFacade
-    .comparedMetrocSpecifications$;
-
-  timeBound$ = this.monitoringPageFacade.timeBound$;
-  updateLogButtonClick$: BehaviorSubject<any> = new BehaviorSubject('');
-
-  s1: Subscription;
-  s2: Subscription;
-  s3: Subscription;
-  s4: Subscription;
-  s5: Subscription;
+export class MonitoringPageComponent implements OnInit {
+  checks$ = this.facade.checks$;
+  checksAggreagation$ = this.facade.checksAggreagtions$;
+  customChecks$ = this.facade.customChecks$;
+  errors$ = this.facade.errors$;
+  latency$ = this.facade.latency$;
+  modelVersion$ = this.facade.modelVersion$;
+  selectedAggregationColumn$ = this.facade.selectedAggregation$;
+  selectedMetrics$ = this.facade.selectedMetrics$;
+  siblingModelVersions$ = this.facade.siblingModelVersions$;
 
   constructor(
     private dialogService: DialogService,
-    private monitoringPageFacade: MonitoringPageFacade
-  ) {
-    // metrics
-    this.s1 = this.selectedModelVersion$
-      .pipe(tap(({ id }) => this.monitoringPageFacade.loadMetrics(id)))
-      .subscribe();
+    private facade: MonitoringPageFacade
+  ) {}
 
-    // full aggregation polling;
-    this.s2 = combineLatest(this.metrics$, this.isLive$, this.timeBound$)
-      .pipe(
-        filter(([metrics]) => !isEmpty(metrics)),
-        switchMap(([, isLive, timeBound]) => {
-          if (isLive && timeBound === 0) {
-            return timer(0, 5000).pipe(
-              tap(() => {
-                this.monitoringPageFacade.loadFullAggregation({
-                  timeBoundary: 0,
-                });
-              })
-            );
-          } else {
-            return EMPTY;
-          }
-        })
-      )
-      .subscribe();
-
-    this.s3 = this.fullAggregation$
-      .pipe(
-        pairwise(),
-        filter(([prevLog, newLog]) => {
-          const recievedNewData = !isEqual(prevLog, newLog);
-          return recievedNewData;
-        })
-      )
-      .subscribe(([, newLog]) => {
-        const [
-          from,
-          to,
-        ] = this.monitoringPageFacade.getMinimumAndMaximumTimestamps(newLog);
-        this.monitoringPageFacade.setTimeInterval({ from, to });
-      });
-
-    this.timeInterval$
-      .subscribe(timeInterval => {
-        this.monitoringPageFacade.loadSonarData();
-        this.monitoringPageFacade.loadDetailedAggregation({ timeInterval });
-      });
-
-    this.detailedTimeInterval$.subscribe(timeInterval => {
-      this.monitoringPageFacade.loadDetailedAggregation({ timeInterval });
-    });
-
-    this.s4 = this.comparedMetricSpecs$
-      .pipe(
-        switchMap(() => timer(0, 10000)),
-        tap(() => this.monitoringPageFacade.loadComparedSonarData())
-      )
-      .subscribe();
-
-    this.s5 = this.timeBound$
-      .pipe(
-        switchMap(timeBound => {
-          if (timeBound) {
-            return timer(0, 10000).pipe(
-              tap(() => {
-                const to = new Date().getTime();
-                const from = to - timeBound;
-                this.monitoringPageFacade.setTimeInterval({ from, to });
-              })
-            );
-          } else {
-            return EMPTY;
-          }
-        })
-      )
-      .subscribe();
-  }
-
-  onChangeTimeInterval(timeInterval: TimeInterval): void {
-    if (timeInterval && timeInterval.from && timeInterval.to) {
-      const { from, to } = timeInterval;
-      this.monitoringPageFacade.setDetailedTimeInterval({ from, to });
-    }
+  ngOnInit(): void {
+    this.facade.loadMetrics();
   }
 
   openSettings() {
@@ -145,39 +38,7 @@ export class MonitoringPageComponent implements OnDestroy {
     });
   }
 
-  onStopLive() {
-    this.monitoringPageFacade.stopAutoUpdate();
-  }
-  onStartLive() {
-    this.monitoringPageFacade.startAutoUpdate();
-  }
-
-  setTimeBound(timeBound: number) {
-    this.monitoringPageFacade.setTimeBound({ timeBound });
-  }
-
-  updateReqstore(params: {
-    maxMBytes: number;
-    maxMessages: number;
-    reverse: boolean;
-    loadFailed: boolean;
-  }) {
-    this.monitoringPageFacade.loadReqstoreData(params);
-  }
-
-  addModelVersionIdToCompare(params: {
-    modelVersionId: number;
-    metricSpecId: string;
-    metricSpecKind: string;
-  }) {
-    this.monitoringPageFacade.addModelVersionIdToCompare(params);
-  }
-
-  ngOnDestroy() {
-    this.s1.unsubscribe();
-    this.s2.unsubscribe();
-    this.s3.unsubscribe();
-    this.s4.unsubscribe();
-    this.monitoringPageFacade.clear();
+  onSelectedAggregationColumn(index: number) {
+    this.facade.selectAggregationColumn(index);
   }
 }

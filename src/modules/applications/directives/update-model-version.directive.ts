@@ -8,9 +8,7 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
-import { getModelVersionsByModelId } from '@models/reducers';
-import { Store } from '@ngrx/store';
+import { ModelsFacade } from '@models/store';
 import { ModelVersion, ModelVersionStatus } from '@shared/_index';
 import { Subscription } from 'rxjs';
 import { tap, filter } from 'rxjs/operators';
@@ -25,7 +23,7 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
   private latestModelVersion: ModelVersion;
   private modelVersionSub: Subscription;
 
-  constructor(public el: ElementRef, private store: Store<HydroServingState>) {}
+  constructor(public el: ElementRef, private modelsFacade: ModelsFacade) {}
 
   @HostListener('click')
   onclick() {
@@ -40,8 +38,8 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
       model: { id },
       modelVersion,
     } = this.modelVersion;
-    this.modelVersionSub = this.store
-      .select(getModelVersionsByModelId(this.modelVersion.model.id))
+    this.modelVersionSub = this.modelsFacade
+      .modelVersionsByModelId(this.modelVersion.model.id)
       .pipe(
         filter(modelVersions => modelVersions !== undefined),
         tap((modelVersions: ModelVersion[]) => {

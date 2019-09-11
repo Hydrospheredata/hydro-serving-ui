@@ -5,7 +5,7 @@ export interface SonarMetricData {
     columnIndex: string;
     modelVersionId: string;
     trace?: any;
-    traces?: any;
+    traces?: Array<{ uid: number; timestamp: number }>;
   };
   timestamp: number;
   health: any;

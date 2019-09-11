@@ -1,24 +1,18 @@
-import { MdlModule } from '@angular-mdl/core';
-import { MdlSelectModule } from '@angular-mdl/select';
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { reducers, ProfilerEffects, ProfilesEffects } from '@profiler/store';
 import { SharedModule } from '@shared/shared.module';
 import {
   ProfilesComponent,
   ProfileStatsComponent,
-  ProfilesComparisonHistogramComponent } from './components';
+  ProfilesComparisonHistogramComponent,
+} from './components';
 import { ProfilerPageComponent } from './containers/profiler-page/profiler-page.component';
-import { ProfilerEffects, ProfilesEffects } from './effects';
-import { reducers } from './reducers';
 
 @NgModule({
   imports: [
-    CommonModule,
     SharedModule,
-    MdlModule,
-    MdlSelectModule,
     StoreModule.forFeature('profiler', reducers),
     EffectsModule.forFeature([ProfilerEffects, ProfilesEffects]),
   ],
@@ -28,9 +22,6 @@ import { reducers } from './reducers';
     ProfileStatsComponent,
     ProfilesComparisonHistogramComponent,
   ],
-  exports: [
-    ProfilerPageComponent,
-    ProfilesComponent,
-  ],
+  exports: [ProfilerPageComponent, ProfilesComponent],
 })
-export class ProfilerModule { }
+export class ProfilerModule {}

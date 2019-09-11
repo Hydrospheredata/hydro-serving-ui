@@ -1,0 +1,24 @@
+@import "variables";
+.requests__info {
+  background: white;
+  padding: 12px;
+  width: 320px;
+  border: 2px $neutral-color-100 solid;
+  text-align: left;
+  &-requests {
+    color: $neutral-color-800;
+    font-family: $font-family-light;
+    font-size: 12px;
+    text-transform: uppercase;
+    &-count {
+      padding-left: 4px;
+      color: $neutral-color-900;
+      font-size: 24px;
+    }
+  }
+  &-dates {
+    font-family: $font-family-light;
+    color: $neutral-color-800;
+    font-size: 10px;
+  }
+}

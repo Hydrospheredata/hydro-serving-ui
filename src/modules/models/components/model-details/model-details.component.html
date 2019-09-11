@@ -1,8 +1,8 @@
-<section class="model-details content">
+<section class="model-details content" *ngIf="model$ | async as model">
   <header class="model-details__header content__header">
-    <div class="model-details__header-title">{{ (model$ | async)?.name }}</div>
+    <div class="model-details__header-title">{{ model.name }}</div>
     <div class="model-details__header-buttons">
-      <button hs-button kind="stroked" (click)="removeModel()">
+      <button hs-button kind="stroked" (click)="removeModel(model)">
         <hydro-icon class="button__icon" [type]="'icon-remove'"></hydro-icon>
         remove
       </button>

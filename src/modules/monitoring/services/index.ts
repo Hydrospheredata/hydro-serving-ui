@@ -1,1 +1,1 @@
-export * from './monitoring-page.service';
+export * from './api';
