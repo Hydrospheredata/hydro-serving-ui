@@ -27,16 +27,8 @@ import { SonarMetricData, TimeInterval, ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import * as d3 from 'd3';
 import * as _ from 'lodash';
-import {
-  Subscription,
-  Observable,
-  BehaviorSubject,
-  of,
-} from 'rxjs';
-import {
-  tap,
-  map,
-} from 'rxjs/operators';
+import { Subscription, Observable, of } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-chart',
@@ -87,7 +79,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   tooltipContent: TooltipContent = null;
 
   canvasWidth: number = 300;
-  canvasHeight: number = 150;
+  canvasHeight: number = 170;
   groupedData: GroupedData;
   minValue: number;
 
@@ -175,7 +167,7 @@ export class ChartComponent implements OnInit, OnDestroy {
     const { width, height } = el.getBoundingClientRect();
 
     this.canvasWidth = width;
-    this.canvasHeight = height - 102;
+    this.canvasHeight = height - 78;
     this.chartWidth = this.canvasWidth - this.xOffset;
     this.initialized = true;
   }
@@ -227,7 +219,9 @@ export class ChartComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const availableMetricNames = this.chartService.getMetricsBySpecKind(this.mainMetric);
+      const availableMetricNames = this.chartService.getMetricsBySpecKind(
+        this.mainMetric
+      );
 
       for (const key in groupedData) {
         if (groupedData.hasOwnProperty(key)) {
