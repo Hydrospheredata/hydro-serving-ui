@@ -2,7 +2,6 @@ import {
   Component,
   ViewChild,
   ViewContainerRef,
-  ComponentFactory,
   ComponentFactoryResolver,
   ComponentRef,
 } from '@angular/core';
@@ -33,6 +32,7 @@ export class ModelVersionDetailsComponent {
   servables$: Observable<Servable[]>;
 
   globalLog: boolean = false;
+  private current: ComponentRef<any>;
 
   constructor(
     private store: Store<HydroServingState>,
@@ -55,11 +55,11 @@ export class ModelVersionDetailsComponent {
       ModelVersionLogComponent
     );
     const component = this.logContainer.createComponent(factory);
-
+    this.current = component;
     component.instance.modelVersion = modelVersionId;
-    component.instance.closed.subscribe(() => this.closeGlobalLog(component));
+    component.instance.closed.subscribe(() => this.closeGlobalLog());
     component.changeDetectorRef.detectChanges();
-    this.toggleGlobalLog();
+    this.openGlobalLog();
   }
 
   showServableLogs(servableName: string) {
@@ -69,21 +69,22 @@ export class ModelVersionDetailsComponent {
     );
 
     const component = this.logContainer.createComponent(factory);
+    this.current = component;
     component.instance.servableName = servableName;
-    component.instance.closed.subscribe(() => this.closeGlobalLog(component));
+    component.instance.closed.subscribe(() => this.closeGlobalLog());
     component.changeDetectorRef.detectChanges();
-    this.toggleGlobalLog();
+    this.openGlobalLog();
   }
 
   closeGlobalLog(
-    ref: ComponentRef<ModelVersionLogComponent | ServableLogsComponent>
   ): void {
-    ref.destroy();
+    this.current.destroy();
+    this.logContainer.clear();
     this.globalLog = false;
   }
 
-  toggleGlobalLog(): void {
-    this.globalLog = !this.globalLog;
+  openGlobalLog(): void {
+    this.globalLog = true;
   }
 
   isEmpty(obj: object): boolean {

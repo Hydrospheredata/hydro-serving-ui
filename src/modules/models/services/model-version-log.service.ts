@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { Subject, merge, Observable } from 'rxjs';
-import { startWith, scan, bufferTime } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { scan, publish, refCount, finalize } from 'rxjs/operators';
 
 @Injectable()
 export class ModelVersionLogService {
-  message: Subject<string> = new Subject<string>();
-  eventSource: EventSource;
-
   getLog(modelVersionId) {
-    const myObservable = new Observable(subscribe => {
+    let eventSource: EventSource;
+    const logStream$ = new Observable(subscribe => {
       const { host, apiUrl, production } = environment;
       const { protocol, port, hostname } = window.location;
-      let eventSource;
       if (production) {
         eventSource = new EventSource(
           `${protocol}//${hostname}:${port}${apiUrl}/model/version/${modelVersionId}/logs`,
@@ -34,22 +31,26 @@ export class ModelVersionLogService {
       });
 
       eventSource.addEventListener('EndOfStream', () => {
+        console.log('event stream closed by EndOfStream message');
         eventSource.close();
         subscribe.complete();
       });
 
       eventSource.onerror = err => {
-        console.error(err);
         subscribe.error(err);
       };
     });
 
-    return merge(myObservable).pipe(
-      bufferTime(1000),
-      scan((acc, cur) => {
-        return [...acc, ...cur];
+    return logStream$.pipe(
+      scan((log, curString) => {
+        return [...log, curString];
       }, []),
-      startWith([])
+      publish(),
+      refCount(),
+      finalize(() => {
+        eventSource.close();
+        console.log('event stream closed');
+      })
     );
   }
 }

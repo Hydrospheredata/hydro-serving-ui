@@ -5,33 +5,45 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import { Subscription, of, Subject } from 'rxjs';
-import { catchError, takeUntil } from 'rxjs/operators';
+import { Subscription, Subject, Observable } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ServablesService } from '../../services';
 
 @Component({
   selector: 'hs-servable-logs',
   templateUrl: './servable-logs.component.html',
   styleUrls: ['./servable-logs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServableLogsComponent implements OnInit, OnDestroy {
   @Output() closed: EventEmitter<any> = new EventEmitter();
-  sub: Subscription;
-  logs$: any;
+  logs$: Observable<string[]>;
+  logs: string[] = [];
   servableName: string;
   error: string = '';
 
   destroy = new Subject();
-  constructor(private servablesService: ServablesService) {}
+  private logSubscription: Subscription;
+  constructor(
+    private servablesService: ServablesService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.logs$ = this.servablesService.getLog(this.servableName).pipe(
-      takeUntil(this.destroy),
-      catchError(_ => {
-        this.error = 'No logs available';
-        return of([]);
-      })
+    this.logs$ = this.servablesService
+      .getLog(this.servableName)
+      .pipe(takeUntil(this.destroy));
+    this.logSubscription = this.logs$.subscribe(
+      val => {
+        this.logs = val;
+        this.cdr.detectChanges();
+      },
+      () => {
+        this.error = 'Iternal error, stream was stopped';
+        this.cdr.detectChanges();
+      }
     );
   }
 
@@ -43,5 +55,6 @@ export class ServableLogsComponent implements OnInit, OnDestroy {
     this.destroy.next();
     this.destroy.complete();
     this.destroy = null;
+    this.logSubscription.unsubscribe();
   }
 }

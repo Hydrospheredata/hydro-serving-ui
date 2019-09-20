@@ -1,7 +1,6 @@
 @import 'variables.scss';
 
 .mv-details {
-
   &__metadata,
   &__signatures,
   &__servables {
@@ -98,4 +97,17 @@
 }
 .show-log-button {
   margin-left: 8px;
+}
+
+.runtime {
+  &__tag {
+    display: inline-block;
+    margin-left: 4px;
+    background: $neutral-color-100;
+    color: $neutral-color-700;
+    font-size: 10px;
+    line-height: 12px;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
 }

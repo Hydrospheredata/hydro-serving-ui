@@ -4,11 +4,10 @@ import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import {
   scan,
-  bufferTime,
-  startWith,
   finalize,
   publish,
   refCount,
+  catchError,
 } from 'rxjs/operators';
 import { Deployable } from '../interfaces';
 import { Servable } from '../models';
@@ -40,13 +39,14 @@ export class ServablesService {
     return this.http.get(`${this.url}/${name}`);
   }
 
-  getLog(name: string): Observable<Servable[]> {
+  getLog(name: string): Observable<string[]> {
     let eventSource: EventSource;
 
     const logStream$ = new Observable<string>(subscribe => {
       const { host, apiUrl, production } = environment;
       const { protocol, port, hostname } = window.location;
 
+      console.log(production);
       if (production) {
         eventSource = new EventSource(
           `${protocol}//${hostname}:${port}${apiUrl}/servable/${name}/logs?follow=true`,
@@ -64,7 +64,9 @@ export class ServablesService {
       }
 
       eventSource.addEventListener('EndOfStream', () => {
+        console.log('event stream closed by command');
         eventSource.close();
+        subscribe.complete();
       });
 
       eventSource.onmessage = ({ data }) => {
@@ -74,25 +76,20 @@ export class ServablesService {
       };
 
       eventSource.onerror = err => {
-        console.error(err);
-        subscribe.error(err);
+        subscribe.error();
       };
     });
 
     return logStream$.pipe(
-      bufferTime(1000),
       scan((log, curString) => {
-        return [
-          ...log,
-          ...curString.reduce((arr, str) => [...arr, ...str.split('\n')], []),
-        ];
+        return [...log, curString];
       }, []),
       publish(),
       refCount(),
       finalize(() => {
         eventSource.close();
-      }),
-      startWith([])
+        console.log('event stream closed');
+      })
     );
   }
 }

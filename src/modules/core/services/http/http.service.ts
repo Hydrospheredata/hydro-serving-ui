@@ -25,6 +25,10 @@ interface IHydroHttpOptions {
 export class HttpService {
   private baseUrl: string = '';
 
+  get url(): string {
+    return this.baseUrl;
+  }
+
   constructor(public http: HttpClient) {
     if (environment.production) {
       const { protocol, hostname, port } = window.location;
