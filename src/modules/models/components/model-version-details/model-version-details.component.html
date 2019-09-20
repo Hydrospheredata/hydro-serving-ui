@@ -26,7 +26,8 @@
           <span class="information__item-title">Runtime</span>
           <span class="information__item-value">
             <div class="runtime">
-              {{ modelVersion.runtime.name }}
+              <span>{{ modelVersion.runtime.name }}</span
+              ><span class="runtime__tag">{{ modelVersion.runtime.tag }}</span>
             </div>
           </span>
         </li>
@@ -83,9 +84,7 @@
     <section *ngIf="!isEmpty(meta)" class="content__cell mv-details__metadata">
       <div class="content__cell-title">Metadata</div>
       <div class="content__cell-body">
-        <hs-metadata
-          [metadata]="meta"
-        ></hs-metadata>
+        <hs-metadata [metadata]="meta"></hs-metadata>
       </div>
     </section>
   </ng-container>
@@ -110,7 +109,7 @@
   </section>
 
   <div class="log" [ngClass]="{ 'log--is-visible': globalLog }">
-    <div class="log__layout" (click)="toggleGlobalLog()"></div>
+    <div class="log__layout" (click)="closeGlobalLog()"></div>
     <div class="log__content">
       <ng-container #logContainer></ng-container>
     </div>

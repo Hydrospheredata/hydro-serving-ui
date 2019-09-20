@@ -15,16 +15,12 @@ import {
   styleUrls: ['./logs.component.scss'],
 })
 export class LogsComponent implements AfterViewChecked, AfterViewInit {
-  @Input() set logs(logs: string[]) {
-    this.currentLogs = logs || [];
-  }
+  @Input() logs: string[];
   @ViewChild('logBody', { read: ElementRef }) logBody: ElementRef;
   @Input() header: string = 'Logs';
   @Input() error: string = '';
-
   @Output() closed: EventEmitter<any> = new EventEmitter<any>();
 
-  currentLogs: string[] = [];
   autoScroll: boolean = true;
 
   ngAfterViewInit(): void {
@@ -38,11 +34,15 @@ export class LogsComponent implements AfterViewChecked, AfterViewInit {
   }
 
   get isEmptyLog(): boolean {
-    return this.currentLogs.length === 0;
+    return this.logs.length === 0;
   }
 
   onClose(): void {
     this.closed.emit();
+  }
+
+  trackByFn(index) {
+    return index;
   }
 
   private scrollDown() {
