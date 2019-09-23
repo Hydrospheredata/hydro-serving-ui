@@ -1,14 +1,14 @@
 import {
   Component,
   OnInit,
-  ChangeDetectorRef,
   Output,
   EventEmitter,
   OnDestroy,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
-import { Subscription, Subject, Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ServablesService } from '../../services';
 
 @Component({
@@ -17,15 +17,11 @@ import { ServablesService } from '../../services';
   styleUrls: ['./servable-logs.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ServableLogsComponent implements OnInit, OnDestroy {
+export class ServableLogsComponent implements OnInit {
   @Output() closed: EventEmitter<any> = new EventEmitter();
   logs$: Observable<string[]>;
-  logs: string[] = [];
   servableName: string;
-  error: string = '';
 
-  destroy = new Subject();
-  private logSubscription: Subscription;
   constructor(
     private servablesService: ServablesService,
     private cdr: ChangeDetectorRef
@@ -33,28 +29,12 @@ export class ServableLogsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.logs$ = this.servablesService
-      .getLog(this.servableName)
-      .pipe(takeUntil(this.destroy));
-    this.logSubscription = this.logs$.subscribe(
-      val => {
-        this.logs = val;
-        this.cdr.detectChanges();
-      },
-      () => {
-        this.error = 'Iternal error, stream was stopped';
-        this.cdr.detectChanges();
-      }
-    );
+      .getLog(this.servableName).pipe(
+        tap(() => this.cdr.detectChanges())
+      );
   }
 
   onClose(): void {
     this.closed.emit();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next();
-    this.destroy.complete();
-    this.destroy = null;
-    this.logSubscription.unsubscribe();
   }
 }

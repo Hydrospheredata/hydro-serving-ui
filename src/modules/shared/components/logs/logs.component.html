@@ -6,13 +6,15 @@
     {{ error }}
   </hs-error-message>
   <div class="log__body" #logBody>
-    <div
-      class="log__item"
-      *ngFor="let item of logs; index as i; trackBy: trackByFn"
-    >
-      <span class="log__item-index">{{ i }}</span
-      ><span class="log__item-text">{{ item }}</span>
-    </div>
+    <table>
+        <tr
+        class="log__item"
+        *ngFor="let item of logs; index as i; trackBy: trackByFn"
+      >
+        <td class="log__item-index">{{ i }}</td>
+        <td class="log__item-text">{{ item }}</td>
+      </tr>
+    </table>
   </div>
   <div class="log__scroller" *ngIf="!autoScroll" (click)="scrollDown()">
     <hydro-icon

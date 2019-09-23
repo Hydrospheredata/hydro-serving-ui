@@ -46,7 +46,6 @@ export class ServablesService {
       const { host, apiUrl, production } = environment;
       const { protocol, port, hostname } = window.location;
 
-      console.log(production);
       if (production) {
         eventSource = new EventSource(
           `${protocol}//${hostname}:${port}${apiUrl}/servable/${name}/logs?follow=true`,
