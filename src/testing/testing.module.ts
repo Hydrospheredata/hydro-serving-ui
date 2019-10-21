@@ -47,7 +47,7 @@ const COMPONENTS = [
 const DIRECTIVES = [UpdateModelVersionDirective];
 
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [...COMPONENTS, ...DIRECTIVES],
   exports: [...COMPONENTS],
 })
 export class TestingModule {}
