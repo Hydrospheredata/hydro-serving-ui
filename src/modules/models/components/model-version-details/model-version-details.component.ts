@@ -5,12 +5,14 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
 } from '@angular/core';
+import { ApplicationsFacade } from '@applications/store';
 import { ModelVersionLogComponent } from '@models/components/model-version-log/model-version-log.component';
 import { ModelVersionLogService } from '@models/services/model-version-log.service';
 import { ModelsFacade } from '@models/store';
 import { ServableLogsComponent } from '@servables/containers';
+import { ModelVersionStatus, ModelVersion } from '@shared/_index';
 import * as _ from 'lodash';
-
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'hydro-model-version-details',
   templateUrl: './model-version-details.component.html',
@@ -22,16 +24,18 @@ export class ModelVersionDetailsComponent {
   logContainer: ViewContainerRef;
 
   modelVersion$ = this.modelsFacade.selectedModelVersion$;
+  released$ = this.modelVersion$.pipe(
+    map(({ status }) => status === ModelVersionStatus.Released)
+  );
   servables$ = this.modelsFacade.selectedServables$;
   showLog: boolean = false;
-
   globalLog: boolean = false;
 
   constructor(
     private modelsFacade: ModelsFacade,
-    private resolver: ComponentFactoryResolver
-  ) {
-  }
+    private resolver: ComponentFactoryResolver,
+    private applicationsFacade: ApplicationsFacade
+  ) {}
 
   showBuildLog(modelVersionId: number) {
     this.logContainer.clear();
@@ -64,6 +68,10 @@ export class ModelVersionDetailsComponent {
   ): void {
     ref.destroy();
     this.globalLog = false;
+  }
+
+  onAddApplication(modelVersion: ModelVersion): void {
+    this.applicationsFacade.createApplicationFromModelVersion(modelVersion);
   }
 
   toggleGlobalLog(): void {

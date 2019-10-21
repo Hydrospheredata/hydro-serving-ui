@@ -5,6 +5,7 @@ import {
   FormsService,
   SvgSpriteService,
   SnackbarService,
+  NameGenerator,
 } from '@core/services';
 import { BuildInformationService } from '@core/services/build-information.service';
 import { HttpService } from '@core/services/http';
@@ -62,6 +63,7 @@ import {
     ReqstoreService,
     BuildInformationService,
     SnackbarService,
+    NameGenerator,
   ],
 })
 export class CoreModule {}

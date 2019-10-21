@@ -45,8 +45,7 @@
             </span>
             <button
               hs-button
-              kind="flat"
-              color="primary"
+              kind="stroked"
               class="show-log-button"
               (click)="showBuildLog(modelVersion.id)"
             >
@@ -77,15 +76,25 @@
           </span>
         </li>
       </ol>
+      <div>
+        <button
+          class="model-version-detail__add-application"
+          (click)="onAddApplication(modelVersion)"
+          [disabled]="!(released$ | async)"
+          kind="flat"
+          color="primary"
+          hs-button
+        >
+          create app
+        </button>
+      </div>
     </div>
   </section>
   <ng-container *ngIf="(modelVersion$ | async).metadata as meta">
     <section *ngIf="!isEmpty(meta)" class="content__cell mv-details__metadata">
       <div class="content__cell-title">Metadata</div>
       <div class="content__cell-body">
-        <hs-metadata
-          [metadata]="meta"
-        ></hs-metadata>
+        <hs-metadata [metadata]="meta"></hs-metadata>
       </div>
     </section>
   </ng-container>

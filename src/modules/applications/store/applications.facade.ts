@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
+import { ApplicationCreatingRequest } from '@applications/interfaces';
 import {
   selectAllApplications,
   selectSelectedApplication,
   selectApplicationLoaded,
   selectTestingDialogState,
 } from '@applications/store/selectors';
+import { NameGenerator } from '@core/services';
 import { Store, select } from '@ngrx/store';
-import { Application } from '@shared/_index';
-import { filter, share } from 'rxjs/operators';
+import { Application, ModelVersion } from '@shared/_index';
+import { filter, share, first, tap } from 'rxjs/operators';
 import {
   Add,
   Delete,
@@ -39,9 +41,41 @@ export class ApplicationsFacade {
     share()
   );
 
-  constructor(private store: Store<State>) {}
+  constructor(
+    private store: Store<State>,
+    private nameGenerator: NameGenerator
+  ) {}
 
-  public addApplication(data) {
+  public createApplicationFromModelVersion(modelVersion: ModelVersion) {
+    this.allApplications$.pipe(first()).subscribe(applications => {
+      const isNotUniqName = str =>
+        applications.some(({ name }) => name === str);
+      const generateUniqName = () =>
+        `${modelVersion.model.name}_v${
+          modelVersion.modelVersion
+        }_${this.nameGenerator.generate()}`;
+
+      let uniqName = generateUniqName();
+
+      while (isNotUniqName(uniqName)) {
+        uniqName = generateUniqName();
+      }
+
+      this.addApplication({
+        name: uniqName,
+        kafkaStreaming: [],
+        executionGraph: {
+          stages: [
+            {
+              modelVariants: [{ modelVersionId: modelVersion.id, weight: 100 }],
+            },
+          ],
+        },
+      });
+    });
+  }
+
+  public addApplication(data: ApplicationCreatingRequest) {
     this.store.dispatch(Add({ application: new Application(data) }));
   }
 

@@ -11,7 +11,7 @@ import {
 import { Store, select } from '@ngrx/store';
 import { ServablesFacade } from '@servables/servables.facade';
 import { ModelVersionStatus } from '@shared/_index';
-import { filter, switchMap, map, share } from 'rxjs/operators';
+import { filter, switchMap, map } from 'rxjs/operators';
 import { State } from './reducers';
 
 @Injectable({
@@ -36,23 +36,15 @@ export class ModelsFacade {
     })
   );
 
-  allModels$ = this.store.pipe(
-    select(selectAllModels),
-    share()
-  );
+  allModels$ = this.store.pipe(select(selectAllModels));
 
-  allModelVersions$ = this.store.pipe(
-    select(selectAllModelVersions),
-    share()
-  );
+  allModelVersions$ = this.store.pipe(select(selectAllModelVersions));
 
   someModelVersionIsReleased$ = this.store.pipe(
     select(selectAllModelVersions),
-    map(modelVersions => {
-      return modelVersions.some(
-        modelVersion => modelVersion.status === ModelVersionStatus.Released
-      );
-    })
+    map(modelVersions =>
+      modelVersions.some(({ status }) => status === ModelVersionStatus.Released)
+    )
   );
 
   selectedModel$ = this.store.pipe(
