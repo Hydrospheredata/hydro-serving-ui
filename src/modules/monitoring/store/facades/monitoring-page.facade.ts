@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import { ComparingChartParams, Check } from '@monitoring/interfaces';
+import {
+  Check,
+  ChecksAggregation,
+  ChecksAggregationResponse,
+} from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
+import { CheckAggregationBuilder } from '@monitoring/services/builders/check-aggregation.builder';
 import {
   LoadMetrics,
   DeleteMetric,
@@ -16,38 +21,50 @@ import {
   selectSelectedMetrics,
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
-import { isNumber, isEmpty } from 'lodash';
-import { Subject, timer, combineLatest, interval } from 'rxjs';
+import { isNumber, isEmpty, pick } from 'lodash';
+import { Subject, combineLatest, of, Observable } from 'rxjs';
 import {
   filter,
   switchMap,
   share,
   tap,
-  takeUntil,
   map,
   exhaustMap,
+  catchError,
+  startWith,
 } from 'rxjs/operators';
 
 @Injectable()
 export class MonitoringPageFacade {
+  error$ = new Subject();
   siblingModelVersions$ = this.modelsFacade.siblingModelVersions$;
   serviceStatus$ = this.store.pipe(select(getMonitoringServiceStatus));
   serviceStatusError$ = this.store.pipe(select(getMonitoringServiceError));
   modelVersion$ = this.modelsFacade.selectedModelVersion$;
   selectedMetrics$ = this.store.pipe(select(selectSelectedMetrics));
 
-  checksAggreagtions$ = this.modelVersion$.pipe(
+  checksAggreagtions$: Observable<
+    ChecksAggregation[]
+  > = this.modelVersion$.pipe(
     filter(val => val !== undefined),
     switchMap(modelVersion => {
       // return timer(0, 5000).pipe(
       // return exhaustMap(() => {
-      return this.monitoring.getChecksAggregation({
-        modelVersionId: modelVersion.id,
-      });
+      return this.monitoring
+        .getChecksAggregation({
+          modelVersionId: modelVersion.id,
+        })
+        .pipe(
+          map(res => res.map(rawCheck => this.checkAggBuilder.build(rawCheck))),
+          startWith([]),
+          catchError(err => {
+            this.error$.next(err);
+            return of([]);
+          })
+        );
       // });
       // );
     }),
-    tap(console.dir),
     share()
   );
 
@@ -66,7 +83,7 @@ export class MonitoringPageFacade {
         _hs_first_id: from,
         _hs_last_id: to,
         _hs_model_version_id: modelVersionId,
-      } = aggregation;
+      } = aggregation.additionalInfo;
 
       return this.monitoring.getChecks({
         modelVersionId,
@@ -74,7 +91,6 @@ export class MonitoringPageFacade {
         to,
       });
     }),
-    tap(console.dir),
     share()
   );
 
@@ -85,7 +101,7 @@ export class MonitoringPageFacade {
     }),
     share()
   );
-  errors$ = this.checks$.pipe(
+  errorsChecks$ = this.checks$.pipe(
     map(checks => {
       const getErrorField = (check: Check) => check._hs_error;
       return checks.map(getErrorField) || [];
@@ -123,7 +139,8 @@ export class MonitoringPageFacade {
   constructor(
     private store: Store<State>,
     private modelsFacade: ModelsFacade,
-    private monitoring: MonitoringService
+    private monitoring: MonitoringService,
+    private checkAggBuilder: CheckAggregationBuilder
   ) {}
   loadMetrics(): void {
     this.store.dispatch(LoadMetrics());

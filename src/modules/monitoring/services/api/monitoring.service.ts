@@ -5,6 +5,7 @@ import {
   GetChecksAggreagationParams,
   GetChecksParams,
   ChecksAggregation,
+  ChecksAggregationResponse,
 } from '@monitoring/interfaces';
 import {
   MetricSpecification,
@@ -82,7 +83,7 @@ export class MonitoringService {
     modelVersionId,
     limit = 20,
     offset = 0,
-  }: GetChecksAggreagationParams): Observable<ChecksAggregation[]> {
+  }: GetChecksAggreagationParams): Observable<ChecksAggregationResponse[]> {
     const params = {
       limit: `${limit}`,
       offset: `${offset}`,

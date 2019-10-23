@@ -15,12 +15,12 @@ export class RequestsInformationComponent implements OnInit {
   ngOnInit() {}
 
   get firstId() {
-    return this.aggregation._hs_first_id;
+    return this.aggregation.additionalInfo._hs_first_id;
   }
   get lastId() {
-    return this.aggregation._hs_last_id;
+    return this.aggregation.additionalInfo._hs_last_id;
   }
   get requests() {
-    return this.aggregation._hs_requests;
+    return this.aggregation.additionalInfo._hs_requests;
   }
 }

@@ -1,10 +1,11 @@
-import { Component, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, SimpleChanges, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CustomCheck, ChartConfig } from '@monitoring/interfaces';
 
 @Component({
   selector: 'hs-custom-check',
   templateUrl: 'custom-check.component.html',
   styleUrls: ['custom-check.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomCheckComponent implements OnChanges {
   @Input() check: CustomCheck;

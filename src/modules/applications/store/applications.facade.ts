@@ -9,7 +9,7 @@ import {
 import { NameGenerator } from '@core/services';
 import { Store, select } from '@ngrx/store';
 import { Application, ModelVersion } from '@shared/_index';
-import { filter, share, first, tap } from 'rxjs/operators';
+import { filter, share, first } from 'rxjs/operators';
 import {
   Add,
   Delete,

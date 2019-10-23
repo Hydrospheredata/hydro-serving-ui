@@ -52,7 +52,6 @@ export class DialogTestComponent implements OnInit {
     this.facade.clearTestingDialog();
     this.inputValid$ = this.state$.pipe(
       map(state => {
-        console.log(state);
         try {
           JSON.parse(state.input);
           return true;

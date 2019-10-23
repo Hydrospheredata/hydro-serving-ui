@@ -22,9 +22,9 @@ export class AggregationComponent implements OnChanges {
   @ViewChild('svgContainer', { read: ElementRef })
   svgContainer: ElementRef;
 
-  @Input() aggregation: ChecksAggregation[];
-  @Input() latency: number[];
-  @Input() errors: boolean[];
+  @Input() aggregation: ChecksAggregation[] = [];
+  @Input() latency: number[] = [];
+  @Input() errors: boolean[] = [];
   @Output() changedSelectedColumn = new EventEmitter<number>();
 
   labelsWidth: number = 100;
@@ -59,7 +59,7 @@ export class AggregationComponent implements OnChanges {
   get countRequests(): number {
     if (this.aggregation) {
       return this.aggregation.reduce(
-        (res, { _hs_requests }) => res + _hs_requests,
+        (res, { additionalInfo: { _hs_requests } }) => res + _hs_requests,
         0
       );
     }
@@ -67,23 +67,18 @@ export class AggregationComponent implements OnChanges {
   }
 
   get firstId(): string {
-    if (this.aggregation) {
-      return this.aggregation[0]._hs_first_id;
+    if (this.aggregation.length) {
+      return this.aggregation[0].additionalInfo._hs_first_id;
     }
   }
   get lastId(): string {
-    if (this.aggregation) {
-      return this.aggregation[this.aggregation.length - 1]._hs_last_id;
+    if (this.aggregation.length) {
+      return this.aggregation[this.aggregation.length - 1].additionalInfo._hs_last_id;
     }
   }
 
-  get featureNames() {
-    if (!this.aggregation) {
-      return [];
-    }
-
-    const isNotSystemValue = str => str[0] !== '_';
-    return Object.keys(this.aggregation[0]).filter(isNotSystemValue);
+  get featureNames(): string[] {
+    return Object.keys(this.aggregation[0].features);
   }
 
   changeActiveColumn(index) {
@@ -92,8 +87,12 @@ export class AggregationComponent implements OnChanges {
   }
 
   cellColor(column: ChecksAggregation, featureName: string) {
-    const { passed, checks } = column[featureName];
+    const { passed, checks } = column.features[featureName];
     const value = (passed * checks) / 100;
     return interpolateRdYlGn(value);
+  }
+
+  get dataAvailable(): boolean {
+    return this.aggregation && this.aggregation.length > 0;
   }
 }

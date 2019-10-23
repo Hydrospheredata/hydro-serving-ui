@@ -1,0 +1,16 @@
+@import "variables";
+
+.custom-checks {
+  margin: 12px 0;
+  &__header {
+    text-align: right;
+  }
+  &__empty {
+    text-align: center;
+  }
+  &__alert {
+    color: $neutral-color-600;
+    font-family: $font-family-light;
+    margin-bottom: 4px;
+  }
+}

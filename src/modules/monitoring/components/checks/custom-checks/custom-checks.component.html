@@ -1,7 +1,36 @@
 <div class="custom-checks">
-  <hs-custom-check
-    *ngFor="let check of customChecks; trackBy: trackByFn"
-    [check]="check"
-  >
-  </hs-custom-check>
+  <ng-container *ngIf="!isEmptyList; else emptyBlock">
+    <header class="custom-checks__header">
+      <button
+        color="cyan"
+        class="custom-checks__button"
+        hs-button
+        (click)="onOpenSetting()"
+      >
+        metric settings
+      </button>
+    </header>
+    <hs-custom-check
+      *ngFor="let check of customChecks; trackBy: trackByFn"
+      [check]="check"
+    >
+    </hs-custom-check>
+  </ng-container>
 </div>
+
+<ng-template #emptyBlock>
+  <div class="custom-checks__empty">
+    <div class="custom-checks__alert">
+      Custom metric list is empty
+    </div>
+    <button
+      class="custom-checks__button"
+      color="cyan"
+      kind="flat"
+      hs-button
+      (click)="onOpenSetting()"
+    >
+      Add metric
+    </button>
+  </div>
+</ng-template>

@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { tap } from 'rxjs/operators';
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
@@ -12,12 +13,13 @@ export class MonitoringPageComponent implements OnInit {
   checks$ = this.facade.checks$;
   checksAggreagation$ = this.facade.checksAggreagtions$;
   customChecks$ = this.facade.customChecks$;
-  errors$ = this.facade.errors$;
+  errorsChecks$ = this.facade.errorsChecks$;
   latency$ = this.facade.latency$;
   modelVersion$ = this.facade.modelVersion$;
   selectedAggregationColumn$ = this.facade.selectedAggregation$;
   selectedMetrics$ = this.facade.selectedMetrics$;
   siblingModelVersions$ = this.facade.siblingModelVersions$;
+  error$ = this.facade.error$;
 
   constructor(
     private dialogService: DialogService,

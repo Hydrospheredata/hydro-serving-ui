@@ -1,6 +1,7 @@
 import { SonarMetricData } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 
+// !TODO: del after merge
 export interface AggregationItem {
   meanValue: number | null;
   meanHealth: number | null;
@@ -34,20 +35,16 @@ export type ChartViewModel = Chart & {
 export interface Charts {
   [metricSpecId: string]: Chart;
 }
-
 export type ChartsViewModel = ChartViewModel[];
-
 export interface ReqstoreEntry {
   uid: string;
   ts: string;
   request: any;
   response: any;
 }
-
 export interface ReqstoreLog {
   [id: string]: ReqstoreEntry[];
 }
-
 type LogEntry = ReqstoreEntry & {
   failed: boolean;
   metrics: {
@@ -58,7 +55,6 @@ type LogEntry = ReqstoreEntry & {
     };
   };
 };
-
 export interface RequestResponseLog {
   [uid: string]: LogEntry[];
 }
@@ -68,73 +64,10 @@ export interface ComparingChartParams {
   metricId: string;
   metricKind: string;
 }
-export interface GetChecksParams {
-  modelVersionId: number;
-  from: string;
-  to: string;
-}
 
-export interface GetChecksAggreagationParams {
-  modelVersionId: number;
-  limit?: number;
-  offset?: number;
-}
+// TODO:  ^ del after merge
 
-interface AdditionalInfo {
-  _hs_first_id: string;
-  _hs_last_id: string;
-  _hs_model_version_id: number;
-  _hs_requests: number;
-  _id: string;
-}
-export interface Feautures {
-  [featureName: string]: { checks: number; passed: number };
-}
-
-export type ChecksAggregation = Feautures & AdditionalInfo;
-
-export interface Check {
-  _id: string;
-  _hs_prediction_score: number;
-  _hs_raw_checks: {
-    overall: RawCheck[];
-  };
-  _hs_latency: number;
-  _hs_error: number;
-  _hs_score: number;
-  _hs_overall_score: number;
-  _hs_model_version_id: number;
-}
-
-export interface RawCheck {
-  check: boolean;
-  description: string;
-  threshold: number;
-  value: number;
-  metricSpecId: string;
-}
-
-export interface CustomCheck {
-  name: string;
-  data: number[];
-  threshold: number;
-}
-
-export interface ChartConfig {
-  size: {
-    width: number;
-    height: number;
-    margins?: {
-      bottom?: number;
-      left?: number;
-      right?: number;
-      top?: number;
-    };
-  };
-  name: string;
-  data?: {
-    x: number[];
-    y: number[];
-  };
-  threshold?: number;
-}
+export * from './api';
+export * from './aggregation';
+export * from './checks';
+export * from './chart-config';

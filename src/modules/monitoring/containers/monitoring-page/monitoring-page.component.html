@@ -1,25 +1,33 @@
-<div class="monitoring__aggregation">
-  <hs-aggregation
-    class="monitoring__aggregation-item"
-    [aggregation]="checksAggreagation$ | async"
-    (changedSelectedColumn)="onSelectedAggregationColumn($event)"
-  >
-  </hs-aggregation>
-  <hs-requests-information
-    [aggregation]="selectedAggregationColumn$ | async"
-    [latency]="latency$ | async"
-    [errors]="errors$ | async"
-    class="monitoring__aggregation-item"
-  >
-  </hs-requests-information>
+<div class="monitoring-page">
+  <ng-container *ngIf="!(error$ | async); else errorSection">
+    <div class="monitoring__aggregation">
+      <hs-aggregation
+        class="monitoring__aggregation-item"
+        [aggregation]="checksAggreagation$ | async"
+        (changedSelectedColumn)="onSelectedAggregationColumn($event)"
+      >
+      </hs-aggregation>
+      <hs-requests-information
+        [aggregation]="selectedAggregationColumn$ | async"
+        [latency]="latency$ | async"
+        [errors]="errorsChecks$ | async"
+        class="monitoring__aggregation-item"
+      >
+      </hs-requests-information>
+    </div>
+    <hs-log
+      [checks]="checks$ | async"
+      [modelVersion]="modelVersion$ | async"
+    ></hs-log>
+    <hs-custom-checks
+      [customChecks]="customChecks$ | async"
+      (openSettings)="openSettings()"
+    ></hs-custom-checks>
+  </ng-container>
 </div>
-<hs-log
-  [checks]="checks$ | async"
-  [modelVersion]="modelVersion$ | async"
-></hs-log>
-<header class="monitoring__header">
-  <span class="monitoring__settings" (click)="openSettings()">
-    <button color="primary" hs-button>metric settings</button>
-  </span>
-</header>
-<hs-custom-checks [customChecks]="customChecks$ | async"></hs-custom-checks>
+
+<ng-template #errorSection>
+    <hs-error-message class="monitoring-page__error">
+        {{ error$ | async }}
+      </hs-error-message>
+</ng-template>

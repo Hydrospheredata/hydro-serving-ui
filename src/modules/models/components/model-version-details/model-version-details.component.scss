@@ -11,6 +11,12 @@
 
 .application {
   cursor: pointer;
+  color: $neutral-color-500;
+  font-family: $font-family-light;
+  transition: .3s all ease;
+  &:hover {
+    color: $neutral-color-1000;
+  }
 }
 
 .information {
