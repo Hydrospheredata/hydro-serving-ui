@@ -32,4 +32,8 @@ export class LogComponent implements OnChanges {
   isFailed(check: Check): boolean {
     return check._hs_overall_score === 0;
   }
+
+  get haveSomeData(): boolean {
+    return this.checks !== null && this.checks.length > 0;
+  }
 }

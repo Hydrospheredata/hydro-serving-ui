@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { ChecksAggregation } from '@monitoring/interfaces';
 
 @Component({
@@ -7,20 +7,22 @@ import { ChecksAggregation } from '@monitoring/interfaces';
   styleUrls: ['./requests-information.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RequestsInformationComponent implements OnInit {
+export class RequestsInformationComponent {
   @Input() aggregation: ChecksAggregation;
   @Input() latency;
   @Input() errors = [];
 
-  ngOnInit() {}
+  get additionalInfo() {
+    return this.aggregation.additionalInfo;
+  }
 
   get firstId() {
-    return this.aggregation.additionalInfo._hs_first_id;
+    return this.additionalInfo._hs_first_id;
   }
   get lastId() {
-    return this.aggregation.additionalInfo._hs_last_id;
+    return this.additionalInfo._hs_last_id;
   }
   get requests() {
-    return this.aggregation.additionalInfo._hs_requests;
+    return this.additionalInfo._hs_requests;
   }
 }

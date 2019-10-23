@@ -1,16 +1,24 @@
-<div class="requests__info" *ngIf="aggregation">
-  <div class="requests__info-requests">
-    Selected requests:
-    <span class="requests__info-requests-count">{{ requests }}</span>
-  </div>
-  <div class="requests__info-dates">
-    <span>{{ firstId | checkIdToTime | moment }}</span> -
-    <span>{{ lastId | checkIdToTime | moment }}</span>
-  </div>
-  <div>
-    <hs-latency-check [data]="latency"></hs-latency-check>
-  </div>
-  <div>
-    <hs-error-check [data]="errors"></hs-error-check>
-  </div>
+<div class="requests-info">
+  <ng-container *ngIf="aggregation; else noDataAvailable">
+    <div class="requests-info__requests">
+      Selected requests:
+      <span class="requests-info__requests-count">{{ requests }}</span>
+    </div>
+    <div class="requests-info__dates">
+      <span>{{ firstId | checkIdToTime | moment }}</span> -
+      <span>{{ lastId | checkIdToTime | moment }}</span>
+    </div>
+    <div>
+      <hs-latency-check [data]="latency"></hs-latency-check>
+    </div>
+    <div>
+      <hs-error-check [data]="errors"></hs-error-check>
+    </div>
+  </ng-container>
 </div>
+<ng-template #noDataAvailable>
+  <div class="requests-info__message">
+    No data available
+  </div>
+</ng-template>
+
