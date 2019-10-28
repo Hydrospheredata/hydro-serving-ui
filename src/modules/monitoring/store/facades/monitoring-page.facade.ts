@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import {
-  Check,
-  ChecksAggregation,
-  ChecksAggregationResponse,
-} from '@monitoring/interfaces';
+import { Check, ChecksAggregation } from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
 import { CheckAggregationBuilder } from '@monitoring/services/builders/check-aggregation.builder';
 import {
@@ -21,17 +17,18 @@ import {
   selectSelectedMetrics,
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
-import { isNumber, isEmpty, pick } from 'lodash';
-import { Subject, combineLatest, of, Observable } from 'rxjs';
+import { isNumber, isEmpty, isEqual } from 'lodash';
+import { Subject, combineLatest, of, Observable, timer } from 'rxjs';
 import {
   filter,
   switchMap,
   share,
-  tap,
   map,
   exhaustMap,
   catchError,
   startWith,
+  pairwise,
+  tap,
 } from 'rxjs/operators';
 
 @Injectable()
@@ -46,24 +43,29 @@ export class MonitoringPageFacade {
   checksAggreagtions$: Observable<
     ChecksAggregation[]
   > = this.modelVersion$.pipe(
-    filter(val => val !== undefined),
     switchMap(modelVersion => {
-      // return timer(0, 5000).pipe(
-      // return exhaustMap(() => {
-      return this.monitoring
-        .getChecksAggregation({
-          modelVersionId: modelVersion.id,
-        })
-        .pipe(
-          map(res => res.map(rawCheck => this.checkAggBuilder.build(rawCheck))),
-          startWith([]),
-          catchError(err => {
-            this.error$.next(err);
-            return of([]);
-          })
-        );
-      // });
-      // );
+      return timer(0, 5000).pipe(
+        switchMap(() => {
+          return this.monitoring
+            .getChecksAggregation({
+              modelVersionId: modelVersion.id,
+            })
+            .pipe(
+              catchError(err => {
+                this.error$.next(err);
+                return of([]);
+              })
+            );
+        }),
+        startWith([]),
+        pairwise(),
+        filter(([prev, cur]) => {
+          return !isEqual(prev, cur);
+        }),
+        map(([_, currentRes]) =>
+          currentRes.map(rawCheck => this.checkAggBuilder.build(rawCheck))
+        )
+      );
     }),
     share()
   );
