@@ -9,11 +9,9 @@ import { Store, MemoizedSelector } from '@ngrx/store';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { ModelVersion } from '@shared/_index';
 import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
-import { asyncData } from '@testing/helpers';
 import { of } from 'rxjs';
-import { first, take } from 'rxjs/operators';
 
-fdescribe('Monitoring page facade', () => {
+describe('Monitoring page facade', () => {
   let monitoringPageFacade: MonitoringPageFacade;
   let store: MockStore<HydroServingState>;
   let selectSelectedModelVersion$: MemoizedSelector<

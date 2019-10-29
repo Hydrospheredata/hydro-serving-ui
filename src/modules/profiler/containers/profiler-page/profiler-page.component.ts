@@ -5,13 +5,9 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { ProfilerStatus } from '@profiler/models';
 import {
-  ProfilerState,
-  GetProfilerServiceStatus,
-  selectProfilerServiceStatus,
-  selectErrorMessage,
+  ProfilerFacade,
 } from '@profiler/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -23,34 +19,23 @@ import { map } from 'rxjs/operators';
 })
 export class ProfilerPageComponent implements OnInit {
   activeTemplate$: Observable<TemplateRef<any>>;
-  error$: Observable<string>;
+  error$ = this.facade.error$;
 
   @ViewChild('loadingTemplate', { read: TemplateRef }) loadingTemplate;
   @ViewChild('errorTemplate', { read: TemplateRef }) errorTemplate;
   @ViewChild('alertTemplate', { read: TemplateRef }) alertTemplate;
   @ViewChild('contentTemplate', { read: TemplateRef }) contentTemplate;
 
-  constructor(private store: Store<ProfilerState>) {}
-
-  isFailed(): string {
-    return ProfilerStatus.FAILED;
-  }
-
-  isClosedForOSS(): string {
-    return ProfilerStatus.CLOSED_FOR_OSS;
-  }
-
-  isLoading(): string {
-    return ProfilerStatus.UNKNOWN;
-  }
+  constructor(
+    private facade: ProfilerFacade
+  ) {}
 
   ngOnInit() {
-    this.error$ = this.store.select(selectErrorMessage);
-    this.store.dispatch(GetProfilerServiceStatus());
+    this.facade.getProfilerServiceStatus();
 
-    this.activeTemplate$ = this.store
-      .select(selectProfilerServiceStatus)
-      .pipe(map(status => this.statusToTemplate(status)));
+    this.activeTemplate$ = this.facade.serviceStatus$.pipe(
+      map(status => this.statusToTemplate(status))
+    );
   }
 
   private statusToTemplate(status: ProfilerStatus): TemplateRef<any> {

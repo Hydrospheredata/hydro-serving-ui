@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { reducers, ProfilerEffects, ProfilesEffects } from '@profiler/store';
+import { reducers, ProfilerEffects, ProfilesEffects, ProfilerFacade } from '@profiler/store';
 import { SharedModule } from '@shared/shared.module';
 import {
   ProfilesComponent,
@@ -22,6 +22,7 @@ import { ProfilerPageComponent } from './containers/profiler-page/profiler-page.
     ProfileStatsComponent,
     ProfilesComparisonHistogramComponent,
   ],
+  providers: [ProfilerFacade],
   exports: [ProfilerPageComponent, ProfilesComponent],
 })
 export class ProfilerModule {}
