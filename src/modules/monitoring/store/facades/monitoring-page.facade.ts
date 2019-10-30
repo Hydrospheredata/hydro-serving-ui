@@ -37,7 +37,10 @@ export class MonitoringPageFacade {
   serviceStatus$ = this.store.pipe(select(getMonitoringServiceStatus));
   serviceStatusError$ = this.store.pipe(select(getMonitoringServiceError));
   modelVersion$ = this.modelsFacade.selectedModelVersion$;
-  selectedMetrics$ = this.store.pipe(select(selectSelectedMetrics));
+  selectedMetrics$ = this.store.pipe(
+    select(selectSelectedMetrics),
+    filter(val => val !== undefined)
+  );
 
   checksAggreagtions$: Observable<
     ChecksAggregation[]

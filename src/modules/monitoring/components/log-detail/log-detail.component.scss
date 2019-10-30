@@ -15,6 +15,7 @@
       border: 1px $neutral-color-300 solid;
       text-align: right;
       color: $neutral-color-900;
+      vertical-align: top;
       &--error {
         background-color: $supportive-color-red-100;
         color: $supportive-color-red-700;

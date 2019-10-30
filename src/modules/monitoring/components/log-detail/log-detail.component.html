@@ -11,10 +11,26 @@
     </tr>
     <tr>
       <td class="inputs-table__cell" *ngFor="let inputKey of inputKeys">
-        {{ check[inputKey] }}
+        <ng-container
+          *ngTemplateOutlet="isImage(inputKey) ? image : plainText"
+        ></ng-container>
+        <ng-template #image>
+          <hs-tensor-image-list
+            [pixels]="check[inputKey]"
+            [tensorProto]="getTensorShape(inputKey)"
+          ></hs-tensor-image-list>
+        </ng-template>
+        <ng-template #plainText>
+          <div hs-expander maxHeight="170">
+            <div #expand>
+              {{ getValueAsText(check[inputKey]) }}
+            </div>
+          </div>
+        </ng-template>
       </td>
     </tr>
   </table>
+
   <div class="log-detail__label">Outputs</div>
   <table class="outputs-table">
     <tr>
@@ -27,10 +43,27 @@
     </tr>
     <tr>
       <td class="outputs-table__cell" *ngFor="let outputKey of outputKeys">
-        {{ check[outputKey] }}
+        <ng-container
+          *ngTemplateOutlet="
+            showAsList(outputKey) ? asList : plainText
+          "
+        ></ng-container>
+        <ng-template #asList>
+          <hs-probabilities-list
+            [probabilities]="check[outputKey]"
+          ></hs-probabilities-list>
+        </ng-template>
+        <ng-template #plainText>
+          <div hs-expander maxHeight="170">
+            <div #expand>
+              {{ getValueAsText(check[outputKey]) }}
+            </div>
+          </div>
+        </ng-template>
       </td>
     </tr>
   </table>
+
   <div class="log-detail__label">Metrics</div>
   <div>
     <table class="metrics-table">

@@ -20,4 +20,33 @@ export class LogDetailComponent implements OnInit {
     this.inputKeys = inputs.map(el => el.name);
     this.outputKeys = outputs.map(el => el.name);
   }
+
+  isImage(inputName: string): boolean {
+    const isImage = this.modelVersion.modelContract.predict.inputs.some(
+      p => p.name === inputName && p.profile === 'IMAGE'
+    );
+    return isImage;
+  }
+
+  getValueAsText(data): any {
+    try {
+      return data.join(', ');
+    } catch {
+      return data;
+    }
+  }
+
+  getTensorShape(inputName: string) {
+    const inputs = this.modelVersion.modelContract.predict.inputs;
+    const input = inputs.find(el => el.name === inputName);
+
+    return input.shape;
+  }
+
+  showAsList(name: string) {
+    if (name === 'probabilities') {
+      return true;
+    }
+    return false;
+  }
 }
