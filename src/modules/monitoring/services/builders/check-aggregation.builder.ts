@@ -13,6 +13,7 @@ export class CheckAggregationBuilder {
       '_hs_last_id',
       '_hs_model_version_id',
       '_hs_requests',
+      '_hs_model_name',
     ];
   }
 

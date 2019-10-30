@@ -9,6 +9,7 @@ export interface AdditionalCheckInfo {
   _hs_last_id: string;
   _hs_model_version_id: number;
   _hs_requests: number;
+  _hs_model_name: string;
   _id: string;
 }
 
