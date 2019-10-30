@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import { Check, ChecksAggregation } from '@monitoring/interfaces';
+import { Check, ChecksAggregation, CustomCheck } from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
 import { CheckAggregationBuilder } from '@monitoring/services/builders/check-aggregation.builder';
 import {
@@ -28,7 +28,6 @@ import {
   catchError,
   startWith,
   pairwise,
-  tap,
 } from 'rxjs/operators';
 
 @Injectable()
@@ -111,29 +110,35 @@ export class MonitoringPageFacade {
     filter(val => val !== undefined),
     share()
   );
-  customChecks$ = this.checks$.pipe(
-    map(checks => {
-      const dict = checks.reduce((acc, check) => {
+  customChecks$ = combineLatest(this.checks$, this.selectedMetrics$).pipe(
+    map(([checks, metrics]) => {
+      const rawMetrics: Array<[string, CustomCheck]> = metrics
+        .filter(({ id }) => isRawMetric(id))
+        .map(
+          ({ id, name, config: { threshold } }) =>
+            [id, { data: [], name, threshold }] as [string, CustomCheck]
+        );
+
+      const customChecks: Map<string, CustomCheck> = new Map(rawMetrics);
+
+      const updateValue = (check: CustomCheck, value) => {
+        return { ...check, data: [...check.data, value] };
+      };
+
+      checks.forEach(check => {
         const overall = check._hs_raw_checks.overall;
-        if (isEmpty(overall.filter(el => !isEmpty(el)))) {
-          return acc;
-        }
 
-        overall.forEach(rawCheck => {
-          if (acc[rawCheck.metricSpecId] === undefined) {
-            acc[rawCheck.metricSpecId] = {
-              data: [],
-              threshold: rawCheck.threshold,
-              name: rawCheck.description,
-            };
+        overall.forEach(({ metricSpecId, value }) => {
+          if (customChecks.has(metricSpecId)) {
+            customChecks.set(
+              metricSpecId,
+              updateValue(customChecks.get(metricSpecId), value)
+            );
           }
-          acc[rawCheck.metricSpecId].data.push(rawCheck.value);
         });
+      });
 
-        return acc;
-      }, {});
-
-      return Object.values(dict);
+      return customChecks.values();
     }),
     share()
   );
@@ -166,3 +171,13 @@ export class MonitoringPageFacade {
     this.selectedColumnIndex$.next(index);
   }
 }
+
+const isRawMetric = (metricId: string): boolean => {
+  const systemMetrics = new Set([
+    'fake-id-error-rate',
+    'fake-id-latency',
+    'fake-id-counter',
+  ]);
+
+  return !systemMetrics.has(metricId);
+};
