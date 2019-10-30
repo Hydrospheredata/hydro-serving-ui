@@ -3,7 +3,8 @@
 .log {
   margin-bottom: 12px;
   background: white;
-  border: 2px solid $neutral-color-100;
+  border-radius: 4px;
+  box-shadow: $box-shadow;
   &__body {
     display: flex;
   }

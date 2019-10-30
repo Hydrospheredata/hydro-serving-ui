@@ -11,8 +11,8 @@
     .mdl-select & {
       padding: 6px 14px;
       min-height: auto;
-      font-family: 'Museo Sans Regular';
       color: $neutral-color-400;
+      font-family: $font-family-light;
 
       &.is-active,
       &:hover,

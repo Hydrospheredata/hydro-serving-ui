@@ -7,8 +7,9 @@
   &__label {
     left: 10px;
     top: 4px;
-    color: $neutral-color-400;
-
+    color: $neutral-color-500;
+    font-size: 14px;
+    font-family: $font-family-light;
     &:after {
       display: none;
     }
@@ -19,7 +20,8 @@
     padding: 4px 8px;
     border-radius: 0px;
     border-bottom: 1px $neutral-color-500 solid;
-    color: $neutral-color-800;
+    color: $neutral-color-900;
+    font-size: 14px;
 
     &:focus {
       border-bottom: 1px $primary-color-700 solid;

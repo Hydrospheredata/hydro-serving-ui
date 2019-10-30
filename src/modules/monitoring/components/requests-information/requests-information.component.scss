@@ -3,7 +3,8 @@
   background: white;
   padding: 12px;
   width: 320px;
-  border: 2px $neutral-color-100 solid;
+  border-radius: 4px;
+  box-shadow: $box-shadow;
   text-align: left;
   &__requests {
     color: $neutral-color-800;

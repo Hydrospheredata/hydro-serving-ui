@@ -1,0 +1,88 @@
+@import "variables";
+
+$box-shadow: 0px 1px 2px 0px #e2e2e2; 
+
+.container {
+  padding: 30px 36px;
+  margin-bottom: 60px;
+  position: relative;
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.container.isloading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #cccccc;
+  opacity: 0.5;
+  z-index: 999999;
+}
+
+.profiles {
+  &__header {
+    margin-bottom: 24px;
+    background: white;
+    padding: 12px 17px;
+    border-radius: 4px;
+    box-shadow: $box-shadow;
+    &-row {
+      padding: 2px 0;
+      display: flex;
+      align-items: baseline;
+    }
+    &-label {
+      // width: 100px;
+      font-size: 14px;
+      font-family: $font-family-light;
+      color: $neutral-color-700;
+      padding-right: 4px;
+    }
+    &-value {
+      color: $neutral-color-900;
+      font-family: $font-family-bold;
+      font-size: 20px;
+      padding: 0 4px;
+    }
+    &-input {
+      width: 240px;
+    }
+  }
+
+  &__error {
+    margin: 8px 0;
+  }
+
+  &__body {
+
+  }
+}
+
+.profile {
+  &__container {
+    background: white;
+    padding: 0 24px;  
+    width: calc(50% - 12px);
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 4px;
+    box-shadow: $box-shadow;
+  }
+  &__header {
+    text-align: center;
+    font-weight: bold;
+    text-decoration: underline;
+    color: $neutral-color-800;
+    padding: 8px;
+  }
+  &__container + &__container {
+    margin-left: 24px;
+  }
+}
+
+.comparison_histogram {
+  margin-top: 30px;
+}

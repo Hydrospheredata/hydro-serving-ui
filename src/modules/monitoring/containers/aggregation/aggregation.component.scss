@@ -13,7 +13,8 @@
 
 .aggregation {
   padding: 8px;
-  border: 2px $neutral-color-100 solid;
+  border-radius: 4px;
+  box-shadow: $box-shadow; 
   width: 766px;
   margin-right: 12px;
 
@@ -26,10 +27,11 @@
     line-height: 14px;
     margin-bottom: 8px;
     font-family: $font-family-light;
-    color: $neutral-color-400;
+    color: $neutral-color-700;
 
     &-count {
       font-family: $font-family-regular;
+      color: $neutral-color-900;
     }
   }
 

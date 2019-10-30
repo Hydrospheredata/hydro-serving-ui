@@ -2,8 +2,8 @@
   <ng-container *ngIf="dataAvailable; else noDataAvailable">
     <div class="aggregation__header">
       <div>
-        Showed:
-        <span class="aggregation__header-count">{{ countRequests }}</span>
+        Requests:
+        <span class="aggregation__header-count">{{ countRequests }} </span>
       </div>
       <div>
         <span>{{ firstId | checkIdToTime | moment }}</span> -
@@ -44,4 +44,3 @@
     No data available. Waiting data ...
   </div>
 </ng-template>
-

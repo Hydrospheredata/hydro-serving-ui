@@ -2,8 +2,10 @@
 
 .no-data {
   text-align: center;
-  font-size: 18px;
-  color: $neutral-color-500;
+  font-size: 14px;
+  font-family: $font-family-light;
+  color: $neutral-color-600;
+  font-style: italic;
   padding: 30px;
 }
 
