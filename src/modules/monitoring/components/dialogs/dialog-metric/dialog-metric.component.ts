@@ -139,7 +139,6 @@ export class DialogMetricComponent implements OnInit {
       thresholdCmpOperator,
     }: Partial<MetricSpecificationConfig> = {
       applicationName: '',
-      threshold: '',
       input: '',
       interval: 1,
       thresholdCmpOperator: { kind: '' },
