@@ -88,7 +88,7 @@ export class AggregationComponent implements OnChanges {
 
   cellColor(column: ChecksAggregation, featureName: string) {
     const { passed, checks } = column.features[featureName];
-    const value = (passed * checks) / 100;
+    const value = (1 / (checks / passed));
     return interpolateRdYlGn(value);
   }
 

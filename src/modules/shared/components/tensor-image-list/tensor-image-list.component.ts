@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ImageHelperService } from '@core/services/image-helper.service';
-import { getFiledNameByTensorDataType } from '@shared/utils/field-name-by-tensor-data-type';
-import { fromSnakeToCamel } from '@shared/utils/from-snake-to-camel';
 
 @Component({
   selector: 'hs-tensor-image-list',
@@ -56,14 +54,6 @@ export class TensorImageListComponent implements OnInit {
   constructor(private imageHelper: ImageHelperService) {}
 
   ngOnInit(): void {}
-
-  private getValue(tensorProto): any {
-    const field = fromSnakeToCamel(
-      getFiledNameByTensorDataType(tensorProto.dtype)
-    );
-    const data = tensorProto[field];
-    return data;
-  }
 
   private partitionArrayBySize(arr, size): number[][] {
     let offset = 0;

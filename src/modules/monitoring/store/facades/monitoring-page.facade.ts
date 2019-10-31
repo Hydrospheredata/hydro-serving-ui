@@ -17,7 +17,7 @@ import {
   selectSelectedMetrics,
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
-import { isNumber, isEmpty, isEqual } from 'lodash';
+import { isNumber, isEqual } from 'lodash';
 import { Subject, combineLatest, of, Observable, timer } from 'rxjs';
 import {
   filter,

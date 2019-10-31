@@ -10,7 +10,8 @@ import {
   Renderer2,
 } from '@angular/core';
 import { ChartConfig } from '@monitoring/interfaces';
-import { scaleLinear, extent, select, mouse, bisectLeft } from 'd3';
+import { scaleLinear, extent, select, mouse } from 'd3';
+import { isEmpty } from 'lodash';
 
 @Component({
   selector: 'hs-check-chart',
@@ -121,6 +122,10 @@ export class CheckChartComponent implements OnInit {
     const y = top + this.viewHeight;
 
     return `translate(${x}, ${y})`;
+  }
+
+  get noData(): boolean {
+    return isEmpty(this.xData) || isEmpty(this.yData);
   }
 
   constructor(private cdr: ChangeDetectorRef, private renderer2: Renderer2) {}
