@@ -73,7 +73,8 @@ export class AggregationComponent implements OnChanges {
   }
   get lastId(): string {
     if (this.aggregation.length) {
-      return this.aggregation[this.aggregation.length - 1].additionalInfo._hs_last_id;
+      return this.aggregation[this.aggregation.length - 1].additionalInfo
+        ._hs_last_id;
     }
   }
 
@@ -88,8 +89,14 @@ export class AggregationComponent implements OnChanges {
 
   cellColor(column: ChecksAggregation, featureName: string) {
     const { passed, checks } = column.features[featureName];
-    const value = (1 / (checks / passed));
-    return interpolateRdYlGn(value);
+
+    const ratio = checks / passed;
+
+    if (ratio) {
+      return interpolateRdYlGn(1 / ratio);
+    } else {
+      return '#70757a';
+    }
   }
 
   get dataAvailable(): boolean {
