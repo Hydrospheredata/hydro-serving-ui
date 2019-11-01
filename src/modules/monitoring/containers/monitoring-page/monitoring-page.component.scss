@@ -6,10 +6,6 @@
   &__aggregation {
     margin-bottom: 12px;
     display: flex;
-
-    &-item {
-      display: flex;
-    }
   }
 
   &__alert {
@@ -41,6 +37,34 @@
       &:hover {
         color: $neutral-color-800;
       }
+    }
+  }
+
+  &__metrics-mini {
+    padding: 8px;
+    margin-bottom: 12px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: $box-shadow;
+    display: flex;
+
+    &-name {
+      font-family: $font-family-light;
+      color: $neutral-color-900;
+    }
+
+    &-item {
+      width: 120px;
+    }
+
+    &-list {
+      display: flex;
+    }
+
+    &-check {}
+
+    &-item+&-item {
+      margin-left: 8px;
     }
   }
 }

@@ -34,8 +34,8 @@ export class LatencyCheckComponent {
       y: [],
     },
     size: {
-      width: 320,
-      height: 80,
+      width: 260,
+      height: 68,
       margins: {
         left: 24,
         right: 24,

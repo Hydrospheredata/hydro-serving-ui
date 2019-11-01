@@ -1,20 +1,20 @@
 <div class="monitoring-page">
   <ng-container *ngIf="!(error$ | async); else errorSection">
-    <div class="monitoring__aggregation">
+    <section class="monitoring__aggregation">
       <hs-aggregation
-        class="monitoring__aggregation-item"
         [aggregation]="checksAggreagation$ | async"
         (changedSelectedColumn)="onSelectedAggregationColumn($event)"
       >
       </hs-aggregation>
+
       <hs-requests-information
         [aggregation]="selectedAggregationColumn$ | async"
         [latency]="latency$ | async"
         [errors]="errorsChecks$ | async"
-        class="monitoring__aggregation-item"
       >
       </hs-requests-information>
-    </div>
+    </section>
+
     <hs-log
       [checks]="checks$ | async"
       [modelVersion]="modelVersion$ | async"

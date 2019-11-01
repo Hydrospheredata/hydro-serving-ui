@@ -12,12 +12,13 @@
 }
 
 .aggregation {
+  height: 100%;
   padding: 8px;
   border-radius: 4px;
-  box-shadow: $box-shadow; 
-  width: 766px;
+  box-shadow: $box-shadow;
+  width: 820px; 
   margin-right: 12px;
-
+  background: white;
   &__body {
     display: flex;
   }

@@ -1,20 +1,16 @@
 <div class="error-check">
   <div class="error-check__information">
     <div class="error-check__information-name">
-      Requests errors
+      Errors
     </div>
   </div>
-  <div class="error-check__chart">
-    <div
-      class="error-check__cell"
-      *ngFor="let item of data; let i = index"
-      [ngClass]="{ 'error-check__cell--failed': item }"
-    ></div>
+  <div class="error-check__count" [ngClass]="{'error-check__count--failed': errorsCount > 0}">
+    {{ errorsCount }}
   </div>
   <button
     (click)="openErrorsDialog()"
     class="error-check__button"
-    color="cyan"
+    color="accent"
     hs-button
     *ngIf="showButton"
   >

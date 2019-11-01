@@ -45,10 +45,18 @@ export class ErrorCheckComponent {
     });
   }
 
-  get showButton(): boolean {
+  get errorsCount(): number {
     if (this.data) {
       const withError = el => el !== null;
-      return this.data.filter(withError).length > 1;
+      return this.data.filter(withError).length;
+    }
+
+    return 0;
+  }
+
+  get showButton(): boolean {
+    if (this.data) {
+      return this.errorsCount > 1;
     }
 
     return false;

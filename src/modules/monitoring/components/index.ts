@@ -9,5 +9,4 @@ export * from './time-interval-select/time-interval-select.component';
 export * from './log/log.component';
 export * from './log-detail/log-detail.component';
 export * from './requests-information/requests-information.component';
-
 export * from './checks';

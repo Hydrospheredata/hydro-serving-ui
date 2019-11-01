@@ -16,8 +16,14 @@
       [scale]="yScale"
       position="left"
       [attr.transform]="yAxisTranslate"
+      *ngIf="!noData"
     ></g>
-    <g hsD3Axis [scale]="xScale" [attr.transform]="xAxisTranslate"></g>
+    <g
+      hsD3Axis
+      [scale]="xScale"
+      [attr.transform]="xAxisTranslate"
+      *ngIf="!noData"
+    ></g>
     <g
       [hs-d3line]
       [data]="mappedData"

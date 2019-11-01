@@ -1,40 +1,26 @@
 @import 'variables';
 
 .error-check {
-  width: 180px;
+  padding: 12px 0;
   &__information {
-    min-width: 120px;
+    min-width: 60px;
     &-name {
       font-size: 12px;
       color: $neutral-color-900;
       font-family: $font-family-light;
     }
   }
-  &__chart {
-    width: 140px;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  &__cell {
-    height: 12px;
-    width: 12px;
-    background-color:$supportive-color-green-400;
-    margin: 1px;
-    position: relative;
-    text-align: center;
-    &-index {
-      top: 16px;
-      color: $neutral-color-900;
-      position: relative;
-      font-size: 12px
-    }
-    &--failed {
-      background-color: $supportive-color-red-400;
-    }
-  }
-
   &__button {
     margin: 6px 0;
     width: 100%
+  }
+  &__count {
+    text-align: center;
+    margin: 8px 0;
+    font-size: 28px;
+    color: $supportive-color-green-400;
+    &--failed {
+      color: $supportive-color-red-400;
+    }
   }
 }
