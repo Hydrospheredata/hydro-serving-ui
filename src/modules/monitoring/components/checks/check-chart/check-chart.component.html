@@ -53,6 +53,9 @@
     [ngStyle]="{ display: mouseIn ? 'block' : 'none' }"
     #tooltip
   >
-  {{ tooltipText }}
+    {{ tooltipText }}
+  </div>
+  <div class="check-chart__no-data" *ngIf="noData">
+    <span>no data available</span>
   </div>
 </div>

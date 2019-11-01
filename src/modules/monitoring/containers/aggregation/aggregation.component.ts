@@ -95,11 +95,15 @@ export class AggregationComponent implements OnChanges {
     if (ratio) {
       return interpolateRdYlGn(1 / ratio);
     } else {
-      return '#70757a';
+      return this.greyColor;
     }
   }
 
   get dataAvailable(): boolean {
     return this.aggregation && this.aggregation.length > 0;
+  }
+
+  private get greyColor(): string {
+    return '#70757a';
   }
 }

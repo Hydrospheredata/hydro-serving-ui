@@ -13,7 +13,6 @@ import {
   selector: 'hs-latency-check',
   templateUrl: 'latency-check.component.html',
   styleUrls: ['latency-check.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LatencyCheckComponent {
   @Input()
@@ -25,7 +24,6 @@ export class LatencyCheckComponent {
           x: data.map((_, i) => i + 1),
           y: data,
         },
-        name: 'latency',
       };
     }
   }
@@ -45,6 +43,7 @@ export class LatencyCheckComponent {
         bottom: 24,
       },
     },
+    area: true,
     name: 'latency',
   };
 }

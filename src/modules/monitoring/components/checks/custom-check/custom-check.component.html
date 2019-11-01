@@ -3,8 +3,9 @@
     <div class="custom-check__information-name" *ngIf="check">
       <div>{{ name }}</div>
     </div>
-    <div class="custom-check__information-config" *ngIf="check">
-      <div>threshold: {{ threshold }}</div>
+    <div class="custom-check__information-config" *ngIf="check && threshold">
+      <div class="custom-check__information-label">threshold</div>
+      <div class="custom-check__information-value"> {{ threshold }}</div>
     </div>
   </div>
   <div class="custom-check__chart">

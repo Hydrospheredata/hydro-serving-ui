@@ -128,6 +128,10 @@ export class CheckChartComponent implements OnInit {
     return isEmpty(this.xData) || isEmpty(this.yData);
   }
 
+  get hasArea(): boolean {
+    return this.config.area;
+  }
+
   constructor(private cdr: ChangeDetectorRef, private renderer2: Renderer2) {}
 
   ngOnInit() {

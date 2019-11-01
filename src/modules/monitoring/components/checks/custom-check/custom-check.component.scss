@@ -6,7 +6,11 @@
   margin: 12px 0;
   background: white;
   border-radius: 4px;
-  box-shadow: $box-shadow; 
+  box-shadow: $box-shadow;
+  min-height: 160px;
+  &__chart {
+    width: 100%;
+  }
   &__information {
     min-width: 120px;
     max-width: 120px;
@@ -16,10 +20,18 @@
     &-name {
       font-size: 16px;
       font-family: $font-family-bold;
+      margin-bottom: 8px;
     }
     &-config {
       font-size: 12px;
-      color: $neutral-color-400;
+      line-height: 12px;
+      color: $neutral-color-500;
+    }
+    &-value {
+      color:$neutral-color-800;
+      font-family: $font-family-regular;
+      font-size: 12px;
+      line-height: 16px;
     }
   }
 }

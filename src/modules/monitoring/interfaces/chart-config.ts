@@ -14,5 +14,6 @@ export interface ChartConfig {
     x: number[];
     y: number[];
   };
+  area?: boolean;
   threshold?: number;
 }
