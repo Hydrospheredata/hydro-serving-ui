@@ -22,8 +22,8 @@
             *ngFor="let column of aggregation; let columnIndex = index"
             class="column"
             [attr.transform]="columnTranslate(columnIndex)"
-            (click)="changeActiveColumn(columnIndex)"
-            [ngClass]="{ 'column--active': selectedColumn === columnIndex }"
+            (click)="changeActiveColumn(column)"
+            [ngClass]="{ 'column--active': isSelected(column) }"
           >
             <rect
               *ngFor="let featureName of featureNames; let rowIndex = index"

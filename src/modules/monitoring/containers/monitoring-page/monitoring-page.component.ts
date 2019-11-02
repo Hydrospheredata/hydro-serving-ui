@@ -39,7 +39,7 @@ export class MonitoringPageComponent implements OnInit {
     });
   }
 
-  onSelectedAggregationColumn(index: number) {
-    this.facade.selectAggregationColumn(index);
+  onSelectedAggregationColumn(id: string) {
+    this.facade.selectAggregationColumn(id);
   }
 }

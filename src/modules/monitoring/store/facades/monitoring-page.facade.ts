@@ -72,12 +72,12 @@ export class MonitoringPageFacade {
     share()
   );
 
-  selectedColumnIndex$ = new Subject<number>();
+  selectedColumnId$ = new Subject<string>();
   selectedAggregation$ = combineLatest(
     this.checksAggreagtions$,
-    this.selectedColumnIndex$
+    this.selectedColumnId$
   ).pipe(
-    map(([agg, idx]) => agg[idx]),
+    map(([agg, id]) => agg.find(a => a.additionalInfo._id === id)),
     share()
   );
 
@@ -170,8 +170,8 @@ export class MonitoringPageFacade {
     this.store.dispatch(GetServiceStatusAction());
   }
 
-  selectAggregationColumn(index: number) {
-    this.selectedColumnIndex$.next(index);
+  selectAggregationColumn(id: string) {
+    this.selectedColumnId$.next(id);
   }
 }
 
