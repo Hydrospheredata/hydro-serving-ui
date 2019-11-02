@@ -27,7 +27,7 @@ export class CustomCheckComponent implements OnChanges {
       width: 960,
       height: 170,
       margins: {
-        left: 24,
+        left: 46,
         right: 12,
         top: 12,
         bottom: 18,

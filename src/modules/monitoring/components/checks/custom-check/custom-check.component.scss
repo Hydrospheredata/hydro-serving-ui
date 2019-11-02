@@ -21,6 +21,8 @@
       font-size: 16px;
       font-family: $font-family-bold;
       margin-bottom: 8px;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     &-config {
       font-size: 12px;
