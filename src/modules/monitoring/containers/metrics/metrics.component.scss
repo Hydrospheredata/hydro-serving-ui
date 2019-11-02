@@ -1,3 +1,5 @@
+@import "variables";
+
 .add-metric-button {
   margin: 8px 0;
   display: block;
@@ -5,7 +7,6 @@
 
 .wrap {
   padding: 24px;
-  height: 480px;
   overflow: scroll;
   position: relative;
   display: flex;
@@ -27,5 +28,43 @@
   justify-content: flex-end;
   .button {
     padding: 12px;
+  }
+}
+
+.metrics {
+  &__table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 12px;
+    &-row {
+      border-bottom: 1px solid $neutral-color-200;
+      &--disabled {
+        background: $neutral-color-100;
+      }
+    }
+    &-cell {
+      padding: 10px 6px;
+      color: $neutral-color-800;
+      font-family: $font-family-light;
+    }
+    &-head {
+      color: $neutral-color-900;
+      font-family: $font-family-bold;
+      font-size: 12px;
+    }
+  }
+}
+
+.metric {
+  &__actions {
+    display: flex;
+  }
+  &__action {
+    cursor: pointer;
+    color: $neutral-color-700;
+    margin-left: 8px;
+    &:hover {
+      color: $neutral-color-900;
+    }
   }
 }

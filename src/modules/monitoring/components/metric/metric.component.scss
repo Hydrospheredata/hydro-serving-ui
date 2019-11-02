@@ -3,11 +3,11 @@
 .metric {
   background: white;
   height: 150px;
-  width: calc((100% / 2) - 12px);
+  width: 100%;
   margin-bottom: 12px;
   display: inline-flex;
   margin-right: 12px;
-  border: 2px $neutral-color-200 solid;
+  box-shadow: $box-shadow;
   border-radius: 5px;
 
   &:hover {

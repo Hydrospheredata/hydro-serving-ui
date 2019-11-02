@@ -1,5 +1,4 @@
 <div class="wrap">
-  <div class="layout" *ngIf="layout"></div>
   <ng-container #container></ng-container>
 
   <div class="metrics">
@@ -9,15 +8,47 @@
     >
       add metric
     </button>
-    <div class="metrics__list">
-      <ng-container *ngFor="let metric of metrics$ | async">
-        <hs-metric
-          [metric]="metric"
-          (deleteMetric)="onDeleteMetric($event)"
-          (editMetric)="onEditMetric($event)"
-        ></hs-metric>
-      </ng-container>
-    </div>
+    <table class="metrics__table">
+      <tr class="metrics__table-row">
+        <td class="metrics__table-cell metrics__table-head">Name</td>
+        <td class="metrics__table-cell metrics__table-head">Application</td>
+        <td class="metrics__table-cell metrics__table-head">Operator</td>
+        <td class="metrics__table-cell metrics__table-head">Threshold</td>
+        <td class="metrics__table-cell metrics__table-head">Actions</td>
+      </tr>
+      <tr
+        class="metrics__table-row"
+        *ngFor="let metric of metrics$ | async"
+        [ngClass]="{
+          'metrics__table-row--disabled': metric.id.startsWith('fake-id')
+        }"
+      >
+        <td class="metrics__table-cell">{{ metric.name }}</td>
+        <td class="metrics__table-cell">
+          {{ metric.config?.applicationName }}
+        </td>
+        <td class="metrics__table-cell">
+          {{ metric.config?.thresholdCmpOperator?.kind }}
+        </td>
+        <td class="metrics__table-cell">{{ metric.config?.threshold }}</td>
+        <td class="metrics__table-cell">
+          <div class="metric__actions" *ngIf="!metric.id.startsWith('fake-id')">
+            <div class="metric__action" (click)="onEditMetric(metric)">
+              <hydro-icon
+                class="button__icon metric__action-icon"
+                type="icon-edit"
+              ></hydro-icon>
+            </div>
+            <div class="metric__action" (click)="onDeleteMetric(metric)">
+              <hydro-icon
+                class="button__icon metric__action-icon "
+                type="icon-remove"
+              ></hydro-icon>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
 
   <div class="buttons">

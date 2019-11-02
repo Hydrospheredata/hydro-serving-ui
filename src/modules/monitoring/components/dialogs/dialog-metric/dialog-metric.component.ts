@@ -1,7 +1,6 @@
 import { Observable, of } from 'rxjs';
 import {
   switchMap,
-  startWith,
   tap,
 } from 'rxjs/operators';
 
@@ -55,15 +54,15 @@ export class DialogMetricComponent implements OnInit {
   sources$: Observable<string[]>;
 
   metricSpecificationKinds: IMetricSpecificationKind[] = [
-    { name: 'Kolmogorov-Smirnov', className: 'KSMetricSpec' },
-    { name: 'Autoencoder', className: 'AEMetricSpec' },
-    { name: 'Image Autoencoder', className: 'ImageAEMetricSpec' },
-    { name: 'Random Forest', className: 'RFMetricSpec' },
-    { name: 'GAN', className: 'GANMetricSpec' },
-    { name: 'Latency', className: 'LatencyMetricSpec' },
-    { name: 'Counter', className: 'CounterMetricSpec' },
-    { name: 'Error Rate', className: 'ErrorRateMetricSpec' },
-    { name: 'Prediction Accuracy', className: 'AccuracyMetricSpec' },
+    // { name: 'Kolmogorov-Smirnov', className: 'KSMetricSpec' },
+    // { name: 'Autoencoder', className: 'AEMetricSpec' },
+    // { name: 'Image Autoencoder', className: 'ImageAEMetricSpec' },
+    // { name: 'Random Forest', className: 'RFMetricSpec' },
+    // { name: 'GAN', className: 'GANMetricSpec' },
+    // { name: 'Latency', className: 'LatencyMetricSpec' },
+    // { name: 'Counter', className: 'CounterMetricSpec' },
+    // { name: 'Error Rate', className: 'ErrorRateMetricSpec' },
+    // { name: 'Prediction Accuracy', className: 'AccuracyMetricSpec' },
     { name: 'Custom Model', className: 'CustomModelMetricSpec' },
   ];
 
@@ -89,11 +88,11 @@ export class DialogMetricComponent implements OnInit {
     this.createForm(this.metricSpecification);
 
     const kindChange = this.form.get('kind').valueChanges;
-    const withHealthChange = this.form
-      .get('withHealth')
-      .valueChanges.pipe(startWith(true));
+    // const withHealthChange = this.form
+    //   .get('withHealth')
+    //   .valueChanges.pipe(startWith(true));
 
-    withHealthChange.subscribe(() => this.withHealthChanged());
+    // withHealthChange.subscribe(() => this.withHealthChanged());
     kindChange.subscribe(() => this.kindChanged({}));
   }
 
@@ -101,34 +100,34 @@ export class DialogMetricComponent implements OnInit {
     return this.metricSpecification ? 'Edit' : 'Add';
   }
 
-  withHealthChanged() {
-    const withHealth: boolean = this.form.get('withHealth').value;
-    const kind: MetricSpecificationKind = this.form.get('kind').value;
+  // withHealthChanged() {
+  //   const withHealth: boolean = this.form.get('withHealth').value;
+  //   const kind: MetricSpecificationKind = this.form.get('kind').value;
 
-    switch (kind) {
-      case 'AEMetricSpec':
-      case 'ImageAEMetricSpec':
-      case 'RFMetricSpec':
-      case 'LatencyMetricSpec':
-        const config = this.form.get('config') as FormGroup;
-        if (withHealth) {
-          config.addControl('threshold', this.fb.control(''));
-        } else {
-          config.removeControl('threshold');
-        }
-        break;
-      case 'CustomModelMetricSpec':
-        const cfg = this.form.get('config') as FormGroup;
-        if (withHealth) {
-          cfg.addControl('threshold', this.fb.control(''));
-          cfg.addControl('thresholdCmpOperator', this.fb.control(''));
-        } else {
-          cfg.removeControl('threshold');
-          cfg.removeControl('thresholdCmpOperator');
-        }
-        break;
-    }
-  }
+  //   switch (kind) {
+  //     case 'AEMetricSpec':
+  //     case 'ImageAEMetricSpec':
+  //     case 'RFMetricSpec':
+  //     case 'LatencyMetricSpec':
+  //       const config = this.form.get('config') as FormGroup;
+  //       if (withHealth) {
+  //         config.addControl('threshold', this.fb.control(''));
+  //       } else {
+  //         config.removeControl('threshold');
+  //       }
+  //       break;
+  //     case 'CustomModelMetricSpec':
+  //       const cfg = this.form.get('config') as FormGroup;
+  //       if (withHealth) {
+  //         cfg.addControl('threshold', this.fb.control(''));
+  //         cfg.addControl('thresholdCmpOperator', this.fb.control(''));
+  //       } else {
+  //         cfg.removeControl('threshold');
+  //         cfg.removeControl('thresholdCmpOperator');
+  //       }
+  //       break;
+  //   }
+  // }
 
   kindChanged(
     {
@@ -144,7 +143,8 @@ export class DialogMetricComponent implements OnInit {
       thresholdCmpOperator: { kind: '' },
     }
   ) {
-    const withHealth: boolean = this.form.get('withHealth').value;
+    // const withHealth: boolean = this.form.get('withHealth').value;
+    const withHealth: boolean = true;
     const kind: MetricSpecificationKind = this.form.get('kind').value;
 
     let controls: { [controlName: string]: AbstractControl };
@@ -240,13 +240,13 @@ export class DialogMetricComponent implements OnInit {
       return;
     }
 
-    const { withHealth, config = {}, kind } = this.form.value;
+    const { config = {}, kind } = this.form.value;
 
     const params: IMetricSpecificationRequest = {
       name: this.form.value.name,
       modelVersionId: this.modelVersion.id,
       config,
-      withHealth,
+      withHealth: true,
       kind,
     };
 
@@ -266,16 +266,14 @@ export class DialogMetricComponent implements OnInit {
   private createForm(metricSpecification?: Partial<MetricSpecification>) {
     const defaultMetricSpecification: Partial<MetricSpecification> = {
       name: '',
-      withHealth: true,
-      kind: 'CounterMetricSpec',
+      kind: 'CustomModelMetricSpec',
     };
 
     const newMetricSpec = metricSpecification || defaultMetricSpecification;
-    const { name, withHealth, kind, config } = newMetricSpec;
+    const { name, kind, config } = newMetricSpec;
 
     this.form = this.fb.group({
       name: [name || '', Validators.required],
-      withHealth: { value: withHealth || true, disabled: false },
       config: this.fb.group({}),
       kind: [kind || '', Validators.required],
     });

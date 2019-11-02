@@ -33,7 +33,7 @@ export class MonitoringPageComponent implements OnInit {
     this.dialogService.createDialog({
       component: MetricsComponent,
       styles: {
-        width: '600px',
+        width: '800px',
         padding: '0px',
       },
     });
