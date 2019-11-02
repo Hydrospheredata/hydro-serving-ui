@@ -1,4 +1,7 @@
+@import "variables";
+
 .model-versions {
+  border: 1px $neutral-color-200 solid;
   &__header {
     padding: 2px 16px;
     border-top-left-radius: 2px;

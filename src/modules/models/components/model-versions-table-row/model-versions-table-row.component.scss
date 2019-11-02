@@ -2,14 +2,24 @@
 
 .model-version {
   &__model-version {
-    color: $neutral-color-700;
+    color: $neutral-color-900;
   }
   &__runtime {
-    color: $neutral-color-700;
+    color: $neutral-color-900;
     font-family: $font-family-light;
+    &-tag {
+      display: inline-block;
+      margin-left: 4px;
+      background: $neutral-color-100;
+      color: $neutral-color-700;
+      font-size: 10px;
+      line-height: 12px;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
   }
   &__created-time {
-    color: $neutral-color-700;
+    color: $neutral-color-900;
     font-family: $font-family-light;
     font-size: 12px;
   }

@@ -82,7 +82,7 @@
 
   &__cell {
     background: white;
-    box-shadow: 0 0 4px -2px hsla(200, 50, 20, .5);
+    box-shadow: $box-shadow; 
     border-radius: 2px;
 
     &-title {

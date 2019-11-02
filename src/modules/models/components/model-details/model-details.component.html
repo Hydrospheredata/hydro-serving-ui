@@ -9,13 +9,11 @@
     </div>
   </header>
   <div class="content__body">
-    <div class="content__cell">
-      <div class="content__cell-title">Versions</div>
-      <div class="versions">
-        <hs-model-versions-table
-          [modelVersions]="modelVersions$ | async"
-        ></hs-model-versions-table>
-      </div>
+    <!-- <div class="content__cell-title">Versions</div> -->
+    <div class="versions">
+      <hs-model-versions-table
+        [modelVersions]="modelVersions$ | async"
+      ></hs-model-versions-table>
     </div>
   </div>
 </section>

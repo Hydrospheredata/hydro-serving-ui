@@ -109,13 +109,11 @@
   </section>
   <section class="content__cell mv-details__servables">
     <div class="content__cell-title">Servables</div>
-    <div class="content__cell-body">
-      <hs-servables-table
-        [servables]="servables$ | async"
-        (showedLog)="showServableLogs($event)"
-      >
-      </hs-servables-table>
-    </div>
+    <hs-servables-table
+      [servables]="servables$ | async"
+      (showedLog)="showServableLogs($event)"
+    >
+    </hs-servables-table>
   </section>
 
   <div class="log" [ngClass]="{ 'log--is-visible': globalLog }">

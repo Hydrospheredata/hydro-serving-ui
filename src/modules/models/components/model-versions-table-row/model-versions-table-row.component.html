@@ -2,7 +2,10 @@
   {{ modelVersion.modelVersion }}
 </td>
 <td class="hydro-table-body__cell model-version__runtime">
-  {{ modelVersion.runtime?.name }}
+  <span>{{ modelVersion.runtime?.name }}</span
+  ><span class="model-version__runtime-tag"
+    >{{ modelVersion.runtime?.tag }}
+  </span>
 </td>
 <td class="hydro-table-body__cell">
   <span class="cs-text-overflow-ellipsis model-version__created-time">{{
@@ -30,7 +33,7 @@
       [routerLink]="['../../applications', appName]"
     >
       {{ appName }}
-  </div>
+    </div>
   </div>
   <ng-template #emptyApplication>
     <span class="applications-is-empty">-</span>
@@ -45,7 +48,7 @@
       <span hs-tooltip="Profiler">
         <hydro-icon type="profiler" class="model-version__actions-icon">
         </hydro-icon>
-    </span>
+      </span>
     </div>
     <div
       class="model-version__actions-item"
