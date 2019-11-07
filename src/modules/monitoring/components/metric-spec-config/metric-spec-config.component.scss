@@ -8,3 +8,10 @@
   font-size: 14px;
   font-family: $font-family-light;
 }
+
+.metric-spec-config {
+  &__error-list {
+    width: 180px;
+    position: relative;
+  }
+}

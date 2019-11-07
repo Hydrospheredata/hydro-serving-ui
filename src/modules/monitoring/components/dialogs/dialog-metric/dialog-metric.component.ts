@@ -1,8 +1,5 @@
 import { Observable, of } from 'rxjs';
-import {
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 import { Application } from '@shared/models/application.model';
 
@@ -21,6 +18,7 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { ApplicationsFacade } from '@applications/store';
+import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { ModelsFacade } from '@models/store';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { ModelVersion } from '@shared/_index';
@@ -72,10 +70,11 @@ export class DialogMetricComponent implements OnInit {
     private fb: FormBuilder,
     private facade: MonitoringPageFacade,
     private applicationsFacade: ApplicationsFacade,
-    private modelsFacade: ModelsFacade
+    private modelsFacade: ModelsFacade,
+    private customValidators: CustomValidatorsService
   ) {
     this.modelVersion$ = this.modelsFacade.selectedModelVersion$.pipe(
-      tap( mv => this.modelVersion = mv )
+      tap(mv => (this.modelVersion = mv))
     );
     this.applications$ = this.applicationsFacade.allApplications$;
 
@@ -149,76 +148,84 @@ export class DialogMetricComponent implements OnInit {
 
     let controls: { [controlName: string]: AbstractControl };
     switch (kind) {
-      case 'AccuracyMetricSpec':
-        this.removeConfig();
-        break;
-      case 'ImageAEMetricSpec':
-        controls = {
-          applicationName: this.fb.control(applicationName),
-        };
-        if (withHealth) {
-          controls.threshold = this.fb.control(threshold);
-        }
-        this.form.setControl('config', this.fb.group(controls));
-        break;
-      case 'AEMetricSpec':
-      case 'RFMetricSpec':
-        controls = {
-          input: this.fb.control(input),
-          applicationName: this.fb.control(applicationName),
-        };
+      // case 'AccuracyMetricSpec':
+      //   this.removeConfig();
+      //   break;
+      // case 'ImageAEMetricSpec':
+      //   controls = {
+      //     applicationName: this.fb.control(applicationName),
+      //   };
+      //   if (withHealth) {
+      //     controls.threshold = this.fb.control(threshold);
+      //   }
+      //   this.form.setControl('config', this.fb.group(controls));
+      //   break;
+      // case 'AEMetricSpec':
+      // case 'RFMetricSpec':
+      //   controls = {
+      //     input: this.fb.control(input),
+      //     applicationName: this.fb.control(applicationName),
+      //   };
 
-        if (withHealth) {
-          controls.threshold = this.fb.control(threshold);
-        }
+      //   if (withHealth) {
+      //     controls.threshold = this.fb.control(threshold);
+      //   }
 
-        this.form.setControl('config', this.fb.group(controls));
-        break;
-      case 'GANMetricSpec':
-        this.form.setControl(
-          'config',
-          this.fb.group({
-            input: this.fb.control(input),
-            applicationName: this.fb.control(applicationName),
-          })
-        );
-        break;
-      case 'ErrorRateMetricSpec':
-      case 'LatencyMetricSpec':
-        controls = {
-          interval: this.fb.control(interval, [Validators.required]),
-        };
+      //   this.form.setControl('config', this.fb.group(controls));
+      //   break;
+      // case 'GANMetricSpec':
+      //   this.form.setControl(
+      //     'config',
+      //     this.fb.group({
+      //       input: this.fb.control(input),
+      //       applicationName: this.fb.control(applicationName),
+      //     })
+      //   );
+      //   break;
+      // case 'ErrorRateMetricSpec':
+      // case 'LatencyMetricSpec':
+      //   controls = {
+      //     interval: this.fb.control(interval, [Validators.required]),
+      //   };
 
-        if (withHealth) {
-          controls.threshold = this.fb.control(threshold);
-        }
+      //   if (withHealth) {
+      //     controls.threshold = this.fb.control(threshold);
+      //   }
 
-        this.form.setControl('config', this.fb.group(controls));
-        break;
-      case 'CounterMetricSpec':
-        this.form.setControl(
-          'config',
-          this.fb.group({
-            interval: this.fb.control(interval, [Validators.required]),
-          })
-        );
-        break;
-      case 'KSMetricSpec':
-        this.form.setControl(
-          'config',
-          this.fb.group({
-            input: this.fb.control(input, Validators.required),
-          })
-        );
-        break;
+      //   this.form.setControl('config', this.fb.group(controls));
+      //   break;
+      // case 'CounterMetricSpec':
+      //   this.form.setControl(
+      //     'config',
+      //     this.fb.group({
+      //       interval: this.fb.control(interval, [Validators.required]),
+      //     })
+      //   );
+      //   break;
+      // case 'KSMetricSpec':
+      //   this.form.setControl(
+      //     'config',
+      //     this.fb.group({
+      //       input: this.fb.control(input, Validators.required),
+      //     })
+      //   );
+      //   break;
       case 'CustomModelMetricSpec':
         controls = {
           applicationName: this.fb.control(applicationName),
         };
 
         if (withHealth) {
-          controls.threshold = this.fb.control(threshold);
-          controls.thresholdCmpOperator = this.fb.control(thresholdCmpOperator);
+          controls.threshold = this.fb.control(threshold, [
+            Validators.required,
+            this.customValidators.pattern(
+              this.customValidators.VALIDATION_PATTERNS.floatNumber
+            ),
+          ]);
+          controls.thresholdCmpOperator = this.fb.control(
+            thresholdCmpOperator,
+            Validators.required
+          );
         }
         this.form.setControl('config', this.fb.group(controls));
     }
@@ -252,9 +259,9 @@ export class DialogMetricComponent implements OnInit {
 
     if (this.metricSpecification) {
       params.id = this.metricSpecification.id;
-      this.facade.editMetric( params );
+      this.facade.editMetric(params);
     } else {
-      this.facade.addMetric( params);
+      this.facade.addMetric(params);
     }
     this.onClose();
   }
@@ -273,7 +280,7 @@ export class DialogMetricComponent implements OnInit {
     const { name, kind, config } = newMetricSpec;
 
     this.form = this.fb.group({
-      name: [name || '', Validators.required],
+      name: [name || '', [Validators.required, Validators.maxLength(50)]],
       config: this.fb.group({}),
       kind: [kind || '', Validators.required],
     });

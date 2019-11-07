@@ -11,7 +11,7 @@ import { ModelVersionLogService } from '@models/services/model-version-log.servi
 import { ModelsFacade } from '@models/store';
 import { ServableLogsComponent } from '@servables/containers';
 import { ModelVersionStatus, ModelVersion } from '@shared/_index';
-import * as _ from 'lodash';
+import { isEmpty } from 'lodash';
 import { map } from 'rxjs/operators';
 @Component({
   selector: 'hydro-model-version-details',
@@ -79,6 +79,6 @@ export class ModelVersionDetailsComponent {
   }
 
   isEmpty(obj: object): boolean {
-    return _.isEmpty(obj);
+    return isEmpty(obj);
   }
 }

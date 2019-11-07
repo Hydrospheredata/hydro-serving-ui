@@ -21,6 +21,7 @@ export class CustomValidatorsService {
   private _VALIDATION_PATTERNS = {
     text: /[a-zA-Z]+/,
     number: /^[0-9]+$/,
+    floatNumber: /^[+-]?\d+(\.\d+)?$/,
     textAndNumber: /[a-zA-Z0-9]+/,
     name: /[a-zA-Z_0-9-]+/,
   };

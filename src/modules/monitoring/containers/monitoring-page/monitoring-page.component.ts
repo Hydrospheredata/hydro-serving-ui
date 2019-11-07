@@ -34,6 +34,7 @@ export class MonitoringPageComponent implements OnInit {
       component: MetricsComponent,
       styles: {
         width: '800px',
+        height: '600px',
         padding: '0px',
       },
     });

@@ -18,7 +18,7 @@ import {
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
 import { isNumber, isEqual } from 'lodash';
-import { Subject, combineLatest, of, Observable, timer } from 'rxjs';
+import { Subject, combineLatest, of, Observable, timer, BehaviorSubject } from 'rxjs';
 import {
   filter,
   switchMap,
@@ -28,6 +28,7 @@ import {
   catchError,
   startWith,
   pairwise,
+  tap,
 } from 'rxjs/operators';
 
 @Injectable()
@@ -41,6 +42,7 @@ export class MonitoringPageFacade {
     select(selectSelectedMetrics),
     filter(val => val !== undefined)
   );
+  detailedLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   checksAggreagtions$: Observable<
     ChecksAggregation[]
@@ -48,12 +50,14 @@ export class MonitoringPageFacade {
     switchMap(modelVersion => {
       return timer(0, 5000).pipe(
         switchMap(() => {
+          this.detailedLoading$.next(true);
           return this.monitoring
             .getChecksAggregation({
               modelVersionId: modelVersion.id,
             })
             .pipe(
               catchError(err => {
+                this.detailedLoading$.next(false);
                 this.error$.next(err);
                 return of([]);
               })
@@ -66,7 +70,10 @@ export class MonitoringPageFacade {
         }),
         map(([_, currentRes]) =>
           currentRes.map(rawCheck => this.checkAggBuilder.build(rawCheck))
-        )
+        ),
+        tap(() => {
+          this.detailedLoading$.next(false);
+        })
       );
     }),
     share()
