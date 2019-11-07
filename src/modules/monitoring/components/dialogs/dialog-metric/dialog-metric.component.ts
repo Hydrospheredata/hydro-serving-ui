@@ -280,7 +280,14 @@ export class DialogMetricComponent implements OnInit {
     const { name, kind, config } = newMetricSpec;
 
     this.form = this.fb.group({
-      name: [name || '', [Validators.required, Validators.maxLength(50)]],
+      name: [
+        name || '',
+        [
+          Validators.required,
+          Validators.maxLength(50),
+          this.customValidators.metricNameFormat(),
+        ],
+      ],
       config: this.fb.group({}),
       kind: [kind || '', Validators.required],
     });

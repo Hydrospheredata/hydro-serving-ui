@@ -60,3 +60,10 @@ label.disabled {
 .config {
   margin-bottom: 12px
 }
+
+.metric {
+  &__error-list {
+    position: relative;
+    width: 100%
+  }
+}

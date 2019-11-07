@@ -107,6 +107,19 @@ export class CustomValidatorsService {
     };
   }
 
+  public metricNameFormat(): ValidatorFn {
+    return (control: FormControl): ValidationErrors => {
+      const metricName = control.value;
+      const reg = /^[a-z][a-zA-Z\-_\d]*$/;
+
+      if (reg.test(metricName)) {
+        return null;
+      } else {
+        return { format: 'Format: must start with any word character and contain [a-Z, 1-9,-,_] characters' };
+      }
+    };
+  }
+
   public pattern(pattern): ValidatorFn {
     return (control: FormControl) => {
       if (!pattern.test(control.value)) {
