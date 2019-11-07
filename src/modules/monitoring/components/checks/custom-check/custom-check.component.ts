@@ -24,10 +24,10 @@ export class CustomCheckComponent implements OnChanges {
       y: [],
     },
     size: {
-      width: 960,
+      width: 1000,
       height: 170,
       margins: {
-        left: 46,
+        left: 86,
         right: 12,
         top: 12,
         bottom: 18,

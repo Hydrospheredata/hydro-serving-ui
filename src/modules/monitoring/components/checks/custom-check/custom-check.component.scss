@@ -1,28 +1,27 @@
 @import "variables";
 
 .custom-check {
-  display: flex;
+  // display: flex;
   width: 1100px;
   margin: 12px 0;
   background: white;
   border-radius: 4px;
   box-shadow: $box-shadow;
-  min-height: 160px;
   &__chart {
     width: 100%;
   }
   &__information {
-    min-width: 120px;
-    max-width: 120px;
+    display: flex;
     color: $neutral-color-800;
     font-family: $font-family-light;
     padding: 8px;
+    align-items: center;
     &-name {
       font-size: 16px;
       font-family: $font-family-bold;
-      margin-bottom: 8px;
       text-overflow: ellipsis;
       overflow: hidden;
+      margin-right: 12px;
     }
     &-config {
       font-size: 12px;
