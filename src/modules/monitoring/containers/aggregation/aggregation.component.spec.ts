@@ -53,9 +53,10 @@ describe('Aggregation component', () => {
         features: {
           fake_check: {
             passed: 0,
-            checks: 1,
+            checked: 1,
           },
         },
+        metrics: {},
         additionalInfo: {
           _hs_first_id: '1',
           _hs_last_id: '2',

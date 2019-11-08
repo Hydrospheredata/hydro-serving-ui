@@ -25,6 +25,14 @@
       *ngIf="!noData"
     ></g>
     <g
+      *ngFor="let plotBand of plotBands"
+      [hs-d3-plot-band]="plotBand"
+      [height]="viewHeight"
+      [xScale]="xScale"
+      [attr.transform]="dataTranslate"
+      fill="#e12d393d"
+    ></g>
+    <g
       [hs-d3line]
       [data]="mappedData"
       [xScale]="xScale"
@@ -40,7 +48,7 @@
       #trackableRect
     ></rect>
     <g
-      *ngIf="threshold"
+      *ngIf="threshold && !noData"
       [attr.clip-path]="clipUrl"
       [hs-d3threshold]="threshold"
       [yScale]="yScale"

@@ -52,7 +52,7 @@ describe('CustomChecks component', () => {
   });
   describe('with not empty custom metrics list', () => {
     beforeEach(() => {
-      component.customChecks = [{ name: 'custom', data: [], threshold: 0 }];
+      component.customChecks = [{ name: 'custom', data: [], threshold: 0, health: [] }];
       fixture.detectChanges();
     });
 

@@ -1,4 +1,10 @@
-import { Component, Input, SimpleChanges, OnChanges, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  SimpleChanges,
+  OnChanges,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CustomCheck, ChartConfig } from '@monitoring/interfaces';
 
 @Component({
@@ -33,6 +39,7 @@ export class CustomCheckComponent implements OnChanges {
         bottom: 18,
       },
     },
+    plotBands: [],
     name: 'custom',
   };
 
@@ -45,9 +52,37 @@ export class CustomCheckComponent implements OnChanges {
           x: check.data.map((_, i) => i + 1),
           y: check.data,
         },
+        plotBands: this.buildPlotBands(check.health),
         threshold: check.threshold,
         name: check.name,
       };
     }
+  }
+
+  private buildPlotBands(
+    health: boolean[]
+  ): Array<{ from: number; to: number }> {
+    let currentBand: { from: number; to: number };
+    const res = [];
+    health.forEach((check, idx) => {
+      if (!check) {
+        if (currentBand) {
+          currentBand.to = idx + 1;
+        } else {
+          currentBand = { from: idx + 1, to: idx + 1 };
+        }
+      } else {
+        if (currentBand) {
+          res.push({ ...currentBand });
+          currentBand = undefined;
+        }
+      }
+    });
+
+    if (currentBand) {
+      res.push({ ...currentBand });
+    }
+
+    return res;
   }
 }

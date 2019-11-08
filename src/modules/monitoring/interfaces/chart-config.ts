@@ -9,6 +9,7 @@ export interface ChartConfig {
       top?: number;
     };
   };
+  plotBands: Array<{ from: number; to: number }>;
   name: string;
   data?: {
     x: number[];

@@ -1,10 +1,8 @@
 import {
   Component,
-  OnInit,
   ChangeDetectionStrategy,
   Input,
 } from '@angular/core';
-import { SonarMetricData } from '@shared/_index';
 
 @Component({
   selector: '[hs-d3-plot-band]',
@@ -17,23 +15,19 @@ import { SonarMetricData } from '@shared/_index';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class D3PlotBandComponent implements OnInit {
-  @Input() 'hs-d3-plot-band': {from: SonarMetricData, to: SonarMetricData};
+export class D3PlotBandComponent {
+  @Input() 'hs-d3-plot-band': {from: number, to: number};
   @Input() height;
   @Input()
   set xScale(scale) {
     if (this['hs-d3-plot-band']) {
-      const from = this['hs-d3-plot-band'].from.timestamp;
-      const to = this['hs-d3-plot-band'].to.timestamp;
-
-      const y = scale(new Date(to));
-      this.x = scale(new Date(from));
+      const {to, from} = this['hs-d3-plot-band'];
+      const y = scale(to);
+      this.x = scale(from);
       this.width = y - this.x;
     }
   }
 
   x: number = 0;
   width: number = 0;
-
-  ngOnInit() {}
 }

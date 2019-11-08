@@ -52,6 +52,10 @@ export class AggregationComponent implements OnChanges {
     return this.featureNames.length * 14;
   }
 
+  get metricsCanvasHeight() {
+    return this.metricNames.length * 14;
+  }
+
   columnTranslate(index): string {
     return `translate(${index * this.CELL_SIZE +
       this.COLUMN_MARGIN_RIGHT * index}, 0)`;
@@ -88,6 +92,10 @@ export class AggregationComponent implements OnChanges {
     return Object.keys(this.aggregation[0].features);
   }
 
+  get metricNames(): string[] {
+    return Object.keys(this.aggregation[0].metrics);
+  }
+
   changeActiveColumn(aggregation: ChecksAggregation) {
     const id = aggregation.additionalInfo._id;
     this.selectedColumnId = id;
@@ -95,9 +103,29 @@ export class AggregationComponent implements OnChanges {
   }
 
   cellColor(column: ChecksAggregation, featureName: string) {
-    const { passed, checks } = column.features[featureName];
+    if (column.features[featureName] === undefined) {
+      return this.greyColor;
+    }
 
-    const ratio = checks / passed;
+    const { passed, checked } = column.features[featureName];
+
+    const ratio = checked / passed;
+
+    if (ratio) {
+      return interpolateRdYlGn(1 / ratio);
+    } else {
+      return this.greyColor;
+    }
+  }
+
+  metricCellColor(column: ChecksAggregation, metricName: string) {
+    if (column.metrics[metricName] === undefined) {
+      return this.greyColor;
+    }
+
+    const { passed, checked } = column.metrics[metricName];
+
+    const ratio = checked / passed;
 
     if (ratio) {
       return interpolateRdYlGn(1 / ratio);

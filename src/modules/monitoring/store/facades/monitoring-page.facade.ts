@@ -17,8 +17,16 @@ import {
   selectSelectedMetrics,
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { isNumber, isEqual } from 'lodash';
-import { Subject, combineLatest, of, Observable, timer, BehaviorSubject } from 'rxjs';
+import {
+  Subject,
+  combineLatest,
+  of,
+  Observable,
+  timer,
+  BehaviorSubject,
+} from 'rxjs';
 import {
   filter,
   switchMap,
@@ -42,12 +50,17 @@ export class MonitoringPageFacade {
     select(selectSelectedMetrics),
     filter(val => val !== undefined)
   );
+
+  customMetrics$ = this.selectedMetrics$.pipe(
+    map(metrics => metrics.filter(isCustomMetric))
+  );
   detailedLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  checksAggreagtions$: Observable<
-    ChecksAggregation[]
-  > = this.modelVersion$.pipe(
-    switchMap(modelVersion => {
+  checksAggreagtions$: Observable<ChecksAggregation[]> = combineLatest(
+    this.modelVersion$,
+    this.customMetrics$
+  ).pipe(
+    switchMap(([modelVersion, metrics]) => {
       return timer(0, 5000).pipe(
         switchMap(() => {
           this.detailedLoading$.next(true);
@@ -69,7 +82,9 @@ export class MonitoringPageFacade {
           return !isEqual(prev, cur);
         }),
         map(([_, currentRes]) =>
-          currentRes.map(rawCheck => this.checkAggBuilder.build(rawCheck))
+          currentRes.map(rawCheck =>
+            this.checkAggBuilder.build(rawCheck, metrics)
+          )
         ),
         tap(() => {
           this.detailedLoading$.next(false);
@@ -120,29 +135,34 @@ export class MonitoringPageFacade {
     filter(val => val !== undefined),
     share()
   );
-  customChecks$ = combineLatest(this.checks$, this.selectedMetrics$).pipe(
+  customChecks$ = combineLatest(this.checks$, this.customMetrics$).pipe(
     map(([checks, metrics]) => {
-      const rawMetrics: Array<[string, CustomCheck]> = metrics
-        .filter(({ id }) => isRawMetric(id))
-        .map(
-          ({ id, name, config: { threshold } }) =>
-            [id, { data: [], name, threshold }] as [string, CustomCheck]
-        );
+      const rawMetrics: Array<[string, CustomCheck]> = metrics.map(
+        ({ id, name, config: { threshold } }) =>
+          [id, { data: [], name, threshold, health: [] }] as [
+            string,
+            CustomCheck
+          ]
+      );
 
       const customChecks: Map<string, CustomCheck> = new Map(rawMetrics);
 
-      const updateValue = (check: CustomCheck, value) => {
-        return { ...check, data: [...check.data, value] };
+      const updateValue = (check: CustomCheck, value, health) => {
+        return {
+          ...check,
+          data: [...check.data, value],
+          health: [...check.health, health],
+        };
       };
 
       checks.forEach(check => {
         const overall = check._hs_raw_checks.overall;
 
-        overall.forEach(({ metricSpecId, value }) => {
+        overall.forEach(({ metricSpecId, value, check: health }) => {
           if (customChecks.has(metricSpecId)) {
             customChecks.set(
               metricSpecId,
-              updateValue(customChecks.get(metricSpecId), value)
+              updateValue(customChecks.get(metricSpecId), value, health)
             );
           }
         });
@@ -182,12 +202,12 @@ export class MonitoringPageFacade {
   }
 }
 
-const isRawMetric = (metricId: string): boolean => {
+const isCustomMetric = (metric: MetricSpecification): boolean => {
   const systemMetrics = new Set([
     'fake-id-error-rate',
     'fake-id-latency',
     'fake-id-counter',
   ]);
 
-  return !systemMetrics.has(metricId);
+  return !systemMetrics.has(metric.id);
 };

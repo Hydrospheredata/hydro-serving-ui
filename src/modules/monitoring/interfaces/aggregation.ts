@@ -11,6 +11,7 @@ export interface AdditionalCheckInfo {
   _hs_requests: number;
   _hs_model_name: string;
   _id: string;
+  _hs_metrics: { [metricName: string]: { checks: number; passed: number } };
 }
 
 export interface Feautures {
@@ -19,6 +20,11 @@ export interface Feautures {
 
 export type ChecksAggregationResponse = Feautures & AdditionalCheckInfo;
 export interface ChecksAggregation {
-  features: Feautures;
+  features: {
+    [featureName: string]: { checked: number; passed: number };
+  };
+  metrics: {
+    [metricName: string]: { checked: number; passed: number };
+  };
   additionalInfo: Partial<AdditionalCheckInfo>;
 }

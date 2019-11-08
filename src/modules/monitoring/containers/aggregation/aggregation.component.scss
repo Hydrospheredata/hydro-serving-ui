@@ -53,6 +53,11 @@
     }
   }
 
+  &__metrics-label, &__features-label {
+    color: $neutral-color-900;
+    font-family: $font-family-bold;
+  }
+
   &__message {
     text-align: center;
     color: $neutral-color-600;

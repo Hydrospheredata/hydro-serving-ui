@@ -43,6 +43,7 @@ export class LatencyCheckComponent {
         bottom: 24,
       },
     },
+    plotBands: [],
     area: true,
     name: 'latency',
   };

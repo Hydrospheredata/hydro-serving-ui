@@ -22,5 +22,6 @@ export interface RawCheck {
 export interface CustomCheck {
   name: string;
   data: number[];
+  health: number[];
   threshold: number;
 }

@@ -34,6 +34,7 @@ export class CheckChartComponent implements OnInit {
         bottom: 24,
       },
     },
+    plotBands: [],
     name: 'default',
     data: {
       x: [],
@@ -130,6 +131,14 @@ export class CheckChartComponent implements OnInit {
 
   get hasArea(): boolean {
     return this.config.area;
+  }
+
+  get plotBands(): Array<{ from: number; to: number }> {
+    if (this.noData) {
+      return [];
+    }
+
+    return this.config.plotBands;
   }
 
   constructor(private cdr: ChangeDetectorRef, private renderer2: Renderer2) {}
