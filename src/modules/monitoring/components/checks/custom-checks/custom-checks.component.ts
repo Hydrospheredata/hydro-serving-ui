@@ -1,5 +1,12 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CustomCheck } from '@monitoring/interfaces';
+import { MetricSpecification } from '@shared/models/metric-specification.model';
 
 @Component({
   selector: 'hs-custom-checks',
@@ -8,6 +15,7 @@ import { CustomCheck } from '@monitoring/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomChecksComponent {
+  @Input() customMetrics: MetricSpecification[] = [];
   @Input() customChecks: CustomCheck[] = [];
   @Output() openSettings = new EventEmitter();
 
@@ -19,7 +27,11 @@ export class CustomChecksComponent {
     this.openSettings.emit();
   }
 
-  get isEmptyList(): boolean {
+  get emptyMetrics(): boolean {
+    return this.customMetrics.length === 0;
+  }
+
+  get noData(): boolean {
     return !this.customChecks || this.customChecks.length === 0;
   }
 }

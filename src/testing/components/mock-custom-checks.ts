@@ -5,5 +5,6 @@ import { Input, Component } from '@angular/core';
   template: '',
 })
 export class CustomChecksComponent {
+  @Input() customMetrics: any[];
   @Input() customChecks: any[];
 }

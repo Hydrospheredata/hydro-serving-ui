@@ -20,6 +20,7 @@
       [modelVersion]="modelVersion$ | async"
     ></hs-log>
     <hs-custom-checks
+      [customMetrics]="customMetrics$ | async" 
       [customChecks]="customChecks$ | async"
       (openSettings)="openSettings()"
     ></hs-custom-checks>

@@ -9,12 +9,10 @@ import { MonitoringPageFacade } from '@monitoring/store/facades';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonitoringPageComponent implements OnInit {
-
-  // TODO: plotbands + normalize aggregation
-
   checks$ = this.facade.checks$;
   checksAggreagation$ = this.facade.checksAggreagtions$;
   customChecks$ = this.facade.customChecks$;
+  customMetrics$ = this.facade.customMetrics$;
   errorsChecks$ = this.facade.errorsChecks$;
   latency$ = this.facade.latency$;
   modelVersion$ = this.facade.modelVersion$;

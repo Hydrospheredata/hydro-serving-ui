@@ -3,6 +3,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { SharedModule } from '@shared/shared.module';
 import { CustomCheckComponent } from '@testing/components';
+import { MockMetricSpecification } from '@testing/factories/metric-specification';
 import { CustomChecksComponent } from './custom-checks.component';
 
 describe('CustomChecks component', () => {
@@ -52,6 +53,7 @@ describe('CustomChecks component', () => {
   });
   describe('with not empty custom metrics list', () => {
     beforeEach(() => {
+      component.customMetrics = [MockMetricSpecification];
       component.customChecks = [{ name: 'custom', data: [], threshold: 0, health: [] }];
       fixture.detectChanges();
     });
