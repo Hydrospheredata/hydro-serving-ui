@@ -91,7 +91,7 @@ export class DialogMetricComponent implements OnInit {
     this.applications$ = this.store.select(fromApplications.getAllApplications);
 
     this.sources$ = this.modelVersion$.pipe(
-      switchMap(modelVersion => of(this.getInputNames(modelVersion)))
+      switchMap(modelVersion => of(this.getInputNames(modelVersion).concat(this.geOutputNames(modelVersion))))
     );
   }
 
@@ -243,6 +243,17 @@ export class DialogMetricComponent implements OnInit {
     const getName = input => input.name;
     const res = modelVersion.modelContract.predict.inputs.map(getName);
 
+    return res;
+  }
+
+  geOutputNames(modelVersion: ModelVersion): string[] {
+    if (!modelVersion) {
+      return [];
+    }
+
+    const getName = output => output.name;
+    const res = modelVersion.modelContract.predict.outputs.map(getName);
+    console.log(res);
     return res;
   }
 
