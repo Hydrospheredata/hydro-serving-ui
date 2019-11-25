@@ -13,7 +13,7 @@ export class MetricsService {
   private baseUrl: string;
 
   constructor(private http: HttpService) {
-    this.baseUrl = `${environment.monitoringUrl}/metricspec`;
+    this.baseUrl = `${environment.apiUrl}/monitoring/metricspec`;
   }
 
   public getMetricSpecifications(
