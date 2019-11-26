@@ -1,12 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import {
-  IMetricSpecificationRequest,
+  MetricSpecificationRequest,
   MetricSpecification,
 } from '@shared/models/metric-specification.model';
 
 export const AddMetric = createAction(
   '[Metrics] add metric',
-  props<{ aggreagation: IMetricSpecificationRequest}>()
+  props<{ aggreagation: MetricSpecificationRequest}>()
 );
 export const AddMetricSuccess = createAction(
   '[Metrics] add metric success',
@@ -14,18 +14,6 @@ export const AddMetricSuccess = createAction(
 );
 export const AddMetricFail = createAction(
   '[Metrics] add metric fail',
-  props<{ error: string}>()
-);
-export const EditMetric = createAction(
-  '[Metrics] edit metric',
-  props<{ aggregation: IMetricSpecificationRequest}>()
-);
-export const EditMetricSuccess = createAction(
-  '[Metrics] edit metric success',
-  props<{ payload: MetricSpecification}>()
-);
-export const EditMetricFail = createAction(
-  '[Metrics] edit metric fail',
   props<{ error: string}>()
 );
 export const LoadMetrics = createAction(
@@ -48,6 +36,6 @@ export const DeleteMetricSuccess = createAction(
   props<{payload: {id: string}}>()
 );
 export const DeleteMetricFail = createAction(
-  '[Metrics] delete metric',
+  '[Metrics] delete metric fail',
   props<{error: string}>()
 );

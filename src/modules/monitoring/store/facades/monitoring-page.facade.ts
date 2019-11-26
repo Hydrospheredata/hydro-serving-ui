@@ -7,7 +7,6 @@ import {
   LoadMetrics,
   DeleteMetric,
   AddMetric,
-  EditMetric,
   GetServiceStatusAction,
 } from '@monitoring/store/actions';
 import { State } from '@monitoring/store/reducers';
@@ -185,9 +184,6 @@ export class MonitoringPageFacade {
 
   deleteMetric(id: string) {
     this.store.dispatch(DeleteMetric({ id }));
-  }
-  editMetric(metric: any) {
-    this.store.dispatch(EditMetric({ aggregation: metric }));
   }
   addMetric(metric: any) {
     this.store.dispatch(AddMetric({ aggreagation: metric }));

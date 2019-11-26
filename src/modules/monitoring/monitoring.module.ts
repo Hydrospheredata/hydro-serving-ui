@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
   DialogMetricComponent,
-  MetricComponent,
   DialogDeleteMetricComponent,
   ReqstoreTableLogComponent,
   MetricSpecConfigComponent,
@@ -55,7 +54,6 @@ import {
     ErrorCheckComponent,
     InputOutputComponent,
     LatencyCheckComponent,
-    MetricComponent,
     MetricsComponent,
     MetricSpecConfigComponent,
     MonitoringAvailabilityComponent,

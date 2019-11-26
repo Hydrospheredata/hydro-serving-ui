@@ -35,8 +35,8 @@
       font-size: 12px;
       line-height: 12px;
       margin-bottom: 5px;
-      color: $neutral-color-700;
-      font-family: $font-family-light;
+      color: $neutral-color-900;
+      font-family: $font-family-bold;
     }
 
     &-input {
@@ -44,7 +44,7 @@
       font-size: 14px;
       line-height: 16px;
       border: 1px $neutral-color-500 solid;
-      color: $neutral-color-800;
+      color: $neutral-color-700;
 
       &:focus {
         border-color: $primary-color-700;

@@ -3,7 +3,6 @@ import { createReducer, on, Action } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import {
   AddMetricSuccess,
-  EditMetricSuccess,
   LoadMetricsSuccess,
   LoadMetricsFail,
   DeleteMetricSuccess,
@@ -25,9 +24,6 @@ const metricsReducer = createReducer(
   initialState,
   on(AddMetricSuccess, (state, action) =>
     adapter.addOne(action.payload, state)
-  ),
-  on(EditMetricSuccess, (state, action) =>
-    adapter.updateOne({ id: action.payload.id, changes: action.payload }, state)
   ),
   on(LoadMetricsSuccess, (state, action) =>
     adapter.upsertMany(action.payload, state)

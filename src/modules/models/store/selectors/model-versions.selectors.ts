@@ -41,6 +41,12 @@ export const selectAllModelVersionsByModelId = (id: number) =>
       modelVersions.filter(modelVersion => modelVersion.model.id === id)
   );
 
+export const selectModelVersionById = id =>
+  createSelector(
+    selectModelVersionEntities,
+    entities => entities && entities[id]
+  );
+
 export const selectSiblingModelVersions = ({
   modelVersionId,
   modelId,

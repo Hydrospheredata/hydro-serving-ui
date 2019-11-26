@@ -1,17 +1,31 @@
 @import "variables";
-.row {
-  padding: 10px 0 10px 0;
+.config {
+  &__row {
+    display: flex;
+    padding: 10px 0 10px 0;
+
+  }
+
+  &__cell {
+    width: 100%;
+    position: relative;
+  }
+
+  &__cell + &__cell  {
+    margin-left: 12px;
+  }
 }
+  
 
 .label {
-  color: $neutral-color-600;
-  font-size: 14px;
-  font-family: $font-family-light;
+  color: $neutral-color-900;
+  font-size: 12px;
+  font-family: $font-family-bold;
 }
 
 .metric-spec-config {
   &__error-list {
     width: 180px;
-    position: relative;
+    position: absolute;
   }
 }

@@ -2,16 +2,20 @@
   <ng-container #container></ng-container>
 
   <div class="metrics">
-    <button
-      class="button button--primary add-metric-button"
-      (click)="onAddMetric()"
-    >
-      add metric
-    </button>
+    <ng-container *ngIf="modelVersion$ | async as modelVersion">
+      <button
+        class="button button--primary add-metric-button"
+        (click)="onAddMetric(modelVersion)"
+      >
+        add metric
+      </button>
+    </ng-container>
+
     <table class="metrics__table">
       <tr class="metrics__table-row">
         <td class="metrics__table-cell metrics__table-head">Name</td>
-        <td class="metrics__table-cell metrics__table-head">Application</td>
+        <td class="metrics__table-cell metrics__table-head">ModelVersion</td>
+        <td class="metrics__table-cell metrics__table-head">Servable</td>
         <td class="metrics__table-cell metrics__table-head">Operator</td>
         <td class="metrics__table-cell metrics__table-head">Threshold</td>
         <td class="metrics__table-cell metrics__table-head">Actions</td>
@@ -25,7 +29,17 @@
       >
         <td class="metrics__table-cell">{{ metric.name }}</td>
         <td class="metrics__table-cell">
-          {{ metric.config?.applicationName }}
+          <ng-container
+            *ngIf="
+              modelVersionById$(metric.config?.modelVersionId)
+                | async as modelVersion
+            "
+          >
+            {{ modelVersion.model.name }}:{{ modelVersion.modelVersion }}
+          </ng-container>
+        </td>
+        <td class="metrics__table-cell">
+          {{ metric.config?.servable.fullName }}
         </td>
         <td class="metrics__table-cell">
           {{ metric.config?.thresholdCmpOperator?.kind }}
@@ -33,12 +47,6 @@
         <td class="metrics__table-cell">{{ metric.config?.threshold }}</td>
         <td class="metrics__table-cell">
           <div class="metric__actions" *ngIf="!metric.id.startsWith('fake-id')">
-            <div class="metric__action" (click)="onEditMetric(metric)">
-              <hydro-icon
-                class="button__icon metric__action-icon"
-                type="icon-edit"
-              ></hydro-icon>
-            </div>
             <div class="metric__action" (click)="onDeleteMetric(metric.id)">
               <hydro-icon
                 class="button__icon metric__action-icon "

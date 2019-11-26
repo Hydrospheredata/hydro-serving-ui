@@ -7,6 +7,7 @@ import {
   selectAllModelVersions,
   selectAllModels,
   selectSelectedModel,
+  selectModelVersionById,
 } from '@models/store/selectors';
 import { Store, select } from '@ngrx/store';
 import { ServablesFacade } from '@servables/servables.facade';
@@ -64,6 +65,9 @@ export class ModelsFacade {
     private store: Store<State>,
     private servablesFacade: ServablesFacade
   ) {}
+
+  selectModelVersionById$ = id =>
+    this.store.pipe(select(selectModelVersionById(id)))
 
   modelVersionsByModelId(id: number) {
     return this.store.pipe(select(selectAllModelVersionsByModelId(id)));

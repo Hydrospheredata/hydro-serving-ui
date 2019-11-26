@@ -4,12 +4,11 @@ import { environment } from '@environments/environment';
 import {
   GetChecksAggreagationParams,
   GetChecksParams,
-  ChecksAggregation,
   ChecksAggregationResponse,
 } from '@monitoring/interfaces';
 import {
   MetricSpecification,
-  IMetricSpecificationProvider,
+  MetricSpecificationProvider,
 } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
 
@@ -59,18 +58,6 @@ export class MonitoringService {
     };
 
     return dict[metricName];
-  }
-
-  public createMetricProviders(
-    metricSpecification: MetricSpecification
-  ): IMetricSpecificationProvider {
-    return {
-      kind: metricSpecification.kind,
-      byModelVersionId: {
-        [metricSpecification.modelVersionId]: metricSpecification,
-      },
-      metrics: this.getMetricsBySpecKind(metricSpecification.kind),
-    };
   }
 
   getChecks({ modelVersionId, from, to }: GetChecksParams): Observable<any> {

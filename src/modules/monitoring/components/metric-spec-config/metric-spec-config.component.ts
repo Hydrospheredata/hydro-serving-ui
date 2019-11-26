@@ -1,6 +1,6 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Application } from '@shared/_index';
+import { Model, ModelVersion } from '@shared/_index';
 
 @Component({
   selector: 'hs-metric-spec-config',
@@ -12,17 +12,17 @@ export class MetricSpecConfigComponent {
   parent: FormGroup;
 
   @Input()
-  sources: string[];
+  models: Model[];
 
   @Input()
-  applications: Application[];
+  modelVersions: ModelVersion[];
 
-  thresholdCmpOperators: object[] = [
-    {kind: 'Eq'},
-    {kind: 'NotEq'},
-    {kind: 'Greater'},
-    {kind: 'Less'},
-    {kind: 'GreaterEq'},
-    {kind: 'LessEq'},
+  thresholdCmpOperators: Array<{ kind: string }> = [
+    { kind: 'Eq' },
+    { kind: 'NotEq' },
+    { kind: 'Greater' },
+    { kind: 'Less' },
+    { kind: 'GreaterEq' },
+    { kind: 'LessEq' },
   ];
 }

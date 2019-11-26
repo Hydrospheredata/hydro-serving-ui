@@ -1,10 +1,12 @@
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 
 export const MockMetricSpecification: MetricSpecification = {
-    id: 'id',
-    name: 'counter',
-    kind: 'CounterMetricSpec',
-    config: {},
+  id: 'id',
+  name: 'counter',
+  config: {
+    threshold: 0,
+    thresholdCmpOperator: { kind: '' },
     modelVersionId: 1,
-    withHealth: true,
+  },
+  modelVersionId: 1,
 };

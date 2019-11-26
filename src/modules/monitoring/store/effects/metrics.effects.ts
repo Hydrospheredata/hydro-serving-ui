@@ -10,9 +10,6 @@ import {
   AddMetric,
   AddMetricSuccess,
   AddMetricFail,
-  EditMetric,
-  EditMetricSuccess,
-  EditMetricFail,
   DeleteMetric,
   DeleteMetricSuccess,
   DeleteMetricFail,
@@ -49,35 +46,11 @@ export class MetricsEffects {
     )
   );
 
-  editMetric$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(EditMetric),
-      switchMap(action =>
-        this.metricsService.editMetricSpecification(action.aggregation).pipe(
-          map(response => {
-            this.snackbar.show({
-              message: 'Metric was successfully edit',
-            });
-            return EditMetricSuccess({
-              payload: new MetricSpecification(response),
-            });
-          }),
-          catchError(error => {
-            this.snackbar.show({
-              message: `Error: ${error}`,
-            });
-            return of(EditMetricFail({ error }));
-          })
-        )
-      )
-    )
-  );
-
   deleteMetric$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DeleteMetric),
-      switchMap(({ id }) =>
-        this.metricsService.deleteMetricSpecification(id).pipe(
+      switchMap(({ id }) => {
+        return this.metricsService.deleteMetricSpecification(id).pipe(
           map(() => DeleteMetricSuccess({ payload: { id } })),
           catchError(error => {
             this.snackbar.show({
@@ -85,8 +58,8 @@ export class MetricsEffects {
             });
             return of(DeleteMetricFail({ error }));
           })
-        )
-      )
+        );
+      })
     )
   );
 
