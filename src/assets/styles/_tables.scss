@@ -1,18 +1,20 @@
+@import "variables";
+
 $table-padding: 14px;
 
 .cell {
-  padding: 6px $table-padding * 2;
+  border-bottom: 1px $neutral-color-200 solid;
+  padding: 12px $table-padding * 2;
 }
 
 .hydro-table {
   border-collapse: collapse;
   width: 100%;
+  background: white;
   &-head {
-    color: $secondary-text-color;
-    font-size: 10px;
-    font-family: $font-family-light;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 12px;
+    font-family: $font-family-bold;
+    color: $neutral-color-900;
     &__cell {
       @extend .cell;
       text-align: left;
@@ -20,6 +22,9 @@ $table-padding: 14px;
   }
   &-body {
     color: $neutral-text-color;
+    & :last-child &__cell{
+      border-bottom: none;
+    }
     &__row {
       outline: none;
       [class$="services"] & {
@@ -36,8 +41,7 @@ $table-padding: 14px;
     &__cell {
       @extend .cell;
     }
-  }
-  &-models {
-    background: white;
+
+
   }
 }

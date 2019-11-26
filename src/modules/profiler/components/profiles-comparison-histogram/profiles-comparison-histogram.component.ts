@@ -14,8 +14,10 @@ import { HIGHCHART_COLORS } from './highchart-colors';
 @Component({
   selector: 'hs-profiles-comparison-histogram',
   template: `
-    <p class="header">comparison histogram</p>
-    <div #chartContainer></div>
+    <div class="comparison-histogram">
+      <p class="comparison-histogram__header">Comparison histogram</p>
+      <div #chartContainer></div>
+    </div>
   `,
   styleUrls: ['./profiles-comparison-histogram.component.scss'],
 })
@@ -32,8 +34,8 @@ export class ProfilesComparisonHistogramComponent implements AfterViewInit, OnCh
     const trainingProfile: SimpleChange = changes.trainingProfile;
     const productionProfile: SimpleChange = changes.productionProfile;
 
-    this.trainingProfile = trainingProfile.currentValue;
-    this.productionProfile = productionProfile.currentValue;
+    this.trainingProfile = trainingProfile && trainingProfile.currentValue;
+    this.productionProfile = productionProfile && productionProfile.currentValue;
 
     if (this.chart) {
       const bins = this.getBins();

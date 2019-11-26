@@ -1,0 +1,13 @@
+<div class="time-interval">
+  <label class="time-interval__label">Time interval: </label>
+  <mdl-select
+    class="time-interval__select"
+    label="Chart time window"
+    [(ngModel)]="chartTimeWidth"
+    (change)="onChangeTimeWidth($event)"
+  >
+    <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms">{{
+      param.text
+    }}</mdl-option>
+  </mdl-select>
+</div>

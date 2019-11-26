@@ -1,0 +1,12 @@
+@import "variables";
+
+.latency-check {
+  &__information {
+    min-width: 120px;
+    &-name {
+      color: $neutral-color-800;
+      font-family: $font-family-bold;
+      font-size: 12px
+    }
+  }
+}

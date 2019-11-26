@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { EffectsModule } from '@ngrx/effects';
@@ -30,7 +29,6 @@ const DIALOGS = [
     ServableLogsComponent,
   ],
   imports: [
-    CommonModule,
     StoreModule.forFeature('servables', reducer),
     EffectsModule.forFeature([ServablesEffects]),
     SharedModule,

@@ -1,4 +1,4 @@
-import { getRouterState } from '@core/reducers';
+import { selectRouterState } from '@core/store';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { adapter } from '../reducer';
 import { State } from '../state';
@@ -17,7 +17,7 @@ export const selectServablesEntities = createSelector(
 );
 export const selectCurrentServable = createSelector(
   selectServablesEntities,
-  getRouterState,
+  selectRouterState,
   (state, router) => {
     try {
       return state[router.state.params.name];

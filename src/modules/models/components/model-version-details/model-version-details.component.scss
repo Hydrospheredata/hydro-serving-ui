@@ -5,11 +5,18 @@
   &__signatures,
   &__servables {
     margin-top: 24px;
+    margin-bottom: 24px;
   }
 }
 
 .application {
   cursor: pointer;
+  color: $neutral-color-500;
+  font-family: $font-family-light;
+  transition: .3s all ease;
+  &:hover {
+    color: $neutral-color-1000;
+  }
 }
 
 .information {
@@ -28,6 +35,7 @@
       display: flex;
       width: 250px;
       align-items: baseline;
+      min-width: 250px;
 
       &:after {
         content: "";
@@ -99,15 +107,9 @@
   margin-left: 8px;
 }
 
-.runtime {
-  &__tag {
-    display: inline-block;
-    margin-left: 4px;
-    background: $neutral-color-100;
-    color: $neutral-color-700;
-    font-size: 10px;
-    line-height: 12px;
-    padding: 2px 4px;
-    border-radius: 4px;
-  }
+.model-version-detail__add-application {
+  display: block;
+  font-size: 14px;
+  margin-left: 4px;
+  margin-left: 250px;
 }

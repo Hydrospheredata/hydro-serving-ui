@@ -5,18 +5,14 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
 } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
+import { ApplicationsFacade } from '@applications/store';
 import { ModelVersionLogComponent } from '@models/components/model-version-log/model-version-log.component';
-import * as fromModels from '@models/reducers';
 import { ModelVersionLogService } from '@models/services/model-version-log.service';
-import { Store } from '@ngrx/store';
+import { ModelsFacade } from '@models/store';
 import { ServableLogsComponent } from '@servables/containers';
-import { Servable } from '@servables/models';
-import { selectServablesByModelVersionId } from '@servables/selectors';
-import { ModelVersion } from '@shared/models/_index';
-import * as _ from 'lodash';
-import { Observable } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { ModelVersionStatus, ModelVersion } from '@shared/_index';
+import { isEmpty } from 'lodash';
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'hydro-model-version-details',
   templateUrl: './model-version-details.component.html',
@@ -27,27 +23,20 @@ export class ModelVersionDetailsComponent {
   @ViewChild('logContainer', { read: ViewContainerRef })
   logContainer: ViewContainerRef;
 
-  modelVersion$: Observable<ModelVersion>;
+  modelVersion$ = this.modelsFacade.selectedModelVersion$;
+  released$ = this.modelVersion$.pipe(
+    map(({ status }) => status === ModelVersionStatus.Released)
+  );
+  servables$ = this.modelsFacade.selectedServables$;
   showLog: boolean = false;
-  servables$: Observable<Servable[]>;
-
   globalLog: boolean = false;
   private current: ComponentRef<any>;
 
   constructor(
-    private store: Store<HydroServingState>,
-    private resolver: ComponentFactoryResolver
-  ) {
-    this.modelVersion$ = this.store
-      .select(fromModels.getSelectedModelVersion)
-      .pipe(filter(mv => !!mv));
-
-    this.servables$ = this.modelVersion$.pipe(
-      switchMap(({ id }) =>
-        this.store.select(selectServablesByModelVersionId(id))
-      )
-    );
-  }
+    private modelsFacade: ModelsFacade,
+    private resolver: ComponentFactoryResolver,
+    private applicationsFacade: ApplicationsFacade
+  ) {}
 
   showBuildLog(modelVersionId: number) {
     this.logContainer.clear();
@@ -59,7 +48,7 @@ export class ModelVersionDetailsComponent {
     component.instance.modelVersion = modelVersionId;
     component.instance.closed.subscribe(() => this.closeGlobalLog());
     component.changeDetectorRef.detectChanges();
-    this.openGlobalLog();
+    this.toggleGlobalLog();
   }
 
   showServableLogs(servableName: string) {
@@ -73,7 +62,7 @@ export class ModelVersionDetailsComponent {
     component.instance.servableName = servableName;
     component.instance.closed.subscribe(() => this.closeGlobalLog());
     component.changeDetectorRef.detectChanges();
-    this.openGlobalLog();
+    this.toggleGlobalLog();
   }
 
   closeGlobalLog(
@@ -83,11 +72,15 @@ export class ModelVersionDetailsComponent {
     this.globalLog = false;
   }
 
-  openGlobalLog(): void {
-    this.globalLog = true;
+  onAddApplication(modelVersion: ModelVersion): void {
+    this.applicationsFacade.createApplicationFromModelVersion(modelVersion);
+  }
+
+  toggleGlobalLog(): void {
+    this.globalLog = !this.globalLog;
   }
 
   isEmpty(obj: object): boolean {
-    return _.isEmpty(obj);
+    return isEmpty(obj);
   }
 }

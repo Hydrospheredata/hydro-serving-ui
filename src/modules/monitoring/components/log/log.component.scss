@@ -1,0 +1,51 @@
+@import 'variables';
+
+.log {
+  margin-bottom: 12px;
+  background: white;
+  border-radius: 4px;
+  box-shadow: $box-shadow;
+  &__body {
+    display: flex;
+  }
+  &__ids {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: $neutral-color-100;
+
+    &-item {
+      padding: 8px 12px;
+      color: $neutral-color-800;
+      cursor: pointer;
+      font-family: $font-family-light;
+      font-size: 12px;
+      opacity: .7;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      &--selected {
+        opacity: 1;
+        background: white;
+      }
+
+      &--failed {
+        color: $supportive-color-red-800;
+      }
+    }
+  }
+
+  &__detailed {
+    padding: 8px 12px;
+  }
+
+  &__message {
+    width: 100%;
+    padding: 12px 0;
+    text-align: center;
+    color: $neutral-color-600;
+    font-family: $font-family-light;
+  }
+}

@@ -1,17 +1,13 @@
 import {
   Component,
   InjectionToken,
-  Inject,
   Output,
   EventEmitter,
   Input,
 } from '@angular/core';
 
-import { DeleteMetricAction } from '@core/actions/monitoring.actions';
-import { HydroServingState } from '@core/reducers';
-import { Store } from '@ngrx/store';
-
 import { DialogService } from '@dialog/dialog.service';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 
 export const METRIC_ID_VALUE = new InjectionToken<string>('metric id value');
 
@@ -24,7 +20,7 @@ export class DialogDeleteMetricComponent {
   @Input() metricId: string;
   constructor(
     public dialog: DialogService,
-    private store: Store<HydroServingState>
+    private facade: MonitoringPageFacade
   ) {}
 
   public onClose(): void {
@@ -32,7 +28,7 @@ export class DialogDeleteMetricComponent {
   }
 
   public onDelete() {
-    this.store.dispatch(new DeleteMetricAction(this.metricId));
+    this.facade.deleteMetric(this.metricId);
     this.closed.next();
   }
 }

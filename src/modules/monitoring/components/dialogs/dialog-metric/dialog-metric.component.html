@@ -8,28 +8,27 @@
       bordered="true"
     >
     </hydro-input-text>
-    <div class="row">
-      <mdl-select formControlName="kind" label="Choose metric">
-        <mdl-option
-          *ngFor="let kind of metricSpecificationKinds"
-          [value]="kind.className"
-          >{{ kind.name }}</mdl-option
-        >
-      </mdl-select>
-    </div>
-    <div class="row">
-      <label class="hydro-checkbox">
-        <span class="hydro-checkbox__label">Use this metric for health checks</span>
-        <input type="checkbox" formControlName="withHealth" />
-        <span></span>
-      </label>
-    </div>
+    <ng-container
+      *ngIf="
+        form.get('name').dirty &&
+          form
+            .get('name')
+            .getError('format');
+        let error
+      "
+    >
+      <ul class="error__list metric__error-list">
+        <li class="error__item">
+          {{ error }}
+        </li>
+      </ul>
+    </ng-container>
     <div>
       <hs-metric-spec-config
         class="config"
         [parent]="form"
-        [applications]="applications$ | async"
-        [sources]="sources$ | async"
+        [models]="models$ | async"
+        [modelVersions]="modelVersions$ | async"
       >
       </hs-metric-spec-config>
     </div>
@@ -45,7 +44,7 @@
       [disabled]="!form.valid"
       (click)="onSubmit()"
     >
-      {{ actionName }} Metric
+      Add Metric
     </button>
   </div>
 </div>

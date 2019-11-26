@@ -1,6 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { IMetricData } from '@core/services/metrics/monitoring.service';
+import { SonarMetricData } from '@shared/_index';
 
 @Component({
   selector: 'hs-reqstore-metrics',
@@ -28,8 +28,8 @@ export class ReqstoreMetricsComponent {
     return features.length;
   }
 
-  isFailedFeature(feature: { [columnIndex: string]: IMetricData }) {
-    const metrics: IMetricData[] = Object.values(feature);
+  isFailedFeature(feature: { [columnIndex: string]: SonarMetricData }) {
+    const metrics: SonarMetricData[] = Object.values(feature);
     return metrics.some(metricData => metricData.health === false);
   }
 

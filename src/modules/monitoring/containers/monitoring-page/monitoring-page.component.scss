@@ -2,6 +2,11 @@
 
 .monitoring {
   position: relative;
+  width: 1100px;
+  &__aggregation {
+    margin-bottom: 12px;
+    display: flex;
+  }
 
   &__alert {
     font-weight: bold;
@@ -9,8 +14,13 @@
     cursor: pointer;
   }
 
+  &__log {
+    margin-bottom: 2
+  }
+
   &__header {
     line-height: 24px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -27,6 +37,34 @@
       &:hover {
         color: $neutral-color-800;
       }
+    }
+  }
+
+  &__metrics-mini {
+    padding: 8px;
+    margin-bottom: 12px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: $box-shadow;
+    display: flex;
+
+    &-name {
+      font-family: $font-family-light;
+      color: $neutral-color-900;
+    }
+
+    &-item {
+      width: 120px;
+    }
+
+    &-list {
+      display: flex;
+    }
+
+    &-check {}
+
+    &-item+&-item {
+      margin-left: 8px;
     }
   }
 }

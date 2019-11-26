@@ -1,0 +1,38 @@
+@import "variables";
+
+.custom-check {
+  // display: flex;
+  width: 1100px;
+  margin: 12px 0;
+  background: white;
+  border-radius: 4px;
+  box-shadow: $box-shadow;
+  &__chart {
+    width: 100%;
+  }
+  &__information {
+    display: flex;
+    color: $neutral-color-800;
+    font-family: $font-family-light;
+    padding: 8px;
+    align-items: center;
+    &-name {
+      font-size: 16px;
+      font-family: $font-family-bold;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin-right: 12px;
+    }
+    &-config {
+      font-size: 12px;
+      line-height: 12px;
+      color: $neutral-color-500;
+    }
+    &-value {
+      color:$neutral-color-800;
+      font-family: $font-family-regular;
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+}

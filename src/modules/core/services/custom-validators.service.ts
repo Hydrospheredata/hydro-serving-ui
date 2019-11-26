@@ -5,10 +5,7 @@ import {
   ValidationErrors,
   FormControl,
 } from '@angular/forms';
-import { Store } from '@ngrx/store';
-
-import { getAllApplications } from '@applications/reducers';
-import { HydroServingState } from '@core/reducers';
+import { ApplicationsFacade } from '@applications/store';
 
 @Injectable()
 export class CustomValidatorsService {
@@ -24,6 +21,7 @@ export class CustomValidatorsService {
   private _VALIDATION_PATTERNS = {
     text: /[a-zA-Z]+/,
     number: /^[0-9]+$/,
+    floatNumber: /^[+-]?\d+(\.\d+)?$/,
     textAndNumber: /[a-zA-Z0-9]+/,
     name: /[a-zA-Z_0-9-]+/,
   };
@@ -53,8 +51,8 @@ export class CustomValidatorsService {
     },
   };
 
-  constructor(private store: Store<HydroServingState>) {
-    this.store.select(getAllApplications).subscribe(applications => {
+  constructor(private applicationsFacade: ApplicationsFacade) {
+    this.applicationsFacade.allApplications$.subscribe(applications => {
       this.applicationNames = applications.map(app => app.name);
     });
   }
@@ -73,12 +71,12 @@ export class CustomValidatorsService {
 
   public lengthValidation(length: number): ValidatorFn {
     return (control: FormControl): ValidationErrors => {
-        const currentApplicationName = control.value;
+      const currentApplicationName = control.value;
 
-        if (currentApplicationName.length > length) {
-            return { uniq: `Max length ${length}` };
-        }
-        return null;
+      if (currentApplicationName.length > length) {
+        return { uniq: `Max length ${length}` };
+      }
+      return null;
     };
   }
 
@@ -105,6 +103,19 @@ export class CustomValidatorsService {
         return null;
       } else {
         return { format: 'Application format: a-Z, 1-9,-,_' };
+      }
+    };
+  }
+
+  public metricNameFormat(): ValidatorFn {
+    return (control: FormControl): ValidationErrors => {
+      const metricName = control.value;
+      const reg = /^[a-z][a-zA-Z\-_\d]*$/;
+
+      if (reg.test(metricName)) {
+        return null;
+      } else {
+        return { format: 'Format: must start with any word character and contain [a-Z, 1-9,-,_] characters' };
       }
     };
   }

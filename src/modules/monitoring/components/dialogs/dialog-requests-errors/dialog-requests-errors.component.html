@@ -1,0 +1,23 @@
+<div class="dialog__content request-errors">
+  <table class="request-errors__table">
+    <tr class="request-errors__row">
+      <td class="request-errors__head">Request</td>
+      <td class="request-errors__head">error</td>
+    </tr>
+    <tr class="request-errors__row" *ngFor="let error of errors; let i = index">
+      <td class="request-errors__cell">{{ i }}</td>
+      <td
+        class="request-errors__cell"
+        [ngClass]="{ 'request-errors__cell--failed': error }"
+      >
+        {{ error }}
+      </td>
+    </tr>
+  </table>
+
+  <div class="dialog__buttons dialog__buttons--column">
+    <button hs-button (click)="close()" type="button">
+      close
+    </button>
+  </div>
+</div>

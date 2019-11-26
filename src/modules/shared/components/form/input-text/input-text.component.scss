@@ -2,9 +2,9 @@
 
 .control {
   &-label {
-    color: $neutral-color-500;
-    font-size: 14px;
-    font-family: $font-family-light;
+    color: $neutral-color-900;
+    font-size: 12px;
+    font-family: $font-family-bold;
     &__postfix {
       font-size: 12px;
       font-style: italic;
@@ -76,11 +76,11 @@
 }
 
 .form-control {
-  height: 40px;
+  height: 26px;
   box-shadow: none;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid $neutral-color-200;
+  border-bottom: 1px solid $neutral-color-400;
   color:$neutral-color-800;
   &::placeholder {
     color: $neutral-color-500;
@@ -90,17 +90,13 @@
   }
 
   &--is-bordered {
-    border: 1px solid $neutral-color-200;  
+    border: 1px solid $neutral-color-500;  
   }
   
 
   &.input-icon {
     &.left {
-      padding-left: 3rem;
-    }
-
-    &.right {
-      padding-right: 3rem;
+      padding-left: 24px;
     }
   }
 
@@ -148,18 +144,13 @@
 }
 
 hydro-icon.input-icon {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   color: $neutral-color-500;
-  &.right {
-    right: 1rem;
-    position: absolute;
-    top: 27%;
-  }
 
   &.left {
-    left: 1rem;
+    left: 4px;
     position: absolute;
-    top: 27%;
+    top: 4px;
   }
 }

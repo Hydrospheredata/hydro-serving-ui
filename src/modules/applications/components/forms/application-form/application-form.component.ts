@@ -5,7 +5,10 @@ import {
   ApplicationFormService,
   StageFormData,
 } from '@applications/services/application-form.service';
-import { ModelVariantFormService } from '@applications/services/model-variant-form.service';
+import {
+  ModelVariantFormService,
+  IModelVariantFormData,
+} from '@applications/services/model-variant-form.service';
 import { IApplication } from '@shared/_index';
 
 @Component({
@@ -43,14 +46,15 @@ export class ApplicationFormComponent implements OnInit {
   }
 
   public normalizeStageControlsValue() {
-    return this.applicationForm.value.stages.map((stage: StageFormData) => {
-      return (stage = {
-        modelVariants: stage.modelVariants.map(modelVariant => ({
-          modelVersionId: modelVariant.modelVersionId,
-          weight: Number(modelVariant.weight),
-        })),
-      });
+    const stages: StageFormData[] = this.applicationForm.value.stages;
+    const toModelVariant = (modelVariant: IModelVariantFormData) => ({
+      modelVersionId: modelVariant.modelVersionId,
+      weight: Number(modelVariant.weight),
     });
+
+    return stages.map((stage: StageFormData) => ({
+      modelVariants: stage.modelVariants.map(toModelVariant),
+    }));
   }
 
   public submit(): void {

@@ -1,11 +1,17 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, TemplateRef, ViewChild } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { GetProfilersServiceStatus } from '@profiler/actions';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ProfilerStatus } from '@profiler/models';
-import { ProfilerState } from '@profiler/reducers';
+import {
+  ProfilerFacade,
+} from '@profiler/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { selectProfilerServiceStatus, selectErrorMessage } from '../../selectors';
+
 @Component({
   selector: 'hs-profiler-page',
   templateUrl: './profiler-page.component.html',
@@ -13,37 +19,23 @@ import { selectProfilerServiceStatus, selectErrorMessage } from '../../selectors
 })
 export class ProfilerPageComponent implements OnInit {
   activeTemplate$: Observable<TemplateRef<any>>;
-  error$: Observable<string>;
+  error$ = this.facade.error$;
 
-  @ViewChild('loadingTemplate', {read: TemplateRef}) loadingTemplate;
-  @ViewChild('errorTemplate', {read: TemplateRef}) errorTemplate;
-  @ViewChild('alertTemplate', {read: TemplateRef}) alertTemplate;
-  @ViewChild('contentTemplate', {read: TemplateRef}) contentTemplate;
+  @ViewChild('loadingTemplate', { read: TemplateRef }) loadingTemplate;
+  @ViewChild('errorTemplate', { read: TemplateRef }) errorTemplate;
+  @ViewChild('alertTemplate', { read: TemplateRef }) alertTemplate;
+  @ViewChild('contentTemplate', { read: TemplateRef }) contentTemplate;
 
   constructor(
-    private store: Store<ProfilerState>
+    private facade: ProfilerFacade
   ) {}
 
-  isFailed(): string {
-    return ProfilerStatus.FAILED;
-  }
-
-  isClosedForOSS(): string {
-    return ProfilerStatus.CLOSED_FOR_OSS;
-  }
-
-  isLoading(): string {
-    return ProfilerStatus.UNKNOWN;
-  }
-
   ngOnInit() {
-    this.error$ = this.store.select(selectErrorMessage);
-    this.store.dispatch(new GetProfilersServiceStatus());
+    this.facade.getProfilerServiceStatus();
 
-    this.activeTemplate$ = this.store.select(selectProfilerServiceStatus)
-      .pipe(
-        map(status => this.statusToTemplate(status))
-      );
+    this.activeTemplate$ = this.facade.serviceStatus$.pipe(
+      map(status => this.statusToTemplate(status))
+    );
   }
 
   private statusToTemplate(status: ProfilerStatus): TemplateRef<any> {

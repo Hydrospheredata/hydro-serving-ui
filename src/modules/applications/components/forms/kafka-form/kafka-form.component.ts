@@ -2,52 +2,50 @@ import { Component, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'hs-kafka-form',
-    templateUrl: './kafka-form.component.html',
-    styleUrls: ['./kafka-form.component.scss'],
+  selector: 'hs-kafka-form',
+  templateUrl: './kafka-form.component.html',
+  styleUrls: ['./kafka-form.component.scss'],
 })
 export class KafkaFormComponent {
-    @Input()
-    public kafkaFormArray: FormArray;
+  @Input()
+  public kafkaFormArray: FormArray;
 
-    isKafkaEnabled: boolean = false;
+  isKafkaEnabled: boolean = false;
 
-    constructor(
-        private fb: FormBuilder
-    ) { }
+  constructor(private fb: FormBuilder) {}
 
-    public addKafkaControl(): void {
-        this.kafkaFormArray.push(this.buildKafkaSourceControl());
+  public addKafkaControl(): void {
+    this.kafkaFormArray.push(this.buildKafkaSourceControl());
+  }
+
+  public removeKafkaControlAtIndex(index: number): void {
+    this.kafkaFormArray.removeAt(index);
+
+    if (this.kafkaFormArray.length === 0) {
+      this.isKafkaEnabled = false;
     }
+  }
 
-    public removeKafkaControlAtIndex(index: number): void {
-        this.kafkaFormArray.removeAt(index);
+  public toggleKafkaEnabled(event): void {
+    this.isKafkaEnabled = event.target.checked;
 
-        if (this.kafkaFormArray.length === 0) {
-            this.isKafkaEnabled = false;
-        }
+    if (this.isKafkaEnabled) {
+      this.addKafkaControl();
+    } else {
+      this.removeAllKafkaControls();
     }
+  }
 
-    public toggleKafkaEnabled(event): void {
-        this.isKafkaEnabled = event.target.checked;
+  private buildKafkaSourceControl(): FormGroup {
+    return this.fb.group({
+      sourceTopic: new FormControl(),
+      destinationTopic: new FormControl(),
+    });
+  }
 
-        if (this.isKafkaEnabled) {
-            this.addKafkaControl();
-        } else {
-            this.removeAllKafkaControls();
-        }
+  private removeAllKafkaControls(): void {
+    while (this.kafkaFormArray.length) {
+      this.removeKafkaControlAtIndex(0);
     }
-
-    private buildKafkaSourceControl(): FormGroup {
-        return this.fb.group({
-            sourceTopic: new FormControl(),
-            destinationTopic: new FormControl(),
-        });
-    }
-
-    private removeAllKafkaControls(): void {
-        while (this.kafkaFormArray.length) {
-            this.removeKafkaControlAtIndex(0);
-        }
-    }
+  }
 }

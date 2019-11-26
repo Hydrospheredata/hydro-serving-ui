@@ -2,10 +2,10 @@
 
 .model-version {
   &__model-version {
-    color: $neutral-color-700;
+    color: $neutral-color-900;
   }
   &__runtime {
-    color: $neutral-color-700;
+    color: $neutral-color-900;
     font-family: $font-family-light;
     &-tag {
       display: inline-block;
@@ -19,7 +19,7 @@
     }
   }
   &__created-time {
-    color: $neutral-color-700;
+    color: $neutral-color-900;
     font-family: $font-family-light;
     font-size: 12px;
   }

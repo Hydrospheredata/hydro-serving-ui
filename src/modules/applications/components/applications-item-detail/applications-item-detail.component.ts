@@ -1,17 +1,11 @@
 import {
   Component,
   ViewEncapsulation,
-  OnInit,
-  OnDestroy,
 } from '@angular/core';
 
-import * as fromApplications from '@applications/reducers';
-import { HydroServingState } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
-import { Store } from '@ngrx/store';
 import {
   Application,
-  ModelVersion,
   ApplicationStatus,
 } from '@shared/models/_index';
 import { Observable } from 'rxjs';
@@ -21,12 +15,13 @@ import {
   DialogUpdateApplicationComponent,
   DialogUpdateModelVersionComponent,
   SELECTED_MODEL_VARIANT,
-  SELECTED_UPD_APPLICATION$,
+  SELECTED_UPD_APPLICATION,
   DialogTestComponent,
-  SELECTED_APPLICATION$,
+  SELECTED_APPLICATION,
   LATEST_MODEL_VERSION,
-  SELECTED_DEL_APPLICATION$,
+  SELECTED_DEL_APPLICATION,
 } from '@applications/components/dialogs';
+import { ApplicationsFacade } from '@applications/store';
 
 @Component({
   selector: 'hs-applications-item-detail',
@@ -34,22 +29,14 @@ import {
   styleUrls: ['./applications-item-detail.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
-  application$: Observable<Application>;
-  modelVersions: ModelVersion[];
+export class ApplicationsItemDetailComponent {
+  application$: Observable<Application> = this.facade.selectedApplication$;
 
   constructor(
-    private store: Store<HydroServingState>,
+    private facade: ApplicationsFacade,
     private dialog: DialogService
   ) {
-    this.application$ = this.store.select(
-      fromApplications.getSelectedApplication
-    );
   }
-
-  ngOnInit() {}
-
-  ngOnDestroy() {}
 
   public updateModelVersionDialog(lastModelVersion, modelVariant) {
     this.dialog.createDialog({
@@ -61,20 +48,20 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  public testApplication(): void {
+  public testApplication(application): void {
     this.dialog.createDialog({
       component: DialogTestComponent,
       providers: [
-        { provide: SELECTED_APPLICATION$, useValue: this.application$ },
+        { provide: SELECTED_APPLICATION, useValue: application },
       ],
     });
   }
 
-  public editApplication(): void {
+  public editApplication(application): void {
     this.dialog.createDialog({
       component: DialogUpdateApplicationComponent,
       providers: [
-        { provide: SELECTED_UPD_APPLICATION$, useValue: this.application$ },
+        { provide: SELECTED_UPD_APPLICATION, useValue: application },
       ],
       styles: {
         height: '100%',
@@ -82,11 +69,11 @@ export class ApplicationsItemDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  public removeApplication() {
+  public removeApplication(application: Application) {
     this.dialog.createDialog({
       component: DialogDeleteApplicationComponent,
       providers: [
-        { provide: SELECTED_DEL_APPLICATION$, useValue: this.application$ },
+        { provide: SELECTED_DEL_APPLICATION, useValue: application },
       ],
     });
   }

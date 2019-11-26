@@ -13,8 +13,6 @@ import {
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { MonitoringPageComponent } from '@monitoring/containers';
 
-import { routes as monitoringRoutes } from '@monitoring/monitoring-routing.module';
-
 @NgModule({
   imports: [
     RouterModule.forChild([
@@ -56,7 +54,6 @@ import { routes as monitoringRoutes } from '@monitoring/monitoring-routing.modul
               {
                 path: 'monitoring',
                 component: MonitoringPageComponent,
-                children: monitoringRoutes,
               },
               {
                 path: 'replay',

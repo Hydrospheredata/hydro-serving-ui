@@ -1,0 +1,19 @@
+<div class="error-check">
+  <div class="error-check__information">
+    <div class="error-check__information-name">
+      Errors
+    </div>
+  </div>
+  <div class="error-check__count" [ngClass]="{'error-check__count--failed': errorsCount > 0}">
+    {{ errorsCount }}
+  </div>
+  <button
+    (click)="openErrorsDialog()"
+    class="error-check__button"
+    color="accent"
+    hs-button
+    *ngIf="showButton"
+  >
+    show errors
+  </button>
+</div>

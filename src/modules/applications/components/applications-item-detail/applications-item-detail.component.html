@@ -11,16 +11,16 @@
         kind="stroked"
         color="primary"
         [disabled]="!isReady(application.status)"
-        (click)="testApplication()"
+        (click)="testApplication(application)"
       >
         <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
         Test
       </button>
-      <button hs-button (click)="editApplication()">
+      <button hs-button (click)="editApplication(application)">
         <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
         Edit
       </button>
-      <button hs-button (click)="removeApplication()">
+      <button hs-button (click)="removeApplication(application)">
         <hydro-icon class="button__icon" type="icon-remove"></hydro-icon>
         remove
       </button>

@@ -1,9 +1,17 @@
-.header {
-  font-size: 12px;
-  color: #abafb2;
-  text-align: left;
-  text-transform: uppercase;
-  padding: 24px 0;
-  text-align: center;
-  line-height: 1;
+@import "variables";
+.comparison-histogram {
+  background: white;
+  padding: 8px 0;
+  box-shadow: $box-shadow;
+  margin-bottom: 24px;
+  border-radius: 4px;
+  &__header {
+    font-size: 14px;
+    color: $neutral-color-800;
+    text-align: left;
+    padding: 8px 0;
+    text-align: center;
+    line-height: 1;
+  }
 }
+

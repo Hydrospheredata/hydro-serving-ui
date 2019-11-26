@@ -1,14 +1,5 @@
-import { Observable, of } from 'rxjs';
-import {
-  switchMap,
-  tap,
-  startWith,
-  filter,
-  publish,
-  refCount,
-} from 'rxjs/operators';
-
-import { Application } from '@shared/models/application.model';
+import { Observable, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import {
   Component,
@@ -18,232 +9,62 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CustomValidatorsService } from '@core/services/custom-validators.service';
+import { ModelsFacade } from '@models/store';
+import { MetricSpecificationKind } from '@monitoring/interfaces';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { ModelVersion, Model } from '@shared/_index';
 import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  AbstractControl,
-} from '@angular/forms';
-
-import * as fromApplications from '@applications/reducers';
-import * as HydroActions from '@core/actions/monitoring.actions';
-import { HydroServingState } from '@core/reducers';
-import * as fromModels from '@models/reducers';
-import { Store } from '@ngrx/store';
-
-import { ModelVersion } from '@shared/_index';
-import { MetricSpecificationConfig } from '@shared/models/metric-specification-kind.model';
-import {
-  IMetricSpecificationRequest,
   MetricSpecification,
-  MetricSpecificationKind,
+  MetricSpecificationRequest,
 } from '@shared/models/metric-specification.model';
 
 export const metricSpec = new InjectionToken<MetricSpecification>(
   'metric spec id'
 );
 
-interface IMetricSpecificationKind {
-  name: string;
-  className: string;
-}
-
 @Component({
   templateUrl: './dialog-metric.component.html',
   styleUrls: ['./dialog-metric.component.scss'],
 })
 export class DialogMetricComponent implements OnInit {
-  @Input() metricSpecification: MetricSpecification;
+  @Input() modelVersion: ModelVersion;
   @Output() closed: EventEmitter<any> = new EventEmitter();
+
   form: FormGroup;
-  applications$: Observable<Application[]>;
-  sources$: Observable<string[]>;
-  modelVersion: ModelVersion;
+  models$: Observable<Model[]> = this.modelsFacade.allModels$;
+  allModelVersions$: Observable<ModelVersion[]> = this.modelsFacade
+    .allModelVersions$;
+  modelVersions$: Observable<ModelVersion[]>;
 
-  metricSpecificationKinds: IMetricSpecificationKind[] = [
-    { name: 'Kolmogorov-Smirnov', className: 'KSMetricSpec' },
-    { name: 'Autoencoder', className: 'AEMetricSpec' },
-    { name: 'Image Autoencoder', className: 'ImageAEMetricSpec' },
-    { name: 'Random Forest', className: 'RFMetricSpec' },
-    { name: 'GAN', className: 'GANMetricSpec' },
-    { name: 'Latency', className: 'LatencyMetricSpec' },
-    { name: 'Counter', className: 'CounterMetricSpec' },
-    { name: 'Error Rate', className: 'ErrorRateMetricSpec' },
-    { name: 'Prediction Accuracy', className: 'AccuracyMetricSpec' },
-    { name: 'Custom Model', className: 'CustomModelMetricSpec' },
-  ];
-
-  private modelVersion$: Observable<ModelVersion>;
+  // metricSpecificationKinds: MetricSpecificationKind[] = [
+  //   { name: 'Custom Model', className: 'CustomModelMetricSpec' },
+  // ];
 
   constructor(
     private fb: FormBuilder,
-    private store: Store<HydroServingState>
-  ) {
-    this.modelVersion$ = this.store
-      .select(fromModels.getSelectedModelVersion)
-      .pipe(
-        filter(mv => !!mv),
-        tap(modelVersion => (this.modelVersion = modelVersion)),
-        publish(),
-        refCount()
-      );
 
-    this.applications$ = this.store.select(fromApplications.getAllApplications);
-
-    this.sources$ = this.modelVersion$.pipe(
-      switchMap(modelVersion => of(this.getInputNames(modelVersion).concat(this.geOutputNames(modelVersion))))
-    );
-  }
-
+    private facade: MonitoringPageFacade,
+    private modelsFacade: ModelsFacade,
+    private customValidators: CustomValidatorsService
+  ) {}
   ngOnInit() {
-    this.createForm(this.metricSpecification);
+    this.createForm();
 
-    const kindChange = this.form.get('kind').valueChanges;
-    const withHealthChange = this.form
-      .get('withHealth')
-      .valueChanges.pipe(startWith(true));
+    const modelChange = this.form.get('config').get('model').valueChanges;
+    modelChange.subscribe(_ => {
+      console.log(_);
+    });
 
-    withHealthChange.subscribe(() => this.withHealthChanged());
-    kindChange.subscribe(() => this.kindChanged({}));
-  }
-
-  get actionName(): string {
-    return this.metricSpecification ? 'Edit' : 'Add';
-  }
-
-  withHealthChanged() {
-    const withHealth: boolean = this.form.get('withHealth').value;
-    const kind: MetricSpecificationKind = this.form.get('kind').value;
-
-    switch (kind) {
-      case 'AEMetricSpec':
-      case 'ImageAEMetricSpec':
-      case 'RFMetricSpec':
-      case 'LatencyMetricSpec':
-        const config = this.form.get('config') as FormGroup;
-        if (withHealth) {
-          config.addControl('threshold', this.fb.control(''));
-        } else {
-          config.removeControl('threshold');
-        }
-        break;
-      case 'CustomModelMetricSpec':
-        const cfg = this.form.get('config') as FormGroup;
-        if (withHealth) {
-          cfg.addControl('threshold', this.fb.control(''));
-          cfg.addControl('thresholdCmpOperator', this.fb.control(''));
-        } else {
-          cfg.removeControl('threshold');
-          cfg.removeControl('thresholdCmpOperator');
-        }
-        break;
-    }
-  }
-
-  kindChanged(
-    {
-      applicationName,
-      threshold,
-      input,
-      interval,
-      thresholdCmpOperator,
-    }: Partial<MetricSpecificationConfig> = {
-      applicationName: '',
-      threshold: '',
-      input: '',
-      interval: 1,
-      thresholdCmpOperator: {kind: ''},
-    }
-  ) {
-    const withHealth: boolean = this.form.get('withHealth').value;
-    const kind: MetricSpecificationKind = this.form.get('kind').value;
-
-    let controls: { [controlName: string]: AbstractControl };
-    switch (kind) {
-      case 'AccuracyMetricSpec':
-        this.removeConfig();
-        break;
-      case 'ImageAEMetricSpec':
-        controls = {
-          applicationName: this.fb.control(applicationName),
-        };
-        if (withHealth) {
-          controls.threshold = this.fb.control(threshold);
-        }
-        this.form.setControl('config', this.fb.group(controls));
-        break;
-      case 'AEMetricSpec':
-      case 'RFMetricSpec':
-        controls = {
-          input: this.fb.control(input),
-          applicationName: this.fb.control(applicationName),
-        };
-
-        if (withHealth) {
-          controls.threshold = this.fb.control(threshold);
-        }
-
-        this.form.setControl('config', this.fb.group(controls));
-        break;
-      case 'GANMetricSpec':
-        this.form.setControl(
-          'config',
-          this.fb.group({
-            input: this.fb.control(input),
-            applicationName: this.fb.control(applicationName),
-          })
-        );
-        break;
-      case 'ErrorRateMetricSpec':
-      case 'LatencyMetricSpec':
-        controls = {
-          interval: this.fb.control(interval, [Validators.required]),
-        };
-
-        if (withHealth) {
-          controls.threshold = this.fb.control(threshold);
-        }
-
-        this.form.setControl('config', this.fb.group(controls));
-        break;
-      case 'CounterMetricSpec':
-        this.form.setControl(
-          'config',
-          this.fb.group({
-            interval: this.fb.control(interval, [Validators.required]),
-          })
-        );
-        break;
-      case 'KSMetricSpec':
-        this.form.setControl(
-          'config',
-          this.fb.group({
-            input: this.fb.control(input, Validators.required),
-          })
-        );
-        break;
-      case 'CustomModelMetricSpec':
-        controls = {
-          applicationName: this.fb.control(applicationName),
-        };
-
-        if (withHealth) {
-          controls.threshold = this.fb.control(threshold);
-          controls.thresholdCmpOperator = this.fb.control(thresholdCmpOperator);
-        }
-        this.form.setControl('config', this.fb.group(controls));
-    }
-  }
-
-  getInputNames(modelVersion: ModelVersion): string[] {
-    if (!modelVersion) {
-      return [];
-    }
-
-    const getName = input => input.name;
-    const res = modelVersion.modelContract.predict.inputs.map(getName);
-
-    return res;
+    this.modelVersions$ = combineLatest(
+      modelChange,
+      this.allModelVersions$
+    ).pipe(
+      map(([model, modelVersions]) => {
+        return modelVersions.filter(mv => mv.model.id === model.id);
+      })
+    );
   }
 
   geOutputNames(modelVersion: ModelVersion): string[] {
@@ -262,22 +83,22 @@ export class DialogMetricComponent implements OnInit {
       return;
     }
 
-    const { withHealth, config = {}, kind } = this.form.value;
+    const {
+      config: { threshold, thresholdCmpOperator, modelVersionId },
+      name,
+    } = this.form.value;
 
-    const params: IMetricSpecificationRequest = {
-      name: this.form.value.name,
+    const params: MetricSpecificationRequest = {
+      name,
       modelVersionId: this.modelVersion.id,
-      config,
-      withHealth,
-      kind,
+      config: {
+        threshold: +threshold,
+        thresholdCmpOperator,
+        modelVersionId,
+      },
     };
 
-    if (this.metricSpecification) {
-      params.id = this.metricSpecification.id;
-      this.store.dispatch(new HydroActions.EditMetricAction(params));
-    } else {
-      this.store.dispatch(new HydroActions.AddMetricAction(params));
-    }
+    this.facade.addMetric(params);
     this.onClose();
   }
 
@@ -285,26 +106,31 @@ export class DialogMetricComponent implements OnInit {
     this.closed.next();
   }
 
-  private createForm(metricSpecification?: Partial<MetricSpecification>) {
-    const defaultMetricSpecification: Partial<MetricSpecification> = {
-      name: '',
-      withHealth: true,
-      kind: 'CounterMetricSpec',
-    };
-
-    const newMetricSpec = metricSpecification || defaultMetricSpecification;
-    const { name, withHealth, kind, config } = newMetricSpec;
-
+  private createForm() {
     this.form = this.fb.group({
-      name: [name || '', Validators.required],
-      withHealth: { value: withHealth || true, disabled: false },
-      config: this.fb.group({}),
-      kind: [kind || '', Validators.required],
+      name: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(50),
+          this.customValidators.metricNameFormat(),
+        ],
+      ],
+      config: this.fb.group({
+        threshold: this.fb.control('', [
+          Validators.required,
+          this.customValidators.pattern(
+            this.customValidators.VALIDATION_PATTERNS.number
+          ),
+        ]),
+        thresholdCmpOperator: this.fb.control(
+          { kind: '' },
+          Validators.required
+        ),
+        model: this.fb.control('', Validators.required),
+        modelVersionId: this.fb.control('', Validators.required),
+      }),
+      kind: ['CustomModelMetricSpec', Validators.required],
     });
-    this.kindChanged(config);
-  }
-
-  private removeConfig(): void {
-    this.form.removeControl('config');
   }
 }

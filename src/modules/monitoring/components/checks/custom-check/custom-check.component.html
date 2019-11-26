@@ -1,0 +1,16 @@
+<div class="custom-check">
+  <div class="custom-check__information">
+    <div class="custom-check__information-name" *ngIf="check">
+      {{ name }}
+    </div>
+    <div class="custom-check__information-config" *ngIf="check && threshold">
+      <div class="custom-check__information-label">
+        threshold:
+        <span class="custom-check__information-value">{{ threshold }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="custom-check__chart">
+    <hs-check-chart [config]="chartConfig"></hs-check-chart>
+  </div>
+</div>

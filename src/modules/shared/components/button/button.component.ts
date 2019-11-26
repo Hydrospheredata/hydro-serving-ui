@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 type buttonKinds = 'base' | 'flat' | 'stroked';
-type buttonColors = 'base' | 'primary' | 'accent' | 'warning';
+type buttonColors = 'base' | 'primary' | 'accent' | 'warning' | 'cyan';
 
 @Component({
   selector: 'button [hs-button]',

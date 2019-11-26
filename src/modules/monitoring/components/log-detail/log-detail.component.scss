@@ -1,0 +1,31 @@
+@import 'variables';
+
+.log-detail {
+  &__label {
+    color: $neutral-color-900;
+    line-height: 20px;
+    font-family: $font-family-light;
+    margin-bottom: 4px;
+  }
+  .inputs-table, .outputs-table, .metrics-table {
+    border-collapse: collapse;
+    margin-bottom: 24px;
+    &__cell {
+      padding: 4px;
+      border: 1px $neutral-color-300 solid;
+      text-align: right;
+      color: $neutral-color-900;
+      vertical-align: top;
+      &--error {
+        background-color: $supportive-color-red-100;
+        color: $supportive-color-red-700;
+      }
+    }
+    &__header-cell {
+      text-align: left;
+      font-family: $font-family-light;
+      background: $neutral-color-100;
+    }
+  }
+}
+

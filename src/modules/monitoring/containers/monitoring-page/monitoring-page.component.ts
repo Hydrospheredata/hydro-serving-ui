@@ -1,68 +1,47 @@
-import { Component, OnInit } from '@angular/core';
-import { HydroServingState, getSelectedMetrics, isMetricsLoading } from '@core/reducers';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
-import { getSelectedModelVersion } from '@models/reducers';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
-import { Store, select } from '@ngrx/store';
-import { ModelVersion, TimeInterval } from '@shared/_index';
-import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { Observable, of, Subject } from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
   styleUrls: ['./monitoring-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MonitoringPageComponent {
-  selectedModelVersion$: Observable<ModelVersion>;
-  selectedMetricSpecifications$: Observable<MetricSpecification[]>;
-  metricsNotEmpty$: Observable<boolean>;
-
-  timeInterval: TimeInterval;
-  timeIntervalChange$: Subject<TimeInterval> = new Subject();
-
-  live: boolean = true;
-  metricsLoading$: Observable<boolean>;
+export class MonitoringPageComponent implements OnInit {
+  checks$ = this.facade.checks$;
+  checksAggreagation$ = this.facade.checksAggreagtions$;
+  customChecks$ = this.facade.customChecks$;
+  customMetrics$ = this.facade.customMetrics$;
+  errorsChecks$ = this.facade.errorsChecks$;
+  latency$ = this.facade.latency$;
+  modelVersion$ = this.facade.modelVersion$;
+  selectedAggregationColumn$ = this.facade.selectedAggregation$;
+  selectedMetrics$ = this.facade.selectedMetrics$;
+  siblingModelVersions$ = this.facade.siblingModelVersions$;
+  error$ = this.facade.error$;
 
   constructor(
-    private store: Store<HydroServingState>,
-    private dialogService: DialogService
-  ) {
-    this.selectedModelVersion$ = this.store
-      .select(getSelectedModelVersion)
-      .pipe(filter(mv => !!mv));
+    private dialogService: DialogService,
+    private facade: MonitoringPageFacade
+  ) {}
 
-    this.selectedMetricSpecifications$ = this.store
-      .select(getSelectedMetrics)
-      .pipe(filter(_ => !!_));
-    this.metricsNotEmpty$ = this.selectedMetricSpecifications$.pipe(
-      switchMap(metrics => of(metrics.length > 0))
-    );
-
-    this.metricsLoading$ = this.store.pipe(select(isMetricsLoading));
-  }
-
-  onChangeTimeInterval(timeInterval: TimeInterval): void {
-    if (timeInterval && timeInterval.from && timeInterval.to) {
-      this.timeInterval = timeInterval;
-      this.timeIntervalChange$.next(timeInterval);
-    }
+  ngOnInit(): void {
+    this.facade.loadMetrics();
   }
 
   openSettings() {
     this.dialogService.createDialog({
       component: MetricsComponent,
       styles: {
-        width: '600px',
+        width: '800px',
+        height: '600px',
         padding: '0px',
       },
     });
   }
 
-  onStopLive() {
-    this.live = false;
-  }
-  onStartLive() {
-    this.live = true;
+  onSelectedAggregationColumn(id: string) {
+    this.facade.selectAggregationColumn(id);
   }
 }

@@ -1,9 +1,16 @@
-import { Component, OnInit, ChangeDetectionStrategy, TemplateRef, ViewChild, AfterViewInit } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
-import { GetServiceStatusAction} from '@monitoring/actions';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { MonitoringServiceStatus } from '@monitoring/models/monitoring-service-status';
-import { getMonitoringServiceStatus, getMonitoringServiceError } from '@monitoring/selectors';
-import { Store } from '@ngrx/store';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
+import {
+  getMonitoringServiceStatus,
+  getMonitoringServiceError,
+} from '@monitoring/store/selectors';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -15,26 +22,20 @@ import { map } from 'rxjs/operators';
 })
 export class MonitoringAvailabilityComponent implements OnInit {
   activeTemplate$: Observable<TemplateRef<any>>;
-  error$: Observable<string>;
+  error$ = this.facade.serviceStatusError$;
 
-  @ViewChild('loadingTemplate', {read: TemplateRef}) loadingTemplate;
-  @ViewChild('errorTemplate', {read: TemplateRef}) errorTemplate;
-  @ViewChild('alertTemplate', {read: TemplateRef}) alertTemplate;
-  @ViewChild('contentTemplate', {read: TemplateRef}) contentTemplate;
+  @ViewChild('loadingTemplate', { read: TemplateRef }) loadingTemplate;
+  @ViewChild('errorTemplate', { read: TemplateRef }) errorTemplate;
+  @ViewChild('alertTemplate', { read: TemplateRef }) alertTemplate;
+  @ViewChild('contentTemplate', { read: TemplateRef }) contentTemplate;
 
-  constructor(
-    private store: Store<HydroServingState>
-  ) {
-  }
+  constructor(private facade: MonitoringPageFacade) {}
 
   ngOnInit() {
-    this.store.dispatch(new GetServiceStatusAction());
-    this.error$ = this.store.select(getMonitoringServiceError);
+    this.activeTemplate$ = this.facade.serviceStatus$
+      .pipe(map(status => this.statusToTemplate(status)));
 
-    this.activeTemplate$ = this.store.select(getMonitoringServiceStatus)
-      .pipe(
-        map(status => this.statusToTemplate(status))
-      );
+    this.facade.getServiceStatus();
   }
 
   private statusToTemplate(status: MonitoringServiceStatus): TemplateRef<any> {

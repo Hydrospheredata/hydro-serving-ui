@@ -1,7 +1,8 @@
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
-import * as fromModels from '@models/reducers';
+import { HydroServingState } from '@core/store';
+import * as fromModels from '@models/store/selectors';
 import { Store } from '@ngrx/store';
 import { Model } from '@shared/_index';
 import { Observable, of } from 'rxjs';
@@ -12,7 +13,7 @@ export class ModelDetailsGuard implements CanActivate {
   private defaultUrl: string = 'models';
 
   constructor(
-    private store: Store<fromModels.ModelsState>,
+    private store: Store<HydroServingState>,
     private mdlSnackbarService: MdlSnackbarService,
     private router: Router
   ) {}
@@ -21,7 +22,7 @@ export class ModelDetailsGuard implements CanActivate {
     const modelId = Number(route.params.modelId);
 
     return this.modelsAreLoaded().pipe(
-      switchMap(_ => this.store.select(fromModels.getAllModels)),
+      switchMap(_ => this.store.select(fromModels.selectAllModels)),
       switchMap(models => {
         const model: Model = models.find(curModel => curModel.id === modelId);
         if (model) {
@@ -39,7 +40,7 @@ export class ModelDetailsGuard implements CanActivate {
   }
 
   private modelsAreLoaded(): Observable<boolean> {
-    return this.store.select(fromModels.getModelEntitiesLoaded).pipe(
+    return this.store.select(fromModels.selectModelsLoaded).pipe(
       filter(loaded => loaded),
       take(1)
     );

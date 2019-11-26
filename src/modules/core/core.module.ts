@@ -1,67 +1,32 @@
-import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { MetricSettingsService } from './services/metrics/metric-settings.service';
-
-import { MdlModule } from '@angular-mdl/core';
-import { MdlSelectModule } from '@angular-mdl/select';
+import { ModelBuilder, ModelVersionBuilder } from '@core/builders/_index';
+import {
+  FormsService,
+  SvgSpriteService,
+  SnackbarService,
+  NameGenerator,
+} from '@core/services';
+import { BuildInformationService } from '@core/services/build-information.service';
+import { HttpService } from '@core/services/http';
+import { ReqstoreService } from '@core/services/reqstore.service';
+import { reducers, CustomRouterStateSerializer } from '@core/store';
 import { EffectsModule } from '@ngrx/effects';
-import { CodemirrorModule } from 'ng2-codemirror';
-
-// Components
+import {
+  RouterStateSerializer,
+  StoreRouterConnectingModule,
+} from '@ngrx/router-store';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { SharedModule } from '@shared/shared.module';
 import {
   HeaderComponent,
   PageNotFoundComponent,
   BuildInformationDialogComponent,
 } from './components';
-
-// Services
-import {
-  FormsService,
-  SignaturesService,
-  RuntimesService,
-  InfluxDBService,
-  SvgSpriteService,
-} from '@core/services';
-import { HttpService } from '@core/services/http';
-
-// Effects
-import {
-  RuntimesEffects,
-  SignaturesEffects,
-  MonitoringEffects,
-} from '@core/effects/_index';
-
-// Builders
-import {
-  ModelBuilder,
-  ModelVersionBuilder,
-  ModelBuildBuilder,
-  RuntimeBuilder,
-} from '@core/builders/_index';
-
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
-import { reducers, CustomRouterStateSerializer } from '@core/reducers';
-import { BuildInformationService } from '@core/services/build-information.service';
-import { MonitoringService } from '@core/services/metrics/monitoring.service';
-import { ReqstoreService } from '@core/services/reqstore.service';
-import {
-  RouterStateSerializer,
-  StoreRouterConnectingModule,
-} from '@ngrx/router-store';
-import { SharedModule } from '@shared/shared.module';
-
 @NgModule({
   entryComponents: [BuildInformationDialogComponent],
   imports: [
-    CommonModule,
-    RouterModule,
-    MdlModule,
-    MdlSelectModule,
-    CodemirrorModule,
     HttpClientModule,
     SharedModule,
     StoreModule.forRoot(reducers, {
@@ -77,16 +42,12 @@ import { SharedModule } from '@shared/shared.module';
       },
     }),
     StoreDevtoolsModule.instrument(),
-    EffectsModule.forRoot([
-      RuntimesEffects,
-      SignaturesEffects,
-      MonitoringEffects,
-    ]),
+    EffectsModule.forRoot([]),
     StoreRouterConnectingModule.forRoot({
       stateKey: 'router',
     }),
   ],
-  exports: [HeaderComponent, MdlModule, MdlSelectModule, CodemirrorModule],
+  exports: [HeaderComponent],
   declarations: [
     HeaderComponent,
     PageNotFoundComponent,
@@ -95,19 +56,14 @@ import { SharedModule } from '@shared/shared.module';
   providers: [
     ModelBuilder,
     ModelVersionBuilder,
-    ModelBuildBuilder,
-    RuntimeBuilder,
     FormsService,
-    SignaturesService,
-    RuntimesService,
-    InfluxDBService,
-    MetricSettingsService,
-    MonitoringService,
     HttpService,
     { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
     SvgSpriteService,
     ReqstoreService,
     BuildInformationService,
+    SnackbarService,
+    NameGenerator,
   ],
 })
 export class CoreModule {}

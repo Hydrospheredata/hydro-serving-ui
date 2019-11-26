@@ -6,15 +6,13 @@ import { ApplicationsItemDetailComponent } from './applications-item-detail.comp
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { UpdateModelVersionDirective } from '@applications/directives';
-import { InfluxDBService } from '@core/services';
-import { HttpService } from '@core/services/http';
-import { MonitoringService } from '@core/services/metrics/monitoring.service';
+import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
+import { UpdateModelVersionDirective } from '@testing/directives/test-update-model-version.directive';
 import { MockApplication } from '@testing/factories/application';
-import { MockStoreProvider } from '@testing/mocks';
 import { of } from 'rxjs';
 
+const applicationsFacadeMock = {};
 describe('ApplicationsItemDetailComponent', () => {
   let component: ApplicationsItemDetailComponent;
   let fixture: ComponentFixture<ApplicationsItemDetailComponent>;
@@ -32,11 +30,11 @@ describe('ApplicationsItemDetailComponent', () => {
         RouterTestingModule,
       ],
       providers: [
-        MockStoreProvider,
         DialogService,
-        MonitoringService,
-        InfluxDBService,
-        HttpService,
+        {
+          provide: ApplicationsFacade,
+          useValue: applicationsFacadeMock,
+        },
       ],
     }).compileComponents();
   });

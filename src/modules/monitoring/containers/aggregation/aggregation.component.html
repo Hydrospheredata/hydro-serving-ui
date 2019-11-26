@@ -1,0 +1,74 @@
+<div class="aggregation">
+  <ng-container *ngIf="dataAvailable; else noDataAvailable">
+    <div class="aggregation__header">
+      <div>
+        Requests:
+        <span class="aggregation__header-count">{{ countRequests }} </span>
+      </div>
+      <div>
+        <span>{{ firstId | checkIdToTime | moment }}</span> -
+        <span>{{ lastId | checkIdToTime | moment }}</span>
+      </div>
+    </div>
+    <div class="aggregation__features-label">Features</div>
+    <div class="aggregation__body" *ngIf="featureNames">
+      <ul class="aggregation__labels" [ngStyle]="{ 'width.px': labelsWidth }">
+        <li class="aggregation__labels-item" *ngFor="let label of featureNames">
+          {{ label }}
+        </li>
+      </ul>
+      <div class="aggregation__checks">
+        <svg [attr.width]="canvasWidth" [attr.height]="canvasHeight">
+          <g
+            *ngFor="let column of aggregation; let columnIndex = index"
+            class="column"
+            [attr.transform]="columnTranslate(columnIndex)"
+            (click)="changeActiveColumn(column)"
+            [ngClass]="{ 'column--active': isSelected(column) }"
+          >
+            <rect
+              *ngFor="let featureName of featureNames; let rowIndex = index"
+              [attr.width]="CELL_SIZE"
+              [attr.height]="CELL_SIZE"
+              [attr.fill]="cellColor(column, featureName)"
+              [attr.transform]="rowTranslate(rowIndex)"
+            ></rect>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="aggregation__metrics-label">Metrics</div>
+    <div class="aggregation__body" *ngIf="metricNames">
+      <ul class="aggregation__labels" [ngStyle]="{ 'width.px': labelsWidth }">
+        <li class="aggregation__labels-item" *ngFor="let label of metricNames">
+          {{ label }}
+        </li>
+      </ul>
+      <div class="aggregation__checks">
+        <svg [attr.width]="canvasWidth" [attr.height]="metricsCanvasHeight">
+          <g
+            *ngFor="let column of aggregation; let columnIndex = index"
+            class="column"
+            [attr.transform]="columnTranslate(columnIndex)"
+            (click)="changeActiveColumn(column)"
+            [ngClass]="{ 'column--active': isSelected(column) }"
+          >
+            <rect
+              *ngFor="let metricName of metricNames; let rowIndex = index"
+              [attr.width]="CELL_SIZE"
+              [attr.height]="CELL_SIZE"
+              [attr.fill]="metricCellColor(column, metricName)"
+              [attr.transform]="rowTranslate(rowIndex)"
+            ></rect>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #noDataAvailable>
+  <div class="aggregation__message">
+    No data available. Waiting data ...
+  </div>
+</ng-template>

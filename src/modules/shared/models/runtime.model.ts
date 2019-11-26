@@ -1,8 +1,3 @@
-export interface IRuntime {
-    name: string;
-    tag: string;
-    sha256: string;
-}
 export class Runtime {
     public name: string;
     public tag: string;

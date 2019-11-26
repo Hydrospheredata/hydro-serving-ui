@@ -1,31 +1,24 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { MdlSelectModule } from '@angular-mdl/select';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { SignaturesService } from '@core/services';
-import { HttpService } from '@core/services/http';
-import * as fromModels from '@models/reducers';
-import { Store } from '@ngrx/store';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import {
-  ProfilesComparisonHistogramComponent,
-  ProfilesComponent,
-  ProfileStatsComponent,
-} from '@profiler/components';
+import { DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { ApplicationsFacade } from '@applications/store';
+import { ModelsFacade } from '@models/store';
+import { ModelVersion } from '@shared/_index';
 import { SharedModule } from '@shared/shared.module';
 import { ModelVersionLogComponent } from '@testing/components';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
-import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
-import { MomentModule } from 'angular2-moment';
-import { of } from 'rxjs';
+import {
+  MockModelVersion1Model1,
+  FailedModelVersion,
+} from '@testing/factories/modelVersion';
+import { of, BehaviorSubject } from 'rxjs';
 import { ModelVersionDetailsComponent } from './model-version-details.component';
 
 describe('ModelVersionDetailsComponent', () => {
   let component: ModelVersionDetailsComponent;
   let fixture: ComponentFixture<ModelVersionDetailsComponent>;
-  let store: MockStore<fromModels.State>;
-
+  let applicationsFacade: ApplicationsFacade;
+  const modelVersionStream = new BehaviorSubject(MockModelVersion1Model1);
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -33,27 +26,84 @@ describe('ModelVersionDetailsComponent', () => {
         ModelVersionLogComponent,
         ServablesTableComponent,
       ],
-      imports: [
-        MdlSelectModule,
-        SharedModule,
-        RouterTestingModule,
-        MomentModule,
-        HttpClientTestingModule,
+      imports: [SharedModule],
+      providers: [
+        {
+          provide: ModelsFacade,
+          useValue: {
+            selectedModelVersion$: modelVersionStream.asObservable(),
+            selectedServables$: of([]),
+          },
+        },
+        {
+          provide: ApplicationsFacade,
+          useValue: {
+            createApplicationFromModelVersion: (
+              modelVersion: ModelVersion
+            ) => {},
+          },
+        },
       ],
-      providers: [SignaturesService, HttpService, provideMockStore()],
     }).compileComponents();
-    store = TestBed.get(Store);
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ModelVersionDetailsComponent);
     component = fixture.componentInstance;
-    component.modelVersion$ = of(MockModelVersion1Model1);
-    component.servables$ = of([]);
+    applicationsFacade = TestBed.get(ApplicationsFacade);
+
     fixture.detectChanges();
   });
 
   it('it should be created', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('add application button', () => {
+    let button: DebugElement;
+
+    beforeEach(() => {
+      button = fixture.debugElement.query(
+        By.css('.model-version-detail__add-application')
+      );
+      spyOn(component, 'onAddApplication').and.callThrough();
+    });
+    it('shown if model version released', () => {
+      expect(button.nativeElement).toBeTruthy();
+      expect(button.nativeElement.disabled).toBeFalsy();
+    });
+    it('hidden if model version is not released', () => {
+      modelVersionStream.next(FailedModelVersion);
+      fixture.detectChanges();
+      expect(button.nativeElement.disabled).toBeTruthy();
+    });
+    it('contains right text', () => {
+      expect(button.nativeElement.textContent).toContain('create app');
+    });
+
+    it('onClick trigger wright component function', () => {
+      button.triggerEventHandler('click', null);
+      fixture.detectChanges();
+      expect(component.onAddApplication).toHaveBeenCalled();
+      expect(component.onAddApplication).toHaveBeenCalledTimes(1);
+    });
+
+    it('add application', () => {
+      spyOn(applicationsFacade, 'createApplicationFromModelVersion');
+      component.modelVersion$.subscribe(mv => {
+        button.triggerEventHandler('click', null);
+        fixture.detectChanges();
+
+        expect(
+          applicationsFacade.createApplicationFromModelVersion
+        ).toHaveBeenCalled();
+        expect(
+          applicationsFacade.createApplicationFromModelVersion
+        ).toHaveBeenCalledTimes(1);
+        expect(
+          applicationsFacade.createApplicationFromModelVersion
+        ).toHaveBeenCalledWith(mv);
+      });
+    });
   });
 });

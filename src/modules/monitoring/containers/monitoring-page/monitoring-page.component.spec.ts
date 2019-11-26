@@ -1,77 +1,83 @@
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { RouterTestingModule } from '@angular/router/testing';
-import { getSelectedMetrics, isMetricsLoading } from '@core/reducers';
 import { DialogService } from '@dialog/dialog.service';
-import * as fromModels from '@models/reducers';
-import { MemoizedSelector, Store } from '@ngrx/store';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { ModelVersion, AlertMessageComponent } from '@shared/_index';
-import { MetricSpecification } from '@shared/models/metric-specification.model';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { SharedModule } from '@shared/shared.module';
 import {
-  HealthTimelineComponent,
-  ReqResLogsComponent,
-  ChartsComponent,
+  AggregationComponent,
+  RequestsInformationComponent,
+  LogComponent,
+  CustomChecksComponent,
 } from '@testing/components';
-import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
+import { getErrorText } from '@testing/helpers';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { MonitoringPageComponent } from './monitoring-page.component';
-
-const metricSpec: MetricSpecification = {
-  id: 'id',
-  name: 'testMetric',
-  kind: 'CounterMetricSpec',
-  modelVersionId: 1,
-  config: {},
-  withHealth: true,
-};
 
 describe('MonitoringPageComponent', () => {
   let component: MonitoringPageComponent;
   let fixture: ComponentFixture<MonitoringPageComponent>;
-  let store: MockStore<fromModels.State>;
-  let selectedModelVersion: MemoizedSelector<fromModels.State, ModelVersion>;
-  let selectedMetricSpecs: MemoizedSelector<{}, MetricSpecification[]>;
-  let isLoading: MemoizedSelector<{}, boolean>;
+  let debugElement: DebugElement;
+  let facade: {
+    loadMetrics: () => {};
+    error$: Subject<string>;
+  };
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         MonitoringPageComponent,
-        HealthTimelineComponent,
-        ReqResLogsComponent,
-        ChartsComponent,
+        AggregationComponent,
+        RequestsInformationComponent,
+        LogComponent,
+        CustomChecksComponent,
       ],
-      imports: [RouterTestingModule, SharedModule],
-      providers: [provideMockStore(), DialogService],
+      imports: [SharedModule],
+      providers: [
+        DialogService,
+        {
+          provide: MonitoringPageFacade,
+          useValue: {
+            loadMetrics: () => {},
+            error$: new BehaviorSubject(''),
+          },
+        },
+      ],
     }).compileComponents();
-
-    store = TestBed.get(Store);
-    selectedModelVersion = store.overrideSelector(
-      fromModels.getSelectedModelVersion,
-      MockModelVersion1Model1
-    );
-    selectedMetricSpecs = store.overrideSelector(getSelectedMetrics, []);
-    isLoading = store.overrideSelector(isMetricsLoading, false);
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MonitoringPageComponent);
     component = fixture.componentInstance;
+    facade = TestBed.get(MonitoringPageFacade);
+    debugElement = fixture.debugElement;
+    spyOn(facade, 'loadMetrics');
+
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('with empty metrics array', () => {
+  it('called loadMetrics function on init', () => {
+    expect(facade.loadMetrics).toHaveBeenCalled();
+    expect(facade.loadMetrics).toHaveBeenCalledTimes(1);
+  });
+
+  describe('if something failed', () => {
+    const errorText = 'Error';
     beforeEach(() => {
+      facade.error$.next(errorText);
       fixture.detectChanges();
     });
-    it('shows alert message', () => {
-      const alertEl = fixture.debugElement.query(
-        By.directive(AlertMessageComponent)
+
+    it('shows error message', () => {
+      const errorElement = debugElement.query(
+        By.css('.monitoring-page__error')
       );
-      expect(alertEl).toBeTruthy();
+      fixture.detectChanges();
+      expect(errorElement).toBeTruthy();
+      expect(getErrorText(errorElement)).toContain(errorText);
     });
   });
 });

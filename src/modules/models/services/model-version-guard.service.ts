@@ -1,7 +1,8 @@
 import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
-import * as fromModels from '@models/reducers';
+import { HydroServingState } from '@core/store';
+import * as fromModels from '@models/store/selectors';
 import { Store } from '@ngrx/store';
 import { Model } from '@shared/_index';
 import { Observable, forkJoin, of } from 'rxjs';
@@ -12,7 +13,7 @@ export class ModelVersionDetailsGuard implements CanActivate {
   private defaultUrl: string = 'models';
 
   constructor(
-    private store: Store<fromModels.ModelsState>,
+    private store: Store<HydroServingState>,
     private mdlSnackbarService: MdlSnackbarService,
     private router: Router
   ) {}
@@ -21,7 +22,7 @@ export class ModelVersionDetailsGuard implements CanActivate {
     const modelId = Number(route.params.modelId);
 
     return forkJoin(this.modelsAreLoaded(), this.modelVersionAreLoaded()).pipe(
-      switchMap(_ => this.store.select(fromModels.getAllModels)),
+      switchMap(_ => this.store.select(fromModels.selectAllModels)),
       switchMap(models => {
         const model: Model = models.find(curModel => curModel.id === modelId);
         if (model) {
@@ -43,14 +44,14 @@ export class ModelVersionDetailsGuard implements CanActivate {
   }
 
   private modelsAreLoaded(): Observable<boolean> {
-    return this.store.select(fromModels.getModelEntitiesLoaded).pipe(
+    return this.store.select(fromModels.selectModelsLoaded).pipe(
       filter(loaded => loaded),
       take(1)
     );
   }
 
   private modelVersionAreLoaded(): Observable<boolean> {
-    return this.store.select(fromModels.getModelVersionLoaded).pipe(
+    return this.store.select(fromModels.selectModelVersionsLoaded).pipe(
       filter(loaded => loaded),
       take(1)
     );
@@ -61,7 +62,7 @@ export class ModelVersionDetailsGuard implements CanActivate {
     modelVersionId: number
   ): Observable<boolean> {
     return this.store
-      .select(fromModels.getModelVersionsByModelId(modelId))
+      .select(fromModels.selectAllModelVersionsByModelId(modelId))
       .pipe(
         switchMap(modelVersions => {
           const modelVersion = modelVersions.find(

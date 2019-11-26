@@ -1,8 +1,4 @@
 import { Component, InjectionToken, Inject, OnDestroy } from '@angular/core';
-
-import * as fromApplications from '@applications/reducers';
-import { HydroServingState } from '@core/reducers';
-import { Store } from '@ngrx/store';
 import { isEqual } from 'lodash';
 
 import {
@@ -14,8 +10,8 @@ import {
 import { Observable, Subject, of } from 'rxjs';
 import { tap, catchError, takeUntil, take, map } from 'rxjs/operators';
 
-import { UpdateApplicationAction } from '@applications/actions';
 import { IModelVariantFormData } from '@applications/services';
+import { ApplicationsFacade } from '@applications/store';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { DialogService } from '@dialog/dialog.service';
 
@@ -31,18 +27,16 @@ export const LATEST_MODEL_VERSION = new InjectionToken<ModelVersion>(
 })
 export class DialogUpdateModelVersionComponent implements OnDestroy {
   private destroySubscriptions: Subject<any> = new Subject<any>();
-  private selectedApplication$: Observable<Application>;
+  private selectedApplication$: Observable<Application> = this.facade.selectedApplication$;
 
   constructor(
     public dialog: DialogService,
-    private store: Store<HydroServingState>,
+    private facade: ApplicationsFacade,
     private applicationBuilder: ApplicationBuilder,
     @Inject(SELECTED_MODEL_VARIANT) private selectedModelVariant: IModelVariant,
     @Inject(LATEST_MODEL_VERSION) private latestModelVersion: ModelVersion
   ) {
-    this.selectedApplication$ = this.store.select(
-      fromApplications.getSelectedApplication
-    );
+
   }
 
   onClose(): void {
@@ -81,8 +75,8 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
           return { ...application, executionGraph: { stages } };
         }),
         tap(newApplicationData => {
-          const app = this.applicationBuilder.build(newApplicationData);
-          this.store.dispatch(new UpdateApplicationAction(app));
+          const application = this.applicationBuilder.build(newApplicationData);
+          this.facade.editApplication(application);
         }),
         catchError(err => {
           console.error(err);

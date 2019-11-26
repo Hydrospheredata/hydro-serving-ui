@@ -1,50 +1,45 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { By } from '@angular/platform-browser';
-import * as actions from '@monitoring/actions';
-import {
-  SetStatusToAvailableAction,
-  SetStatusToFailedAction,
-  SetStatusToClosedForOSSAction
-} from '@monitoring/actions';
-import * as fromMonitoring from '@monitoring/reducers';
-import * as fromMonitoringServiceStatus from '@monitoring/reducers/monitoring-service-status.reducer';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
+import { MonitoringServiceStatus } from '@monitoring/models';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { AlertMessageComponent } from '@shared/_index';
 import { ErrorMessageComponent } from '@shared/components/error-message/error-message.component';
 import { SharedModule } from '@shared/shared.module';
+import { BehaviorSubject } from 'rxjs';
 import { MonitoringAvailabilityComponent } from './monitoring-availability.component';
-
-interface MockState {
-  'monitoring': fromMonitoring.State;
-}
 
 describe('MonitoringAvailabilityComponent', () => {
   let component: MonitoringAvailabilityComponent;
   let fixture: ComponentFixture<MonitoringAvailabilityComponent>;
-  let store: Store<MockState>;
-
-  const reducers = combineReducers({
-    monitoringServiceStatus: fromMonitoringServiceStatus.reducer,
-  });
-
+  let facade: {
+    serviceStatusError$: BehaviorSubject<string>;
+    serviceStatus$: BehaviorSubject<MonitoringServiceStatus>;
+    getServiceStatus: () => {};
+  };
+  let getStatusSpy: jasmine.Spy;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        SharedModule,
-        StoreModule.forRoot({monitoring: reducers}),
+      imports: [SharedModule],
+      declarations: [MonitoringAvailabilityComponent],
+      providers: [
+        {
+          provide: MonitoringPageFacade,
+          useValue: {
+            serviceStatusError$: new BehaviorSubject(''),
+            serviceStatus$: new BehaviorSubject(undefined),
+            getServiceStatus: () => {},
+          },
+        },
       ],
-      declarations: [ MonitoringAvailabilityComponent ],
-    })
-    .compileComponents();
+    }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MonitoringAvailabilityComponent);
     component = fixture.componentInstance;
-    store = TestBed.get(Store);
-    spyOn(store, 'dispatch').and.callThrough();
-
+    facade = TestBed.get(MonitoringPageFacade);
+    getStatusSpy = spyOn(facade, 'getServiceStatus');
     fixture.detectChanges();
   });
 
@@ -53,8 +48,9 @@ describe('MonitoringAvailabilityComponent', () => {
   });
 
   describe('onInit', () => {
-    it('dispatch getMonitoringServiceStatus action', () => {
-      expect(store.dispatch).toHaveBeenCalledWith(new actions.GetServiceStatusAction());
+    it('call getServiceStatus function', () => {
+      expect(facade.getServiceStatus).toHaveBeenCalled();
+      expect(facade.getServiceStatus).toHaveBeenCalledTimes(1);
     });
 
     it('show loading message', () => {
@@ -66,7 +62,7 @@ describe('MonitoringAvailabilityComponent', () => {
 
   describe('if service status is AVAILABLE', () => {
     beforeEach(() => {
-      store.dispatch(new SetStatusToAvailableAction());
+      facade.serviceStatus$.next(MonitoringServiceStatus.AVAILABLE);
       fixture.detectChanges();
     });
 
@@ -83,11 +79,13 @@ describe('MonitoringAvailabilityComponent', () => {
     const errorMessage = 'Fail';
 
     beforeEach(() => {
-      store.dispatch(new SetStatusToFailedAction({errorMessage}));
+      facade.serviceStatus$.next(MonitoringServiceStatus.FAILED);
+      facade.serviceStatusError$.next(errorMessage);
       fixture.detectChanges();
 
-      errorMessageComponent = fixture.debugElement.query(By.directive(ErrorMessageComponent));
-
+      errorMessageComponent = fixture.debugElement.query(
+        By.directive(ErrorMessageComponent)
+      );
     });
 
     it('ErrorComponent is shown', () => {
@@ -95,7 +93,9 @@ describe('MonitoringAvailabilityComponent', () => {
     });
 
     it('ErrorComponent has error message', () => {
-      expect(errorMessageComponent.nativeElement.textContent).toContain(errorMessage);
+      expect(errorMessageComponent.nativeElement.textContent).toContain(
+        errorMessage
+      );
     });
   });
 
@@ -103,10 +103,12 @@ describe('MonitoringAvailabilityComponent', () => {
     let alertMessageComponent;
 
     beforeEach(() => {
-      store.dispatch(new SetStatusToClosedForOSSAction());
+      facade.serviceStatus$.next(MonitoringServiceStatus.CLOSED_FOR_OSS);
       fixture.detectChanges();
 
-      alertMessageComponent = fixture.debugElement.query(By.directive(AlertMessageComponent));
+      alertMessageComponent = fixture.debugElement.query(
+        By.directive(AlertMessageComponent)
+      );
     });
 
     it('MonitoringComponent is shown', () => {
@@ -114,8 +116,11 @@ describe('MonitoringAvailabilityComponent', () => {
     });
 
     it('MonitoringComponent is shown', () => {
-      const alertText = 'Monitoring isn\'t available in OSS yet. But you can make request for a demo';
-      expect(alertMessageComponent.nativeElement.textContent).toContain(alertText);
+      const alertText =
+        'Monitoring isn\'t available in OSS yet. But you can make request for a demo';
+      expect(alertMessageComponent.nativeElement.textContent).toContain(
+        alertText
+      );
     });
   });
 });

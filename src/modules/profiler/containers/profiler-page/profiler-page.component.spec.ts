@@ -1,45 +1,49 @@
 import { DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { Store, StoreModule, combineReducers } from '@ngrx/store';
-import { MockStore } from '@ngrx/store/testing';
-import * as fromProfiler from '@profiler/reducers';
+import { combineReducers } from '@ngrx/store';
+import { ProfilerStatus } from '@profiler/models';
+import * as fromProfiler from '@profiler/store';
 import { AlertMessageComponent } from '@shared/_index';
 import { ErrorMessageComponent } from '@shared/components/error-message/error-message.component';
 import { SharedModule } from '@shared/shared.module';
 import { ProfilesComponent } from '@testing/components/mock-profiles';
-import {
-  ProfilerServiceStatusIsFailed,
-  ProfilerServiceStatusIsClosedForOSS,
-  ProfilerServiceStatusIsAvailable
-} from '../../actions';
+import { getErrorText } from '@testing/helpers';
+import { BehaviorSubject } from 'rxjs';
+import { ProfilerFacade } from '../../store';
 import { ProfilerPageComponent } from './profiler-page.component';
 
 const c = combineReducers(fromProfiler.reducers);
 
 describe('ProfilerPageComponent', () => {
+  const serviceStatusStream = new BehaviorSubject(undefined);
+  const errorStream = new BehaviorSubject(null);
   let component: ProfilerPageComponent;
   let fixture: ComponentFixture<ProfilerPageComponent>;
-  let store: MockStore<fromProfiler.ProfilerState>;
-
+  let facade: Partial<ProfilerFacade>;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        SharedModule,
-        StoreModule.forRoot({profiler: c}),
+      imports: [SharedModule],
+      declarations: [ProfilesComponent, ProfilerPageComponent],
+      providers: [
+        {
+          provide: ProfilerFacade,
+          useValue: {
+            serviceStatus$: serviceStatusStream.asObservable(),
+            error$: errorStream.asObservable(),
+            getProfilerServiceStatus: () => {},
+          },
+        },
       ],
-      declarations: [ ProfilesComponent, ProfilerPageComponent,  ],
-      providers: [],
-    })
-    .compileComponents();
+    }).compileComponents();
 
-    store = TestBed.get(Store);
-    spyOn(store, 'dispatch').and.callThrough();
+    facade = TestBed.get(ProfilerFacade);
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProfilerPageComponent);
     component = fixture.componentInstance;
+    spyOn(facade, 'getProfilerServiceStatus').and.callThrough();
     fixture.detectChanges();
   });
 
@@ -47,13 +51,21 @@ describe('ProfilerPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('getServiceStatus function was called on init', () => {
+    expect(facade.getProfilerServiceStatus).toHaveBeenCalled();
+    expect(facade.getProfilerServiceStatus).toHaveBeenCalledTimes(1);
+  });
+
   describe('if profiler service failed', () => {
     let errorDebugElement: DebugElement;
-
+    const errorText = 'Error message';
     beforeEach(() => {
-      store.dispatch(new ProfilerServiceStatusIsFailed({errorMessage: 'Fail'}));
+      serviceStatusStream.next(ProfilerStatus.FAILED);
+      errorStream.next(errorText);
       fixture.detectChanges();
-      errorDebugElement = fixture.debugElement.query(By.directive(ErrorMessageComponent));
+      errorDebugElement = fixture.debugElement.query(
+        By.directive(ErrorMessageComponent)
+      );
     });
 
     it('error template showed', () => {
@@ -61,7 +73,7 @@ describe('ProfilerPageComponent', () => {
     });
 
     it('error template has right message', () => {
-      expect(errorDebugElement.nativeElement.textContent).toContain('Fail');
+      expect(getErrorText(errorDebugElement)).toContain(errorText);
     });
   });
 
@@ -69,9 +81,11 @@ describe('ProfilerPageComponent', () => {
     let alertDebugElement: DebugElement;
 
     beforeEach(() => {
-      store.dispatch(new ProfilerServiceStatusIsClosedForOSS());
+      serviceStatusStream.next(ProfilerStatus.CLOSED_FOR_OSS);
       fixture.detectChanges();
-      alertDebugElement = fixture.debugElement.query(By.directive(AlertMessageComponent));
+      alertDebugElement = fixture.debugElement.query(
+        By.directive(AlertMessageComponent)
+      );
     });
 
     it('alert template showed', () => {
@@ -79,7 +93,8 @@ describe('ProfilerPageComponent', () => {
     });
 
     it('alert template has right message', () => {
-      const message = 'Profiler isn\'t available in OSS yet. But you can make request for a demo';
+      const message =
+        'Profiler isn\'t available in OSS yet. But you can make request for a demo';
       expect(alertDebugElement.nativeElement.textContent).toContain(message);
     });
   });
@@ -90,22 +105,26 @@ describe('ProfilerPageComponent', () => {
     let profilesComponent: HTMLElement;
 
     beforeEach(() => {
-      store.dispatch(new ProfilerServiceStatusIsAvailable());
+      serviceStatusStream.next(ProfilerStatus.AVAILABLE);
       fixture.detectChanges();
-      alertDebugElement = fixture.debugElement.query(By.directive(AlertMessageComponent));
-      errorDebugElement = fixture.debugElement.query(By.directive(ErrorMessageComponent));
+      alertDebugElement = fixture.debugElement.query(
+        By.directive(AlertMessageComponent)
+      );
+      errorDebugElement = fixture.debugElement.query(
+        By.directive(ErrorMessageComponent)
+      );
       profilesComponent = fixture.nativeElement.querySelector('.profiler');
     });
 
-    it('error did not show', () => {
+    it('error is not showed', () => {
       expect(errorDebugElement).toBeNull();
     });
 
-    it('alert did not show', () => {
+    it('alert is not showed', () => {
       expect(alertDebugElement).toBeNull();
     });
 
-    it('profiler component showed', () => {
+    it('profiler component is showed', () => {
       expect(profilesComponent).toBeTruthy();
     });
   });

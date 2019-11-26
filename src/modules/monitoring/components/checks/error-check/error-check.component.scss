@@ -1,0 +1,26 @@
+@import 'variables';
+
+.error-check {
+  padding: 12px 0;
+  &__information {
+    min-width: 60px;
+    &-name {
+      font-size: 12px;
+      color: $neutral-color-800;
+      font-family: $font-family-bold;
+    }
+  }
+  &__button {
+    margin: 6px 0;
+    width: 100%
+  }
+  &__count {
+    text-align: center;
+    margin: 8px 0;
+    font-size: 28px;
+    color: $supportive-color-green-400;
+    &--failed {
+      color: $supportive-color-red-400;
+    }
+  }
+}

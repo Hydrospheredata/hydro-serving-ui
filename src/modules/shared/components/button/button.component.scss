@@ -39,6 +39,12 @@
       background: $supportive-color-red-100;
     }
   }
+  &-cyan {
+    color: $supportive-color-cyan-700;
+    &:not([disabled]):hover {
+      background: $supportive-color-cyan-100;
+    }
+  }
 
   &[disabled] {
     color: $neutral-color-200;
@@ -70,6 +76,12 @@
       background: $supportive-color-red-100;
     }
   }
+  &-cyan {
+    color: $supportive-color-cyan-700;
+    &:not([disabled]):hover {
+      background: $supportive-color-cyan-100;
+    }
+  }
   &[disabled] {
     color: $neutral-color-200;
     border-color: $neutral-color-100;
@@ -89,6 +101,11 @@
   }
   &-warning {
     background: $supportive-color-red-700;
+    color: $neutral-color-100;
+  }
+
+  &-cyan {
+    background: $supportive-color-cyan-700;
     color: $neutral-color-100;
   }
 

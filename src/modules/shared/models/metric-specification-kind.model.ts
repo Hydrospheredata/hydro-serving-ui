@@ -1,7 +1,8 @@
+import { Servable } from '@servables/models';
+
 export interface MetricSpecificationConfig {
-  input?: string;
-  threshold?: string;
-  interval?: number;
-  applicationName?: string;
-  thresholdCmpOperator?: {kind: string};
+  threshold: number;
+  modelVersionId: number;
+  thresholdCmpOperator: {kind: string};
+  servable?: Servable;
 }

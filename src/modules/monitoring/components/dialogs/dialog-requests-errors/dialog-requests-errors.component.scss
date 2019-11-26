@@ -1,0 +1,26 @@
+@import "variables";
+
+.request-errors {
+  &__table {
+    border-collapse: collapse;
+  }
+
+  &__cell, &__head {
+    color: $neutral-color-900;
+    border: 1px $neutral-color-300 solid;
+    padding: 4px 8px;
+  }
+
+  &__cell {
+    &--failed {
+      background: $supportive-color-red-100;
+      color: $supportive-color-red-800;
+    }
+  }
+
+  &__head {
+    background-color: $neutral-color-100;
+    color: $neutral-color-700;
+    font-family: $font-family-light;
+  }
+}

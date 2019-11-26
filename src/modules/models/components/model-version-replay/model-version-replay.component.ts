@@ -6,13 +6,16 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
-import { HydroServingState } from '@core/reducers';
 import { TimemachineService } from '@core/services/timemachine.service';
-import { getSiblingVersions, getSelectedModelVersion } from '@models/reducers';
-import { Store } from '@ngrx/store';
+import { HydroServingState } from '@core/store';
+import {
+  selectSiblingModelVersions,
+  selectSelectedModelVersion,
+} from '@models/store/selectors';
+import { Store, select } from '@ngrx/store';
 import { ModelVersion } from '@shared/_index';
 import { Observable, fromEvent, Subscription } from 'rxjs';
-import { withLatestFrom, exhaustMap } from 'rxjs/operators';
+import { withLatestFrom, exhaustMap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-model-version-replay',
@@ -23,6 +26,7 @@ import { withLatestFrom, exhaustMap } from 'rxjs/operators';
 export class ModelVersionReplayComponent implements OnInit, OnDestroy {
   @ViewChild('replyButton', { read: ElementRef }) replyButton: ElementRef;
   siblingsModelVersions$: Observable<ModelVersion[]>;
+  modelVersion$: Observable<ModelVersion>;
   replayableModelVersion: number;
   onReplayClick$: Observable<any>;
   replayClickSubscribe: Subscription;
@@ -31,7 +35,15 @@ export class ModelVersionReplayComponent implements OnInit, OnDestroy {
     private store: Store<HydroServingState>,
     private timemachine: TimemachineService
   ) {
-    this.siblingsModelVersions$ = this.store.select(getSiblingVersions);
+    this.modelVersion$ = this.store.pipe(select(selectSelectedModelVersion));
+    this.siblingsModelVersions$ = this.modelVersion$.pipe(
+      switchMap(({ model: { id: modelId }, id: modelVersionId }) =>
+        selectSiblingModelVersions({
+          modelId,
+          modelVersionId,
+        })
+      )
+    );
   }
 
   ngOnInit() {
@@ -39,7 +51,7 @@ export class ModelVersionReplayComponent implements OnInit, OnDestroy {
       this.replyButton.nativeElement,
       'click'
     ).pipe(
-      withLatestFrom(this.store.select(getSelectedModelVersion)),
+      withLatestFrom(this.modelVersion$),
       exhaustMap(([_, modelVersionTo]: [any, ModelVersion]) => {
         return this.timemachine.travel({
           modelNameTo: `${modelVersionTo.model.name}`,

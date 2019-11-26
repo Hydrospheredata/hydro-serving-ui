@@ -1,7 +1,7 @@
 import { Provider } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  SELECTED_APPLICATION$,
+  SELECTED_APPLICATION,
   SELECTED_MODEL_VARIANT,
   LATEST_MODEL_VERSION,
 } from '@applications/components';
@@ -31,8 +31,8 @@ export const MockRouterProvider: Provider = {
   useValue: MockRouter,
 };
 export const MockSelectedApplication: Provider = {
-  provide: SELECTED_APPLICATION$,
-  useValue: of({}),
+  provide: SELECTED_APPLICATION,
+  useValue: {},
 };
 export const MockSelectedModelVariantProvider: Provider = {
   provide: SELECTED_MODEL_VARIANT,

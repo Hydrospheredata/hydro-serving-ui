@@ -5,9 +5,9 @@ import {
   SimpleChanges,
   OnChanges,
 } from '@angular/core';
+import { RequestResponseLog } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/models/_index';
-import { isEmptyObj } from '@shared/utils/is-empty-object';
-import * as _ from 'lodash';
+import { isEqual, isEmpty } from 'lodash';
 
 @Component({
   selector: 'hs-reqstore-table-log',
@@ -19,7 +19,7 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   modelVersion: ModelVersion;
 
   @Input()
-  logData: any;
+  logData: RequestResponseLog;
 
   @Input()
   loading: any = false;
@@ -27,12 +27,12 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   uid: string;
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.logData && changes.logData.currentValue) {
-      const sameData = _.isEqual(
+      const sameData = isEqual(
         changes.logData.previousValue,
         changes.logData.currentValue
       );
       const values = Object.keys(changes.logData.currentValue);
-      if (values.length > 0) {
+      if (!isEmpty(values)) {
         if (!sameData) {
           this.uid = values[0];
         }
@@ -53,6 +53,6 @@ export class ReqstoreTableLogComponent implements OnInit, OnChanges {
   }
 
   logNotEmpty(): boolean {
-    return !isEmptyObj(this.logData);
+    return !isEmpty(this.logData);
   }
 }
