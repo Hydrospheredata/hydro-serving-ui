@@ -1,4 +1,5 @@
 <div class="mv-details">
+  <router-outlet></router-outlet>
   <section
     class="content__cell mv-details__information"
     *ngIf="modelVersion$ | async as modelVersion"
@@ -104,7 +105,6 @@
     <div class="content__cell-title">Signatures</div>
     <div class="content__cell-body">
       <hydro-signatures
-        [signature]="(modelVersion$ | async)?.modelContract?.predict"
       ></hydro-signatures>
     </div>
   </section>

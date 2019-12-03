@@ -1,13 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ReactiveFormsModule } from '@angular/forms';
+import { ModelsFacade } from '@models/store';
 import { SharedModule } from '@shared/shared.module';
+import { of } from 'rxjs';
 import { SignaturesComponent } from './signatures.component';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpService } from '@core/services/http';
-import { MockSignature1 } from '@testing/factories/signature';
-import { MockStoreProvider } from '@testing/mocks';
+const mockModelsFacade = {
+  signature$: of(),
+};
 
 describe('SignaturesComponent', () => {
   let component: SignaturesComponent;
@@ -15,16 +14,18 @@ describe('SignaturesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [],
-      imports: [SharedModule, ReactiveFormsModule, HttpClientTestingModule],
-      providers: [HttpService, MockStoreProvider],
+      declarations: [SignaturesComponent],
+      imports: [SharedModule],
+      providers: [ {
+        provide: ModelsFacade,
+        useValue: mockModelsFacade,
+      }],
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SignaturesComponent);
     component = fixture.componentInstance;
-    component.signature = MockSignature1;
     fixture.detectChanges();
   });
 

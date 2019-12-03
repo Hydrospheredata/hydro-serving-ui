@@ -6,7 +6,9 @@ import {
   ComponentRef,
 } from '@angular/core';
 import { ApplicationsFacade } from '@applications/store';
-import { ModelVersionLogComponent } from '@models/components/model-version-log/model-version-log.component';
+import {
+  ModelVersionLogComponent
+} from '@models/components/model-version/model-version-log/model-version-log.component';
 import { ModelVersionLogService } from '@models/services/model-version-log.service';
 import { ModelsFacade } from '@models/store';
 import { ServableLogsComponent } from '@servables/containers';
@@ -28,6 +30,7 @@ export class ModelVersionDetailsComponent {
     map(({ status }) => status === ModelVersionStatus.Released)
   );
   servables$ = this.modelsFacade.selectedServables$;
+  signature$ = this.modelsFacade.signature$;
   showLog: boolean = false;
   globalLog: boolean = false;
   private current: ComponentRef<any>;
@@ -65,8 +68,7 @@ export class ModelVersionDetailsComponent {
     this.toggleGlobalLog();
   }
 
-  closeGlobalLog(
-  ): void {
+  closeGlobalLog(): void {
     this.current.destroy();
     this.logContainer.clear();
     this.globalLog = false;

@@ -1,17 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { MdlModule } from '@angular-mdl/core';
-import { MdlSelectModule } from '@angular-mdl/select';
-import { StoreModule, combineReducers } from '@ngrx/store';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ProfilesComparisonHistogramComponent } from '@profiler/components';
 import { ProfileStatsComponent } from '@profiler/components/profile-stats/profile-stats.component';
-import * as fromProfiler from '@profiler/store';
 import { ProfilerFacade } from '@profiler/store';
 import { SharedModule } from '@shared/shared.module';
-import { BehaviorSubject, of } from 'rxjs';
+import { BehaviorSubject, of, Subject } from 'rxjs';
 import { ProfilesComponent } from './profiles.component';
-
-const c = combineReducers(fromProfiler.reducers);
 
 describe('ProfilesComponent', () => {
   let component: ProfilesComponent;
@@ -24,9 +18,7 @@ describe('ProfilesComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         SharedModule,
-        MdlModule,
-        MdlSelectModule,
-        StoreModule.forRoot({ profiler: c }),
+        RouterTestingModule,
       ],
       providers: [
         {
@@ -35,6 +27,7 @@ describe('ProfilesComponent', () => {
             fields$: of([]),
             error$: error.asObservable(),
             cleanProfiles: () => {},
+            selectedField: new Subject(),
           },
         },
       ],

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ISignature } from '@shared/models/_index';
+import { ModelsFacade } from '@models/store';
 
 @Component({
   selector: 'hydro-signatures',
@@ -7,6 +7,6 @@ import { ISignature } from '@shared/models/_index';
   styleUrls: ['./signatures.component.scss'],
 })
 export class SignaturesComponent {
-  @Input() modelId: number;
-  @Input() signature: ISignature;
+  signature$ = this.models.signatureWithFieldNames$;
+  constructor(private models: ModelsFacade) {}
 }

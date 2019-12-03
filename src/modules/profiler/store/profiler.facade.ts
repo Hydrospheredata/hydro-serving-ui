@@ -1,16 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ProfilerService } from '@core/services';
-import { ModelsFacade } from '@models/store';
 import { Store, select } from '@ngrx/store';
 import { Profiles } from '@shared/_index';
-import { Subject, combineLatest, timer, of, Observable } from 'rxjs';
+import { timer, of, Observable, BehaviorSubject } from 'rxjs';
 import {
   switchMap,
   map,
   catchError,
-  publish,
-  refCount,
-  startWith,
+  filter,
 } from 'rxjs/operators';
 import {
   GetProfilerServiceStatus,
@@ -19,50 +16,27 @@ import {
   GetFieldsFail,
 } from './actions';
 import { ProfilerState } from './reducers';
-import { selectErrorMessage, selectProfilerServiceStatus } from './selectors';
+import {
+  selectErrorMessage,
+  selectProfilerServiceStatus,
+  selectSelectedFeatureName,
+} from './selectors';
 @Injectable()
 export class ProfilerFacade {
   error$ = this.store.pipe(select(selectErrorMessage));
   serviceStatus$ = this.store.select(selectProfilerServiceStatus);
-  modelVersion$ = this.modelsFacade.selectedModelVersion$;
-  selectedField = new Subject<string>();
-  selectedField$ = this.selectedField.asObservable();
+  selectedField = new BehaviorSubject<string>(undefined);
+  selectedField$ = this.selectedField
+    .asObservable()
+    .pipe(filter(val => val !== undefined));
 
-  fields$: Observable<string[]> = this.modelVersion$.pipe(
-    switchMap(({ id }) => {
-      return this.profilerService.getFields(`${id}`).pipe(
-        catchError(error => {
-          this.store.dispatch(GetFieldsFail({ error }));
-          return of([]);
-        })
-      );
-    }),
-    publish(),
-    refCount(),
-    startWith([])
-  );
-  profiles$: Observable<Profiles> = combineLatest(
-    this.modelVersion$,
-    this.selectedField$
-  ).pipe(
-    switchMap(([modelVersion, field]) =>
-      timer(0, 5000).pipe(
-        switchMap(() => {
-          return this.profilerService.getProfiles(modelVersion.id, field).pipe(
-            map(data => new Profiles(data)),
-            catchError(error => {
-              this.store.dispatch(GetProfilesFail({ error }));
-              return of(null);
-            })
-          );
-        })
-      )
-    )
+  selectedFeatureName$ = this.store.pipe(
+    select(selectSelectedFeatureName),
+    filter(val => val !== undefined)
   );
 
   constructor(
     private store: Store<ProfilerState>,
-    private modelsFacade: ModelsFacade,
     private profilerService: ProfilerService
   ) {}
 
@@ -72,5 +46,28 @@ export class ProfilerFacade {
 
   cleanProfiles(): void {
     this.store.dispatch(CleanProfiles());
+  }
+
+  loadFields: (modelVersionId) => Observable<string[]> = modelVersionId => {
+    return this.profilerService.getFields(`${modelVersionId}`).pipe(
+      catchError(error => {
+        this.store.dispatch(GetFieldsFail({ error }));
+        return of([]);
+      })
+    );
+  }
+
+  loadProfiles: (modelVerId, fieldName) => Observable<Profiles> = (modelVerId, fieldName) => {
+    return timer(0, 5000).pipe(
+      switchMap(() => {
+        return this.profilerService.getProfiles(modelVerId, fieldName).pipe(
+          map(data => new Profiles(data)),
+          catchError(error => {
+            this.store.dispatch(GetProfilesFail({ error }));
+            return of(null);
+          })
+        );
+      })
+    );
   }
 }

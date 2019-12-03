@@ -1,0 +1,21 @@
+<section class="model-version-profiler">
+  <header class="model-version-profiler__header">
+    <nav *ngIf="modelVersion$ | async as mv">
+      <hydro-icon
+        class="model-version-profiler__link-icon"
+        type="icon-left"
+      ></hydro-icon>
+      <a class="model-version-profiler__link" (click)="backToModelVersion(mv)"
+        >back to model version</a
+      >
+    </nav>
+  </header>
+  <hs-profiler-page>
+    <hs-profiles
+      [profiles]="profiles$ | async"
+      [featureNames]="featureNames$ | async"
+      [featureName]="featureName$ | async"
+      [modelVersion]="modelVersion$ | async"
+    ></hs-profiles>
+  </hs-profiler-page>
+</section>

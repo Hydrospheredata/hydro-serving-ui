@@ -14,9 +14,11 @@ export interface State extends EntityState<ModelVersion> {
   loaded: boolean;
 }
 
-const adapter: EntityAdapter<ModelVersion> = createEntityAdapter<
-  ModelVersion
->();
+const adapter: EntityAdapter<ModelVersion> = createEntityAdapter<ModelVersion>({
+  sortComparer: (a, b) => {
+    return b.id - a.id;
+  },
+});
 
 export const initialState: State = adapter.getInitialState({
   loading: false,

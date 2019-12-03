@@ -10,6 +10,10 @@ import {
   ModelVersionContainerComponent,
   ModelVersionsTableRowComponent,
   ModelVersionProfilerComponent,
+  SignaturesComponent,
+  ModelVersionReplayComponent,
+  ModelVersionDetailsContainerComponent,
+  ModelVersionLogComponent,
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
@@ -18,15 +22,13 @@ import {
   ModelDetailsGuard,
   ModelVersionDetailsGuard,
 } from '@models/services';
-import { reducer, ModelEffects, ModelsFacade } from '@models/store';
+import { reducer, ModelEffects } from '@models/store';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { RootCauseModule } from '@rootcause/root-cause.module';
 import { ProfilerModule } from '../profiler/profiler.module';
 import { ServablesModule } from '../servables/servables.module';
-import { ModelVersionLogComponent } from './components/model-version-log/model-version-log.component';
-import { ModelVersionReplayComponent } from './components/model-version-replay/model-version-replay.component';
 
 @NgModule({
   imports: [
@@ -51,12 +53,10 @@ import { ModelVersionReplayComponent } from './components/model-version-replay/m
     ModelVersionsTableComponent,
     ModelVersionReplayComponent,
     ModelVersionLogComponent,
+    SignaturesComponent,
+    ModelVersionDetailsContainerComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
-  providers: [
-    ModelsService,
-    ModelDetailsGuard,
-    ModelVersionDetailsGuard,
-  ],
+  providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
 })
 export class ModelsModule {}

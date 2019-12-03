@@ -1,11 +1,15 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ApplicationsFacade } from '@applications/store';
 import { ModelsFacade } from '@models/store';
 import { ModelVersion } from '@shared/_index';
 import { SharedModule } from '@shared/shared.module';
-import { ModelVersionLogComponent } from '@testing/components';
+import {
+  ModelVersionLogComponent,
+  SignaturesComponent,
+} from '@testing/components';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
 import {
   MockModelVersion1Model1,
@@ -25,8 +29,9 @@ describe('ModelVersionDetailsComponent', () => {
         ModelVersionDetailsComponent,
         ModelVersionLogComponent,
         ServablesTableComponent,
+        SignaturesComponent,
       ],
-      imports: [SharedModule],
+      imports: [SharedModule, RouterTestingModule],
       providers: [
         {
           provide: ModelsFacade,

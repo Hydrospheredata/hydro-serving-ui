@@ -8,6 +8,7 @@ import {
   ModelVersionContainerComponent,
   ModelVersionProfilerComponent,
   ModelVersionReplayComponent,
+  ModelVersionDetailsContainerComponent,
 } from '@models/components';
 
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
@@ -44,7 +45,17 @@ import { MonitoringPageComponent } from '@monitoring/containers';
               },
               {
                 path: 'details',
-                component: ModelVersionDetailsComponent,
+                component: ModelVersionDetailsContainerComponent,
+                children: [
+                  {
+                    path: '',
+                    component: ModelVersionDetailsComponent,
+                  },
+                  {
+                    path: 'profile/:featureName',
+                    component: ModelVersionProfilerComponent,
+                  },
+                ],
               },
               {
                 path: 'profiler',

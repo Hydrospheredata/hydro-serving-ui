@@ -45,10 +45,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sidebarDataSub = this.sidebarData.subscribe(items => {
-      this.sidebarList = this.sidebarFiltredList = this.sortBy.transform(
-        items,
-        'id'
-      );
+      this.sidebarList = this.sidebarFiltredList = items;
       if (this.sidebarList.length > 0) {
         this.redirectToFirst();
       }

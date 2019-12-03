@@ -10,9 +10,19 @@ import {
   selectModelVersionById,
 } from '@models/store/selectors';
 import { Store, select } from '@ngrx/store';
+import { ProfilerFacade, selectSelectedFeatureName } from '@profiler/store';
 import { ServablesFacade } from '@servables/servables.facade';
 import { ModelVersionStatus } from '@shared/_index';
-import { filter, switchMap, map } from 'rxjs/operators';
+import { isEmpty } from 'lodash';
+import { combineLatest, Observable } from 'rxjs';
+import {
+  filter,
+  switchMap,
+  map,
+  publish,
+  refCount,
+  startWith,
+} from 'rxjs/operators';
 import { State } from './reducers';
 
 @Injectable({
@@ -61,9 +71,103 @@ export class ModelsFacade {
     switchMap(({ id }) => this.servablesFacade.getServablesByModelVersionId(id))
   );
 
+  signature$ = combineLatest(this.selectedModelVersion$).pipe(
+    map(([modelVersion]) => modelVersion.modelContract.predict)
+  );
+
+  fields$ = this.selectedModelVersion$.pipe(
+    switchMap(({ id }) => {
+      return this.profilerFacade.loadFields(id);
+    }),
+    publish(),
+    refCount(),
+    startWith([])
+  );
+
+  // TODO: rewrite
+
+  groupedFieldNames$: Observable<{
+    [uniqName: string]: string[];
+  }> = this.fields$.pipe(
+    map(fields => {
+      return fields.reduce((res, fieldName) => {
+        const regex = new RegExp(/\_\d$/, 'g');
+        const postfix = regex.exec(fieldName);
+
+        let name = fieldName;
+
+        if (postfix) {
+          name = fieldName.slice(0, postfix.index);
+        }
+
+        if (res[name] === undefined) {
+          res[name] = [];
+        }
+
+        res[name].push(fieldName);
+
+        return res;
+      }, {});
+    })
+  );
+
+  selectedFeatureNames$ = combineLatest(
+    this.groupedFieldNames$,
+    this.profilerFacade.selectedFeatureName$
+  ).pipe(
+    map(([mappedNames, featureName]) => {
+      return mappedNames[featureName as string] || [];
+    })
+  );
+
+  signatureWithFieldNames$ = combineLatest(
+    this.groupedFieldNames$,
+    this.signature$
+  ).pipe(
+    map(([fields, signatures]) => {
+      let mapped = signatures;
+
+      if (!isEmpty(fields)) {
+        mapped = {
+          ...mapped,
+          inputs: mapped.inputs.map(field => {
+            const nf = { ...field, profileNames: [] };
+
+            if (fields[field.name]) {
+              nf.profileNames = fields[field.name];
+            }
+
+            return nf;
+          }),
+          outputs: mapped.outputs.map(field => {
+            const nf = { ...field, profileNames: [] };
+
+            if (fields[field.name]) {
+              nf.profileNames = fields[field.name];
+            }
+
+            return nf;
+          }),
+        };
+      }
+
+      return mapped;
+    })
+  );
+
+  profiles$ = combineLatest(
+    this.selectedModelVersion$,
+    this.profilerFacade.selectedFeatureName$
+  ).pipe(
+    switchMap(([modelVer, featureName]) => {
+      return this.profilerFacade.loadProfiles(modelVer.id, featureName);
+    })
+  );
+
   constructor(
     private store: Store<State>,
-    private servablesFacade: ServablesFacade
+    private servablesFacade: ServablesFacade,
+    private profilerFacade: ProfilerFacade
   ) {}
 
   selectModelVersionById$ = id =>

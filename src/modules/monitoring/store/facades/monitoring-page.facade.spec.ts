@@ -34,7 +34,9 @@ describe('Monitoring page facade', () => {
           },
         }),
         MonitoringPageFacade,
-        ModelsFacade,
+        { provide: ModelsFacade, useValue: {
+          selectedModelVersion$: of(MockModelVersion1Model1),
+        } },
         CheckAggregationBuilder,
         {
           provide: MonitoringService,

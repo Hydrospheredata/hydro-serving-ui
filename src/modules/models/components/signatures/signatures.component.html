@@ -1,4 +1,4 @@
-<div class="signatures">
+<div class="signatures" *ngIf="signature$ | async as signature">
   <div class="signature">
     <h6 class="signature__name">
       {{ signature.signatureName }}
@@ -37,12 +37,27 @@
     let-shape="shape"
     let-subfields="subfields"
     let-profile="profile"
+    let-profileNames="profileNames"
   >
     <tr class="fields-table__row">
-      <td class="fields-table__cell">{{ name }}</td>
+      <td class="fields-table__cell">
+        {{ name }}
+      </td>
       <td class="fields-table__cell">{{ dtype }}</td>
       <td class="fields-table__cell">{{ shape | fieldShape }}</td>
-      <td class="fields-table__cell">{{ profile }}</td>
+      <td class="fields-table__cell">
+        {{ profile }}
+        <span
+          class="fields-table__icon"
+          *ngIf="profileNames"
+          [routerLink]="['profile', profileNames[0]]"
+        >
+          <hydro-icon
+            type="profiler"
+            class="fields-table__icon"
+          ></hydro-icon>
+        </span>
+      </td>
     </tr>
     <ng-container *ngIf="subfields && subfields.length > 0">
       <ng-container *ngFor="let subfield of subfields">

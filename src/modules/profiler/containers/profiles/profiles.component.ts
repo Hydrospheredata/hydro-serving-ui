@@ -1,27 +1,41 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProfilerFacade } from '@profiler/store';
-import { Profiles } from '@shared/_index';
+import { Profiles, ModelVersion } from '@shared/_index';
 
 @Component({
   selector: 'hs-profiles',
   templateUrl: './profiles.component.html',
   styleUrls: ['./profiles.component.scss'],
 })
-export class ProfilesComponent implements OnDestroy {
-  @Input() modelVersionId: number;
+export class ProfilesComponent implements OnDestroy, OnInit {
+  @Input() modelVersion: ModelVersion;
+  @Input() featureName: string;
+  @Input() featureNames: string[] = [];
+  @Input() profiles: Profiles;
   error$ = this.profilerFacade.error$;
   selectField$ = this.profilerFacade.selectedField$;
-  profiles$ = this.profilerFacade.profiles$;
-  fields$ = this.profilerFacade.fields$;
+  featureName$ = this.profilerFacade.selectedFeatureName$;
 
-  constructor(private profilerFacade: ProfilerFacade) {}
+  constructor(private profilerFacade: ProfilerFacade, private router: Router) {}
+
+  ngOnInit(): void {
+    this.profilerFacade.selectedField.next(this.featureName);
+  }
 
   ngOnDestroy() {
     this.profilerFacade.cleanProfiles();
   }
 
   onFieldSelect(selectedField) {
-    this.profilerFacade.selectedField.next(selectedField);
+    this.router.navigate([
+      'models',
+      this.modelVersion.model.id,
+      this.modelVersion.id,
+      'details',
+      'profile',
+      selectedField,
+    ]);
   }
 
   showHistogram(profiles: Profiles): boolean {
