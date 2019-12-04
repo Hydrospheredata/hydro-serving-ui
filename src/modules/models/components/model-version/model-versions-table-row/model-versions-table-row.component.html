@@ -1,0 +1,78 @@
+<td class="hydro-table-body__cell">
+  <hydro-icon
+    type="icon-cloud"
+    class="model-version__icon"
+    *ngIf="modelVersion.isExternal"
+  ></hydro-icon>
+</td>
+<td class="model-version__model-version hydro-table-body__cell text-center">
+  {{ modelVersion.modelVersion }}
+</td>
+<td class="hydro-table-body__cell model-version__runtime">
+  <span>{{ modelVersion.runtime?.name }}</span
+  ><span class="model-version__runtime-tag"
+    >{{ modelVersion.runtime?.tag }}
+  </span>
+</td>
+<td class="hydro-table-body__cell">
+  <span class="cs-text-overflow-ellipsis model-version__created-time">{{
+    modelVersion.created | utcToLocal | amTimeAgo
+  }}</span>
+</td>
+<td class="hydro-table-body__cell">
+  <span
+    *ngIf="modelVersion.status"
+    class="cs-text-overflow-ellipsis model-version-status model-version-status--{{
+      modelVersion.status
+    }}"
+    [status]="modelVersion.status"
+    hsModelVersionStatus
+  >
+    <hydro-icon #statusIcon class="icon"></hydro-icon>
+    <span #statusText class="icon-label"></span>
+  </span>
+</td>
+<td class="hydro-table-body__cell model-version__applications">
+  <hydro-icon
+    type="icon-cancel"
+    class="model-version__icon"
+    *ngIf="modelVersion.isExternal"
+  ></hydro-icon>
+  <ng-container *ngIf="!modelVersion.isExternal">
+    <div *ngIf="modelVersion.applications.length > 0; else emptyApplication">
+      <div
+        class="application"
+        *ngFor="let appName of modelVersion.applications; last as lastItem"
+        [routerLink]="['../../applications', appName]"
+      >
+        {{ appName }}
+      </div>
+    </div>
+    <ng-template #emptyApplication>
+      <span class="applications-is-empty">-</span>
+    </ng-template>
+  </ng-container>
+</td>
+<td class="hydro-table-body__cell">
+  <div class="model-version__actions">
+    <div
+      class="model-version__actions-item"
+      [routerLink]="[modelVersion.id, 'monitoring']"
+    >
+      <span hs-tooltip="Monitoring">
+        <hydro-icon
+          type="monitoring"
+          class="model-version__actions-icon"
+        ></hydro-icon>
+      </span>
+    </div>
+    <div class="model-version__actions-item" [routerLink]="[modelVersion.id]">
+      <span hs-tooltip="Details">
+        <hydro-icon
+          type="icon-arrow-right"
+          class="model-version__actions-icon"
+        ></hydro-icon>
+      </span>
+    </div>
+  </div>
+</td>

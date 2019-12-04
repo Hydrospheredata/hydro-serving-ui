@@ -28,6 +28,7 @@ export class ModelVersion {
     public status: ModelVersionStatus;
     public applications: string[];
     public metadata: object;
+    public isExternal: boolean;
 
     constructor(props: any = {}) {
         this.id = props.id;
@@ -42,5 +43,6 @@ export class ModelVersion {
         this.status = props.status;
         this.applications = props.applications;
         this.metadata = props.metadata;
+        this.isExternal = props.isExternal;
     }
 }

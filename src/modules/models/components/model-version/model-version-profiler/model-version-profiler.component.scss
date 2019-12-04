@@ -1,0 +1,18 @@
+@import 'variables';
+
+.model-version-profiler {
+  &__header {
+    margin-bottom: 12px;
+  }
+  &__link {
+    &-icon {
+      width: 10px;
+      height: 10px;
+    }
+    cursor: pointer;
+    line-height: 24px;
+    color: $neutral-color-1000;
+    font-family: $font-family-bold;
+    margin-bottom: 12px;
+  }
+}

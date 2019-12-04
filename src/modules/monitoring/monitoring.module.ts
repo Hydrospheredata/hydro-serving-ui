@@ -2,12 +2,10 @@ import { NgModule } from '@angular/core';
 import {
   DialogMetricComponent,
   DialogDeleteMetricComponent,
-  ReqstoreTableLogComponent,
   MetricSpecConfigComponent,
   ReqstoreMetricsComponent,
   InputOutputComponent,
   TimeIntervalSelectComponent,
-  ReqResLogsComponent,
   CustomChecksComponent,
   LatencyCheckComponent,
   ErrorCheckComponent,
@@ -17,6 +15,7 @@ import {
   RequestsInformationComponent,
   CheckChartComponent,
   DialogRequestsErrorsComponent,
+  RawChecksComponent,
 } from '@monitoring/components';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { MonitoringService } from '@monitoring/services';
@@ -58,15 +57,14 @@ import {
     MetricSpecConfigComponent,
     MonitoringAvailabilityComponent,
     MonitoringPageComponent,
-    ReqResLogsComponent,
     ReqstoreMetricsComponent,
-    ReqstoreTableLogComponent,
     TimeIntervalSelectComponent,
     LogComponent,
     LogDetailComponent,
     CheckIdToTimePipe,
     RequestsInformationComponent,
     CheckChartComponent,
+    RawChecksComponent,
   ],
   imports: [
     SharedModule,

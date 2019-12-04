@@ -31,6 +31,7 @@ export const MockModelVersion1Model1: ModelVersion = {
   status: ModelVersionStatus.Released,
   applications: [],
   metadata: {},
+  isExternal: false,
 };
 
 export const MockModelVersion2Model1: ModelVersion = {
@@ -46,6 +47,7 @@ export const MockModelVersion2Model1: ModelVersion = {
   status: ModelVersionStatus.Released,
   applications: ['app1', 'app2'],
   metadata: {},
+  isExternal: false,
 };
 
 export const MockModelVersion3Model2: ModelVersion = {
@@ -61,6 +63,7 @@ export const MockModelVersion3Model2: ModelVersion = {
   status: ModelVersionStatus.Released,
   applications: ['app1', 'app2'],
   metadata: {},
+  isExternal: false,
 };
 
 export const FailedModelVersion: ModelVersion = {
@@ -76,6 +79,7 @@ export const FailedModelVersion: ModelVersion = {
   status: ModelVersionStatus.Failed,
   applications: [],
   metadata: {},
+  isExternal: false,
 };
 
 export const AssemblingModelVersion: ModelVersion = {
@@ -91,4 +95,5 @@ export const AssemblingModelVersion: ModelVersion = {
   status: ModelVersionStatus.Assembling,
   applications: [],
   metadata: {},
+  isExternal: false,
 };

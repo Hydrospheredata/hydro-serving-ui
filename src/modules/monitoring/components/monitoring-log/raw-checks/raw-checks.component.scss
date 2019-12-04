@@ -1,0 +1,38 @@
+@import "variables";
+
+.raw-checks {
+  margin-bottom: 12px;
+  &__table {
+    border-collapse: collapse;
+    width: 910px;
+    table-layout: fixed;
+  }
+
+  &__cell {
+    padding: 6px 12px;
+    color: $neutral-color-1000;
+    border: 1px $neutral-color-200 solid;
+    font-family: $font-family-light;
+    overflow: scroll;
+
+  }
+
+  &__check {
+    &--success {
+      background: $supportive-color-green-100;
+    }
+    &--failed {
+      background: $supportive-color-red-100;
+    }
+  }
+
+  &__head-cell {
+    color: $neutral-color-900;
+    font-family: $font-family-bold;
+  }
+
+  &__label {
+    font-family: $font-family-bold;
+    color: $neutral-color-1000;
+  }
+}

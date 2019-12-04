@@ -1,0 +1,36 @@
+<div class="content mv" *ngIf="modelVersion$ | async; let modelVersion">
+  <div class="mv__header content__header">
+    <div class="mv__header-buttons mv__header-buttons--left">
+      <button hs-button [routerLink]="['../']">
+        <hydro-icon class="button__icon" type="icon-left"></hydro-icon>
+        back to model
+      </button>
+    </div>
+    <div class="mv__header-title">
+      <span class="mv__model-name">{{ modelVersion.model.name }}</span>
+      <span class="mv__model-version" [routerLink]="['./']"
+        >v:{{ modelVersion.modelVersion }}</span
+      >
+    </div>
+
+    <div class="mv__header-tab tab mv__header-tab--right">
+      <div
+        class="tab__item"
+        [routerLink]="['details']"
+        routerLinkActive="tab__item--is-active"
+      >
+        details
+      </div>
+      <div
+        class="tab__item"
+        [routerLink]="['monitoring']"
+        routerLinkActive="tab__item--is-active"
+      >
+        monitoring
+      </div>
+    </div>
+  </div>
+  <div class="content__body">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -115,7 +115,7 @@ export class CustomValidatorsService {
       if (reg.test(metricName)) {
         return null;
       } else {
-        return { format: 'Format: must start with any word character and contain [a-Z, 1-9,-,_] characters' };
+        return { format: 'Format: must start with any lowercase character and can contain [a-Z, 1-9,-,_] characters' };
       }
     };
   }

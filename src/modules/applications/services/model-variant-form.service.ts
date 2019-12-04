@@ -31,9 +31,11 @@ export class ModelVariantFormService implements OnDestroy {
     private modelsFacade: ModelsFacade,
     private customValidators: CustomValidatorsService
   ) {
-    this.allModelVersionsSub = this.modelsFacade.allModelVersions$.subscribe(
-      allModelVersions => (this.allModelVersions = allModelVersions)
-    );
+    this.allModelVersionsSub = this.modelsFacade.allModelVersions$
+      .pipe(map(mvs => mvs.filter(mv => !mv.isExternal)))
+      .subscribe(
+        allModelVersions => (this.allModelVersions = allModelVersions)
+      );
 
     this.modelsSub = this.modelsFacade.allModels$.subscribe(
       models => (this.models = models)
@@ -50,7 +52,7 @@ export class ModelVariantFormService implements OnDestroy {
       .pipe(
         take(1),
         map(modelVersions =>
-          modelVersions.filter(mv => mv.status === ModelVersionStatus.Released)
+          modelVersions.filter(mv => mv.status === ModelVersionStatus.Released || mv.isExternal)
         ),
         tap(modelVersions => {
           this.modelVersions.next(modelVersions);
@@ -60,7 +62,7 @@ export class ModelVariantFormService implements OnDestroy {
   }
 
   public getDefaultModelVersion(): ModelVersion {
-    const currentModelVersionsArray: ModelVersion[] = this.modelVersions.getValue();
+    const currentModelVersionsArray: ModelVersion[] = this.modelVersions.getValue().filter(mv => !mv.isExternal);
 
     if (currentModelVersionsArray.length) {
       return currentModelVersionsArray[0];

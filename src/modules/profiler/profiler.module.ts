@@ -22,6 +22,6 @@ import { ProfilerPageComponent, ProfilesComponent } from './containers';
     ProfilesComparisonHistogramComponent,
   ],
   providers: [ProfilerFacade],
-  exports: [ProfilerPageComponent, ProfilesComponent],
+  exports: [ProfilerPageComponent, ProfilesComponent ],
 })
 export class ProfilerModule {}

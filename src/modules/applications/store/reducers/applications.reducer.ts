@@ -22,6 +22,9 @@ export interface State extends EntityState<Application> {
 
 const adapter = createEntityAdapter<Application>({
   selectId: application => application.name,
+  sortComparer: (a, b) => {
+    return b.id - a.id;
+  },
 });
 
 const initialState: State = adapter.getInitialState({

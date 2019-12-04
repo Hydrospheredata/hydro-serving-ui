@@ -1,0 +1,68 @@
+@import 'variables.scss';
+
+.signatures {
+  &__title {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 32px;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.signature {
+  margin-bottom: 12px;
+  &__name {
+    border-bottom: 1px #e6e9ed solid;
+    display: inline-block;
+    font-size: 16px;
+    line-height: 44px;
+    margin-bottom: 4px;
+    padding: 0px;
+    margin: 0;
+    width: 100%;
+  }
+}
+
+.fields-table {
+  width: 100%;
+  font-size: 14px;
+  border-collapse: collapse;
+  &__row {
+    line-height: 28px;
+    color: $neutral-color-1000;
+    font-family: $font-family-light;
+    &--labels {
+      font-size: 12px;
+      font-family: $font-family-bold;
+      color: $neutral-color-1000;
+    }
+  }
+  &__cell {
+    padding: 0 4px; 
+  }
+  &__icon {
+    height: 18px;
+    cursor: pointer;
+    width: 18px;
+    margin: 0 12px;
+    color: $supportive-color-cyan-700;
+    transition: .3s all ease;
+    &:hover {
+      color: $supportive-color-cyan-900;
+    }
+  }
+  &__link {
+    cursor: pointer;
+    border-bottom: 1px $primary-color-800 solid;
+    color: $primary-color-800;
+  }
+}
+
+.shape {
+  &--anyType {
+    border-bottom: 2px black dotted;
+    cursor: default;
+  }
+}

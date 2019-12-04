@@ -1,0 +1,70 @@
+<div class="signatures" *ngIf="signature$ | async as signature">
+  <div class="signature">
+    <h6 class="signature__name">
+      {{ signature.signatureName }}
+    </h6>
+
+    <table class="fields-table">
+      <tr class="fields-table__row fields-table__row--labels">
+        <td class="fields-table__cell">input_field_name</td>
+        <td class="fields-table__cell">input_data_type</td>
+        <td class="fields-table__cell">input_shape</td>
+        <td class="fields-table__cell">input_profile</td>
+      </tr>
+      <ng-container *ngFor="let field of signature.inputs">
+        <ng-container
+          *ngTemplateOutlet="fieldRow; context: field"
+        ></ng-container>
+      </ng-container>
+      <tr class="fields-table__row fields-table__row--labels">
+        <td class="fields-table__cell">output_field_name</td>
+        <td class="fields-table__cell">output_data_type</td>
+        <td class="fields-table__cell">output_shape</td>
+        <td class="fields-table__cell">output_profile</td>
+      </tr>
+      <ng-container *ngFor="let field of signature.outputs">
+        <ng-container
+          *ngTemplateOutlet="fieldRow; context: field"
+        ></ng-container>
+      </ng-container>
+    </table>
+  </div>
+
+  <ng-template
+    #fieldRow
+    let-name="name"
+    let-dtype="dtype"
+    let-shape="shape"
+    let-subfields="subfields"
+    let-profile="profile"
+    let-profileNames="profileNames"
+  >
+    <tr class="fields-table__row">
+      <td class="fields-table__cell">
+        {{ name }}
+      </td>
+      <td class="fields-table__cell">{{ dtype }}</td>
+      <td class="fields-table__cell">{{ shape | fieldShape }}</td>
+      <td class="fields-table__cell">
+        {{ profile }}
+        <span
+          class="fields-table__icon"
+          *ngIf="profileNames"
+          [routerLink]="['profile', profileNames[0]]"
+        >
+          <hydro-icon
+            type="profiler"
+            class="fields-table__icon"
+          ></hydro-icon>
+        </span>
+      </td>
+    </tr>
+    <ng-container *ngIf="subfields && subfields.length > 0">
+      <ng-container *ngFor="let subfield of subfields">
+        <ng-container
+          *ngTemplateOutlet="fieldRow; context: subfield"
+        ></ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-template>
+</div>

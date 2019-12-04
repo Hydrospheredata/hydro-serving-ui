@@ -13,6 +13,7 @@ import { ModelVariantFormService } from '@applications/services';
 import { Model, ModelVersion } from '@shared/_index';
 
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-model-variant-form',
@@ -48,7 +49,9 @@ export class ModelVariantFormComponent implements OnInit {
     private modelsFacade: ModelsFacade,
     @Self() private modelVariantFormService: ModelVariantFormService
   ) {
-    this.modelVersions$ = this.modelVariantFormService.getModelVersions();
+    this.modelVersions$ = this.modelVariantFormService
+      .getModelVersions()
+      .pipe(map(mvs => mvs.filter(mv => !mv.isExternal)));
     this.selectedModelVersion$ = this.modelVariantFormService.getCurrentModelVersion();
   }
 
@@ -66,9 +69,8 @@ export class ModelVariantFormComponent implements OnInit {
 
   public onModelIdChange(modelId): void {
     this.modelVariantFormService.updateModelVersionList(modelId);
-    this.modelVersionControl.setValue(
-      this.modelVariantFormService.getDefaultModelVersion().id
-    );
+    const modelVersion = this.modelVariantFormService.getDefaultModelVersion();
+    this.modelVersionControl.setValue(modelVersion ? modelVersion.id : null);
   }
 
   public onModelVersionChange(modelVersionId: number): void {
