@@ -69,7 +69,7 @@
                 let appName of (modelVersion$ | async)?.applications;
                 last as isLast
               "
-              [routerLink]="['../../../../applications', appName]"
+              [routerLink]="['/applications', appName]"
               class="application"
             >
               <span class="application-name">{{ appName }}</span

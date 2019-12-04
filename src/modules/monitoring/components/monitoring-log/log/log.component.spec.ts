@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { LogComponent } from '@monitoring/components/log/log.component';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { SharedModule } from '@shared/shared.module';
 import { LogDetailComponent } from '@testing/components';
 import { getNativeElement } from '@testing/helpers';
+import { LogComponent } from './log.component';
 
 describe('Log component', () => {
   let fixture: ComponentFixture<LogComponent>;

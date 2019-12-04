@@ -6,7 +6,6 @@ import {
   HealthTimelineComponent,
   ChartsComponent,
   ChartComponent,
-  MockReqstoreTableLogComponent,
   ModelVersionLogComponent,
   ReqResLogsComponent,
   ApplicationFormComponent,
@@ -19,6 +18,7 @@ import {
   ErrorCheckComponent,
   LogDetailComponent,
   SignaturesComponent,
+  RawChecksComponent,
 } from '@testing/components';
 import { ProfilesComponent } from '@testing/components/mock-profiles';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
@@ -32,7 +32,6 @@ const COMPONENTS = [
   HealthTimelineComponent,
   ChartsComponent,
   ChartComponent,
-  MockReqstoreTableLogComponent,
   ModelVersionLogComponent,
   ReqResLogsComponent,
   ServablesTableComponent,
@@ -46,6 +45,7 @@ const COMPONENTS = [
   ErrorCheckComponent,
   LogDetailComponent,
   SignaturesComponent,
+  RawChecksComponent,
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];

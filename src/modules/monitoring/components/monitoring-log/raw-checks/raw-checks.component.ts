@@ -1,25 +1,23 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+} from '@angular/core';
 import { Check } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/_index';
 
 @Component({
-  selector: 'hs-log-detail',
-  templateUrl: 'log-detail.component.html',
-  styleUrls: ['log-detail.component.scss'],
+  selector: 'hs-raw-checks',
+  templateUrl: './raw-checks.component.html',
+  styleUrls: ['./raw-checks.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LogDetailComponent implements OnInit {
+export class RawChecksComponent implements OnInit {
   @Input() check: Check;
-  // Remove from here to selectors
   @Input() modelVersion: ModelVersion;
-
-  inputKeys: string[];
-  outputKeys: string[];
-
-  ngOnInit(): void {
-    const { inputs, outputs } = this.modelVersion.modelContract.predict;
-    this.inputKeys = inputs.map(el => el.name);
-    this.outputKeys = outputs.map(el => el.name);
-  }
+  @Input() inputKeys: string[] = [];
+  @Input() outputKeys: string[] = [];
 
   isImage(inputName: string): boolean {
     const isImage = this.modelVersion.modelContract.predict.inputs.some(
@@ -49,4 +47,18 @@ export class LogDetailComponent implements OnInit {
     }
     return false;
   }
+
+  get rawChecks() {
+    return this.check._hs_raw_checks;
+  }
+
+  get hasRawChecksExceptOverall(): boolean {
+    return (
+      Object.keys(this.rawChecks)
+            .filter(key => key !== 'overall')
+            .length > 0
+    );
+  }
+
+  ngOnInit() {}
 }

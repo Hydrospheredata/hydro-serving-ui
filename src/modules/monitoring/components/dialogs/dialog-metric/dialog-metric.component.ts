@@ -12,7 +12,6 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { ModelsFacade } from '@models/store';
-import { MetricSpecificationKind } from '@monitoring/interfaces';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { ModelVersion, Model } from '@shared/_index';
 import {
@@ -37,10 +36,6 @@ export class DialogMetricComponent implements OnInit {
   allModelVersions$: Observable<ModelVersion[]> = this.modelsFacade
     .allModelVersions$;
   modelVersions$: Observable<ModelVersion[]>;
-
-  // metricSpecificationKinds: MetricSpecificationKind[] = [
-  //   { name: 'Custom Model', className: 'CustomModelMetricSpec' },
-  // ];
 
   constructor(
     private fb: FormBuilder,
@@ -120,7 +115,7 @@ export class DialogMetricComponent implements OnInit {
         threshold: this.fb.control('', [
           Validators.required,
           this.customValidators.pattern(
-            this.customValidators.VALIDATION_PATTERNS.number
+            this.customValidators.VALIDATION_PATTERNS.floatNumber
           ),
         ]),
         thresholdCmpOperator: this.fb.control(
