@@ -1,3 +1,10 @@
+<td class="hydro-table-body__cell">
+  <hydro-icon
+    type="icon-cloud"
+    class="model-version__icon"
+    *ngIf="modelVersion.isExternal"
+  ></hydro-icon>
+</td>
 <td class="model-version__model-version hydro-table-body__cell text-center">
   {{ modelVersion.modelVersion }}
 </td>
@@ -26,30 +33,28 @@
   </span>
 </td>
 <td class="hydro-table-body__cell model-version__applications">
-  <div *ngIf="modelVersion.applications.length > 0; else emptyApplication">
-    <div
-      class="application"
-      *ngFor="let appName of modelVersion.applications; last as lastItem"
-      [routerLink]="['../../applications', appName]"
-    >
-      {{ appName }}
+  <hydro-icon
+    type="icon-cancel"
+    class="model-version__icon"
+    *ngIf="modelVersion.isExternal"
+  ></hydro-icon>
+  <ng-container *ngIf="!modelVersion.isExternal">
+    <div *ngIf="modelVersion.applications.length > 0; else emptyApplication">
+      <div
+        class="application"
+        *ngFor="let appName of modelVersion.applications; last as lastItem"
+        [routerLink]="['../../applications', appName]"
+      >
+        {{ appName }}
+      </div>
     </div>
-  </div>
-  <ng-template #emptyApplication>
-    <span class="applications-is-empty">-</span>
-  </ng-template>
+    <ng-template #emptyApplication>
+      <span class="applications-is-empty">-</span>
+    </ng-template>
+  </ng-container>
 </td>
 <td class="hydro-table-body__cell">
   <div class="model-version__actions">
-    <!-- <div
-      class="model-version__actions-item"
-      [routerLink]="[modelVersion.id, 'profiler']"
-    >
-      <span hs-tooltip="Profiler">
-        <hydro-icon type="profiler" class="model-version__actions-icon">
-        </hydro-icon>
-      </span>
-    </div> -->
     <div
       class="model-version__actions-item"
       [routerLink]="[modelVersion.id, 'monitoring']"

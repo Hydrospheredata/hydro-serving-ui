@@ -33,8 +33,11 @@ export class DialogMetricComponent implements OnInit {
 
   form: FormGroup;
   models$: Observable<Model[]> = this.modelsFacade.allModels$;
-  allModelVersions$: Observable<ModelVersion[]> = this.modelsFacade
-    .allModelVersions$;
+  allModelVersions$: Observable<
+    ModelVersion[]
+  > = this.modelsFacade.allModelVersions$.pipe(
+    map(mvs => mvs.filter(mv => !mv.isExternal))
+  );
   modelVersions$: Observable<ModelVersion[]>;
 
   constructor(

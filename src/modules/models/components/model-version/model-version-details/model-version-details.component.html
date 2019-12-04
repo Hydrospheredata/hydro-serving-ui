@@ -61,7 +61,7 @@
             [modelVersion]="modelVersion$ | async"
           ></hs-model-version-log>
         </li>
-        <li class="information__item">
+        <li class="information__item" *ngIf="!(modelVersion$ | async).isExternal">
           <span class="information__item-title">Applications</span>
           <span class="information__item-value">
             <span
@@ -78,7 +78,7 @@
           </span>
         </li>
       </ol>
-      <div>
+      <div *ngIf="!(modelVersion$ | async).isExternal">
         <button
           class="model-version-detail__add-application"
           (click)="onAddApplication(modelVersion)"

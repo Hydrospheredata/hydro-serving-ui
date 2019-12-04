@@ -45,6 +45,12 @@
       margin-right: 4px;
     }
   }
+
+  &__icon {
+    color: $neutral-color-700;
+    width: 24px;
+    height: 24px;
+  }
 }
 .application {
   cursor: pointer;

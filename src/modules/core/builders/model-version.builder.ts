@@ -23,6 +23,7 @@ export class ModelVersionBuilder {
         ModelVersionStatus.Undefined,
       applications: props.applications || [],
       metadata: props.metadata || {},
+      isExternal: props.isExternal,
     });
   }
 }
