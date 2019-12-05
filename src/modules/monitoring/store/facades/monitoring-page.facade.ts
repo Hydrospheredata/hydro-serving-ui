@@ -167,7 +167,7 @@ export class MonitoringPageFacade {
         });
       });
 
-      return customChecks.values();
+      return customChecks;
     }),
     share()
   );

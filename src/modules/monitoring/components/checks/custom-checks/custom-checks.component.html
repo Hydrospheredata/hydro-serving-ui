@@ -12,8 +12,8 @@
     </header>
     <ng-container *ngIf="!noData; else noDataTpl">
       <hs-custom-check
-        *ngFor="let check of customChecks; trackBy: trackByFn"
-        [check]="check"
+        *ngFor="let check of customChecks | keyvalue; trackBy: trackByFn"
+        [check]="check.value"
       >
       </hs-custom-check>
     </ng-container>
