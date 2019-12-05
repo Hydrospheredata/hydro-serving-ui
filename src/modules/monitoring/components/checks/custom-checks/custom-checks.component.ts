@@ -19,8 +19,8 @@ export class CustomChecksComponent {
   @Input() customChecks: CustomCheck[] = [];
   @Output() openSettings = new EventEmitter();
 
-  trackByFn(_, item: CustomCheck) {
-    return item.name;
+  trackByFn(_, item) {
+    return item.key;
   }
 
   onOpenSetting() {
