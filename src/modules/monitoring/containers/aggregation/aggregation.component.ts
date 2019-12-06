@@ -19,34 +19,6 @@ import { interpolateRdYlGn } from 'd3';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AggregationComponent implements OnChanges {
-  @ViewChild('svgContainer', { read: ElementRef })
-  svgContainer: ElementRef;
-
-  @Input() aggregation: ChecksAggregation[] = [];
-  @Input() latency: number[] = [];
-  @Input() errors: boolean[] = [];
-  @Output() changedSelectedColumn = new EventEmitter<string>();
-
-  labelsWidth: number = 100;
-  canvasWidth: number = 620;
-  selectedColumnId: string;
-
-  readonly CELL_SIZE = 12;
-  private COLUMN_MARGIN_RIGHT = 2;
-  private CELL_MARGIN_TOP = 2;
-
-  ngOnChanges(changes: SimpleChanges): void {
-    const aggregation: ChecksAggregation[] = changes.aggregation.currentValue;
-    if (aggregation && aggregation.length) {
-      const selectedColumn = aggregation.find(
-        agg => agg.additionalInfo._id === this.selectedColumnId
-      );
-
-      if (selectedColumn === undefined) {
-        this.changeActiveColumn(aggregation[aggregation.length - 1]);
-      }
-    }
-  }
 
   get canvasHeight() {
     return this.featureNames.length * 14;
@@ -54,16 +26,6 @@ export class AggregationComponent implements OnChanges {
 
   get metricsCanvasHeight() {
     return this.metricNames.length * 14;
-  }
-
-  columnTranslate(index): string {
-    return `translate(${index * this.CELL_SIZE +
-      this.COLUMN_MARGIN_RIGHT * index}, 0)`;
-  }
-
-  rowTranslate(index): string {
-    return `translate(0, ${index * this.CELL_SIZE +
-      index * this.CELL_MARGIN_TOP})`;
   }
 
   get countRequests(): number {
@@ -96,6 +58,50 @@ export class AggregationComponent implements OnChanges {
     return Object.keys(this.aggregation[0].metrics);
   }
 
+  get dataAvailable(): boolean {
+    return this.aggregation && this.aggregation.length > 0;
+  }
+
+  private get greyColor(): string {
+    return '#70757a';
+  }
+  @ViewChild('svgContainer', { read: ElementRef })
+  svgContainer: ElementRef;
+
+  @Input() aggregation: ChecksAggregation[] = [];
+  @Input() latency: number[] = [];
+  @Input() errors: boolean[] = [];
+  @Output() changedSelectedColumn = new EventEmitter<string>();
+
+  labelsWidth: number = 100;
+  canvasWidth: number = 620;
+  selectedColumnId: string;
+
+  readonly CELL_SIZE = 12;
+  private COLUMN_MARGIN_RIGHT = 2;
+  private CELL_MARGIN_TOP = 2;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const aggregation: ChecksAggregation[] = changes.aggregation.currentValue;
+    if (aggregation && aggregation.length) {
+      const selectedColumn = aggregation.find(
+        agg => agg.additionalInfo._id === this.selectedColumnId
+      );
+
+      this.update(selectedColumn, aggregation);
+    }
+  }
+
+  columnTranslate(index): string {
+    return `translate(${index * this.CELL_SIZE +
+      this.COLUMN_MARGIN_RIGHT * index}, 0)`;
+  }
+
+  rowTranslate(index): string {
+    return `translate(0, ${index * this.CELL_SIZE +
+      index * this.CELL_MARGIN_TOP})`;
+  }
+
   changeActiveColumn(aggregation: ChecksAggregation) {
     const id = aggregation.additionalInfo._id;
     this.selectedColumnId = id;
@@ -104,7 +110,7 @@ export class AggregationComponent implements OnChanges {
 
   cellColor(column: ChecksAggregation, featureName: string) {
     if (column.features[featureName] === undefined) {
-      return this.greyColor;
+      return 'url(#repeat)';
     }
 
     const { passed, checked } = column.features[featureName];
@@ -114,13 +120,13 @@ export class AggregationComponent implements OnChanges {
     if (ratio) {
       return interpolateRdYlGn(1 / ratio);
     } else {
-      return this.greyColor;
+      return 'url(#repeat)';
     }
   }
 
   metricCellColor(column: ChecksAggregation, metricName: string) {
     if (column.metrics[metricName] === undefined) {
-      return this.greyColor;
+      return 'url(#repeat)';
     }
 
     const { passed, checked } = column.metrics[metricName];
@@ -130,7 +136,7 @@ export class AggregationComponent implements OnChanges {
     if (ratio) {
       return interpolateRdYlGn(1 / ratio);
     } else {
-      return this.greyColor;
+      return 'url(#repeat)';
     }
   }
 
@@ -138,11 +144,12 @@ export class AggregationComponent implements OnChanges {
     return this.selectedColumnId === column.additionalInfo._id;
   }
 
-  get dataAvailable(): boolean {
-    return this.aggregation && this.aggregation.length > 0;
-  }
-
-  private get greyColor(): string {
-    return '#70757a';
+  private update(
+    selectedColumn: ChecksAggregation,
+    aggregation: ChecksAggregation[]
+  ) {
+    if (selectedColumn === undefined) {
+      this.changeActiveColumn(aggregation[aggregation.length - 1]);
+    }
   }
 }

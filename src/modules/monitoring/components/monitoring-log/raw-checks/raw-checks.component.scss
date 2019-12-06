@@ -2,6 +2,7 @@
 
 .raw-checks {
   margin-bottom: 12px;
+
   &__table {
     border-collapse: collapse;
     width: 910px;
@@ -19,10 +20,13 @@
 
   &__check {
     &--success {
-      background: $supportive-color-green-100;
+      font-family: $font-family-bold;
+      color: $supportive-color-green-700;
     }
+
     &--failed {
-      background: $supportive-color-red-100;
+      font-family: $font-family-bold;
+      color: $supportive-color-red-700;
     }
   }
 

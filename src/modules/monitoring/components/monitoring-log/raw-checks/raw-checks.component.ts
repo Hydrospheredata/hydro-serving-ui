@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   ChangeDetectionStrategy,
   Input,
 } from '@angular/core';
@@ -13,7 +12,7 @@ import { ModelVersion } from '@shared/_index';
   styleUrls: ['./raw-checks.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RawChecksComponent implements OnInit {
+export class RawChecksComponent {
   @Input() check: Check;
   @Input() modelVersion: ModelVersion;
   @Input() inputKeys: string[] = [];
@@ -59,6 +58,4 @@ export class RawChecksComponent implements OnInit {
             .length > 0
     );
   }
-
-  ngOnInit() {}
 }

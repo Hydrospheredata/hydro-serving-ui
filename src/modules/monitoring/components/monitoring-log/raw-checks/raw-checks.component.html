@@ -14,21 +14,16 @@
       <td class="raw-checks__cell raw-checks__head-cell">
         name
       </td>
-      <td
-        class="raw-checks__cell raw-checks__head-cell"
-        [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4"
-      >
+      <td class="raw-checks__cell raw-checks__head-cell" [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4">
         value
       </td>
       <ng-container *ngIf="hasRawChecksExceptOverall">
-        <td class="raw-checks__cell raw-checks__head-cell">operator</td>
+        <td class="raw-checks__cell raw-checks__head-cell">description</td>
         <td class="raw-checks__cell raw-checks__head-cell">threshold</td>
         <td class="raw-checks__cell raw-checks__head-cell">check</td>
       </ng-container>
     </tr>
-    <ng-container
-      *ngTemplateOutlet="row; context: { $implicit: inputKeys }"
-    ></ng-container>
+    <ng-container *ngTemplateOutlet="row; context: { $implicit: inputKeys }"></ng-container>
     <tr>
       <td class="raw-checks__cell raw-checks__label" colspan="5">outputs</td>
     </tr>
@@ -36,38 +31,25 @@
       <td class="raw-checks__cell raw-checks__head-cell">
         name
       </td>
-      <td
-        class="raw-checks__cell raw-checks__head-cell"
-        [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4"
-      >
+      <td class="raw-checks__cell raw-checks__head-cell" [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4">
         value
       </td>
       <ng-container *ngIf="hasRawChecksExceptOverall">
-        <td class="raw-checks__cell raw-checks__head-cell">operator</td>
+        <td class="raw-checks__cell raw-checks__head-cell">description</td>
         <td class="raw-checks__cell raw-checks__head-cell">threshold</td>
         <td class="raw-checks__cell raw-checks__head-cell">check</td>
       </ng-container>
     </tr>
-    <ng-container
-      *ngTemplateOutlet="row; context: { $implicit: outputKeys }"
-    ></ng-container>
+    <ng-container *ngTemplateOutlet="row; context: { $implicit: outputKeys }"></ng-container>
   </table>
 </div>
 <ng-template #row let-keys>
   <tr *ngFor="let key of keys">
     <td class="raw-checks__cell">{{ key }}</td>
-    <td
-      class="raw-checks__cell"
-      [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4"
-    >
-      <ng-container
-        *ngTemplateOutlet="isImage(key) ? image : plainText"
-      ></ng-container>
+    <td class="raw-checks__cell" [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4">
+      <ng-container *ngTemplateOutlet="isImage(key) ? image : plainText"></ng-container>
       <ng-template #image>
-        <hs-tensor-image-list
-          [pixels]="check[key]"
-          [tensorProto]="getTensorShape(key)"
-        ></hs-tensor-image-list>
+        <hs-tensor-image-list [pixels]="check[key]" [tensorProto]="getTensorShape(key)"></hs-tensor-image-list>
       </ng-template>
       <ng-template #plainText>
         <div hs-expander maxHeight="170">
@@ -78,17 +60,35 @@
       </ng-template>
     </td>
     <ng-container *ngIf="hasRawChecksExceptOverall">
-      <td class="raw-checks__cell">{{ rawChecks[key][0].description }}</td>
-      <td class="raw-checks__cell">{{ rawChecks[key][0].threshold }}</td>
-      <td
-        class="raw-checks__cell"
-        [ngClass]="{
-          'raw-checks__check--failed': !rawChecks[key][0].check,
-          'raw-checks__check--success': rawChecks[key][0].check
-        }"
-      >
-        {{ rawChecks[key][0].check }}
+      <td class="raw-checks__cell">
+        <ng-container *ngIf="rawChecks[key]">
+          <ng-container *ngTemplateOutlet="rawCheckResult; context: {$implicit: rawChecks[key], key: 'description'}">
+          </ng-container>
+        </ng-container>
+      </td>
+      <td class="raw-checks__cell">
+        <ng-container *ngIf="rawChecks[key]">
+          <ng-container *ngTemplateOutlet="rawCheckResult; context: {$implicit: rawChecks[key], key: 'threshold'}"></ng-container>
+        </ng-container>
+      </td>
+      <td class="raw-checks__cell">
+        <ng-container *ngIf="rawChecks[key]">
+          <ng-container *ngTemplateOutlet="rawCheckResultChecks; context: {$implicit: rawChecks[key], key: 'check'}"></ng-container>
+        </ng-container>
       </td>
     </ng-container>
   </tr>
+</ng-template>
+<ng-template #rawCheckResult let-items let-key=key>
+  <div *ngFor="let item of items">
+    {{ item[key] }}
+  </div>
+</ng-template>
+<ng-template #rawCheckResultChecks let-items let-key=key>
+  <div *ngFor="let item of items" [ngClass]="{
+    'raw-checks__check--failed': !item.check,
+    'raw-checks__check--success': item.check
+  }">
+    {{ item[key] }}
+  </div>
 </ng-template>
