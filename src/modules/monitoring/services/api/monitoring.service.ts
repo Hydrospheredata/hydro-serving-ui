@@ -6,10 +6,6 @@ import {
   GetChecksParams,
   ChecksAggregationResponse,
 } from '@monitoring/interfaces';
-import {
-  MetricSpecification,
-  MetricSpecificationProvider,
-} from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
 
 @Injectable()
