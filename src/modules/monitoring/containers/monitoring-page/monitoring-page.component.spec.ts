@@ -11,7 +11,7 @@ import {
   CustomChecksComponent,
 } from '@testing/components';
 import { getErrorText } from '@testing/helpers';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, of } from 'rxjs';
 import { MonitoringPageComponent } from './monitoring-page.component';
 
 describe('MonitoringPageComponent', () => {
@@ -38,6 +38,7 @@ describe('MonitoringPageComponent', () => {
           provide: MonitoringPageFacade,
           useValue: {
             loadMetrics: () => {},
+            checksAggreagtions$: of([]),
             error$: new BehaviorSubject(''),
           },
         },
