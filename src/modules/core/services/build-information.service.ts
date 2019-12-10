@@ -5,17 +5,15 @@ import { combineLatest } from 'rxjs';
 
 @Injectable()
 export class BuildInformationService {
-    private buildInfoApi = '/api/buildinfo';
-    private gatewayInfoApi = '/gateway/buildinfo';
+  private buildInfoApi = '/api/buildinfo';
+  private gatewayInfoApi = '/gateway/buildinfo';
 
-    constructor(
-       private http: HttpService
-    ) {}
+  constructor(private http: HttpService) {}
 
-    getBuildInformation(): Observable<any> {
-        return combineLatest(
-            this.http.get(this.buildInfoApi),
-            this.http.get(this.gatewayInfoApi)
-        );
-    }
+  getBuildInformation(): Observable<any> {
+    return combineLatest(
+      this.http.get(this.buildInfoApi),
+      this.http.get(this.gatewayInfoApi)
+    );
+  }
 }
