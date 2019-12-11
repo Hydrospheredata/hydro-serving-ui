@@ -2,7 +2,7 @@
   <ng-container *ngIf="!(error$ | async); else errorSection">
     <section class="monitoring__aggregation">
       <hs-aggregation
-        [aggregation]="checksAggreagation$ | async"
+        [aggregation]="checksAggregation$ | async"
         (changedSelectedColumn)="onSelectedAggregationColumn($event)"
       >
       </hs-aggregation>

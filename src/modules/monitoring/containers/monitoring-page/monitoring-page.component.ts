@@ -11,9 +11,7 @@ import { map } from 'rxjs/operators';
 })
 export class MonitoringPageComponent implements OnInit {
   checks$ = this.facade.checks$;
-  checksAggreagation$ = this.facade.checksAggreagtions$.pipe(map(_ => {
-    return _.reverse();
-  }));
+  checksAggregation$ = this.facade.checksAggregations$;
   customChecks$ = this.facade.customChecks$;
   customMetrics$ = this.facade.customMetrics$;
   errorsChecks$ = this.facade.errorsChecks$;

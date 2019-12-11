@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import { Check, ChecksAggregation, CustomCheck } from '@monitoring/interfaces';
+import {
+  Check,
+  ChecksAggregation,
+  CustomCheck,
+  ChecksAggregationResponse,
+} from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
 import { CheckAggregationBuilder } from '@monitoring/services/builders/check-aggregation.builder';
 import {
@@ -55,7 +60,7 @@ export class MonitoringPageFacade {
   );
   detailedLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  checksAggreagtions$: Observable<ChecksAggregation[]> = combineLatest(
+  checksAggregations$: Observable<ChecksAggregation[]> = combineLatest(
     this.modelVersion$,
     this.customMetrics$
   ).pipe(
@@ -80,10 +85,9 @@ export class MonitoringPageFacade {
         filter(([prev, cur]) => {
           return !isEqual(prev, cur);
         }),
-        map(([_, currentRes]) =>
-          currentRes.map(rawCheck =>
-            this.checkAggBuilder.build(rawCheck, metrics)
-          )
+        map(([_, currentRes]: [any, ChecksAggregationResponse[]]) =>
+          currentRes
+            .map(rawCheck => this.checkAggBuilder.build(rawCheck, metrics)).reverse()
         ),
         tap(() => {
           this.detailedLoading$.next(false);
@@ -95,7 +99,7 @@ export class MonitoringPageFacade {
 
   selectedColumnId$ = new Subject<string>();
   selectedAggregation$ = combineLatest(
-    this.checksAggreagtions$,
+    this.checksAggregations$,
     this.selectedColumnId$
   ).pipe(
     map(([agg, id]) => agg.find(a => a.additionalInfo._id === id)),
@@ -186,7 +190,7 @@ export class MonitoringPageFacade {
     this.store.dispatch(DeleteMetric({ id }));
   }
   addMetric(metric: any) {
-    this.store.dispatch(AddMetric({ aggreagation: metric }));
+    this.store.dispatch(AddMetric({ aggregation: metric }));
   }
 
   getServiceStatus() {
