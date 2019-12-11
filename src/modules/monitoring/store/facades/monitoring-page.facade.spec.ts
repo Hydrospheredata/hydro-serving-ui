@@ -68,7 +68,7 @@ describe('Monitoring page facade', () => {
       spyOn(monitoringService, 'getChecksAggregation').and.returnValue(
         of([{}])
       );
-      const sub = monitoringPageFacade.checksAggreagtions$.subscribe();
+      const sub = monitoringPageFacade.checksAggregations$.subscribe();
 
       tick(10000);
 
@@ -79,7 +79,7 @@ describe('Monitoring page facade', () => {
     it('won\'t emit value, if get equall response', fakeAsync(() => {
       let count = 0;
       spyOn(monitoringService, 'getChecksAggregation').and.callThrough();
-      const sub = monitoringPageFacade.checksAggreagtions$.subscribe(res => {
+      const sub = monitoringPageFacade.checksAggregations$.subscribe(res => {
         count = count + 1;
       });
       tick(20000);

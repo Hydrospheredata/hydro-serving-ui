@@ -26,7 +26,7 @@ export class MetricsEffects {
     this.actions$.pipe(
       ofType(AddMetric),
       switchMap(action =>
-        this.metricsService.addMetricSpecification(action.aggreagation).pipe(
+        this.metricsService.addMetricSpecification(action.aggregation).pipe(
           map(response => {
             this.snackbar.show({
               message: 'Metric was successfully added',

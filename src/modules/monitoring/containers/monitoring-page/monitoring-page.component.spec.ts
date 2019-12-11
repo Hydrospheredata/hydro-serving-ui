@@ -38,7 +38,7 @@ describe('MonitoringPageComponent', () => {
           provide: MonitoringPageFacade,
           useValue: {
             loadMetrics: () => {},
-            checksAggreagtions$: of([]),
+            checksAggregations$: of([]),
             error$: new BehaviorSubject(''),
           },
         },

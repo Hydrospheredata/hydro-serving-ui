@@ -6,7 +6,7 @@ import {
 
 export const AddMetric = createAction(
   '[Metrics] add metric',
-  props<{ aggreagation: MetricSpecificationRequest}>()
+  props<{ aggregation: MetricSpecificationRequest}>()
 );
 export const AddMetricSuccess = createAction(
   '[Metrics] add metric success',
