@@ -8,13 +8,11 @@ import { Observable } from 'rxjs';
   styleUrls: ['./build-information-dialog.component.scss'],
 })
 export class BuildInformationDialogComponent {
-  buildInfo$: Observable<any>;
+  buildInfo$: Observable<any> = this.buildInfo.getBuildInformation();
   constructor(
     private buildInfo: BuildInformationService,
     private dialog: DialogService
-  ) {
-    this.buildInfo$ = buildInfo.getBuildInformation();
-  }
+  ) {}
 
   onClose(): void {
     this.dialog.closeDialog();
