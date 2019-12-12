@@ -12,13 +12,24 @@ export interface AdditionalCheckInfo {
   _hs_model_name: string;
   _id: string;
   _hs_metrics: { [metricName: string]: { checks: number; passed: number } };
+  _hs_batch: {
+    [featureName: string]: {
+      [metricName: string]: { checked: number; passed: number };
+    };
+  };
 }
 
 export interface Feautures {
   [featureName: string]: { checks: number; passed: number };
 }
 
-export type ChecksAggregationResponse = Feautures & AdditionalCheckInfo;
+export type CheckAggregationItem = Feautures & AdditionalCheckInfo;
+
+export interface ChecksAggregationResponse {
+  results: CheckAggregationItem[];
+  count: number;
+}
+
 export interface ChecksAggregation {
   features: {
     [featureName: string]: { checked: number; passed: number };
@@ -27,4 +38,9 @@ export interface ChecksAggregation {
     [metricName: string]: { checked: number; passed: number };
   };
   additionalInfo: Partial<AdditionalCheckInfo>;
+  batch: {
+    [featureName: string]: {
+      [metricName: string]: { checked: number; passed: number };
+    };
+  };
 }

@@ -41,7 +41,7 @@ describe('Monitoring page facade', () => {
         {
           provide: MonitoringService,
           useValue: {
-            getChecksAggregation: () => of([{}]),
+            getChecksAggregation: () => of({count: 0, results: []}),
           },
         },
       ],
@@ -66,7 +66,7 @@ describe('Monitoring page facade', () => {
   describe('checkAggregations stream', () => {
     it('get new data at first frame and every 5 seconds', fakeAsync(() => {
       spyOn(monitoringService, 'getChecksAggregation').and.returnValue(
-        of([{}])
+        of({count: 0, results: []})
       );
       const sub = monitoringPageFacade.checksAggregations$.subscribe();
 
@@ -76,7 +76,7 @@ describe('Monitoring page facade', () => {
       expect(monitoringService.getChecksAggregation).toHaveBeenCalledTimes(3);
       sub.unsubscribe();
     }));
-    it('won\'t emit value, if get equall response', fakeAsync(() => {
+    it('won\'t emit value, if get equal response', fakeAsync(() => {
       let count = 0;
       spyOn(monitoringService, 'getChecksAggregation').and.callThrough();
       const sub = monitoringPageFacade.checksAggregations$.subscribe(res => {
