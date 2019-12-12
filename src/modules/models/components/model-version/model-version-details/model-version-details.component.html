@@ -27,8 +27,8 @@
           <span class="information__item-title">Runtime</span>
           <span class="information__item-value">
             <div class="runtime">
-              <span>{{ modelVersion.runtime.name }}</span
-              ><span class="runtime__tag">{{ modelVersion.runtime.tag }}</span>
+              <span>{{ modelVersion.runtime?.name }}</span
+              ><span class="runtime__tag">{{ modelVersion.runtime?.tag }}</span>
             </div>
           </span>
         </li>
@@ -108,7 +108,7 @@
       ></hydro-signatures>
     </div>
   </section>
-  <section class="content__cell mv-details__servables">
+  <section class="content__cell mv-details__servables" *ngIf="!(modelVersion$ | async).isExternal">
     <div class="content__cell-title">Servables</div>
     <hs-servables-table
       [servables]="servables$ | async"
