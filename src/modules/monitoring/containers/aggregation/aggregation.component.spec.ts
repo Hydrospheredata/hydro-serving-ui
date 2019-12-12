@@ -64,6 +64,7 @@ describe('Aggregation component', () => {
           _hs_requests: 10,
           _id: '1',
         },
+        batch: {},
       };
 
       component.aggregation = [mockAggregation];

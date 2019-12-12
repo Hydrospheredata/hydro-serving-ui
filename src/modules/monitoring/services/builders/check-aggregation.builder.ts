@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
-  ChecksAggregationResponse,
   ChecksAggregation,
+  CheckAggregationItem,
 } from '@monitoring/interfaces';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 
@@ -20,7 +20,7 @@ export class CheckAggregationBuilder {
   }
 
   build(
-    rawCheck: ChecksAggregationResponse,
+    rawCheck: CheckAggregationItem,
     metrics: MetricSpecification[]
   ): ChecksAggregation {
     const metricNames = metrics.map(({ name }) => name);
@@ -32,7 +32,8 @@ export class CheckAggregationBuilder {
     const res: ChecksAggregation = {
       additionalInfo: {},
       features: {},
-      metrics: {...obj},
+      metrics: { ...obj },
+      batch: rawCheck._hs_batch,
     };
     for (const prop in rawCheck) {
       if (rawCheck.hasOwnProperty(prop)) {
@@ -40,10 +41,10 @@ export class CheckAggregationBuilder {
           res.additionalInfo[prop] = rawCheck[prop];
         } else {
           const { checks: checked, passed } = rawCheck[prop];
-          res.features[prop] = { checked, passed};
+          res.features[prop] = { checked, passed };
         }
 
-        res.metrics = {...obj, ...rawCheck._hs_metrics};
+        res.metrics = { ...obj, ...rawCheck._hs_metrics };
       }
     }
     return res;

@@ -80,15 +80,22 @@ export class MonitoringPageFacade {
               })
             );
         }),
-        startWith([]),
+        startWith({}),
         pairwise(),
         filter(([prev, cur]) => {
           return !isEqual(prev, cur);
         }),
-        map(([_, currentRes]: [any, ChecksAggregationResponse[]]) =>
-          currentRes
-            .map(rawCheck => this.checkAggBuilder.build(rawCheck, metrics)).reverse()
-        ),
+        map(([_, currentRes]) => {
+          console.log(currentRes);
+
+          if ((currentRes as ChecksAggregationResponse).results === undefined) {
+            return [];
+          }
+
+          return (currentRes as ChecksAggregationResponse).results
+            .map(rawCheck => this.checkAggBuilder.build(rawCheck, metrics))
+            .reverse();
+        }),
         tap(() => {
           this.detailedLoading$.next(false);
         })
