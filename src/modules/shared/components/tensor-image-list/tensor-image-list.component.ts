@@ -1,4 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { ImageHelperService } from '@core/services/image-helper.service';
 
 @Component({
@@ -6,13 +12,28 @@ import { ImageHelperService } from '@core/services/image-helper.service';
   templateUrl: './tensor-image-list.component.html',
   styleUrls: ['./tensor-image-list.component.scss'],
 })
-export class TensorImageListComponent implements OnInit {
+export class TensorImageListComponent implements OnInit, OnChanges {
   @Input() pixels;
-  @Input()
-  set tensorProto(tensorShape) {
+  @Input() tensorProto;
+  imagesCount: number;
+  imageWidth: number;
+  imageHeight: number;
+  imagePixelsArray: number[][];
+
+  readonly elementsForRGBA = 4;
+  constructor(private imageHelper: ImageHelperService) {}
+
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.pixels || changes.tensorProto) {
+      this.redraw();
+    }
+  }
+  private redraw() {
     let dim;
     try {
-      dim = tensorShape.dim;
+      dim = this.tensorProto.dim;
       const [imagesCount, imageWidth, imageHeight] = dim;
       this.imagesCount = imagesCount.size;
       this.imageWidth = imageWidth.size;
@@ -45,15 +66,6 @@ export class TensorImageListComponent implements OnInit {
       throw Error('Did not found dim property in tensorShape');
     }
   }
-  imagesCount: number;
-  imageWidth: number;
-  imageHeight: number;
-  imagePixelsArray: number[][];
-
-  readonly elementsForRGBA = 4;
-  constructor(private imageHelper: ImageHelperService) {}
-
-  ngOnInit(): void {}
 
   private partitionArrayBySize(arr, size): number[][] {
     let offset = 0;
