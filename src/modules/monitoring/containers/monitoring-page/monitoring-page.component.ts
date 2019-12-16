@@ -2,7 +2,6 @@ import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
-import { map } from 'rxjs/operators';
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
@@ -21,6 +20,10 @@ export class MonitoringPageComponent implements OnInit {
   selectedMetrics$ = this.facade.selectedMetrics$;
   siblingModelVersions$ = this.facade.siblingModelVersions$;
   error$ = this.facade.error$;
+  totalRequests$ = this.facade.requestsCount$;
+  currentRequests$ = this.facade.receivedRequestCount$;
+  canLoadRight$ = this.facade.canLoadRight$;
+  canLoadLeft$ = this.facade.canLoadLeft$;
 
   constructor(
     private dialogService: DialogService,
@@ -44,5 +47,12 @@ export class MonitoringPageComponent implements OnInit {
 
   onSelectedAggregationColumn(id: string) {
     this.facade.selectAggregationColumn(id);
+  }
+
+  loadOlder() {
+    this.facade.loadOlder();
+  }
+  loadNewest() {
+    this.facade.loadNewest();
   }
 }

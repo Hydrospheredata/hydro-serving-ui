@@ -1,0 +1,32 @@
+<section class="batch-metrics" *ngIf="aggregation">
+  <table class="batch-metrics__table">
+    <tr class="batch-metrics__table-row">
+      <td class="batch-metrics__table-cell"></td>
+      <td
+        class="batch-metrics__table-cell batch-metrics__table-label"
+        *ngFor="let feature of aggregation.batch | keyvalue"
+      >
+        {{ feature.key }}
+      </td>
+    </tr>
+    <tr class="batch-metrics__table-row" *ngFor="let batchName of batchesNames">
+      {{ batchName }}
+      <td
+        class="batch-metrics__table-cell batch-metrics__table-result"
+        *ngFor="let feature of aggregation.batch | keyvalue"
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            check;
+            context: { $implicit: selectElement(feature.value[batchName]) }
+          "
+        ></ng-container>
+      </td>
+    </tr>
+  </table>
+</section>
+<ng-template #check let-result>
+  <span [ngClass]="{ 'batch-metrics__table-result--fail': result === 'F' }">
+    {{ result }}
+  </span>
+</ng-template>

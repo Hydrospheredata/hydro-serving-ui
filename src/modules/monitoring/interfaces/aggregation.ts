@@ -1,4 +1,4 @@
-export interface GetChecksAggreagationParams {
+export interface GetChecksAggregationParams {
   modelVersionId: number;
   limit?: number;
   offset?: number;
@@ -11,7 +11,9 @@ export interface AdditionalCheckInfo {
   _hs_requests: number;
   _hs_model_name: string;
   _id: string;
-  _hs_metrics: { [metricName: string]: { checks: number; passed: number } };
+  _hs_metrics: {
+    [metricName: string]: { checks: number; passed: number };
+  };
   _hs_batch: {
     [featureName: string]: {
       [metricName: string]: { checked: number; passed: number };
@@ -19,11 +21,11 @@ export interface AdditionalCheckInfo {
   };
 }
 
-export interface Feautures {
+export interface Features {
   [featureName: string]: { checks: number; passed: number };
 }
 
-export type CheckAggregationItem = Feautures & AdditionalCheckInfo;
+export type CheckAggregationItem = Features & AdditionalCheckInfo;
 
 export interface ChecksAggregationResponse {
   results: CheckAggregationItem[];

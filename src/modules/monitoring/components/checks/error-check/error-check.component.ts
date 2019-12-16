@@ -56,7 +56,7 @@ export class ErrorCheckComponent {
 
   get showButton(): boolean {
     if (this.data) {
-      return this.errorsCount > 1;
+      return this.errorsCount >= 1;
     }
 
     return false;
