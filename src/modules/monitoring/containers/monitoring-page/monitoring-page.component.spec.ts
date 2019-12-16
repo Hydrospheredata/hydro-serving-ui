@@ -9,6 +9,7 @@ import {
   RequestsInformationComponent,
   LogComponent,
   CustomChecksComponent,
+  BatchMetricsComponent,
 } from '@testing/components';
 import { getErrorText } from '@testing/helpers';
 import { Subject, BehaviorSubject, of } from 'rxjs';
@@ -30,6 +31,7 @@ describe('MonitoringPageComponent', () => {
         RequestsInformationComponent,
         LogComponent,
         CustomChecksComponent,
+        BatchMetricsComponent,
       ],
       imports: [SharedModule],
       providers: [

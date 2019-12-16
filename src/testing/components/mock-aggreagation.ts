@@ -8,5 +8,9 @@ export class AggregationComponent {
   @Input() aggregation: any;
   @Input() latency: number[];
   @Input() errors: boolean[];
+  @Input() canLoadLeft: boolean;
+  @Input() canLoadRight: boolean;
   @Output() changedSelectedColumn = new EventEmitter<number>();
+  @Output() loadedOlder = new EventEmitter<string>();
+  @Output() loadedNewest = new EventEmitter<string>();
 }
