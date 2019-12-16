@@ -100,6 +100,7 @@ export class MonitoringPageFacade {
           this.detailedLoading$.next(true);
           return this.monitoring
             .getChecksAggregation({
+              limit: this.limit,
               modelVersionId: modelVersion.id,
               offset,
             })
@@ -228,7 +229,7 @@ export class MonitoringPageFacade {
     }),
     share()
   );
-  private limit: number = 80;
+  private limit: number = 60;
 
   constructor(
     private store: Store<State>,

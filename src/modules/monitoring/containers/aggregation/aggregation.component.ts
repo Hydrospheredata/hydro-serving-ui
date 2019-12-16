@@ -94,7 +94,7 @@ export class AggregationComponent implements OnChanges {
   @Output() loadedNewest = new EventEmitter<string>();
 
   labelsWidth: number = 100;
-  canvasWidth: number = 820;
+  canvasWidth: number = 880;
   selectedColumnId: string;
 
   readonly CELL_SIZE = 12;
