@@ -45,6 +45,36 @@ import {
 
 @Injectable()
 export class MonitoringPageFacade {
+  requestsCount$: Subject<number> = new Subject();
+  receivedRequestCount$: Subject<number> = new Subject();
+  receivedColumnsCount$: Subject<number> = new Subject();
+  currentOffset$: BehaviorSubject<number> = new BehaviorSubject(0);
+  elementsPerColumn$: Subject<number> = new BehaviorSubject(10);
+
+  canLoadLeft$: Observable<boolean> = combineLatest(
+    this.requestsCount$,
+    this.receivedRequestCount$,
+    this.receivedColumnsCount$,
+    this.currentOffset$,
+    this.elementsPerColumn$
+  ).pipe(
+    map(([total, current, columns, offset, elPerColumn]) => {
+      const res = total > (columns + offset) * elPerColumn;
+      return res;
+    }),
+    startWith(false)
+  );
+  canLoadRight$: Observable<boolean> = combineLatest(
+    this.requestsCount$,
+    this.receivedRequestCount$,
+    this.currentOffset$
+  ).pipe(
+    map(([total, current, offset]) => {
+      return offset !== 0;
+    }),
+    startWith(false)
+  );
+
   error$ = new Subject();
   siblingModelVersions$ = this.modelsFacade.siblingModelVersions$;
   serviceStatus$ = this.store.pipe(select(getMonitoringServiceStatus));
@@ -54,7 +84,6 @@ export class MonitoringPageFacade {
     select(selectSelectedMetrics),
     filter(val => val !== undefined)
   );
-
   customMetrics$ = this.selectedMetrics$.pipe(
     map(metrics => metrics.filter(isCustomMetric))
   );
@@ -62,15 +91,17 @@ export class MonitoringPageFacade {
 
   checksAggregations$: Observable<ChecksAggregation[]> = combineLatest(
     this.modelVersion$,
-    this.customMetrics$
+    this.customMetrics$,
+    this.currentOffset$
   ).pipe(
-    switchMap(([modelVersion, metrics]) => {
+    switchMap(([modelVersion, metrics, offset]) => {
       return timer(0, 5000).pipe(
         switchMap(() => {
           this.detailedLoading$.next(true);
           return this.monitoring
             .getChecksAggregation({
               modelVersionId: modelVersion.id,
+              offset,
             })
             .pipe(
               catchError(err => {
@@ -86,13 +117,18 @@ export class MonitoringPageFacade {
           return !isEqual(prev, cur);
         }),
         map(([_, currentRes]) => {
-          console.log(currentRes);
-
-          if ((currentRes as ChecksAggregationResponse).results === undefined) {
+          const res = currentRes as ChecksAggregationResponse;
+          if (res.results === undefined) {
             return [];
           }
 
-          return (currentRes as ChecksAggregationResponse).results
+          this.requestsCount$.next(res.count);
+          this.receivedRequestCount$.next(
+            res.results.reduce((x, el) => x + el._hs_requests, 0)
+          );
+          this.receivedColumnsCount$.next(res.results.length);
+
+          return res.results
             .map(rawCheck => this.checkAggBuilder.build(rawCheck, metrics))
             .reverse();
         }),
@@ -109,7 +145,18 @@ export class MonitoringPageFacade {
     this.checksAggregations$,
     this.selectedColumnId$
   ).pipe(
-    map(([agg, id]) => agg.find(a => a.additionalInfo._id === id)),
+    map(([agg, id]) => {
+      let res: ChecksAggregation;
+      if (id) {
+        res = agg.find(a => a.additionalInfo._id === id);
+      }
+
+      if (res === undefined) {
+        res = agg[agg.length - 1];
+      }
+
+      return res;
+    }),
     share()
   );
 
@@ -166,8 +213,7 @@ export class MonitoringPageFacade {
       };
 
       checks.forEach(check => {
-        const overall = check._hs_raw_checks.overall;
-
+        const overall = Object.values(check._hs_metric_checks || {});
         overall.forEach(({ metricSpecId, value, check: health }) => {
           if (customChecks.has(metricSpecId)) {
             customChecks.set(
@@ -182,6 +228,7 @@ export class MonitoringPageFacade {
     }),
     share()
   );
+  private limit: number = 10;
 
   constructor(
     private store: Store<State>,
@@ -206,6 +253,14 @@ export class MonitoringPageFacade {
 
   selectAggregationColumn(id: string) {
     this.selectedColumnId$.next(id);
+  }
+
+  loadOlder() {
+    this.currentOffset$.next(this.currentOffset$.value + 1);
+  }
+
+  loadNewest(offset: number = 0) {
+    this.currentOffset$.next(this.currentOffset$.value - 1);
   }
 }
 

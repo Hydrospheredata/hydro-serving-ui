@@ -3,24 +3,30 @@
     <section class="monitoring__aggregation">
       <hs-aggregation
         [aggregation]="checksAggregation$ | async"
+        [canLoadLeft]="canLoadLeft$ | async"
+        [canLoadRight]="canLoadRight$ | async"
         (changedSelectedColumn)="onSelectedAggregationColumn($event)"
+        (loadedOlder)="loadOlder()"
+        (loadedNewest)="loadNewest()"
       >
       </hs-aggregation>
-
-      <hs-requests-information
-        [aggregation]="selectedAggregationColumn$ | async"
-        [latency]="latency$ | async"
-        [errors]="errorsChecks$ | async"
-      >
-      </hs-requests-information>
     </section>
 
+    <hs-requests-information
+      [aggregation]="selectedAggregationColumn$ | async"
+      [latency]="latency$ | async"
+      [errors]="errorsChecks$ | async"
+    >
+    </hs-requests-information>
+    <hs-batch-metrics
+      [aggregation]="selectedAggregationColumn$ | async"
+    ></hs-batch-metrics>
     <hs-log
       [checks]="checks$ | async"
       [modelVersion]="modelVersion$ | async"
     ></hs-log>
     <hs-custom-checks
-      [customMetrics]="customMetrics$ | async" 
+      [customMetrics]="customMetrics$ | async"
       [customChecks]="customChecks$ | async"
       (openSettings)="openSettings()"
     ></hs-custom-checks>

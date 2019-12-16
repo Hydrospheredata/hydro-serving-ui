@@ -4,7 +4,7 @@
   margin-bottom: 12px;
   background: white;
   border-radius: 4px;
-  box-shadow: $box-shadow;
+  border: 1px $neutral-color-900 solid;
   &__body {
     display: flex;
   }

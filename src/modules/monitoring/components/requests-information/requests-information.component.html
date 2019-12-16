@@ -1,23 +1,20 @@
 <div class="requests-info">
   <ng-container *ngIf="aggregation; else noDataAvailable">
-    <div class="requests-info__header">
-      <div class="requests-info__requests">
-        Selected requests:
-        <span class="requests-info__requests-count">{{ requests }}</span>
+    <div class="requests-info__section">
+      <div class="requests-info__header">
+        Selected requests
       </div>
+      <div class="requests-info__count">{{ requests }}</div>
       <div class="requests-info__dates">
         <span>{{ firstId | checkIdToTime | moment }}</span> -
         <span>{{ lastId | checkIdToTime | moment }}</span>
       </div>
     </div>
-
-    <div class="requests-info__checks">
-      <div>
-        <hs-latency-check [data]="latency"></hs-latency-check>
-      </div>
-      <div class="requests-info__checks-item">
-        <hs-error-check [data]="errors"></hs-error-check>
-      </div>
+    <div class="requests-info__section">
+      <hs-latency-check [data]="latency"></hs-latency-check>
+    </div>
+    <div class="requests-info__section">
+      <hs-error-check [data]="errors"></hs-error-check>
     </div>
   </ng-container>
 </div>

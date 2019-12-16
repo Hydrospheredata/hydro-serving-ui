@@ -1,0 +1,29 @@
+@import "variables";
+
+.batch-metrics {
+  background: white;
+  border-radius: 4px;
+  border: 1px $neutral-color-900 solid;
+  margin-bottom: 12px;
+  padding: 12px;
+  &__table {
+    overflow: scroll;
+    &-cell {
+      color: $neutral-color-600;
+      padding: 4px;
+    }
+    &-label {
+      color: $neutral-color-900;
+      font-family: $font-family-bold;
+    }
+    &-result {
+      text-align: center;
+      &--success {
+        color: $supportive-color-green-600;
+      }
+      &--fail {
+        color: $supportive-color-red-600;
+      }
+    }
+  }
+}

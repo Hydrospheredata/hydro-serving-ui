@@ -1,12 +1,11 @@
 @import "variables";
 
 .custom-check {
-  // display: flex;
   width: 1100px;
   margin: 12px 0;
   background: white;
   border-radius: 4px;
-  box-shadow: $box-shadow;
+  border: 1px $neutral-color-800 solid;
   &__chart {
     width: 100%;
   }

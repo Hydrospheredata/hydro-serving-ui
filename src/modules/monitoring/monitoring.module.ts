@@ -35,6 +35,7 @@ import {
   MetricsComponent,
   MonitoringPageComponent,
   AggregationComponent,
+  BatchMetricsComponent
 } from './containers';
 @NgModule({
   entryComponents: [
@@ -65,6 +66,7 @@ import {
     RequestsInformationComponent,
     CheckChartComponent,
     RawChecksComponent,
+    BatchMetricsComponent,
   ],
   imports: [
     SharedModule,

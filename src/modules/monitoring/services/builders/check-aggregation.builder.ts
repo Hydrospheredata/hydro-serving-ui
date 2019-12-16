@@ -16,6 +16,8 @@ export class CheckAggregationBuilder {
       '_hs_requests',
       '_hs_model_name',
       '_hs_metrics',
+      '_hs_batch',
+      '_hs_metric_checks',
     ];
   }
 
