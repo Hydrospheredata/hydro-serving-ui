@@ -28,7 +28,7 @@ export class MonitoringService {
 
   getChecksAggregation({
     modelVersionId,
-    limit = 10,
+    limit = 80,
     offset,
   }: GetChecksAggregationParams): Observable<ChecksAggregationResponse> {
     const params = {

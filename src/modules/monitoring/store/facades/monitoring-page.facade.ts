@@ -228,7 +228,7 @@ export class MonitoringPageFacade {
     }),
     share()
   );
-  private limit: number = 10;
+  private limit: number = 80;
 
   constructor(
     private store: Store<State>,
