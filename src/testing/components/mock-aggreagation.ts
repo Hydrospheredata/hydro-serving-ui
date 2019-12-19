@@ -10,6 +10,8 @@ export class AggregationComponent {
   @Input() errors: boolean[];
   @Input() canLoadLeft: boolean;
   @Input() canLoadRight: boolean;
+  @Input() totalRequests: number;
+  @Input() currentRequests: number;
   @Output() changedSelectedColumn = new EventEmitter<number>();
   @Output() loadedOlder = new EventEmitter<string>();
   @Output() loadedNewest = new EventEmitter<string>();

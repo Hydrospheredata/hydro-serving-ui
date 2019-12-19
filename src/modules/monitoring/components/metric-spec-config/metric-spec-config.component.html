@@ -2,10 +2,10 @@
   <div formGroupName="config" *ngIf="parent.get('config')">
     <div class="config__row">
       <div class="config__cell">
-        <label class="label">Model: </label>
+        <label class="label">Monitoring model: </label>
         <mdl-select
           [formControl]="parent.get('config').get('model')"
-          label="Choose model"
+          label="Choose monitoring model"
         >
           <mdl-option *ngFor="let model of models" [value]="model">{{
             model.name
@@ -33,7 +33,7 @@
     >
       <div class="config__cell">
         <label class="label" for="thresholdCmpOperator"
-          >Comparision operator:
+          >Comparison operator:
         </label>
         <mdl-select
           name="thresholdCmpOperator"

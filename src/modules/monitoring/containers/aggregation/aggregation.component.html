@@ -11,7 +11,11 @@
       <div class="aggregation__header-selected">
         <div>
           Requests:
-          <span class="aggregation__header-count">{{ countRequests }} </span>
+          <span class="aggregation__header-count">{{ totalRequests }} </span>
+        </div>
+        <div>
+          Showed:
+          <span class="aggregation__header-count">{{ currentRequests }} </span>
         </div>
         <div>
           <span>{{ firstId | checkIdToTime | moment }}</span> -

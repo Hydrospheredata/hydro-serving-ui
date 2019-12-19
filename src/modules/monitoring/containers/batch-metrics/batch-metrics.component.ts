@@ -4,7 +4,7 @@ import {
   Input,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { ChecksAggregation } from '@monitoring/interfaces';
+import { ChecksAggregationItem } from '@monitoring/interfaces';
 
 @Component({
   selector: 'hs-batch-metrics',
@@ -13,7 +13,7 @@ import { ChecksAggregation } from '@monitoring/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BatchMetricsComponent implements OnInit {
-  @Input() aggregation: ChecksAggregation;
+  @Input() aggregation: ChecksAggregationItem;
   ngOnInit() {}
 
   get batchesNames() {

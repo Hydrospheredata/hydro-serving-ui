@@ -2,6 +2,8 @@
   <ng-container *ngIf="!(error$ | async); else errorSection">
     <section class="monitoring__aggregation">
       <hs-aggregation
+        [totalRequests]="totalRequests$ | async"
+        [currentRequests]="currentRequests$ | async"
         [aggregation]="checksAggregation$ | async"
         [canLoadLeft]="canLoadLeft$ | async"
         [canLoadRight]="canLoadRight$ | async"

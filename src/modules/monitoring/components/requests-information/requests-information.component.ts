@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { ChecksAggregation } from '@monitoring/interfaces';
+import { ChecksAggregationItem } from '@monitoring/interfaces';
 
 @Component({
   selector: 'hs-requests-information',
@@ -8,7 +8,7 @@ import { ChecksAggregation } from '@monitoring/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestsInformationComponent {
-  @Input() aggregation: ChecksAggregation;
+  @Input() aggregation: ChecksAggregationItem;
   @Input() latency;
   @Input() errors = [];
   get additionalInfo() {

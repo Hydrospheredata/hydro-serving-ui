@@ -3,7 +3,7 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AggregationComponent } from '@monitoring/containers/aggregation/aggregation.component';
 import {
-  ChecksAggregation,
+  ChecksAggregationItem,
 } from '@monitoring/interfaces';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { SharedModule } from '@shared/shared.module';
@@ -49,7 +49,7 @@ describe('Aggregation component', () => {
 
   describe('with some data', () => {
     beforeEach(() => {
-      const mockAggregation: ChecksAggregation = {
+      const mockAggregation: ChecksAggregationItem = {
         features: {
           fake_check: {
             passed: 0,

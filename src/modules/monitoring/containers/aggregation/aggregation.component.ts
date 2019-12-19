@@ -9,7 +9,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { ChecksAggregation } from '@monitoring/interfaces';
+import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { interpolateRdYlGn } from 'd3';
 
 @Component({
@@ -31,16 +31,6 @@ export class AggregationComponent implements OnChanges {
   }
   get batchMetricsCanvasHeight() {
     return this.batchNames.size * this.blockSize;
-  }
-
-  get countRequests(): number {
-    if (this.aggregation) {
-      return this.aggregation.reduce(
-        (res, { additionalInfo: { _hs_requests } }) => res + _hs_requests,
-        0
-      );
-    }
-    return 0;
   }
 
   get firstId(): string {
@@ -87,11 +77,13 @@ export class AggregationComponent implements OnChanges {
   @ViewChild('svgContainer', { read: ElementRef })
   svgContainer: ElementRef;
 
-  @Input() aggregation: ChecksAggregation[] = [];
+  @Input() aggregation: ChecksAggregationItem[] = [];
   @Input() latency: number[] = [];
   @Input() errors: boolean[] = [];
   @Input() canLoadLeft: boolean;
   @Input() canLoadRight: boolean;
+  @Input() totalRequests: number;
+  @Input() currentRequests: number;
   @Output() changedSelectedColumn = new EventEmitter<string>();
   @Output() loadedOlder = new EventEmitter<string>();
   @Output() loadedNewest = new EventEmitter<string>();
@@ -106,7 +98,7 @@ export class AggregationComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.aggregation) {
-      const aggregation: ChecksAggregation[] = changes.aggregation.currentValue;
+      const aggregation: ChecksAggregationItem[] = changes.aggregation.currentValue;
       if (aggregation && aggregation.length) {
         const selectedColumn = aggregation.find(
           agg => agg.additionalInfo._id === this.selectedColumnId
@@ -127,13 +119,13 @@ export class AggregationComponent implements OnChanges {
       index * this.CELL_MARGIN_TOP})`;
   }
 
-  changeActiveColumn(aggregation: ChecksAggregation) {
+  changeActiveColumn(aggregation: ChecksAggregationItem) {
     const id = aggregation.additionalInfo._id;
     this.selectedColumnId = id;
     this.changedSelectedColumn.next(id);
   }
 
-  cellColor(column: ChecksAggregation, featureName: string) {
+  cellColor(column: ChecksAggregationItem, featureName: string) {
     if (column.features[featureName] === undefined) {
       return 'url(#repeat)';
     }
@@ -149,7 +141,7 @@ export class AggregationComponent implements OnChanges {
     }
   }
 
-  metricCellColor(column: ChecksAggregation, metricName: string) {
+  metricCellColor(column: ChecksAggregationItem, metricName: string) {
     if (column.metrics[metricName] === undefined) {
       return 'url(#repeat)';
     }
@@ -164,7 +156,7 @@ export class AggregationComponent implements OnChanges {
       return 'url(#repeat)';
     }
   }
-  batchMetricCellColor(column: ChecksAggregation, batchName: string) {
+  batchMetricCellColor(column: ChecksAggregationItem, batchName: string) {
     const batch = column.batch;
     if (batch === undefined) {
       return 'url(#repeat)';
@@ -193,7 +185,7 @@ export class AggregationComponent implements OnChanges {
     }
   }
 
-  isSelected(column: ChecksAggregation): boolean {
+  isSelected(column: ChecksAggregationItem): boolean {
     return this.selectedColumnId === column.additionalInfo._id;
   }
 
@@ -205,8 +197,8 @@ export class AggregationComponent implements OnChanges {
   }
 
   private update(
-    selectedColumn: ChecksAggregation,
-    aggregation: ChecksAggregation[]
+    selectedColumn: ChecksAggregationItem,
+    aggregation: ChecksAggregationItem[]
   ) {
     if (selectedColumn === undefined) {
       this.changeActiveColumn(aggregation[aggregation.length - 1]);
