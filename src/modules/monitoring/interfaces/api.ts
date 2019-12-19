@@ -3,3 +3,8 @@ export interface GetChecksParams {
   from: string;
   to: string;
 }
+export interface GetChecksAggregationParams {
+  modelVersionId: number;
+  limit?: number;
+  offset?: number;
+}

@@ -19,15 +19,18 @@ import { interpolateRdYlGn } from 'd3';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AggregationComponent implements OnChanges {
+  get blockSize(): number {
+    return 14;
+  }
   get canvasHeight() {
-    return this.featureNames.length * 14;
+    return this.featureNames.length * this.blockSize;
   }
 
   get metricsCanvasHeight() {
-    return this.metricNames.length * 14;
+    return this.metricNames.length * this.blockSize;
   }
   get batchMetricsCanvasHeight() {
-    return this.batchNames.size * 14;
+    return this.batchNames.size * this.blockSize;
   }
 
   get countRequests(): number {

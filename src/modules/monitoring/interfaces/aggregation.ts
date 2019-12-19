@@ -1,9 +1,3 @@
-export interface GetChecksAggregationParams {
-  modelVersionId: number;
-  limit?: number;
-  offset?: number;
-}
-
 export interface AdditionalCheckInfo {
   _hs_first_id: string;
   _hs_last_id: string;
