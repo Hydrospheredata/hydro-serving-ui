@@ -224,4 +224,9 @@ server {
     proxy_set_header Upgrade $http_upgrade;
     proxy_http_version 1.1;
   }
+
+  location /status {
+      vhost_traffic_status_display;
+      vhost_traffic_status_display_format prometheus;
+  }  
 }
