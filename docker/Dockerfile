@@ -1,4 +1,4 @@
-FROM nginx:1.15-alpine
+FROM xcgd/nginx-vts:1.16.0-0.1.18
 
 ENV MANAGER_HOST=localhost
 ENV GATEWAY_HOST=localhost
@@ -23,6 +23,8 @@ ENV PROMETHEUS_AM_PORT=9093
 EXPOSE 80
 
 ADD nginx/config/default.conf.template /etc/nginx/conf.d/default.conf.template
+
+COPY nginx/config/nginx.conf /etc/nginx/nginx.conf
 COPY hydro-serving-ui /usr/share/nginx/html
 
 CMD envsubst '${PROMETHEUS_AM_HOST} ${PROMETHEUS_AM_PORT} ${MANAGER_HOST} ${GATEWAY_HOST} ${MONITORING_HOST} ${REQSTORE_HOST} ${MANAGER_HTTP_PORT} ${MANAGER_GRPC_PORT} ${GATEWAY_HTTP_PORT} ${GATEWAY_GRPC_PORT} ${MONITORING_HTTP_PORT} ${MONITORING_GRPC_PORT} ${REQSTORE_HTTP_PORT} ${REQSTORE_GRPC_PORT} ${TIMEMACHINE_HOST} ${TIMEMACHINE_HTTP_PORT} ${ROOTCAUSE_HOST} ${ROOTCAUSE_HTTP_PORT}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf \
