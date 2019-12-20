@@ -99,6 +99,14 @@ server {
 
   error_page 404 =200 /index.html;
 
+  #Exclude /status traffic by stats
+  vhost_traffic_status_bypass_limit on;
+  vhost_traffic_status_bypass_stats on;
+
+  #Filter traffic by location 
+  vhost_traffic_status_filter_by_set_key $uri uris::$server_name;
+  vhost_traffic_status_limit_check_duplicate on;
+
   location /health {
       return 200 'no content';
   }
@@ -229,12 +237,6 @@ server {
     #Access ip to status page
     allow ${STATS_ACCESS};
     deny  all;
-    #Exclude /status traffic by stats
-    vhost_traffic_status_bypass_limit on;
-    vhost_traffic_status_bypass_stats on;
-    #Filter traffic by location
-    vhost_traffic_status_filter_by_set_key $uri uris::$server_name;
-    vhost_traffic_status_limit_check_duplicate on;
     #Display status page in html format  (set vts-exporter to scrape /status/format/json )
     vhost_traffic_status_display;
     vhost_traffic_status_display_format html;
