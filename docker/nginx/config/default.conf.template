@@ -91,6 +91,7 @@ server {
 # HTTP
 server {
   listen 80 default_server;
+  server_name _;
 
   client_max_body_size 1G;
   root   /usr/share/nginx/html;
@@ -98,14 +99,6 @@ server {
   include /etc/nginx/mime.types;
 
   error_page 404 =200 /index.html;
-
-  #Exclude /status traffic by stats
-  vhost_traffic_status_bypass_limit on;
-  vhost_traffic_status_bypass_stats on;
-
-  #Filter traffic by location 
-  vhost_traffic_status_filter_by_set_key $uri uris::$server_name;
-  vhost_traffic_status_limit_check_duplicate on;
 
   location /health {
       return 200 'no content';
