@@ -1,4 +1,8 @@
 <div class="aggregation">
+  <ng-container *ngIf="loading">
+    <hs-loader class="aggregation__loader"></hs-loader>
+  </ng-container>
+
   <ng-container *ngIf="dataAvailable; else noDataAvailable">
     <div class="aggregation__header">
       <hydro-icon

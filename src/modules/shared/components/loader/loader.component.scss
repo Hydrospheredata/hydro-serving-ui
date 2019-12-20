@@ -1,0 +1,18 @@
+.loader {
+  width: 24px;
+  height: 24px;
+  animation: aaa 1.3s infinite linear;
+  &__icon {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@keyframes aaa {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}

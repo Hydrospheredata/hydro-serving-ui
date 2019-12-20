@@ -8,4 +8,5 @@ export class RequestsInformationComponent {
   @Input() aggregation: any;
   @Input() latency;
   @Input() errors = [];
+  @Input() loading = false;
 }

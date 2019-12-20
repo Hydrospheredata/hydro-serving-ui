@@ -12,6 +12,7 @@ export class AggregationComponent {
   @Input() canLoadRight: boolean;
   @Input() totalRequests: number;
   @Input() currentRequests: number;
+  @Input() loading: boolean;
   @Output() changedSelectedColumn = new EventEmitter<number>();
   @Output() loadedOlder = new EventEmitter<string>();
   @Output() loadedNewest = new EventEmitter<string>();

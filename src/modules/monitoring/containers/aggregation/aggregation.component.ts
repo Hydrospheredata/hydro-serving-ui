@@ -84,6 +84,7 @@ export class AggregationComponent implements OnChanges {
   @Input() canLoadRight: boolean;
   @Input() totalRequests: number;
   @Input() currentRequests: number;
+  @Input() loading: boolean = false;
   @Output() changedSelectedColumn = new EventEmitter<string>();
   @Output() loadedOlder = new EventEmitter<string>();
   @Output() loadedNewest = new EventEmitter<string>();

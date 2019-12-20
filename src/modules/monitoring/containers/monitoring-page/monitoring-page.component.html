@@ -7,6 +7,7 @@
         [aggregation]="checksAggregation$ | async"
         [canLoadLeft]="canLoadLeft$ | async"
         [canLoadRight]="canLoadRight$ | async"
+        [loading]="aggregationLoading$ | async"
         (changedSelectedColumn)="onSelectedAggregationColumn($event)"
         (loadedOlder)="loadOlder()"
         (loadedNewest)="loadNewest()"
@@ -21,15 +22,18 @@
     >
     </hs-requests-information>
     <hs-batch-metrics
+      *ngIf="showBatchMetricsBlock(selectedAggregationColumn$ | async)"
       [aggregation]="selectedAggregationColumn$ | async"
     ></hs-batch-metrics>
     <hs-log
       [checks]="checks$ | async"
       [modelVersion]="modelVersion$ | async"
+      [loading]="detailedCheckLoading$ | async"
     ></hs-log>
     <hs-custom-checks
       [customMetrics]="customMetrics$ | async"
       [customChecks]="customChecks$ | async"
+      [loading]="detailedCheckLoading$ | async"
       (openSettings)="openSettings()"
     ></hs-custom-checks>
   </ng-container>

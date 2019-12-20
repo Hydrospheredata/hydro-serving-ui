@@ -1,4 +1,9 @@
 <div class="log">
+  <ng-container *ngIf="loading">
+    <div class="log__loader">
+      <hs-loader></hs-loader>
+    </div>
+  </ng-container>
   <div class="log__body" *ngIf="haveSomeData; else noDataAvailable">
     <ul class="log__ids">
       <li

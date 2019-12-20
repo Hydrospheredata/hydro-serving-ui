@@ -7,4 +7,5 @@ import { Input, Component } from '@angular/core';
 export class CustomChecksComponent {
   @Input() customMetrics: any[];
   @Input() customChecks: any[];
+  @Input() loading: boolean = false;
 }

@@ -2,9 +2,7 @@ import { DebugElement, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { AggregationComponent } from '@monitoring/containers/aggregation/aggregation.component';
-import {
-  ChecksAggregationItem,
-} from '@monitoring/interfaces';
+import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { SharedModule } from '@shared/shared.module';
 import { getNativeElement } from '@testing/helpers';
@@ -74,6 +72,23 @@ describe('Aggregation component', () => {
     it('alert message hidden', () => {
       const message = debugEl.query(By.css('.aggregation__message'));
       expect(message).toBeFalsy();
+    });
+  });
+
+  it('loader isn\'t shown', () => {
+    const loadingEl = debugEl.query(By.css('.aggregation__loader'));
+    expect(loadingEl).toBeFalsy();
+  });
+
+  describe('when is loading', () => {
+    beforeEach(() => {
+      component.loading = true;
+      fixture.detectChanges();
+    });
+
+    it('show loader', () => {
+      const loadingEl = debugEl.query(By.css('.aggregation__loader'));
+      expect(getNativeElement(loadingEl)).toBeTruthy();
     });
   });
 });

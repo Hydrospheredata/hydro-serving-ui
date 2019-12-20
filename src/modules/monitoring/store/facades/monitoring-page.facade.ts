@@ -43,6 +43,7 @@ import {
   refCount,
   publishReplay,
   startWith,
+  tap,
 } from 'rxjs/operators';
 import { AggregationPaginator } from '../../services/aggregation-paginator';
 
@@ -50,6 +51,8 @@ import { AggregationPaginator } from '../../services/aggregation-paginator';
 export class MonitoringPageFacade {
   groupedBy$: BehaviorSubject<number> = new BehaviorSubject(10);
   currentOffset$: BehaviorSubject<number> = new BehaviorSubject(0);
+  aggregationLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  detailedLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   error$ = new Subject();
   siblingModelVersions$ = this.modelsFacade.siblingModelVersions$;
   serviceStatus$ = this.store.pipe(select(getMonitoringServiceStatus));
@@ -62,13 +65,13 @@ export class MonitoringPageFacade {
   customMetrics$ = this.selectedMetrics$.pipe(
     map(metrics => metrics.filter(isCustomMetric))
   );
-  detailedLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   checksAggregationResponse$: Observable<
     ChecksAggregationResponse
   > = combineLatest(this.modelVersion$, this.currentOffset$).pipe(
     switchMap(([modelVersion, offset]) => {
       return timer(0, 5000).pipe(
         switchMap(() => {
+          this.aggregationLoading$.next(true);
           return this.monitoring
             .getChecksAggregation({
               limit: this.limit,
@@ -77,11 +80,14 @@ export class MonitoringPageFacade {
             })
             .pipe(
               catchError(err => {
-                this.detailedLoading$.next(false);
+                this.aggregationLoading$.next(false);
                 this.error$.next(err);
                 return of({}) as Observable<ChecksAggregationResponse>;
               })
             );
+        }),
+        tap(() => {
+          this.aggregationLoading$.next(false);
         }),
         startWith({ results: [], count: 0 }),
         pairwise(),
@@ -102,7 +108,11 @@ export class MonitoringPageFacade {
   receivedRequestCount$: Observable<
     number
   > = this.checksAggregationResponse$.pipe(
+    filter(val => val !== undefined),
     map(({ results }) => {
+      if (results === undefined) {
+        return 0;
+      }
       return results.reduce(
         (result, { _hs_requests }) => result + _hs_requests,
         0
@@ -131,7 +141,12 @@ export class MonitoringPageFacade {
     this.groupedBy$
   ).pipe(
     map(([count, receivedCount, offset, groupedBy]) => {
-      return this.paginator.canLoadOlder(count, receivedCount, offset, groupedBy);
+      return this.paginator.canLoadOlder(
+        count,
+        receivedCount,
+        offset,
+        groupedBy
+      );
     })
   );
 
@@ -162,12 +177,17 @@ export class MonitoringPageFacade {
         _hs_last_id: to,
         _hs_model_version_id: modelVersionId,
       } = aggregation.additionalInfo;
-
+      this.detailedLoading$.next(true);
       return this.monitoring.getChecks({
         modelVersionId,
         from,
         to,
       });
+    }),
+    tap(() => this.detailedLoading$.next(false)),
+    catchError(err => {
+      this.detailedLoading$.next(false);
+      return of({});
     }),
     share()
   );

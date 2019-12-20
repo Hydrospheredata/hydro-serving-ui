@@ -9,4 +9,5 @@ import { ModelVersion } from '@shared/_index';
 export class LogComponent {
   @Input() modelVersion: ModelVersion;
   @Input() checks: Check[] = [];
+  @Input() loading: boolean;
 }

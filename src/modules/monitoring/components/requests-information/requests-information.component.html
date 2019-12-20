@@ -1,4 +1,9 @@
 <div class="requests-info">
+  <ng-container *ngIf="loading">
+    <div class="requests-info__loader">
+      <hs-loader class="requests-info__loader-icon"></hs-loader>
+    </div>
+  </ng-container>
   <ng-container *ngIf="aggregation; else noDataAvailable">
     <div class="requests-info__section">
       <div class="requests-info__header">
