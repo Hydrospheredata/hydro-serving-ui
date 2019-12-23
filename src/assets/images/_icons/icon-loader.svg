@@ -1,13 +1,1 @@
- <svg viewBox="0 0 120 120" version="1.1" width="120px" height="120px"
-xmlns="http://www.w3.org/2000/svg">
-<circle cx="60" cy="60" r="50"
-fill="none"
-stroke="rgba(48, 55, 74, 0.5)"
-stroke-width="10%">
-<animate 
-    attributeType="CSS" 
-    attributeName="stroke-dasharray" 
-    from="0 500" to="320 500" dur="3s" repeatCount="indefinite">
-    </animate>
-    </circle>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 6v3l4-4-4-4v3c-4.42 0-8 3.58-8 8 0 1.57.46 3.03 1.24 4.26L6.7 14.8c-.45-.83-.7-1.79-.7-2.8 0-3.31 2.69-6 6-6zm6.76 1.74L17.3 9.2c.44.84.7 1.79.7 2.8 0 3.31-2.69 6-6 6v-3l-4 4 4 4v-3c4.42 0 8-3.58 8-8 0-1.57-.46-3.03-1.24-4.26z"/><path d="M0 0h24v24H0z" fill="none"/></svg>

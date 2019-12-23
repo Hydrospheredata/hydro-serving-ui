@@ -1,4 +1,11 @@
 <div class="aggregation">
+  <ng-container *ngIf="loading">
+    <div class="aggregation__loader">
+      <hs-loader class="aggregation__loader-icon"></hs-loader>
+      <span>loading</span>
+    </div>
+  </ng-container>
+
   <ng-container *ngIf="dataAvailable; else noDataAvailable">
     <div class="aggregation__header">
       <hydro-icon
@@ -11,7 +18,11 @@
       <div class="aggregation__header-selected">
         <div>
           Requests:
-          <span class="aggregation__header-count">{{ countRequests }} </span>
+          <span class="aggregation__header-count">{{ totalRequests }} </span>
+        </div>
+        <div>
+          Showed:
+          <span class="aggregation__header-count">{{ currentRequests }} </span>
         </div>
         <div>
           <span>{{ firstId | checkIdToTime | moment }}</span> -

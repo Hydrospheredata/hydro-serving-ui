@@ -84,4 +84,18 @@ describe('Log component', () => {
       expect(messageDebugEl).toBeFalsy();
     });
   });
+
+  describe('loader', () => {
+    it('wasn\'t shown', () => {
+      const de = fixture.debugElement.query(By.css('.log__loader'));
+      expect(de).toBeNull();
+    });
+    it('was shown when loading', () => {
+      component.loading = true;
+      fixture.detectChanges();
+
+      const de = fixture.debugElement.query(By.css('.log__loader'));
+      expect(de).toBeTruthy();
+    });
+  });
 });

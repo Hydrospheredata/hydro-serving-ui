@@ -14,3 +14,4 @@ export * from './logs/logs.component';
 export * from './tooltip/tooltip.component';
 export * from './expander/expander.component';
 export * from './probabilities-list/probabilities-list.component';
+export * from './loader/loader.component';

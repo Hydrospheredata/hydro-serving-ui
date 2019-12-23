@@ -3,10 +3,11 @@
   width: 100%;
   margin-bottom: 12px;
   display: flex;
+  position: relative;
   &__section {
-    border: 1px $neutral-color-900 solid;
+    border: 1px $neutral-color-200 solid;
     width: 100%;
-    padding: 8px 8px;
+    padding: 8px;
     border-radius: 4px;
     background: white; 
   }
@@ -16,7 +17,7 @@
   &__header {
     color: $neutral-color-800;
     font-family: $font-family-bold;
-    font-size: 16px;
+    font-size: 14px;
   }
   &__count {
     margin: 16px 0;

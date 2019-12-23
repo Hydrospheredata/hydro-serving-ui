@@ -1,0 +1,19 @@
+.loader {
+  height: inherit;
+  width: inherit;
+  transform-origin: center center;
+  animation: aaa 1.3s infinite linear;
+  &__icon {
+    width: inherit;
+    height: inherit;
+  }
+}
+
+@keyframes aaa {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(180deg);
+  }
+}

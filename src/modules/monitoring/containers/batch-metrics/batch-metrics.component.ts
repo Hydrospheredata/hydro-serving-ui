@@ -4,7 +4,9 @@ import {
   Input,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { ChecksAggregation } from '@monitoring/interfaces';
+import { ChecksAggregationItem } from '@monitoring/interfaces';
+
+type BatchMetricCheckStatus = 'success' | 'fail' | 'unknown';
 
 @Component({
   selector: 'hs-batch-metrics',
@@ -13,7 +15,7 @@ import { ChecksAggregation } from '@monitoring/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BatchMetricsComponent implements OnInit {
-  @Input() aggregation: ChecksAggregation;
+  @Input() aggregation: ChecksAggregationItem;
   ngOnInit() {}
 
   get batchesNames() {
@@ -29,11 +31,11 @@ export class BatchMetricsComponent implements OnInit {
     return names.keys();
   }
 
-  selectElement(check: { checked: number; passed: number }): string {
+  checkStatus(check: { checked: number; passed: number }): BatchMetricCheckStatus {
     if (check.checked === 0) {
-      return '?';
+      return 'unknown';
     }
 
-    return check.checked === check.passed ? 'P' : 'F';
+    return check.checked === check.passed ? 'success' : 'fail';
   }
 }

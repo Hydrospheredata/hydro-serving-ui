@@ -12,13 +12,27 @@
 }
 
 .aggregation {
-  height: 100%;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px $neutral-color-900 solid;
-  width: 1100px;
-  margin-right: 12px;
   background: white;
+  border-radius: 4px;
+  border: 1px $neutral-color-200 solid;
+  height: 100%;
+  margin-right: 12px;
+  padding: 20px 24px;
+  position: relative;
+  width: 1100px;
+
+  &__loader {
+    left: calc(50% - 12px);
+    position: absolute;
+    top: calc(100% - 20px);
+    color: $neutral-color-300;
+    font-family: $font-family-light;
+    &-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+    }
+  }
 
   &__body {
     display: flex;

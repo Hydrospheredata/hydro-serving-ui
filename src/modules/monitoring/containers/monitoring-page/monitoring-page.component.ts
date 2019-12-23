@@ -2,6 +2,8 @@ import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { Observable, of } from 'rxjs';
+import { ChecksAggregationItem } from '@monitoring/interfaces';
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
@@ -24,6 +26,9 @@ export class MonitoringPageComponent implements OnInit {
   currentRequests$ = this.facade.receivedRequestCount$;
   canLoadRight$ = this.facade.canLoadRight$;
   canLoadLeft$ = this.facade.canLoadLeft$;
+
+  aggregationLoading$: Observable<boolean> = this.facade.aggregationLoading$;
+  detailedCheckLoading$: Observable<boolean> = this.facade.detailedLoading$;
 
   constructor(
     private dialogService: DialogService,
@@ -54,5 +59,9 @@ export class MonitoringPageComponent implements OnInit {
   }
   loadNewest() {
     this.facade.loadNewest();
+  }
+
+  showBatchMetricsBlock(aggregationItem: ChecksAggregationItem): boolean {
+    return aggregationItem && aggregationItem.batch !== undefined;
   }
 }
