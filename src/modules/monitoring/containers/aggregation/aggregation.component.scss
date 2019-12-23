@@ -17,18 +17,21 @@
   border: 1px $neutral-color-200 solid;
   height: 100%;
   margin-right: 12px;
-  padding: 18px 24px;
+  padding: 20px 24px;
   position: relative;
   width: 1100px;
 
   &__loader {
-    width: 24px;
-    height: 24px;
-    position: absolute;
-    top: calc(50% - 12px);
     left: calc(50% - 12px);
-    right: 0;
-    bottom: 0;
+    position: absolute;
+    top: calc(100% - 20px);
+    color: $neutral-color-300;
+    font-family: $font-family-light;
+    &-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+    }
   }
 
   &__body {

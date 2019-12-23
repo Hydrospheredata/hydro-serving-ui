@@ -1,10 +1,11 @@
 .loader {
-  width: 24px;
-  height: 24px;
+  height: inherit;
+  width: inherit;
+  transform-origin: center center;
   animation: aaa 1.3s infinite linear;
   &__icon {
-    width: 24px;
-    height: 24px;
+    width: inherit;
+    height: inherit;
   }
 }
 

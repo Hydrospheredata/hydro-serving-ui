@@ -4,19 +4,6 @@
   margin-bottom: 12px;
   display: flex;
   position: relative;
-  &__loader {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: #5197ff2b;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-  }
   &__section {
     border: 1px $neutral-color-200 solid;
     width: 100%;

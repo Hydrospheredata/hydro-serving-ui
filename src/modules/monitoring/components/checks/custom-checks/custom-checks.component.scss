@@ -19,6 +19,10 @@
     justify-content: center;
     align-items: center;
     z-index: 1;
+    &-icon {
+      height: 24px;
+      width: 24px;
+    }
   }
   &__header {
     text-align: right;

@@ -11,7 +11,6 @@ export class RequestsInformationComponent {
   @Input() aggregation: ChecksAggregationItem;
   @Input() latency;
   @Input() errors = [];
-  @Input() loading: boolean = false;
 
   get additionalInfo() {
     return this.aggregation.additionalInfo;

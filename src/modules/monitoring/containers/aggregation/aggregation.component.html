@@ -1,6 +1,9 @@
 <div class="aggregation">
   <ng-container *ngIf="loading">
-    <hs-loader class="aggregation__loader"></hs-loader>
+    <div class="aggregation__loader">
+      <hs-loader class="aggregation__loader-icon"></hs-loader>
+      <span>loading</span>
+    </div>
   </ng-container>
 
   <ng-container *ngIf="dataAvailable; else noDataAvailable">
