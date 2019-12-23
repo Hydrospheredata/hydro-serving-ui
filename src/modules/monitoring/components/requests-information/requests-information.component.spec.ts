@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { SharedModule } from '@shared/shared.module';
 import {
@@ -39,19 +38,5 @@ describe('RequestsInformationComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('loader', () => {
-    it('wasn\'t shown', () => {
-      const de = fixture.debugElement.query(By.css('.requests-info__loader'));
-      expect(de).toBeNull();
-    });
-    it('was shown when loading', () => {
-      component.loading = true;
-      fixture.detectChanges();
-
-      const de = fixture.debugElement.query(By.css('.requests-info__loader'));
-      expect(de).toBeTruthy();
-    });
   });
 });
