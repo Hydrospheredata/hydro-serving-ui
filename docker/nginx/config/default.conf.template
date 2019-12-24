@@ -230,6 +230,9 @@ server {
     #Access ip to status page
     allow ${STATS_ACCESS};
     deny  all;
+    #Exclude /status traffic by stats
+    vhost_traffic_status_bypass_limit on;
+    vhost_traffic_status_bypass_stats on;    
     #Display status page in html format  (set vts-exporter to scrape /status/format/json )
     vhost_traffic_status_display;
     vhost_traffic_status_display_format html;
