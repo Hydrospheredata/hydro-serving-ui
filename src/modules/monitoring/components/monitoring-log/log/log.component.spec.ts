@@ -66,6 +66,7 @@ describe('Log component', () => {
           _hs_overall_score: 0,
           _hs_prediction_score: 0,
           _hs_raw_checks: { overall: [] },
+          _hs_metric_checks: {},
           _hs_score: 0,
         },
       ];

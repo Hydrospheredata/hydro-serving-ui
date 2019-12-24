@@ -120,13 +120,13 @@ export class MonitoringPageFacade {
     })
   );
 
-  checksAggregations$ = combineLatest(this.checksAggregationResponse$).pipe(
-    map(([aggregationResponse]) => {
+  checksAggregations$ = combineLatest(this.checksAggregationResponse$, this.selectedMetrics$).pipe(
+    map(([aggregationResponse, metrics]) => {
       if (aggregationResponse.results === undefined) {
         return [];
       }
       return aggregationResponse.results
-        .map(rawCheck => this.checkAggBuilder.build(rawCheck, []))
+        .map(rawCheck => this.checkAggBuilder.build(rawCheck, metrics))
         .reverse();
     })
   );
@@ -251,7 +251,7 @@ export class MonitoringPageFacade {
     private monitoring: MonitoringService,
     private checkAggBuilder: CheckAggregationBuilder,
     private paginator: AggregationPaginator
-  ) {}
+  ) { }
   loadMetrics(): void {
     this.store.dispatch(LoadMetrics());
   }
