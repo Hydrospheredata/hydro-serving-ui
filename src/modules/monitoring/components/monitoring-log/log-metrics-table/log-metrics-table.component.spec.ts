@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { IconComponent } from '../icons/icons.component';
-import { LoaderComponent } from './loader.component';
 
-describe('LoaderComponent', () => {
-  let component: LoaderComponent;
-  let fixture: ComponentFixture<LoaderComponent>;
+import { LogMetricsTableComponent } from './log-metrics-table.component';
+
+describe('LogMetricsTableComponent', () => {
+  let component: LogMetricsTableComponent;
+  let fixture: ComponentFixture<LogMetricsTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoaderComponent, IconComponent],
+      declarations: [LogMetricsTableComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoaderComponent);
+    fixture = TestBed.createComponent(LogMetricsTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

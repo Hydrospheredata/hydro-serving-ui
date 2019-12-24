@@ -5,8 +5,8 @@ export interface Check {
     overall: RawCheck[];
   };
   _hs_metric_checks: {
-    [metricName: string]: RawCheck
-  }
+    [metricName: string]: RawCheck;
+  };
   _hs_latency: number;
   _hs_error: number;
   _hs_score: number;

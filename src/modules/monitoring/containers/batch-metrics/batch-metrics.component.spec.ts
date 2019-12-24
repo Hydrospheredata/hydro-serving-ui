@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { BatchMetricsComponent } from './batch-metrics.component';
 import { SharedModule } from '@shared/shared.module';
+import { BatchMetricsComponent } from './batch-metrics.component';
 
 describe('BatchMetricsComponent', () => {
   let component: BatchMetricsComponent;
@@ -10,9 +9,8 @@ describe('BatchMetricsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [SharedModule],
-      declarations: [ BatchMetricsComponent ]
-    })
-    .compileComponents();
+      declarations: [BatchMetricsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

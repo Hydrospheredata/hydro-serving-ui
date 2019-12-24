@@ -18,3 +18,4 @@ export * from './mock-log-detail';
 export * from './mock-signatures';
 export * from  './mock-row-checks';
 export * from './mock-batch-metrics';
+export * from './mock-log-metrics-table';
