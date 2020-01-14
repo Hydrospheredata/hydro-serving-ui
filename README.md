@@ -1,4 +1,7 @@
 # HydroServingUi
+|   |   |   |   |
+|---|---|---|---|
+|[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Hydrospheredata_hydro-serving-ui&metric=alert_status)](https://sonarcloud.io/dashboard?id=Hydrospheredata_hydro-serving-ui)|[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Hydrospheredata_hydro-serving-ui&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=Hydrospheredata_hydro-serving-ui)|[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Hydrospheredata_hydro-serving-ui&metric=bugs)](https://sonarcloud.io/dashboard?id=Hydrospheredata_hydro-serving-ui)|[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=Hydrospheredata_hydro-serving-ui&metric=code_smells)](https://sonarcloud.io/dashboard?id=Hydrospheredata_hydro-serving-ui)|
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.1.
 
