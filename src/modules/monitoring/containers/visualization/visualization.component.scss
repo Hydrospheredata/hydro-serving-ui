@@ -1,0 +1,21 @@
+.visualization {
+  &__header{
+    margin-bottom: 24px;
+  }
+  &__body {
+    display: flex;
+  }
+  &__chart {
+    margin-right: 24px;
+  }
+  &__details {
+
+  }
+
+  &__circle {
+    opacity: .5;
+    &:hover {
+      opacity: 1x;
+    }
+  }
+}

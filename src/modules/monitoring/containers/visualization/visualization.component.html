@@ -1,0 +1,40 @@
+<div class="visualization">
+  <div class="visualization__header">
+    <mdl-select
+      label="Choose label"
+      [(ngModel)]="selectedLabel"
+      (change)="changedLabel($event)"
+    >
+      <mdl-option *ngFor="let labelName of labelNames" [value]="labelName">{{
+        labelName
+      }}</mdl-option>
+    </mdl-select>
+  </div>
+  <div class="visualization__body">
+    <div class="visualization__chart">
+      <svg [attr.width]="chartWidth" [attr.height]="chartHeight" #svgContainer>
+        <g
+          hsD3Axis
+          [scale]="yScale"
+          position="left"
+          [attr.transform]="yAxisTranslate"
+        ></g>
+        <g hsD3Axis [scale]="xScale" [attr.transform]="xAxisTranslate"></g>
+        <g [attr.transform]="dataTranslate">
+          <circle
+            class="visualization__circle"
+            *ngFor="let point of points; index as i"
+            r="4"
+            [attr.fill]="pointColor(i)"
+            [attr.transform]="translatePoint(point)"
+            (click)="onSelectPoint(i)"
+          />
+        </g>
+      </svg>
+    </div>
+    <div class="visualization__detail">
+      <div>selected index: {{ selectedIndex }}</div>
+      <div>selected point: {{ selectedPoint }}</div>
+    </div>
+  </div>
+</div>

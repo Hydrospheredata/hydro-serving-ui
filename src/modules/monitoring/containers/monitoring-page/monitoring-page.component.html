@@ -20,10 +20,11 @@
       [modelVersion]="modelVersion$ | async"
     ></hs-log>
     <hs-custom-checks
-      [customMetrics]="customMetrics$ | async" 
+      [customMetrics]="customMetrics$ | async"
       [customChecks]="customChecks$ | async"
       (openSettings)="openSettings()"
     ></hs-custom-checks>
+    <hs-visualization></hs-visualization>
   </ng-container>
 </div>
 
