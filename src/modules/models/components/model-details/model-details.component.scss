@@ -1,11 +1,9 @@
 @import 'variables.scss';
 
 .model-details {
+  position: relative;
+
   &__header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 48px;
     &-title {
       font-size: 16px;
     }
@@ -13,5 +11,9 @@
       position: absolute;
       right: 24px;
     }
+  }
+
+  &__body {
+    margin: 72px 24px;
   }
 }

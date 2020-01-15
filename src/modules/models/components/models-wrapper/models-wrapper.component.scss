@@ -1,14 +1,3 @@
-:host {
-    width: 100%;
-    display: flex;
-}
-
-.models-wrapper {
-    &__container {
-        width: 100%;
-    }
-}
-
-.sidebar {
-    z-index: 2;
+  :host {
+  width: 100%;
 }

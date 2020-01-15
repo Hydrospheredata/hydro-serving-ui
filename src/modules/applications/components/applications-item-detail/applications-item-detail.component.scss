@@ -5,7 +5,8 @@
     height: calc(100% - 40px);
     overflow: scroll;
     .signature {
-      width: 240px;
+      min-width: 240px;
+      max-width: 240px;
       overflow: scroll;
       padding: 8px;
       background-color: white;
@@ -73,13 +74,9 @@
   &__body {
     display: flex;
     height: 100%;
+    margin: 72px 24px;
   }
   &__header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 48px;
-    color: $neutral-color-1000;
     &-title {
       font-size: 16px;
     }

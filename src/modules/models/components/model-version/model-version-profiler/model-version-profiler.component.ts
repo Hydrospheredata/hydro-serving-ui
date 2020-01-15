@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ZenModeService } from '@core/services/zenmode.service';
 import { ModelsFacade } from '@models/store';
 import { ProfilerFacade } from '@profiler/store';
 import { ModelVersion } from '@shared/_index';
@@ -16,11 +17,13 @@ export class ModelVersionProfilerComponent {
   featureName$ = this.profilerFacade.selectedFeatureName$;
   featureNames$ = this.modelsFacade.selectedFeatureNames$;
   profiles$ = this.modelsFacade.profiles$;
+  isZenMode$ = this.zenMode.isZenMode$;
 
   constructor(
     private profilerFacade: ProfilerFacade,
     private modelsFacade: ModelsFacade,
-    private router: Router
+    private router: Router,
+    private zenMode: ZenModeService
   ) {}
 
   backToModelVersion(modelVersion: ModelVersion): void {

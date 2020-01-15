@@ -1,5 +1,8 @@
-<section class="model-details content" *ngIf="model$ | async as model">
-  <header class="model-details__header content__header">
+<section class="model-details" *ngIf="model$ | async as model">
+  <header
+    class="content__header model-details__header"
+    [ngClass]="{ 'content__header--zen-mode': isZenMode$ | async }"
+  >
     <div class="model-details__header-title">{{ model.name }}</div>
     <div class="model-details__header-buttons">
       <button hs-button kind="stroked" (click)="removeModel(model)">
@@ -8,12 +11,9 @@
       </button>
     </div>
   </header>
-  <div class="content__body">
-    <!-- <div class="content__cell-title">Versions</div> -->
-    <div class="versions">
-      <hs-model-versions-table
-        [modelVersions]="modelVersions$ | async"
-      ></hs-model-versions-table>
-    </div>
+  <div class="model-details__body">
+    <hs-model-versions-table
+      [modelVersions]="modelVersions$ | async"
+    ></hs-model-versions-table>
   </div>
 </section>

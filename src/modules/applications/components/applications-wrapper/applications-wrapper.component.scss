@@ -20,16 +20,6 @@
   }
 }
 
-
-.sidebar {
-  z-index: 2;
-}
-
-.container {
-  width: calc(100% - 250px);
-  overflow: scroll;
-}
-
 .add-application {
   &__button {
     margin-bottom: 16px;
