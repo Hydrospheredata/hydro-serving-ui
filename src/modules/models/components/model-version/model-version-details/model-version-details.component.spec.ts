@@ -15,6 +15,7 @@ import {
   MockModelVersion1Model1,
   FailedModelVersion,
 } from '@testing/factories/modelVersion';
+import { MockZenModeServiceProvider } from '@testing/services/zenMode.service';
 import { of, BehaviorSubject } from 'rxjs';
 import { ModelVersionDetailsComponent } from './model-version-details.component';
 
@@ -48,6 +49,7 @@ describe('ModelVersionDetailsComponent', () => {
             ) => {},
           },
         },
+        MockZenModeServiceProvider,
       ],
     }).compileComponents();
   });

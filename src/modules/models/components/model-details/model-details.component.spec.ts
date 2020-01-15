@@ -1,9 +1,13 @@
+import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
 import { SharedModule } from '@shared/shared.module';
 import * as mockComponents from '@testing/components';
+import { ModelVersionsTableComponent } from '@testing/components';
 import { MockModel1 } from '@testing/factories/model';
+import { MockZenModeServiceProvider } from '@testing/services/zenMode.service';
 import { of } from 'rxjs';
 import { ModelDetailsComponent } from './model-details.component';
 
@@ -11,6 +15,7 @@ describe('ModelDetailsComponent', () => {
   let component: ModelDetailsComponent;
   let fixture: ComponentFixture<ModelDetailsComponent>;
   let element: HTMLElement;
+  let debugElement: DebugElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -27,6 +32,7 @@ describe('ModelDetailsComponent', () => {
             selectedModel$: of(MockModel1),
           },
         },
+        MockZenModeServiceProvider,
       ],
     }).compileComponents();
   });
@@ -35,6 +41,7 @@ describe('ModelDetailsComponent', () => {
     fixture = TestBed.createComponent(ModelDetailsComponent);
     component = fixture.componentInstance;
     element = fixture.nativeElement;
+    debugElement = fixture.debugElement;
     fixture.detectChanges();
   });
 
@@ -68,13 +75,15 @@ describe('ModelDetailsComponent', () => {
   });
 
   describe('versions block', () => {
-    let versionsElement: HTMLElement;
+    let versionsDebugElement: DebugElement;
     beforeEach(() => {
-      versionsElement = element.querySelector('.versions');
+      versionsDebugElement = debugElement.query(
+        By.directive(ModelVersionsTableComponent)
+      );
     });
 
     it('exists', () => {
-      expect(versionsElement).toBeTruthy();
+      expect(versionsDebugElement).toBeTruthy();
     });
   });
 });
