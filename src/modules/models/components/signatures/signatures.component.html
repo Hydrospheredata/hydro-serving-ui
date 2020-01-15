@@ -51,6 +51,7 @@
           class="fields-table__icon"
           *ngIf="profileNames"
           [routerLink]="['profile', profileNames[0]]"
+          queryParamsHandling="merge"
         >
           <hydro-icon
             type="profiler"

@@ -1,6 +1,9 @@
 @import 'variables';
 
 .mv {
+  &--zen-mode {
+    width: 100%;
+  }
   &__header {
     display: flex;
     justify-content: center;
@@ -26,6 +29,10 @@
       &--left {
         left: 24px;
       }
+    }
+
+    &--zen-mode {
+      left: 0;
     }
   }
 

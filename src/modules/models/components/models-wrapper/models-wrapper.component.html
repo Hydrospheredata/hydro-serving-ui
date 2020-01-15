@@ -1,9 +1,18 @@
-<div class="content-wrapper">
-    <hydro-sidebar 
-        class="sidebar"
-        [sidebarData]="models$"
-        [isFilterEnabled]="true"></hydro-sidebar>
-    <div [@anim]="prepareAnimation(out)" class="container" >
-        <router-outlet #out="outlet"></router-outlet>
-    </div>
+<div
+  class="content-wrapper models-wrapper"
+  [ngClass]="{ 'models-wrapper--zen-mode': isZenMode$ | async }"
+>
+  <hydro-sidebar
+    *ngIf="!(isZenMode$ | async)"
+    class="sidebar"
+    [sidebarData]="models$"
+    [isFilterEnabled]="true"
+  ></hydro-sidebar>
+  <div
+    [@anim]="prepareAnimation(out)"
+    class="container models-wrapper__container"
+    [ngClass]="{ 'models-wrapper__container--zen-mode': isZenMode$ | async }" 
+  >
+    <router-outlet #out="outlet"></router-outlet>
+  </div>
 </div>

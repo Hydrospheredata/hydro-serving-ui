@@ -3,6 +3,7 @@ import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { map } from 'rxjs/operators';
+import { ZenModeService } from '@core/services/zenmode.service';
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
@@ -21,10 +22,12 @@ export class MonitoringPageComponent implements OnInit {
   selectedMetrics$ = this.facade.selectedMetrics$;
   siblingModelVersions$ = this.facade.siblingModelVersions$;
   error$ = this.facade.error$;
+  isZenMode$ = this.zenMode.isZenMode$;
 
   constructor(
     private dialogService: DialogService,
-    private facade: MonitoringPageFacade
+    private facade: MonitoringPageFacade,
+    private zenMode: ZenModeService
   ) {}
 
   ngOnInit(): void {

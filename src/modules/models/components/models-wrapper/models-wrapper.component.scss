@@ -3,11 +3,12 @@
     display: flex;
 }
 
-.sidebar {
-    z-index: 2;
+.models-wrapper {
+    &__container {
+        width: 100%;
+    }
 }
 
-.container {
-    width: calc(100% - 250px);
-    overflow: scroll;
+.sidebar {
+    z-index: 2;
 }

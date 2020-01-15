@@ -1,6 +1,13 @@
-<div class="content mv" *ngIf="modelVersion$ | async; let modelVersion">
-  <div class="mv__header content__header">
-    <div class="mv__header-buttons mv__header-buttons--left">
+<div
+  class="content mv"
+  [ngClass]="{ 'mv--zen-mode': isZenMode$ | async }"
+  *ngIf="modelVersion$ | async; let modelVersion"
+>
+  <div
+    class="content__header mv__header"
+    [ngClass]="{ 'mv__header--zen-mode': isZenMode$ | async }"
+  >
+    <div class="mv__header-buttons mv__header-buttons--left" *ngIf="!(isZenMode$ | async)">
       <button hs-button [routerLink]="['../']">
         <hydro-icon class="button__icon" type="icon-left"></hydro-icon>
         back to model
@@ -8,7 +15,7 @@
     </div>
     <div class="mv__header-title">
       <span class="mv__model-name">{{ modelVersion.model.name }}</span>
-      <span class="mv__model-version" [routerLink]="['./']"
+      <span class="mv__model-version" [routerLink]="['./']" queryParamsHandling="merge"
         >v:{{ modelVersion.modelVersion }}</span
       >
     </div>
@@ -18,6 +25,7 @@
         class="tab__item"
         [routerLink]="['details']"
         routerLinkActive="tab__item--is-active"
+        queryParamsHandling="merge"
       >
         details
       </div>
@@ -25,6 +33,7 @@
         class="tab__item"
         [routerLink]="['monitoring']"
         routerLinkActive="tab__item--is-active"
+        queryParamsHandling="merge"
       >
         monitoring
       </div>

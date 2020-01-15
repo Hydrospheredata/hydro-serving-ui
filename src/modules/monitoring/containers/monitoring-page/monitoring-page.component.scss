@@ -3,6 +3,9 @@
 .monitoring {
   position: relative;
   width: 1100px;
+  &--zen-mode {
+    margin: 0 auto;
+  }
   &__aggregation {
     margin-bottom: 12px;
     display: flex;

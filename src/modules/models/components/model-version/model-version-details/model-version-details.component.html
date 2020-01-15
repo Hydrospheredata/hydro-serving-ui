@@ -61,7 +61,10 @@
             [modelVersion]="modelVersion$ | async"
           ></hs-model-version-log>
         </li>
-        <li class="information__item" *ngIf="!(modelVersion$ | async).isExternal">
+        <li
+          class="information__item"
+          *ngIf="!(modelVersion$ | async).isExternal"
+        >
           <span class="information__item-title">Applications</span>
           <span class="information__item-value">
             <span
@@ -78,7 +81,7 @@
           </span>
         </li>
       </ol>
-      <div *ngIf="!(modelVersion$ | async).isExternal">
+      <div *ngIf="!(modelVersion$ | async).isExternal && !(isZenMode$ | async)">
         <button
           class="model-version-detail__add-application"
           (click)="onAddApplication(modelVersion)"
@@ -104,11 +107,13 @@
   <section class="content__cell mv-details__signatures">
     <div class="content__cell-title">Signatures</div>
     <div class="content__cell-body">
-      <hydro-signatures
-      ></hydro-signatures>
+      <hydro-signatures></hydro-signatures>
     </div>
   </section>
-  <section class="content__cell mv-details__servables" *ngIf="!(modelVersion$ | async).isExternal">
+  <section
+    class="content__cell mv-details__servables"
+    *ngIf="!(modelVersion$ | async).isExternal"
+  >
     <div class="content__cell-title">Servables</div>
     <hs-servables-table
       [servables]="servables$ | async"
