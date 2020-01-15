@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
+import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { Observable, of } from 'rxjs';
-import { ChecksAggregationItem } from '@monitoring/interfaces';
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',

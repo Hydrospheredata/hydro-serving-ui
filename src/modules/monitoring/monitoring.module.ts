@@ -16,6 +16,7 @@ import {
   CheckChartComponent,
   DialogRequestsErrorsComponent,
   RawChecksComponent,
+  LogMetricsTableComponent,
 } from '@monitoring/components';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { MonitoringService } from '@monitoring/services';
@@ -67,6 +68,7 @@ import {
     CheckChartComponent,
     RawChecksComponent,
     BatchMetricsComponent,
+    LogMetricsTableComponent,
   ],
   imports: [
     SharedModule,
