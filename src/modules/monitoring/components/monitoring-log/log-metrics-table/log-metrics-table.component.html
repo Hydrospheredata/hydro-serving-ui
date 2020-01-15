@@ -1,0 +1,17 @@
+<div>
+  <table class="log-metrics-table">
+    <tr>
+      <td class="log-metrics-table__cell log-metrics-table__header-cell">Metric name</td>
+      <td class="log-metrics-table__cell log-metrics-table__header-cell">value</td>
+    </tr>
+    <tr *ngFor="let item of metrics | keyvalue">
+      <td class="log-metrics-table__cell">{{ item.value.description }}</td>
+      <td
+        class="log-metrics-table__cell"
+        [ngClass]="{ 'log-metrics-table__cell--error': item.value.check === false }"
+      >
+        {{ item.value.value }}
+      </td>
+    </tr>
+  </table>
+</div>

@@ -2,26 +2,38 @@
   <ng-container *ngIf="!(error$ | async); else errorSection">
     <section class="monitoring__aggregation">
       <hs-aggregation
+        [totalRequests]="totalRequests$ | async"
+        [currentRequests]="currentRequests$ | async"
         [aggregation]="checksAggregation$ | async"
+        [canLoadLeft]="canLoadLeft$ | async"
+        [canLoadRight]="canLoadRight$ | async"
+        [loading]="aggregationLoading$ | async"
         (changedSelectedColumn)="onSelectedAggregationColumn($event)"
+        (loadedOlder)="loadOlder()"
+        (loadedNewest)="loadNewest()"
       >
       </hs-aggregation>
-
-      <hs-requests-information
-        [aggregation]="selectedAggregationColumn$ | async"
-        [latency]="latency$ | async"
-        [errors]="errorsChecks$ | async"
-      >
-      </hs-requests-information>
     </section>
 
+    <hs-requests-information
+      [aggregation]="selectedAggregationColumn$ | async"
+      [latency]="latency$ | async"
+      [errors]="errorsChecks$ | async"
+    >
+    </hs-requests-information>
+    <hs-batch-metrics
+      *ngIf="showBatchMetricsBlock(selectedAggregationColumn$ | async)"
+      [aggregation]="selectedAggregationColumn$ | async"
+    ></hs-batch-metrics>
     <hs-log
       [checks]="checks$ | async"
       [modelVersion]="modelVersion$ | async"
+      [loading]="detailedCheckLoading$ | async"
     ></hs-log>
     <hs-custom-checks
       [customMetrics]="customMetrics$ | async"
       [customChecks]="customChecks$ | async"
+      [loading]="detailedCheckLoading$ | async"
       (openSettings)="openSettings()"
     ></hs-custom-checks>
   </ng-container>

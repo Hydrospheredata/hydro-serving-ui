@@ -17,6 +17,7 @@ import { MetricSpecification } from '@shared/models/metric-specification.model';
 export class CustomChecksComponent {
   @Input() customMetrics: MetricSpecification[] = [];
   @Input() customChecks: CustomCheck[] = [];
+  @Input() loading: boolean = false;
   @Output() openSettings = new EventEmitter();
 
   trackByFn(_, item) {

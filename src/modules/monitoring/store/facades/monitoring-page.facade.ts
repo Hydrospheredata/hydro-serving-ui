@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
 import {
   Check,
-  ChecksAggregation,
+  ChecksAggregationItem,
   CustomCheck,
   ChecksAggregationResponse,
 } from '@monitoring/interfaces';
@@ -38,13 +38,21 @@ import {
   map,
   exhaustMap,
   catchError,
-  startWith,
   pairwise,
+  pluck,
+  refCount,
+  publishReplay,
+  startWith,
   tap,
 } from 'rxjs/operators';
+import { AggregationPaginator } from '../../services/aggregation-paginator';
 
 @Injectable()
 export class MonitoringPageFacade {
+  groupedBy$: BehaviorSubject<number> = new BehaviorSubject(10);
+  currentOffset$: BehaviorSubject<number> = new BehaviorSubject(0);
+  aggregationLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  detailedLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   error$ = new Subject();
   siblingModelVersions$ = this.modelsFacade.siblingModelVersions$;
   serviceStatus$ = this.store.pipe(select(getMonitoringServiceStatus));
@@ -54,54 +62,92 @@ export class MonitoringPageFacade {
     select(selectSelectedMetrics),
     filter(val => val !== undefined)
   );
-
   customMetrics$ = this.selectedMetrics$.pipe(
     map(metrics => metrics.filter(isCustomMetric))
   );
-  detailedLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
-  checksAggregations$: Observable<ChecksAggregation[]> = combineLatest(
-    this.modelVersion$,
-    this.customMetrics$
-  ).pipe(
-    switchMap(([modelVersion, metrics]) => {
+  checksAggregationResponse$: Observable<
+    ChecksAggregationResponse
+  > = combineLatest(this.modelVersion$, this.currentOffset$).pipe(
+    switchMap(([modelVersion, offset]) => {
       return timer(0, 5000).pipe(
         switchMap(() => {
-          this.detailedLoading$.next(true);
+          this.aggregationLoading$.next(true);
           return this.monitoring
             .getChecksAggregation({
+              limit: this.limit,
               modelVersionId: modelVersion.id,
+              offset,
             })
             .pipe(
               catchError(err => {
-                this.detailedLoading$.next(false);
+                this.aggregationLoading$.next(false);
                 this.error$.next(err);
-                return of([]);
+                return of({}) as Observable<ChecksAggregationResponse>;
               })
             );
         }),
-        startWith({}),
+        tap(() => {
+          this.aggregationLoading$.next(false);
+        }),
+        startWith({ results: [], count: 0 }),
         pairwise(),
         filter(([prev, cur]) => {
           return !isEqual(prev, cur);
         }),
-        map(([_, currentRes]) => {
-          console.log(currentRes);
-
-          if ((currentRes as ChecksAggregationResponse).results === undefined) {
-            return [];
-          }
-
-          return (currentRes as ChecksAggregationResponse).results
-            .map(rawCheck => this.checkAggBuilder.build(rawCheck, metrics))
-            .reverse();
-        }),
-        tap(() => {
-          this.detailedLoading$.next(false);
-        })
+        map(([_, cur]) => cur)
       );
     }),
-    share()
+    publishReplay(),
+    refCount()
+  );
+
+  requestsCount$: Observable<number> = this.checksAggregationResponse$.pipe(
+    pluck('count')
+  );
+
+  receivedRequestCount$: Observable<
+    number
+  > = this.checksAggregationResponse$.pipe(
+    filter(val => val !== undefined),
+    map(({ results }) => {
+      if (results === undefined) {
+        return 0;
+      }
+      return results.reduce(
+        (result, { _hs_requests }) => result + _hs_requests,
+        0
+      );
+    })
+  );
+
+  checksAggregations$ = combineLatest(this.checksAggregationResponse$, this.selectedMetrics$).pipe(
+    map(([aggregationResponse, metrics]) => {
+      if (aggregationResponse.results === undefined) {
+        return [];
+      }
+      return aggregationResponse.results
+        .map(rawCheck => this.checkAggBuilder.build(rawCheck, metrics))
+        .reverse();
+    })
+  );
+
+  canLoadRight$: Observable<boolean> = this.currentOffset$.pipe(
+    map(offset => this.paginator.canLoadNewest(offset))
+  );
+  canLoadLeft$: Observable<boolean> = combineLatest(
+    this.requestsCount$,
+    this.receivedRequestCount$,
+    this.currentOffset$,
+    this.groupedBy$
+  ).pipe(
+    map(([count, receivedCount, offset, groupedBy]) => {
+      return this.paginator.canLoadOlder(
+        count,
+        receivedCount,
+        offset,
+        groupedBy
+      );
+    })
   );
 
   selectedColumnId$ = new Subject<string>();
@@ -109,7 +155,18 @@ export class MonitoringPageFacade {
     this.checksAggregations$,
     this.selectedColumnId$
   ).pipe(
-    map(([agg, id]) => agg.find(a => a.additionalInfo._id === id)),
+    map(([agg, id]) => {
+      let res: ChecksAggregationItem;
+      if (id) {
+        res = agg.find(a => a.additionalInfo._id === id);
+      }
+
+      if (res === undefined) {
+        res = agg[agg.length - 1];
+      }
+
+      return res;
+    }),
     share()
   );
 
@@ -120,12 +177,17 @@ export class MonitoringPageFacade {
         _hs_last_id: to,
         _hs_model_version_id: modelVersionId,
       } = aggregation.additionalInfo;
-
+      this.detailedLoading$.next(true);
       return this.monitoring.getChecks({
         modelVersionId,
         from,
         to,
       });
+    }),
+    tap(() => this.detailedLoading$.next(false)),
+    catchError(err => {
+      this.detailedLoading$.next(false);
+      return of({});
     }),
     share()
   );
@@ -166,8 +228,7 @@ export class MonitoringPageFacade {
       };
 
       checks.forEach(check => {
-        const overall = check._hs_raw_checks.overall;
-
+        const overall = Object.values(check._hs_metric_checks || {});
         overall.forEach(({ metricSpecId, value, check: health }) => {
           if (customChecks.has(metricSpecId)) {
             customChecks.set(
@@ -182,13 +243,15 @@ export class MonitoringPageFacade {
     }),
     share()
   );
+  private limit: number = 60;
 
   constructor(
     private store: Store<State>,
     private modelsFacade: ModelsFacade,
     private monitoring: MonitoringService,
-    private checkAggBuilder: CheckAggregationBuilder
-  ) {}
+    private checkAggBuilder: CheckAggregationBuilder,
+    private paginator: AggregationPaginator
+  ) { }
   loadMetrics(): void {
     this.store.dispatch(LoadMetrics());
   }
@@ -206,6 +269,14 @@ export class MonitoringPageFacade {
 
   selectAggregationColumn(id: string) {
     this.selectedColumnId$.next(id);
+  }
+
+  loadOlder() {
+    this.currentOffset$.next(this.currentOffset$.value + 1);
+  }
+
+  loadNewest(offset: number = 0) {
+    this.currentOffset$.next(this.currentOffset$.value - 1);
   }
 }
 

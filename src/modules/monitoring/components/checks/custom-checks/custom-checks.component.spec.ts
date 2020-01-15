@@ -67,7 +67,7 @@ describe('CustomChecks component', () => {
       const button = de.query(By.css('.custom-checks__button'));
       expect(button).toBeTruthy();
       expect((button.nativeElement as HTMLElement).textContent).toContain(
-        'metric settings'
+        'Custom metrics'
       );
     });
   });

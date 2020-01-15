@@ -11,7 +11,7 @@ export class LogComponent implements OnChanges {
   selectedIndex: number;
   @Input() modelVersion: ModelVersion;
   @Input() checks: Check[] = [];
-
+  @Input() loading: boolean = false;
   selectItem(index: number) {
     this.selectedIndex = index;
   }

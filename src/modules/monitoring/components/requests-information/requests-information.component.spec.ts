@@ -1,3 +1,4 @@
+import { ChangeDetectionStrategy } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { SharedModule } from '@shared/shared.module';
@@ -20,7 +21,13 @@ describe('RequestsInformationComponent', () => {
         ErrorCheckComponent,
       ],
       imports: [SharedModule],
-    }).compileComponents();
+    })
+      .overrideComponent(RequestsInformationComponent, {
+        set: {
+          changeDetection: ChangeDetectionStrategy.Default,
+        },
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {

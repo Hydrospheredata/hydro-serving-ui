@@ -1,9 +1,10 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { ZenModeService } from '@core/services/zenmode.service';
 import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
+import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
-import { map } from 'rxjs/operators';
-import { ZenModeService } from '@core/services/zenmode.service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
@@ -23,6 +24,13 @@ export class MonitoringPageComponent implements OnInit {
   siblingModelVersions$ = this.facade.siblingModelVersions$;
   error$ = this.facade.error$;
   isZenMode$ = this.zenMode.isZenMode$;
+  totalRequests$ = this.facade.requestsCount$;
+  currentRequests$ = this.facade.receivedRequestCount$;
+  canLoadRight$ = this.facade.canLoadRight$;
+  canLoadLeft$ = this.facade.canLoadLeft$;
+
+  aggregationLoading$: Observable<boolean> = this.facade.aggregationLoading$;
+  detailedCheckLoading$: Observable<boolean> = this.facade.detailedLoading$;
 
   constructor(
     private dialogService: DialogService,
@@ -47,5 +55,16 @@ export class MonitoringPageComponent implements OnInit {
 
   onSelectedAggregationColumn(id: string) {
     this.facade.selectAggregationColumn(id);
+  }
+
+  loadOlder() {
+    this.facade.loadOlder();
+  }
+  loadNewest() {
+    this.facade.loadNewest();
+  }
+
+  showBatchMetricsBlock(aggregationItem: ChecksAggregationItem): boolean {
+    return aggregationItem && aggregationItem.batch !== undefined;
   }
 }

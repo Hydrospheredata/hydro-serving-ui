@@ -1,0 +1,44 @@
+<section class="batch-metrics" *ngIf="aggregation">
+  <header>
+    <div class="batch-metrics__label">Batch metrics</div>
+  </header>
+  <div class="batch-metrics__body">
+    <table class="batch-metrics__table">
+      <tr class="batch-metrics__table-row">
+        <td class="batch-metrics__table-cell">Metric name</td>
+        <td
+          class="batch-metrics__table-cell"
+          *ngFor="let feature of aggregation.batch | keyvalue"
+        >
+          {{ feature.key }}
+        </td>
+      </tr>
+      <tr
+        class="batch-metrics__table-row"
+        *ngFor="let batchName of batchesNames"
+      >
+        <td class="batch-metrics__table-cell  batch-metrics__table-label">
+          {{ batchName }}
+        </td>
+        <td
+          class="batch-metrics__table-cell batch-metrics__table-result"
+          *ngFor="let feature of aggregation.batch | keyvalue"
+        >
+          <div [ngSwitch]="checkStatus(feature.value[batchName])">
+            <hydro-icon
+              class="check__icon check__icon--success"
+              *ngSwitchCase="'success'"
+              type="icon-check-success"
+            ></hydro-icon>
+            <hydro-icon
+              *ngSwitchCase="'fail'"
+              class="check__icon check__icon--fail"
+              type="icon-cancel"
+            ></hydro-icon>
+            <span *ngSwitchDefault>n/a</span>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>

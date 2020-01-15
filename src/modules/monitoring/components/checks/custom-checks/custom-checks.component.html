@@ -7,16 +7,24 @@
         hs-button
         (click)="onOpenSetting()"
       >
-        metric settings
+        Custom metrics
       </button>
     </header>
-    <ng-container *ngIf="!noData; else noDataTpl">
-      <hs-custom-check
-        *ngFor="let check of customChecks | keyvalue; trackBy: trackByFn"
-        [check]="check.value"
-      >
-      </hs-custom-check>
-    </ng-container>
+    <div class="custom-checks__body">
+      <ng-container *ngIf="loading">
+        <div class="custom-checks__loader">
+          <hs-loader class="custom-checks__loader-icon"></hs-loader>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="!noData; else noDataTpl">
+        <hs-custom-check
+          *ngFor="let check of customChecks | keyvalue; trackBy: trackByFn"
+          [check]="check.value"
+        >
+        </hs-custom-check>
+      </ng-container>
+    </div>
   </ng-container>
 </div>
 

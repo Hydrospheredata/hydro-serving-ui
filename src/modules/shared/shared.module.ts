@@ -15,7 +15,6 @@ import {
   SortByPipe,
   UtcToLocalPipe,
   IterateAsArrayPipe,
-  RemoveDublicatesPipe,
   ToNumberPipe,
   MatchSorterPipe,
   DockerImageSplitPipe,
@@ -43,6 +42,7 @@ import {
   TooltipComponent,
   ExpanderComponent,
   ProbabilitiesListComponent,
+  LoaderComponent,
 } from './components/_index';
 
 // Directives
@@ -65,7 +65,6 @@ const PIPES = [
   SortByPipe,
   UtcToLocalPipe,
   IterateAsArrayPipe,
-  RemoveDublicatesPipe,
   ToNumberPipe,
   MatchSorterPipe,
   DockerImageSplitPipe,
@@ -93,6 +92,7 @@ const COMPONENTS = [
   TooltipComponent,
   ExpanderComponent,
   ProbabilitiesListComponent,
+  LoaderComponent,
 ];
 
 const DIRECTIVES = [

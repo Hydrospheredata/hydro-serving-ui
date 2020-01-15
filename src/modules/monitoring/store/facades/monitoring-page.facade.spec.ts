@@ -41,7 +41,7 @@ describe('Monitoring page facade', () => {
         {
           provide: MonitoringService,
           useValue: {
-            getChecksAggregation: () => of({count: 0, results: []}),
+            getChecksAggregation: () => of({count: 1, results: []}),
           },
         },
       ],
@@ -63,12 +63,12 @@ describe('Monitoring page facade', () => {
     expect(monitoringPageFacade).toBeTruthy();
   });
 
-  describe('checkAggregations stream', () => {
+  describe('checkAggregationsResponse stream', () => {
     it('get new data at first frame and every 5 seconds', fakeAsync(() => {
       spyOn(monitoringService, 'getChecksAggregation').and.returnValue(
         of({count: 0, results: []})
       );
-      const sub = monitoringPageFacade.checksAggregations$.subscribe();
+      const sub = monitoringPageFacade.checksAggregationResponse$.subscribe();
 
       tick(10000);
 
@@ -76,10 +76,10 @@ describe('Monitoring page facade', () => {
       expect(monitoringService.getChecksAggregation).toHaveBeenCalledTimes(3);
       sub.unsubscribe();
     }));
-    it('won\'t emit value, if get equal response', fakeAsync(() => {
+    it('won\'t emit value, if got equal response', fakeAsync(() => {
       let count = 0;
       spyOn(monitoringService, 'getChecksAggregation').and.callThrough();
-      const sub = monitoringPageFacade.checksAggregations$.subscribe(res => {
+      const sub = monitoringPageFacade.checksAggregationResponse$.subscribe(res => {
         count = count + 1;
       });
       tick(20000);

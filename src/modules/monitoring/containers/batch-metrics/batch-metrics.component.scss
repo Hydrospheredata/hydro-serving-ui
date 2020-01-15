@@ -1,0 +1,53 @@
+@import "variables";
+
+.batch-metrics {
+  background: white;
+  border-radius: 4px;
+  border: 1px $neutral-color-200 solid;
+  margin-bottom: 12px;
+  padding: 12px;
+  &__body {
+    overflow: scroll;
+  }
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: scroll;
+    &-cell {
+      border: 1px $neutral-color-200 solid;
+      color: $neutral-color-600;
+      padding: 4px;
+    }
+    &-label {
+      color: $neutral-color-900;
+      font-family: $font-family-bold;
+    }
+    &-result {
+      text-align: center;
+      &--success {
+        color: $supportive-color-green-600;
+      }
+      &--fail {
+        color: $supportive-color-red-600;
+      }
+    }
+  }
+  &__label {
+    font-family: $font-family-bold;
+    color: $neutral-color-800;
+    margin-bottom: 12px;
+  }
+}
+
+.check {
+  &__icon {
+    width: 18px;
+    height: 18px;
+    &--success {
+      color: $supportive-color-green-500
+    }
+    &--fail {
+      color: $supportive-color-red-500
+    }
+  }
+}

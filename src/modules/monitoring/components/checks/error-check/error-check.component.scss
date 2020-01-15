@@ -1,11 +1,10 @@
 @import 'variables';
 
 .error-check {
-  padding: 12px 0;
   &__information {
     min-width: 60px;
     &-name {
-      font-size: 12px;
+      font-size: 14px;
       color: $neutral-color-800;
       font-family: $font-family-bold;
     }
@@ -16,8 +15,8 @@
   }
   &__count {
     text-align: center;
-    margin: 8px 0;
-    font-size: 28px;
+    margin: 16px 0;
+    font-size: 32px;
     color: $supportive-color-green-400;
     &--failed {
       color: $supportive-color-red-400;

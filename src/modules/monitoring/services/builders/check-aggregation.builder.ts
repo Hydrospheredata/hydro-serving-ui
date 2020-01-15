@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
-  ChecksAggregation,
-  CheckAggregationItem,
+  CheckAggregationResponseItem,
+  ChecksAggregationItem,
 } from '@monitoring/interfaces';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 
@@ -16,20 +16,22 @@ export class CheckAggregationBuilder {
       '_hs_requests',
       '_hs_model_name',
       '_hs_metrics',
+      '_hs_batch',
+      '_hs_metric_checks',
     ];
   }
 
   build(
-    rawCheck: CheckAggregationItem,
+    rawCheck: CheckAggregationResponseItem,
     metrics: MetricSpecification[]
-  ): ChecksAggregation {
+  ): ChecksAggregationItem {
     const metricNames = metrics.map(({ name }) => name);
     const obj = {};
     for (const item of metricNames) {
       obj[item] = { checked: undefined, passed: undefined };
     }
 
-    const res: ChecksAggregation = {
+    const res: ChecksAggregationItem = {
       additionalInfo: {},
       features: {},
       metrics: { ...obj },

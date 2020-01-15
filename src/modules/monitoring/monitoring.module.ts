@@ -16,6 +16,7 @@ import {
   CheckChartComponent,
   DialogRequestsErrorsComponent,
   RawChecksComponent,
+  LogMetricsTableComponent,
 } from '@monitoring/components';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { MonitoringService } from '@monitoring/services';
@@ -35,6 +36,7 @@ import {
   MetricsComponent,
   MonitoringPageComponent,
   AggregationComponent,
+  BatchMetricsComponent
 } from './containers';
 @NgModule({
   entryComponents: [
@@ -65,6 +67,8 @@ import {
     RequestsInformationComponent,
     CheckChartComponent,
     RawChecksComponent,
+    BatchMetricsComponent,
+    LogMetricsTableComponent,
   ],
   imports: [
     SharedModule,

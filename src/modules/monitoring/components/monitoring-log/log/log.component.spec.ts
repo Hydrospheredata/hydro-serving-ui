@@ -66,6 +66,7 @@ describe('Log component', () => {
           _hs_overall_score: 0,
           _hs_prediction_score: 0,
           _hs_raw_checks: { overall: [] },
+          _hs_metric_checks: {},
           _hs_score: 0,
         },
       ];
@@ -82,6 +83,20 @@ describe('Log component', () => {
       const messageDebugEl = debugElement.query(By.css('.log__message'));
 
       expect(messageDebugEl).toBeFalsy();
+    });
+  });
+
+  describe('loader', () => {
+    it('wasn\'t shown', () => {
+      const de = fixture.debugElement.query(By.css('.log__loader'));
+      expect(de).toBeNull();
+    });
+    it('was shown when loading', () => {
+      component.loading = true;
+      fixture.detectChanges();
+
+      const de = fixture.debugElement.query(By.css('.log__loader'));
+      expect(de).toBeTruthy();
     });
   });
 });

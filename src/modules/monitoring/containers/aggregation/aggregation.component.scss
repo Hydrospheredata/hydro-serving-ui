@@ -12,24 +12,55 @@
 }
 
 .aggregation {
-  height: 100%;
-  padding: 8px;
-  border-radius: 4px;
-  box-shadow: $box-shadow;
-  width: 820px; 
-  margin-right: 12px;
   background: white;
+  border-radius: 4px;
+  border: 1px $neutral-color-200 solid;
+  height: 100%;
+  margin-right: 12px;
+  padding: 20px 24px;
+  position: relative;
+  width: 1100px;
+
+  &__loader {
+    left: calc(50% - 12px);
+    position: absolute;
+    top: calc(100% - 20px);
+    color: $neutral-color-300;
+    font-family: $font-family-light;
+    &-icon {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+    }
+  }
+
   &__body {
     display: flex;
   }
 
   &__header {
+    align-items: center;
+    color: $neutral-color-700;
+    display: flex;
+    font-family: $font-family-light;
     font-size: 12px;
+    justify-content: center;
     line-height: 14px;
     margin-bottom: 8px;
-    font-family: $font-family-light;
-    color: $neutral-color-700;
-
+    &-selected {
+      text-align: center;
+      margin: 0 12px;
+    }
+    &-nav-button {
+      color: $neutral-color-600;
+      cursor: pointer;
+      height: 16px;
+      width: 16px;
+      transition: .3s all ease;
+      &:hover {
+       color: $neutral-color-900;
+      }
+    }
     &-count {
       font-family: $font-family-regular;
       color: $neutral-color-900;
@@ -53,7 +84,9 @@
     }
   }
 
-  &__metrics-label, &__features-label {
+  &__metrics-label,
+  &__features-label,
+  &__batches-label {
     color: $neutral-color-900;
     font-family: $font-family-bold;
   }
