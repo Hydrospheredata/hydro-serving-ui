@@ -1,118 +1,118 @@
-<div class="application content" *ngIf="application$ | async as application">
-  <div class="content__header application__header">
-    <div class="application__header-title">
-      {{ application.name }}
+<div class="application " *ngIf="application$ | async as application">
+  <div class="content__header">
+    <div class="application__path">
+      <span class="application__path-separator">/</span>{{ application.name }}
     </div>
     <div
       class="action-buttons application__header-buttons application__header-buttons--right"
     >
       <button
         hs-button
-        kind="stroked"
-        color="primary"
+        kind="flat"
+        color="cyan"
         [disabled]="!isReady(application.status)"
         (click)="testApplication(application)"
       >
         <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
         Test
       </button>
-      <button hs-button (click)="editApplication(application)">
+      <button
+        hs-button
+        kind="flat"
+        color="primary"
+        (click)="editApplication(application)"
+      >
         <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
         Edit
       </button>
-      <button hs-button (click)="removeApplication(application)">
+      <button
+        hs-button
+        kind="flat"
+        color="warning"
+        (click)="removeApplication(application)"
+      >
         <hydro-icon class="button__icon" type="icon-remove"></hydro-icon>
         remove
       </button>
     </div>
   </div>
-  <div class="content__body">
+  <div class="application__body">
     <div class="application__error" *ngIf="isFailed(application.status)">
       <hs-error-message>
         {{ application.message }}
       </hs-error-message>
     </div>
-    <div class="application__body">
-      <div class="application__signature">
-        <ng-container
-          *ngTemplateOutlet="
-            signature;
-            context: { $implicit: application.signature }
-          "
-        ></ng-container>
-      </div>
-      <div class="content-info">
-        <ul
-          class="content-info__list"
-          *ngIf="application.kafkaStreaming?.length"
+    <div class="application__signature">
+      <ng-container
+        *ngTemplateOutlet="
+          signature;
+          context: { $implicit: application.signature }
+        "
+      ></ng-container>
+    </div>
+    <div class="content-info">
+      <ul class="content-info__list" *ngIf="application.kafkaStreaming?.length">
+        <li class="content-info__list-title">
+          Kafka Info
+        </li>
+        <li
+          class="content-info__list-item"
+          *ngFor="let kafka of application.kafkaStreaming"
         >
-          <li class="content-info__list-title">
-            Kafka Info
-          </li>
-          <li
-            class="content-info__list-item"
-            *ngFor="let kafka of application.kafkaStreaming"
-          >
-            <ol class="content-info__sublist">
-              <li
-                class="content-info__sublist-item"
-                *ngFor="let item of kafka | iterateAsArray"
-              >
-                <span class="content-info__sublist-item-title">{{ item }}</span>
-                <span class="content-info__sublist-item-value">{{
-                  kafka[item]
-                }}</span>
-              </li>
-            </ol>
-          </li>
-        </ul>
-      </div>
-      <div class="application__stages">
-        <div
-          class="application__stage"
-          *ngFor="
-            let stage of application.executionGraph?.stages;
-            let i = index
-          "
-        >
-          <div class="application__stage-header">Stage {{ i + 1 }}</div>
-          <div class="application__model-variants">
-            <div
-              class="application__model-variant"
-              *ngFor="let modelVariant of stage.modelVariants; let j = index"
-              [routerLink]="[
-                '/models',
-                modelVariant.modelVersion.model.id,
-                modelVariant.modelVersion.id
-              ]"
+          <ol class="content-info__sublist">
+            <li
+              class="content-info__sublist-item"
+              *ngFor="let item of kafka | iterateAsArray"
             >
-              <div
-                class="application__model-variant-update tooltip"
-                hsUpdateModelVersion
-                [modelVersion]="modelVariant.modelVersion"
-                (handleClick)="updateModelVersionDialog($event, modelVariant)"
-              >
-                <span hs-tooltip="Model has new version">
-                  <hydro-icon
-                    type="icon-upgrade"
-                    class="icon model-variant__version-new-icon"
-                  >
-                  </hydro-icon>
-                </span>
-              </div>
-              <div
-                class="application__model-variant-model-version model-version"
-              >
-                <span class="model-version__name">
-                  {{ modelVariant.modelVersion.model.name }}
-                </span>
-                <span class="model-version__version">
-                  v:{{ modelVariant.modelVersion.modelVersion }}
-                </span>
-              </div>
-              <div class="application__model-variant-weight">
-                {{ modelVariant.weight }}%
-              </div>
+              <span class="content-info__sublist-item-title">{{ item }}</span>
+              <span class="content-info__sublist-item-value">{{
+                kafka[item]
+              }}</span>
+            </li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+    <div class="application__stages">
+      <div
+        class="application__stage"
+        *ngFor="let stage of application.executionGraph?.stages; let i = index"
+      >
+        <div class="application__stage-header">Stage {{ i + 1 }}</div>
+        <div class="application__model-variants">
+          <div
+            class="application__model-variant"
+            *ngFor="let modelVariant of stage.modelVariants; let j = index"
+            [routerLink]="[
+              '/models',
+              modelVariant.modelVersion.model.id,
+              modelVariant.modelVersion.id
+            ]"
+          >
+            <div
+              class="application__model-variant-update tooltip"
+              hsUpdateModelVersion
+              [modelVersion]="modelVariant.modelVersion"
+              (handleClick)="updateModelVersionDialog($event, modelVariant)"
+            >
+              <span hs-tooltip="Model has new version">
+                <hydro-icon
+                  type="icon-upgrade"
+                  class="icon model-variant__version-new-icon"
+                >
+                </hydro-icon>
+              </span>
+            </div>
+            <div class="application__model-variant-model-version model-version">
+              <span class="model-version__name">
+                {{ modelVariant.modelVersion.model.name }}
+              </span>
+              <span class="model-version__version">
+                v:{{ modelVariant.modelVersion.modelVersion }}
+              </span>
+            </div>
+            <div class="application__model-variant-weight">
+              {{ modelVariant.weight }}%
             </div>
           </div>
         </div>

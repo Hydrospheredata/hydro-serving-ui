@@ -12,17 +12,19 @@
   </button>
 </ng-template>
 
-<div class="content-wrapper">
-  <hydro-sidebar
-    class="sidebar"
-    [sidebarData]="applications$"
-    [actionButton]="addButton"
-    [isApplications]="true"
-    [isFilterEnabled]="true"
-  ></hydro-sidebar>
+<div class="content">
+  <div class="content__sidebar">
+    <hydro-sidebar
+      class="sidebar"
+      [sidebarData]="applications$"
+      [actionButton]="addButton"
+      [isApplications]="true"
+      [isFilterEnabled]="true"
+    ></hydro-sidebar>
+  </div>
   <div
     [@anim]="prepare(out)"
-    class="container"
+    class="content__body"
     *ngIf="someModelVersionIsReleased$ | async; else alertMessage"
   >
     <router-outlet #out="outlet"></router-outlet>
@@ -30,17 +32,15 @@
 </div>
 
 <ng-template #alertMessage>
-  <div class="container">
-    <div class="application-wrapper__alert-message">
-      <span>
+  <div class="application-wrapper__alert-message">
+    <span>
       <a
-          class="application-wrapper__alert-message-link"
+        class="application-wrapper__alert-message-link"
         href="https://hydrosphere.io/serving-docs/latest/tutorials/index.html#serving-the-model"
         target="_blank"
-          >Upload</a
-    >
-        first model
-      </span>
-    </div>
+        >Upload</a
+      >
+      first model
+    </span>
   </div>
 </ng-template>

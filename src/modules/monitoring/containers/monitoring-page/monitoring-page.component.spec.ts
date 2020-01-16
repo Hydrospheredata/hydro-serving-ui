@@ -12,6 +12,7 @@ import {
   BatchMetricsComponent,
 } from '@testing/components';
 import { getErrorText } from '@testing/helpers';
+import { MockZenModeServiceProvider } from '@testing/services/zenMode.service';
 import { Subject, BehaviorSubject, of } from 'rxjs';
 import { MonitoringPageComponent } from './monitoring-page.component';
 
@@ -44,6 +45,7 @@ describe('MonitoringPageComponent', () => {
             error$: new BehaviorSubject(''),
           },
         },
+        MockZenModeServiceProvider,
       ],
     }).compileComponents();
   });

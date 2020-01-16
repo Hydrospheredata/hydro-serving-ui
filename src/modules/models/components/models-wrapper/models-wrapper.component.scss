@@ -1,13 +1,3 @@
-:host {
-    width: 100%;
-    display: flex;
-}
-
-.sidebar {
-    z-index: 2;
-}
-
-.container {
-    width: calc(100% - 250px);
-    overflow: scroll;
+  :host {
+  width: 100%;
 }

@@ -6,15 +6,13 @@ import {
   ComponentRef,
 } from '@angular/core';
 import { ApplicationsFacade } from '@applications/store';
-import {
-  ModelVersionLogComponent
-} from '@models/components/model-version/model-version-log/model-version-log.component';
 import { ModelVersionLogService } from '@models/services/model-version-log.service';
 import { ModelsFacade } from '@models/store';
 import { ServableLogsComponent } from '@servables/containers';
 import { ModelVersionStatus, ModelVersion } from '@shared/_index';
 import { isEmpty } from 'lodash';
 import { map } from 'rxjs/operators';
+import { ModelVersionLogComponent } from '../model-version-log/model-version-log.component';
 @Component({
   selector: 'hydro-model-version-details',
   templateUrl: './model-version-details.component.html',

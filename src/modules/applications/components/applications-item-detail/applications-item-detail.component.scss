@@ -1,36 +1,55 @@
 @import "variables";
 
 .application {
+  &__path {
+    font-size: 14px;
+    color: $primary-color-1000;
+
+    &-separator {
+      color: $neutral-color-300;
+      margin: 0 2px;
+
+    }
+  }
+
   &__signature {
     height: calc(100% - 40px);
     overflow: scroll;
+
     .signature {
-      width: 240px;
+      min-width: 240px;
+      max-width: 240px;
       overflow: scroll;
       padding: 8px;
       background-color: white;
       border: 1px $neutral-color-200 solid;
       border-radius: 4px;
       max-height: 100%;
+
       &__header {
         line-height: 28px;
       }
+
       &__title {
         color: $neutral-color-500;
         font-family: $font-family-light;
         text-transform: uppercase;
         font-size: 10px;
       }
+
       &__label {
         color: $neutral-color-600;
         font-family: $font-family-light;
       }
+
       &__name {
         color: $neutral-color-600;
         text-transform: none;
       }
+
       &__io {
         display: flex;
+
         &-field {
           &-title {
             font-size: 10px;
@@ -38,9 +57,11 @@
             color: $neutral-color-500;
             text-transform: uppercase;
           }
+
           &-name {
             color: $neutral-color-600;
           }
+
           &-additional-info {
             font-style: italic;
             color: $neutral-color-400;
@@ -48,17 +69,20 @@
             font-style: $font-family-light;
             line-height: 10px;
           }
+
           &-item {
             margin-bottom: 4px;
           }
         }
+
         &-separator {
           margin: 0 12px;
         }
-    
+
       }
     }
   }
+
   &__error {
     overflow: scroll;
     width: 100%;
@@ -70,16 +94,14 @@
     max-height: 80px;
 
   }
+
   &__body {
     display: flex;
     height: 100%;
+    padding-top: 8px;
   }
+
   &__header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 48px;
-    color: $neutral-color-1000;
     &-title {
       font-size: 16px;
     }
@@ -317,4 +339,3 @@
 
 
 }
-

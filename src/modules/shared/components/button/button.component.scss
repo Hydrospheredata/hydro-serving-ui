@@ -4,7 +4,7 @@
   background: transparent;
   border: none;
   border-radius: 3px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   padding: 6px 12px;
   text-transform: capitalize;
@@ -12,6 +12,10 @@
   cursor: pointer;
   &[disabled] {
     cursor: default;
+  }
+  &__icon {
+    width: 12px;
+    height: 12px;
   }
 }
 .hs-button--base {

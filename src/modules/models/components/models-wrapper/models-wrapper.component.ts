@@ -8,7 +8,9 @@ import {
 } from '@angular/animations';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ZenModeService } from '@core/services/zenmode.service';
 import { ModelsFacade } from '@models/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'hydro-models-wrapper',
@@ -57,8 +59,11 @@ import { ModelsFacade } from '@models/store';
 })
 export class ModelsWrapperComponent {
   models$ = this.modelsFacade.allModels$;
-
-  constructor(private modelsFacade: ModelsFacade) {}
+  isZenMode$: Observable<boolean> = this.zenMode.isZenMode$;
+  constructor(
+    private modelsFacade: ModelsFacade,
+    private zenMode: ZenModeService
+  ) {}
 
   prepareAnimation(outlet: RouterOutlet) {
     return outlet.activatedRouteData && outlet.activatedRouteData.anim;

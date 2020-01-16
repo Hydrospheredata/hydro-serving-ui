@@ -1,14 +1,20 @@
 @import 'variables.scss';
 
 .model-details {
-  &__header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 48px;
-    &-title {
-      font-size: 16px;
+  position: relative;
+
+  &__path {
+    font-size: 14px;
+    color: $primary-color-1000;
+
+    &-separator {
+      color: $neutral-color-300;
+      margin: 0 2px;
+
     }
+  }
+
+  &__header {
     &-buttons {
       position: absolute;
       right: 24px;

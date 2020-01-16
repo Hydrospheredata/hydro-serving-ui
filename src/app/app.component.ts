@@ -16,12 +16,12 @@ import * as fromServables from 'modules/servables/actions';
 export class AppComponent implements OnInit {
   constructor(
     private dialogOutletService: MdlDialogOutletService,
-    private viewConatinerRef: ViewContainerRef,
+    private viewContainerRef: ViewContainerRef,
     private store: Store<HydroServingState>,
     private svgSprite: SvgSpriteService,
     private sse: SseService
   ) {
-    this.dialogOutletService.setDefaultViewContainerRef(this.viewConatinerRef);
+    this.dialogOutletService.setDefaultViewContainerRef(this.viewContainerRef);
   }
 
   ngOnInit() {

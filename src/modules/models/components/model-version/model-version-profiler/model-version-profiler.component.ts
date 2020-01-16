@@ -21,15 +21,12 @@ export class ModelVersionProfilerComponent {
     private profilerFacade: ProfilerFacade,
     private modelsFacade: ModelsFacade,
     private router: Router
-  ) {
-  }
+  ) {}
 
   backToModelVersion(modelVersion: ModelVersion): void {
-    this.router.navigate([
-      'models',
-      modelVersion.model.id,
-      modelVersion.id,
-      'details',
-    ]);
+    this.router.navigate(
+      ['models', modelVersion.model.id, modelVersion.id, 'details'],
+      { queryParamsHandling: 'merge' }
+    );
   }
 }
