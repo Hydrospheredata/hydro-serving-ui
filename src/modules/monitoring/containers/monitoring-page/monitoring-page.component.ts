@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
-import { ZenModeService } from '@core/services/zenmode.service';
 import { DialogService } from '@dialog/dialog.service';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { ChecksAggregationItem } from '@monitoring/interfaces';
@@ -23,7 +22,6 @@ export class MonitoringPageComponent implements OnInit {
   selectedMetrics$ = this.facade.selectedMetrics$;
   siblingModelVersions$ = this.facade.siblingModelVersions$;
   error$ = this.facade.error$;
-  isZenMode$ = this.zenMode.isZenMode$;
   totalRequests$ = this.facade.requestsCount$;
   currentRequests$ = this.facade.receivedRequestCount$;
   canLoadRight$ = this.facade.canLoadRight$;
@@ -34,8 +32,7 @@ export class MonitoringPageComponent implements OnInit {
 
   constructor(
     private dialogService: DialogService,
-    private facade: MonitoringPageFacade,
-    private zenMode: ZenModeService
+    private facade: MonitoringPageFacade
   ) {}
 
   ngOnInit(): void {

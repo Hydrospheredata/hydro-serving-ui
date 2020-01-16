@@ -1,26 +1,36 @@
 <div class="application " *ngIf="application$ | async as application">
   <div class="content__header">
-    <div class="application__header-title">
-      {{ application.name }}
+    <div class="application__path">
+      <span class="application__path-separator">/</span>{{ application.name }}
     </div>
     <div
       class="action-buttons application__header-buttons application__header-buttons--right"
     >
       <button
         hs-button
-        kind="stroked"
-        color="primary"
+        kind="flat"
+        color="cyan"
         [disabled]="!isReady(application.status)"
         (click)="testApplication(application)"
       >
         <hydro-icon class="button__icon" type="icon-start"></hydro-icon>
         Test
       </button>
-      <button hs-button (click)="editApplication(application)">
+      <button
+        hs-button
+        kind="flat"
+        color="primary"
+        (click)="editApplication(application)"
+      >
         <hydro-icon class="button__icon" type="icon-edit"></hydro-icon>
         Edit
       </button>
-      <button hs-button (click)="removeApplication(application)">
+      <button
+        hs-button
+        kind="flat"
+        color="warning"
+        (click)="removeApplication(application)"
+      >
         <hydro-icon class="button__icon" type="icon-remove"></hydro-icon>
         remove
       </button>

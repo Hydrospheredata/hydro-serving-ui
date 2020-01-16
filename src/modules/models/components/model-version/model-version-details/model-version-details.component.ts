@@ -6,13 +6,11 @@ import {
   ComponentRef,
 } from '@angular/core';
 import { ApplicationsFacade } from '@applications/store';
-import { ZenModeService } from '@core/services/zenmode.service';
 import { ModelVersionLogService } from '@models/services/model-version-log.service';
 import { ModelsFacade } from '@models/store';
 import { ServableLogsComponent } from '@servables/containers';
 import { ModelVersionStatus, ModelVersion } from '@shared/_index';
 import { isEmpty } from 'lodash';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModelVersionLogComponent } from '../model-version-log/model-version-log.component';
 @Component({
@@ -33,14 +31,12 @@ export class ModelVersionDetailsComponent {
   signature$ = this.modelsFacade.signature$;
   showLog: boolean = false;
   globalLog: boolean = false;
-  isZenMode$: Observable<boolean> = this.zenMode.isZenMode$;
   private current: ComponentRef<any>;
 
   constructor(
     private modelsFacade: ModelsFacade,
     private resolver: ComponentFactoryResolver,
-    private applicationsFacade: ApplicationsFacade,
-    private zenMode: ZenModeService
+    private applicationsFacade: ApplicationsFacade
   ) {}
 
   showBuildLog(modelVersionId: number) {

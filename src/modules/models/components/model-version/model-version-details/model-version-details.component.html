@@ -1,7 +1,4 @@
-<div
-  class="mv-details"
-  [ngClass]="{ 'mv-details--zen-mode': isZenMode$ | async }"
->
+<div class="mv-details">
   <router-outlet></router-outlet>
   <section
     class="content__cell mv-details__information"
@@ -84,7 +81,7 @@
           </span>
         </li>
       </ol>
-      <div *ngIf="!(modelVersion$ | async).isExternal && !(isZenMode$ | async)">
+      <div *ngIf="!(modelVersion$ | async).isExternal">
         <button
           class="model-version-detail__add-application"
           (click)="onAddApplication(modelVersion)"

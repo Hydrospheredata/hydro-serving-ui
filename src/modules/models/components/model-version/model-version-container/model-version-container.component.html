@@ -1,45 +1,34 @@
-<div
-  class="content mv"
-  [ngClass]="{ 'mv--zen-mode': isZenMode$ | async }"
-  *ngIf="modelVersion$ | async; let modelVersion"
->
+<div class="mv" *ngIf="modelVersion$ | async; let modelVersion">
   <div
     class="content__header mv__header"
-    [ngClass]="{ 'mv__header--zen-mode': isZenMode$ | async }"
+    [ngClass]="{ 'content__header--zen-mode': isZenMode$ | async }"
   >
-    <div class="mv__header-buttons mv__header-buttons--left" *ngIf="!(isZenMode$ | async)">
-      <button hs-button [routerLink]="['../']">
-        <hydro-icon class="button__icon" type="icon-left"></hydro-icon>
-        back to model
-      </button>
+    <div class="mv__path">
+      <span class="mv__path-separator">/</span>
+      <span class="mv__path-link" [routerLink]="['../']">{{
+        modelVersion.model.name
+      }}</span>
+      <span class="mv__path-separator">/</span>
+      <span>{{ modelVersion.modelVersion }}</span>
     </div>
-    <div class="mv__header-title">
-      <span class="mv__model-name">{{ modelVersion.model.name }}</span>
-      <span class="mv__model-version" [routerLink]="['./']" queryParamsHandling="merge"
-        >v:{{ modelVersion.modelVersion }}</span
-      >
-    </div>
-
-    <div class="mv__header-tab tab mv__header-tab--right">
+    <div class="tabs">
       <div
-        class="tab__item"
+        class="tabs__item"
         [routerLink]="['details']"
-        routerLinkActive="tab__item--is-active"
+        routerLinkActive="tabs__item--is-active"
         queryParamsHandling="merge"
       >
         details
       </div>
       <div
-        class="tab__item"
+        class="tabs__item"
         [routerLink]="['monitoring']"
-        routerLinkActive="tab__item--is-active"
+        routerLinkActive="tabs__item--is-active"
         queryParamsHandling="merge"
       >
         monitoring
       </div>
     </div>
   </div>
-  <div class="content__body">
-    <router-outlet></router-outlet>
-  </div>
+  <router-outlet></router-outlet>
 </div>

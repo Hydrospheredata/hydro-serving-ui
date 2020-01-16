@@ -3,6 +3,10 @@
   height: 100%;
   display: flex;
   width: 100%;
+  &--zen-mode {
+    width: 1100px;
+    margin: 0 auto;
+  }
   &__sidebar {
     overflow: scroll;
     max-width: 250px;
@@ -15,10 +19,8 @@
 
   &__header {
     align-items: center;
-    background: white;
-    border-bottom: 1px $neutral-color-100 solid;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     line-height: 48px;
     padding: 0 24px;
     position: fixed;
@@ -26,12 +28,20 @@
     right: 0;
     top: 48px;
     z-index: 2;
+    background: $neutral-color-100;
+    &--zen-mode {
+      max-width: 1100px;
+    }
   }
 
   &__body {
     overflow: scroll;
     width: 100%;
     position: relative;
+    padding: 48px 24px;
+    &--zen-mode {
+      padding: 48px 0px;
+    }
   }
 
   &-info {
@@ -85,11 +95,8 @@
 
     &-title {
       padding: 8px 16px;
-      background: $neutral-color-100;
-      color: $neutral-color-500;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      color: $neutral-color-1000;
+      font-size: 14px;
     }
 
     &-body {

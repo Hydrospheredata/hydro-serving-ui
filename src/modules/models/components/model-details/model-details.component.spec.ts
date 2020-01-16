@@ -60,13 +60,6 @@ describe('ModelDetailsComponent', () => {
       expect(headerElement).toBeTruthy();
     });
 
-    it('has title element with models name', () => {
-      const title = headerElement.querySelector('.model-details__header-title');
-
-      expect(title).toBeTruthy();
-      expect(title.textContent).toEqual(MockModel1.name);
-    });
-
     it('has remove button', () => {
       const button = headerElement.querySelector('button');
 
