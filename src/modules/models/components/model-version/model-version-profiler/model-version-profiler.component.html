@@ -1,7 +1,4 @@
-<section
-  class="model-version-profiler"
-  [ngClass]="{ 'model-version-profiler--zen-mode': isZenMode$ | async }"
->
+<section class="model-version-profiler">
   <header class="model-version-profiler__header">
     <nav *ngIf="modelVersion$ | async as mv">
       <hydro-icon
