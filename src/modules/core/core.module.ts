@@ -24,6 +24,7 @@ import {
   PageNotFoundComponent,
   BuildInformationDialogComponent,
 } from './components';
+import { ChartHelperService } from './services/chart-helper.service';
 @NgModule({
   entryComponents: [BuildInformationDialogComponent],
   imports: [
@@ -64,6 +65,7 @@ import {
     BuildInformationService,
     SnackbarService,
     NameGenerator,
+    ChartHelperService,
   ],
 })
 export class CoreModule {}

@@ -35,8 +35,8 @@ import {
   MetricsComponent,
   MonitoringPageComponent,
   AggregationComponent,
-  VisualizationComponent,
 } from './containers';
+import { VisualizationModule } from 'modules/visualization/visualization.module';
 @NgModule({
   entryComponents: [
     DialogDeleteMetricComponent,
@@ -66,9 +66,9 @@ import {
     RequestsInformationComponent,
     CheckChartComponent,
     RawChecksComponent,
-    VisualizationComponent,
   ],
   imports: [
+    VisualizationModule,
     SharedModule,
     StoreModule.forFeature('monitoring', reducer),
     EffectsModule.forFeature([

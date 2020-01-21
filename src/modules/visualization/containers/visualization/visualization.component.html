@@ -1,0 +1,21 @@
+<div class="visualization">
+  <div class="visualization__header">
+    <mdl-select label="Choose label" [(ngModel)]="selectedLabel">
+      <mdl-option *ngFor="let labelName of labelNames" [value]="labelName">{{
+        labelName
+      }}</mdl-option>
+    </mdl-select>
+  </div>
+  <div class="visualization__body">
+    <div class="visualization__chart">
+      <hs-chart
+        [data]="data$ | async"
+        (selectPoint)="handleSelectPoint($event)"
+      ></hs-chart>
+    </div>
+    <div class="visualization__detail">
+      <div>selected index: {{ selectedIndex }}</div>
+      <div>selected point: {{ selectedPoint }}</div>
+    </div>
+  </div>
+</div>
