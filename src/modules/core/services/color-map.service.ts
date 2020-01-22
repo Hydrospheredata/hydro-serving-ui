@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { RGBColor } from 'd3';
 import * as d3 from 'd3';
 import * as colorScaleChromatic from 'd3-scale-chromatic';
-export type ColorMapType = 'coldwarm' | 'interpolateRdYlBu' | 'redToGreen';
+export type ColorMapType =
+  | 'coldwarm'
+  | 'interpolateRdYlBu'
+  | 'redToBlue'
+  | 'interpolateRainbow';
 
 @Injectable({
   providedIn: 'root',
@@ -10,14 +14,14 @@ export type ColorMapType = 'coldwarm' | 'interpolateRdYlBu' | 'redToGreen';
 export class ColorMapService {
   getRGB({
     val,
-    type,
+    type = 'coldwarm',
   }: {
     val: number;
     type: ColorMapType;
   }): [number, number, number] {
     try {
       if (this.valueOutOfRange(val)) {
-        throw Error('Value must be in [0, 1] range');
+        throw Error(`Value must be in [0, 1] range, got: ${val}`);
       }
 
       switch (type) {
@@ -25,10 +29,10 @@ export class ColorMapService {
           return this.coldwarm(val);
         case 'interpolateRdYlBu':
           return this.interpolateRdYlBu(val);
-        case 'redToGreen':
-          return this.interpolateRdYlBu(val);
+        case 'redToBlue':
+          return this.redToBlue(val);
         default:
-          throw Error('Unknow colormap type');
+          throw Error('Unknown colormap type');
       }
     } catch (error) {
       console.warn(error);
@@ -37,7 +41,7 @@ export class ColorMapService {
   }
 
   private coldwarm(val): [number, number, number] {
-    const {r, g, b} = d3.color(
+    const { r, g, b } = d3.color(
       colorScaleChromatic.interpolatePuBu(val)
     ) as RGBColor;
 
@@ -45,7 +49,7 @@ export class ColorMapService {
   }
 
   private interpolateRdYlBu(val): [number, number, number] {
-    const {r, g, b} = d3.color(
+    const { r, g, b } = d3.color(
       colorScaleChromatic.interpolateRdYlBu(1 - val)
     ) as RGBColor;
 
@@ -54,5 +58,13 @@ export class ColorMapService {
 
   private valueOutOfRange(val: number): boolean {
     return val < 0 || val > 1;
+  }
+
+  private redToBlue(val: number): [number, number, number] {
+    const { r, g, b } = d3.color(
+      colorScaleChromatic.interpolateRdBu(1 - val)
+    ) as RGBColor;
+
+    return [r, g, b];
   }
 }

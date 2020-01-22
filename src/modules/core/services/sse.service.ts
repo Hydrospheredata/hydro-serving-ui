@@ -3,7 +3,7 @@ import {
   UpdateSuccess,
   DeleteSuccess,
 } from '@applications/store';
-import { ModelVersionBuilder } from '@core/builders/_index';
+import { ModelVersionBuilder } from '@core/builders';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { HydroServingState } from '@core/store';
 import * as fromModels from '@models/store/actions';

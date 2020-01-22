@@ -1,21 +1,51 @@
 <div class="visualization">
-  <div class="visualization__header">
-    <mdl-select label="Choose label" [(ngModel)]="selectedLabel">
-      <mdl-option *ngFor="let labelName of labelNames" [value]="labelName">{{
-        labelName
-      }}</mdl-option>
-    </mdl-select>
-  </div>
   <div class="visualization__body">
+    <div class="visualization__settings">
+      <div class="visualization__settings-item">
+        <div class="visualization__settings-label">Label</div>
+        <mdl-select
+          label="Choose label"
+          [(ngModel)]="selectedLabel"
+          (change)="handleSelectLabel($event)"
+        >
+          <mdl-option
+            *ngFor="let labelName of labels$ | async"
+            [value]="labelName"
+            >{{ labelName }}</mdl-option
+          >
+        </mdl-select>
+      </div>
+      <div class="visualization__setting-item">
+        <mdl-checkbox [(ngModel)]="showTop100">
+          Show nearest points
+        </mdl-checkbox>
+      </div>
+    </div>
     <div class="visualization__chart">
-      <hs-chart
-        [data]="data$ | async"
+      <hs-scatter-plot
+        [data]="scatterPlotData$ | async"
+        [colors]="colors$ | async"
+        [top100]="top100$ | async"
+        [showTop100]="showTop100"
         (selectPoint)="handleSelectPoint($event)"
-      ></hs-chart>
+      ></hs-scatter-plot>
     </div>
     <div class="visualization__detail">
-      <div>selected index: {{ selectedIndex }}</div>
-      <div>selected point: {{ selectedPoint }}</div>
+      <ng-template
+        [ngTemplateOutlet]="point"
+        [ngTemplateOutletContext]="selectedPoint$ | async"
+      ></ng-template>
     </div>
   </div>
 </div>
+
+<ng-template let-x="x" let-y="y" #point>
+  <div class="visualization__detail-point">
+    <div>
+      <span>x: {{ x }}</span>
+    </div>
+    <div>
+      <span>y: {{ y }}</span>
+    </div>
+  </div>
+</ng-template>

@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ModelBuilder, ModelVersionBuilder } from '@core/builders/_index';
+import { ModelBuilder, ModelVersionBuilder } from '@core/builders';
 import {
   FormsService,
   SvgSpriteService,

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
+import { ChartsModule } from '@charts/charts.module';
 import { SharedModule } from '@shared/shared.module';
-import { ChartComponent } from './components/chart/chart.component';
 import { VisualizationComponent } from './containers/visualization/visualization.component';
 
 @NgModule({
-  imports: [SharedModule],
-  declarations: [VisualizationComponent, ChartComponent],
+  imports: [SharedModule, ChartsModule],
+  declarations: [VisualizationComponent],
   exports: [VisualizationComponent],
 })
 export class VisualizationModule {}
