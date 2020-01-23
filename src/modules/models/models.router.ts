@@ -13,18 +13,14 @@ import {
 
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { MonitoringPageComponent } from '@monitoring/containers';
+import { ModelsPageComponent } from './containers/models-page/models-page.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
-        path: '',
-        redirectTo: 'models',
-        pathMatch: 'full',
-      },
-      {
         path: 'models',
-        component: ModelsWrapperComponent,
+        component: ModelsPageComponent,
         children: [
           {
             path: ':modelId',

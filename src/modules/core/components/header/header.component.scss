@@ -1,32 +1,33 @@
 @import 'variables';
 
 .hydro-navbar {
-  height: 48px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  background: white;
+  padding: 12px 8px;
+
   &__logo {
     cursor: pointer;
     outline: none;
-    position: absolute;
+    position: relative;
     background: $primary-color-900;
-    width: 250px;
-    padding: 6px 24px 0;
-    height: 48px;
+    top: 3px;
+
     &-icon {
       width: 152px;
       height: 36px;
     }
   }
+
   &__menu {
     height: 100%;
     display: flex;
     flex-direction: row;
     flex: auto;
     justify-content: center;
+
     &-item {
       line-height: 19px;
       display: flex;
@@ -38,21 +39,27 @@
       min-width: 170px;
       color: $neutral-color-300;
       transition: .3s all ease;
+
       &:not(:last-child) {
         margin-right: 15px;
       }
-      &.__active, &:hover {
+
+      &.__active,
+      &:hover {
         color: $primary-color-800;
         box-shadow: inset 0px -2px $primary-color-800;
       }
     }
   }
+
   &__icon {
     margin-right: 15px;
+
     &--models {
       width: 18px;
       height: 18px;
     }
+
     &--applications {
       width: 20px;
       height: 20px;
@@ -64,7 +71,9 @@
     right: 24px;
     font-family: $font-family-light;
   }
-  &__documentation, &__build-info {
+
+  &__documentation,
+  &__build-info {
     cursor: pointer;
     color: $neutral-color-500;
     transition: color .3s ease;
@@ -74,7 +83,7 @@
     font-size: 10px;
     padding-left: 12px;
     letter-spacing: 1px;
-    
+
     &:hover {
       color: $primary-color-900;
     }

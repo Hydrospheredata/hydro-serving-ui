@@ -29,6 +29,7 @@ import { StoreModule } from '@ngrx/store';
 import { RootCauseModule } from '@rootcause/root-cause.module';
 import { ProfilerModule } from '../profiler/profiler.module';
 import { ServablesModule } from '../servables/servables.module';
+import { ModelsPageComponent } from './containers/models-page/models-page.component';
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import { ServablesModule } from '../servables/servables.module';
     ServablesModule,
   ],
   declarations: [
+    ModelsPageComponent,
     ModelsWrapperComponent,
     ModelDetailsComponent,
     ModelVersionsTableComponent,
@@ -58,5 +60,6 @@ import { ServablesModule } from '../servables/servables.module';
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
+  exports: [ModelsPageComponent],
 })
 export class ModelsModule {}

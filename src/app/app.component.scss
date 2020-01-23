@@ -1,14 +1,21 @@
+@import "variables";
+
 .app {
-  &-container {
+  height: 100%;
+  width: 100%;
+  &__header {
+    background: $primary-color-900;
+  }
+  &__body {
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
     height: 100%;
   }
-
-  &-body {
-    display: flex;
-    height: 100%;
-    overflow: scroll;
+  &__navigation {
+    width: 48px;
+    background: $primary-color-900;
+  }
+  &__main {
+    width: 100%;
+    padding: 24px;
   }
 }

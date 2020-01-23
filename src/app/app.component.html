@@ -1,7 +1,14 @@
-<div class="app-container">
-  <hs-header></hs-header>
-  <main class="app-body">
-    <router-outlet></router-outlet>
-  </main>
+<div class="app">
+  <div class="app__header">
+    <hs-header></hs-header>
+  </div>
+  <div class="app__body">
+    <div class="app__navigation">
+      <hs-navigation></hs-navigation>
+    </div>
+    <main class="app__main">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>
 <hydro-dialog></hydro-dialog>
