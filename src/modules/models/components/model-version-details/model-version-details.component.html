@@ -1,8 +1,7 @@
 <div class="mv-details">
-  <router-outlet></router-outlet>
   <section
     class="content__cell mv-details__information"
-    *ngIf="modelVersion$ | async as modelVersion"
+    *ngIf="modelVersion"
   >
     <div class="content__cell-title">Information</div>
     <div class="content__cell-body">
@@ -58,18 +57,18 @@
         <li>
           <hs-model-version-log
             *ngIf="showLog"
-            [modelVersion]="modelVersion$ | async"
+            [modelVersion]="modelVersion"
           ></hs-model-version-log>
         </li>
         <li
           class="information__item"
-          *ngIf="!(modelVersion$ | async).isExternal"
+          *ngIf="!modelVersion.isExternal"
         >
           <span class="information__item-title">Applications</span>
           <span class="information__item-value">
             <span
               *ngFor="
-                let appName of (modelVersion$ | async)?.applications;
+                let appName of modelVersion.applications;
                 last as isLast
               "
               [routerLink]="['/applications', appName]"
@@ -81,11 +80,11 @@
           </span>
         </li>
       </ol>
-      <div *ngIf="!(modelVersion$ | async).isExternal">
+      <div *ngIf="!modelVersion.isExternal">
         <button
           class="model-version-detail__add-application"
           (click)="onAddApplication(modelVersion)"
-          [disabled]="!(released$ | async)"
+          [disabled]="!released"
           kind="flat"
           color="primary"
           hs-button
@@ -95,7 +94,7 @@
       </div>
     </div>
   </section>
-  <ng-container *ngIf="(modelVersion$ | async).metadata as meta">
+  <ng-container *ngIf="modelVersion.metadata as meta">
     <section *ngIf="!isEmpty(meta)" class="content__cell mv-details__metadata">
       <div class="content__cell-title">Metadata</div>
       <div class="content__cell-body">
@@ -112,11 +111,11 @@
   </section>
   <section
     class="content__cell mv-details__servables"
-    *ngIf="!(modelVersion$ | async).isExternal"
+    *ngIf="!modelVersion.isExternal"
   >
     <div class="content__cell-title">Servables</div>
     <hs-servables-table
-      [servables]="servables$ | async"
+      [servables]="servables"
       (showedLog)="showServableLogs($event)"
     >
     </hs-servables-table>

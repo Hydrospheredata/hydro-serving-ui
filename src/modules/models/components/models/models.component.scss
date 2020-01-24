@@ -1,0 +1,48 @@
+@import "variables";
+
+.models {
+  display: flex;
+  flex-wrap: wrap;
+  &__header {
+    color: $neutral-color-900;
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 12px;
+    width: 100%;
+    font-style: $font-family-bold;
+  }
+}
+
+
+.model {
+  border: 1px $neutral-color-200 solid;
+  background: white;
+  border-radius: 4px;
+  margin-right: 24px;
+  padding: 12px;
+  width: 240px;
+  cursor: pointer;
+  transition: .3s ease all;
+  &__name {
+    color: $neutral-color-900;
+    font-family: $font-family-bold;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  &__versions {
+    text-align: center;
+    &-count {
+      color: $neutral-color-600;
+      font-size: 36px;
+      font-family: $font-family-bold;
+      line-height: 40px;
+    }
+    &-text {
+      font-family: $font-family-light;
+      color: $neutral-color-400;
+    }
+  }
+  &:hover {
+    border: 1px $neutral-color-400 solid;
+  }
+}

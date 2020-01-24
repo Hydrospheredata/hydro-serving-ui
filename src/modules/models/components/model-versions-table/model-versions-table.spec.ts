@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import {
   ModelVersionsTableComponent,
   ModelVersionsTableRowComponent,
-} from '@models/components/model-version';
+} from '@models/components';
 import { SharedModule } from '@shared/shared.module';
 import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
 import { MomentModule } from 'angular2-moment';

@@ -4,41 +4,45 @@ import {
   ViewContainerRef,
   ComponentFactoryResolver,
   ComponentRef,
+  Input,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { ApplicationsFacade } from '@applications/store';
 import { ModelVersionLogService } from '@models/services/model-version-log.service';
-import { ModelsFacade } from '@models/store';
 import { ServableLogsComponent } from '@servables/containers';
-import { ModelVersionStatus, ModelVersion } from '@shared/_index';
+import { Servable } from '@servables/models';
+import { ModelVersionStatus, ModelVersion, ISignature } from '@shared/_index';
 import { isEmpty } from 'lodash';
-import { map } from 'rxjs/operators';
 import { ModelVersionLogComponent } from '../model-version-log/model-version-log.component';
 @Component({
-  selector: 'hydro-model-version-details',
+  selector: 'hs-model-version-details',
   templateUrl: './model-version-details.component.html',
   styleUrls: ['./model-version-details.component.scss'],
   providers: [ModelVersionLogService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModelVersionDetailsComponent {
   @ViewChild('logContainer', { read: ViewContainerRef })
   logContainer: ViewContainerRef;
 
-  modelVersion$ = this.modelsFacade.selectedModelVersion$;
-  released$ = this.modelVersion$.pipe(
-    map(({ status }) => status === ModelVersionStatus.Released)
-  );
-  servables$ = this.modelsFacade.selectedServables$;
-  signature$ = this.modelsFacade.signature$;
+  @Input() modelVersion: ModelVersion;
+  @Input() servables: Servable[];
+  @Input() signature: ISignature;
+
   showLog: boolean = false;
   globalLog: boolean = false;
   private current: ComponentRef<any>;
 
   constructor(
-    private modelsFacade: ModelsFacade,
     private resolver: ComponentFactoryResolver,
     private applicationsFacade: ApplicationsFacade
   ) {}
 
+  get released(): boolean {
+    if (this.modelVersion) {
+      return this.modelVersion.status === ModelVersionStatus.Released;
+    }
+  }
   showBuildLog(modelVersionId: number) {
     this.logContainer.clear();
     const factory = this.resolver.resolveComponentFactory(

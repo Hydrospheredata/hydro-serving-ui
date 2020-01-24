@@ -6,63 +6,18 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
-  padding: 12px 8px;
-
+  padding: 0px 8px;
+  height: 48px;
   &__logo {
     cursor: pointer;
     outline: none;
     position: relative;
     background: $primary-color-900;
-    top: 3px;
+    left: -2px;
 
     &-icon {
       width: 152px;
       height: 36px;
-    }
-  }
-
-  &__menu {
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    flex: auto;
-    justify-content: center;
-
-    &-item {
-      line-height: 19px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 15px;
-      text-decoration: none;
-      font-size: 14px;
-      min-width: 170px;
-      color: $neutral-color-300;
-      transition: .3s all ease;
-
-      &:not(:last-child) {
-        margin-right: 15px;
-      }
-
-      &.__active,
-      &:hover {
-        color: $primary-color-800;
-        box-shadow: inset 0px -2px $primary-color-800;
-      }
-    }
-  }
-
-  &__icon {
-    margin-right: 15px;
-
-    &--models {
-      width: 18px;
-      height: 18px;
-    }
-
-    &--applications {
-      width: 20px;
-      height: 20px;
     }
   }
 
@@ -85,7 +40,7 @@
     letter-spacing: 1px;
 
     &:hover {
-      color: $primary-color-900;
+      color: $primary-color-100;
     }
   }
 }

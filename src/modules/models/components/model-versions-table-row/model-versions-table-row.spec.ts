@@ -5,7 +5,6 @@ import { ModelVersionStatus, UtcToLocalPipe } from '@shared/_index';
 import { SharedModule } from '@shared/shared.module';
 import {
   MockModelVersion1Model1,
-  MockModelVersion2Model1,
   FailedModelVersion,
   AssemblingModelVersion,
 } from '@testing/factories/modelVersion';

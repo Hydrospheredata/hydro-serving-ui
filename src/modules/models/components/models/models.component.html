@@ -1,0 +1,14 @@
+<div class="models">
+  <div class="models__header">Models</div>
+  <div
+    class="model"
+    *ngFor="let model of models"
+    [routerLink]="[model.id]"
+  >
+    <div class="model__name">{{ model.name }}</div>
+    <div class="model__versions">
+      <div class="model__versions-count">6</div>
+      <span class="model__versions-text">versions</span>
+    </div>
+  </div>
+</div>
