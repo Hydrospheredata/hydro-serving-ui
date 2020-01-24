@@ -3,7 +3,9 @@
 .applications {
   display: flex;
   flex-wrap: wrap;
-  &__header {}
+  &__header {
+    
+  }
 }
 
 .application {
@@ -13,15 +15,16 @@
   margin-right: 24px;
   margin-bottom: 24px;
   padding: 12px;
-  width: 240px;
+  width: 300px;
   cursor: pointer;
   transition: .3s ease all;
   &__name {
+    width: calc(100% - 28px);
     overflow: hidden;
     text-overflow: ellipsis;
     color: $neutral-color-900;
     font-family: $font-family-bold;
     text-transform: uppercase;
-    margin-bottom: 24px
+    margin-bottom: 24px;
   }
 }

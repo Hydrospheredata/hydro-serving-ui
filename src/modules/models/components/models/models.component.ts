@@ -1,5 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
-import { ModelsFacade } from '@models/store';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { Model } from '@shared/_index';
 
 @Component({
@@ -10,4 +15,11 @@ import { Model } from '@shared/_index';
 })
 export class ModelsComponent {
   @Input() models: Model[];
+  @Input() favoriteModels: Model[];
+  @Output() toggledFavorite: EventEmitter<Model> = new EventEmitter();
+
+  toggleFavorite(model: Model): void {
+    event.stopPropagation();
+    this.toggledFavorite.emit(model);
+  }
 }

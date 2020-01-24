@@ -11,19 +11,39 @@
     width: 100%;
     font-style: $font-family-bold;
   }
+  &__separator {
+    border-top:1px $neutral-color-600 solid;
+    margin-bottom: 24px;
+  }
 }
 
 
 .model {
+  position: relative;
   border: 1px $neutral-color-200 solid;
   background: white;
   border-radius: 4px;
   margin-right: 24px;
   margin-bottom: 24px;
   padding: 12px;
-  width: 240px;
+  width: 300px;
   cursor: pointer;
   transition: .3s ease all;
+  &__favorite-icon  {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border-radius: 50%;
+    border: 2px $neutral-color-400 solid;
+    &:hover {
+      background: $accent-color-400;
+    }
+    &--selected {
+      background: $accent-color-400;;
+    }
+  }
   &__name {
     color: $neutral-color-900;
     font-family: $font-family-bold;
@@ -31,6 +51,7 @@
     margin-bottom: 24px;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: calc(100% - 28px);
   }
   &__versions {
     text-align: center;

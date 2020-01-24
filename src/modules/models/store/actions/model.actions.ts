@@ -22,3 +22,7 @@ export const DeleteModelFail = createAction(
   '[Model] delete with fail',
   props<{ error: string }>()
 );
+export const ToggleFavorite = createAction(
+  '[Model] toggle favorite',
+  props<{ model: Model }>()
+);

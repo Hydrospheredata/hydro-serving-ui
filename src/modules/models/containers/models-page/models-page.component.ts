@@ -9,6 +9,16 @@ import { Observable } from 'rxjs';
   styleUrls: ['./models-page.component.scss'],
 })
 export class ModelsPageComponent {
-  models$: Observable<Model[]> = this.modelsFacade.allModels$;
+  nonFavoriteModels$: Observable<Model[]> = this.modelsFacade.nonFavoriteModels$;
+  favoriteModels$: Observable<Model[]> = this.modelsFacade.favoriteModels$;
+  filterString: string = '';
   constructor(private modelsFacade: ModelsFacade) {}
+
+  onChangeFilter(str): void {
+    this.modelsFacade.filterString$.next(str);
+  }
+
+  handleToggleFavoriteModel(model: Model): void {
+   this.modelsFacade.toggleFavorite(model);
+  }
 }
