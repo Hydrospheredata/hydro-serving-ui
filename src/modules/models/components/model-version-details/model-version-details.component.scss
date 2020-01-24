@@ -53,12 +53,11 @@
 }
 
 .log {
-  top: 96px;
-  left: 250px;
+  height: 100%;
+  left: 0;
   position: fixed;
   right: 0;
-  height: 100%;
-  right: 0;
+  top: 0;
   visibility: hidden;
 
   &__layout {

@@ -15,7 +15,7 @@ describe('ApplicationsItemDetailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ApplicationStatusComponent);
     component = fixture.componentInstance;
-    component.application = MockApplication;
+    component.status = undefined;
 
     fixture.detectChanges();
   });

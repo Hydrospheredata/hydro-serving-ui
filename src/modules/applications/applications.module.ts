@@ -7,16 +7,17 @@ import { ChartsModule } from 'ng2-charts';
 import { CodemirrorModule } from 'ng2-codemirror';
 
 import {
-  ApplicationsWrapperComponent,
-  ApplicationsItemDetailComponent,
   ApplicationFormComponent,
-  KafkaFormComponent,
-  ModelVariantFormComponent,
+  ApplicationsComponent,
+  ApplicationsItemDetailComponent,
+  ApplicationsWrapperComponent,
   DialogAddApplicationComponent,
   DialogDeleteApplicationComponent,
   DialogTestComponent,
   DialogUpdateApplicationComponent,
   DialogUpdateModelVersionComponent,
+  KafkaFormComponent,
+  ModelVariantFormComponent,
 } from '@applications/components';
 
 import { UpdateModelVersionDirective } from '@applications/directives';
@@ -25,9 +26,17 @@ import {
   ApplicationsGuard,
   ApplicationFormService,
 } from '@applications/services';
-import { reducer, ApplicationsEffects, ApplicationsFacade } from '@applications/store';
+import {
+  reducer,
+  ApplicationsEffects,
+  ApplicationsFacade,
+} from '@applications/store';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
+import {
+  ApplicationsPageComponent,
+  ApplicationPageComponent,
+} from './containers';
 
 const DIALOGS = [
   DialogDeleteApplicationComponent,
@@ -37,7 +46,9 @@ const DIALOGS = [
   DialogTestComponent,
 ];
 
-const PRIVATE_COMPONENTS = [
+const COMPONENTS = [
+  ApplicationsPageComponent,
+  ApplicationsComponent,
   ApplicationsWrapperComponent,
   ApplicationsItemDetailComponent,
   ApplicationFormComponent,
@@ -55,7 +66,12 @@ const DIRECTIVES = [UpdateModelVersionDirective];
     EffectsModule.forFeature([ApplicationsEffects]),
     CodemirrorModule,
   ],
-  declarations: [...PRIVATE_COMPONENTS, ...DIALOGS, ...DIRECTIVES],
+  declarations: [
+    ...COMPONENTS,
+    ...DIALOGS,
+    ...DIRECTIVES,
+    ApplicationPageComponent,
+  ],
   entryComponents: [...DIALOGS],
   providers: [
     ApplicationsFacade,

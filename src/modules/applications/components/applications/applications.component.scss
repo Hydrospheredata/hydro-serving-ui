@@ -1,0 +1,27 @@
+@import 'variables';
+
+.applications {
+  display: flex;
+  flex-wrap: wrap;
+  &__header {}
+}
+
+.application {
+  border: 1px $neutral-color-200 solid;
+  background: white;
+  border-radius: 4px;
+  margin-right: 24px;
+  margin-bottom: 24px;
+  padding: 12px;
+  width: 240px;
+  cursor: pointer;
+  transition: .3s ease all;
+  &__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: $neutral-color-900;
+    font-family: $font-family-bold;
+    text-transform: uppercase;
+    margin-bottom: 24px
+  }
+}

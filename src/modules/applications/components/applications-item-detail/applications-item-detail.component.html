@@ -1,8 +1,5 @@
-<div class="application " *ngIf="application$ | async as application">
+<div class="application " *ngIf="application">
   <div class="content__header">
-    <div class="application__path">
-      <span class="application__path-separator">/</span>{{ application.name }}
-    </div>
     <div
       class="action-buttons application__header-buttons application__header-buttons--right"
     >

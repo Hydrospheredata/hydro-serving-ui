@@ -8,14 +8,5 @@ import { IApplication, ApplicationStatus } from '@shared/models/_index';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ApplicationStatusComponent {
-  status: string;
-
-  @Input('application')
-  set application(application: IApplication) {
-    if (application && application.status) {
-      this.status = application.status;
-    } else {
-      this.status = ApplicationStatus.Undefined;
-    }
-  }
+  @Input() status: ApplicationStatus = ApplicationStatus.Undefined;
 }

@@ -1,0 +1,16 @@
+<div class="applications">
+  <div
+    class="application"
+    *ngFor="let application of applications"
+    [routerLink]="[application.name]"
+  >
+    <div class="application__name">
+      {{ application.name }}
+    </div>
+    <div class="application__status">
+      <hs-application-status
+        [status]="application.status"
+      ></hs-application-status>
+    </div>
+  </div>
+</div>
