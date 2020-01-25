@@ -1,8 +1,18 @@
 @import "variables";
 
 .models {
-  display: flex;
-  flex-wrap: wrap;
+  &__favorite {
+    &-label {
+      color: $neutral-color-800;
+      font-family: $font-family-light;
+      margin-bottom: 8px;
+      font-style: italic;
+    }
+  }
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
   &__header {
     color: $neutral-color-900;
     font-size: 18px;
@@ -12,10 +22,12 @@
     font-style: $font-family-bold;
   }
   &__separator {
-    border-top:1px $neutral-color-600 solid;
+    border-top:1px $neutral-color-300 solid;
     margin-bottom: 24px;
   }
 }
+
+
 
 
 .model {
@@ -26,29 +38,33 @@
   margin-right: 24px;
   margin-bottom: 24px;
   padding: 12px;
-  width: 300px;
+  width: 260px;
   cursor: pointer;
   transition: .3s ease all;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
   &__favorite-icon  {
     width: 24px;
     height: 24px;
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    border-radius: 50%;
-    border: 2px $neutral-color-400 solid;
-    &:hover {
-      background: $accent-color-400;
+    color: transparent;
+    transition: .3s ease all;
+    &:hover, &--selected {
+      color: orange;
     }
     &--selected {
-      background: $accent-color-400;;
+      &:hover {
+        color: transparent;
+      }
     }
   }
   &__name {
     color: $neutral-color-900;
     font-family: $font-family-bold;
     text-transform: uppercase;
-    margin-bottom: 24px;
     overflow: hidden;
     text-overflow: ellipsis;
     width: calc(100% - 28px);

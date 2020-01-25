@@ -1,29 +1,39 @@
-<div class="models">
-  <div class="model" *ngFor="let model of favoriteModels" [routerLink]="[model.id]">
-    <div class="model__name">{{ model.name }}</div>
+<div *ngIf="favoriteModels.length > 0" class="models__favorite">
+  <div class="models__favorite-label">Favorite models</div>
+  <div class="models__list">
+    <ng-container *ngFor="let model of favoriteModels">
+      <ng-container
+        *ngTemplateOutlet="modelCard; context: { $implicit: model }"
+      ></ng-container>
+    </ng-container>
+  </div>
+  <div
+    class="models__separator"
+    *ngIf="favoriteModels.length > 0 && models.length > 0"
+  ></div>
+</div>
+<div class="models__list">
+  <ng-container *ngFor="let model of models">
+    <ng-container
+      *ngTemplateOutlet="modelCard; context: { $implicit: model }"
+    ></ng-container>
+  </ng-container>
+</div>
+
+<ng-template #modelCard let-model>
+  <div class="model" [routerLink]="[model.id]">
+    <div class="model__header">
+      <div class="model__name">{{ model.name }}</div>
+      <hydro-icon
+        type="icon-star"
+        class="model__favorite-icon"
+        (click)="toggleFavorite(model)"
+        [ngClass]="{ 'model__favorite-icon--selected': model.favorite }"
+      ></hydro-icon>
+    </div>
     <div class="model__versions">
       <div class="model__versions-count">6</div>
       <span class="model__versions-text">versions</span>
     </div>
-    <div
-      class="model__favorite-icon"
-      (click)="toggleFavorite(model)"
-      [ngClass]="{ 'model__favorite-icon--selected': model.favorite }"
-    ></div>
   </div>
-</div>
-<div class="models__separator"></div>
-<div class="models">
-  <div class="model" *ngFor="let model of models" [routerLink]="[model.id]">
-    <div class="model__name">{{ model.name }}</div>
-    <div class="model__versions">
-      <div class="model__versions-count">6</div>
-      <span class="model__versions-text">versions</span>
-    </div>
-    <div
-      class="model__favorite-icon"
-      (click)="toggleFavorite(model)"
-      [ngClass]="{ 'model__favorite-icon--selected': model.favorite }"
-    ></div>
-  </div>
-</div>
+</ng-template>

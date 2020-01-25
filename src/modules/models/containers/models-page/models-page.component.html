@@ -1,6 +1,16 @@
 <div class="models-page">
   <div class="models-page__header">
-    <input type="text" (input)="onChangeFilter($event.target.value)" />
+    <div class="models-page__control">
+      <label class="models-page__control-label" for="model-name-filter"
+        >Model name</label
+      >
+      <input
+        class="models-page__control-input"
+        type="text"
+        (input)="onChangeFilter($event.target.value)"
+        id="model-name-filter"
+      />
+    </div>
   </div>
   <hs-models
     [favoriteModels]="favoriteModels$ | async"
