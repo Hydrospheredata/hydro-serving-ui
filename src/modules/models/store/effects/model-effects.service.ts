@@ -32,7 +32,7 @@ export class ModelEffects {
               .map(model => {
                 return {
                   ...model,
-                  favorite: this.favoriteStorage.has(model.name),
+                  favorite: this.favoriteStorage.isFavorite(model.name),
                 };
               });
             return GetModelsSuccess({ payload: models });

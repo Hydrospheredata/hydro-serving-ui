@@ -11,17 +11,24 @@ import { Observable } from 'rxjs';
   styleUrls: ['./applications-page.component.scss'],
 })
 export class ApplicationsPageComponent implements OnInit {
-  applications$: Observable<Application[]> = this.facade.allApplications$;
+  applications$: Observable<Application[]> = this.facade.nonFavoriteApplications$;
+  favoriteApplications$: Observable<Application[]> = this.facade.favoriteApplications$;
+
   constructor(
     private facade: ApplicationsFacade,
     private dialog: DialogService
   ) {}
   ngOnInit() {}
 
-  public addApplication(): void {
+  addApplication(): void {
     this.dialog.createDialog({
       component: DialogAddApplicationComponent,
       styles: { height: '100%' },
     });
+  }
+
+  handleToggleFavorite(application: Application): void {
+    console.log('handle toggle', { application });
+    this.facade.toggleFavorite(application);
   }
 }

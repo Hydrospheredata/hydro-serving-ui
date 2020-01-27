@@ -8,6 +8,5 @@ import { ApplicationsFacade } from '@applications/store';
 })
 export class ApplicationPageComponent {
   application$ = this.facade.selectedApplication$;
-  constructor(private facade: ApplicationsFacade) {
-  }
+  constructor(private facade: ApplicationsFacade) {}
 }

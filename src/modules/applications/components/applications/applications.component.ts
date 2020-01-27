@@ -1,4 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { Application } from '@shared/_index';
 
 @Component({
@@ -9,5 +16,11 @@ import { Application } from '@shared/_index';
 })
 export class ApplicationsComponent implements OnInit {
   @Input() applications: Application[] = [];
+  @Input() favoriteApplications: Application[] = [];
+  @Output() toggledFavorite: EventEmitter<Application> = new EventEmitter();
   ngOnInit() {}
+  toggleFavorite(application: Application): void {
+    event.stopPropagation();
+    this.toggledFavorite.emit(application);
+  }
 }

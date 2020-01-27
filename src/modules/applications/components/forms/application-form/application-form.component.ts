@@ -9,7 +9,7 @@ import {
   ModelVariantFormService,
   IModelVariantFormData,
 } from '@applications/services/model-variant-form.service';
-import { IApplication } from '@shared/_index';
+import { Application } from '@shared/_index';
 
 @Component({
   selector: 'hs-application-form',
@@ -19,7 +19,7 @@ import { IApplication } from '@shared/_index';
 })
 export class ApplicationFormComponent implements OnInit {
   @Output() submitHandle: EventEmitter<any> = new EventEmitter();
-  @Input() application: IApplication;
+  @Input() application: Application;
 
   public applicationForm: FormGroup;
 

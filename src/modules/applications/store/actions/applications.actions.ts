@@ -94,6 +94,8 @@ export const TestFail = createAction(
   '[Application] test with fail',
   props<{ payload: { name: string; error: string } }>()
 );
-export const ClearTestingDialog = createAction(
-  '[Testing window] clear'
+export const ToggleFavorite = createAction(
+  '[Application] toggleFavorite',
+  props<{ payload: { application: Application } }>()
 );
+export const ClearTestingDialog = createAction('[Testing window] clear');

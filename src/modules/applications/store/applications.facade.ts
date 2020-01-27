@@ -9,7 +9,7 @@ import {
 import { NameGenerator } from '@core/services';
 import { Store, select } from '@ngrx/store';
 import { Application, ModelVersion } from '@shared/_index';
-import { filter, share, first } from 'rxjs/operators';
+import { filter, share, first, map } from 'rxjs/operators';
 import {
   Add,
   Delete,
@@ -18,6 +18,7 @@ import {
   GenerateInput,
   Update,
   ClearTestingDialog,
+  ToggleFavorite,
 } from '../store/actions';
 import { State } from './reducers';
 
@@ -26,6 +27,12 @@ export class ApplicationsFacade {
   public allApplications$ = this.store.pipe(
     select(selectAllApplications),
     filter(val => val !== undefined)
+  );
+  public nonFavoriteApplications$ = this.allApplications$.pipe(
+    map(apps => apps.filter(app => !app.favorite))
+  );
+  public favoriteApplications$ = this.allApplications$.pipe(
+    map(apps => apps.filter(app => app.favorite))
   );
 
   public selectedApplication$ = this.store.pipe(
@@ -101,5 +108,8 @@ export class ApplicationsFacade {
 
   public clearTestingDialog() {
     this.store.dispatch(ClearTestingDialog());
+  }
+  public toggleFavorite(application: Application) {
+    this.store.dispatch(ToggleFavorite({ payload: { application } }));
   }
 }

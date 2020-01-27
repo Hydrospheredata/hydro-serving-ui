@@ -63,7 +63,7 @@ export class ModelsFacade {
 
   nonFavoriteModels$: Observable<Model[]> = this.filteredModels$.pipe(
     map(models => models.filter(model => !model.favorite))
-  );s
+  );
 
   favoriteModels$: Observable<Model[]> = this.filteredModels$.pipe(
     map(models => models.filter(model => model.favorite))
@@ -208,7 +208,7 @@ export class ModelsFacade {
     if (model.favorite) {
       this.favoriteStorage.remove(model.name);
     } else {
-      this.favoriteStorage.save(model.name);
+      this.favoriteStorage.add(model.name);
     }
   }
 }

@@ -1,16 +1,47 @@
 <div class="applications">
   <div
-    class="application"
-    *ngFor="let application of applications"
-    [routerLink]="[application.name]"
+    class="applications__favorite-label"
+    *ngIf="favoriteApplications.length > 0"
   >
+    Favorite applications
+  </div>
+  <div class="applications__list">
+    <ng-container *ngFor="let application of favoriteApplications">
+      <ng-container
+        *ngTemplateOutlet="applicationCard; context: { $implicit: application }"
+      ></ng-container>
+    </ng-container>
+  </div>
+  <div
+    class="applications__separator"
+    *ngIf="favoriteApplications.length > 0 && applications.length > 0"
+  ></div>
+  <div class="applications__list">
+    <ng-container *ngFor="let application of applications">
+      <ng-container
+        *ngTemplateOutlet="applicationCard; context: { $implicit: application }"
+      ></ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #applicationCard let-application>
+  <div class="application" [routerLink]="[application.id]">
     <div class="application__name">
       {{ application.name }}
     </div>
+    <hydro-icon
+      type="bookmark"
+      class="application__favorite-icon"
+      (click)="toggleFavorite(application)"
+      [ngClass]="{
+        'application__favorite-icon--selected': application.favorite
+      }"
+    ></hydro-icon>
     <div class="application__status">
       <hs-application-status
         [status]="application.status"
       ></hs-application-status>
     </div>
   </div>
-</div>
+</ng-template>

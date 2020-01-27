@@ -4,5 +4,9 @@
       add application
     </button>
   </div>
-  <hs-applications [applications]="applications$ | async"></hs-applications>
+  <hs-applications
+    [applications]="applications$ | async"
+    [favoriteApplications]="favoriteApplications$ | async"
+    (toggledFavorite)="handleToggleFavorite($event)"
+  ></hs-applications>
 </div>
