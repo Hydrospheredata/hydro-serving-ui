@@ -1,7 +1,11 @@
 <div class="model-versions">
   <div class="model-versions__header"></div>
   <div class="model-versions__body">
-    <div class="model-version" *ngFor="let modelVersion of modelVersions">
+    <div
+      class="model-version"
+      *ngFor="let modelVersion of modelVersions"
+      [routerLink]="[modelVersion.id]"
+    >
       <div class="model-version__header">
         <div class="model-version__version">
           {{ modelVersion.modelVersion }}
@@ -44,6 +48,15 @@
             {{ application }}
           </div>
         </div>
+      </div>
+      <div class="model-version__footer">
+        <button
+          hs-button
+          color="primary"
+          [routerLink]="[modelVersion.id, 'monitoring']"
+        >
+          MONITORING
+        </button>
       </div>
     </div>
   </div>

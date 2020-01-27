@@ -9,6 +9,7 @@
 }
 
 .model-version {
+  width: 300px;
   display: flex;
   border: 1px $neutral-color-200 solid;
   background: white;
@@ -17,13 +18,13 @@
   margin-bottom: 24px;
   cursor: pointer;
   min-height: 120px;
+  flex-wrap: wrap;
 
   &:hover {
     border-color: $neutral-color-300;
   }
 
   &__header {
-    height: 100%;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -74,5 +75,10 @@
     color: $neutral-color-1000;
     font-family: $font-family-light;
     line-height: 14px;
+  }
+  &__footer {
+    text-align: right;
+    padding: 4px 12px;
+    width: 100%;
   }
 }
