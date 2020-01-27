@@ -11,6 +11,7 @@ import {
   ModelVersionsTableRowComponent,
   ModelVersionDetailsComponent,
   ModelVersionLogComponent,
+  ModelVersionsComponent,
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
@@ -53,6 +54,7 @@ import {
     ModelVersionDetailsComponent,
     ModelVersionLogComponent,
     ModelVersionPageComponent,
+    ModelVersionsComponent,
     ModelVersionsTableComponent,
     ModelVersionsTableRowComponent,
     SignaturesComponent,

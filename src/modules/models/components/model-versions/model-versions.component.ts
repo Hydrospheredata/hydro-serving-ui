@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModelsFacade } from '@models/store';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModelVersion } from '@shared/_index';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'hs-model-versions',
@@ -9,9 +7,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./model-versions.component.scss'],
 })
 export class ModelVersionsComponent implements OnInit {
-  modelVersions$: Observable<ModelVersion[]> = this.facade
-    .selectedModelVersions$;
-  constructor(private facade: ModelsFacade) {}
+  @Input() modelVersions: ModelVersion[] = [];
 
   ngOnInit() {}
 }

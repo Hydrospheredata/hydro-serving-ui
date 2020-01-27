@@ -1,1 +1,34 @@
-
+<div class="model-versions">
+  <div class="model-version" *ngFor="let modelVersion of modelVersions">
+    <div
+      class="model-version__header model-version__header--{{
+        modelVersion.status
+      }}"
+    >
+      <div class="model-version__version">{{ modelVersion.modelVersion }}</div>
+    </div>
+    <div class="model-version__body">
+      <div class="model-version__label">
+        created
+      </div>
+      <div class="model-version__date">
+        {{ modelVersion.created }}
+      </div>
+      <div class="model-version__label">
+        runtime
+      </div>
+      <div class="model-version__runtime">
+        {{ modelVersion.runtime?.name }}
+      </div>
+      <div class="model-version__label">
+        applications
+      </div>
+      <div
+        class="model-version__application"
+        *ngFor="let application of modelVersion.applications"
+      >
+        {{ application }}
+      </div>
+    </div>
+  </div>
+</div>

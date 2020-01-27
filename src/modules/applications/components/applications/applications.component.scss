@@ -15,10 +15,11 @@
   margin-right: 24px;
   margin-bottom: 24px;
   padding: 12px;
-  width: 300px;
+  width: 220px;
   cursor: pointer;
   transition: .3s ease all;
   &__name {
+    white-space: nowrap;
     width: calc(100% - 28px);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -26,5 +27,6 @@
     font-family: $font-family-bold;
     text-transform: uppercase;
     margin-bottom: 24px;
+    font-size: 12px;
   }
 }

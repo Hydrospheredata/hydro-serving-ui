@@ -38,18 +38,19 @@
   margin-right: 24px;
   margin-bottom: 24px;
   padding: 12px;
-  width: 260px;
+  width: 220px;
   cursor: pointer;
   transition: .3s ease all;
   &__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+    font-size: 12px;
   }
   &__favorite-icon  {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     color: transparent;
     transition: .3s ease all;
     &:hover, &--selected {
@@ -68,14 +69,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: calc(100% - 28px);
+    white-space: nowrap;
   }
   &__versions {
     text-align: center;
     &-count {
-      color: $neutral-color-600;
-      font-size: 36px;
+      color: $neutral-color-700;
+      font-size: 24px;
       font-family: $font-family-bold;
-      line-height: 40px;
+      line-height: 32px;
     }
     &-text {
       font-family: $font-family-light;
