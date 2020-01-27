@@ -1,34 +1,68 @@
 <div class="model-versions">
-  <div class="model-version" *ngFor="let modelVersion of modelVersions">
-    <div
-      class="model-version__header model-version__header--{{
-        modelVersion.status
-      }}"
-    >
-      <div class="model-version__version">{{ modelVersion.modelVersion }}</div>
-    </div>
-    <div class="model-version__body">
-      <div class="model-version__label">
-        created
+  <div class="model-versions__header"></div>
+  <div class="model-versions__body">
+    <div class="model-version" *ngFor="let modelVersion of modelVersions">
+      <div class="model-version__header">
+        <div class="model-version__version">
+          {{ modelVersion.modelVersion }}
+        </div>
+        <div>
+          <ng-container
+            *ngTemplateOutlet="
+              modelVersionStatus;
+              context: { $implicit: modelVersion.status }
+            "
+          ></ng-container>
+        </div>
       </div>
-      <div class="model-version__date">
-        {{ modelVersion.created }}
-      </div>
-      <div class="model-version__label">
-        runtime
-      </div>
-      <div class="model-version__runtime">
-        {{ modelVersion.runtime?.name }}
-      </div>
-      <div class="model-version__label">
-        applications
-      </div>
-      <div
-        class="model-version__application"
-        *ngFor="let application of modelVersion.applications"
-      >
-        {{ application }}
+      <div class="model-version__body">
+        <div class="model-version__body-row">
+          <div class="model-version__label">
+            created
+          </div>
+          <div class="model-version__date">
+            {{ modelVersion.created }}
+          </div>
+        </div>
+        <div class="model-version__body-row">
+          <div class="model-version__label">
+            runtime
+          </div>
+          <div class="model-version__runtime">
+            {{ modelVersion.runtime?.name }}
+          </div>
+        </div>
+
+        <div class="model-version__body-row">
+          <div class="model-version__label">
+            applications
+          </div>
+          <div
+            class="model-version__application"
+            *ngFor="let application of modelVersion.applications"
+          >
+            {{ application }}
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+<ng-template #modelVersionStatus let-status>
+  <div [ngSwitch]="status">
+    <div *ngSwitchCase="'released'">
+      <hydro-icon
+        class="model-version__status-icon model-version__status-icon--released"
+        type="circle-check"
+      ></hydro-icon>
+    </div>
+    <div *ngSwitchCase="'failed'">
+      <hydro-icon
+        class="model-version__status-icon model-version__status-icon--failed"
+        type="circle-x"
+      ></hydro-icon>
+    </div>
+    <div *ngSwitchDefault>{{ status }}</div>
+  </div>
+</ng-template>

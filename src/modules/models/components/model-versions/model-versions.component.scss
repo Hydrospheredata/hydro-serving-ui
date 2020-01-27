@@ -1,51 +1,78 @@
 @import "variables";
 
 .model-versions {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
+  &__body {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
 }
+
 .model-version {
-  width: 280px;
-  height: 280px;
+  display: flex;
   border: 1px $neutral-color-200 solid;
   background: white;
   border-radius: 4px;
   margin-right: 24px;
   margin-bottom: 24px;
   cursor: pointer;
+  min-height: 120px;
+
   &:hover {
     border-color: $neutral-color-300;
   }
-  &__header {
-    padding: 24px;
-    height: 72px;
-    &--released {
-      background: $supportive-color-green-300;
-      color: $supportive-color-green-900;
-    }
-    &--failed {
-      background: $supportive-color-red-300;
-      color: $supportive-color-red-900;
-    }
 
+  &__header {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
   }
+
   &__version {
-    font-size: 32px;
+    font-size: 24px;
+    padding: 16px;
     font-family: $font-family-bold;
+    background: $neutral-color-200;
+    color: $neutral-color-800;
+    border-bottom-right-radius: 4px;
+    margin-bottom: 8px;
   }
+
   &__body {
-    padding: 24px;
+    padding: 8px 12px;
+    font-size: 12px;
+    &-row + &-row {
+      margin-top: 8px;
+    }
   }
+
   &__label {
     color: $neutral-color-800;
+    margin-bottom: 2px;
     font-size: 12px;
     line-height: 14px;
     font-family: $font-family-bold;
   }
-  &__runtime, &__date, &__application {
+
+  &__status-icon {
+    width: 20px;
+    height: 20px;
+
+    &--released {
+      color: $supportive-color-green-700;
+    }
+
+    &--failed {
+      color: $supportive-color-red-700;
+    }
+  }
+
+  &__runtime,
+  &__date,
+  &__application {
     color: $neutral-color-1000;
     font-family: $font-family-light;
-    margin-bottom: 8px;
+    line-height: 14px;
   }
 }
