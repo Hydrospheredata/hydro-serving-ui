@@ -1,5 +1,16 @@
 <div class="models-page">
-  <div class="models-page__header">
+  <div class="models-page__sidebar">
+    <hs-sidebar
+      [sidebarData]="allModels$ | async"
+      (filtered)="handleFilter($event)"
+      (bookmarked)="handleToggleFavoriteModel($event)"
+      (clicked)="handleSidebarClick($event)"
+    ></hs-sidebar>
+  </div>
+  <div class="models-page__body">
+    <router-outlet></router-outlet>
+  </div>
+  <!-- <div class="models-page__header">
     <div class="models-page__control">
       <label class="models-page__control-label" for="model-name-filter"
         >Model name</label
@@ -11,10 +22,10 @@
         id="model-name-filter"
       />
     </div>
-  </div>
-  <hs-models
+  </div> -->
+  <!-- <hs-models
     [favoriteModels]="favoriteModels$ | async"
-    [models]="nonFavoriteModels$ | async"
+    [models]="allModels$ | async"
     (toggledFavorite)="handleToggleFavoriteModel($event)"
-  ></hs-models>
+  ></hs-models> -->
 </div>

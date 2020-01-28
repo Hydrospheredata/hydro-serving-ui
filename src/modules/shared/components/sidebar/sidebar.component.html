@@ -1,5 +1,35 @@
 <aside class="sidebar">
-  <div class="sidebar-header">
+  <div class="sidebar__header">
+    <div class="sidebar__filter">
+      <div class="sidebar__filter-label"></div>
+      <hydro-icon class="sidebar__filter-icon" type="icon-search"></hydro-icon>
+      <input
+        class="sidebar__filter-input"
+        type="text"
+        (input)="handleFilter($event.target.value)"
+      />
+    </div>
+  </div>
+  <div class="sidebar__list">
+    <div
+      class="sidebar__item"
+      *ngFor="let item of sidebarData"
+      (click)="handleClick(item)"
+      routerLinkActive="sidebar__item--selected"
+    >
+      <hydro-icon
+        type="bookmark"
+        class="sidebar__item-bookmark"
+        (click)="toggleBookmark(item)"
+        [ngClass]="{ 'sidebar__item-bookmark--selected': item.favorite }"
+      ></hydro-icon>
+      <span *ngIf="item.status" class="sidebar__item-status">
+        <hs-application-status [status]="item.status"></hs-application-status>
+      </span>
+      <span class="sidebar__item-name">{{ item.name }}</span>
+    </div>
+  </div>
+  <!-- <div class="sidebar-header">
     <div class="sidebar-header__row">
       <ng-container *ngIf="actionButton">
         <ng-container *ngTemplateOutlet="actionButton"></ng-container>
@@ -14,7 +44,6 @@
       </hydro-filter>
     </div>
   </div>
-
   <div class="sidebar-body">
     <ng-container *ngIf="sidebarFiltredList.length; else emptyMessage">
       <ul class="sidebar-list">
@@ -34,5 +63,5 @@
     <ng-template #emptyMessage>
       <div class="sidebar__empty-message">not found</div>
     </ng-template>
-  </div>
+  </div> -->
 </aside>

@@ -69,6 +69,15 @@ export class ModelsFacade {
     map(models => models.filter(model => model.favorite))
   );
 
+  sortedModels$ = combineLatest(
+    this.favoriteModels$,
+    this.nonFavoriteModels$
+  ).pipe(
+    map(([fav, nonFav]) => {
+      return [...fav, ...nonFav];
+    })
+  );
+
   allModelVersions$ = this.store.pipe(select(selectAllModelVersions));
 
   someModelVersionIsReleased$ = this.store.pipe(

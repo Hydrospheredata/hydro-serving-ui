@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModelsFacade } from '@models/store';
 import { Model } from '@shared/_index';
 import { Observable } from 'rxjs';
@@ -9,16 +10,19 @@ import { Observable } from 'rxjs';
   styleUrls: ['./models-page.component.scss'],
 })
 export class ModelsPageComponent {
-  nonFavoriteModels$: Observable<Model[]> = this.modelsFacade.nonFavoriteModels$;
-  favoriteModels$: Observable<Model[]> = this.modelsFacade.favoriteModels$;
+  allModels$: Observable<Model[]> = this.modelsFacade.sortedModels$;
   filterString: string = '';
-  constructor(private modelsFacade: ModelsFacade) {}
+  constructor(private modelsFacade: ModelsFacade, private router: Router) {}
 
-  onChangeFilter(str): void {
+  handleFilter(str): void {
     this.modelsFacade.filterString$.next(str);
   }
 
   handleToggleFavoriteModel(model: Model): void {
-   this.modelsFacade.toggleFavorite(model);
+    this.modelsFacade.toggleFavorite(model);
+  }
+
+  handleSidebarClick(model: Model): void {
+    this.router.navigate([`models/${model.id}`]);
   }
 }

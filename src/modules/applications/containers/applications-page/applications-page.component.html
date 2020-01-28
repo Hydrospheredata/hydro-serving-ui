@@ -1,12 +1,23 @@
 <div class="applications-page">
-  <div class="applications-page__header">
+  <div class="applications-page__sidebar">
+    <hs-sidebar
+      [sidebarData]="applications$ | async"
+      (filtered)="handleFilter($event)"
+      (bookmarked)="handleBookmark($event)"
+      (clicked)="handleSidebarClick($event)"
+    ></hs-sidebar>
+  </div>
+  <div class="applications-page__body">
+    <router-outlet></router-outlet>
+  </div>
+  <!-- <div class="applications-page__header">
     <button hs-button color="cyan" kind="flat" (click)="addApplication()">
       add application
     </button>
-  </div>
-  <hs-applications
+  </div> -->
+  <!-- <hs-applications
     [applications]="applications$ | async"
     [favoriteApplications]="favoriteApplications$ | async"
     (toggledFavorite)="handleToggleFavorite($event)"
-  ></hs-applications>
+  ></hs-applications> -->
 </div>

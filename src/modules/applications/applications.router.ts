@@ -11,11 +11,12 @@ import {
       {
         path: 'applications',
         component: ApplicationsPageComponent,
-      },
-      {
-        path: 'applications/:name',
-        component: ApplicationPageComponent,
-        data: { anim: 'appDetail' },
+        children: [
+          {
+            path: ':name',
+            component: ApplicationPageComponent,
+          },
+        ],
       },
     ]),
   ],

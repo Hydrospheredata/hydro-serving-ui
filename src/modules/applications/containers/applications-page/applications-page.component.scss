@@ -1,5 +1,8 @@
 .applications-page {
-  &__header {
-    margin-bottom: 16px;
+  display: flex;
+
+  &__sidebar {
+    overflow: hidden;
+    width: 250px;
   }
 }

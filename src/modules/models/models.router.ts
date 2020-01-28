@@ -15,23 +15,20 @@ import {
       {
         path: 'models',
         component: ModelsPageComponent,
-        children: [],
-      },
-      {
-        path: 'models/:modelId',
-        component: ModelPageComponent,
-        data: { anim: 'modelDetail' },
-        canActivate: [ModelDetailsGuard],
+        children: [
+          {
+            path: ':modelId',
+            component: ModelPageComponent,
+            data: { anim: 'modelDetail' },
+            canActivate: [ModelDetailsGuard],
+          },
+        ],
       },
       {
         path: 'models/:modelId/:modelVersionId',
         component: ModelVersionPageComponent,
         canActivate: [ModelVersionDetailsGuard],
       },
-      // {
-      //   path: 'models/:modelId/:modelVersionId/profiler',
-      //   component: ModelVersionProfilerComponent,
-      // },
       {
         path: 'models/:modelId/:modelVersionId/monitoring',
         component: MonitoringPageComponent,

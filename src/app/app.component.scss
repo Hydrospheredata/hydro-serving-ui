@@ -6,18 +6,9 @@
     background: $primary-color-900;
     height: 48px;
   }
-  &__body {
-    display: flex;
-    height: calc(100% - 48px); 
-  }
-  &__navigation {
-    width: 48px;
-    background: $primary-color-900;
-  }
   &__main {
     height: 100%;
     overflow: scroll;
-    padding: 48px;
     width: 100%;
   }
 }
