@@ -23,7 +23,6 @@ export class SidebarComponent {
   @Output() clicked: EventEmitter<Model | Application> = new EventEmitter();
   @Output() filtered: EventEmitter<string> = new EventEmitter();
   @Output() bookmarked: EventEmitter<Model | Application> = new EventEmitter();
-  @ContentChild('button') actionButton;
 
   toggleBookmark(item: Model | Application): void {
     event.stopPropagation();
