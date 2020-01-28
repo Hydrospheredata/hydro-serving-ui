@@ -2,11 +2,12 @@
 .app {
   height: 100%;
   width: 100%;
+  overflow: hidden;
   &__header {
     background: $primary-color-900;
     height: 48px;
   }
-  &__main {
+  &__body {
     height: 100%;
     overflow: scroll;
     width: 100%;

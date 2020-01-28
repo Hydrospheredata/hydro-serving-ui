@@ -1,6 +1,6 @@
 @import 'variables';
 
-.hydro-navbar {
+.header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -21,9 +21,26 @@
     }
   }
 
+  &__navigation {
+    &-item {
+      text-decoration: none;
+      color: white;
+      opacity: .5;
+      &:hover, %--selected {
+        opacity: 1;
+      }
+    }
+    &-item + &-item {
+      margin-left: 24px;
+    }
+    &-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+  }
+
   &__support-info {
-    position: absolute;
-    right: 24px;
     font-family: $font-family-light;
   }
 
