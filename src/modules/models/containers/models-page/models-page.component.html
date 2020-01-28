@@ -2,6 +2,7 @@
   <div class="models-page__sidebar">
     <hs-sidebar
       [sidebarData]="allModels$ | async"
+      [selectedItem]="selectedModel$ | async"
       (filtered)="handleFilter($event)"
       (bookmarked)="handleToggleFavoriteModel($event)"
       (clicked)="handleSidebarClick($event)"
@@ -10,22 +11,4 @@
   <div class="models-page__body">
     <router-outlet></router-outlet>
   </div>
-  <!-- <div class="models-page__header">
-    <div class="models-page__control">
-      <label class="models-page__control-label" for="model-name-filter"
-        >Model name</label
-      >
-      <input
-        class="models-page__control-input"
-        type="text"
-        (input)="onChangeFilter($event.target.value)"
-        id="model-name-filter"
-      />
-    </div>
-  </div> -->
-  <!-- <hs-models
-    [favoriteModels]="favoriteModels$ | async"
-    [models]="allModels$ | async"
-    (toggledFavorite)="handleToggleFavoriteModel($event)"
-  ></hs-models> -->
 </div>

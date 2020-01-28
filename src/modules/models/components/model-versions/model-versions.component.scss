@@ -2,9 +2,11 @@
 
 .model-versions {
   &__body {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 24px;
+    width: 100%;
+  }
+  &__table  {
+    border: 1px $neutral-color-300 solid;
+    width: 100%;
   }
 }
 

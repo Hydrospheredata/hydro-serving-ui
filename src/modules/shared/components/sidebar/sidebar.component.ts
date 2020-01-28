@@ -19,6 +19,7 @@ import { Application, Model } from '@shared/models/_index';
 export class SidebarComponent {
   @Input() actionButton: TemplateRef<any>;
   @Input() sidebarData: Observable<Application[] | Model[]>;
+  @Input() selectedItem: Application | Model;
   @Output() clicked: EventEmitter<Model | Application> = new EventEmitter();
   @Output() filtered: EventEmitter<string> = new EventEmitter();
   @Output() bookmarked: EventEmitter<Model | Application> = new EventEmitter();

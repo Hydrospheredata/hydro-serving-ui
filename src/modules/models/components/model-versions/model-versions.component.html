@@ -1,64 +1,60 @@
 <div class="model-versions">
   <div class="model-versions__header"></div>
   <div class="model-versions__body">
-    <div
-      class="model-version"
-      *ngFor="let modelVersion of modelVersions"
-      [routerLink]="[modelVersion.id]"
-    >
-      <div class="model-version__header">
-        <div class="model-version__version">
-          {{ modelVersion.modelVersion }}
-        </div>
-        <div>
-          <ng-container
-            *ngTemplateOutlet="
-              modelVersionStatus;
-              context: { $implicit: modelVersion.status }
-            "
-          ></ng-container>
-        </div>
-      </div>
-      <div class="model-version__body">
-        <div class="model-version__body-row">
-          <div class="model-version__label">
-            created
-          </div>
-          <div class="model-version__date">
-            {{ modelVersion.created }}
-          </div>
-        </div>
-        <div class="model-version__body-row">
-          <div class="model-version__label">
-            runtime
-          </div>
-          <div class="model-version__runtime">
-            {{ modelVersion.runtime?.name }}
-          </div>
-        </div>
-
-        <div class="model-version__body-row">
-          <div class="model-version__label">
-            applications
-          </div>
-          <div
-            class="model-version__application"
-            *ngFor="let application of modelVersion.applications"
-          >
-            {{ application }}
-          </div>
-        </div>
-      </div>
-      <div class="model-version__footer">
-        <button
-          hs-button
-          color="primary"
-          [routerLink]="[modelVersion.id, 'monitoring']"
+    <table class="hydro-table model-versions__table">
+      <thead class="hydro-table-head">
+        <tr>
+          <th class="hydro-table-head__cell">version</th>
+          <th class="hydro-table-head__cell">status</th>
+          <th class="hydro-table-head__cell">runtime</th>
+          <th class="hydro-table-head__cell">created</th>
+          <th class="hydro-table-head__cell">applications</th>
+          <th class="hydro-table-head__cell"></th>
+        </tr>
+      </thead>
+      <tbody class="hydro-table-body">
+        <tr
+          *ngFor="let modelVersion of modelVersions"
+          class="hydro-table-body__row"
         >
-          MONITORING
-        </button>
-      </div>
-    </div>
+          <td class="hydro-table-body__cell">
+            {{ modelVersion.modelVersion }}
+          </td>
+          <td class="hydro-table-body__cell">
+            <ng-container
+              *ngTemplateOutlet="
+                modelVersionStatus;
+                context: { $implicit: modelVersion.status }
+              "
+            ></ng-container>
+          </td>
+          <td class="hydro-table-body__cell">
+            {{ modelVersion.runtime?.name }}
+          </td>
+          <td class="hydro-table-body__cell">{{ modelVersion.created }}</td>
+          <td class="hydro-table-body__cell">
+            <div
+              class="model-version__application"
+              *ngFor="let application of modelVersion.applications"
+            >
+              {{ application }}
+            </div>
+          </td>
+          <td class="hydro-table-body__cell">
+            <button hs-button color="primary" [routerLink]="[modelVersion.id]">
+              DETAILS
+            </button>
+            <button
+              hs-button
+              color="primary"
+              [routerLink]="[modelVersion.id, 'monitoring']"
+            >
+              MONITORING
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 

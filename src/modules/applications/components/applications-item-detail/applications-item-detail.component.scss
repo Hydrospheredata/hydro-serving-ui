@@ -1,6 +1,9 @@
 @import "variables";
 
 .application {
+  padding: 24px;
+  width: 100%;
+
   &__path {
     font-size: 14px;
     color: $primary-color-1000;
@@ -84,21 +87,18 @@
   }
 
   &__error {
-    overflow: scroll;
     width: 100%;
+    position: fixed;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    position: absolute;
-    z-index: 2;
-    max-height: 80px;
-
+    left: 250px;
   }
 
   &__body {
     display: flex;
     height: 100%;
-    padding-top: 8px;
+    width: 100%;
   }
 
   &__header {
@@ -111,18 +111,11 @@
     }
 
     &-buttons {
-      position: absolute;
+      display: flex;
+      justify-content: flex-end;
 
       button+button {
         margin-left: 8px;
-      }
-
-      &--right {
-        right: 24px;
-      }
-
-      &--left {
-        left: 24px;
       }
     }
   }
@@ -262,30 +255,6 @@
       margin-bottom: 8px;
     }
   }
-}
-
-.action-buttons {
-  display: flex;
-
-  .action-button {
-    margin-left: 8px;
-    padding: 8px;
-  }
-}
-
-.health-status {
-  width: 15px;
-  height: 15px;
-  background: gray;
-  border-radius: 50%;
-}
-
-.good {
-  background-color: #59b659;
-}
-
-.bad {
-  background-color: #e44545;
 }
 
 .navigation {

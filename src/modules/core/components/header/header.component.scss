@@ -26,12 +26,12 @@
       text-decoration: none;
       color: white;
       opacity: .5;
-      &:hover, %--selected {
+      &:hover, &--active {
         opacity: 1;
       }
     }
     &-item + &-item {
-      margin-left: 24px;
+      margin-left: 32px;
     }
     &-icon {
       width: 24px;

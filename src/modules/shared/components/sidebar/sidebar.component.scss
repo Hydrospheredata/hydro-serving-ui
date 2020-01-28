@@ -44,11 +44,12 @@
     cursor: pointer;
     padding: 12px 12px 12px 32px;
     transition: .3s ease all;
-    color: $neutral-color-400;
+    color: $neutral-color-500;
     border-top: 1px $neutral-color-100 solid;
     &:hover,
     &--selected {
-      color: $primary-color-500;
+      color: $primary-color-700;
+      font-family: $font-family-bold;
     }
 
     &-name {
@@ -79,6 +80,9 @@
           color: $neutral-color-200;
         }
       }
+    }
+    &-status {
+      margin-left: 8px;
     }
   }
 

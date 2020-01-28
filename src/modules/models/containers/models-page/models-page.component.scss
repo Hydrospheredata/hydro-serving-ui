@@ -5,35 +5,10 @@
   display: flex;
   &__sidebar {
     width: 250px;
+    min-width: 250px;
   }
   &__body {
+    width: 100%;
     margin: 24px;
   }
-  // &__header {
-  //   margin-bottom: 24px;
-  // }
-
-  // &__title {}
-
-  // &__control {
-  //   width: 220px;
-  //   display: flex;
-  //   flex-direction: column;
-  //   &-label {
-  //     color: $neutral-color-900;
-  //     font-family: $font-family-light;
-  //     font-size: 12px;
-  //     margin-bottom: 0;
-  //   }
-
-  //   &-input {
-  //     border: none;
-  //     font-size: 14px;
-  //     padding: 4px 8px;
-  //     border-bottom: 1px $neutral-color-900 solid;
-  //     &:focus {
-  //       border-bottom-color: $primary-color-600;
-  //     }
-  //   }
-  // }
 }

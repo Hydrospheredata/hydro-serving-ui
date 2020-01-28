@@ -9,6 +9,7 @@ import {
 import { NameGenerator } from '@core/services';
 import { Store, select } from '@ngrx/store';
 import { Application, ModelVersion } from '@shared/_index';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { filter, share, first, map } from 'rxjs/operators';
 import {
   Add,
@@ -28,12 +29,29 @@ export class ApplicationsFacade {
     select(selectAllApplications),
     filter(val => val !== undefined)
   );
-  public nonFavoriteApplications$ = this.allApplications$.pipe(
+  public filterStr$: BehaviorSubject<string> = new BehaviorSubject('');
+  public filteredApplications$: Observable<Application[]> = combineLatest(
+    this.allApplications$,
+    this.filterStr$
+  ).pipe(
+    map(([applications, filterStr]) => {
+      if (filterStr) {
+        return applications.filter(({ name }) => name.includes(filterStr));
+      }
+      return applications;
+    })
+  );
+  public nonFavoriteApplications$ = this.filteredApplications$.pipe(
     map(apps => apps.filter(app => !app.favorite))
   );
-  public favoriteApplications$ = this.allApplications$.pipe(
+  public favoriteApplications$ = this.filteredApplications$.pipe(
     map(apps => apps.filter(app => app.favorite))
   );
+
+  public visibleApplications$: Observable<Application[]> = combineLatest(
+    this.favoriteApplications$,
+    this.nonFavoriteApplications$
+  ).pipe(map(([favorites, nonFavorites]) => [...favorites, ...nonFavorites]));
 
   public selectedApplication$ = this.store.pipe(
     select(selectSelectedApplication),
@@ -111,5 +129,9 @@ export class ApplicationsFacade {
   }
   public toggleFavorite(application: Application) {
     this.store.dispatch(ToggleFavorite({ payload: { application } }));
+  }
+
+  public onFilter(filterStr: string): void {
+    this.filterStr$.next(filterStr);
   }
 }

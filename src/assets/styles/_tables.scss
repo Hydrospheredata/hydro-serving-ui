@@ -11,26 +11,33 @@ $table-padding: 14px;
   border-collapse: collapse;
   width: 100%;
   background: white;
+
   &-head {
     font-size: 12px;
     font-family: $font-family-bold;
     color: $neutral-color-900;
+
     &__cell {
       @extend .cell;
       text-align: left;
     }
   }
+
   &-body {
     color: $neutral-text-color;
-    & :last-child &__cell{
+
+    & :last-child &__cell {
       border-bottom: none;
     }
+
     &__row {
       outline: none;
+
       [class$="services"] & {
         background-color: $main-bg-color;
         border-bottom: 2px solid #ffffff;
       }
+
       &.__link {
         &:hover {
           background-color: #e6e9ed;
@@ -38,10 +45,10 @@ $table-padding: 14px;
         }
       }
     }
+
     &__cell {
       @extend .cell;
+      font-size: 12px;
     }
-
-
   }
 }

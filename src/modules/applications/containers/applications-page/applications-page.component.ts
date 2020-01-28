@@ -5,6 +5,7 @@ import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
 import { Application } from '@shared/_index';
 import { Observable } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-applications-page',
@@ -12,14 +13,24 @@ import { Observable } from 'rxjs';
   styleUrls: ['./applications-page.component.scss'],
 })
 export class ApplicationsPageComponent implements OnInit {
-  applications$: Observable<Application[]> = this.facade.allApplications$;
-
+  applications$: Observable<Application[]> = this.facade.visibleApplications$;
+  selectedApplication$: Observable<Application> = this.facade
+    .selectedApplication$;
   constructor(
     private facade: ApplicationsFacade,
     private dialog: DialogService,
     private router: Router
   ) {}
-  ngOnInit() {}
+  ngOnInit() {
+    this.applications$
+      .pipe(
+        filter(application => application.length > 0),
+        take(1)
+      )
+      .subscribe(applications => {
+        this.router.navigate([`applications/${applications[0].name}`]);
+      });
+  }
 
   addApplication(): void {
     this.dialog.createDialog({
@@ -29,7 +40,7 @@ export class ApplicationsPageComponent implements OnInit {
   }
 
   handleFilter(filterStr: string): void {
-    console.log('');
+    this.facade.onFilter(filterStr);
   }
 
   handleBookmark(application: Application): void {

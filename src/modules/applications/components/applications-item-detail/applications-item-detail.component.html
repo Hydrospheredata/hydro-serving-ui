@@ -1,8 +1,6 @@
 <div class="application " *ngIf="application">
-  <div class="content__header">
-    <div
-      class="action-buttons application__header-buttons application__header-buttons--right"
-    >
+  <div class="application__header">
+    <div class="application__header-buttons application__header-buttons--right">
       <button
         hs-button
         kind="flat"
@@ -33,12 +31,8 @@
       </button>
     </div>
   </div>
+
   <div class="application__body">
-    <div class="application__error" *ngIf="isFailed(application.status)">
-      <hs-error-message>
-        {{ application.message }}
-      </hs-error-message>
-    </div>
     <div class="application__signature">
       <ng-container
         *ngTemplateOutlet="
@@ -69,6 +63,11 @@
           </ol>
         </li>
       </ul>
+    </div>
+    <div class="application__error" *ngIf="isFailed(application.status)">
+      <hs-error-message>
+        {{ application.message }}
+      </hs-error-message>
     </div>
     <div class="application__stages">
       <div

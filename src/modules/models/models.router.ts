@@ -22,16 +22,16 @@ import {
             data: { anim: 'modelDetail' },
             canActivate: [ModelDetailsGuard],
           },
+          {
+            path: ':modelId/:modelVersionId',
+            component: ModelVersionPageComponent,
+            canActivate: [ModelVersionDetailsGuard],
+          },
+          {
+            path: ':modelId/:modelVersionId/monitoring',
+            component: MonitoringPageComponent,
+          },
         ],
-      },
-      {
-        path: 'models/:modelId/:modelVersionId',
-        component: ModelVersionPageComponent,
-        canActivate: [ModelVersionDetailsGuard],
-      },
-      {
-        path: 'models/:modelId/:modelVersionId/monitoring',
-        component: MonitoringPageComponent,
       },
     ]),
   ],
