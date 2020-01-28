@@ -6,7 +6,16 @@
       (filtered)="handleFilter($event)"
       (bookmarked)="handleBookmark($event)"
       (clicked)="handleSidebarClick($event)"
-    ></hs-sidebar>
+      ><button
+        class="applications-page__button"
+        hs-button
+        kind="flat"
+        color="primary"
+        (click)="addApplication()"
+      >
+        create application
+      </button></hs-sidebar
+    >
   </div>
   <div class="applications-page__body">
     <router-outlet></router-outlet>

@@ -16,15 +16,15 @@ export class ModelsPageComponent implements OnInit {
   filterString: string = '';
   constructor(private modelsFacade: ModelsFacade, private router: Router) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.allModels$
-    .pipe(
-      filter(models => models.length > 0),
-      take(1)
-    )
-    .subscribe(models => {
+      .pipe(
+        filter(models => models.length > 0),
+        take(1)
+      )
+      .subscribe(models => {
         this.router.navigate([`models/${models[0].id}`]);
-    });
+      });
   }
 
   handleFilter(str): void {

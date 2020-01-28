@@ -4,6 +4,7 @@ import {
   Output,
   EventEmitter,
   TemplateRef,
+  ContentChild,
 } from '@angular/core';
 import { SortByPipe } from '@shared/pipes/_index';
 import { Observable } from 'rxjs';
@@ -17,12 +18,12 @@ import { Application, Model } from '@shared/models/_index';
   providers: [SortByPipe],
 })
 export class SidebarComponent {
-  @Input() actionButton: TemplateRef<any>;
   @Input() sidebarData: Observable<Application[] | Model[]>;
   @Input() selectedItem: Application | Model;
   @Output() clicked: EventEmitter<Model | Application> = new EventEmitter();
   @Output() filtered: EventEmitter<string> = new EventEmitter();
   @Output() bookmarked: EventEmitter<Model | Application> = new EventEmitter();
+  @ContentChild('button') actionButton;
 
   toggleBookmark(item: Model | Application): void {
     event.stopPropagation();
