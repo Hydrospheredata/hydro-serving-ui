@@ -10,7 +10,6 @@ import {
   ApplicationFormComponent,
   ApplicationsComponent,
   ApplicationsItemDetailComponent,
-  ApplicationsWrapperComponent,
   DialogAddApplicationComponent,
   DialogDeleteApplicationComponent,
   DialogTestComponent,
@@ -49,7 +48,6 @@ const DIALOGS = [
 const COMPONENTS = [
   ApplicationsPageComponent,
   ApplicationsComponent,
-  ApplicationsWrapperComponent,
   ApplicationsItemDetailComponent,
   ApplicationFormComponent,
   KafkaFormComponent,

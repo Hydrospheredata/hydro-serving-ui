@@ -6,11 +6,10 @@ import { ModelVersion } from '@shared/_index';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'hs-profiler',
-  templateUrl: './model-version-profiler.component.html',
-  styleUrls: ['model-version-profiler.component.scss'],
+  templateUrl: './model-version-profiler-page.component.html',
+  styleUrls: ['model-version-profiler-page.component.scss'],
 })
-export class ModelVersionProfilerComponent {
+export class ModelVersionProfilerPageComponent {
   modelVersion$: Observable<ModelVersion> = this.modelsFacade
     .selectedModelVersion$;
   featureName$ = this.profilerFacade.selectedFeatureName$;

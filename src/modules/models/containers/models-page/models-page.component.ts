@@ -1,34 +1,34 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd, RouterEvent, Event } from '@angular/router';
 import { ModelsFacade } from '@models/store';
 import { Model } from '@shared/_index';
 import { Observable, Subscription } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { filter, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-models-page',
   templateUrl: './models-page.component.html',
   styleUrls: ['./models-page.component.scss'],
 })
-export class ModelsPageComponent implements OnInit, OnDestroy {
+export class ModelsPageComponent implements OnDestroy {
   allModels$: Observable<Model[]> = this.modelsFacade.sortedModels$;
   selectedModel$: Observable<Model> = this.modelsFacade.selectedModel$;
   filterString: string = '';
   private routerSub: Subscription;
 
-  constructor(private modelsFacade: ModelsFacade, private router: Router) {}
-
-  ngOnInit() {
-    this.routerSub = this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd && event.url.split('/').length <= 2) {
-        this.redirectToFirst();
-      }
-    });
+  constructor(private modelsFacade: ModelsFacade, private router: Router) {
+    this.routerSub = this.router.events
+      .pipe(
+        filter(event => this.isRootModelsUrl(event)),
+        tap(_ => this.redirectToFirst())
+      )
+      .subscribe();
   }
+
   ngOnDestroy() {
     this.routerSub.unsubscribe();
   }
-  handleFilter(str): void {
+  handleFilter(str: string): void {
     this.modelsFacade.filterString$.next(str);
   }
 
@@ -49,5 +49,9 @@ export class ModelsPageComponent implements OnInit, OnDestroy {
       .subscribe(models => {
         this.router.navigate([`models/${models[0].id}`]);
       });
+  }
+
+  private isRootModelsUrl(event: Event): boolean {
+    return event instanceof NavigationEnd && event.url.split('/').length <= 2;
   }
 }

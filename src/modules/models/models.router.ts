@@ -7,6 +7,7 @@ import {
   ModelsPageComponent,
   ModelPageComponent,
   ModelVersionPageComponent,
+  ModelVersionProfilerPageComponent,
 } from './containers';
 
 @NgModule({
@@ -30,6 +31,10 @@ import {
           {
             path: ':modelId/:modelVersionId/monitoring',
             component: MonitoringPageComponent,
+          },
+          {
+            path: ':modelId/:modelVersionId/profile/:featureName',
+            component: ModelVersionProfilerPageComponent,
           },
         ],
       },

@@ -1,9 +1,0 @@
-<div class="content" [ngClass]="{ 'content--zen-mode': isZenMode$ | async }">
-  <div
-    class="content__body"
-    [@anim]="prepareAnimation(out)"
-    [ngClass]="{ 'content__body--zen-mode': isZenMode$ | async }"
-  >
-    <router-outlet #out="outlet"></router-outlet>
-  </div>
-</div>
