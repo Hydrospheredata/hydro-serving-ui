@@ -1,125 +1,178 @@
-<div class="mv-details">
-  <section
-    class="content__cell mv-details__information"
-    *ngIf="modelVersion"
-  >
-    <div class="content__cell-title">Information</div>
-    <div class="content__cell-body">
-      <ol class="information">
-        <li class="information__item">
-          <span class="information__item-title">Created</span>
-          <span class="information__item-value">
-            <div class="status">
+<div class="model-version">
+  <div class="model-version__row">
+    <div class="model-version__col-6">
+      <div class="model-version__item-header">Details</div>
+      <div class="model-version__details">
+        <ol class="model-version__details-list">
+          <li class="model-version__details-list-item">
+            <span class="model-version__details-list-title">Created</span>
+            <span class="model-version__details-list-value">
               {{ modelVersion.created | utcToLocal | amTimeAgo }}
-            </div>
-          </span>
-        </li>
-        <li class="information__item">
-          <span class="information__item-title">Version</span>
-          <span class="information__item-value">
-            <div class="status">
+            </span>
+          </li>
+          <li class="model-version__details-list-item">
+            <span class="model-version__details-list-title">Version</span>
+            <span class="model-version__details-list-value">
               {{ modelVersion.modelVersion }}
-            </div>
-          </span>
-        </li>
-        <li class="information__item">
-          <span class="information__item-title">Runtime</span>
-          <span class="information__item-value">
-            <div class="runtime">
+            </span>
+          </li>
+          <li class="information__list-item">
+            <span class="model-version__details-list-title">Runtime</span>
+            <span class="model-version__details-list-value">
               <span>{{ modelVersion.runtime?.name }}</span
               ><span class="runtime__tag">{{ modelVersion.runtime?.tag }}</span>
-            </div>
-          </span>
-        </li>
-        <li class="information__item">
-          <span class="information__item-title">Status</span>
-          <ng-container *ngIf="modelVersion.status; let status">
-            <span
-              class="model-version-status model-version-status--{{
-                status | lowercase
-              }}"
-              [status]="status"
-              hsModelVersionStatus
-            >
-              <hydro-icon #statusIcon class="icon"></hydro-icon>
-              <span #statusText class="status"></span>
             </span>
-            <button
-              hs-button
-              color="primary"
-              class="show-log-button"
-              (click)="showBuildLog(modelVersion.id)"
-            >
-              {{ showLog ? 'hide build logs' : 'show build logs' }}
-            </button>
-          </ng-container>
-        </li>
-        <li>
-          <hs-model-version-log
-            *ngIf="showLog"
-            [modelVersion]="modelVersion"
-          ></hs-model-version-log>
-        </li>
-        <li
-          class="information__item"
-          *ngIf="!modelVersion.isExternal"
+          </li>
+        </ol>
+        <div
+          class="model-version__details-status"
+          [ngClass]="{
+            'model-version__details-status--released': isReleased,
+            'model-version__details-status--failed': isFailed
+          }"
         >
-          <span class="information__item-title">Applications</span>
-          <span class="information__item-value">
-            <span
-              *ngFor="
-                let appName of modelVersion.applications;
-                last as isLast
-              "
-              [routerLink]="['/applications', appName]"
-              class="application"
-            >
-              <span class="application-name">{{ appName }}</span
-              ><span *ngIf="!isLast">, </span>
-            </span>
-          </span>
-        </li>
-      </ol>
-      <div *ngIf="!modelVersion.isExternal">
+          <span class="model-version__details-status-label">status</span>
+          <ng-container
+            *ngTemplateOutlet="
+              modelVersionStatus;
+              context: { $implicit: modelVersion.status }
+            "
+          ></ng-container>
+          <button
+            class="model-version__details-status-button"
+            hs-button
+            click="showBuildLog(modelVersion.id)"
+          >
+            show build logs
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="model-version__col-6">
+      <div class="model-version__item-header">Services</div>
+      <div class="model-version__services">
+        <table class="hydro-table">
+          <thead class="hydro-table-head">
+            <tr>
+              <th class="hydro-table-head__cell">service</th>
+              <th class="hydro-table-head__cell">status</th>
+              <th class="hydro-table-head__cell"></th>
+            </tr>
+          </thead>
+          <tbody class="hydro-table-body">
+            <tr *ngFor="let service of services">
+              <td class="hydro-table-body__cell">{{ service.name }}</td>
+              <td class="hydro-table-body__cell">{{ service.status }}</td>
+              <td class="hydro-table-body__cell">{{ service.link }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- <div class="model-version__services-item">
+          <span class="model-version__services-item-label">monitoring</span>
+          <span class="model-version__services-item-status">available</span>
+          <button class="model-version__services-item-button" hs-button>
+            show monitoring
+          </button>
+        </div>
+        <div class="model-version__services-item">
+          <span class="model-version__services-item-label">profiling</span>
+          <span class="model-version__services-item-status">not available</span>
+          <button class="model-version__services-item-button" hs-button>
+            show profiling
+          </button>
+        </div>
+        <div class="model-version__services-item">
+          <span class="model-version__services-item-label">visualization</span>
+          <span class="model-version__services-item-status"
+            >closed for OSS</span
+          >
+          <button class="model-version__services-item-button" hs-button>
+            show visualization
+          </button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="model-version__row">
+    <div class="model-version__col-12">
+      <div class="model-version__item-header">Metadata</div>
+      <section
+        *ngIf="!isEmpty(modelVersion.metadata)"
+        class="model-version__metadata"
+      >
+        <hs-metadata [metadata]="modelVersion.metadata"></hs-metadata>
+      </section>
+    </div>
+  </div>
+
+  <div class="model-version__row">
+    <div class="model-version__col-6">
+      <div class="model-version__item-header">
+        <span>
+          Applications
+        </span>
         <button
-          class="model-version-detail__add-application"
-          (click)="onAddApplication(modelVersion)"
-          [disabled]="!released"
+          class="model-version__item-button"
+          hs-button
           kind="flat"
           color="primary"
-          hs-button
+          (click)="onAddApplication(modelVersion)"
         >
-          create app
+          create application
         </button>
       </div>
-    </div>
-  </section>
-  <ng-container *ngIf="modelVersion.metadata as meta">
-    <section *ngIf="!isEmpty(meta)" class="content__cell mv-details__metadata">
-      <div class="content__cell-title">Metadata</div>
-      <div class="content__cell-body">
-        <hs-metadata [metadata]="meta"></hs-metadata>
+      <div class="model-version__applications">
+        <table class="hydro-table">
+          <thead class="hydro-table-head">
+            <tr>
+              <th class="hydro-table-head__cell">name</th>
+              <th class="hydro-table-head__cell">status</th>
+              <th class="hydro-table-head__cell"></th>
+            </tr>
+          </thead>
+          <tbody class="hydro-table-body">
+            <tr
+              *ngFor="let application of modelVersion.applications"
+              class="hydro-table-body__row"
+            >
+              <td class="hydro-table-body__cell">{{ application }}</td>
+              <td class="hydro-table-body__cell">
+                <hs-application-status status="ready"></hs-application-status>
+              </td>
+              <td
+                class="hydro-table-body__cell model-version__applications-link"
+              >
+                <button hs-button [routerLink]="['/applications', application]">
+                  GO TO
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </section>
-  </ng-container>
-
-  <section class="content__cell mv-details__signatures">
-    <div class="content__cell-title">Signatures</div>
-    <div class="content__cell-body">
-      <hydro-signatures></hydro-signatures>
     </div>
-  </section>
-  <section
-    class="content__cell mv-details__servables"
-    *ngIf="!modelVersion.isExternal"
-  >
-    <div class="content__cell-title">Servables</div>
-    <hs-servables-table
-      [servables]="servables"
-      (showedLog)="showServableLogs($event)"
-    >
-    </hs-servables-table>
-  </section>
+    <div class="model-version__col-6">
+      <div class="model-version__item-header">Servables</div>
+      <section
+        *ngIf="!modelVersion.isExternal"
+        class="model-version__servables"
+      >
+        <hs-servables-table
+          [servables]="servables"
+          (showedLog)="showServableLogs($event)"
+        >
+        </hs-servables-table>
+      </section>
+    </div>
+  </div>
+
+  <div class="model-version__item">
+    <div class="model-version__item-header">Signatures</div>
+    <section class="model-version__signatures">
+      <hydro-signatures></hydro-signatures>
+    </section>
+  </div>
 
   <div class="log" [ngClass]="{ 'log--is-visible': globalLog }">
     <div class="log__layout" (click)="closeGlobalLog()"></div>
@@ -128,3 +181,21 @@
     </div>
   </div>
 </div>
+
+<ng-template #modelVersionStatus let-status>
+  <div [ngSwitch]="status">
+    <div *ngSwitchCase="'released'">
+      <hydro-icon
+        class="model-version__details-status-icon model-version__details-status-icon--released"
+        type="circle-check"
+      ></hydro-icon>
+    </div>
+    <div *ngSwitchCase="'failed'">
+      <hydro-icon
+        class="model-version__details-status-icon model-version__details-status-icon--failed"
+        type="circle-x"
+      ></hydro-icon>
+    </div>
+    <div *ngSwitchDefault>{{ status }}</div>
+  </div>
+</ng-template>

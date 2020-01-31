@@ -3,61 +3,18 @@
 .model-versions {
   &__body {
     width: 100%;
-  }
-  &__table  {
+    overflow: hidden;
     border: 1px $neutral-color-300 solid;
+    border-radius: 4px;
+
+  }
+
+  &__table {
     width: 100%;
   }
 }
 
 .model-version {
-  width: 300px;
-  display: flex;
-  border: 1px $neutral-color-200 solid;
-  background: white;
-  border-radius: 4px;
-  margin-right: 24px;
-  margin-bottom: 24px;
-  cursor: pointer;
-  min-height: 120px;
-  flex-wrap: wrap;
-
-  &:hover {
-    border-color: $neutral-color-300;
-  }
-
-  &__header {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-  }
-
-  &__version {
-    font-size: 24px;
-    padding: 16px;
-    font-family: $font-family-bold;
-    background: $neutral-color-200;
-    color: $neutral-color-800;
-    border-bottom-right-radius: 4px;
-    margin-bottom: 8px;
-  }
-
-  &__body {
-    padding: 8px 12px;
-    font-size: 12px;
-    &-row + &-row {
-      margin-top: 8px;
-    }
-  }
-
-  &__label {
-    color: $neutral-color-800;
-    margin-bottom: 2px;
-    font-size: 12px;
-    line-height: 14px;
-    font-family: $font-family-bold;
-  }
-
   &__status-icon {
     width: 20px;
     height: 20px;
@@ -69,18 +26,5 @@
     &--failed {
       color: $supportive-color-red-700;
     }
-  }
-
-  &__runtime,
-  &__date,
-  &__application {
-    color: $neutral-color-1000;
-    font-family: $font-family-light;
-    line-height: 14px;
-  }
-  &__footer {
-    text-align: right;
-    padding: 4px 12px;
-    width: 100%;
   }
 }

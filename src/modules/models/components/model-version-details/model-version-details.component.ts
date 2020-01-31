@@ -28,6 +28,11 @@ export class ModelVersionDetailsComponent {
   @Input() modelVersion: ModelVersion;
   @Input() servables: Servable[];
   @Input() signature: ISignature;
+  @Input() services: any = [
+    { name: 'monitoring', status: 'ok' },
+    { name: 'profiler', status: 'ok' },
+    { name: 'visualization', status: 'ok' },
+  ];
 
   showLog: boolean = false;
   globalLog: boolean = false;
@@ -86,5 +91,17 @@ export class ModelVersionDetailsComponent {
 
   isEmpty(obj: object): boolean {
     return isEmpty(obj);
+  }
+
+  get status(): ModelVersionStatus {
+    return this.modelVersion.status;
+  }
+
+  get isReleased(): boolean {
+    return this.status === ModelVersionStatus.Released;
+  }
+
+  get isFailed(): boolean {
+    return this.status === ModelVersionStatus.Failed;
   }
 }

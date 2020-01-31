@@ -1,25 +1,36 @@
 <table class="hydro-table servables-table">
-  <tr class="hydro-table-head servables-table__head">
-    <th class="hydro-table-head__cell">name</th>
-    <th class="hydro-table-head__cell">status</th>
-    <th class="hydro-table-head__cell">message</th>
-    <th class="hydro-table-head__cell">actions</th>
-  </tr>
-  <tr class="servables-table__row" *ngFor="let servable of servables">
-    <td class="hydro-table-body__cell">{{ servable.fullName }}</td>
-    <td class="hydro-table-body__cell">{{ servable.status.status }}</td>
-    <td class="hydro-table-body__cell">{{ servable.status.msg }}</td>
-    <td class="hydro-table-body__cell">
-      <div class="servables-table__row-buttons">
-        <button hs-button color="primary" (click)="onShowLog(servable.fullName)">
-          show logs
-        </button>
-        <button hs-button color="warning" (click)="onDelete(servable)">
-          delete
-        </button>
-      </div>
-    </td>
-  </tr>
+  <thead class="hydro-table-head">
+    <tr>
+      <th class="hydro-table-head__cell">name</th>
+      <th class="hydro-table-head__cell">status</th>
+      <th class="hydro-table-head__cell">message</th>
+      <th class="hydro-table-head__cell">actions</th>
+    </tr>
+  </thead>
+  <tbody class="hydro-table-body">
+    <tr
+      class="hydro-table-body__row servables-table__row"
+      *ngFor="let servable of servables"
+    >
+      <td class="hydro-table-body__cell">{{ servable.fullName }}</td>
+      <td class="hydro-table-body__cell">{{ servable.status.status }}</td>
+      <td class="hydro-table-body__cell">{{ servable.status.msg }}</td>
+      <td class="hydro-table-body__cell">
+        <div class="servables-table__row-buttons">
+          <button
+            hs-button
+            color="primary"
+            (click)="onShowLog(servable.fullName)"
+          >
+            show logs
+          </button>
+          <button hs-button color="warning" (click)="onDelete(servable)">
+            delete
+          </button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
 </table>
 
 <div *ngIf="isEmpty" class="servables--is-empty">
