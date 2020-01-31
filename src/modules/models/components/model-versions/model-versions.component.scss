@@ -15,6 +15,12 @@
 }
 
 .model-version {
+  &__application {
+    cursor: pointer;
+    &:hover {
+      color: $primary-color-700;
+    }
+  }
   &__status-icon {
     width: 20px;
     height: 20px;

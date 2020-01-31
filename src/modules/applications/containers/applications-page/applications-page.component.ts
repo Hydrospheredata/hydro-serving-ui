@@ -1,35 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd, Event } from '@angular/router';
 import { DialogAddApplicationComponent } from '@applications/components';
 import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
 import { Application } from '@shared/_index';
-import { Observable } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { filter, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-applications-page',
   templateUrl: './applications-page.component.html',
   styleUrls: ['./applications-page.component.scss'],
 })
-export class ApplicationsPageComponent implements OnInit {
+export class ApplicationsPageComponent implements OnDestroy {
   applications$: Observable<Application[]> = this.facade.visibleApplications$;
   selectedApplication$: Observable<Application> = this.facade
     .selectedApplication$;
+
+  private routerSub: Subscription;
   constructor(
     private facade: ApplicationsFacade,
     private dialog: DialogService,
     private router: Router
-  ) {}
-  ngOnInit() {
-    this.applications$
+  ) {
+    this.routerSub = this.router.events
       .pipe(
-        filter(application => application.length > 0),
-        take(1)
+        filter(event => this.isRootApplicationsUrl(event)),
+        tap(_ => this.redirectToFirst())
       )
-      .subscribe(applications => {
-        this.router.navigate([`applications/${applications[0].name}`]);
-      });
+      .subscribe();
+  }
+
+  ngOnDestroy() {
+    this.routerSub.unsubscribe();
   }
 
   addApplication(): void {
@@ -50,5 +53,20 @@ export class ApplicationsPageComponent implements OnInit {
 
   handleSidebarClick(application: Application): void {
     this.router.navigate([`applications/${application.name}`]);
+  }
+
+  private redirectToFirst() {
+    this.applications$
+      .pipe(
+        filter(application => application.length > 0),
+        take(1)
+      )
+      .subscribe(applications => {
+        this.router.navigate([`applications/${applications[0].name}`]);
+      });
+  }
+
+  private isRootApplicationsUrl(event: Event): boolean {
+    return event instanceof NavigationEnd && event.url.split('/').length <= 2;
   }
 }

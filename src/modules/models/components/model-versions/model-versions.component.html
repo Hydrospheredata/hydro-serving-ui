@@ -36,6 +36,7 @@
             <div
               class="model-version__application"
               *ngFor="let application of modelVersion.applications"
+              [routerLink]="['/applications', application]"
             >
               {{ application }}
             </div>

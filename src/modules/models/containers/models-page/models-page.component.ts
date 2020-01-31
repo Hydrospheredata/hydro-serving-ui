@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd, RouterEvent, Event } from '@angular/router';
+import { Router, NavigationEnd, Event } from '@angular/router';
 import { ModelsFacade } from '@models/store';
 import { Model } from '@shared/_index';
 import { Observable, Subscription } from 'rxjs';

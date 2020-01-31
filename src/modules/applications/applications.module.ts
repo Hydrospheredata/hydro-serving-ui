@@ -8,7 +8,6 @@ import { CodemirrorModule } from 'ng2-codemirror';
 
 import {
   ApplicationFormComponent,
-  ApplicationsComponent,
   ApplicationsItemDetailComponent,
   DialogAddApplicationComponent,
   DialogDeleteApplicationComponent,
@@ -47,7 +46,6 @@ const DIALOGS = [
 
 const COMPONENTS = [
   ApplicationsPageComponent,
-  ApplicationsComponent,
   ApplicationsItemDetailComponent,
   ApplicationFormComponent,
   KafkaFormComponent,
