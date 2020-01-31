@@ -31,7 +31,6 @@ export class ModelVersionDetailsComponent {
   @Input() services: any = [
     { name: 'monitoring', status: 'ok' },
     { name: 'profiler', status: 'ok' },
-    { name: 'visualization', status: 'ok' },
   ];
 
   showLog: boolean = false;

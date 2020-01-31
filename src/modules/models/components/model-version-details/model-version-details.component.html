@@ -1,21 +1,32 @@
 <div class="model-version">
+  <div class="model-version__header">
+    <span class="model-version__header-link" [routerLink]="['../']">
+      <hydro-icon
+        class="model-version__header-link-icon"
+        type="icon-left"
+      ></hydro-icon>
+
+      back to model</span
+    >
+  </div>
   <div class="model-version__row">
-    <div class="model-version__col-6">
+    <div class="model-version__col-8">
       <div class="model-version__item-header">Details</div>
       <div class="model-version__details">
         <ol class="model-version__details-list">
-          <li class="model-version__details-list-item">
-            <span class="model-version__details-list-title">Created</span>
-            <span class="model-version__details-list-value">
-              {{ modelVersion.created | utcToLocal | amTimeAgo }}
-            </span>
-          </li>
           <li class="model-version__details-list-item">
             <span class="model-version__details-list-title">Version</span>
             <span class="model-version__details-list-value">
               {{ modelVersion.modelVersion }}
             </span>
           </li>
+          <li class="model-version__details-list-item">
+            <span class="model-version__details-list-title">Created</span>
+            <span class="model-version__details-list-value">
+              {{ modelVersion.created | utcToLocal | amTimeAgo }}
+            </span>
+          </li>
+
           <li class="information__list-item">
             <span class="model-version__details-list-title">Runtime</span>
             <span class="model-version__details-list-value">
@@ -48,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="model-version__col-6">
+    <div class="model-version__col-4">
       <div class="model-version__item-header">Services</div>
       <div class="model-version__services">
         <table class="hydro-table">
@@ -84,7 +95,7 @@
   </div>
 
   <div class="model-version__row">
-    <div class="model-version__col-6">
+    <div class="model-version__col-4">
       <div class="model-version__item-header">
         <span>
           Applications
@@ -101,6 +112,11 @@
       </div>
       <div class="model-version__applications">
         <table class="hydro-table">
+          <colgroup>
+            <col />
+            <col width="80" />
+            <col width="120" />
+          </colgroup>
           <thead class="hydro-table-head">
             <tr>
               <th class="hydro-table-head__cell">name</th>
@@ -129,7 +145,7 @@
         </table>
       </div>
     </div>
-    <div class="model-version__col-6">
+    <div class="model-version__col-8">
       <div class="model-version__item-header">Servables</div>
       <section
         *ngIf="!modelVersion.isExternal"
