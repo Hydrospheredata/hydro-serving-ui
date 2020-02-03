@@ -56,6 +56,7 @@ import {
   PixelToCanvasDirective,
   AutofocusedDirective,
   ScaleImageDirective,
+  HideInZenModeDirective,
 } from './directives/_index';
 
 const PIPES = [
@@ -102,6 +103,7 @@ const DIRECTIVES = [
   PixelToCanvasDirective,
   AutofocusedDirective,
   ScaleImageDirective,
+  HideInZenModeDirective,
 ];
 
 const RE_EXPORTED_MODULES = [
@@ -119,7 +121,11 @@ const RE_EXPORTED_MODULES = [
 
 @NgModule({
   imports: [...RE_EXPORTED_MODULES],
-  declarations: [...PIPES, ...COMPONENTS, ...DIRECTIVES, ScaleImageDirective],
+  declarations: [
+    ...PIPES,
+    ...COMPONENTS,
+    ...DIRECTIVES,
+  ],
   exports: [...PIPES, ...COMPONENTS, ...DIRECTIVES, ...RE_EXPORTED_MODULES],
 })
 export class SharedModule {}

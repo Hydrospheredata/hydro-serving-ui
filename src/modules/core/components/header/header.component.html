@@ -5,7 +5,7 @@
     </span>
   </ng-container>
 
-  <nav class="header__navigation" *ngIf="!(isZenMode$ | async)">
+  <nav class="header__navigation" hsHideInZenMode>
     <a
       class="header__navigation-item"
       [routerLink]="['/models']"
