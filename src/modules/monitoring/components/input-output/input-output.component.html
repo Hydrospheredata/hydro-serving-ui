@@ -34,30 +34,6 @@
           </td>
         </tr>
       </table>
-
-      <!-- <div
-          class="request__input"
-          *ngFor="let input of reqstoreEntry.request.inputs | keyvalue"
-        >
-          <div class="request__input-name">{{ input.key }}</div>
-          <div>
-            <ng-container
-              *ngTemplateOutlet="isImage(input.key) ? image : plainText"
-            ></ng-container>
-            <ng-template #image>
-              <hs-tensor-image-list
-                [tensorProto]="input.value"
-              ></hs-tensor-image-list>
-            </ng-template>
-            <ng-template #plainText>
-              <div class="request__input-value" hs-expander maxHeight="170">
-                <div #expand>
-                  {{ getValueAsText(input.value) }}
-                </div>
-              </div>
-            </ng-template>
-          </div>
-        </div> -->
     </div>
     <div class="response">
       <div class="response__label">outputs</div>

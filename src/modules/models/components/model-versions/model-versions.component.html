@@ -3,12 +3,12 @@
   <div class="model-versions__body">
     <table class="hydro-table model-versions__table">
       <colgroup>
-        <col width="100"/>
-        <col width="50"/>
+        <col width="100" />
+        <col width="50" />
         <col />
         <col />
         <col />
-        <col width="240"/>
+        <col width="240" />
       </colgroup>
       <thead class="hydro-table-head">
         <tr>
@@ -39,7 +39,9 @@
           <td class="hydro-table-body__cell">
             {{ modelVersion.runtime?.name }}
           </td>
-          <td class="hydro-table-body__cell">{{ modelVersion.created }}</td>
+          <td class="hydro-table-body__cell">
+            {{ modelVersion.created | hsTimeAgo }}
+          </td>
           <td class="hydro-table-body__cell">
             <div
               class="model-version__application"

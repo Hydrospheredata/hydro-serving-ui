@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MomentModule } from 'angular2-moment';
 import { SelectModule } from 'ng2-select';
 
 // Pipes
@@ -13,14 +12,14 @@ import {
   PositiveNumbersPipe,
   SearchPipe,
   SortByPipe,
-  UtcToLocalPipe,
   IterateAsArrayPipe,
   ToNumberPipe,
   MatchSorterPipe,
   DockerImageSplitPipe,
   ReverseArrayPipe,
   FieldShapePipe,
-  MomentPipe,
+  TimeAgoPipe,
+  FormatDatePipe
 } from './pipes/_index';
 
 // Components
@@ -64,14 +63,14 @@ const PIPES = [
   PositiveNumbersPipe,
   SearchPipe,
   SortByPipe,
-  UtcToLocalPipe,
   IterateAsArrayPipe,
   ToNumberPipe,
   MatchSorterPipe,
   DockerImageSplitPipe,
   ReverseArrayPipe,
   FieldShapePipe,
-  MomentPipe,
+  TimeAgoPipe,
+  FormatDatePipe,
 ];
 
 const COMPONENTS = [
@@ -113,7 +112,6 @@ const RE_EXPORTED_MODULES = [
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  MomentModule,
   SelectModule,
   HsD3Module,
   BrowserAnimationsModule,
