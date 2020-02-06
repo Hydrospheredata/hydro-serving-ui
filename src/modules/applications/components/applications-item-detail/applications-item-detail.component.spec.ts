@@ -10,7 +10,6 @@ import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
 import { UpdateModelVersionDirective } from '@testing/directives/test-update-model-version.directive';
 import { MockApplication } from '@testing/factories/application';
-import { of } from 'rxjs';
 
 const applicationsFacadeMock = {};
 describe('ApplicationsItemDetailComponent', () => {
@@ -42,7 +41,7 @@ describe('ApplicationsItemDetailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ApplicationsItemDetailComponent);
     component = fixture.componentInstance;
-    component.application$ = of(MockApplication);
+    component.application = MockApplication;
 
     fixture.detectChanges();
   });

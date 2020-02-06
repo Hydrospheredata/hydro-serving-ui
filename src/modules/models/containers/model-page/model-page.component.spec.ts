@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { ModelsFacade } from '@models/store';
+import { SharedModule } from '@shared/shared.module';
+import { ModelVersionsComponent } from '@testing/components';
 import { ModelPageComponent } from './model-page.component';
+
+const modelsFacade: Partial<ModelsFacade> = {};
 
 describe('ModelPageComponent', () => {
   let component: ModelPageComponent;
@@ -8,7 +12,9 @@ describe('ModelPageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ModelPageComponent],
+      imports: [SharedModule],
+      declarations: [ModelPageComponent, ModelVersionsComponent],
+      providers: [{ provide: ModelsFacade, useValue: modelsFacade }],
     }).compileComponents();
   }));
 

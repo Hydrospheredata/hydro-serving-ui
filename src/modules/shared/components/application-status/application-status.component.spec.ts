@@ -1,21 +1,22 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApplicationStatus, ApplicationStatusComponent } from '@shared/_index';
-import { MockApplication } from '@testing/factories/application';
+import { IconComponent } from '../icons/icons.component';
 
-describe('ApplicationsItemDetailComponent', () => {
+describe('ApplicationStatusComponent', () => {
   let component: ApplicationStatusComponent;
   let fixture: ComponentFixture<ApplicationStatusComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ApplicationStatusComponent],
+      imports: [],
+      declarations: [ApplicationStatusComponent, IconComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ApplicationStatusComponent);
     component = fixture.componentInstance;
-    component.status = undefined;
+    component.status = ApplicationStatus.Ready;
 
     fixture.detectChanges();
   });
@@ -24,11 +25,9 @@ describe('ApplicationsItemDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('contains status text', () => {
+  it('show success icon', () => {
     const el = fixture.debugElement.nativeElement;
-    const statusEl = el.querySelector('.status');
-
-    expect(statusEl).toBeDefined();
-    expect(statusEl.innerText).toEqual(ApplicationStatus.Ready);
+    const statusEl = el.querySelector('.application__status-icon--released');
+    expect(statusEl).toBeTruthy();
   });
 });

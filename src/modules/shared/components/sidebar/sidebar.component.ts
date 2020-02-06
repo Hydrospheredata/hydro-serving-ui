@@ -3,22 +3,16 @@ import {
   Input,
   Output,
   EventEmitter,
-  TemplateRef,
-  ContentChild,
 } from '@angular/core';
-import { SortByPipe } from '@shared/pipes/_index';
-import { Observable } from 'rxjs';
-
 import { Application, Model } from '@shared/models/_index';
 
 @Component({
   selector: 'hs-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
-  providers: [SortByPipe],
 })
 export class SidebarComponent {
-  @Input() sidebarData: Observable<Application[] | Model[]>;
+  @Input() sidebarData: Application[] | Model[];
   @Input() selectedItem: Application | Model;
   @Output() clicked: EventEmitter<Model | Application> = new EventEmitter();
   @Output() filtered: EventEmitter<string> = new EventEmitter();

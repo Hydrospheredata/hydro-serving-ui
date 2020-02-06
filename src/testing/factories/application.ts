@@ -18,7 +18,7 @@ const MockService2: IModelVariant = {
     signature: MockSignature2,
 };
 
-export const MockApplication: IApplication = {
+export const MockApplication: Application = {
     id: 1,
     signature: MockSignature1,
     name: 'app1',
@@ -39,4 +39,5 @@ export const MockApplication: IApplication = {
     error: '',
     kafkaStreaming: [],
     status: ApplicationStatus.Ready,
+    favorite: false,
 };

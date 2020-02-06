@@ -1,9 +1,8 @@
-import { DebugElement } from '@angular/core';
+import { DebugElement, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApplicationsFacade } from '@applications/store';
-import { ModelsFacade } from '@models/store';
 import { ModelVersion } from '@shared/_index';
 import { SharedModule } from '@shared/shared.module';
 import {
@@ -15,15 +14,12 @@ import {
   MockModelVersion1Model1,
   FailedModelVersion,
 } from '@testing/factories/modelVersion';
-import { MockZenModeServiceProvider } from '@testing/services/zenMode.service';
-import { of, BehaviorSubject } from 'rxjs';
 import { ModelVersionDetailsComponent } from './model-version-details.component';
 
 describe('ModelVersionDetailsComponent', () => {
   let component: ModelVersionDetailsComponent;
   let fixture: ComponentFixture<ModelVersionDetailsComponent>;
   let applicationsFacade: ApplicationsFacade;
-  const modelVersionStream = new BehaviorSubject(MockModelVersion1Model1);
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
@@ -35,13 +31,6 @@ describe('ModelVersionDetailsComponent', () => {
       imports: [SharedModule, RouterTestingModule],
       providers: [
         {
-          provide: ModelsFacade,
-          useValue: {
-            selectedModelVersion$: modelVersionStream.asObservable(),
-            selectedServables$: of([]),
-          },
-        },
-        {
           provide: ApplicationsFacade,
           useValue: {
             createApplicationFromModelVersion: (
@@ -49,15 +38,21 @@ describe('ModelVersionDetailsComponent', () => {
             ) => {},
           },
         },
-        MockZenModeServiceProvider,
       ],
-    }).compileComponents();
+    })
+      .overrideComponent(ModelVersionDetailsComponent, {
+        set: {
+          changeDetection: ChangeDetectionStrategy.Default,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ModelVersionDetailsComponent);
     component = fixture.componentInstance;
     applicationsFacade = TestBed.get(ApplicationsFacade);
+    component.modelVersion = MockModelVersion1Model1;
 
     fixture.detectChanges();
   });
@@ -70,17 +65,15 @@ describe('ModelVersionDetailsComponent', () => {
     let button: DebugElement;
 
     beforeEach(() => {
-      button = fixture.debugElement.query(
-        By.css('.model-version-detail__add-application')
-      );
+      button = fixture.debugElement.query(By.css('.create-application-button'));
       spyOn(component, 'onAddApplication').and.callThrough();
     });
     it('shown if model version released', () => {
       expect(button.nativeElement).toBeTruthy();
       expect(button.nativeElement.disabled).toBeFalsy();
     });
-    it('hidden if model version is not released', () => {
-      modelVersionStream.next(FailedModelVersion);
+    it('disabled if model version is not released', () => {
+      component.modelVersion = FailedModelVersion;
       fixture.detectChanges();
       expect(button.nativeElement.disabled).toBeTruthy();
     });
@@ -97,20 +90,18 @@ describe('ModelVersionDetailsComponent', () => {
 
     it('add application', () => {
       spyOn(applicationsFacade, 'createApplicationFromModelVersion');
-      component.modelVersion$.subscribe(mv => {
-        button.triggerEventHandler('click', null);
-        fixture.detectChanges();
+      button.triggerEventHandler('click', null);
+      fixture.detectChanges();
 
-        expect(
-          applicationsFacade.createApplicationFromModelVersion
-        ).toHaveBeenCalled();
-        expect(
-          applicationsFacade.createApplicationFromModelVersion
-        ).toHaveBeenCalledTimes(1);
-        expect(
-          applicationsFacade.createApplicationFromModelVersion
-        ).toHaveBeenCalledWith(mv);
-      });
+      expect(
+        applicationsFacade.createApplicationFromModelVersion
+      ).toHaveBeenCalled();
+      expect(
+        applicationsFacade.createApplicationFromModelVersion
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        applicationsFacade.createApplicationFromModelVersion
+      ).toHaveBeenCalledWith(component.modelVersion);
     });
   });
 });

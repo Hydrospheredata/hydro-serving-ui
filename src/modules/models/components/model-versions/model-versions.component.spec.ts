@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedModule } from '@shared/shared.module';
 import { ModelVersionsComponent } from './model-versions.component';
 
 describe('ModelVersionsComponent', () => {
@@ -8,9 +8,9 @@ describe('ModelVersionsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ModelVersionsComponent ]
-    })
-    .compileComponents();
+      imports: [SharedModule],
+      declarations: [ModelVersionsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

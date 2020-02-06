@@ -6,6 +6,11 @@ import format from 'date-fns/format';
 })
 export class FormatDatePipe implements PipeTransform {
   transform(time: number | Date): string {
-    return format(new Date(time), 'dd MMM yyyy H:mm:ss');
+    try {
+      return format(new Date(time), 'dd MMM yyyy H:mm:ss');
+    } catch (e) {
+      console.error(e);
+      return `${time}`;
+    }
   }
 }

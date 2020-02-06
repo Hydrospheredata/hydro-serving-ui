@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
+import { SharedModule } from '@shared/shared.module';
 import { NavigationComponent } from './navigation.component';
 
 describe('NavigationComponent', () => {
@@ -8,6 +9,7 @@ describe('NavigationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [SharedModule, RouterTestingModule],
       declarations: [NavigationComponent],
     }).compileComponents();
   }));
