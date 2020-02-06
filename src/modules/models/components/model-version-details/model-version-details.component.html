@@ -43,12 +43,9 @@
           }"
         >
           <span class="model-version__details-status-label">status</span>
-          <ng-container
-            *ngTemplateOutlet="
-              modelVersionStatus;
-              context: { $implicit: modelVersion.status }
-            "
-          ></ng-container>
+          <hs-model-version-status
+            [status]="modelVersion.status"
+          ></hs-model-version-status>
           <button
             class="model-version__details-status-button"
             hs-button

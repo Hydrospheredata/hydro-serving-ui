@@ -1,0 +1,24 @@
+@import "variables";
+
+.model-version-status {
+  &__icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  &--assembling {
+    color: $primary-color-700
+  }
+
+  &--released {
+    color: $supportive-color-green-700
+  }
+
+  &--failed {
+    color: $supportive-color-red-700
+  }
+
+  &--undefined {
+    color: $neutral-color-900;
+  }
+}

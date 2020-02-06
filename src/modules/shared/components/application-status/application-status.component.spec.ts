@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApplicationStatus, ApplicationStatusComponent } from '@shared/_index';
-import { IconComponent } from '../icons/icons.component';
 import { getNativeElement } from '@testing/helpers';
+import { IconComponent } from '../icons/icons.component';
 
-fdescribe('ApplicationStatusComponent', () => {
+describe('ApplicationStatusComponent', () => {
   let component: ApplicationStatusComponent;
   let fixture: ComponentFixture<ApplicationStatusComponent>;
   let debugElement: DebugElement;

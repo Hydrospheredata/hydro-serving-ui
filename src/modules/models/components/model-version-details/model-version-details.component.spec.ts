@@ -14,6 +14,7 @@ import {
   MockModelVersion1Model1,
   FailedModelVersion,
 } from '@testing/factories/modelVersion';
+import { ModelVersionStatusComponent } from '../model-version-status/model-version-status.component';
 import { ModelVersionDetailsComponent } from './model-version-details.component';
 
 describe('ModelVersionDetailsComponent', () => {
@@ -27,6 +28,7 @@ describe('ModelVersionDetailsComponent', () => {
         ModelVersionLogComponent,
         ServablesTableComponent,
         SignaturesComponent,
+        ModelVersionStatusComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [

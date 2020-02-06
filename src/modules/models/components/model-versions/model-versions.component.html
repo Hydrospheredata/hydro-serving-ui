@@ -29,12 +29,7 @@
             {{ modelVersion.modelVersion }}
           </td>
           <td class="hydro-table-body__cell">
-            <ng-container
-              *ngTemplateOutlet="
-                modelVersionStatus;
-                context: { $implicit: modelVersion.status }
-              "
-            ></ng-container>
+            <hs-model-version-status [status]="modelVersion.status"></hs-model-version-status>
           </td>
           <td class="hydro-table-body__cell">
             {{ modelVersion.runtime?.name }}
@@ -68,21 +63,3 @@
     </table>
   </div>
 </div>
-
-<ng-template #modelVersionStatus let-status>
-  <div [ngSwitch]="status">
-    <div *ngSwitchCase="'released'">
-      <hydro-icon
-        class="model-version__status-icon model-version__status-icon--released"
-        type="circle-check"
-      ></hydro-icon>
-    </div>
-    <div *ngSwitchCase="'failed'">
-      <hydro-icon
-        class="model-version__status-icon model-version__status-icon--failed"
-        type="circle-x"
-      ></hydro-icon>
-    </div>
-    <div *ngSwitchDefault>{{ status }}</div>
-  </div>
-</ng-template>

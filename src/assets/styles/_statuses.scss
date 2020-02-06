@@ -45,23 +45,3 @@
     }
   }
 }
-
-.model-version-status {
-  padding: 2px 8px;
-  border-radius: 2px;
-
-  &--released {
-    background: $status-success-background-color;
-    color: $status-success-text-color;
-  }
-
-  &--assembling {
-    background: $neutral-color-100;
-    color: $neutral-color-700;
-  }
-
-  &--failed {
-    background: $supportive-color-red-100;
-    color: $supportive-color-red-700;
-  }
-}
