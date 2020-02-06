@@ -11,5 +11,11 @@
       type="circle-x"
     ></hydro-icon>
   </div>
-  <div *ngSwitchDefault>{{ status }}</div>
+  <div *ngSwitchCase="'assembling'">
+    <hydro-icon
+      class="application__status-icon application__status-icon--assembling"
+      type="clock"
+    ></hydro-icon>
+  </div>
+  <div *ngSwitchDefault class="application__status-unknown">{{ status }}</div>
 </div>
