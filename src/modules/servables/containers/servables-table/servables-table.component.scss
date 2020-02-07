@@ -19,3 +19,16 @@
   font-size: 12px;
   font-family: $font-family-light;
 }
+
+.servable {
+  &__status {
+    color: $neutral-color-500;
+    &-icon {
+      width: 18px;
+      height: 18px;
+    }
+    &--serving {
+      color: $supportive-color-green-700;
+    }
+  }
+}

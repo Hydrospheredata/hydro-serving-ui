@@ -8,7 +8,8 @@ import {
   ModelVersionDetailsComponent,
   ModelVersionLogComponent,
   ModelVersionsComponent,
-  ModelVersionStatusComponent
+  ModelVersionStatusComponent,
+  ModelVersionsRowComponent,
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
@@ -52,6 +53,7 @@ import {
     ModelVersionsComponent,
     SignaturesComponent,
     ModelVersionStatusComponent,
+    ModelVersionsRowComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],

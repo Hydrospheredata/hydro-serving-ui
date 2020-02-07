@@ -13,8 +13,18 @@
       *ngFor="let servable of servables"
     >
       <td class="hydro-table-body__cell">{{ servable.fullName }}</td>
-      <td class="hydro-table-body__cell">{{ servable.status.status }}</td>
-      <td class="hydro-table-body__cell">{{ servable.status.msg }}</td>
+      <td class="hydro-table-body__cell">
+        <ng-container
+          *ngTemplateOutlet="
+            status;
+            context: { $implicit: servable.status.status }
+          "
+        ></ng-container>
+
+      </td>
+      <td class="hydro-table-body__cell">
+        {{ servable.status.msg }}
+      </td>
       <td class="hydro-table-body__cell">
         <div class="servables-table__row-buttons">
           <button
@@ -36,3 +46,22 @@
 <div *ngIf="isEmpty" class="servables--is-empty">
   Servable's list is empty
 </div>
+
+<ng-template #status let-status>
+  <div
+    class="servable__status"
+    [ngSwitch]="status"
+    [ngClass]="{ 'servable__status--serving': status === 'Serving' }"
+  >
+    <hydro-icon
+      *ngSwitchCase="'Serving'"
+      class="servable__status-icon"
+      type="circle-check"
+    ></hydro-icon>
+    <hydro-icon
+      *ngSwitchDefault
+      class="servable__status-icon"
+      type="clock"
+    ></hydro-icon>
+  </div>
+</ng-template>

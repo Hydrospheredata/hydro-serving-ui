@@ -21,44 +21,11 @@
         </tr>
       </thead>
       <tbody class="hydro-table-body">
-        <tr
-          *ngFor="let modelVersion of modelVersions"
+        <hs-model-versions-row
           class="hydro-table-body__row"
-        >
-          <td class="hydro-table-body__cell">
-            {{ modelVersion.modelVersion }}
-          </td>
-          <td class="hydro-table-body__cell">
-            <hs-model-version-status [status]="modelVersion.status"></hs-model-version-status>
-          </td>
-          <td class="hydro-table-body__cell">
-            {{ modelVersion.runtime?.name }}
-          </td>
-          <td class="hydro-table-body__cell">
-            {{ modelVersion.created | hsTimeAgo }}
-          </td>
-          <td class="hydro-table-body__cell">
-            <div
-              class="model-version__application"
-              *ngFor="let application of modelVersion.applications"
-              [routerLink]="['/applications', application]"
-            >
-              {{ application }}
-            </div>
-          </td>
-          <td class="hydro-table-body__cell">
-            <button hs-button color="primary" [routerLink]="[modelVersion.id]">
-              DETAILS
-            </button>
-            <button
-              hs-button
-              color="primary"
-              [routerLink]="[modelVersion.id, 'monitoring']"
-            >
-              MONITORING
-            </button>
-          </td>
-        </tr>
+          *ngFor="let modelVersion of modelVersions"
+          [modelVersion]="modelVersion"
+        ></hs-model-versions-row>
       </tbody>
     </table>
   </div>

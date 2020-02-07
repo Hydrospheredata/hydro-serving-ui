@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModelVersion } from '@shared/_index';
 
 @Component({
@@ -6,8 +6,6 @@ import { ModelVersion } from '@shared/_index';
   templateUrl: './model-versions.component.html',
   styleUrls: ['./model-versions.component.scss'],
 })
-export class ModelVersionsComponent implements OnInit {
+export class ModelVersionsComponent {
   @Input() modelVersions: ModelVersion[] = [];
-
-  ngOnInit() {}
 }

@@ -1,0 +1,27 @@
+@import "variables";
+
+:host {
+  display: table-row;
+}
+
+.model-version {
+  &__model-version {
+    font-family: $font-family-bold;
+  }
+  &__external {
+    font-family: $font-family-bold;
+    color: $neutral-color-400;
+    padding-right: 8px;
+  }
+  &__application {
+    cursor: pointer;
+    &:hover {
+      color: $primary-color-700;
+    }
+  }
+  &__icon {
+    width: 18px;
+    height: 18px;
+    color: $neutral-color-700;
+  }
+}

@@ -1,0 +1,48 @@
+<td class="hydro-table-body__cell">
+  <span *ngIf="modelVersion.isExternal" class="model-version__external"
+    >ext.</span
+  >
+  <span class="model-version__model-version">{{
+    modelVersion.modelVersion
+  }}</span>
+</td>
+<td class="hydro-table-body__cell">
+  <hs-model-version-status
+    [status]="modelVersion.status"
+  ></hs-model-version-status>
+</td>
+<td class="hydro-table-body__cell">
+  <span *ngIf="!modelVersion.isExternal; else blockIcon">
+    {{ modelVersion.runtime?.name }}
+  </span>
+</td>
+<td class="hydro-table-body__cell">
+  {{ modelVersion.created | hsTimeAgo }}
+</td>
+<td class="hydro-table-body__cell">
+  <ng-container *ngIf="!modelVersion.isExternal; else blockIcon">
+    <div
+      class="model-version__application"
+      *ngFor="let application of modelVersion.applications"
+      [routerLink]="['/applications', application]"
+    >
+      {{ application }}
+    </div>
+  </ng-container>
+</td>
+<td class="hydro-table-body__cell">
+  <button hs-button color="primary" [routerLink]="[modelVersion.id]">
+    DETAILS
+  </button>
+  <button
+    hs-button
+    color="primary"
+    [routerLink]="[modelVersion.id, 'monitoring']"
+  >
+    MONITORING
+  </button>
+</td>
+
+<ng-template #blockIcon>
+  <hydro-icon class="model-version__icon" type="block"></hydro-icon>
+</ng-template>

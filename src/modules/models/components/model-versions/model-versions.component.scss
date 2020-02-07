@@ -18,24 +18,3 @@
     width: 100%;
   }
 }
-
-.model-version {
-  &__application {
-    cursor: pointer;
-    &:hover {
-      color: $primary-color-700;
-    }
-  }
-  &__status-icon {
-    width: 20px;
-    height: 20px;
-
-    &--released {
-      color: $supportive-color-green-700;
-    }
-
-    &--failed {
-      color: $supportive-color-red-700;
-    }
-  }
-}
