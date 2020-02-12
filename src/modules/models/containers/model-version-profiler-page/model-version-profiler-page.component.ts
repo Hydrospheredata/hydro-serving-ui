@@ -24,7 +24,7 @@ export class ModelVersionProfilerPageComponent {
 
   backToModelVersion(modelVersion: ModelVersion): void {
     this.router.navigate(
-      ['models', modelVersion.model.id, modelVersion.id, 'details'],
+      ['models', modelVersion.model.id, modelVersion.id],
       { queryParamsHandling: 'merge' }
     );
   }

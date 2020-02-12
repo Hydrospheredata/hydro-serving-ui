@@ -57,7 +57,7 @@ const COMPONENTS = [
   ApplicationsItemDetailComponent,
   ModelVersionsComponent,
   ModelVersionDetailsComponent,
-  ModelVersionsRowComponent
+  ModelVersionsRowComponent,
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];

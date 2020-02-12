@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Model, ModelVersion } from '@shared/_index';
-
+import { cmpOperators } from '../../models';
 @Component({
   selector: 'hs-metric-spec-config',
   templateUrl: 'metric-spec-config.component.html',
@@ -17,12 +17,5 @@ export class MetricSpecConfigComponent {
   @Input()
   modelVersions: ModelVersion[];
 
-  thresholdCmpOperators: Array<{ kind: string }> = [
-    { kind: 'Eq' },
-    { kind: 'NotEq' },
-    { kind: 'Greater' },
-    { kind: 'Less' },
-    { kind: 'GreaterEq' },
-    { kind: 'LessEq' },
-  ];
+  thresholdCmpOperators = cmpOperators;
 }

@@ -39,9 +39,11 @@
       color: $neutral-color-700;
 
       &-link {
-        font-family: $font-family-bold;
-        color: $primary-color-900;
+        color: $neutral-color-700;
         cursor: pointer;
+        &:hover {
+          color: $neutral-color-900;
+        }
       }
 
       &-separator {
