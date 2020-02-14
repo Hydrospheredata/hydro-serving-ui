@@ -6,7 +6,7 @@
     margin-bottom: 8px;
     &-link {
       cursor: pointer;
-      font-size: 16px;
+      font-size: 14px;
       color: $neutral-color-1000;
       font-family: $font-family-bold;
       &-icon {
@@ -230,39 +230,6 @@
     &-item + &-item {
       margin-left: 12px;
     }
-    // border: 1px $neutral-color-300 solid;
-    // border-radius: 4px;
-    // overflow: hidden;
-    // &-item {
-    //   width: 160px;
-    //   display: flex;
-    //   flex-direction: column;
-    //   align-items: center;
-    //   background: white;
-    //   border: 1px $neutral-color-300 solid;
-    //   padding: 12px;
-    //   border-radius: 4px;
-
-    //   &-label {
-    //     font-family: $font-family-bold;
-    //     line-height: 24px;
-    //   }
-
-    //   &-status {
-    //     line-height: 48px;
-    //     text-transform: uppercase;
-
-    //     &--available {}
-
-    //     &--not-available {}
-
-    //     &--closed {}
-    //   }
-    // }
-
-    // &-item+&-item {
-    //   margin-left: 12px;
-    // }
   }
 
   &__applications {
@@ -275,7 +242,6 @@
       padding: 12px;
     }
 
-    &-link {}
   }
 
   &__metadata {
@@ -350,5 +316,15 @@
       opacity: 1;
       transition: .6s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
     }
+  }
+}
+
+.runtime {
+  &__tag {
+    background: $neutral-color-200;
+    color: $neutral-color-700;
+    margin-left: 4px;
+    padding: 2px 4px;
+    border-radius: 4px;
   }
 }

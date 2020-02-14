@@ -1,7 +1,5 @@
 @import "variables.scss";
 
-
-
 .cs {
   &-align-center {
     align-items: center;
@@ -96,7 +94,7 @@
   }
   &-message {
     &.error {
-      color: $color--failed;
+      color: $supportive-color-red-500;
     }
   }
   &-table {

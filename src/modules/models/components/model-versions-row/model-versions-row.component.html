@@ -12,9 +12,14 @@
   ></hs-model-version-status>
 </td>
 <td class="hydro-table-body__cell">
-  <span *ngIf="!modelVersion.isExternal; else blockIcon">
-    {{ modelVersion.runtime?.name }}
-  </span>
+  <ng-container *ngIf="!modelVersion.isExternal; else blockIcon">
+    <span>
+      {{ modelVersion.runtime?.name }}
+    </span>
+    <span class="model-version__runtime-tag">
+      {{ modelVersion.runtime?.tag }}
+    </span>
+  </ng-container>
 </td>
 <td class="hydro-table-body__cell">
   {{ modelVersion.created | hsTimeAgo }}
