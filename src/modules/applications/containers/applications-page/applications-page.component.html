@@ -12,6 +12,7 @@
         kind="flat"
         color="primary"
         (click)="addApplication()"
+        [disabled]="!(someModelVersionIsReleased$ | async)"
       >
         create application
       </button></hs-sidebar
@@ -19,5 +20,17 @@
   </div>
   <div class="applications-page__body">
     <router-outlet></router-outlet>
+    <div
+      *ngIf="!(someModelVersionIsReleased$ | async)"
+      class="applications-page__message"
+    >
+      <a
+        class="applications-page__message-link"
+        href="https://hydrosphere.io/serving-docs/latest/tutorials/index.html#serving-the-model"
+        target="_blank"
+        >Upload</a
+      >
+      first model
+    </div>
   </div>
 </div>

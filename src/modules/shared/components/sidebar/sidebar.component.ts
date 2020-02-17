@@ -1,9 +1,4 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Application, Model } from '@shared/models/_index';
 
 @Component({
@@ -12,7 +7,7 @@ import { Application, Model } from '@shared/models/_index';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
-  @Input() sidebarData: Application[] | Model[];
+  @Input() sidebarData: Application[] | Model[] = [];
   @Input() selectedItem: Application | Model;
   @Output() clicked: EventEmitter<Model | Application> = new EventEmitter();
   @Output() filtered: EventEmitter<string> = new EventEmitter();
@@ -29,5 +24,9 @@ export class SidebarComponent {
 
   handleClick(item: Model | Application): void {
     this.clicked.emit(item);
+  }
+
+  get isEmpty(): boolean {
+    return this.sidebarData === null || this.sidebarData.length === 0;
   }
 }

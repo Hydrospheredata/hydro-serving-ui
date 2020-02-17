@@ -6,6 +6,7 @@ import { DialogService } from '@dialog/dialog.service';
 import { Application } from '@shared/_index';
 import { Observable, Subscription } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
+import { ModelsFacade } from '@models/store';
 
 @Component({
   selector: 'hs-applications-page',
@@ -13,13 +14,15 @@ import { filter, take, tap } from 'rxjs/operators';
   styleUrls: ['./applications-page.component.scss'],
 })
 export class ApplicationsPageComponent implements OnDestroy {
-  applications$: Observable<Application[]> = this.facade.visibleApplications$;
+  applications$: Observable<Application[]>;
+  someModelVersionIsReleased$: Observable<boolean>;
   selectedApplication$: Observable<Application> = this.facade
     .selectedApplication$;
 
   private routerSub: Subscription;
   constructor(
     private facade: ApplicationsFacade,
+    private modelsFacade: ModelsFacade,
     private dialog: DialogService,
     private router: Router
   ) {
@@ -29,6 +32,9 @@ export class ApplicationsPageComponent implements OnDestroy {
         tap(_ => this.redirectToFirst())
       )
       .subscribe();
+
+    this.applications$ = facade.visibleApplications$;
+    this.someModelVersionIsReleased$ = this.modelsFacade.someModelVersionIsReleased$;
   }
 
   ngOnDestroy() {

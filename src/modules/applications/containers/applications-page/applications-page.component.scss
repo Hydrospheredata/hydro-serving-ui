@@ -1,3 +1,4 @@
+@import "variables";
 .applications-page {
   display: flex;
   overflow: hidden;
@@ -14,5 +15,14 @@
   &__body {
     width: 100%;
     overflow: scroll;
+  }
+  &__message {
+    padding: 24px;
+    text-align: center;
+    font-size: 24px;
+
+    &-link {
+      color: $primary-color-700;
+    }
   }
 }

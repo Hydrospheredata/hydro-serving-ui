@@ -86,73 +86,9 @@
     }
   }
 
-  // background-color: white;
-  // min-height: 100%;
-  // &-header {
-  //   padding: 16px 24px;
-  //   &__row {
-  //     display: flex;
-  //     align-items: center;
-  //     justify-content: space-between;
-  //   }
-  // }
-  // &-title {
-  //   font-weight: 700;
-  //   font-size: 22px;
-  //   margin: 0;
-  //   line-height: 1;
-  //   text-transform: capitalize;
-  //   line-height: 46px;
-  // }
-  // &-search {
-  //   flex-basis: 100%;
-  //   margin-bottom: 0;
-  // }
-  // &-list {
-  //   list-style: none;
-  //   margin: 0;
-  //   padding: 0;
-  //   &__item {
-  //     display: flex;
-  //     justify-content: space-between;
-  //     align-items: center;
-  //     padding: 0 24px;
-  //     cursor: pointer;
-  //     outline: none;
-  //     line-height: 36px;
-  //     color: $neutral-color-400;
-  //     transition: .3s all ease;
-  //     &.__active,
-  //     &:hover,
-  //     &:focus {
-  //       background: white;
-  //       box-shadow: inset -2px 0px $primary-color-800;
-  //       color: $primary-color-1000;
-  //     }
-  //     &-status {
-  //       line-height: 24px;
-  //     }
-  //     &-name {
-  //       line-break: strict;
-  //       font-size: 16px;
-  //       display: block;
-  //       width: 70%;
-  //       white-space: nowrap;
-  //       overflow: hidden;
-  //       text-overflow: ellipsis
-  //     }
-  //   }
-  // }
-  // &__filter {
-  //   width: 100%;
-  // }
-  // &__empty-message {
-  //   text-align: center;
-  //   color: $neutral-color-500;
-  //   text-transform: uppercase;
-  //   letter-spacing: 1px;
-  //   font-size: 12px;
-  //   font-style: italic;
-  //   font-family: $font-family-light;
-  // }
+  &__message {
+    color: $neutral-color-500;
+    text-align: center;
+    font-family: $font-family-light;
+  }
 }

@@ -39,7 +39,7 @@ export class ApplicationsFacade {
         return applications.filter(({ name }) => name.includes(filterStr));
       }
       return applications;
-    })
+    }),
   );
   public nonFavoriteApplications$ = this.filteredApplications$.pipe(
     map(apps => apps.filter(app => !app.favorite))
