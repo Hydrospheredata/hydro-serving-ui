@@ -4,7 +4,9 @@
   <div class="metrics">
     <ng-container *ngIf="modelVersion$ | async as modelVersion">
       <button
-        class="button button--primary add-metric-button"
+        hs-button
+        kind="flat"
+        color="primary"
         (click)="onAddMetric(modelVersion)"
       >
         add metric
