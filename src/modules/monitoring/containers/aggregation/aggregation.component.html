@@ -25,8 +25,8 @@
           <span class="aggregation__header-count">{{ currentRequests }} </span>
         </div>
         <div>
-          <span>{{ firstId | checkIdToTime | moment }}</span> -
-          <span>{{ lastId | checkIdToTime | moment }}</span>
+          <span>{{ firstId | checkIdToTime | hsFormatDate }}</span> -
+          <span>{{ lastId | checkIdToTime | hsFormatDate }}</span>
         </div>
       </div>
       <hydro-icon

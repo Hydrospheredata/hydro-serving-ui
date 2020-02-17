@@ -1,41 +1,39 @@
 <aside class="sidebar">
-  <div class="sidebar-header">
-    <div class="sidebar-header__row">
-      <ng-container *ngIf="actionButton">
-        <ng-container *ngTemplateOutlet="actionButton"></ng-container>
-      </ng-container>
+  <div class="sidebar__header">
+    <ng-content></ng-content>
+    <div class="sidebar__filter">
+      <div class="sidebar__filter-label"></div>
+      <hydro-icon class="sidebar__filter-icon" type="icon-search"></hydro-icon>
+      <input
+        class="sidebar__filter-input"
+        type="text"
+        (input)="handleFilter($event.target.value)"
+      />
     </div>
-    <div class="sidebar-header__row" *ngIf="isFilterEnabled">
-      <hydro-filter
-        class="sidebar__filter"
-        [data]="sidebarList"
-        (filterEvent)="onFilter($event)"
+  </div>
+  <ng-container *ngIf="!isEmpty; else message">
+    <div class="sidebar__list">
+      <div
+        class="sidebar__item"
+        *ngFor="let item of sidebarData"
+        (click)="handleClick(item)"
+        [ngClass]="{ 'sidebar__item--selected': selectedItem === item }"
       >
-      </hydro-filter>
+        <hydro-icon
+          type="bookmark"
+          class="sidebar__item-bookmark"
+          (click)="toggleBookmark(item)"
+          [ngClass]="{ 'sidebar__item-bookmark--selected': item.favorite }"
+        ></hydro-icon>
+        <span class="sidebar__item-name">{{ item.name }}</span>
+        <span *ngIf="item.status" class="sidebar__item-status">
+          <hs-application-status [status]="item.status"></hs-application-status>
+        </span>
+      </div>
     </div>
-  </div>
-
-  <div class="sidebar-body">
-    <ng-container *ngIf="sidebarFiltredList.length; else emptyMessage">
-      <ul class="sidebar-list">
-        <li
-          *ngFor="let item of sidebarFiltredList"
-          class="sidebar-list__item"
-          [routerLink]="[isApplications ? item.name : item.id]"
-          routerLinkActive="__active"
-        >
-          <span class="sidebar-list__item-name">{{ item.name }}</span>
-          <ng-container *ngIf="isApplications">
-            <hs-application-status
-              class="sidebar-list__item-status"
-              [application]="item"
-            ></hs-application-status>
-          </ng-container>
-        </li>
-      </ul>
-    </ng-container>
-    <ng-template #emptyMessage>
-      <div class="sidebar__empty-message">not found</div>
-    </ng-template>
-  </div>
+  </ng-container>
 </aside>
+
+<ng-template #message>
+  <div class="sidebar__message">list is empty</div>
+</ng-template>

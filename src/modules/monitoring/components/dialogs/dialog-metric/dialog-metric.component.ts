@@ -18,7 +18,7 @@ import {
   MetricSpecification,
   MetricSpecificationRequest,
 } from '@shared/models/metric-specification.model';
-
+import { cmpOperators } from '../../../models';
 export const metricSpec = new InjectionToken<MetricSpecification>(
   'metric spec id'
 );
@@ -122,7 +122,7 @@ export class DialogMetricComponent implements OnInit {
           ),
         ]),
         thresholdCmpOperator: this.fb.control(
-          { kind: '' },
+          cmpOperators[0],
           Validators.required
         ),
         model: this.fb.control('', Validators.required),

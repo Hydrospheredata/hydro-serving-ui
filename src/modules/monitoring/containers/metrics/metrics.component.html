@@ -4,7 +4,9 @@
   <div class="metrics">
     <ng-container *ngIf="modelVersion$ | async as modelVersion">
       <button
-        class="button button--primary add-metric-button"
+        hs-button
+        kind="flat"
+        color="primary"
         (click)="onAddMetric(modelVersion)"
       >
         add metric
@@ -49,7 +51,7 @@
           <div class="metric__actions" *ngIf="!metric.id.startsWith('fake-id')">
             <div class="metric__action" (click)="onDeleteMetric(metric.id)">
               <hydro-icon
-                class="button__icon metric__action-icon "
+                class="hs-button__icon metric__action-icon "
                 type="icon-remove"
               ></hydro-icon>
             </div>

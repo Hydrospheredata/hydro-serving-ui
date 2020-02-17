@@ -1,70 +1,51 @@
 @import 'variables';
 
-.hydro-navbar {
-  height: 48px;
+.header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  background: white;
+  padding: 0px 8px;
+  height: 48px;
   &__logo {
     cursor: pointer;
     outline: none;
-    position: absolute;
+    position: relative;
     background: $primary-color-900;
-    width: 250px;
-    padding: 6px 24px 0;
-    height: 48px;
+    left: -2px;
+
     &-icon {
       width: 152px;
       height: 36px;
     }
   }
-  &__menu {
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    flex: auto;
-    justify-content: center;
+
+  &__navigation {
     &-item {
-      line-height: 19px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 15px;
       text-decoration: none;
-      font-size: 14px;
-      min-width: 170px;
-      color: $neutral-color-300;
-      transition: .3s all ease;
-      &:not(:last-child) {
-        margin-right: 15px;
-      }
-      &.__active, &:hover {
-        color: $primary-color-800;
-        box-shadow: inset 0px -2px $primary-color-800;
+      color: white;
+      opacity: .5;
+      &:hover, &--active {
+        opacity: 1;
       }
     }
-  }
-  &__icon {
-    margin-right: 15px;
-    &--models {
-      width: 18px;
-      height: 18px;
+    &-item + &-item {
+      margin-left: 32px;
     }
-    &--applications {
-      width: 20px;
-      height: 20px;
+    &-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
     }
   }
 
   &__support-info {
-    position: absolute;
-    right: 24px;
     font-family: $font-family-light;
   }
-  &__documentation, &__build-info {
+
+  &__documentation,
+  &__build-info {
     cursor: pointer;
     color: $neutral-color-500;
     transition: color .3s ease;
@@ -74,9 +55,9 @@
     font-size: 10px;
     padding-left: 12px;
     letter-spacing: 1px;
-    
+
     &:hover {
-      color: $primary-color-900;
+      color: $primary-color-100;
     }
   }
 }

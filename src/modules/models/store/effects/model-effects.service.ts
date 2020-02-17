@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ModelBuilder, ModelVersionBuilder } from '@core/builders/_index';
 import { SnackbarService } from '@core/services';
+import { FavoriteStorageLocal } from '@core/services/favorite-storage-local.service';
 import { ModelsService } from '@models/services';
 import {
   GetModels,
@@ -26,7 +27,14 @@ export class ModelEffects {
       switchMap(() =>
         this.modelsService.getModels().pipe(
           map(data => {
-            const models = data.map(this.modelBuilder.build, this.modelBuilder);
+            const models = data
+              .map(this.modelBuilder.build, this.modelBuilder)
+              .map(model => {
+                return {
+                  ...model,
+                  favorite: this.favoriteStorage.isFavorite(model.name),
+                };
+              });
             return GetModelsSuccess({ payload: models });
           }),
           catchError(error => {
@@ -84,6 +92,7 @@ export class ModelEffects {
     private modelsService: ModelsService,
     private actions$: Actions,
     private snackbar: SnackbarService,
-    private router: Router
+    private router: Router,
+    private favoriteStorage: FavoriteStorageLocal
   ) {}
 }

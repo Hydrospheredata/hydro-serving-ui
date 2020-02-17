@@ -1,13 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
 @import "fonts.scss";
 @import "variables.scss";
 @import "content.scss";
 @import "inputs.scss";
 @import "common.scss";
 @import "codemirror.scss";
-@import "buttons.scss";
 @import "tables.scss";
-@import "panel.scss";
 @import "forms.scss";
 @import "mdl-textfieled.scss";
 @import "mdl-list.scss";
@@ -15,10 +12,9 @@
 @import "mdl-popover.scss";
 @import "mdl-tabs.scss";
 @import "mdl-progress.scss";
-@import "icons.scss";
-@import "statuses.scss";
 @import "error.scss";
 @import "expandable.scss";
+@import "icons.scss";
 
 * {
   -webkit-box-sizing: border-box;
@@ -26,71 +22,145 @@
   box-sizing: border-box
 }
 
-:after, :before {
+:after,
+:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box
 }
 
-html, body {
+html,
+body {
   font-family: $font-family-regular !important;
-  background-color: $neutral-color-100;
-  color: $color-base;
+  background-color: $background-color;
+  color: $neutral-color-900;
   height: 100%;
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: $font-family-regular;
   font-weight: 500;
   line-height: 1.1;
   color: inherit
 }
 
-.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, .h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+.h1 .small,
+.h1 small,
+.h2 .small,
+.h2 small,
+.h3 .small,
+.h3 small,
+.h4 .small,
+.h4 small,
+.h5 .small,
+.h5 small,
+.h6 .small,
+.h6 small,
+h1 .small,
+h1 small,
+h2 .small,
+h2 small,
+h3 .small,
+h3 small,
+h4 .small,
+h4 small,
+h5 .small,
+h5 small,
+h6 .small,
+h6 small {
   font-weight: 400;
   line-height: 1;
-  color: $color-base;
+  color: $neutral-color-900;
 }
 
-.h1, .h2, .h3, h1, h2, h3 {
+.h1,
+.h2,
+.h3,
+h1,
+h2,
+h3 {
   margin-top: 20px;
   margin-bottom: 10px
 }
 
-.h1 .small, .h1 small, .h2 .small, .h2 small, .h3 .small, .h3 small, h1 .small, h1 small, h2 .small, h2 small, h3 .small, h3 small {
+.h1 .small,
+.h1 small,
+.h2 .small,
+.h2 small,
+.h3 .small,
+.h3 small,
+h1 .small,
+h1 small,
+h2 .small,
+h2 small,
+h3 .small,
+h3 small {
   font-size: 65%
 }
 
-.h4, .h5, .h6, h4, h5, h6 {
+.h4,
+.h5,
+.h6,
+h4,
+h5,
+h6 {
   margin-top: 10px;
   margin-bottom: 10px
 }
 
-.h4 .small, .h4 small, .h5 .small, .h5 small, .h6 .small, .h6 small, h4 .small, h4 small, h5 .small, h5 small, h6 .small, h6 small {
+.h4 .small,
+.h4 small,
+.h5 .small,
+.h5 small,
+.h6 .small,
+.h6 small,
+h4 .small,
+h4 small,
+h5 .small,
+h5 small,
+h6 .small,
+h6 small {
   font-size: 75%
 }
 
-.h1, h1 {
+.h1,
+h1 {
   font-size: 36px
 }
 
-.h2, h2 {
+.h2,
+h2 {
   font-size: 30px
 }
 
-.h3, h3 {
+.h3,
+h3 {
   font-size: 24px
 }
 
-.h4, h4 {
+.h4,
+h4 {
   font-size: 18px
 }
 
-.h5, h5 {
+.h5,
+h5 {
   font-size: 14px
 }
 
-.h6, h6 {
+.h6,
+h6 {
   font-size: 12px
 }
 
@@ -101,12 +171,13 @@ label {
   font-weight: 500;
 }
 
-button:focus, input:focus {
+button:focus,
+input:focus {
   outline: 0;
 }
 
 li a {
-  color: $color-base;
+  color: $neutral-color-900;
 }
 
 hr {
@@ -116,10 +187,11 @@ hr {
 a.hydro-link {
   font-size: 12px;
   text-decoration: none;
-  color: $label-color;
+  color: $neutral-color-900;
+
   &:hover {
     cursor: pointer;
-    color: $color--light-blue;
+    color: $primary-color-700;
   }
 
   &.hydro-link--big {
@@ -133,45 +205,5 @@ a.hydro-link {
 
   span {
     vertical-align: middle;
-  }
-}
-
-md-dialog-container.mat-dialog-container {
-  box-shadow: 0 11px 15px -7px rgba(0, 0, 0, .2),
-              0 24px 38px 3px rgba(0, 0, 0, .14),
-              0 9px 46px 8px rgba(0, 0, 0, .12);
-  display: block;
-  padding: 45px;
-  border-radius: 2px;
-  box-sizing: border-box;
-  overflow: auto;
-  max-width: 80vw;
-  width: 100%;
-  height: 100%;
-}
-
-.mat-dialog-container--big {
-  width: 1300px;
-}
-
-.md-40 {
-  font-size: 40px;
-}
-
-.rotate-90 {
-  -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg);
-}
-
-// common styles
-.text-center {
-  text-align: center;
-}
-
-.monitoring-log .highcharts-plot-band  {
-  cursor: pointer;
-  &:hover {
-     fill: rgb(247, 73, 73);
   }
 }

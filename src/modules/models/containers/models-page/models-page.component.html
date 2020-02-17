@@ -1,0 +1,14 @@
+<div class="models-page">
+  <div class="models-page__sidebar" hsHideInZenMode>
+    <hs-sidebar
+      [sidebarData]="allModels$ | async"
+      [selectedItem]="selectedModel$ | async"
+      (filtered)="handleFilter($event)"
+      (bookmarked)="handleToggleFavoriteModel($event)"
+      (clicked)="handleSidebarClick($event)"
+    ></hs-sidebar>
+  </div>
+  <div class="models-page__body">
+    <router-outlet></router-outlet>
+  </div>
+</div>

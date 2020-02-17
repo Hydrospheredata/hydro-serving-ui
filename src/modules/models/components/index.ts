@@ -1,7 +1,8 @@
-export * from './models-wrapper/models-wrapper.component';
-export * from './model-details/model-details.component';
-
-export * from './model-version';
 export * from './signatures/signatures.component';
-// dialogs
+export * from './models/models.component';
+export * from './model-version-details/model-version-details.component';
+export * from './model-versions/model-versions.component';
+export * from './model-version-log/model-version-log.component';
+export * from './model-version-status/model-version-status.component';
+export * from './model-versions-row/model-versions-row.component';
 export * from './dialogs';

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SnackbarService } from '@core/services';
 import { HydroServingState } from '@core/store';
-import { selectSelectedModelVersion } from '@models/store';
+import { selectSelectedModelVersion, ModelsFacade } from '@models/store';
 import { MetricsService } from '@monitoring/services';
 import {
   LoadMetrics,
@@ -66,7 +66,7 @@ export class MetricsEffects {
   loadMetrics$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LoadMetrics),
-      withLatestFrom(this.store.pipe(select(selectSelectedModelVersion))),
+      withLatestFrom(this.modelsFacade.selectedModelVersion$),
       switchMap(([, { id }]) => {
         return this.metricsService.getMetricSpecifications(`${id}`).pipe(
           map(metricSettings =>
@@ -81,6 +81,7 @@ export class MetricsEffects {
   constructor(
     private actions$: Actions,
     private metricsService: MetricsService,
+    private modelsFacade: ModelsFacade,
     private store: Store<HydroServingState>,
     private snackbar: SnackbarService
   ) {}

@@ -1,24 +1,17 @@
 @import "variables";
 
-.status {
-  display: inline-block;
-  font-size: 12px;
-  padding: 0 6px;
-  vertical-align: bottom;
-  border-radius: 2px;
+.application__status-icon {
+  width: 18px;
+  height: 18px;
 
-  &--ready {
-    background: $status-success-background-color;
-    color: $status-success-text-color;
-  }
-
-  &--assembling {
-    background: $neutral-color-100;
-    color: $neutral-color-700;
+  &--released {
+    color: $supportive-color-green-700;
   }
 
   &--failed {
-    background: $supportive-color-red-100;
     color: $supportive-color-red-700;
+  }
+  &--assembling {
+    color: $primary-color-700;
   }
 }

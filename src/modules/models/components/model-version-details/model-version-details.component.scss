@@ -1,0 +1,330 @@
+@import 'variables.scss';
+
+.model-version {
+  &__header {
+    line-height: 32px;
+    margin-bottom: 8px;
+    &-link {
+      cursor: pointer;
+      font-size: 14px;
+      color: $neutral-color-1000;
+      font-family: $font-family-bold;
+      &-icon {
+        width: 12px;
+        height: 12px;
+      }
+    }
+    &-path {
+      font-style: italic;
+      color: $neutral-color-700;
+      &-link {
+        font-family: $font-family-bold;
+        color: $primary-color-900;
+        cursor: pointer;
+      }
+      &-separator {
+        color: $neutral-color-500;
+        padding: 0 4px;
+      }
+    }
+  }
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -12px;
+    margin-right: -12px;
+    margin-bottom: 24px;
+  }
+
+  &__col-1,
+  &__col-2,
+  &__col-3,
+  &__col-4,
+  &__col-5,
+  &__col-6,
+  &__col-7,
+  &__col-8,
+  &__col-9,
+  &__col-10,
+  &__col-11,
+  &__col-12 {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  &__col-1 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 8.333333%;
+    flex: 0 0 8.333333%;
+    max-width: 8.333333%;
+  }
+  
+  &__col-2 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 16.666667%;
+    flex: 0 0 16.666667%;
+    max-width: 16.666667%;
+  }
+  
+  &__col-3 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  
+  &__col-4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.333333%;
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+  
+  &__col-5 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 41.666667%;
+    flex: 0 0 41.666667%;
+    max-width: 41.666667%;
+  }
+  
+  &__col-6 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  &__col-7 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 58.333333%;
+    flex: 0 0 58.333333%;
+    max-width: 58.333333%;
+  }
+  
+  &__col-8 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 66.666667%;
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+  }
+  
+  &__col-9 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 75%;
+    flex: 0 0 75%;
+    max-width: 75%;
+  }
+  
+  &__col-10 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 83.333333%;
+    flex: 0 0 83.333333%;
+    max-width: 83.333333%;
+  }
+  
+  &__col-11 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 91.666667%;
+    flex: 0 0 91.666667%;
+    max-width: 91.666667%;
+  }
+  
+  &__col-12 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  &__item {
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      line-height: 28px;
+      font-family: $font-family-bold;
+      margin-bottom: 4px;
+      color:$neutral-color-900
+    }
+  }
+
+  &__details {
+    display: flex;
+    align-self: flex-start;
+    background: white;
+    border: 1px $neutral-color-300 solid;
+    border-radius: 4px;
+    overflow: hidden;
+    justify-content: space-between;
+
+    &-list {
+      margin: 12px;
+      margin-right: 24px;
+      padding: 0;
+      list-style: none;
+
+      &-item {
+        line-height: 24px;
+      }
+
+      &-title {
+        font-family: $font-family-light;
+      }
+
+      &-value {
+        padding-left: 12px;
+        font-family: $font-family-bold;
+      }
+    }
+
+    &-status {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+      &--released {
+        background: $supportive-color-green-100;
+      }
+
+      &--failed {
+        background: $supportive-color-red-100;
+      }
+
+      &-label {
+        font-family: $font-family-bold;
+        line-height: 24px;
+      }
+
+      &-icon {
+        display: inline-block;
+        margin: 4px 0;
+
+        &--released {
+          color: $supportive-color-green-700;
+        }
+
+        &--failed {
+          color: $supportive-color-red-700;
+        }
+      }
+    }
+  }
+
+  &__services {
+    display: flex;
+    &-item {
+      background: white;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px $neutral-color-300 solid;
+      border-radius: 5px;
+      height: 105px;
+      &-icon {
+        color: $neutral-color-400;
+        width: 48px;
+        height: 48px;
+      }
+    }
+    &-item + &-item {
+      margin-left: 12px;
+    }
+  }
+
+  &__applications {
+    background: white;
+    border: 1px $neutral-color-300 solid;
+    border-radius: 4px;
+    overflow: hidden;
+
+    &-header {
+      padding: 12px;
+    }
+
+  }
+
+  &__metadata {
+    width: 100%;
+    background: white;
+    border: 1px $neutral-color-300 solid;
+    border-radius: 4px;
+    padding: 12px;
+  }
+
+  &__signatures {
+    background: white;
+    border: 1px $neutral-color-300 solid;
+    border-radius: 4px;
+    padding: 12px;
+  }
+
+  &__servables {
+    background: white;
+    border: 1px $neutral-color-300 solid;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+}
+
+.log {
+  top: 48px;
+  left: 0px;
+  position: fixed;
+  right: 0;
+  height: 100%;
+  right: 0;
+  visibility: hidden;
+
+  &__layout {
+    background: #000000b5;
+    top: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    height: 100%;
+    right: 0;
+    opacity: 0;
+    transition: .4s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+  }
+
+  &__content {
+    display: flex;
+    opacity: 0;
+    background: #e2e4ea;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    width: 60%;
+    right: 0;
+    padding: 24px 38px 24px;
+    transform: translateX(360px);
+    transition: .4s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+  }
+
+  &--is-visible {
+    visibility: visible;
+
+    .log__content {
+      opacity: 1;
+      transform: translateX(0);
+      transition: .6s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+
+    }
+
+    .log__layout {
+      opacity: 1;
+      transition: .6s all cubic-bezier(0.165, 0.840, 0.440, 1.000);
+    }
+  }
+}
+
+.runtime {
+  &__tag {
+    background: $neutral-color-200;
+    color: $neutral-color-700;
+    margin-left: 4px;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+}

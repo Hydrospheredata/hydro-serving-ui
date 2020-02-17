@@ -22,12 +22,8 @@
     display: flex;
     justify-content: space-between;
     line-height: 48px;
-    padding: 0 24px;
-    position: fixed;
-    left: 250px;
     right: 0;
     top: 48px;
-    z-index: 2;
     background: $neutral-color-100;
     &--zen-mode {
       max-width: 1100px;

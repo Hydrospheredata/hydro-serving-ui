@@ -1,6 +1,7 @@
 import {
   Component,
   ViewEncapsulation,
+  Input,
 } from '@angular/core';
 
 import { DialogService } from '@dialog/dialog.service';
@@ -8,7 +9,6 @@ import {
   Application,
   ApplicationStatus,
 } from '@shared/models/_index';
-import { Observable } from 'rxjs';
 
 import {
   DialogDeleteApplicationComponent,
@@ -21,7 +21,6 @@ import {
   LATEST_MODEL_VERSION,
   SELECTED_DEL_APPLICATION,
 } from '@applications/components/dialogs';
-import { ApplicationsFacade } from '@applications/store';
 
 @Component({
   selector: 'hs-applications-item-detail',
@@ -30,10 +29,9 @@ import { ApplicationsFacade } from '@applications/store';
   encapsulation: ViewEncapsulation.None,
 })
 export class ApplicationsItemDetailComponent {
-  application$: Observable<Application> = this.facade.selectedApplication$;
+  @Input() application: Application;
 
   constructor(
-    private facade: ApplicationsFacade,
     private dialog: DialogService
   ) {
   }

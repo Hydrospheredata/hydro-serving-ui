@@ -21,6 +21,10 @@ import {
   RawChecksComponent,
   BatchMetricsComponent,
   LogMetricsTableComponent,
+  ApplicationsItemDetailComponent,
+  ModelVersionsComponent,
+  ModelVersionDetailsComponent,
+  ModelVersionsRowComponent,
 } from '@testing/components';
 import { ProfilesComponent } from '@testing/components/mock-profiles';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
@@ -50,6 +54,10 @@ const COMPONENTS = [
   RawChecksComponent,
   BatchMetricsComponent,
   LogMetricsTableComponent,
+  ApplicationsItemDetailComponent,
+  ModelVersionsComponent,
+  ModelVersionDetailsComponent,
+  ModelVersionsRowComponent,
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];

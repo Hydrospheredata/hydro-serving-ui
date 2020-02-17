@@ -13,6 +13,7 @@ import {
   TestSuccess,
   TestFail,
   DeleteSuccess,
+  ToggleFavorite,
 } from '../actions';
 
 export interface State extends EntityState<Application> {
@@ -95,6 +96,22 @@ const applicationReducer = createReducer(
   ),
   on(DeleteSuccess, (state, { applicationName }) =>
     adapter.removeOne(applicationName, state)
+  ),
+  on(
+    ToggleFavorite,
+    (
+      state,
+      {
+        payload: {
+          application: { name, favorite },
+        },
+      }
+    ) => {
+      return adapter.updateOne(
+        { id: name, changes: { favorite: !favorite } },
+        state
+      );
+    }
   )
 );
 

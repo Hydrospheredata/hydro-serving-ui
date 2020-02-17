@@ -1,0 +1,20 @@
+@import "variables";
+
+.model-versions {
+  &__header {
+    line-height: 32px;
+    font-family: $font-family-bold;
+    color: $neutral-color-1000;
+  }
+  &__body {
+    width: 100%;
+    overflow: hidden;
+    border: 1px $neutral-color-300 solid;
+    border-radius: 4px;
+
+  }
+
+  &__table {
+    width: 100%;
+  }
+}

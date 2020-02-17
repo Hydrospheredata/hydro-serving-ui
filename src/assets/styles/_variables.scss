@@ -1,21 +1,6 @@
 // BASE
 $base-size: 8px;
 
-// Colors
-$color-base: #04143c;
-$main-bg-color: #fdfdfd;
-
-$color--success: #8cc63e;
-$color--failed: #ef3a41;
-$color--primary: #b8d7f9;
-$color--pending: #607D8B;
-
-$color--light-blue: #4d9bf1;
-$color--blue: #539ae9;
-
-$border-color: #f1f3f7;
-$secondary-color: #e6e9ed;
-
 // FONT
 // Font family
 $font-family-light: 'Museo Sans Light',
@@ -33,7 +18,6 @@ $title-font-size: $base-font-size * 1.5;
 
 // forms section
 $form-border-color-focus: #04143c;
-$form-border-color: $secondary-color;
 $label-color: #818994;
 
 // 18px
@@ -41,6 +25,7 @@ $label-font-size: 1.125rem;
 $input-font-size: 1.125rem;
 
 // COLORS
+$background-color: hsl(206, 7%, 95%);
 // primary color palette
 $primary-color-100: #DCEEFB;
 $primary-color-200: #B6E0FE;

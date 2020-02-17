@@ -1,51 +1,51 @@
-<header class="hydro-navbar">
+<header class="header">
   <ng-container *ngIf="isZenMode$ | async; else logoWithLink">
-    <span class="hydro-navbar__logo">
-      <hydro-icon type="logo" class="hydro-navbar__logo-icon"></hydro-icon>
+    <span class="header__logo">
+      <hydro-icon type="logo" class="header__logo-icon"></hydro-icon>
     </span>
   </ng-container>
 
-  <nav class="hydro-navbar__menu" *ngIf="!(isZenMode$ | async)">
+  <nav class="header__navigation" hsHideInZenMode>
     <a
-      class="hydro-navbar__menu-item"
+      class="header__navigation-item"
       [routerLink]="['/models']"
-      routerLinkActive="__active"
+      routerLinkActive="header__navigation-item--active"
     >
       <hydro-icon
         type="icon-models"
-        class="hydro-navbar__icon hydro-navbar__icon--models"
+        class="header__navigation-icon header__navigation-icon--models"
       ></hydro-icon>
       <span class="models-link-label">Models</span>
     </a>
     <a
-      class="hydro-navbar__menu-item"
+      class="header__navigation-item"
       [routerLink]="['/applications']"
-      routerLinkActive="__active"
+      routerLinkActive="header__navigation-item--active"
     >
       <hydro-icon
         type="icon-applications"
-        class="hydro-navbar__icon hydro-navbar__icon--applications"
+        class="header__navigation-icon header__navigation-icon--applications"
       ></hydro-icon>
       <span class="services-link-label">Applications</span>
     </a>
   </nav>
-  <div class="hydro-navbar__support-info">
+  <div class="header__support-info">
     <a
-      class="hydro-navbar__documentation"
+      class="header__documentation"
       target="_blank"
       rel="noopener noreferrer"
       href="https://hydrosphere.io/serving-docs"
     >
       documentation
     </a>
-    <a class="hydro-navbar__build-info" hsBuildInformation>
+    <a class="header__build-info" hsBuildInformation>
       build information
     </a>
   </div>
 </header>
 
 <ng-template #logoWithLink>
-  <span class="hydro-navbar__logo" [routerLink]="['/']">
-    <hydro-icon type="logo" class="hydro-navbar__logo-icon"></hydro-icon>
+  <span class="header__logo" [routerLink]="['/']">
+    <hydro-icon type="logo" class="header__logo-icon"></hydro-icon>
   </span>
 </ng-template>

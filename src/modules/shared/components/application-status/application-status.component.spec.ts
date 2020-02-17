@@ -1,21 +1,32 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApplicationStatus, ApplicationStatusComponent } from '@shared/_index';
-import { MockApplication } from '@testing/factories/application';
+import { getNativeElement } from '@testing/helpers';
+import { IconComponent } from '../icons/icons.component';
 
-describe('ApplicationsItemDetailComponent', () => {
+describe('ApplicationStatusComponent', () => {
   let component: ApplicationStatusComponent;
   let fixture: ComponentFixture<ApplicationStatusComponent>;
-
+  let debugElement: DebugElement;
+  let nativeElement: HTMLElement;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ApplicationStatusComponent],
-    }).compileComponents();
+      imports: [],
+      declarations: [ApplicationStatusComponent, IconComponent],
+    })
+      .overrideComponent(ApplicationStatusComponent, {
+        set: {
+          changeDetection: ChangeDetectionStrategy.Default,
+        },
+      })
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ApplicationStatusComponent);
     component = fixture.componentInstance;
-    component.application = MockApplication;
+    debugElement = fixture.debugElement;
+    nativeElement = getNativeElement(debugElement);
 
     fixture.detectChanges();
   });
@@ -24,11 +35,31 @@ describe('ApplicationsItemDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('contains status text', () => {
-    const el = fixture.debugElement.nativeElement;
-    const statusEl = el.querySelector('.status');
-
-    expect(statusEl).toBeDefined();
-    expect(statusEl.innerText).toEqual(ApplicationStatus.Ready);
+  it('show default text if status is undefined', () => {
+    component.status = 'unknown_status' as ApplicationStatus;
+    const statusEl = nativeElement.querySelector('.application__status-unknown');
+    expect(statusEl).toBeTruthy();
   });
+
+  it('show success icon', () => {
+    component.status =  ApplicationStatus.Ready;
+    fixture.detectChanges();
+    const statusEl = nativeElement.querySelector(
+      '.application__status-icon--released'
+    );
+    expect(statusEl).toBeTruthy();
+  });
+  it('show failed icon', () => {
+    component.status =  ApplicationStatus.Failed;
+    fixture.detectChanges();
+    const statusEl = nativeElement.querySelector('.application__status-icon--failed');
+    expect(statusEl).toBeTruthy();
+  });
+  it('show serving icon', () => {
+    component.status =  ApplicationStatus.Assembling;
+    fixture.detectChanges();
+    const statusEl = nativeElement.querySelector('.application__status-icon--assembling');
+    expect(statusEl).toBeTruthy();
+  });
+
 });

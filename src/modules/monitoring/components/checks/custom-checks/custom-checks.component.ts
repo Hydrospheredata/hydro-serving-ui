@@ -29,7 +29,7 @@ export class CustomChecksComponent {
   }
 
   get emptyMetrics(): boolean {
-    return this.customMetrics.length === 0;
+    return !this.customChecks || this.customMetrics.length === 0;
   }
 
   get noData(): boolean {

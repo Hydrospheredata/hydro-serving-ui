@@ -23,6 +23,7 @@ import {
   HeaderComponent,
   PageNotFoundComponent,
   BuildInformationDialogComponent,
+  NavigationComponent,
 } from './components';
 @NgModule({
   entryComponents: [BuildInformationDialogComponent],
@@ -47,11 +48,12 @@ import {
       stateKey: 'router',
     }),
   ],
-  exports: [HeaderComponent],
+  exports: [HeaderComponent, NavigationComponent],
   declarations: [
     HeaderComponent,
     PageNotFoundComponent,
     BuildInformationDialogComponent,
+    NavigationComponent,
   ],
   providers: [
     ModelBuilder,

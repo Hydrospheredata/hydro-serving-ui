@@ -16,7 +16,6 @@ import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
 import { Store } from '@ngrx/store';
 import { ProfilerModule } from '@profiler/profiler.module';
-import { MomentModule } from 'angular2-moment';
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -31,7 +30,6 @@ describe('AppComponent', () => {
         ApplicationsModule,
         FormsModule,
         ReactiveFormsModule,
-        MomentModule,
         SharedModule,
         ProfilerModule,
         AppRoutingModule,

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DeleteModel } from '@models/store/actions';
+import { FavoriteStorageLocal } from '@core/services/favorite-storage-local.service';
+import { DeleteModel, ToggleFavorite } from '@models/store/actions';
 import {
   selectSelectedModelVersion,
   selectSiblingModelVersions,
@@ -10,11 +11,11 @@ import {
   selectModelVersionById,
 } from '@models/store/selectors';
 import { Store, select } from '@ngrx/store';
-import { ProfilerFacade, selectSelectedFeatureName } from '@profiler/store';
+import { ProfilerFacade } from '@profiler/store';
 import { ServablesFacade } from '@servables/servables.facade';
-import { ModelVersionStatus } from '@shared/_index';
+import { ModelVersionStatus, Model } from '@shared/_index';
 import { isEmpty } from 'lodash';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, BehaviorSubject } from 'rxjs';
 import {
   filter,
   switchMap,
@@ -48,6 +49,34 @@ export class ModelsFacade {
   );
 
   allModels$ = this.store.pipe(select(selectAllModels));
+  // !TODO move
+  filterString$ = new BehaviorSubject('');
+  filteredModels$ = combineLatest(this.allModels$, this.filterString$).pipe(
+    map(([models, filterStr]) => {
+      let filtered: Model[] = models;
+      if (filterStr) {
+        filtered = models.filter(model => model.name.includes(filterStr));
+      }
+      return filtered;
+    })
+  );
+
+  nonFavoriteModels$: Observable<Model[]> = this.filteredModels$.pipe(
+    map(models => models.filter(model => !model.favorite))
+  );
+
+  favoriteModels$: Observable<Model[]> = this.filteredModels$.pipe(
+    map(models => models.filter(model => model.favorite))
+  );
+
+  sortedModels$ = combineLatest(
+    this.favoriteModels$,
+    this.nonFavoriteModels$
+  ).pipe(
+    map(([fav, nonFav]) => {
+      return [...fav, ...nonFav];
+    })
+  );
 
   allModelVersions$ = this.store.pipe(select(selectAllModelVersions));
 
@@ -167,7 +196,8 @@ export class ModelsFacade {
   constructor(
     private store: Store<State>,
     private servablesFacade: ServablesFacade,
-    private profilerFacade: ProfilerFacade
+    private profilerFacade: ProfilerFacade,
+    private favoriteStorage: FavoriteStorageLocal
   ) {}
 
   selectModelVersionById$ = id =>
@@ -179,5 +209,15 @@ export class ModelsFacade {
 
   deleteModel(id: number): void {
     this.store.dispatch(DeleteModel({ modelId: id }));
+  }
+
+  toggleFavorite(model: Model) {
+    this.store.dispatch(ToggleFavorite({ model }));
+
+    if (model.favorite) {
+      this.favoriteStorage.remove(model.name);
+    } else {
+      this.favoriteStorage.add(model.name);
+    }
   }
 }

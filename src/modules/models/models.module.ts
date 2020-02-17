@@ -3,17 +3,13 @@ import { SharedModule } from '@shared/shared.module';
 import { ModelsRoutingModule } from './models.router';
 
 import {
-  ModelsWrapperComponent,
-  ModelDetailsComponent,
-  ModelVersionsTableComponent,
-  ModelVersionDetailsComponent,
-  ModelVersionContainerComponent,
-  ModelVersionsTableRowComponent,
-  ModelVersionProfilerComponent,
   SignaturesComponent,
-  ModelVersionReplayComponent,
-  ModelVersionDetailsContainerComponent,
+  ModelsComponent,
+  ModelVersionDetailsComponent,
   ModelVersionLogComponent,
+  ModelVersionsComponent,
+  ModelVersionStatusComponent,
+  ModelVersionsRowComponent,
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
@@ -26,9 +22,14 @@ import { reducer, ModelEffects } from '@models/store';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { RootCauseModule } from '@rootcause/root-cause.module';
 import { ProfilerModule } from '../profiler/profiler.module';
 import { ServablesModule } from '../servables/servables.module';
+import {
+  ModelsPageComponent,
+  ModelPageComponent,
+  ModelVersionPageComponent,
+  ModelVersionProfilerPageComponent,
+} from './containers';
 
 @NgModule({
   imports: [
@@ -38,25 +39,24 @@ import { ServablesModule } from '../servables/servables.module';
     EffectsModule.forFeature([ModelEffects]),
     ProfilerModule,
     MonitoringModule,
-    RootCauseModule,
     ServablesModule,
   ],
   declarations: [
-    ModelsWrapperComponent,
-    ModelDetailsComponent,
-    ModelVersionsTableComponent,
-    ModelVersionsTableRowComponent,
-    ModelVersionDetailsComponent,
     DialogDeleteModelComponent,
-    ModelVersionContainerComponent,
-    ModelVersionProfilerComponent,
-    ModelVersionsTableComponent,
-    ModelVersionReplayComponent,
+    ModelPageComponent,
+    ModelsComponent,
+    ModelsPageComponent,
+    ModelVersionDetailsComponent,
     ModelVersionLogComponent,
+    ModelVersionPageComponent,
+    ModelVersionProfilerPageComponent,
+    ModelVersionsComponent,
     SignaturesComponent,
-    ModelVersionDetailsContainerComponent,
+    ModelVersionStatusComponent,
+    ModelVersionsRowComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
+  exports: [ModelsPageComponent],
 })
 export class ModelsModule {}

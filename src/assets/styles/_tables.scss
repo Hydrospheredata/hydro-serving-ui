@@ -1,36 +1,43 @@
 @import "variables";
 
-$table-padding: 14px;
+$table-padding: 12px;
 
 .cell {
   border-bottom: 1px $neutral-color-200 solid;
-  padding: 12px $table-padding * 2;
+  padding: 8px $table-padding * 1.5;
 }
 
 .hydro-table {
   border-collapse: collapse;
   width: 100%;
   background: white;
+
   &-head {
     font-size: 12px;
     font-family: $font-family-bold;
     color: $neutral-color-900;
+
     &__cell {
       @extend .cell;
       text-align: left;
     }
   }
+
   &-body {
     color: $neutral-text-color;
-    & :last-child &__cell{
+
+    & :last-child &__cell {
       border-bottom: none;
     }
+
     &__row {
       outline: none;
+
       [class$="services"] & {
-        background-color: $main-bg-color;
+        background-color: $neutral-color-200;
         border-bottom: 2px solid #ffffff;
       }
+
       &.__link {
         &:hover {
           background-color: #e6e9ed;
@@ -38,10 +45,10 @@ $table-padding: 14px;
         }
       }
     }
+
     &__cell {
       @extend .cell;
+      font-size: 12px;
     }
-
-
   }
 }

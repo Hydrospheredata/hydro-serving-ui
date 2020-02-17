@@ -3,6 +3,7 @@ import {
   GetModelsSuccess,
   GetModelsFail,
   DeleteModelSuccess,
+  ToggleFavorite,
 } from '@models/store/actions';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
@@ -29,6 +30,9 @@ const modelsReducer = createReducer(
   on(GetModelsFail, state => ({ ...state, loading: false })),
   on(DeleteModelSuccess, (state, { modelId }) =>
     adapter.removeOne(modelId, state)
+  ),
+  on(ToggleFavorite, (state, { model: { id, favorite } }) =>
+    adapter.updateOne({ id, changes: { favorite: !favorite } }, state)
   )
 );
 

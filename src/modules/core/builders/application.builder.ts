@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Application, IApplication, ISignature } from '@shared/models/_index';
+import { Application, ISignature } from '@shared/models/_index';
 @Injectable()
 export class ApplicationBuilder {
   public build(props): Application {
     return this.toApplication(props);
   }
 
-  private toApplication(props): IApplication {
+  private toApplication(props): Application {
     let id: number;
     let signature: ISignature;
 
@@ -26,6 +26,7 @@ export class ApplicationBuilder {
       kafkaStreaming: props.kafkaStreaming || [],
       status: props.status && props.status.toLowerCase(),
       message: props.message,
+      favorite: false,
     });
 
     return application;

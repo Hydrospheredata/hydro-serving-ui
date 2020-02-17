@@ -65,6 +65,7 @@ export class Application implements IApplication {
     error?: string;
     status: string;
     message?: string;
+    favorite: boolean;
 
     constructor(props: any = {}) {
         if (props.id) { this.id = props.id; }
@@ -80,5 +81,6 @@ export class Application implements IApplication {
         this.testStatus = props.testStatus || TestStatus.Undefined;
         this.status = props.status;
         this.message = props.message;
+        this.favorite = props.favorite || false;
     }
 }

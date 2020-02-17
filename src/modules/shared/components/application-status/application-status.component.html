@@ -1,3 +1,21 @@
-<span class="status status--{{status}}" >
-    {{ status }}
-</span>
+<div [ngSwitch]="status">
+  <div *ngSwitchCase="'ready'">
+    <hydro-icon
+      class="application__status-icon application__status-icon--released"
+      type="circle-check"
+    ></hydro-icon>
+  </div>
+  <div *ngSwitchCase="'failed'">
+    <hydro-icon
+      class="application__status-icon application__status-icon--failed"
+      type="circle-x"
+    ></hydro-icon>
+  </div>
+  <div *ngSwitchCase="'assembling'">
+    <hydro-icon
+      class="application__status-icon application__status-icon--assembling"
+      type="clock"
+    ></hydro-icon>
+  </div>
+  <div *ngSwitchDefault class="application__status-unknown">{{ status }}</div>
+</div>

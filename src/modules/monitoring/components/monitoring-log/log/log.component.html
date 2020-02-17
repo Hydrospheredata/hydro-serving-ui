@@ -13,7 +13,7 @@
         }"
         (click)="selectItem(i)"
       >
-        {{ check._id | checkIdToTime | moment }}
+        {{ check._id | checkIdToTime | hsFormatDate }}
       </li>
     </ul>
     <div class="log__detailed">

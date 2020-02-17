@@ -1,76 +1,40 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import {
-  ModelsWrapperComponent,
-  ModelDetailsComponent,
-  ModelVersionDetailsComponent,
-  ModelVersionContainerComponent,
-  ModelVersionProfilerComponent,
-  ModelVersionReplayComponent,
-  ModelVersionDetailsContainerComponent,
-} from '@models/components';
-
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { MonitoringPageComponent } from '@monitoring/containers';
+import {
+  ModelsPageComponent,
+  ModelPageComponent,
+  ModelVersionPageComponent,
+  ModelVersionProfilerPageComponent,
+} from './containers';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
       {
-        path: '',
-        redirectTo: 'models',
-        pathMatch: 'full',
-      },
-      {
         path: 'models',
-        component: ModelsWrapperComponent,
+        component: ModelsPageComponent,
         children: [
           {
             path: ':modelId',
-            component: ModelDetailsComponent,
+            component: ModelPageComponent,
             data: { anim: 'modelDetail' },
             canActivate: [ModelDetailsGuard],
           },
           {
             path: ':modelId/:modelVersionId',
-            component: ModelVersionContainerComponent,
-            data: { anim: 'modelVerDetail' },
+            component: ModelVersionPageComponent,
             canActivate: [ModelVersionDetailsGuard],
-            children: [
-              {
-                path: '',
-                redirectTo: 'details',
-                pathMatch: 'full',
-              },
-              {
-                path: 'details',
-                component: ModelVersionDetailsContainerComponent,
-                children: [
-                  {
-                    path: '',
-                    component: ModelVersionDetailsComponent,
-                  },
-                  {
-                    path: 'profile/:featureName',
-                    component: ModelVersionProfilerComponent,
-                  },
-                ],
-              },
-              {
-                path: 'profiler',
-                component: ModelVersionProfilerComponent,
-                data: { anim: 'modelVerDetail' },
-              },
-              {
-                path: 'monitoring',
-                component: MonitoringPageComponent,
-              },
-              {
-                path: 'replay',
-                component: ModelVersionReplayComponent,
-              },
-            ],
+          },
+          {
+            path: ':modelId/:modelVersionId/monitoring',
+            component: MonitoringPageComponent,
+          },
+          {
+            path: ':modelId/:modelVersionId/profile/:featureName',
+            component: ModelVersionProfilerPageComponent,
           },
         ],
       },

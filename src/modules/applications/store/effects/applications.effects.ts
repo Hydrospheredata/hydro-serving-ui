@@ -29,10 +29,12 @@ import {
   TestSuccess,
   TestFail,
   SetInput,
+  ToggleFavorite,
 } from '@applications/store/actions';
 import { selectSelectedApplication } from '@applications/store/selectors';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { SnackbarService } from '@core/services';
+import { ApplicationsFavoriteStorage } from '@core/services/applications-favorite-storage.service';
 import { of } from 'rxjs';
 import {
   switchMap,
@@ -40,6 +42,7 @@ import {
   withLatestFrom,
   skip,
   map,
+  tap,
 } from 'rxjs/operators';
 
 @Injectable()
@@ -50,9 +53,14 @@ export class ApplicationsEffects {
       switchMap(() =>
         this.applicationsService.getApplications().pipe(
           map((result: Application[]) => {
-            const applications = result.map(app =>
-              this.applicationBuilder.build(app)
-            );
+            const applications = result
+              .map(app => this.applicationBuilder.build(app))
+              .map(app => {
+                return {
+                  ...app,
+                  favorite: this.favoriteStorage.isFavorite(app.name),
+                };
+              });
             return GetSuccess({ payload: applications });
           }),
           catchError(error => of(GetFail({ error })))
@@ -136,9 +144,7 @@ export class ApplicationsEffects {
   generateInputs$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GenerateInput),
-      withLatestFrom(
-        this.store.select(selectSelectedApplication)
-      ),
+      withLatestFrom(this.store.select(selectSelectedApplication)),
       switchMap(([_, { name: applicationName }]) =>
         this.applicationsService.generateInputs(applicationName).pipe(
           map(input => {
@@ -161,9 +167,7 @@ export class ApplicationsEffects {
       ofType(SetInput),
       skip(1),
       map(action => action.payload),
-      withLatestFrom(
-        this.store.select(selectSelectedApplication)
-      ),
+      withLatestFrom(this.store.select(selectSelectedApplication)),
       switchMap(([input, { name }]) => {
         return of(SetInputSuccess({ payload: { name, input } }));
       })
@@ -173,10 +177,8 @@ export class ApplicationsEffects {
   testApplication$ = createEffect(() =>
     this.actions$.pipe(
       ofType(Test),
-      withLatestFrom(
-        this.store.select(selectSelectedApplication)
-      ),
-      switchMap(([_, { name, input}]) =>
+      withLatestFrom(this.store.select(selectSelectedApplication)),
+      switchMap(([_, { name, input }]) =>
         this.applicationsService.serveService(JSON.parse(input), name).pipe(
           map(output =>
             TestSuccess({
@@ -192,12 +194,28 @@ export class ApplicationsEffects {
     )
   );
 
+  toggleFavorite$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ToggleFavorite),
+        tap(({ payload: { application } }) => {
+          if (application.favorite) {
+            this.favoriteStorage.remove(application.name);
+          } else {
+            this.favoriteStorage.add(application.name);
+          }
+        })
+      ),
+    { dispatch: false }
+  );
+
   constructor(
     private actions$: Actions,
     private router: Router,
     private applicationsService: ApplicationsService,
     private applicationBuilder: ApplicationBuilder,
     private snackbar: SnackbarService,
-    private store: Store<HydroServingState>
+    private store: Store<HydroServingState>,
+    private favoriteStorage: ApplicationsFavoriteStorage
   ) {}
 }

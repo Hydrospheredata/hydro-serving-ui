@@ -1,5 +1,6 @@
 import { ModelVersion } from '@shared/_index';
 import { Observable } from 'rxjs';
+type ServableStatus = 'Serving' | 'NotServing';
 
 export class Servable {
   modelVersion: ModelVersion;
@@ -8,7 +9,7 @@ export class Servable {
     msg: string;
     host: string;
     port: number;
-    status: string;
+    status: ServableStatus;
   };
   logStream: Observable<any>;
 }

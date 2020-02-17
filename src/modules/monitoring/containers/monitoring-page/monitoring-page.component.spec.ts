@@ -1,6 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { RouterTestingModule } from '@angular/router/testing';
 import { DialogService } from '@dialog/dialog.service';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { SharedModule } from '@shared/shared.module';
@@ -34,7 +35,7 @@ describe('MonitoringPageComponent', () => {
         CustomChecksComponent,
         BatchMetricsComponent,
       ],
-      imports: [SharedModule],
+      imports: [SharedModule, RouterTestingModule],
       providers: [
         DialogService,
         {

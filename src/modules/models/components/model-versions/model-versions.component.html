@@ -1,0 +1,32 @@
+<div class="model-versions">
+  <div class="model-versions__header">Model versions</div>
+  <div class="model-versions__body">
+    <table class="hydro-table model-versions__table">
+      <colgroup>
+        <col width="100" />
+        <col width="50" />
+        <col />
+        <col />
+        <col />
+        <col width="240" />
+      </colgroup>
+      <thead class="hydro-table-head">
+        <tr>
+          <th class="hydro-table-head__cell">version</th>
+          <th class="hydro-table-head__cell">status</th>
+          <th class="hydro-table-head__cell">runtime</th>
+          <th class="hydro-table-head__cell">created</th>
+          <th class="hydro-table-head__cell">applications</th>
+          <th class="hydro-table-head__cell"></th>
+        </tr>
+      </thead>
+      <tbody class="hydro-table-body">
+        <hs-model-versions-row
+          class="hydro-table-body__row"
+          *ngFor="let modelVersion of modelVersions"
+          [modelVersion]="modelVersion"
+        ></hs-model-versions-row>
+      </tbody>
+    </table>
+  </div>
+</div>
