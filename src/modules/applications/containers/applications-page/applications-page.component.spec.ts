@@ -3,17 +3,19 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
 import { SharedModule } from '@shared/shared.module';
-import { ApplicationsPageComponent } from './applications-page.component';
-import { ModelsFacade } from '@models/store';
-import { of, BehaviorSubject } from 'rxjs';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { getNativeElement } from '@testing/helpers';
+import { ApplicationsPageComponent } from './applications-page.component';
 
+import { By } from '@angular/platform-browser';
+
+import { of, BehaviorSubject } from 'rxjs';
+
+import { DebugElement } from '@angular/core';
+import { ModelsFacade } from '@models/store';
 const mockApplicationsFacade: Partial<ApplicationsFacade> = {};
 const mockModelsFacade = {
   someModelVersionIsReleased$: new BehaviorSubject(false),
-}
+};
 
 describe('ApplicationsPageComponent', () => {
   let component: ApplicationsPageComponent;
@@ -48,24 +50,28 @@ describe('ApplicationsPageComponent', () => {
   describe('add application button', () => {
     let buttonDE: DebugElement;
     beforeEach(() => {
-      buttonDE = debugElement.query(By.css('.applications-page__button'))
-    })
+      buttonDE = debugElement.query(By.css('.applications-page__button'));
+    });
     it('exists', () => {
-      expect(buttonDE).toBeTruthy()
-    })
+      expect(buttonDE).toBeTruthy();
+    });
 
     it('disabled if none model versions is released', () => {
-      const el: HTMLButtonElement = getNativeElement(buttonDE) as HTMLButtonElement; 
+      const el: HTMLButtonElement = getNativeElement(
+        buttonDE
+      ) as HTMLButtonElement;
       expect(el.disabled).toBeTruthy();
     });
     it('enabled if models list is not empty', () => {
-      const el: HTMLButtonElement = getNativeElement(buttonDE) as HTMLButtonElement;
+      const el: HTMLButtonElement = getNativeElement(
+        buttonDE
+      ) as HTMLButtonElement;
       modelsFacade.someModelVersionIsReleased$.next(true);
-      fixture.detectChanges()
+      fixture.detectChanges();
 
       expect(el.disabled).toBeFalsy();
     });
-  })
+  });
 
   describe('message', () => {
     let messageDE: DebugElement;
@@ -80,8 +86,8 @@ describe('ApplicationsPageComponent', () => {
     it('exists if none modelVersion is released', () => {
       modelsFacade.someModelVersionIsReleased$.next(false);
       fixture.detectChanges();
-      messageDE = debugElement.query(By.css('.applications-page__message'))
+      messageDE = debugElement.query(By.css('.applications-page__message'));
       expect(messageDE).toBeTruthy();
     });
-  })
+  });
 });

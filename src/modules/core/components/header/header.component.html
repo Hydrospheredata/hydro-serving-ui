@@ -1,8 +1,6 @@
 <header class="header">
   <ng-container *ngIf="isZenMode$ | async; else logoWithLink">
-    <span class="header__logo">
-      <hydro-icon type="logo" class="header__logo-icon"></hydro-icon>
-    </span>
+    <img class="header__logo" src="./assets/images/logo/logo.svg" alt="logo" />>
   </ng-container>
 
   <nav class="header__navigation" hsHideInZenMode>
@@ -45,7 +43,7 @@
 </header>
 
 <ng-template #logoWithLink>
-  <span class="header__logo" [routerLink]="['/']">
-    <hydro-icon type="logo" class="header__logo-icon"></hydro-icon>
+  <span class="header__logo" [routerLink]="['/']" queryParamsHandling="merge">
+    <img class="header__logo" src="./assets/images/logo/logo.svg" alt="logo" />
   </span>
 </ng-template>

@@ -4,6 +4,7 @@ import { MetricsComponent } from '@monitoring/containers/metrics/metrics.compone
 import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { Observable } from 'rxjs';
+
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',

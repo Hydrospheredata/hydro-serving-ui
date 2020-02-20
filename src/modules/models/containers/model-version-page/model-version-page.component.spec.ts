@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ModelsFacade } from '@models/store';
 import { ModelVersionDetailsComponent } from '@testing/components';
 import { ModelVersionPageComponent } from './model-version-page.component';
@@ -13,6 +14,7 @@ describe('ModelVersionPageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ModelVersionPageComponent, ModelVersionDetailsComponent],
       providers: [{ provide: ModelsFacade, useValue: modelsFacade }],
+      imports: [RouterTestingModule],
     }).compileComponents();
   }));
 

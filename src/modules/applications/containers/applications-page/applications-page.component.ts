@@ -3,10 +3,10 @@ import { Router, NavigationEnd, Event } from '@angular/router';
 import { DialogAddApplicationComponent } from '@applications/components';
 import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
+import { ModelsFacade } from '@models/store';
 import { Application } from '@shared/_index';
 import { Observable, Subscription } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
-import { ModelsFacade } from '@models/store';
 
 @Component({
   selector: 'hs-applications-page',

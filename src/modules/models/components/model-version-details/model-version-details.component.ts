@@ -24,7 +24,6 @@ import { ModelVersionLogComponent } from '../model-version-log/model-version-log
 export class ModelVersionDetailsComponent {
   @ViewChild('logContainer', { read: ViewContainerRef })
   logContainer: ViewContainerRef;
-
   @Input() modelVersion: ModelVersion;
   @Input() servables: Servable[];
   @Input() signature: ISignature;
