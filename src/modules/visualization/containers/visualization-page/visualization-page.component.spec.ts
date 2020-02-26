@@ -1,19 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VisualizationComponent } from './visualization.component';
+import { VisualizationPageComponent } from './visualization-page.component';
 
 describe('VisualizationComponent', () => {
-  let component: VisualizationComponent;
-  let fixture: ComponentFixture<VisualizationComponent>;
+  let component: VisualizationPageComponent;
+  let fixture: ComponentFixture<VisualizationPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [VisualizationComponent],
+      declarations: [VisualizationPageComponent],
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(VisualizationComponent);
+    fixture = TestBed.createComponent(VisualizationPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

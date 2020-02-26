@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Labels, LabelTypes, Colorizer } from '@core/models';
+import { Colorizer } from '@core/models';
 import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { VisualizationFacade } from '../visualization.facade';
 import { ColorizerBuilder } from './colorizer.builder';
 
 @Injectable()
-export class VisualizationService {
-  selectedLabel$: BehaviorSubject<LabelTypes> = new BehaviorSubject(undefined);
+export class VisualizationPageService {
+  selectedLabel$: BehaviorSubject<any> = new BehaviorSubject(undefined);
   selectedIndex$: BehaviorSubject<number> = new BehaviorSubject(undefined);
-  labels$: Observable<Labels>;
+  labels$: Observable<any>;
   colors$: Observable<string[]>;
   selectedPoint$: Observable<ScatterPlotPoint>;
   showNearestPoints$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -76,7 +76,7 @@ export class VisualizationService {
     ).pipe(map(([data, selectedIndex]) => data.top_100[selectedIndex]));
   }
 
-  selectLabel(label: LabelTypes): void {
+  selectLabel(label: any): void {
     this.selectedLabel$.next(label);
   }
   selectIndex(index: number): void {

@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
-import { LabelTypes } from '@core/models';
 import { Observable } from 'rxjs';
-import { VisualizationService } from '../../services';
+import { VisualizationPageService } from '../../services';
 import { VisualizationFacade } from '../../visualization.facade';
 
 @Component({
   selector: 'hs-visualization',
-  templateUrl: './visualization.component.html',
-  styleUrls: ['./visualization.component.scss'],
-  providers: [VisualizationService],
+  templateUrl: './visualization-page.component.html',
+  styleUrls: ['./visualization-page.component.scss'],
+  providers: [VisualizationPageService],
 })
-export class VisualizationComponent {
-  selectedLabel: LabelTypes;
+export class VisualizationPageComponent {
+  selectedLabel: {[name: string]: string};
   selectedIndex: number;
   selectedPoint$: Observable<ScatterPlotPoint>;
   labels$: Observable<string[]>;
@@ -21,7 +20,7 @@ export class VisualizationComponent {
   showTop100: boolean = false;
   constructor(
     private facade: VisualizationFacade,
-    private visualization: VisualizationService
+    private visualization: VisualizationPageService
   ) {
     this.scatterPlotData$ = this.visualization.scatterPlotData$;
     this.labels$ = this.facade.visualizationLabelNames$;
@@ -35,7 +34,7 @@ export class VisualizationComponent {
     this.visualization.selectIndex(index);
   }
 
-  handleSelectLabel(label: LabelTypes): void {
+  handleSelectLabel(label: any): void {
     this.selectedLabel = label;
     this.visualization.selectLabel(label);
   }

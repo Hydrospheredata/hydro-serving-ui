@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { VisualizationResponse, Labels } from '@core/models/visualization';
+import { VisualizationResponse } from '@core/models/visualization';
 import { VisualizationApi } from '@core/services/visualization-api.service';
 import { Observable } from 'rxjs';
-import { refCount, publishReplay, map, filter, pluck } from 'rxjs/operators';
+import { refCount, publishReplay, map, filter, pluck, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +10,9 @@ import { refCount, publishReplay, map, filter, pluck } from 'rxjs/operators';
 export class VisualizationFacade {
   response$: Observable<VisualizationResponse> = this.api
     .getData$()
-    .pipe(publishReplay(1), refCount());
-  visualizationLabels$: Observable<Labels> = this.response$.pipe(
-    pluck('labels')
+    .pipe(tap(console.dir), publishReplay(1), refCount());
+  visualizationLabels$: Observable<any> = this.response$.pipe(
+    pluck('class_labels')
   );
   visualizationLabelNames$: Observable<
     string[]
