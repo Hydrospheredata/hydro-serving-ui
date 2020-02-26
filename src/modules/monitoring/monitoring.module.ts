@@ -38,6 +38,7 @@ import {
   AggregationComponent,
   BatchMetricsComponent
 } from './containers';
+import { VisualizationModule } from 'modules/visualization/visualization.module';
 @NgModule({
   entryComponents: [
     DialogDeleteMetricComponent,
@@ -71,6 +72,7 @@ import {
     LogMetricsTableComponent,
   ],
   imports: [
+    VisualizationModule,
     SharedModule,
     StoreModule.forFeature('monitoring', reducer),
     EffectsModule.forFeature([
