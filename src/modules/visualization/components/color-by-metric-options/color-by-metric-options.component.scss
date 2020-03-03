@@ -1,0 +1,23 @@
+@import "variables";
+
+.color-by-metric {
+  &__select {
+    display: inline-block;
+    margin-bottom: 18px;
+    width: 100%;
+  }
+
+  &__setting {
+    display: flex;
+    justify-content: space-between;
+
+    &-key {
+      color: $neutral-color-800;
+    }
+
+    &-value {
+      font-family: $font-family-bold;
+      color: $neutral-color-1000;
+    }
+  }
+}

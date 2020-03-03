@@ -3,12 +3,11 @@ import { Injectable } from '@angular/core';
 import { VisualizationResponse } from '@core/models';
 import { of, Observable } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { HttpService } from './http';
 
 @Injectable({ providedIn: 'root' })
 export class VisualizationApi {
   constructor(private http: HttpClient) {}
-  getData$(): Observable<VisualizationResponse> {
+  getData$(transformer: string = 'umap'): Observable<VisualizationResponse> {
     const body = {
       model_name: 'adult_scalar',
       model_version: 1,
@@ -28,7 +27,7 @@ export class VisualizationApi {
     };
 
     return this.http
-      .post('http://localhost:5000/plottable_embeddings/umap', body)
+      .post(`http://localhost:5000/plottable_embeddings/${transformer}`, body)
       .pipe(
         tap(console.dir),
         catchError(err => {

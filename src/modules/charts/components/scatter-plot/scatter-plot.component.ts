@@ -7,6 +7,7 @@ import {
   SimpleChanges,
   OnChanges,
 } from '@angular/core';
+import { ScatterPlotData, ScatterPlotPoint } from '@charts/models/scatter-plot-data.model';
 import { ScatterPlotConfig } from '@core/models';
 import { ChartHelperService } from '@core/services/chart-helper.service';
 
@@ -26,8 +27,8 @@ export class ScatterPlotComponent implements OnInit, OnChanges {
   xScale;
   private yAxisOffset: number = 1;
   private scatterPlotConfig: ScatterPlotConfig = {
-    height: 400,
-    width: 520,
+    height: 620,
+    width: 620,
     margins: {
       top: 24,
       right: 24,

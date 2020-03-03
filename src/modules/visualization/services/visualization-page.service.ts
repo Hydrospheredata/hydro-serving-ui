@@ -1,20 +1,45 @@
 import { Injectable } from '@angular/core';
-import { Colorizer } from '@core/models';
+import {
+  ScatterPlotPoint,
+  ScatterPlotData,
+} from '@charts/models/scatter-plot-data.model';
+import {
+  Colorizer,
+  VisualizationResponse,
+  ClassLabel,
+  Metric,
+} from '@core/models';
 import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, switchMap } from 'rxjs/operators';
 import { VisualizationFacade } from '../visualization.facade';
 import { ColorizerBuilder } from './colorizer.builder';
 
-@Injectable()
+export type ColorBy = 'class' | 'metric';
+
+@Injectable({
+  providedIn: 'root',
+})
 export class VisualizationPageService {
-  selectedLabel$: BehaviorSubject<any> = new BehaviorSubject(undefined);
-  selectedIndex$: BehaviorSubject<number> = new BehaviorSubject(undefined);
-  labels$: Observable<any>;
   colors$: Observable<string[]>;
+  labels$: Observable<Pick<VisualizationResponse, 'class_labels'>>;
+  labelsNames$: Observable<string[]>;
+  loading$: Observable<boolean>;
+  metricNames$: Observable<string[]>;
+  scatterPlotData$: Observable<ScatterPlotData>;
+  selectedIndex$: BehaviorSubject<number> = new BehaviorSubject(undefined);
+  selectedLabel$: BehaviorSubject<string> = new BehaviorSubject(undefined);
+  selectedMetric$: Observable<Metric>;
   selectedPoint$: Observable<ScatterPlotPoint>;
   showNearestPoints$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   top100$: Observable<number[]>;
-  scatterPlotData$: Observable<ScatterPlotData>;
+  selectedMetricName$: Observable<string>;
+  colorBy$: Observable<ColorBy>;
+
+  private colorBy: BehaviorSubject<ColorBy> = new BehaviorSubject('class' as ColorBy);
+  private selectedMetricName: BehaviorSubject<string> = new BehaviorSubject(
+    undefined
+  );
+
   constructor(
     private facade: VisualizationFacade,
     private colorizerBuilder: ColorizerBuilder
@@ -45,23 +70,23 @@ export class VisualizationPageService {
         );
       })
     );
-    this.labels$ = this.facade.visualizationLabels$;
-    this.colors$ = combineLatest(this.labels$, this.selectedLabel$).pipe(
-      map(([labels, selectedLabel]) => {
-        if (labels[selectedLabel] === undefined) {
-          return [];
-        }
 
-        let colorizer: Colorizer;
-        if (labels[selectedLabel]) {
-          colorizer = this.colorizerBuilder.build(selectedLabel);
-        } else {
-          colorizer = this.colorizerBuilder.build();
-        }
+    this.colorBy$ = this.colorBy.asObservable();
 
-        return labels[selectedLabel].map(val => colorizer.color(val));
+    this.colors$ = this.colorBy$.pipe(
+      switchMap(colorBy => {
+        switch (colorBy) {
+          case 'class':
+            return this.colorsByClassLabel$();
+          case 'metric':
+            return this.colorsByMetric$();
+          default:
+            break;
+        }
+        return this.colorsByClassLabel$();
       })
     );
+
     this.selectedPoint$ = combineLatest(
       this.scatterPlotData$,
       this.selectedIndex$
@@ -70,16 +95,63 @@ export class VisualizationPageService {
         return data.points[index];
       })
     );
+
     this.top100$ = combineLatest(
       this.facade.response$,
       this.selectedIndex$
     ).pipe(map(([data, selectedIndex]) => data.top_100[selectedIndex]));
+
+    this.labelsNames$ = this.facade.labelsNames$;
+    this.metricNames$ = this.facade.metricsNames$;
+
+    this.loading$ = this.facade.loading$;
+    this.selectedMetric$ = combineLatest(
+      this.facade.metrics$,
+      this.selectedMetricName.asObservable()
+    ).pipe(map(([metrics, selectedMetricName]) => metrics[selectedMetricName]));
+    this.selectedMetricName$ = this.selectedMetricName.asObservable();
   }
 
-  selectLabel(label: any): void {
+  changeColorBy(colorBy: ColorBy): void {
+    this.colorBy.next(colorBy);
+  }
+
+  selectLabel(label: string): void {
     this.selectedLabel$.next(label);
+  }
+  selectMetricName(metricName: string): void {
+    this.selectedMetricName.next(metricName);
   }
   selectIndex(index: number): void {
     this.selectedIndex$.next(index);
+  }
+
+  private colorsByClassLabel$(): Observable<string[]> {
+    return combineLatest(this.facade.labels$, this.selectedLabel$).pipe(
+      map(([labels, selectedLabel]) => {
+        const classLabel: ClassLabel = labels[selectedLabel];
+        if (classLabel === undefined) {
+          return [];
+        }
+
+        const colorizer: Colorizer = this.colorizerBuilder.build(classLabel);
+        console.log(colorizer.getColors());
+        return colorizer.getColors();
+      })
+    );
+  }
+  private colorsByMetric$(): Observable<string[]> {
+    return this.selectedMetric$.pipe(
+      map(metric => {
+        if (metric === undefined) {
+          return [];
+        }
+        const colors = this.colorizerBuilder
+          .buildMetricColorizer(metric)
+          .getColors();
+        console.dir(colors);
+        return colors;
+      })
+    );
   }
 }

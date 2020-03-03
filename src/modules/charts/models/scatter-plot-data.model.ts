@@ -1,8 +1,8 @@
-interface ScatterPlotPoint {
+export interface ScatterPlotPoint {
   x: number;
   y: number;
 }
-interface ScatterPlotData {
+export interface ScatterPlotData {
   points: ScatterPlotPoint[];
   minX: number;
   maxX: number;

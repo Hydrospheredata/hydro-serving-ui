@@ -1,0 +1,18 @@
+@import "variables";
+
+.color-by-selector {
+  &__title {
+    color: $neutral-color-900;
+    font-family: $font-family-bold;
+  }
+  &__options {
+    &-item {
+      font-family: $font-family-light;
+      color: $neutral-color-900;
+    }
+
+    &-item + &-item {
+      margin-left: 16px;
+    }
+  }
+}

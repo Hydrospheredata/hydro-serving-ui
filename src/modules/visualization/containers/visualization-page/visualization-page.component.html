@@ -1,35 +1,44 @@
 <div class="visualization">
+  <div *ngIf="loading$ | async" class="visualization__loader">
+    loading
+  </div>
   <div class="visualization__body">
     <div class="visualization__settings">
-      <div class="visualization__settings-item">
-        <div class="visualization__settings-label">Label</div>
-        <mdl-select
-          label="Choose label"
-          [(ngModel)]="selectedLabel"
-          (change)="handleSelectLabel($event)"
-        >
-          <mdl-option
-            *ngFor="let labelName of labels$ | async"
-            [value]="labelName"
-            >{{ labelName }}</mdl-option
-          >
-        </mdl-select>
-      </div>
-      <div class="visualization__setting-item">
-        <mdl-checkbox [(ngModel)]="showTop100">
-          Show nearest points
-        </mdl-checkbox>
-      </div>
+      <hs-color-by-selector
+        class="visualization__settings-item"
+        [colorBy]="colorBy$ | async"
+        (colorByChanged)="onColorByChange($event)"
+      ></hs-color-by-selector>
+      <hs-color-by-class-label-options
+        class="visualization__settings-item"
+        *ngIf="(colorBy$ | async) === 'class'"
+        [labelName]="selectedLabel"
+        [labelNames]="labels$ | async"
+        (labelNameChanged)="handleSelectLabel($event)"
+      ></hs-color-by-class-label-options>
+      <hs-color-by-metric-options
+        class="visualization__settings-item"
+        *ngIf="(colorBy$ | async) === 'metric'"
+        [metric]="selectedMetric$ | async"
+        [metricName]="selectedMetricName$ | async"
+        [metricsNames]="metrics$ | async"
+        (metricNameChanged)="handleSelectMetric($event)"
+      ></hs-color-by-metric-options>
+      <mdl-checkbox
+        [(ngModel)]="showTop100"
+        class="visualization__setting-item"
+      >
+        Show nearest points
+      </mdl-checkbox>
     </div>
-    <div class="visualization__chart">
-      <hs-scatter-plot
-        [data]="scatterPlotData$ | async"
-        [colors]="colors$ | async"
-        [top100]="top100$ | async"
-        [showTop100]="showTop100"
-        (selectPoint)="handleSelectPoint($event)"
-      ></hs-scatter-plot>
-    </div>
+    <hs-scatter-plot
+      class="visualization__chart"
+      [data]="scatterPlotData$ | async"
+      [colors]="colors$ | async"
+      [top100]="top100$ | async"
+      [showTop100]="showTop100"
+      (selectPoint)="handleSelectPoint($event)"
+    ></hs-scatter-plot>
     <div class="visualization__detail">
       <ng-template
         [ngTemplateOutlet]="point"

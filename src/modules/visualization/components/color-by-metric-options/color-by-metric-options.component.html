@@ -1,0 +1,22 @@
+<div class="color-by-metric">
+  <mdl-select
+    class="color-by-metric__select"
+    label="Choose metric"
+    [ngModel]="metricName"
+    (change)="onMetricNameChange($event)"
+  >
+    <mdl-option *ngFor="let metricName of metricsNames" [value]="metricName">{{
+      metricName
+    }}</mdl-option>
+  </mdl-select>
+  <div *ngIf="metric">
+    <div class="color-by-metric__setting">
+      <span class="color-by-metric__setting-key">threshold: </span>
+      <span class="color-by-metric__setting-value">{{ metric.threshold }}</span>
+    </div>
+    <div class="color-by-metric__setting">
+      <span class="color-by-metric__setting-key">operation: </span>
+      <span class="color-by-metric__setting-value">{{ metric.operation }}</span>
+    </div>
+  </div>
+</div>
