@@ -1,4 +1,7 @@
 <div class="color-by-metric">
+  <div class="color-by-metric__label">
+    Metric
+  </div>
   <mdl-select
     class="color-by-metric__select"
     label="Choose metric"
@@ -9,7 +12,7 @@
       metricName
     }}</mdl-option>
   </mdl-select>
-  <div *ngIf="metric">
+  <div *ngIf="metric" class="color-by-metric__settings">
     <div class="color-by-metric__setting">
       <span class="color-by-metric__setting-key">threshold: </span>
       <span class="color-by-metric__setting-value">{{ metric.threshold }}</span>

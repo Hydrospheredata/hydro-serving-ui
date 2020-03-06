@@ -2,17 +2,17 @@
 
 .color-by-selector {
   &__title {
-    color: $neutral-color-900;
+    color: $neutral-color-1000;
     font-family: $font-family-bold;
   }
   &__options {
     &-item {
       font-family: $font-family-light;
-      color: $neutral-color-900;
+      color: $neutral-color-1000;
     }
 
     &-item + &-item {
-      margin-left: 16px;
+      margin-left: 12px;
     }
   }
 }

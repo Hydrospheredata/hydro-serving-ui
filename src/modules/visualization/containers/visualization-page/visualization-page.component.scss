@@ -1,10 +1,12 @@
 @import "variables";
+
 .visualization {
   padding: 12px;
   background: white;
   border-radius: 4px;
   border: 1px $neutral-color-300 solid;
   position: relative;
+
   &__loader {
     position: absolute;
     left: 0;
@@ -15,9 +17,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: black;
-    font-size: 20px;
+
+    &-icon {
+      color: white;
+      width: 48px;
+      height: 48px;
+    }
   }
+
   &__header {
     margin-bottom: 24px;
   }
@@ -31,21 +38,23 @@
     margin-right: 24px;
   }
 
-  &__details {
-    
-  }
+  &__details {}
 
   &__settings {
     margin-right: 24px;
+    margin-top: 24px;
     width: 240px;
     max-width: 240px;
+
     &-item {
       display: block;
       margin-bottom: 18px;
     }
+
     &-label {
-      font-size: 16px;
+      font-size: 14px;
       color: $neutral-color-1000;
+      text-transform: lowercase;
     }
   }
 

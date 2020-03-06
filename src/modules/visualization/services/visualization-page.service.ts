@@ -9,12 +9,20 @@ import {
   ClassLabel,
   Metric,
 } from '@core/models';
-import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
-import { map, filter, switchMap } from 'rxjs/operators';
+import { Check } from '@monitoring/interfaces';
+import {
+  Observable,
+  combineLatest,
+  BehaviorSubject,
+  Subject,
+  of,
+} from 'rxjs';
+import { map, filter, switchMap, catchError, pluck } from 'rxjs/operators';
 import { VisualizationFacade } from '../visualization.facade';
 import { ColorizerBuilder } from './colorizer.builder';
+import { ModelVersion } from '@shared/_index';
 
-export type ColorBy = 'class' | 'metric';
+export type ColorBy = 'class_label' | 'metric';
 
 @Injectable({
   providedIn: 'root',
@@ -31,11 +39,15 @@ export class VisualizationPageService {
   selectedMetric$: Observable<Metric>;
   selectedPoint$: Observable<ScatterPlotPoint>;
   showNearestPoints$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  top100$: Observable<number[]>;
+  top100$: Observable<number[][]>;
   selectedMetricName$: Observable<string>;
   colorBy$: Observable<ColorBy>;
-
-  private colorBy: BehaviorSubject<ColorBy> = new BehaviorSubject('class' as ColorBy);
+  error$: Subject<string> = new Subject();
+  selectedRequest$: Observable<Check>;
+  modelVersion$: Observable<ModelVersion>;
+  private colorBy: BehaviorSubject<ColorBy> = new BehaviorSubject(
+    'class' as ColorBy
+  );
   private selectedMetricName: BehaviorSubject<string> = new BehaviorSubject(
     undefined
   );
@@ -68,6 +80,11 @@ export class VisualizationPageService {
             maxY: 0,
           }
         );
+      }),
+      catchError(err => {
+        this.error$.next(err);
+        // TODO: shit
+        return of({} as ScatterPlotData);
       })
     );
 
@@ -76,7 +93,7 @@ export class VisualizationPageService {
     this.colors$ = this.colorBy$.pipe(
       switchMap(colorBy => {
         switch (colorBy) {
-          case 'class':
+          case 'class_label':
             return this.colorsByClassLabel$();
           case 'metric':
             return this.colorsByMetric$();
@@ -96,20 +113,17 @@ export class VisualizationPageService {
       })
     );
 
-    this.top100$ = combineLatest(
-      this.facade.response$,
-      this.selectedIndex$
-    ).pipe(map(([data, selectedIndex]) => data.top_100[selectedIndex]));
-
+    this.top100$ = this.facade.top100$;
     this.labelsNames$ = this.facade.labelsNames$;
     this.metricNames$ = this.facade.metricsNames$;
-
     this.loading$ = this.facade.loading$;
     this.selectedMetric$ = combineLatest(
       this.facade.metrics$,
       this.selectedMetricName.asObservable()
     ).pipe(map(([metrics, selectedMetricName]) => metrics[selectedMetricName]));
     this.selectedMetricName$ = this.selectedMetricName.asObservable();
+    this.selectedRequest$ = this.facade.selectedRequest$;
+    this.modelVersion$ = this.facade.modelVersion$;
   }
 
   changeColorBy(colorBy: ColorBy): void {
@@ -135,7 +149,6 @@ export class VisualizationPageService {
         }
 
         const colorizer: Colorizer = this.colorizerBuilder.build(classLabel);
-        console.log(colorizer.getColors());
         return colorizer.getColors();
       })
     );

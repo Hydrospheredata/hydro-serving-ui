@@ -53,7 +53,6 @@ export class ApplicationsPageComponent implements OnDestroy {
   }
 
   handleBookmark(application: Application): void {
-    console.log('handle toggle', { application });
     this.facade.toggleFavorite(application);
   }
 

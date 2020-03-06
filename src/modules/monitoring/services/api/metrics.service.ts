@@ -19,11 +19,15 @@ export class MetricsService {
   public getMetricSpecifications(
     modelVersionId: string
   ): Observable<MetricSpecification[]> {
-    return this.http.get(`${this.baseUrl}/modelversion/${modelVersionId}`).pipe(
-      catchError(_ => {
-        throw new Error(`Can't fetch data from monitoring service`);
-      })
-    );
+    return this.http
+      .get<MetricSpecification[]>(
+        `${this.baseUrl}/modelversion/${modelVersionId}`
+      )
+      .pipe(
+        catchError(_ => {
+          throw new Error(`Can't fetch data from monitoring service`);
+        })
+      );
   }
 
   public addMetricSpecification(

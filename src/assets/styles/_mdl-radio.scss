@@ -1,9 +1,13 @@
 @import "variables";
 
 .mdl-radio__inner-circle {
-  background: $primary-color-800;
+  background: $primary-color-1000;
 }
 
 .mdl-radio.is-checked .mdl-radio__outer-circle {
-  border: 2px solid $primary-color-800;
+  border: 2px solid $primary-color-1000;
+}
+
+.mdl-radio__label {
+  font-size: 14px;
 }

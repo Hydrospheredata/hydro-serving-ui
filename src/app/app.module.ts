@@ -10,7 +10,9 @@ import { ApplicationsModule } from '@applications/applications.module';
 import { CoreModule } from '@core/core.module';
 import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
+import { MonitoringModule } from '@monitoring/monitoring.module';
 import { SharedModule } from '@shared/shared.module';
+import { VisualizationModule } from 'modules/visualization/visualization.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -21,6 +23,8 @@ import { SharedModule } from '@shared/shared.module';
     ModelsModule,
     SharedModule,
     AppRoutingModule,
+    MonitoringModule,
+    VisualizationModule,
   ],
   bootstrap: [AppComponent],
 })

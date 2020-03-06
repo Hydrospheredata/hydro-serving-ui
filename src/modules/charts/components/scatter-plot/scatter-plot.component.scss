@@ -2,18 +2,17 @@
 
 .scatter-plot {
   &__layout {
-    fill: whitesmoke;
+    fill: white;
   }
   &__point {
-    opacity: .7;
+    opacity: .9;
     transition: .2s ease all;
 
     &:hover {
       opacity: 1;
     }
     &--hide {
-      opacity: 0;
-      visibility: hidden;
+      opacity: 0.2;
     }
     &--selected {
       opacity: 1;

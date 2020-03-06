@@ -56,7 +56,7 @@ fdescribe('VisualizationComponent', () => {
       fixture.detectChanges();
     });
     it('loader is visible', () => {
-      visualizationService.loading$.subscribe(console.log)
+      visualizationService.loading$.subscribe();
       const loaderDE = debugElement.query(By.css('.visualization__loader'));
       expect(loaderDE).toBeTruthy();
     });

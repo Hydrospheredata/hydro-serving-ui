@@ -1,18 +1,24 @@
 @import "variables";
 
 .color-by-metric {
+  &__label {
+    color: $neutral-color-1000;
+    font-family: $font-family-bold;
+  }
   &__select {
     display: inline-block;
-    margin-bottom: 18px;
     width: 100%;
   }
-
+  &__settings {
+    margin-top: 12px;
+  }
   &__setting {
     display: flex;
     justify-content: space-between;
 
     &-key {
-      color: $neutral-color-800;
+      text-transform: capitalize;
+      color: $neutral-color-1000;
     }
 
     &-value {

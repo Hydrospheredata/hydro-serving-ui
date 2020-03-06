@@ -15,9 +15,7 @@ export class ApplicationsService {
   }
 
   public getApplications(): Observable<Application[]> {
-    return this.http
-      .get(this.baseApiUrl)
-      .pipe(map((res: Response): any => res));
+    return this.http.get<Application[]>(this.baseApiUrl);
   }
 
   public updateApplication(application: Application): Observable<Application> {

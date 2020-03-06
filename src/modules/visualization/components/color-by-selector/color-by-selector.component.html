@@ -3,21 +3,17 @@
     Colorize by
   </div>
   <div class="color-by-selector__options">
-    <mdl-radio
-      (change)="onColorByChange($event)"
+    <mdl-select
+      class="color-by-metric__select"
+      label="Choose metric"
       [ngModel]="colorBy"
-      name="group"
-      class="color-by-selector__options-item"
-      value="class"
-      >Class label</mdl-radio
-    >
-    <mdl-radio
       (change)="onColorByChange($event)"
-      [ngModel]="colorBy"
-      name="group"
-      class="color-by-selector__options-item"
-      value="metric"
-      >Metric</mdl-radio
     >
+      <mdl-option
+        *ngFor="let colorBy of colorByTypes"
+        [value]="colorBy"
+        >{{ colorBy }}</mdl-option
+      >
+    </mdl-select>
   </div>
 </div>

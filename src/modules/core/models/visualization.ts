@@ -28,7 +28,7 @@ export interface VisualizationResponse {
   metrics: {
     [name: string]: Metric;
   };
-  request_ids: number[];
+  requests_ids: number[];
   top_100: number[][];
   visualization_metrics: {
     [name: string]: string;

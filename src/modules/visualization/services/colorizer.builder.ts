@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Colorizer, ColoringType, ClassLabel, Metric } from '@core/models';
-import {
-  ColorMapService,
-} from '@core/services/color-map.service';
+import { ColorMapService } from '@core/services/color-map.service';
 import { switchMap } from 'rxjs/operators';
 class DefaultColorizer implements Colorizer {
   constructor(private classLabel: ClassLabel) {}
@@ -30,8 +28,21 @@ class GradientColorizer implements Colorizer {
 class ClassColorizer implements Colorizer {
   constructor(private classLabel: ClassLabel) {}
   public getColors() {
-    const color = ['red', 'blue'];
-    console.log(this.classLabel);
+    const color = [
+      '#82b8ff',
+      '#ff7686',
+      '#ffad37',
+      '#ddff64',
+      '#85ff85',
+      '#8cffd9',
+      '#sef3ff',
+      '#f59dfa',
+      '#8a82ff',
+      '#4362ff',
+      '#6db7fa',
+      '#b384f5',
+      '#b366ac',
+    ];
     return this.classLabel.data.map(val => {
       const classIndex = this.classLabel.classes.indexOf(val);
 
@@ -43,7 +54,7 @@ class MetricColorizer implements Colorizer {
   constructor(private metric: Metric) {}
   public getColors() {
     const { scores, operation, threshold } = this.metric;
-    const [successColor, failedColor] = ['green', 'red'];
+    const [successColor, failedColor] = ['#418ecc', '#ff716c'];
     return scores.map(score => {
       switch (operation) {
         case 'Eq':
@@ -65,7 +76,6 @@ class MetricColorizer implements Colorizer {
   }
 }
 
-// TODO: refactor build
 @Injectable({ providedIn: 'root' })
 export class ColorizerBuilder {
   constructor(private colorMap: ColorMapService) {}

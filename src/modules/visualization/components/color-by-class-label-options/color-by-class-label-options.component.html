@@ -1,9 +1,14 @@
-<mdl-select
-  label="Choose label"
-  [ngModel]="labelName"
-  (change)="onChange($event)"
->
-  <mdl-option *ngFor="let labelName of labelNames" [value]="labelName">{{
-    labelName
-  }}</mdl-option>
-</mdl-select>
+<div class="color-by-class-label">
+  <div class="color-by-class-label__label">
+    Class label
+  </div>
+  <mdl-select
+    label="Choose label"
+    [ngModel]="labelName"
+    (change)="onChange($event)"
+  >
+    <mdl-option *ngFor="let labelName of labelNames" [value]="labelName">{{
+      labelName
+    }}</mdl-option>
+  </mdl-select>
+</div>

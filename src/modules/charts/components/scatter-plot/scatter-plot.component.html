@@ -18,8 +18,11 @@
       [attr.height]="viewHeight"
       [attr.transform]="dataTranslate"
     ></rect>
+    <g [attr.transform]="dataTranslate" class="scatter-plot__links"></g>
     <g [attr.transform]="dataTranslate">
       <circle
+        (mouseenter)="onMouseEnter($event, i)"
+        (mouseleave)="onMouseLeave()"
         *ngFor="let point of points; index as i"
         class="scatter-plot__point"
         [ngClass]="{

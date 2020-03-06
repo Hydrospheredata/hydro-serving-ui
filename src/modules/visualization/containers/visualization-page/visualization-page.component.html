@@ -1,6 +1,9 @@
 <div class="visualization">
+  <hs-error-message *ngIf="error$ | async as error">{{
+    error
+  }}</hs-error-message>
   <div *ngIf="loading$ | async" class="visualization__loader">
-    loading
+    <hs-loader class="visualization__loader-icon"></hs-loader>
   </div>
   <div class="visualization__body">
     <div class="visualization__settings">
@@ -11,7 +14,7 @@
       ></hs-color-by-selector>
       <hs-color-by-class-label-options
         class="visualization__settings-item"
-        *ngIf="(colorBy$ | async) === 'class'"
+        *ngIf="(colorBy$ | async) === 'class_label'"
         [labelName]="selectedLabel"
         [labelNames]="labels$ | async"
         (labelNameChanged)="handleSelectLabel($event)"
@@ -39,22 +42,19 @@
       [showTop100]="showTop100"
       (selectPoint)="handleSelectPoint($event)"
     ></hs-scatter-plot>
-    <div class="visualization__detail">
-      <ng-template
-        [ngTemplateOutlet]="point"
-        [ngTemplateOutletContext]="selectedPoint$ | async"
-      ></ng-template>
-    </div>
+  </div>
+  <div class="visualization__detail">
+    <ng-template
+      [ngTemplateOutlet]="point"
+      [ngTemplateOutletContext]="selectedPoint$ | async"
+    ></ng-template>
   </div>
 </div>
 
 <ng-template let-x="x" let-y="y" #point>
-  <div class="visualization__detail-point">
-    <div>
-      <span>x: {{ x }}</span>
-    </div>
-    <div>
-      <span>y: {{ y }}</span>
-    </div>
-  </div>
+  <hs-log-detail
+    *ngIf="(modelVersion$ | async)"
+    [check]="selectedRequest$ | async"
+    [modelVersion]="modelVersion$ | async"
+  ></hs-log-detail>
 </ng-template>

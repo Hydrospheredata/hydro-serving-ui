@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { VisualizationResponse } from '@core/models';
-import { of, Observable } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class VisualizationApi {
@@ -27,13 +27,10 @@ export class VisualizationApi {
     };
 
     return this.http
-      .post(`http://localhost:5000/plottable_embeddings/${transformer}`, body)
-      .pipe(
-        tap(console.dir),
-        catchError(err => {
-          console.dir(err);
-          return of(null);
-        })
-      );
+      .post<VisualizationResponse>(
+        `http://localhost:5000/plottable_embeddings/${transformer}`,
+        body
+      )
+      .pipe(catchError(err => throwError(err)));
   }
 }

@@ -4,6 +4,8 @@ export interface ScatterPlotPoint {
 }
 export interface ScatterPlotData {
   points: ScatterPlotPoint[];
+  visiblePoints?: ScatterPlotPoint[];
+  opaquePoints?: ScatterPlotPoint[];
   minX: number;
   maxX: number;
   minY: number;

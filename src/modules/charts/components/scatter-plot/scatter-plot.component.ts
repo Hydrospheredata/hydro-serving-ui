@@ -6,29 +6,38 @@ import {
   EventEmitter,
   SimpleChanges,
   OnChanges,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import { ScatterPlotData, ScatterPlotPoint } from '@charts/models/scatter-plot-data.model';
+import {
+  ScatterPlotData,
+  ScatterPlotPoint,
+} from '@charts/models/scatter-plot-data.model';
 import { ScatterPlotConfig } from '@core/models';
 import { ChartHelperService } from '@core/services/chart-helper.service';
-
+import { select } from 'd3';
+import { throttle } from 'lodash';
 @Component({
   selector: 'hs-scatter-plot',
   templateUrl: './scatter-plot.component.html',
   styleUrls: ['./scatter-plot.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScatterPlotComponent implements OnInit, OnChanges {
+export class ScatterPlotComponent implements OnChanges {
   @Input() readonly data: ScatterPlotData;
   @Input() readonly colors: string[] = [];
-  @Input() readonly top100: number[] = [];
+  @Input() readonly top100: number[][] = [];
   @Input() readonly showTop100: boolean = false;
   @Output() selectPoint: EventEmitter<any> = new EventEmitter();
   selectedIndex: number;
+  hoveredIndex: number;
+  throttledFunc: any;
+  links: Array<{ x1: number; x2: number; y1: number; y2: number }>;
   yScale;
   xScale;
   private yAxisOffset: number = 1;
   private scatterPlotConfig: ScatterPlotConfig = {
     height: 620,
-    width: 620,
+    width: 1100,
     margins: {
       top: 24,
       right: 24,
@@ -37,9 +46,9 @@ export class ScatterPlotComponent implements OnInit, OnChanges {
     },
   };
 
-  constructor(private chartHelper: ChartHelperService) {}
-
-  ngOnInit() {}
+  constructor(private chartHelper: ChartHelperService) {
+    // this.throttledFunc = throttle(this.drawLinksFromHoveredElement, 1000);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
@@ -87,10 +96,62 @@ export class ScatterPlotComponent implements OnInit, OnChanges {
     return this.data.points;
   }
 
+  onMouseEnter(_, index): void {
+    this.hoveredIndex = index;
+    this.drawLinksFromHoveredElement();
+  }
+  onMouseLeave(): void {
+    this.hoveredIndex = undefined;
+    select('.scatter-plot__links')
+      .selectAll('line')
+      .remove();
+  }
+
+  drawLinksFromHoveredElement() {
+    console.log('called');
+    if (this.top100) {
+      const currentTop100 = this.top100[this.hoveredIndex];
+      const self = this;
+      const x1 = this.xScale(this.points[this.hoveredIndex].x);
+      const y1 = this.yScale(this.points[this.hoveredIndex].y);
+      select('.scatter-plot__links')
+        .selectAll('line')
+        .data(currentTop100)
+        .join(
+          enter =>
+            enter
+              .append('line')
+              .attr('x1', x1)
+              .attr('y1', y1)
+              .attr('x2', i => {
+                return self.xScale(this.points[i].x);
+              })
+              .attr('y2', i => {
+                return self.yScale(this.points[i].y);
+              })
+              .attr('stroke', 'rgba(130,184,255, .3)')
+              .attr('stroke-width', '1px'),
+          update =>
+            update
+              .attr('x1', x1)
+              .attr('y1', y1)
+              .attr('x2', i => {
+                return self.xScale(this.points[i].x);
+              })
+              .attr('y2', i => {
+                return self.yScale(this.points[i].y);
+              })
+              .attr('stroke', 'rgba(130,184,255, .3)')
+              .attr('stroke-width', '1px')
+        );
+    }
+  }
+
   render() {
     if (!this.data) {
       return;
     }
+
     const { minX, maxX, minY, maxY } = this.data;
     this.xScale = this.chartHelper
       .scaleLinear()
@@ -108,7 +169,7 @@ export class ScatterPlotComponent implements OnInit, OnChanges {
   }
 
   pointColor(index: number): string {
-    return this.colors[index] ? this.colors[index] : 'grey';
+    return this.colors[index] ? this.colors[index] : '#c3d6ee';
   }
 
   onSelectPoint(index) {
@@ -117,10 +178,13 @@ export class ScatterPlotComponent implements OnInit, OnChanges {
   }
 
   hidePoint(index): boolean {
-    if (this.showTop100 && this.top100) {
-      return  !this.top100.includes(index) && index !== this.selectedIndex;
+    if (this.hoveredIndex === undefined) {
+      return false;
     }
-
+    const set = new Set(this.top100[this.hoveredIndex]);
+    if (!set.has(index)) {
+      return true;
+    }
     return false;
   }
 }

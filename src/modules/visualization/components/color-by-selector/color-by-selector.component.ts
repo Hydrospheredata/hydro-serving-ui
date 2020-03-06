@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ColorBy } from 'modules/visualization/services';
 
 @Component({
@@ -6,10 +6,10 @@ import { ColorBy } from 'modules/visualization/services';
   templateUrl: './color-by-selector.component.html',
   styleUrls: ['./color-by-selector.component.scss'],
 })
-export class ColorBySelectorComponent implements OnInit {
+export class ColorBySelectorComponent {
   @Input() colorBy: ColorBy;
   @Output() colorByChanged: EventEmitter<ColorBy> = new EventEmitter();
-  ngOnInit() {}
+  colorByTypes: ColorBy[] = ['class_label', 'metric'];
 
   onColorByChange(colorBy: ColorBy): void {
     this.colorByChanged.next(colorBy);

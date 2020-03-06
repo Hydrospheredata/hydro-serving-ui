@@ -1,0 +1,8 @@
+@import "variables";
+
+.color-by-class-label {
+  &__label{
+    color: $neutral-color-1000;
+    font-family: $font-family-bold;
+  }
+}
