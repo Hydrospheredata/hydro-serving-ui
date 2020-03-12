@@ -1,0 +1,17 @@
+@import "variables";
+
+.regime {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  color: $neutral-color-500;
+  cursor: pointer;
+  transition: .3s all ease;
+  &--active, &:hover {
+    color: $primary-color-1000;
+  }
+
+  + & {
+    margin-left: 8px;
+  }
+}

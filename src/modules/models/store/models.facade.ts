@@ -9,6 +9,7 @@ import {
   selectAllModels,
   selectSelectedModel,
   selectModelVersionById,
+  selectModelVersionEntities,
 } from '@models/store/selectors';
 import { Store, select } from '@ngrx/store';
 import { ProfilerFacade } from '@profiler/store';
@@ -23,6 +24,7 @@ import {
   publish,
   refCount,
   startWith,
+  tap,
 } from 'rxjs/operators';
 import { State } from './reducers';
 
@@ -79,7 +81,9 @@ export class ModelsFacade {
   );
 
   allModelVersions$ = this.store.pipe(select(selectAllModelVersions));
-
+  allModelVersionEntities$ = this.store.pipe(
+    select(selectModelVersionEntities)
+  );
   someModelVersionIsReleased$ = this.store.pipe(
     select(selectAllModelVersions),
     map(modelVersions =>
@@ -201,7 +205,7 @@ export class ModelsFacade {
   ) {}
 
   selectModelVersionById$ = id =>
-    this.store.pipe(select(selectModelVersionById(id)))
+    this.store.pipe(select(selectModelVersionById(id)));
 
   modelVersionsByModelId(id: number) {
     return this.store.pipe(select(selectAllModelVersionsByModelId(id)));

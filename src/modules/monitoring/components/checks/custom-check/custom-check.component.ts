@@ -25,10 +25,6 @@ export class CustomCheckComponent implements OnChanges {
   }
 
   chartConfig: ChartConfig = {
-    data: {
-      x: [],
-      y: [],
-    },
     size: {
       width: 1000,
       height: 170,
@@ -49,8 +45,10 @@ export class CustomCheckComponent implements OnChanges {
       this.chartConfig = {
         ...this.chartConfig,
         data: {
-          x: check.data.map((_, i) => i + 1),
-          y: check.data,
+          [check.name]: {
+            x: check.data.map((_, i) => i + 1),
+            y: check.data,
+          },
         },
         plotBands: this.buildPlotBands(check.health),
         threshold: check.threshold,

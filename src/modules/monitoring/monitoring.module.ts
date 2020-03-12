@@ -17,6 +17,8 @@ import {
   DialogRequestsErrorsComponent,
   RawChecksComponent,
   LogMetricsTableComponent,
+  RegimeSelectorComponent,
+  AddComparableComponent,
 } from '@monitoring/components';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { MonitoringService } from '@monitoring/services';
@@ -36,7 +38,8 @@ import {
   MetricsComponent,
   MonitoringPageComponent,
   AggregationComponent,
-  BatchMetricsComponent
+  BatchMetricsComponent,
+  CustomMetricsComponent
 } from './containers';
 @NgModule({
   entryComponents: [
@@ -44,6 +47,7 @@ import {
     DialogMetricComponent,
     MetricsComponent,
     DialogRequestsErrorsComponent,
+    AddComparableComponent,
   ],
   declarations: [
     AggregationComponent,
@@ -69,6 +73,9 @@ import {
     RawChecksComponent,
     BatchMetricsComponent,
     LogMetricsTableComponent,
+    CustomMetricsComponent,
+    RegimeSelectorComponent,
+    AddComparableComponent,
   ],
   imports: [
     SharedModule,

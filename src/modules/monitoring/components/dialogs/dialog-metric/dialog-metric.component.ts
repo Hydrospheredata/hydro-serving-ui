@@ -52,7 +52,6 @@ export class DialogMetricComponent implements OnInit {
 
     const modelChange = this.form.get('config').get('model').valueChanges;
     modelChange.subscribe(_ => {
-      console.log(_);
     });
 
     this.modelVersions$ = combineLatest(
@@ -72,7 +71,6 @@ export class DialogMetricComponent implements OnInit {
 
     const getName = output => output.name;
     const res = modelVersion.modelContract.predict.outputs.map(getName);
-    console.log(res);
     return res;
   }
 

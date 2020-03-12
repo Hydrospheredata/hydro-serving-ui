@@ -1,0 +1,10 @@
+<div class="regimes">
+  <hydro-icon
+    class="regime"
+    [ngClass]="{ 'regime--active': regime === selectedRegime }"
+    *ngFor="let regime of regimes"
+    [type]="regime"
+    (click)="changeRegime(regime)"
+  >
+  </hydro-icon>
+</div>

@@ -22,6 +22,8 @@ export const selectSelectedModelVersion = createSelector(
   selectModelVersionEntities,
   fromRoot.selectRouterParams,
   (entities, router) => {
+    const mv =  entities && router.params && entities[router.params.modelVersionId];
+    console.log({entities, router, mv});
     return entities && router.params && entities[router.params.modelVersionId];
   }
 );

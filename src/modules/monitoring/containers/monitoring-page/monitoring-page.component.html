@@ -52,12 +52,8 @@
       [modelVersion]="modelVersion$ | async"
       [loading]="detailedCheckLoading$ | async"
     ></hs-log>
-    <hs-custom-checks
-      [customMetrics]="customMetrics$ | async"
-      [customChecks]="customChecks$ | async"
-      [loading]="detailedCheckLoading$ | async"
-      (openSettings)="openSettings()"
-    ></hs-custom-checks>
+    <hs-custom-metrics>
+    </hs-custom-metrics>
   </ng-container>
 </div>
 

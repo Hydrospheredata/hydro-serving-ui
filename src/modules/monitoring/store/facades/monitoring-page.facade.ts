@@ -21,6 +21,7 @@ import {
   selectSelectedMetrics,
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
+import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { isNumber, isEqual } from 'lodash';
 import {
@@ -120,7 +121,10 @@ export class MonitoringPageFacade {
     })
   );
 
-  checksAggregations$ = combineLatest(this.checksAggregationResponse$, this.selectedMetrics$).pipe(
+  checksAggregations$ = combineLatest(
+    this.checksAggregationResponse$,
+    this.selectedMetrics$
+  ).pipe(
     map(([aggregationResponse, metrics]) => {
       if (aggregationResponse.results === undefined) {
         return [];
@@ -243,6 +247,7 @@ export class MonitoringPageFacade {
     }),
     share()
   );
+
   private limit: number = 60;
 
   constructor(
@@ -251,7 +256,8 @@ export class MonitoringPageFacade {
     private monitoring: MonitoringService,
     private checkAggBuilder: CheckAggregationBuilder,
     private paginator: AggregationPaginator
-  ) { }
+  ) {}
+
   loadMetrics(): void {
     this.store.dispatch(LoadMetrics());
   }
@@ -277,6 +283,12 @@ export class MonitoringPageFacade {
 
   loadNewest(offset: number = 0) {
     this.currentOffset$.next(this.currentOffset$.value - 1);
+  }
+
+  idsToModelVersions$(ids: number[]): Observable<ModelVersion[]> {
+    return this.modelsFacade.allModelVersionEntities$.pipe(
+      map(modelVersions => ids.map(id => modelVersions[id]))
+    );
   }
 }
 

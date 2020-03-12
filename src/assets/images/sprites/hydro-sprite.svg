@@ -205,9 +205,9 @@ fill: #CB6E17;
    </g>
   </g>
  </g>
-</symbol><symbol viewBox="0 0 24 24" id="monitoring" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></symbol><symbol viewBox="0 0 24 24" id="profiler" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zm2.5 2.1h-15V5h15v14.1zm0-16.1h-15c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/><path fill="none" d="M0 0h24v24H0z"/></symbol><symbol viewBox="0 0 24 24" id="show">
+</symbol><symbol viewBox="0 0 24 24" id="merge" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/><path d="M0 0h24v24H0z" fill="none"/></symbol><symbol viewBox="0 0 24 24" id="monitoring" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></symbol><symbol viewBox="0 0 24 24" id="profiler" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zm2.5 2.1h-15V5h15v14.1zm0-16.1h-15c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/><path fill="none" d="M0 0h24v24H0z"/></symbol><symbol viewBox="0 0 24 24" id="show">
   <path d="M2,12 
            C6,4 18,4 22,12 
            C18,20 6,20 2,12" fill="none" stroke="black" strokeWidth="2"/>
   <circle cx="12" cy="12" r="4"/>
-</symbol></svg>
+</symbol><symbol viewBox="0 0 24 24" id="split" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0V0z" fill="none"/><path fill="currentColor" d="M3 15h8v-2H3v2zm0 4h8v-2H3v2zm0-8h8V9H3v2zm0-6v2h8V5H3zm10 0h8v14h-8V5z"/></symbol></svg>

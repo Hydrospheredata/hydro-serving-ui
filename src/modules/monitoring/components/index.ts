@@ -5,4 +5,6 @@ export * from './reqstore-metrics/reqstore-metrics.component';
 export * from './time-interval-select/time-interval-select.component';
 export * from './monitoring-log';
 export * from './requests-information/requests-information.component';
+export * from './regime-selector/regime-selector.component';
+export * from './add-comparable/add-comparable.component';
 export * from './checks';

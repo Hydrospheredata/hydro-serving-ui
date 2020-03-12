@@ -97,7 +97,6 @@ export class ModelVersionDetailsComponent {
   }
 
   get isReleased(): boolean {
-    console.log(this.status);
     return this.status === ModelVersionStatus.Released;
   }
 
