@@ -1,10 +1,10 @@
+import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@shared/shared.module';
-import { SidebarComponent } from './sidebar.component';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
 import { getNativeElement } from '@testing/helpers';
+import { SidebarComponent } from './sidebar.component';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -32,9 +32,9 @@ describe('SidebarComponent', () => {
   });
 
   it('show message if data is empty', () => {
-    let de = debugElement.query(By.css('.sidebar__message'))
+    const de = debugElement.query(By.css('.sidebar__message'));
 
     expect(de).toBeTruthy();
-    expect(getNativeElement(de).textContent).toEqual('list is empty')
+    expect(getNativeElement(de).textContent).toEqual('list is empty');
   });
 });

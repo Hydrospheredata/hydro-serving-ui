@@ -114,6 +114,11 @@ export class CheckChartComponent implements OnInit {
     const { left: x, top: y } = this.margins;
     return `translate(${x}, ${y})`;
   }
+
+  get thresholdTranslate() {
+    const { top: y } = this.margins;
+    return `translate(0, ${y})`;
+  }
   get yAxisTranslate() {
     const { left: x, top: y } = this.margins;
     return `translate(${x}, ${y})`;

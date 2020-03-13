@@ -66,8 +66,8 @@ export class MetricsEffects {
   loadMetrics$ = createEffect(() =>
     this.actions$.pipe(
       ofType(LoadMetrics),
-      withLatestFrom(this.modelsFacade.selectedModelVersion$),
-      switchMap(([, { id }]) => {
+      switchMap(() => this.modelsFacade.selectedModelVersion$),
+      switchMap(({ id }) => {
         return this.metricsService.getMetricSpecifications(`${id}`).pipe(
           map(metricSettings =>
             LoadMetricsSuccess({ payload: metricSettings })
