@@ -33,8 +33,16 @@ server {
   location /tensorflow.serving. {
     grpc_pass grpc://gateway_grpc;
   }
+  
+  location /hydrosphere.serving.gateway. {
+    grpc_pass grpc://gateway_grpc;
+  }
 
   location /hydrosphere.manager. {
+    grpc_pass grpc://manager_grpc;
+  }
+  
+  location /hydrosphere.discovery. {
     grpc_pass grpc://manager_grpc;
   }
 }

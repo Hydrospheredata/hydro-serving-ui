@@ -46,6 +46,7 @@
             [status]="modelVersion.status"
           ></hs-model-version-status>
           <button
+            *ngIf="modelVersion.isExternal"
             class="model-version__details-status-button"
             hs-button
             (click)="showBuildLog(modelVersion.id)"
