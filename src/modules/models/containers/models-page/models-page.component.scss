@@ -14,5 +14,10 @@
     padding: 24px;
     height: calc(100% - 48px);
     overflow: scroll;
+    &--zenMode {
+      margin: 0 auto;
+      min-width: 1100px;
+      max-width: 1100px;
+    }
   }
 }

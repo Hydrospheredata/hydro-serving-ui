@@ -24,25 +24,32 @@
 <td class="hydro-table-body__cell">
   {{ modelVersion.created | hsTimeAgo }}
 </td>
-<td class="hydro-table-body__cell">
-  <ng-container *ngIf="!modelVersion.isExternal; else blockIcon">
-    <div
-      class="model-version__application"
-      *ngFor="let application of modelVersion.applications"
-      [routerLink]="['/applications', application]"
-    >
-      {{ application }}
-    </div>
-  </ng-container>
+<td class="hydro-table-body__cell" hsHideInZenMode>
+    <ng-container *ngIf="!modelVersion.isExternal; else blockIcon" >
+      <div
+        class="model-version__application"
+        *ngFor="let application of modelVersion.applications"
+        [routerLink]="['/applications', application]"
+        queryParamsHandling="merge"
+      >
+        {{ application }}
+      </div>
+    </ng-container>
 </td>
 <td class="hydro-table-body__cell">
-  <button hs-button color="primary" [routerLink]="[modelVersion.id]">
+  <button
+    hs-button
+    color="primary"
+    [routerLink]="[modelVersion.id]"
+    queryParamsHandling="merge"
+  >
     DETAILS
   </button>
   <button
     hs-button
     color="primary"
     [routerLink]="[modelVersion.id, 'monitoring']"
+    queryParamsHandling="merge"
   >
     MONITORING
   </button>

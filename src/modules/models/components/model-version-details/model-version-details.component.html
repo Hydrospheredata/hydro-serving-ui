@@ -1,11 +1,10 @@
 <div class="model-version">
-  <div class="model-version__header" hsHideInZenMode>
-    <span class="model-version__header-link" [routerLink]="['../']">
+  <div class="model-version__header">
+    <span class="model-version__header-link" [routerLink]="['../']" queryParamsHandling="merge">
       <hydro-icon
         class="model-version__header-link-icon"
         type="icon-left"
       ></hydro-icon>
-
       back to model</span
     >
   </div>
@@ -70,6 +69,7 @@
             kind="flat"
             color="primary"
             [routerLink]="['./monitoring']"
+            queryParamsHandling="merge"
           >
             monitoring
           </button>

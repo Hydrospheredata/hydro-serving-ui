@@ -1,6 +1,6 @@
 <div class="monitoring">
   <div class="monitoring__header">
-    <div class="monitoring__header-link" [routerLink]="['../']">
+    <div class="monitoring__header-link" [routerLink]="['../']" queryParamsHandling="merge">
       <hydro-icon
         class="monitoring__header-link-icon"
         type="icon-left"
@@ -12,11 +12,11 @@
       class="monitoring__header-path"
       *ngIf="modelVersion$ | async as modelVersion"
     >
-      <span class="monitoring__header-path-link" [routerLink]="['../../']">{{
+      <span class="monitoring__header-path-link" [routerLink]="['../../']" queryParamsHandling="merge">{{
         modelVersion.model.name
       }}</span
       ><span class="monitoring__header-path-separator">/</span
-      ><span class="monitoring__header-path-link" [routerLink]="['../']">{{
+      ><span class="monitoring__header-path-link" [routerLink]="['../']" queryParamsHandling="merge">{{
         modelVersion.modelVersion
       }}</span>
     </div>

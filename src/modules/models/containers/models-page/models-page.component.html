@@ -8,7 +8,10 @@
       (clicked)="handleSidebarClick($event)"
     ></hs-sidebar>
   </div>
-  <div class="models-page__body">
+  <div
+    class="models-page__body"
+    [ngClass]="{'models-page__body--zenMode': isZenMode$ | async}"
+  >
     <router-outlet></router-outlet>
   </div>
 </div>

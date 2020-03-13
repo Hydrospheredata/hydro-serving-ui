@@ -7,14 +7,13 @@
   align-items: center;
   position: relative;
   padding: 0px 8px;
-  height: 48px;
+  height: 72px;
   &__logo {
     cursor: pointer;
     outline: none;
     position: relative;
-    background: $primary-color-900;
-    left: -2px;
-
+    left: 2px;
+    width: 120px;
     &-icon {
       width: 152px;
       height: 36px;

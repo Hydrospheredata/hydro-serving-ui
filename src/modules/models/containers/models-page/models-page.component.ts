@@ -1,5 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
+import { ZenModeService } from '@core/services/zenmode.service';
 import { ModelsFacade } from '@models/store';
 import { Model } from '@shared/_index';
 import { Observable, Subscription } from 'rxjs';
@@ -16,13 +17,21 @@ export class ModelsPageComponent implements OnDestroy {
   filterString: string = '';
   private routerSub: Subscription;
 
-  constructor(private modelsFacade: ModelsFacade, private router: Router) {
+  constructor(
+    private modelsFacade: ModelsFacade,
+    private router: Router,
+    private zenMode: ZenModeService
+  ) {
     this.routerSub = this.router.events
       .pipe(
         filter(event => this.isRootModelsUrl(event)),
         tap(_ => this.redirectToFirst())
       )
       .subscribe();
+  }
+
+  get isZenMode$(): Observable<boolean> {
+    return this.zenMode.isZenMode$;
   }
 
   ngOnDestroy() {
@@ -54,4 +63,5 @@ export class ModelsPageComponent implements OnDestroy {
   private isRootModelsUrl(event: Event): boolean {
     return event instanceof NavigationEnd && event.url.split('/').length <= 2;
   }
+
 }

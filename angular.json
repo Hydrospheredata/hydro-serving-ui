@@ -21,7 +21,8 @@
               "assets": [
                 {"glob": "**/fonts/**", "input": "src/assets", "output": "assets"},
                 {"glob": "*.*", "input": "src/assets/images", "output": "assets/images"},
-                {"glob": "**", "input": "src/assets/images/sprites", "output": "assets/images/sprites"}
+                {"glob": "**", "input": "src/assets/images/sprites", "output": "assets/images/sprites"},
+                {"glob": "**", "input": "src/assets/images/logo", "output": "assets/images/logo"}
               ],
               "styles": [
                 "node_modules/@angular-mdl/core/scss/material-design-lite.scss",
@@ -42,6 +43,27 @@
                   {
                     "replace": "src/environments/environment.ts",
                     "with": "src/environments/environment.prod.ts"
+                  }
+                ],
+                "optimization": true,
+                "outputHashing": "all",
+                "sourceMap": false,
+                "extractCss": true,
+                "namedChunks": false,
+                "aot": true,
+                "extractLicenses": true,
+                "vendorChunk": false,
+                "buildOptimizer": true
+              },
+              "tm": {
+                "fileReplacements": [
+                  {
+                    "replace": "src/environments/environment.ts",
+                    "with": "src/environments/environment.prod.ts"
+                  },
+                  {
+                    "replace": "src/assets/images/logo/logo.svg",
+                    "with": "src/assets/images/tm-logo/logo.svg"
                   }
                 ],
                 "optimization": true,
