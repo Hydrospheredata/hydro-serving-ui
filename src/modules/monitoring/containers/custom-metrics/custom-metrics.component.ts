@@ -26,10 +26,10 @@ export class CustomMetricsComponent {
     private dialog: DialogService,
     private customMetricService: CustomMetricService
   ) {
-    this.customChecks$ = facade.customChecks$;
+    this.customChecks$ = this.facade.customChecks$;
     this.comparisonRegime$ = this.customMetricService.comparisonRegime$;
     this.comparableModelVersions$ = this.customMetricService.comparableModelVersions$;
-    this.comparableCustomMetrics$ = this.customMetricService.comparableCustomMetrics$;
+    this.comparableCustomMetrics$ = this.customMetricService.comparableCustomMetricsByModelVersionId$;
     this.chartConfigs = this.customMetricService.chartConfigs$;
   }
 

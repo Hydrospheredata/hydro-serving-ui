@@ -1,34 +1,16 @@
-import { MetricSpecificationConfig } from '@shared/models/metric-specification-kind.model';
+import { Servable } from '@servables/models';
 
+export interface MetricSpecificationConfig {
+  threshold: number;
+  modelVersionId: number;
+  thresholdCmpOperator: {kind: string};
+  servable?: Servable;
+}
 export interface MetricSpecificationRequest {
   name: string;
   modelVersionId: number;
   config: MetricSpecificationConfig;
 }
-
-export interface MetricSpecificationProvider {
-  // kind: string;
-  byModelVersionId: {
-    [modelVersionId: string]: MetricSpecification;
-  };
-  metrics: string[];
-}
-
-export interface MetricSpecificationProviders {
-  [metricSpecKind: string]: MetricSpecificationProvider;
-}
-
-export type MetricSpecificationKind =
-  | 'CounterMetricSpec'
-  | 'KSMetricSpec'
-  | 'AEMetricSpec'
-  | 'ImageAEMetricSpec'
-  | 'RFMetricSpec'
-  | 'GANMetricSpec'
-  | 'LatencyMetricSpec'
-  | 'ErrorRateMetricSpec'
-  | 'AccuracyMetricSpec'
-  | 'CustomModelMetricSpec';
 
 export class MetricSpecification {
   public id: string;

@@ -5,6 +5,7 @@ import {
   GetChecksAggregationParams,
   GetChecksParams,
   ChecksAggregationResponse,
+  Check,
 } from '@monitoring/interfaces';
 import { Observable } from 'rxjs';
 
@@ -20,7 +21,11 @@ export class MonitoringService {
     return this.http.get(`${this.baseUrl}/buildinfo`);
   }
 
-  getChecks({ modelVersionId, from, to }: GetChecksParams): Observable<any> {
+  getChecks({
+    modelVersionId,
+    from,
+    to,
+  }: GetChecksParams): Observable<Check[]> {
     return this.http.get(`${this.baseUrl}/checks/${modelVersionId}`, {
       params: { from, to },
     });

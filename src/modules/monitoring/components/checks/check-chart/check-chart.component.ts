@@ -252,7 +252,7 @@ export class CheckChartComponent implements OnInit {
   }
 
   lineColor(index: number) {
-    return ['#2680C2', '#F0B429', 'cyan'][index];
+    return ['#2680C2', '#F0B429', '#009688'][index];
   }
 
   toggleExclude(id: string): void {

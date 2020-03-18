@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChartConfig, CustomCheck } from '@monitoring/interfaces';
+import { ChartConfig, CustomCheck, Check } from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { ModelVersion } from '@shared/_index';
@@ -45,72 +45,50 @@ export class CustomMetricService {
     );
 
     this.customMetrics$ = this.facade.customChecks$;
-    // this.comparableCustomMetrics$ = combineLatest(
-    //   this.facade.selectedAggregation$,
-    //   this.comparableModelVersionsIds
-    // ).pipe(
-    //   switchMap(([selectedAggregation, ids]) => {
-    //     const request = ids.reduce((req, id) => {
-    //       req[id] = this.monitoring.getChecks({
-    //         modelVersionId: id,
-    //         from: selectedAggregation.additionalInfo._hs_first_id,
-    //         to: selectedAggregation.additionalInfo._hs_last_id,
-    //       });
-    //       return req;
-    //     }, {});
-
-    //     return forkJoin(request);
-    //   })
-    // );
     this.comparableCustomMetricsByModelVersionId$ = combineLatest(
       this.facade.selectedAggregation$,
       this.comparableModelVersionsIds
     ).pipe(
       switchMap(([selectedAggregation, ids]) => {
-        // const request = ids.reduce((req, id) => {
-        //   req[id] = this.monitoring.getChecks({
-        //     modelVersionId: id,
-        //     from: selectedAggregation.additionalInfo._hs_first_id,
-        //     to: selectedAggregation.additionalInfo._hs_last_id,
-        //   });
-        //   return req;
-        // }, {});
+        const request: {
+          [modelVersionId: number]: Observable<Check[]>;
+        } = ids.reduce((req, id) => {
+          req[id] = this.monitoring.getChecks({
+            modelVersionId: id,
+            from: selectedAggregation.additionalInfo._hs_first_id,
+            to: selectedAggregation.additionalInfo._hs_last_id,
+          });
+          return req;
+        }, {});
+        return forkJoin(request);
+      }),
+      map((res: { [modelVersionId: number]: Check[] }) => {
+        const result = {};
+        for (const modelVersionId in res) {
+          if (res.hasOwnProperty(modelVersionId)) {
+            const checks = res[modelVersionId];
+            if (result[modelVersionId] === undefined) {
+              result[modelVersionId] = {};
+            }
+            checks.forEach(check => {
+              const rawChecks = check._hs_metric_checks;
 
-        // return forkJoin(request);
-        return of({
-          'adult_scalar:2': {
-            2: {
-              data: [
-                0.002457499967252159,
-                0.001457499967252159,
-                0.005457499967252159,
-                0.001457499967252159,
-                0.012457499967252159,
-                0.000457499967252159,
-                0.009457499967252159,
-                0.002457499967252159,
-                0.002457499967252159,
-              ],
-              name: 'm1',
-            },
-          },
-          'adult_scalar:3': {
-            2: {
-              data: [
-                0.012457499967252159,
-                0.000457499967252159,
-                0.009457499967252159,
-                0.021457499967252159,
-                0.002457499967252159,
-                0.100457499967252159,
-                0.009457499967252159,
-                0.002457499967252159,
-                0.0457499967252159,
-              ],
-              name: 'm1',
-            },
-          },
-        });
+              for (const checkName in rawChecks) {
+                if (rawChecks.hasOwnProperty(checkName)) {
+                  const rawCheck = rawChecks[checkName];
+
+                  if (result[modelVersionId][checkName] === undefined) {
+                    result[modelVersionId][checkName] = { data: [], name: checkName};
+                  }
+
+                  result[modelVersionId][checkName].data.push(rawCheck.value);
+                }
+              }
+            });
+          }
+        }
+
+        return result;
       })
     );
 
@@ -165,7 +143,7 @@ export class CustomMetricService {
     result.push(currentConfigs);
     for (const modelVersionId in compCheksByModelVersionId) {
       if (compCheksByModelVersionId.hasOwnProperty(modelVersionId)) {
-        const currentConfig = {};
+        const currentConfig = {} as any;
         const currentChecks = compCheksByModelVersionId[modelVersionId];
         for (const i in currentChecks) {
           if (currentChecks.hasOwnProperty(i)) {
