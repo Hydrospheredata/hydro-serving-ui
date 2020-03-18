@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import { Application } from '@shared/models/_index';
+import { Application } from '@shared/models';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

@@ -7,7 +7,7 @@ import {
 } from '@models/store/actions';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
-import { Model } from '@shared/models/_index';
+import { Model } from '@shared/models';
 
 export interface State extends EntityState<Model> {
   loading: boolean;

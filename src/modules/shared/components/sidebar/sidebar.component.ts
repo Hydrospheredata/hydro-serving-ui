@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Application, Model } from '@shared/models/_index';
+import { Application, Model } from '@shared/models';
 
 @Component({
   selector: 'hs-sidebar',

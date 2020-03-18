@@ -6,7 +6,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import { ApplicationsService } from '@applications/services/applications.service';
-import { Application } from '@shared/models/_index';
+import { Application } from '@shared/models';
 
 import {
   Get,

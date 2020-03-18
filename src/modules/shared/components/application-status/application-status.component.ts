@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { IApplication, ApplicationStatus } from '@shared/models/_index';
+import { IApplication, ApplicationStatus } from '@shared/models';
 
 @Component({
   selector: 'hs-application-status',

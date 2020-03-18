@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Profile } from '@shared/models/_index';
+import { Profile } from '@shared/models';
 
 @Component({
   selector: 'hs-profile-stats',

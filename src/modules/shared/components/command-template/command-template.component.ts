@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommandCreator } from '@core/services/command-creator/command-creator';
 import { CommandCreatorFactory } from '@core/services/command-creator/command-creator-factory.service';
-import { Application } from '@shared/models/_index';
+import { Application } from '@shared/models';
 
 @Component({
     selector: 'hydro-command-template',

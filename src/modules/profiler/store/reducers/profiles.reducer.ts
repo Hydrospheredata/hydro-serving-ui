@@ -1,6 +1,6 @@
 import { createReducer, on, Action } from '@ngrx/store';
 import { GetProfilesSuccess, CleanProfiles } from '@profiler/store/actions';
-import { Profiles } from '@shared/models/_index';
+import { Profiles } from '@shared/models';
 export interface State {
   profiles: Profiles | null;
 }
