@@ -22,8 +22,6 @@ export const selectSelectedModelVersion = createSelector(
   selectModelVersionEntities,
   fromRoot.selectRouterParams,
   (entities, router) => {
-    const mv =  entities && router.params && entities[router.params.modelVersionId];
-    console.log({entities, router, mv});
     return entities && router.params && entities[router.params.modelVersionId];
   }
 );
@@ -37,10 +35,8 @@ export const selectModelVersionsLoaded = createSelector(
   state => state.loaded
 );
 export const selectAllModelVersionsByModelId = (id: number) =>
-  createSelector(
-    selectAllModelVersions,
-    modelVersions =>
-      modelVersions.filter(modelVersion => modelVersion.model.id === id)
+  createSelector(selectAllModelVersions, modelVersions =>
+    modelVersions.filter(modelVersion => modelVersion.model.id === id)
   );
 
 export const selectModelVersionById = id =>
@@ -56,11 +52,8 @@ export const selectSiblingModelVersions = ({
   modelVersionId: number;
   modelId: number;
 }) =>
-  createSelector(
-    selectAllModelVersionsByModelId(modelId),
-    modelVersions => {
-      return modelVersions.filter(
-        modelVersion => modelVersion.id !== modelVersionId
-      );
-    }
-  );
+  createSelector(selectAllModelVersionsByModelId(modelId), modelVersions => {
+    return modelVersions.filter(
+      modelVersion => modelVersion.id !== modelVersionId
+    );
+  });

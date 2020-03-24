@@ -1,0 +1,25 @@
+<div class="comparing">
+  <div class="comparing__list">
+    <div
+      class="comparing__item"
+      *ngFor="let mv of modelVersions$ | async"
+    >
+      <span class="comparing__item-name">{{ mv.model.name }}</span>
+      <span class="comparing__item-version">{{ mv.modelVersion }}</span>
+      <hydro-icon
+        class="comparing__item-icon"
+        type="icon-close"
+        (click)="remove(mv)"
+      ></hydro-icon>
+    </div>
+  </div>
+  <button
+    class="comparing__button"
+    hs-button
+    kind="flat"
+    color="primary"
+    (click)="add()"
+  >
+    add
+  </button>
+</div>

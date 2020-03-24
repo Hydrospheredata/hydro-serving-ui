@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { ModelsModule } from '@models/models.module';
+import { ModelsPublicUiModule } from '@models/shared/models-public-ui.module';
 import {
   DialogMetricComponent,
   DialogDeleteMetricComponent,
@@ -18,7 +20,6 @@ import {
   RawChecksComponent,
   LogMetricsTableComponent,
   RegimeSelectorComponent,
-  AddComparableComponent,
 } from '@monitoring/components';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { MonitoringService } from '@monitoring/services';
@@ -47,7 +48,6 @@ import {
     DialogMetricComponent,
     MetricsComponent,
     DialogRequestsErrorsComponent,
-    AddComparableComponent,
   ],
   declarations: [
     AggregationComponent,
@@ -75,9 +75,9 @@ import {
     LogMetricsTableComponent,
     CustomMetricsComponent,
     RegimeSelectorComponent,
-    AddComparableComponent,
   ],
   imports: [
+    ModelsPublicUiModule,
     SharedModule,
     StoreModule.forFeature('monitoring', reducer),
     EffectsModule.forFeature([

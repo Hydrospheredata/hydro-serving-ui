@@ -1,11 +1,10 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
+import { ModelsFacade } from '@models/store';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { ModelsFacade } from '@models/store';
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
@@ -15,7 +14,6 @@ import { ModelsFacade } from '@models/store';
 export class MonitoringPageComponent implements OnInit {
   checks$ = this.facade.checks$;
   checksAggregation$ = this.facade.checksAggregations$;
-  customChecks$ = this.facade.customChecks$;
   customMetrics$ = this.facade.customMetrics$;
   errorsChecks$ = this.facade.errorsChecks$;
   latency$ = this.facade.latency$;

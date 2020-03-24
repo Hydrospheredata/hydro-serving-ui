@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ComparisonRegime } from '@monitoring/containers/custom-metrics/custom-metrics.service';
+import { ComparisonRegime } from '@monitoring/containers/custom-metrics/custom-metrics.facade';
 
 @Component({
   selector: 'hs-regime-selector',

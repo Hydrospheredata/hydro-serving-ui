@@ -205,7 +205,7 @@ export class ModelsFacade {
   ) {}
 
   selectModelVersionById$ = id =>
-    this.store.pipe(select(selectModelVersionById(id)));
+    this.store.pipe(select(selectModelVersionById(id)))
 
   modelVersionsByModelId(id: number) {
     return this.store.pipe(select(selectAllModelVersionsByModelId(id)));

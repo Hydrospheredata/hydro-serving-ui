@@ -1,39 +1,19 @@
 <div class="custom-metrics">
+  {{ comparisonRegime$ | async }}
   <div class="custom-metrics__header">
     <span class="custom-metrics__header-title">Custom metrics</span>
     <hs-regime-selector
       class="custom-metrics__header-regime-selector"
       [selectedRegime]="comparisonRegime$ | async"
-      (changedRegime)="changeRegime($event)"
+      (changedRegime)="changeRegime()"
     ></hs-regime-selector>
   </div>
-
-  <div class="comparing">
-    <div class="comparing__list">
-      <div
-        class="comparing__item"
-        *ngFor="let mv of comparableModelVersions$ | async"
-      >
-        <span class="comparing__item-name">{{ mv.model.name }}</span>
-        <span class="comparing__item-version">{{ mv.modelVersion }}</span>
-        <hydro-icon
-          class="comparing__item-icon"
-          type="icon-close"
-          (click)="removeComparableModelVersion(mv.id)"
-        ></hydro-icon>
-      </div>
-    </div>
-    <button
-      class="comparing__button"
-      hs-button
-      kind="flat"
-      color="primary"
-      (click)="addComparableModelVersion()"
-    >
-      add
-    </button>
-  </div>
+  <hs-model-versions-tags
+    (listChanged)="comparableModelVersionsChanged($event)"
+  ></hs-model-versions-tags>
 </div>
+
+<!-- {{ chartConfigs | async | json }} -->
 <div class="charts">
   <div class="charts__column" *ngFor="let checksByMv of chartConfigs | async">
     <div class="charts__item" *ngFor="let check of checksByMv | keyvalue">

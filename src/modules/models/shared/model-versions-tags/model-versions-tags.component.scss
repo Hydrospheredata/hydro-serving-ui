@@ -1,0 +1,45 @@
+@import "variables";
+
+.comparing {
+  border: 1px $neutral-color-200 solid;
+  border-radius: 4px;
+  padding: 4px;
+  display: flex;
+  margin-bottom: 24px;
+
+  &__list {
+    display: flex;
+  }
+
+  &__button {
+    margin: 0 4px;
+  }
+
+  &__item {
+    background: white;
+    padding: 2px 4px;
+    height: 28px;
+    border: 1px $neutral-color-800 solid;
+    border-radius: 2px;
+    color: $neutral-color-1000;
+    display: flex;
+    align-items: center;
+    margin-right: 4px;
+
+    &-icon {
+      height: 24px;
+      width: 24px;
+      cursor: pointer;
+      color: $supportive-color-red-500;
+    }
+
+    &-name {
+      color: $neutral-color-800;
+    }
+
+    &-version {
+      font-family: $font-family-bold;
+      margin: 0 8px;
+    }
+  }
+}

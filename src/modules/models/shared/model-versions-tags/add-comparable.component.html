@@ -2,7 +2,7 @@
   <div
     class="model-version"
     *ngFor="let modelVersion of modelVersions$ | async"
-    (click)="onSelectModelVersion(modelVersion.id)"
+    (click)="onSelectModelVersion(modelVersion)"
   >
     {{ modelVersion.model.name }} / {{ modelVersion.modelVersion }}
   </div>
