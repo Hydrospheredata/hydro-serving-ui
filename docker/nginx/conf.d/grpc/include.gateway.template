@@ -1,0 +1,7 @@
+location /tensorflow.serving. {
+  grpc_pass grpc://$GATEWAY_HOST:$GATEWAY_GRPC_PORT;
+}
+
+location /hydrosphere.serving.gateway. {
+  grpc_pass grpc://$GATEWAY_HOST:$GATEWAY_GRPC_PORT;
+}

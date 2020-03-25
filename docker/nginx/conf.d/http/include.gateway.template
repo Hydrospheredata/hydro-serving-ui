@@ -1,0 +1,7 @@
+location /gateway {
+  proxy_pass http://$GATEWAY_HOST:$GATEWAY_HTTP_PORT;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Scheme $scheme;
+  proxy_set_header Upgrade $http_upgrade;
+  proxy_http_version 1.1;
+}

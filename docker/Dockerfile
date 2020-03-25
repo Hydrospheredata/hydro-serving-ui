@@ -1,13 +1,14 @@
-FROM xcgd/nginx-vts:1.16.0-0.1.18
+FROM openresty/openresty:latest
+
+RUN  apt update && apt install -y gettext
+
+ENV OSS=true;
 
 ENV MANAGER_HOST=localhost
 ENV GATEWAY_HOST=localhost
 ENV MONITORING_HOST=localhost
-ENV REQSTORE_HOST=localhost
-ENV TIMEMACHINE_HOST=localhost
 ENV ROOTCAUSE_HOST=localhost
 ENV PROMETHEUS_AM_HOST=localhost
-ENV STATS_ACCESS=127.0.0.1
 
 ENV MANAGER_HTTP_PORT=8080
 ENV MANAGER_GRPC_PORT=9090
@@ -15,19 +16,23 @@ ENV GATEWAY_HTTP_PORT=8080
 ENV GATEWAY_GRPC_PORT=9090
 ENV MONITORING_HTTP_PORT=8080
 ENV MONITORING_GRPC_PORT=9090
-ENV REQSTORE_HTTP_PORT=8080
-ENV REQSTORE_GRPC_PORT=9090
-ENV TIMEMACHINE_HTTP_PORT=9090
 ENV ROOTCAUSE_HTTP_PORT=5005
 ENV PROMETHEUS_AM_PORT=9093
 
 EXPOSE 80
 
-ADD nginx/config/default.conf.template /etc/nginx/conf.d/default.conf.template
-
-COPY nginx/config/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/conf.d /etc/nginx/conf.d/
+COPY nginx/config/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
 COPY hydro-serving-ui /usr/share/nginx/html
 
-CMD envsubst '${PROMETHEUS_AM_HOST} ${PROMETHEUS_AM_PORT} ${MANAGER_HOST} ${GATEWAY_HOST} ${MONITORING_HOST} ${REQSTORE_HOST} ${MANAGER_HTTP_PORT} ${MANAGER_GRPC_PORT} ${GATEWAY_HTTP_PORT} ${GATEWAY_GRPC_PORT} ${MONITORING_HTTP_PORT} ${MONITORING_GRPC_PORT} ${REQSTORE_HTTP_PORT} ${REQSTORE_GRPC_PORT} ${TIMEMACHINE_HOST} ${TIMEMACHINE_HTTP_PORT} ${ROOTCAUSE_HOST} ${ROOTCAUSE_HTTP_PORT} ${STATS_ACCESS}' < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf \
- && cat /etc/nginx/conf.d/default.conf \
- && exec nginx -g 'daemon off;'
+CMD envsubst '${GATEWAY_HOST} ${GATEWAY_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.gateway.template > /etc/nginx/conf.d/grpc/include.gateway \
+  && envsubst '${MANAGER_HOST} ${MANAGER_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.manager.template > /etc/nginx/conf.d/grpc/include.manager \
+  && envsubst '${MONITORING_HOST} ${MONITORING_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.monitoring.template > /etc/nginx/conf.d/grpc/include.manager \
+#
+  && envsubst '${PROMETHEUS_AM_HOST} ${PROMETHEUS_AM_PORT}' < /etc/nginx/conf.d/http/include.alerts.template > /etc/nginx/conf.d/http/include.alerts \
+  && envsubst '${GATEWAY_HOST} ${GATEWAY_HTTP_PORT}' < /etc/nginx/conf.d/http/include.gateway.template > /etc/nginx/conf.d/http/include.gateway \
+  && envsubst '${MANAGER_HOST} ${MANAGER_HTTP_PORT}' < /etc/nginx/conf.d/http/include.manager.template > /etc/nginx/conf.d/http/include.manager \
+  && envsubst '${MONITORING_HOST} ${MONITORING_HTTP_PORT}' < /etc/nginx/conf.d/http/include.monitoring.template > /etc/nginx/conf.d/http/include.monitoring \
+  && envsubst '${ROOTCAUSE_HOST} ${ROOTCAUSE_HTTP_PORT}' < /etc/nginx/conf.d/http/include.rootcause.template > /etc/nginx/conf.d/http/include.rootcause \
+#
+  && exec /usr/bin/openresty -g 'daemon off;'
