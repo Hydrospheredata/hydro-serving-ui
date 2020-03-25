@@ -17,7 +17,7 @@ import { MockZenModeServiceProvider } from '@testing/services/zenMode.service';
 import { Subject, BehaviorSubject, of } from 'rxjs';
 import { MonitoringPageComponent } from './monitoring-page.component';
 
-describe('MonitoringPageComponent', () => {
+xdescribe('MonitoringPageComponent', () => {
   let component: MonitoringPageComponent;
   let fixture: ComponentFixture<MonitoringPageComponent>;
   let debugElement: DebugElement;
