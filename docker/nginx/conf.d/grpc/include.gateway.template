@@ -1,7 +1,14 @@
+upstream gateway_grpc {
+  zone gateway_grpc 64k;
+  server ${GATEWAY_HOST}:${GATEWAY_GRPC_PORT};
+}
+
 location /tensorflow.serving. {
-  grpc_pass grpc://$GATEWAY_HOST:$GATEWAY_GRPC_PORT;
+  #grpc_pass grpc://$GATEWAY_HOST:$GATEWAY_GRPC_PORT;
+  grpc_pass grpc://gateway_grpc;
 }
 
 location /hydrosphere.serving.gateway. {
-  grpc_pass grpc://$GATEWAY_HOST:$GATEWAY_GRPC_PORT;
+  #grpc_pass grpc://$GATEWAY_HOST:$GATEWAY_GRPC_PORT;
+  grpc_pass grpc://gateway_grpc;
 }
