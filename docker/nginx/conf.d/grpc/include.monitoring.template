@@ -1,0 +1,3 @@
+location /hydrosphere.monitoring. {
+  grpc_pass grpc://${MONITORING_HOST}:${MONITORING_GRPC_PORT};
+}

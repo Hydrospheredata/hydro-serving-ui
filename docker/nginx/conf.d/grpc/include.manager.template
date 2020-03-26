@@ -1,0 +1,7 @@
+location /hydrosphere.manager. {
+  grpc_pass grpc://${MANAGER_HOST}:${MANAGER_GRPC_PORT};
+}
+
+location /hydrosphere.discovery. {
+  grpc_pass grpc://${MANAGER_HOST}:${MANAGER_GRPC_PORT};
+}

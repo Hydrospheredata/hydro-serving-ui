@@ -1,0 +1,4 @@
+set_by_lua $is_oss 'return os.getenv("OSS")';
+if ($is_oss) {
+  return 501;
+}
