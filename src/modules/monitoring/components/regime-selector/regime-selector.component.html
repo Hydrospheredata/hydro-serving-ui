@@ -1,10 +1,11 @@
 <div class="regimes">
-  <hydro-icon
-    class="regime"
-    [ngClass]="{ 'regime--active': regime === selectedRegime }"
+  <div class="regimes__label">Regime:</div>
+  <span
+    class="regimes__item"
+    [ngClass]="{ 'regimes__item--active': regime === selectedRegime }"
     *ngFor="let regime of regimes"
-    [type]="regime"
     (click)="changeRegime(regime)"
   >
-  </hydro-icon>
+    {{ regime }}
+  </span>
 </div>

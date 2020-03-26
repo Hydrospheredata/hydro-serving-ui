@@ -64,12 +64,17 @@ export class CheckChartComponent implements OnInit {
   yScale$: Observable<any>;
   excludedUids$: Observable<string[]>;
   noData$: Observable<boolean>;
+  threshold$: Observable<number>;
+  plotBands$: Observable<any>;
+
   private mouseIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private excludedUids: BehaviorSubject<string[]> = new BehaviorSubject([]);
 
   constructor(private cdr: ChangeDetectorRef) {
     // TODO: shit subscribe
     this.config$ = this._config.asObservable().pipe(shareReplay(1));
+    this.threshold$ = this.config$.pipe(pluck('threshold'));
+    this.plotBands$ = this.config$.pipe(pluck('plotBands'));
     this.name$ = this.config$.pipe(pluck('name'));
     this.clipUrl$ = this.name$.pipe(map(name => `url(#${name})`));
     this.size$ = this.config$.pipe(pluck('size'));
@@ -230,11 +235,13 @@ export class CheckChartComponent implements OnInit {
 
           this.tooltipTranslate = `translate(${x + 8}px, ${y}px)`;
 
-          return Object.entries(mappedData).map(([name, coordinatesTyples], idx) => ({
-            name: `${name}`,
-            value: coordinatesTyples[xValue - 1][1],
-            color: this.lineColor(idx),
-          }));
+          return Object.entries(mappedData).map(
+            ([name, coordinatesTyples], idx) => ({
+              name: `${name}`,
+              value: coordinatesTyples[xValue - 1][1],
+              color: this.lineColor(idx),
+            })
+          );
         } else {
           return [];
         }

@@ -5,7 +5,7 @@ export interface Check {
     overall: RawCheck[];
   };
   _hs_metric_checks: {
-    [metricName: string]: RawCheck;
+    [metricName: string]: MetricCheck;
   };
   _hs_latency: number;
   _hs_error: number;
@@ -13,7 +13,13 @@ export interface Check {
   _hs_overall_score: number;
   _hs_model_version_id: number;
 }
-
+export interface MetricCheck {
+  check: boolean;
+  description: string;
+  threshold: number;
+  value: number;
+  metricSpecId: string;
+}
 export interface RawCheck {
   check: boolean;
   description: string;

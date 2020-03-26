@@ -1,17 +1,33 @@
 @import "variables";
-
-.regime {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  color: $neutral-color-500;
-  cursor: pointer;
-  transition: .3s all ease;
-  &--active, &:hover {
-    color: $primary-color-1000;
+.regimes {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  &__label {
+    color: $neutral-color-800;
+    font-family: $font-family-light;
+    min-width: 100px;
   }
-
-  + & {
-    margin-left: 8px;
+  &__item {
+    height: 24px;
+    color: #003E6B;
+    border: 1px $neutral-color-200 solid;
+    padding: 2px 8px;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    color: $neutral-color-700;
+    cursor: pointer;
+    transition: .3s all ease;
+    text-transform: capitalize;
+    &--active, &:hover {
+      border-color: $primary-color-600;
+      background: $primary-color-600;
+      color: $primary-color-100;
+    }
+  
+    & + & {
+      margin-left: 8px;
+    }
   }
 }

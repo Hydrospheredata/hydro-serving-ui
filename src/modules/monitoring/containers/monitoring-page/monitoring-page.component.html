@@ -47,23 +47,14 @@
       *ngIf="showBatchMetricsBlock(selectedAggregationColumn$ | async)"
       [aggregation]="selectedAggregationColumn$ | async"
     ></hs-batch-metrics>
-    <hs-log
-      [checks]="checks$ | async"
-      [modelVersion]="modelVersion$ | async"
-      [loading]="detailedCheckLoading$ | async"
-    ></hs-log>
-    <button
-      class="custom-checks__button"
-      color="cyan"
-      kind="flat"
-      hs-button
-      (click)="openSettings()"
-    >
-      Add metric
-    </button>
-    <hs-custom-metrics>
-      <ng-content></ng-content>
-    </hs-custom-metrics>
+    <div class="monitoring__log">
+      <hs-log
+        [checks]="checks$ | async"
+        [modelVersion]="modelVersion$ | async"
+        [loading]="detailedCheckLoading$ | async"
+      ></hs-log>
+    </div>
+    <hs-custom-metrics></hs-custom-metrics>
   </ng-container>
 </div>
 

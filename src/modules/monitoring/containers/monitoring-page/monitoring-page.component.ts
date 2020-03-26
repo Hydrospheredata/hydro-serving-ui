@@ -40,17 +40,6 @@ export class MonitoringPageComponent implements OnInit {
     this.facade.loadMetrics();
   }
 
-  openSettings() {
-    this.dialogService.createDialog({
-      component: MetricsComponent,
-      styles: {
-        width: '800px',
-        height: '600px',
-        padding: '0px',
-      },
-    });
-  }
-
   onSelectedAggregationColumn(id: string) {
     this.facade.selectAggregationColumn(id);
   }

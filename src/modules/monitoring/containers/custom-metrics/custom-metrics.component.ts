@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { DialogService } from '@dialog/dialog.service';
 import { ModelVersion } from '@shared/_index';
 import { Observable } from 'rxjs';
+import { MetricsComponent } from '../metrics/metrics.component';
 import { CustomMetricsFacade, ComparisonRegime } from './custom-metrics.facade';
 
 @Component({
@@ -16,12 +18,12 @@ export class CustomMetricsComponent {
   comparableCustomMetrics$: Observable<any>;
   chartConfigs: any;
   constructor(
-    private facade: CustomMetricsFacade
+    private facade: CustomMetricsFacade,
+    private dialog: DialogService
   ) {
     this.customMetricsChecks$ = this.facade.customMetrics$;
     this.comparisonRegime$ = this.facade.regime$;
     this.comparableModelVersions$ = this.facade.comparableModelVersions$;
-    this.comparableCustomMetrics$ = this.facade.comparableCustomMetricsByModelVersionId$;
     this.chartConfigs = this.facade.chartConfigs$;
   }
 
@@ -29,7 +31,18 @@ export class CustomMetricsComponent {
     this.facade.comparableModelVersionsChanged(modelVersions);
   }
 
-  changeRegime(): void {
-    this.facade.changeRegime();
+  changeRegime(regime: ComparisonRegime): void {
+    this.facade.changeRegime(regime);
+  }
+
+  openSettings() {
+    this.dialog.createDialog({
+      component: MetricsComponent,
+      styles: {
+        width: '800px',
+        height: '600px',
+        padding: '0px',
+      },
+    });
   }
 }

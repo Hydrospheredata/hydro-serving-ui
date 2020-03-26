@@ -45,6 +45,7 @@ import {
   publishReplay,
   startWith,
   tap,
+  shareReplay,
 } from 'rxjs/operators';
 import { AggregationPaginator } from '../../services/aggregation-paginator';
 
@@ -171,7 +172,7 @@ export class MonitoringPageFacade {
 
       return res;
     }),
-    share()
+    shareReplay(1)
   );
 
   checks$ = this.selectedAggregation$.pipe(

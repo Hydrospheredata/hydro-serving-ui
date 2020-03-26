@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { ModelsModule } from '@models/models.module';
 import { ModelsPublicUiModule } from '@models/shared/models-public-ui.module';
 import {
   DialogMetricComponent,
@@ -8,10 +7,8 @@ import {
   ReqstoreMetricsComponent,
   InputOutputComponent,
   TimeIntervalSelectComponent,
-  CustomChecksComponent,
   LatencyCheckComponent,
   ErrorCheckComponent,
-  CustomCheckComponent,
   LogComponent,
   LogDetailComponent,
   RequestsInformationComponent,
@@ -40,8 +37,8 @@ import {
   MonitoringPageComponent,
   AggregationComponent,
   BatchMetricsComponent,
-  CustomMetricsComponent
 } from './containers';
+import { CustomMetricsComponent } from './containers/custom-metrics/custom-metrics.component';
 @NgModule({
   entryComponents: [
     DialogDeleteMetricComponent,
@@ -51,8 +48,6 @@ import {
   ],
   declarations: [
     AggregationComponent,
-    CustomChecksComponent,
-    CustomCheckComponent,
     DialogDeleteMetricComponent,
     DialogMetricComponent,
     DialogRequestsErrorsComponent,
@@ -73,8 +68,8 @@ import {
     RawChecksComponent,
     BatchMetricsComponent,
     LogMetricsTableComponent,
-    CustomMetricsComponent,
     RegimeSelectorComponent,
+    CustomMetricsComponent,
   ],
   imports: [
     ModelsPublicUiModule,

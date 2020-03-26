@@ -39,14 +39,16 @@
       [attr.y2]="(activeLinePosition$ | async).y"
       style="stroke:rgba(78, 112, 151, 0.336);stroke-width:1"
     />
-    <!-- <g
-      *ngFor="let plotBand of plotBands"
-      [hs-d3-plot-band]="plotBand"
-      [height]="viewHeight$ | async"
-      [xScale]="xScale$ | async"
-      [attr.transform]="dataTranslate$ | async"
-      fill="#e12d393d"
-    ></g> -->
+    <g *ngIf="!(noData$ | async)">
+      <g
+        *ngFor="let plotBand of plotBands$ | async"
+        [hs-d3-plot-band]="plotBand"
+        [height]="viewHeight$ | async"
+        [xScale]="xScale$ | async"
+        [attr.transform]="dataTranslate$ | async"
+        fill="#e12d393d"
+      ></g>
+    </g>
     <g
       *ngFor="let item of mappedData$ | async | keyvalue; index as i"
       [hs-d3line]
@@ -64,12 +66,12 @@
       [attr.transform]="dataTranslate$ | async"
       #trackableRect
     ></rect>
-    <!-- <g
-      *ngIf="threshold && !noData"
-      [attr.clip-path]="clipUrl"
-      [hs-d3threshold]="threshold"
-      [yScale]="yScale"
-    ></g> -->
+    <g
+      [attr.transform]="dataTranslate$ | async"
+      *ngIf="(threshold$ | async) && !(noData$ | async)"
+      [hs-d3threshold]="threshold$ | async"
+      [yScale]="yScale$ | async"
+    ></g>
     <circle
       *ngFor="let circle of activeCircles$ | async"
       [ngStyle]="{ display: mouseIn ? 'block' : 'none' }"

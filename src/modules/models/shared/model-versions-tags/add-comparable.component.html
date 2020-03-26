@@ -1,9 +1,25 @@
-<div class="model-versions">
-  <div
-    class="model-version"
-    *ngFor="let modelVersion of modelVersions$ | async"
-    (click)="onSelectModelVersion(modelVersion)"
-  >
-    {{ modelVersion.model.name }} / {{ modelVersion.modelVersion }}
-  </div>
+<div class="comparable">
+  <input
+    class="comparable__input"
+    type="text"
+    (input)="onFilterChange($event.target.value)"
+  />
+  <table class="hydro-table comparable__table">
+    <thead class="hydro-table-head">
+      <tr>
+        <td class="hydro-table-head__cell">name</td>
+        <td class="hydro-table-head__cell">version</td>
+      </tr>
+    </thead>
+    <tbody class="hydro-table-body">
+      <tr
+        class="hydro-table-body__row comparable__item"
+        *ngFor="let modelVersion of modelVersions$ | async"
+        (click)="onSelectModelVersion(modelVersion)"
+      >
+        <td class="hydro-table-body__cell">{{ modelVersion.model.name }}</td>
+        <td class="hydro-table-body__cell">{{ modelVersion.modelVersion }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>

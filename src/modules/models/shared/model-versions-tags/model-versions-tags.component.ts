@@ -14,7 +14,6 @@ import { ModelVersionsTagsFacade } from './model-versions-tags.facade';
 })
 export class ModelVersionsTagsComponent {
   @Output() listChanged: EventEmitter<ModelVersion[]> = new EventEmitter();
-
   modelVersions$: Observable<ModelVersion[]>;
 
   constructor(

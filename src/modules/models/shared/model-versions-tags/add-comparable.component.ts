@@ -1,25 +1,24 @@
 import { Component } from '@angular/core';
-import { DialogService } from '@dialog/dialog.service';
-import { ModelsFacade } from '@models/store';
 import { ModelVersion } from '@shared/_index';
 import { Observable } from 'rxjs';
-import { ModelVersionsTagsFacade } from './model-versions-tags.facade';
+import { AddComparableFacade } from './add-comparable.facade';
 
 @Component({
   templateUrl: 'add-comparable.component.html',
+  styleUrls: ['./add-comparable.component.scss'],
+  providers: [AddComparableFacade],
 })
 export class AddComparableComponent {
   modelVersions$: Observable<ModelVersion[]>;
-  constructor(
-    private dialogService: DialogService,
-    private modelsFacade: ModelsFacade,
-    private facade: ModelVersionsTagsFacade
-  ) {
-    this.modelVersions$ = this.modelsFacade.allModelVersions$;
+  constructor(private facade: AddComparableFacade) {
+    this.modelVersions$ = this.facade.modelVersions$;
   }
 
   onSelectModelVersion(modelVersion: ModelVersion): void {
-    this.facade.add(modelVersion);
-    this.dialogService.closeDialog();
+    this.facade.onSelectModelVersion(modelVersion);
+  }
+
+  onFilterChange(str: string): void {
+    this.facade.onFilterChange(str);
   }
 }

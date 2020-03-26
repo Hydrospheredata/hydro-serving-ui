@@ -1,0 +1,17 @@
+@import 'variables';
+
+.comparable {
+  &__input {
+    margin-bottom: 24px;
+  }
+  &__table {
+    min-width: 840px;
+  }
+  &__item {
+    cursor: pointer;
+    background: $neutral-color-100;
+    &:hover {
+      background: white;
+    }
+  }
+}

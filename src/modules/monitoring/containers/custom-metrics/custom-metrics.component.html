@@ -1,23 +1,35 @@
 <div class="custom-metrics">
-  {{ comparisonRegime$ | async }}
   <div class="custom-metrics__header">
     <span class="custom-metrics__header-title">Custom metrics</span>
-    <hs-regime-selector
-      class="custom-metrics__header-regime-selector"
-      [selectedRegime]="comparisonRegime$ | async"
-      (changedRegime)="changeRegime()"
-    ></hs-regime-selector>
+    <button
+      class="custom-checks__button"
+      color="primary"
+      kind="flat"
+      hs-button
+      (click)="openSettings()"
+    >
+      Configure metrics
+    </button>
   </div>
-  <hs-model-versions-tags
-    (listChanged)="comparableModelVersionsChanged($event)"
-  ></hs-model-versions-tags>
+  <div class="custom-metrics__config">
+    <hs-model-versions-tags
+      (listChanged)="comparableModelVersionsChanged($event)"
+    ></hs-model-versions-tags>
+    <div
+      *ngIf="(comparableModelVersions$ | async).length"
+      class="custom-metrics__header-regime-selector"
+    >
+      <hs-regime-selector
+        [selectedRegime]="comparisonRegime$ | async"
+        (changedRegime)="changeRegime($event)"
+      ></hs-regime-selector>
+    </div>
+  </div>
 </div>
-
-<!-- {{ chartConfigs | async | json }} -->
 <div class="charts">
   <div class="charts__column" *ngFor="let checksByMv of chartConfigs | async">
     <div class="charts__item" *ngFor="let check of checksByMv | keyvalue">
-      <hs-check-chart [config]="check.value"> </hs-check-chart>
+      <hs-check-chart [config]="check.value"></hs-check-chart>
     </div>
   </div>
 </div>

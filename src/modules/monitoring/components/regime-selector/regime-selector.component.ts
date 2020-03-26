@@ -7,7 +7,7 @@ import { ComparisonRegime } from '@monitoring/containers/custom-metrics/custom-m
   styleUrls: ['./regime-selector.component.scss'],
 })
 export class RegimeSelectorComponent {
-  regimes: ComparisonRegime[] = ['split', 'merge'];
+  regimes: ComparisonRegime[] = ['merge', 'split'];
   @Input() selectedRegime: ComparisonRegime = 'split';
   @Output() changedRegime: EventEmitter<ComparisonRegime> = new EventEmitter();
   changeRegime(regime: ComparisonRegime): void {

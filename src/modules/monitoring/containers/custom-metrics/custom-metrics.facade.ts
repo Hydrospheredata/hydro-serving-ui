@@ -1,173 +1,136 @@
 import { Injectable } from '@angular/core';
-import { ChartConfig, CustomCheck, Check } from '@monitoring/interfaces';
+import { ModelsFacade } from '@models/store';
+import {
+  ChartConfig,
+  Check,
+  ChecksAggregationItem,
+} from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { ModelVersion } from '@shared/_index';
 import { BehaviorSubject, Observable, forkJoin, combineLatest, of } from 'rxjs';
-import {
-  switchMap,
-  map,
-  share,
-  pluck,
-  tap,
-  shareReplay,
-  distinctUntilChanged,
-} from 'rxjs/operators';
+import { switchMap, map, startWith } from 'rxjs/operators';
 
 export type ComparisonRegime = 'split' | 'merge';
-interface CustomMetricsState {
-  regime: ComparisonRegime;
-  compareWith: number[];
-  comparableModelVersions: ModelVersion[];
-  chartConfigs: Array<{ [metricName: string]: ChartConfig }>;
+interface ModelVersionMetricsChecks {
+  id: number;
+  name: string;
+  version: number;
+  metricsChecks: {
+    [metricName: string]: {
+      data: number[];
+      threshold: number;
+      health: boolean[];
+    };
+  };
 }
-
-const initialState: CustomMetricsState = {
-  regime: 'split',
-  compareWith: [],
-  comparableModelVersions: [],
-  chartConfigs: [],
-};
 
 @Injectable()
 export class CustomMetricsFacade {
-  comparableModelVersionsIds$: Observable<number[]>;
-  comparableCustomMetricsByModelVersionId$: Observable<{
-    [modelVersionId: string]: {
-      [metricName: string]: {
-        data: number[];
-        name: string;
-      };
-    };
-  }>;
-  // customMetrics$: Observable<Map<string, CustomCheck>>;
   customMetrics$: Observable<any>;
   chartConfigs$: Observable<Array<{ [metricName: string]: ChartConfig }>>;
-
-  // NEW
   currentCustomChecks$: Observable<any>;
   regime$: Observable<ComparisonRegime>;
   comparableModelVersions$: Observable<ModelVersion[]>;
-  private state$: Observable<CustomMetricsState>;
+  private regime: BehaviorSubject<ComparisonRegime> = new BehaviorSubject(
+    'merge' as ComparisonRegime
+  );
   private comparableModelVersions: BehaviorSubject<
     ModelVersion[]
   > = new BehaviorSubject([]);
-  private state: BehaviorSubject<CustomMetricsState> = new BehaviorSubject(
-    initialState
-  );
-  // NEW
-
-  private comparableModelVersionsIds: BehaviorSubject<
-    number[]
-  > = new BehaviorSubject([]);
-
+  private currentModelVersionMetricsChecks$: Observable<
+    ModelVersionMetricsChecks
+  >;
+  private comparableModelVersionMetricsChecks$: Observable<
+    ModelVersionMetricsChecks[]
+  >;
+  private allModelVersionMetricsChecks$: Observable<
+    ModelVersionMetricsChecks[]
+  >;
   constructor(
+    private modelsFacade: ModelsFacade,
     private facade: MonitoringPageFacade,
     private monitoring: MonitoringService
   ) {
-    this.comparableModelVersionsIds$ = this.comparableModelVersionsIds.asObservable();
-
-    this.currentCustomChecks$ = combineLatest(
-      this.facade.checks$,
-      this.facade.customMetrics$
+    this.currentModelVersionMetricsChecks$ = combineLatest(
+      this.modelsFacade.selectedModelVersion$,
+      this.facade.checks$
     ).pipe(
-      map(([checks, metrics]) => {
-        const metricsChecksTemplates = this.createMetricsChecks(metrics);
-        const metricsChecks = this.fillMetricsCheksData(
-          checks,
-          metricsChecksTemplates
-        );
-        return metricsChecks;
+      map(([modelVersion, checks]) => {
+        return {
+          id: modelVersion.id,
+          name: modelVersion.model.name,
+          version: modelVersion.modelVersion,
+          metricsChecks: this.fillMetricsCheksData(checks),
+        };
       })
     );
 
-    this.comparableCustomMetricsByModelVersionId$ = combineLatest(
+    this.comparableModelVersionMetricsChecks$ = combineLatest(
       this.facade.selectedAggregation$,
-      this.comparableModelVersionsIds
+      this.comparableModelVersions.asObservable()
     ).pipe(
-      switchMap(([selectedAggregation, ids]) => {
-        const request: {
-          [modelVersionId: number]: Observable<Check[]>;
-        } = ids.reduce((req, id) => {
-          req[id] = this.monitoring.getChecks({
-            modelVersionId: id,
-            from: selectedAggregation.additionalInfo._hs_first_id,
-            to: selectedAggregation.additionalInfo._hs_last_id,
-          });
-          return req;
-        }, {});
-        return forkJoin(request);
-      }),
-      map((res: { [modelVersionId: number]: Check[] }) => {
-        const result = {};
-        for (const modelVersionId in res) {
-          if (res.hasOwnProperty(modelVersionId)) {
-            const checks = res[modelVersionId];
-            if (result[modelVersionId] === undefined) {
-              result[modelVersionId] = {};
-            }
-            checks.forEach(check => {
-              const rawChecks = check._hs_metric_checks;
-
-              for (const checkName in rawChecks) {
-                if (rawChecks.hasOwnProperty(checkName)) {
-                  const rawCheck = rawChecks[checkName];
-
-                  if (result[modelVersionId][checkName] === undefined) {
-                    result[modelVersionId][checkName] = {
-                      data: [],
-                      name: checkName,
-                    };
-                  }
-
-                  result[modelVersionId][checkName].data.push(rawCheck.value);
-                }
-              }
-            });
-          }
+      switchMap(([aggregation, modelVersions]) => {
+        if (modelVersions.length === 0) {
+          return of([]);
         }
-
-        return result;
-      })
+        return this.loadComparableChecks(aggregation, modelVersions).pipe(
+          map(response => {
+            return modelVersions.map(modelVersion => {
+              return {
+                id: modelVersion.id,
+                name: modelVersion.model.name,
+                version: modelVersion.modelVersion,
+                metricsChecks: this.fillMetricsCheksData(
+                  response[modelVersion.id]
+                ),
+              };
+            });
+          })
+        );
+      }),
+      startWith([])
     );
 
-    // NEW
-    this.state$ = this.state.asObservable().pipe(shareReplay(1));
-    this.regime$ = this.state$.pipe(pluck('regime'), distinctUntilChanged());
-    this.chartConfigs$ = this.state$.pipe(pluck('chartConfigs'));
+    this.allModelVersionMetricsChecks$ = combineLatest(
+      this.currentModelVersionMetricsChecks$,
+      this.comparableModelVersionMetricsChecks$
+    ).pipe(map(([current, comparable]) => [current, ...comparable]));
 
-    combineLatest(this.state$, this.currentCustomChecks$)
-      .pipe(
-        tap(([state, customChecks]) => {
-          const currentState = state;
-          this.state.next({
-            ...currentState,
-            chartConfigs: this.mergeChecksToChartConfig(customChecks),
-          });
-        })
-      )
-      .subscribe();
-    // NEW
+    this.regime$ = this.regime.asObservable();
+    this.chartConfigs$ = combineLatest(
+      this.regime$,
+      this.allModelVersionMetricsChecks$
+    ).pipe(
+      map(([regime, customChecks]) => {
+        const newConfigs =
+          regime === 'split'
+            ? this.splitChectToChartConfigs(customChecks)
+            : this.mergeChecksToChartConfig(customChecks);
+
+        return newConfigs;
+      })
+    );
+    this.comparableModelVersions$ = this.comparableModelVersions.asObservable();
   }
 
   comparableModelVersionsChanged(modelVersions: ModelVersion[]): void {
+    if (modelVersions.length === 0) {
+      this.changeRegime('merge');
+    }
     this.comparableModelVersions.next(modelVersions);
   }
 
-  changeRegime(): void {
-    const state = this.state.getValue();
-    const currentRegime = state.regime;
-    const regime = currentRegime === 'split' ? 'merge' : 'split';
-    this.state.next({ ...state, regime });
+  changeRegime(regime: ComparisonRegime): void {
+    this.regime.next(regime);
   }
 
   private splitChectToChartConfigs(
-    customCheks: Map<string, CustomCheck>,
-    compCheksByModelVersionId: any
+    modelVersionsMetricsChecks: ModelVersionMetricsChecks[]
   ): Array<{ [metricName: string]: ChartConfig }> {
     const result = [];
     const size: ChartConfig['size'] = {
-      width: 300,
+      width: 420,
       height: 240,
       margins: {
         left: 40,
@@ -176,56 +139,35 @@ export class CustomMetricsFacade {
         bottom: 24,
       },
     };
-
-    const currentConfigs = {};
-    for (const item of customCheks) {
-      const [uid, check] = item;
-      currentConfigs[check.name] = {
-        size,
-        data: {
-          'adult_scalar:1': {
-            color: 'blue',
-            x: check.data.map((_, i) => i + 1),
-            y: check.data,
-          },
-        },
-        name: check.name,
-        plotBands: [],
-      };
-    }
-    result.push(currentConfigs);
-    for (const modelVersionId in compCheksByModelVersionId) {
-      if (compCheksByModelVersionId.hasOwnProperty(modelVersionId)) {
-        const currentConfig = {} as any;
-        const currentChecks = compCheksByModelVersionId[modelVersionId];
-        for (const i in currentChecks) {
-          if (currentChecks.hasOwnProperty(i)) {
-            const check = currentChecks[i];
-            if (currentConfig[check.name] === undefined) {
-              currentConfig.name = {
-                size,
-                data: {
-                  [modelVersionId]: {
-                    color: 'blue',
-                    x: check.data.map((_, i) => i + 1),
-                    y: check.data,
-                  },
+    modelVersionsMetricsChecks.forEach(({ version, metricsChecks }) => {
+      const currentConfig = {};
+      for (const metricName in metricsChecks) {
+        if (metricsChecks.hasOwnProperty(metricName)) {
+          const { data, threshold, health } = metricsChecks[metricName];
+          if (currentConfig[metricName] === undefined) {
+            currentConfig[metricName] = {
+              size,
+              data: {
+                [`${metricName}:${version}`]: {
+                  color: 'blue',
+                  x: data.map((_, i) => i + 1),
+                  y: data,
                 },
-                name: check.name,
-                plotBands: [],
-              };
-            }
+              },
+              name: metricName,
+              plotBands: this.buildPlotBands(health),
+              threshold,
+            };
           }
         }
-        result.push(currentConfig);
       }
-    }
+      result.push(currentConfig);
+    });
 
     return result;
   }
   private mergeChecksToChartConfig(
-    customCheks: Map<string, CustomCheck>
-    // compCheks: any
+    modelVersionsMetricsChecks: ModelVersionMetricsChecks[]
   ): Array<{ [metricName: string]: ChartConfig }> {
     const result: Array<{ [metricName: string]: ChartConfig }> = [{}];
     const size: ChartConfig['size'] = {
@@ -238,111 +180,125 @@ export class CustomMetricsFacade {
         bottom: 24,
       },
     };
-
-    for (const item of customCheks) {
-      const [uid, check] = item;
-      if (result[0][check.name] === undefined) {
-        result[0][check.name] = {
-          size,
-          data: {
-            'adult_scalar:1': {
-              color: 'blue',
-              x: check.data.map((_, i) => i + 1),
-              y: check.data,
-            },
-          },
-          name: check.name,
-          plotBands: [],
-        };
-      }
-    }
-
-    // for (const modelVersionId in compCheks) {
-    //   if (compCheks.hasOwnProperty(modelVersionId)) {
-    //     const checks = compCheks[modelVersionId];
-    //     for (const metricName in checks) {
-    //       if (checks.hasOwnProperty(metricName)) {
-    //         const check = checks[metricName];
-    //         if (result[0][check.name] === undefined) {
-    //           result[0].name = {
-    //             size,
-    //             data: {
-    //               [modelVersionId]: {
-    //                 color: 'blue',
-    //                 x: check.data.map((_, i) => i + 1),
-    //                 y: check.data,
-    //               },
-    //             },
-    //             name: check.name,
-    //             plotBands: [],
-    //           };
-    //         } else {
-    //           result[0][check.name] = {
-    //             ...result[0][check.name],
-    //             data: {
-    //               ...result[0][check.name].data,
-    //               [modelVersionId]: {
-    //                 color: 'red',
-    //                 x: check.data.map((_, i) => i + 1),
-    //                 y: check.data,
-    //               },
-    //             },
-    //           };
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-
-    return result;
-  }
-
-  private createMetricsChecks(metrics) {
-    const metricCheksTemplate: Array<[string, CustomCheck]> = metrics.map(
-      ({ id, name, config: { threshold } }) =>
-        [id, { data: [], name, threshold, health: [] }] as [string, CustomCheck]
-    );
-    return new Map(metricCheksTemplate);
-  }
-  private fillMetricsCheksData(checks, metricsChecks) {
-    debugger;
-    // TODO: mutable
-    // const updateValue = (check: CustomCheck, value, health) => {
-    //   return {
-    //     ...check,
-    //     data: [...check.data, value],
-    //     health: [...check.health, health],
-    //   };
-    // };
-
-    // checks.forEach(check => {
-    //   const overall = Object.values(check._hs_metric_checks || {});
-    //   overall.forEach(({ metricSpecId, value, check: health }) => {
-    //     if (metricsChecks.has(metricSpecId)) {
-    //       metricsChecks.set(
-    //         metricSpecId,
-    //         updateValue(metricsChecks.get(metricSpecId), value, health)
-    //       );
-    //     }
-    //   });
-    // });
-    let res: { [metricName: string]: any };
-    checks.forEach(check => {
-      for (const metricName in check) {
-        if (check.hasOwnProperty(metricName)) {
-          const metricCheck = checks._hs_metric_checks[metricName];
-          if (res[metricName] === undefined) {
-            res[metricName] = {};
+    modelVersionsMetricsChecks.forEach(
+      ({ id, version, name, metricsChecks }) => {
+        for (const metricName in metricsChecks) {
+          if (metricsChecks.hasOwnProperty(metricName)) {
+            const { data, threshold, health } = metricsChecks[metricName];
+            if (result[0][metricName] === undefined) {
+              result[0][metricName] = {
+                size,
+                data: {
+                  [`${metricName}:${version}`]: {
+                    color: 'blue',
+                    x: data.map((_, i) => i + 1),
+                    y: data,
+                  },
+                },
+                name: metricName,
+                plotBands:
+                  modelVersionsMetricsChecks.length === 1
+                    ? this.buildPlotBands(health)
+                    : [],
+                threshold:
+                  modelVersionsMetricsChecks.length === 1
+                    ? threshold
+                    : undefined,
+              };
+            } else {
+              result[0][metricName].data[`${metricName}:${version}`] = {
+                color: 'blue',
+                x: data.map((_, i) => i + 1),
+                y: data,
+              };
+            }
           }
         }
       }
-    })
+    );
+    return result;
+  }
+  private fillMetricsCheksData(
+    checks: Check[]
+  ): {
+    [metricName: string]: {
+      data: number[];
+      threshold: number;
+      health: boolean[];
+    };
+  } {
+    const res: {
+      [metricName: string]: {
+        data: number[];
+        threshold: number;
+        health: boolean[];
+      };
+    } = {};
+    checks.forEach(check => {
+      const metricChecks = check._hs_metric_checks;
+      for (const metricName in metricChecks) {
+        if (metricChecks.hasOwnProperty(metricName)) {
+          const metricCheck = check._hs_metric_checks[metricName];
+          if (res[metricName] === undefined) {
+            res[metricName] = {
+              data: [metricCheck.value],
+              threshold: metricCheck.threshold,
+              health: [metricCheck.check],
+            };
+          } else {
+            res[metricName].data.push(metricCheck.value);
+            res[metricName].threshold = metricCheck.threshold;
+            res[metricName].health.push(metricCheck.check);
+          }
+        }
+      }
+    });
+    return res;
+  }
 
+  private loadComparableChecks(
+    selectedAggregation: ChecksAggregationItem,
+    modelVersions: ModelVersion[]
+  ): Observable<{
+    [modelVersionId: number]: Check[];
+  }> {
+    const request: {
+      [modelVersionId: number]: Observable<Check[]>;
+    } = modelVersions.reduce((req, { id }) => {
+      req[id] = this.monitoring.getChecks({
+        modelVersionId: id,
+        from: selectedAggregation.additionalInfo._hs_first_id,
+        to: selectedAggregation.additionalInfo._hs_last_id,
+      });
+      return req;
+    }, {});
+    return forkJoin(request);
+  }
 
+  private buildPlotBands(
+    health: boolean[]
+  ): Array<{ from: number; to: number }> {
+    let currentBand: { from: number; to: number };
+    const res = [];
+    health.forEach((check, idx) => {
+      if (!check) {
+        if (currentBand) {
+          currentBand.to = idx + 1;
+        } else {
+          currentBand = { from: idx + 1, to: idx + 1 };
+        }
+      } else {
+        if (currentBand) {
+          res.push({ ...currentBand });
+          currentBand = undefined;
+        }
+      }
+    });
 
-    debugger;
-    return [];
+    if (currentBand) {
+      res.push({ ...currentBand });
+    }
 
-    return metricsChecks;
+    return res;
   }
 }
