@@ -1,12 +1,7 @@
-upstream manager_grpc {
-  zone manager_grpc 64k;
-  server ${MANAGER_HOST}:${MANAGER_GRPC_PORT};
-}
-
 location /hydrosphere.manager. {
-  grpc_pass grpc://manager_grpc;
+  grpc_pass grpc://${MANAGER_HOST}:${MANAGER_GRPC_PORT};
 }
 
 location /hydrosphere.discovery. {
-  grpc_pass grpc://manager_grpc;
+  grpc_pass grpc://${MANAGER_HOST}:${MANAGER_GRPC_PORT};
 }

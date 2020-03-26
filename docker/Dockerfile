@@ -27,7 +27,7 @@ COPY hydro-serving-ui /usr/share/nginx/html
 
 CMD envsubst '${GATEWAY_HOST} ${GATEWAY_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.gateway.template > /etc/nginx/conf.d/grpc/include.gateway \
   && envsubst '${MANAGER_HOST} ${MANAGER_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.manager.template > /etc/nginx/conf.d/grpc/include.manager \
-  && envsubst '${MONITORING_HOST} ${MONITORING_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.monitoring.template > /etc/nginx/conf.d/grpc/include.manager \
+  && envsubst '${MONITORING_HOST} ${MONITORING_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.monitoring.template > /etc/nginx/conf.d/grpc/include.monitoring \
 #
   && envsubst '${PROMETHEUS_AM_HOST} ${PROMETHEUS_AM_PORT}' < /etc/nginx/conf.d/http/include.alerts.template > /etc/nginx/conf.d/http/include.alerts \
   && envsubst '${GATEWAY_HOST} ${GATEWAY_HTTP_PORT}' < /etc/nginx/conf.d/http/include.gateway.template > /etc/nginx/conf.d/http/include.gateway \
