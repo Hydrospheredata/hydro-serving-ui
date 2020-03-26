@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
-import { ModelVersion } from '@shared/_index';
+import { ModelVersion } from '@shared/models';
 import { Observable } from 'rxjs';
 import { MetricsComponent } from '../metrics/metrics.component';
 import { CustomMetricsFacade, ComparisonRegime } from './custom-metrics.facade';

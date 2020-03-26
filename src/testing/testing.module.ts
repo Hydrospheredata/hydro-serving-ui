@@ -25,6 +25,9 @@ import {
   ModelVersionsComponent,
   ModelVersionDetailsComponent,
   ModelVersionsRowComponent,
+  ModelVersionsTagsComponent,
+  RegimeSelectorComponent,
+  CheckChartComponent
 } from '@testing/components';
 import { ProfilesComponent } from '@testing/components/mock-profiles';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
@@ -58,6 +61,9 @@ const COMPONENTS = [
   ModelVersionsComponent,
   ModelVersionDetailsComponent,
   ModelVersionsRowComponent,
+  ModelVersionsTagsComponent,
+  RegimeSelectorComponent,
+  CheckChartComponent,
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];

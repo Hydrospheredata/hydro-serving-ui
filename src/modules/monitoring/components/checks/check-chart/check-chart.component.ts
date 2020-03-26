@@ -11,8 +11,8 @@ import {
 import { ChartConfig } from '@monitoring/interfaces';
 import { scaleLinear, extent, select, mouse } from 'd3';
 import { isEmpty } from 'lodash';
-import { Observable, combineLatest, Subject, BehaviorSubject } from 'rxjs';
-import { pluck, map, shareReplay } from 'rxjs/operators';
+import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
+import { pluck, map, shareReplay, filter } from 'rxjs/operators';
 
 interface Point {
   x: number;
@@ -37,7 +37,28 @@ export class CheckChartComponent implements OnInit {
   @ViewChild('trackableRect', { read: ElementRef }) rectRef: ElementRef;
   @ViewChild('tooltip', { read: ElementRef }) tooltipRef: ElementRef;
 
-  _config: Subject<ChartConfig> = new Subject();
+  // TODO: FIX
+  // tslint:disable-next-line:variable-name
+  _config: BehaviorSubject<ChartConfig> = new BehaviorSubject({
+    size: {
+      width: 0,
+      height: 0,
+      margins: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+      },
+    },
+    name: 'default',
+    data: {
+      default: {
+        x: [1],
+        y: [2],
+      },
+    },
+    plotBands: [],
+  });
   @Input() set config(cfg: ChartConfig) {
     this._config.next(cfg);
   }
@@ -72,7 +93,10 @@ export class CheckChartComponent implements OnInit {
 
   constructor(private cdr: ChangeDetectorRef) {
     // TODO: shit subscribe
-    this.config$ = this._config.asObservable().pipe(shareReplay(1));
+    this.config$ = this._config.asObservable().pipe(
+      filter(val => !!val),
+      shareReplay(1)
+    );
     this.threshold$ = this.config$.pipe(pluck('threshold'));
     this.plotBands$ = this.config$.pipe(pluck('plotBands'));
     this.name$ = this.config$.pipe(pluck('name'));
@@ -136,6 +160,7 @@ export class CheckChartComponent implements OnInit {
     );
     this.xScale$ = combineLatest(this.viewWidth$, this.config$).pipe(
       map(([width, config]) => {
+        console.log({ width, config });
         const requests = Object.values(config.data).map(({ x }) => x.length);
         const [, maxRequests] = extent(requests);
         return scaleLinear()

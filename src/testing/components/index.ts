@@ -22,3 +22,4 @@ export * from './mock-log-metrics-table';
 export * from './mock-application-item-detail';
 
 export * from './models';
+export * from './monitoring';

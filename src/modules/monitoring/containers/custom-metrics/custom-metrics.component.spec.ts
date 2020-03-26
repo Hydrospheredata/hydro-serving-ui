@@ -1,6 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { DialogService } from '@dialog/dialog.service';
+import {
+  ModelVersionsTagsComponent,
+  RegimeSelectorComponent,
+  CheckChartComponent,
+} from '@testing/components';
+import { of } from 'rxjs';
 import { CustomMetricsComponent } from './custom-metrics.component';
+import { CustomMetricsFacade } from './custom-metrics.facade';
 
 describe('CustomMetricsComponent', () => {
   let component: CustomMetricsComponent;
@@ -8,9 +16,27 @@ describe('CustomMetricsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CustomMetricsComponent ]
+      declarations: [
+        CustomMetricsComponent,
+        ModelVersionsTagsComponent,
+        RegimeSelectorComponent,
+        CheckChartComponent,
+      ],
     })
-    .compileComponents();
+      .overrideComponent(CustomMetricsComponent, {
+        set: {
+          providers: [
+            {
+              provide: CustomMetricsFacade,
+              useValue: {
+                comparableModelVersions$: of([]),
+              },
+            },
+            { provide: DialogService, useValue: {} },
+          ],
+        },
+      })
+      .compileComponents();
   }));
 
   beforeEach(() => {

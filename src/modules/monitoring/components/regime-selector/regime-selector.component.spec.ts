@@ -8,9 +8,8 @@ describe('RegimeSelectorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegimeSelectorComponent ]
-    })
-    .compileComponents();
+      declarations: [RegimeSelectorComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
