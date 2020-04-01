@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Metric } from '@core/models';
+import { Metric } from 'modules/visualization/models/visualization';
 
 @Component({
   selector: 'hs-color-by-metric-options',

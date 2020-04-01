@@ -1,7 +1,5 @@
 import { CmpOperators } from '@monitoring/models';
 
-// TODO: use namespace ?
-
 export interface VisualizationRequest {}
 
 export interface Colorizer {
@@ -19,6 +17,16 @@ export interface Metric {
   threshold: number;
 }
 export type ColoringType = 'class' | 'gradient';
+export type TaskState =
+  | 'SUCCESS'
+  | 'LOADING';
+
+export interface TaskInformation {
+  Task_id: string;
+  description?: string;
+  state: TaskState;
+  result: VisualizationResponse;
+}
 export interface VisualizationResponse {
   data_shape: [number, number];
   data: number[][];

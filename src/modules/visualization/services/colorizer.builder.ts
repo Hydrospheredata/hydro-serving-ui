@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Colorizer, ColoringType, ClassLabel, Metric } from '@core/models';
 import { ColorMapService } from '@core/services/color-map.service';
 import { switchMap } from 'rxjs/operators';
+import { Colorizer, ClassLabel, Metric } from '../models/visualization';
 class DefaultColorizer implements Colorizer {
   constructor(private classLabel: ClassLabel) {}
   public getColors() {

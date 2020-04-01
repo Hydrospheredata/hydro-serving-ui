@@ -1,5 +1,7 @@
 <div class="visualization">
-  <hs-error-message *ngIf="error$ | async as error">{{
+  {{ loading$ | async }}
+  {{ taskId$ | async }}
+  <!-- <hs-error-message *ngIf="error$ | async as error">{{
     error
   }}</hs-error-message>
   <div *ngIf="loading$ | async" class="visualization__loader">
@@ -48,13 +50,13 @@
       [ngTemplateOutlet]="point"
       [ngTemplateOutletContext]="selectedPoint$ | async"
     ></ng-template>
-  </div>
+  </div> -->
 </div>
 
-<ng-template let-x="x" let-y="y" #point>
+<!-- <ng-template let-x="x" let-y="y" #point>
   <hs-log-detail
     *ngIf="(modelVersion$ | async)"
     [check]="selectedRequest$ | async"
     [modelVersion]="modelVersion$ | async"
   ></hs-log-detail>
-</ng-template>
+</ng-template> -->
