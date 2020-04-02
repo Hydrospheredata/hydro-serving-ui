@@ -1,62 +1,67 @@
 <div class="visualization">
-  {{ loading$ | async }}
-  {{ taskId$ | async }}
-  <!-- <hs-error-message *ngIf="error$ | async as error">{{
-    error
-  }}</hs-error-message>
-  <div *ngIf="loading$ | async" class="visualization__loader">
-    <hs-loader class="visualization__loader-icon"></hs-loader>
+  <div class="visualization__loader" *ngIf="(status$ | async) === 'PENDING'">
+    <hydro-icon type="scatter" class="visualization__loader-icon"></hydro-icon>
+    <span class="visualization__loader-status"
+      >Task id: {{ taskId$ | async }}</span
+    >
   </div>
-  <div class="visualization__body">
-    <div class="visualization__settings">
-      <hs-color-by-selector
-        class="visualization__settings-item"
-        [colorBy]="colorBy$ | async"
-        (colorByChanged)="onColorByChange($event)"
-      ></hs-color-by-selector>
-      <hs-color-by-class-label-options
-        class="visualization__settings-item"
-        *ngIf="(colorBy$ | async) === 'class_label'"
-        [labelName]="selectedLabel"
-        [labelNames]="labels$ | async"
-        (labelNameChanged)="handleSelectLabel($event)"
-      ></hs-color-by-class-label-options>
-      <hs-color-by-metric-options
+  <div class="visualization__error" *ngIf="(status$ | async) === 'FAILED'">
+    <hydro-icon type="circle-x" class="visualization__error-icon"></hydro-icon>
+    <div class="visualization__error-message">
+      <hs-error-message>
+        {{ error$ | async | json }}
+      </hs-error-message>
+    </div>
+    <button kind="flat" color="cyan" (click)="retryRequest()" hs-button>
+      Create new task
+    </button>
+  </div>
+  <div class="visualization__body" *ngIf="(status$ | async) === 'SUCCESS'">
+    <div class="visualization__chart">
+      <div class="visualization__settings">
+        <hs-color-by-selector
+          class="visualization__settings-item"
+          [colorBy]="colorBy$ | async"
+          (colorByChanged)="onColorByChange($event)"
+        ></hs-color-by-selector>
+        <hs-color-by-class-label-options
+          class="visualization__settings-item"
+          [labelName]="selectedLabel"
+          [labelNames]="labelsNames$ | async"
+          (labelNameChanged)="handleSelectLabel($event)"
+        ></hs-color-by-class-label-options>
+        <!-- <hs-color-by-metric-options
         class="visualization__settings-item"
         *ngIf="(colorBy$ | async) === 'metric'"
         [metric]="selectedMetric$ | async"
         [metricName]="selectedMetricName$ | async"
         [metricsNames]="metrics$ | async"
         (metricNameChanged)="handleSelectMetric($event)"
-      ></hs-color-by-metric-options>
-      <mdl-checkbox
-        [(ngModel)]="showTop100"
-        class="visualization__setting-item"
-      >
-        Show nearest points
-      </mdl-checkbox>
+      ></hs-color-by-metric-options> -->
+        <mdl-checkbox
+          [(ngModel)]="showTop100"
+          class="visualization__setting-item"
+        >
+          Show nearest points
+        </mdl-checkbox>
+      </div>
+      <div class="visualization__scatterplot">
+        <hs-scatter-plot
+          [data]="scatterPlotData$ | async"
+          [colors]="colors$ | async"
+          [top100]="top100$ | async"
+          [showTop100]="false"
+          (selectPoint)="handleSelectPoint($event)"
+        ></hs-scatter-plot>
+      </div>
     </div>
-    <hs-scatter-plot
-      class="visualization__chart"
-      [data]="scatterPlotData$ | async"
-      [colors]="colors$ | async"
-      [top100]="top100$ | async"
-      [showTop100]="showTop100"
-      (selectPoint)="handleSelectPoint($event)"
-    ></hs-scatter-plot>
-  </div>
-  <div class="visualization__detail">
-    <ng-template
-      [ngTemplateOutlet]="point"
-      [ngTemplateOutletContext]="selectedPoint$ | async"
-    ></ng-template>
-  </div> -->
-</div>
 
-<!-- <ng-template let-x="x" let-y="y" #point>
-  <hs-log-detail
-    *ngIf="(modelVersion$ | async)"
-    [check]="selectedRequest$ | async"
-    [modelVersion]="modelVersion$ | async"
-  ></hs-log-detail>
-</ng-template> -->
+    <div class="visualization__detail">
+      <hs-log-detail
+        *ngIf="modelVersion$ | async"
+        [check]="selectedCheck$ | async"
+        [modelVersion]="modelVersion$ | async"
+      ></hs-log-detail>
+    </div>
+  </div>
+</div>

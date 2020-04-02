@@ -9,7 +9,7 @@ import {
   VisualizationFacade,
   State,
 } from 'modules/visualization/visualization.facade';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { VisualizationPageService, ColorBy } from '../../services';
 
 @Component({
@@ -19,7 +19,8 @@ import { VisualizationPageService, ColorBy } from '../../services';
   providers: [VisualizationFacade],
 })
 export class VisualizationPageComponent {
-  // selectedLabel: { [name: string]: string };
+  selectedLabel: { [name: string]: string };
+  showTop100: boolean = false;
   // selectedMetric: string;
 
   // selectedIndex: number;
@@ -37,13 +38,31 @@ export class VisualizationPageComponent {
   // loading$: Observable<boolean>;
   // colorBy$: Observable<ColorBy>;
   // error$: Observable<string>;
-  // selectedRequest$: Observable<Check>;
-  // modelVersion$: Observable<ModelVersion>;
+  selectedCheck$: Observable<Check>;
+  modelVersion$: Observable<ModelVersion>;
   loading$: Observable<boolean>;
   taskId$: Observable<string>;
+  status$: Observable<string>;
+  result$: Observable<any>;
+  error$: Observable<string | null>;
+  colors$: Observable<string[]>;
+  top100$: Observable<number[]>;
+  colorBy$: Observable<ColorBy>;
+  scatterPlotData$: Observable<ScatterPlotData>;
+  labelsNames$: Observable<string[]>;
   constructor(private service: VisualizationFacade) {
     this.loading$ = this.service.loading$;
     this.taskId$ = this.service.taskId$;
+    this.status$ = this.service.status$;
+    this.result$ = this.service.result$;
+    this.scatterPlotData$ = this.service.scatterPlotData$;
+    this.error$ = this.service.error$;
+    this.colors$ = this.service.colors$;
+    this.top100$ = of([]);
+    this.colorBy$ = this.service.colorBy$;
+    this.labelsNames$ = this.service.labelsNames$;
+    this.modelVersion$ = this.service.modelVersion$;
+    this.selectedCheck$ = this.service.selectedCheck$;
 
     this.service.loadEmbedding();
     // this.modelVersion$ = this.service.modelVersion$;
@@ -58,23 +77,26 @@ export class VisualizationPageComponent {
     // this.selectedMetric$ = this.service.selectedMetric$;
     // this.selectedMetricName$ = this.service.selectedMetricName$;
     // this.error$ = this.service.error$;
-    // this.selectedRequest$ = this.service.selectedRequest$;
   }
 
-  // handleSelectPoint(index: number) {
-  //   this.selectedIndex = index;
-  //   this.service.selectIndex(index);
-  // }
+  handleSelectPoint(index: number) {
+    // this.selectedIndex = index;
+    // this.service.selectIndex(index);
+  }
 
-  // handleSelectLabel(label: any): void {
-  //   this.selectedLabel = label;
-  //   this.service.selectLabel(label);
-  // }
+  handleSelectLabel(label: any): void {
+    this.selectedLabel = label;
+    this.service.changeSelectedClassLabel(label);
+  }
   // handleSelectMetric(metric: string): void {
   //   this.service.selectMetricName(metric);
   // }
 
-  // onColorByChange(colorBy: ColorBy): void {
-  //   this.service.changeColorBy(colorBy);
-  // }
+  onColorByChange(colorBy: ColorBy): void {
+    this.service.changeColorBy(colorBy);
+  }
+
+  retryRequest(): void {
+    this.service.loadEmbedding();
+  }
 }

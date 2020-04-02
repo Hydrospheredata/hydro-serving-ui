@@ -17,15 +17,13 @@ export interface Metric {
   threshold: number;
 }
 export type ColoringType = 'class' | 'gradient';
-export type TaskState =
-  | 'SUCCESS'
-  | 'LOADING';
+export type TaskState = 'SUCCESS' | 'PENDING' | 'FAILED';
 
 export interface TaskInformation {
   Task_id: string;
   description?: string;
   state: TaskState;
-  result: VisualizationResponse;
+  result: { result: VisualizationResponse };
 }
 export interface VisualizationResponse {
   data_shape: [number, number];

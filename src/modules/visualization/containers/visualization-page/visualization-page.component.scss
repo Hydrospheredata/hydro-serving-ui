@@ -1,28 +1,52 @@
 @import "variables";
 
 .visualization {
-  padding: 12px;
-  background: white;
-  border-radius: 4px;
-  border: 1px $neutral-color-300 solid;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   &__loader {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    background: #73737366;
-    display: flex;
-    justify-content: center;
     align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+    width: 100%;
 
     &-icon {
-      color: white;
-      width: 48px;
-      height: 48px;
+      color: $primary-color-100;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 12px;
+      animation: blink 2s ease infinite alternate backwards;
+      border-left: 1px $neutral-color-500 solid;
+      border-bottom: 1px $neutral-color-500 solid;
     }
+
+    &-status {
+      font-style: italic;
+      color: $neutral-color-500;
+      font-family: $font-family-light;
+    }
+  }
+
+  &__error {
+    margin: auto;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &-icon {
+      height: 64px;
+      width: 64px;
+      color: $supportive-color-red-500;
+    }
+
+    &-message {
+      margin: 24px 0;
+    }
+
+    &-button {}
   }
 
   &__header {
@@ -31,9 +55,20 @@
 
   &__body {
     display: flex;
+    flex-wrap: wrap;
   }
 
   &__chart {
+    display: flex;
+    background: white;
+    border-radius: 4px;
+    border: 1px $neutral-color-200 solid;
+    box-shadow: -4px 4px 8px -8px $neutral-color-500;
+    padding: 0 24px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+  &__scatterplot {
     width: 620px;
     margin-right: 24px;
   }
@@ -41,8 +76,8 @@
   &__settings {
     margin-right: 24px;
     margin-top: 24px;
-    width: 240px;
-    max-width: 240px;
+    max-width: 200px;
+    width: 200px;
 
     &-item {
       display: block;
@@ -51,7 +86,7 @@
 
     &-label {
       font-size: 14px;
-      color: $neutral-color-1000;
+      color: $primary-color-1000;
       text-transform: lowercase;
     }
   }
@@ -62,5 +97,24 @@
     &:hover {
       opacity: 1x;
     }
+  }
+
+  &__detail {
+    width: 100%;
+    border: 1px $neutral-color-200 solid;
+    border-radius: 4px;
+    background: white;
+    padding: 12px;
+    box-shadow: -4px 4px 8px -8px $neutral-color-500;
+  }
+}
+
+@keyframes blink {
+  0% {
+    color: $primary-color-100
+  }
+
+  100% {
+    color: $primary-color-300
   }
 }

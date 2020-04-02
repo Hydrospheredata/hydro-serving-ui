@@ -37,6 +37,6 @@ export class VisualizationApi {
   getJobResult$(taskId: string): Observable<TaskInformation> {
     return this.http.get<TaskInformation>(
       `http://localhost:5000/jobs?task_id=${taskId}`
-    );
+    ).pipe(catchError(err => throwError(err)));
   }
 }
