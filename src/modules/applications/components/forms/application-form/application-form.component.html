@@ -55,7 +55,7 @@
           </hydro-icon>
         </span>
       </div>
-      <ng-container *ngIf="stage.get('modelVariants'); let modelVariants">
+      <ng-container *ngIf="stage.get('modelVariants');let  modelVariants">
         <div formArrayName="modelVariants" class="services__list">
           <div
             *ngFor="
@@ -81,7 +81,6 @@
           hs-button
           kind="flat"
           color="primary"
-          *ngIf="!stage.get('modelVariants').errors"
           (click)="addModelVariantToStage(stage)"
           class="button button--flat stage__add-model-variant-button"
         >

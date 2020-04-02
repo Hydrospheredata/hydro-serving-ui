@@ -1,17 +1,15 @@
+import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
+import { ModelsFacade } from '@models/store';
 import { SharedModule } from '@shared/shared.module';
 import { getNativeElement } from '@testing/helpers';
+import { of, BehaviorSubject } from 'rxjs';
 import { ApplicationsPageComponent } from './applications-page.component';
 
-import { By } from '@angular/platform-browser';
-
-import { of, BehaviorSubject } from 'rxjs';
-
-import { DebugElement } from '@angular/core';
-import { ModelsFacade } from '@models/store';
 const mockApplicationsFacade: Partial<ApplicationsFacade> = {};
 const mockModelsFacade = {
   someModelVersionIsReleased$: new BehaviorSubject(false),

@@ -1,6 +1,10 @@
 <div class="monitoring">
   <div class="monitoring__header">
-    <div class="monitoring__header-link" [routerLink]="['../']" queryParamsHandling="merge">
+    <div
+      class="monitoring__header-link"
+      [routerLink]="['../']"
+      queryParamsHandling="merge"
+    >
       <hydro-icon
         class="monitoring__header-link-icon"
         type="icon-left"
@@ -12,53 +16,60 @@
       class="monitoring__header-path"
       *ngIf="modelVersion$ | async as modelVersion"
     >
-      <span class="monitoring__header-path-link" [routerLink]="['../../']" queryParamsHandling="merge">{{
-        modelVersion.model.name
-      }}</span
+      <span
+        class="monitoring__header-path-link"
+        [routerLink]="['../../']"
+        queryParamsHandling="merge"
+        >{{ modelVersion.model.name }}</span
       ><span class="monitoring__header-path-separator">/</span
-      ><span class="monitoring__header-path-link" [routerLink]="['../']" queryParamsHandling="merge">{{
-        modelVersion.modelVersion
-      }}</span>
+      ><span
+        class="monitoring__header-path-link"
+        [routerLink]="['../']"
+        queryParamsHandling="merge"
+        >{{ modelVersion.modelVersion }}</span
+      >
     </div>
   </div>
-  <ng-container *ngIf="!(error$ | async); else errorSection">
-    <section class="monitoring__aggregation">
-      <hs-aggregation
-        [totalRequests]="totalRequests$ | async"
-        [currentRequests]="currentRequests$ | async"
-        [aggregation]="checksAggregation$ | async"
-        [canLoadLeft]="canLoadLeft$ | async"
-        [canLoadRight]="canLoadRight$ | async"
-        [loading]="aggregationLoading$ | async"
-        (changedSelectedColumn)="onSelectedAggregationColumn($event)"
-        (loadedOlder)="loadOlder()"
-        (loadedNewest)="loadNewest()"
-      >
-      </hs-aggregation>
-    </section>
+  <hs-monitoring-availability>
+    <ng-container *ngIf="!(error$ | async); else errorSection">
+      <section class="monitoring__aggregation">
+        <hs-aggregation
+          [totalRequests]="totalRequests$ | async"
+          [currentRequests]="currentRequests$ | async"
+          [aggregation]="checksAggregation$ | async"
+          [canLoadLeft]="canLoadLeft$ | async"
+          [canLoadRight]="canLoadRight$ | async"
+          [loading]="aggregationLoading$ | async"
+          (changedSelectedColumn)="onSelectedAggregationColumn($event)"
+          (loadedOlder)="loadOlder()"
+          (loadedNewest)="loadNewest()"
+        >
+        </hs-aggregation>
+      </section>
 
-    <hs-requests-information
-      [aggregation]="selectedAggregationColumn$ | async"
-      [latency]="latency$ | async"
-      [errors]="errorsChecks$ | async"
-    >
-    </hs-requests-information>
-    <hs-batch-metrics
-      *ngIf="showBatchMetricsBlock(selectedAggregationColumn$ | async)"
-      [aggregation]="selectedAggregationColumn$ | async"
-    ></hs-batch-metrics>
-    <hs-log
-      [checks]="checks$ | async"
-      [modelVersion]="modelVersion$ | async"
-      [loading]="detailedCheckLoading$ | async"
-    ></hs-log>
-    <hs-custom-checks
-      [customMetrics]="customMetrics$ | async"
-      [customChecks]="customChecks$ | async"
-      [loading]="detailedCheckLoading$ | async"
-      (openSettings)="openSettings()"
-    ></hs-custom-checks>
-  </ng-container>
+      <hs-requests-information
+        [aggregation]="selectedAggregationColumn$ | async"
+        [latency]="latency$ | async"
+        [errors]="errorsChecks$ | async"
+      >
+      </hs-requests-information>
+      <hs-batch-metrics
+        *ngIf="showBatchMetricsBlock(selectedAggregationColumn$ | async)"
+        [aggregation]="selectedAggregationColumn$ | async"
+      ></hs-batch-metrics>
+      <hs-log
+        [checks]="checks$ | async"
+        [modelVersion]="modelVersion$ | async"
+        [loading]="detailedCheckLoading$ | async"
+      ></hs-log>
+      <hs-custom-checks
+        [customMetrics]="customMetrics$ | async"
+        [customChecks]="customChecks$ | async"
+        [loading]="detailedCheckLoading$ | async"
+        (openSettings)="openSettings()"
+      ></hs-custom-checks>
+    </ng-container>
+  </hs-monitoring-availability>
 </div>
 
 <ng-template #errorSection>
