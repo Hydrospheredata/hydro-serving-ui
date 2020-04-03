@@ -6,7 +6,6 @@ fdescribe('Network', () => {
   let browser: Browser;
   let page: Page;
 
-  const reqs = {};
   beforeAll(async () => {
     await initializeBrowser().then(config => {
       browser = config.browser;

@@ -1,5 +1,7 @@
+const url = process.env.URL || 'http://localhost';
+
 export default {
-  url: 'http://localhost',
+  url,
   apiVersion: 2,
   endpoints: ['model', 'model/version', 'application', 'servable'],
 };

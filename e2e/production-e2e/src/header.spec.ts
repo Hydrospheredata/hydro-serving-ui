@@ -4,6 +4,7 @@ import {
   ElementHandle,
   HTMLOrSVGElementHandle,
 } from 'playwright';
+import appConfig from '../app-config';
 import initializeBrowser from '../helpers/initializeBrowser';
 
 describe('Header test', () => {
@@ -15,7 +16,7 @@ describe('Header test', () => {
       page = config.page;
     });
 
-    await page.goto('http://localhost');
+    await page.goto(appConfig.url);
   });
 
   afterAll(async () => {
@@ -68,7 +69,6 @@ describe('Header test', () => {
         });
         it('after clicked show models page', async () => {
           await link.click();
-          await page.screenshot({ path: `screenshots/models-page.png` });
         });
       });
       describe('applications link', () => {
@@ -88,7 +88,6 @@ describe('Header test', () => {
         });
         it('after clicked show applications page', async () => {
           await link.click();
-          await page.screenshot({ path: `screenshots/applications-page.png` });
         });
       });
     });
