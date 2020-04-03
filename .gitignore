@@ -8,6 +8,7 @@
 # dependencies
 /coverage
 /node_modules
+/e2e/production-e2e/node_modules
 
 # IDEs and editors
 /.idea

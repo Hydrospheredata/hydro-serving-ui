@@ -1,0 +1,27 @@
+{
+  "name": "hs-production-e2e",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^13.9.5",
+    "playwright": "^0.12.1",
+    "typescript": "*"
+  },
+  "devDependencies": {
+    "@babel/core": "*",
+    "@babel/preset-env": "*",
+    "@babel/preset-react": "*",
+    "@babel/preset-typescript": "*",
+    "@types/jest": "*",
+    "babel-jest": "*",
+    "jest": "*",
+    "jest-image-snapshot": "^3.0.1",
+    "jest-runner-tsc": "^1.6.0"
+  }
+}
