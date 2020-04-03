@@ -7,103 +7,106 @@ import { ModelsFacade } from '@models/store';
 import { Check } from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
 import { ModelVersion } from '@shared/_index';
+import { Observable, BehaviorSubject, of, Subject, timer } from 'rxjs';
 import {
-  Observable,
-  BehaviorSubject,
-  of,
-  combineLatest,
-  Subject,
-  timer,
-  never,
-} from 'rxjs';
-import {
-  refCount,
-  publishReplay,
   map,
   pluck,
   tap,
   switchMap,
   catchError,
   shareReplay,
-  take,
   distinctUntilChanged,
   exhaustMap,
   takeWhile,
   filter,
+  startWith,
 } from 'rxjs/operators';
-import {
-  TaskState,
-  VisualizationResponse,
-  ClassLabel,
-  Colorizer,
-} from './models/visualization';
-import { ColorizerBuilder } from './services/colorizer.builder';
+import { ColorizerFabric, Colorizer } from './models/Colorizer';
+import { TaskState, VisualizationResponse } from './models/visualization';
 import { VisualizationApi } from './services/visualization-api.service';
 
 export type ColorBy = 'class_label' | 'metric';
 
 export interface State {
-  taskId: string | null;
-  result: VisualizationResponse | null;
-  error: string | null;
+  taskId: string;
+  result: VisualizationResponse;
+  error: string;
   status: TaskState;
   colorBy: ColorBy;
+  colorizers: Colorizer[];
+  selectedColorizer: Colorizer;
+  selectedPointIndex: number;
+  data: number[];
+  top100: number[][];
 }
 
 const initialState: State = {
-  taskId: null,
-  result: null,
-  error: null,
+  taskId: undefined,
+  result: undefined,
+  error: undefined,
   status: 'PENDING',
   colorBy: 'class_label',
+  colorizers: [],
+  selectedColorizer: undefined,
+  data: [],
+  selectedPointIndex: undefined,
+  top100: [],
 };
 
 @Injectable()
 export class VisualizationFacade {
   state$: Observable<State>;
-  loading$: Observable<boolean>;
   taskId$: Observable<string>;
   status$: Observable<TaskState>;
   result$: Observable<VisualizationResponse>;
   error$: Observable<string | null>;
-  // SETTINGS
-  colorBy$: Observable<ColorBy>;
+  selectedColorizer$: Observable<Colorizer>;
+  selectedPointIndex$: Observable<number>;
   // SCATTERPLOT
   scatterPlotData$: Observable<ScatterPlotData>;
   colors$: Observable<string[]>;
   top100$: Observable<number[][]>;
-  labels$: Observable<VisualizationResponse['class_labels']>;
-  labelsNames$: Observable<string[]>;
   modelVersion$: Observable<ModelVersion>;
   selectedCheck$: Observable<Check>;
+  colorizers$: Observable<Colorizer[]>;
+
   private state: BehaviorSubject<State> = new BehaviorSubject(initialState);
   private createTask: Subject<any> = new Subject();
-
-  // labelsNames$: Observable<string[]> = this.labels$.pipe(map(Object.keys));
-  // metrics$ = this.response$.pipe(pluck('metrics'));
-  // metricsNames$: Observable<string[]> = this.metrics$.pipe(map(Object.keys));
-  // top100$ = this.response$.pipe(pluck('top_100'));
-  // requestsIds$ = this.response$.pipe(pluck('requests_ids'));
-  // loading$: Observable<boolean>;
-  // private loading: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(
     private api: VisualizationApi,
     private monitoringApi: MonitoringService,
     private modelsFacade: ModelsFacade,
-    private colorizerBuilder: ColorizerBuilder
+    private colorizerFabric: ColorizerFabric
   ) {
     // UI Inputs
     this.state$ = this.state.asObservable().pipe(shareReplay(1));
     this.status$ = this.state$.pipe(pluck('status'), distinctUntilChanged());
     this.taskId$ = this.state$.pipe(pluck('taskId'), distinctUntilChanged());
+
     this.result$ = this.state$.pipe(
       pluck('result'),
       distinctUntilChanged(),
       filter(val => !!val)
     );
     this.error$ = this.state$.pipe(pluck('error'), distinctUntilChanged());
-    this.colorBy$ = this.state$.pipe(pluck('colorBy'), distinctUntilChanged());
+    this.colorizers$ = this.state.pipe(
+      pluck('colorizers'),
+      distinctUntilChanged()
+    );
+    this.selectedColorizer$ = this.state.pipe(
+      filter(val => val !== undefined),
+      pluck('selectedColorizer'),
+      distinctUntilChanged()
+    );
+    this.selectedPointIndex$ = this.state$.pipe(
+      pluck('selectedPointIndex'),
+      distinctUntilChanged()
+    );
+    this.top100$ = this.state$.pipe(
+      pluck('top100'),
+      distinctUntilChanged()
+    );
     this.scatterPlotData$ = this.result$.pipe(
       filter(val => !!val),
       map(({ data }) => {
@@ -129,30 +132,20 @@ export class VisualizationFacade {
         );
       })
     );
-    this.colorBy$ = this.state.pipe(pluck('colorBy'), distinctUntilChanged());
-    this.colors$ = this.colorBy$.pipe(
-      switchMap(colorBy => {
-        switch (colorBy) {
-          case 'class_label':
-          // return this.colorsByClassLabel$();
-          case 'metric':
-          // return this.colorsByMetric$();
-          default:
-            break;
-        }
-        return this.colorsByClassLabel$();
-      })
+    this.colors$ = this.selectedColorizer$.pipe(
+      filter(val => !!val),
+      map(colorizer => colorizer.getColors()),
+      startWith([]),
+      shareReplay(1)
     );
-    this.labels$ = this.result$.pipe(pluck('class_labels'));
-    this.labelsNames$ = this.labels$.pipe(map(Object.keys));
     this.modelVersion$ = this.modelsFacade.selectedModelVersion$;
+    // TODO: dynamic select id
     this.selectedCheck$ = of('5e84a88a6839050007b02ac4').pipe(
       switchMap(id => this.monitoringApi.getCheck(id))
     );
     // SIDE EFFECT
     this.createTask
       .pipe(
-        tap(_ => console.log('create task')),
         switchMap(_ => {
           return this.api.createTask$().pipe(
             tap(taskInformation => {
@@ -160,7 +153,7 @@ export class VisualizationFacade {
                 ...this.state.getValue(),
                 taskId: taskInformation.Task_id,
               });
-            }),
+            })
             // catchError(err => {
             //   this.state.next({
             //     ...this.state.getValue(),
@@ -189,6 +182,10 @@ export class VisualizationFacade {
                 ...this.state.getValue(),
                 status,
                 result: task.result ? task.result[0].result : undefined,
+                colorizers: task.result
+                  ? this.buildColorizers(task.result[0].result)
+                  : [],
+                top100: task.result ? task.result[0].result.top_100 : [],
               });
             }),
             takeWhile(({ state }) => state !== 'SUCCESS'),
@@ -204,46 +201,36 @@ export class VisualizationFacade {
         })
       )
       .subscribe();
-    // this.loading$ = this.loading.asObservable();
   }
 
   loadEmbedding(): void {
     this.createTask.next();
   }
 
-  changeColorBy(colorBy: ColorBy): void {
-    this.state.next({ ...this.state.getValue(), colorBy });
+  changeColorizer(colorizer: Colorizer): void {
+    this.state.next({ ...this.state.getValue(), selectedColorizer: colorizer });
   }
 
-  changeSelectedClassLabel(classLabel: string): void {}
-
-  private colorsByClassLabel$(): Observable<string[]> {
-    return of([]);
-    return combineLatest(this.labels$, of('class')).pipe(
-      map(([labels, selectedLabel]) => {
-        const classLabel: ClassLabel = labels[selectedLabel];
-        if (classLabel === undefined) {
-          return [];
-        }
-
-        const colorizer: Colorizer = this.colorizerBuilder.build(classLabel);
-        return colorizer.getColors();
-      })
-    );
+  changeSelectedPointIndex(index: number): void {
+    this.state.next({ ...this.state.getValue(), selectedPointIndex: index });
   }
-  private colorsByMetric$(): Observable<string[]> {
-    return of([]);
-    // return this.selectedMetric$.pipe(
-    //   map(metric => {
-    //     if (metric === undefined) {
-    //       return [];
-    //     }
-    //     const colors = this.colorizerBuilder
-    //       .buildMetricColorizer(metric)
-    //       .getColors();
-    //     console.dir(colors);
-    //     return colors;
-    //   })
-    // );
+
+  private buildColorizers({
+    class_labels,
+    metrics,
+  }: VisualizationResponse): Colorizer[] {
+    const res = [];
+    for (const [name, payload] of Object.entries(class_labels)) {
+      res.push(
+        this.colorizerFabric.createColorizer('class_label', {
+          name,
+          data: payload.data,
+        })
+      );
+    }
+    // for (const [_, data] of Object.entries(metrics)) {
+    //   res.push(this.colorizerFabric.createColorizer('metric', { name }));
+    // }
+    return res;
   }
 }

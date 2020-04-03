@@ -14,7 +14,7 @@
     width: 100%;
 
     &-icon {
-      color: $primary-color-100;
+      color: $neutral-color-100;
       width: 64px;
       height: 64px;
       margin-bottom: 12px;
@@ -107,14 +107,21 @@
     padding: 12px;
     box-shadow: -4px 4px 8px -8px $neutral-color-500;
   }
+  .colorizer {
+    font-size: 12px;
+    &__type {
+      font-family: $font-family-bold;
+      color: $neutral-color-900;
+    }
+  }
 }
 
 @keyframes blink {
   0% {
-    color: $primary-color-100
+    color: $neutral-color-100
   }
 
   100% {
-    color: $primary-color-300
+    color: $neutral-color-300
   }
 }

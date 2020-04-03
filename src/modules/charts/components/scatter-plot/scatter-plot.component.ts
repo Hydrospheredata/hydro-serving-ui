@@ -108,7 +108,6 @@ export class ScatterPlotComponent implements OnChanges {
   }
 
   drawLinksFromHoveredElement() {
-    console.log('called');
     if (this.top100) {
       const currentTop100 = this.top100[this.hoveredIndex];
       const self = this;
@@ -129,7 +128,7 @@ export class ScatterPlotComponent implements OnChanges {
               .attr('y2', i => {
                 return self.yScale(this.points[i].y);
               })
-              .attr('stroke', 'rgba(130,184,255, .3)')
+              .attr('stroke', 'rgba(0,0,0, .15)')
               .attr('stroke-width', '1px'),
           update =>
             update
@@ -141,7 +140,7 @@ export class ScatterPlotComponent implements OnChanges {
               .attr('y2', i => {
                 return self.yScale(this.points[i].y);
               })
-              .attr('stroke', 'rgba(130,184,255, .3)')
+              .attr('stroke', 'rgba(0,0,0, .15)')
               .attr('stroke-width', '1px')
         );
     }

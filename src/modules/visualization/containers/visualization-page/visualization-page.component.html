@@ -19,25 +19,19 @@
   <div class="visualization__body" *ngIf="(status$ | async) === 'SUCCESS'">
     <div class="visualization__chart">
       <div class="visualization__settings">
-        <hs-color-by-selector
-          class="visualization__settings-item"
-          [colorBy]="colorBy$ | async"
-          (colorByChanged)="onColorByChange($event)"
-        ></hs-color-by-selector>
-        <hs-color-by-class-label-options
-          class="visualization__settings-item"
-          [labelName]="selectedLabel"
-          [labelNames]="labelsNames$ | async"
-          (labelNameChanged)="handleSelectLabel($event)"
-        ></hs-color-by-class-label-options>
-        <!-- <hs-color-by-metric-options
-        class="visualization__settings-item"
-        *ngIf="(colorBy$ | async) === 'metric'"
-        [metric]="selectedMetric$ | async"
-        [metricName]="selectedMetricName$ | async"
-        [metricsNames]="metrics$ | async"
-        (metricNameChanged)="handleSelectMetric($event)"
-      ></hs-color-by-metric-options> -->
+        <div class="visualization__settings-input">
+          <span class="visualization__settings-input">Colorize: </span>
+          <mdl-select label="Choose label" (change)="onChangeColorizer($event)">
+            <mdl-option
+              *ngFor="let colorizer of colorizers$ | async"
+              [value]="colorizer"
+            >
+              <span class="colorizer">
+                <span class="colorizer__type">{{ colorizer.type }}: </span>{{ colorizer.name }}
+              </span></mdl-option
+            >
+          </mdl-select>
+        </div>
         <mdl-checkbox
           [(ngModel)]="showTop100"
           class="visualization__setting-item"

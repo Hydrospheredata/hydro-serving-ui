@@ -2,10 +2,6 @@ import { CmpOperators } from '@monitoring/models';
 
 export interface VisualizationRequest {}
 
-export interface Colorizer {
-  getColors: () => string[];
-}
-
 export interface ClassLabel {
   classes?: Array<number | string>;
   coloring_type: ColoringType;

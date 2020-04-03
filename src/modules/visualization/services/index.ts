@@ -1,2 +1,1 @@
-export * from './colorizer.builder';
-export * from './visualization-page.service';
+export * from './visualization-api.service';
