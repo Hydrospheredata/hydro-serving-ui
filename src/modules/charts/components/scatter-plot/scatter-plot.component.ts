@@ -128,7 +128,7 @@ export class ScatterPlotComponent implements OnChanges {
               .attr('y2', i => {
                 return self.yScale(this.points[i].y);
               })
-              .attr('stroke', 'rgba(0,0,0, .15)')
+              .attr('stroke', 'rgba(100,100,125, .15)')
               .attr('stroke-width', '1px'),
           update =>
             update
@@ -140,7 +140,7 @@ export class ScatterPlotComponent implements OnChanges {
               .attr('y2', i => {
                 return self.yScale(this.points[i].y);
               })
-              .attr('stroke', 'rgba(0,0,0, .15)')
+              .attr('stroke', 'rgba(100,100,125, .15)')
               .attr('stroke-width', '1px')
         );
     }

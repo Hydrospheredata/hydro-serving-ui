@@ -1,4 +1,5 @@
 import { CmpOperators } from '@monitoring/models';
+import { ColoringType } from './ColoringType';
 
 export interface VisualizationRequest {}
 
@@ -12,7 +13,6 @@ export interface Metric {
   operation: CmpOperators;
   threshold: number;
 }
-export type ColoringType = 'class' | 'gradient';
 export type TaskState = 'SUCCESS' | 'PENDING' | 'FAILED';
 
 export interface TaskInformation {

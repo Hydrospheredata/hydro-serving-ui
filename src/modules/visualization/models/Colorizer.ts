@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ColorsGeneratorFabric, ColorsGenerator } from './ColorGenerator';
+import { ColoringType } from './ColoringType';
 
 type ColorizerType = 'class_label' | 'metric';
 
@@ -50,11 +51,11 @@ export class  ColorizerFabric {
   constructor(private colorGeneratorFabric: ColorsGeneratorFabric) {}
   public createColorizer(
     type: ColorizerType,
-    props: { name: string, data: number[] }
+    props: { name: string, data: number[], coloring_type: ColoringType }
   ): Colorizer | null {
     const colorGenerator = this.colorGeneratorFabric.createColorGenerator(
       type,
-      'class',
+      props.coloring_type,
       {}
     );
 

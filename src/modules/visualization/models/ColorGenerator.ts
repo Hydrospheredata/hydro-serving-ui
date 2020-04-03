@@ -1,19 +1,25 @@
 import { Injectable } from '@angular/core';
-type ColoringType = 'class' | 'gradient';
+import { ColorMapService } from '@core/services/color-map.service';
+import { ColoringType } from './ColoringType';
 export class ColorsGenerator {
   getColors(data: number[]): string[] {
     return data.map(() => '#00498e');
   }
 }
 
+@Injectable()
 class GradientColorsGenerator extends ColorsGenerator {
+  private colorMapService: ColorMapService;
+  constructor() {
+    super();
+    this.colorMapService = new ColorMapService();
+  }
   public getColors(data: number[]) {
     return data.map(val => {
-      const [r, g, b] = [0, 0, 0];
-      // const [r, g, b] = this.colorMapService.getRGB({
-      //   val,
-      //   type: 'redToBlue',
-      // });
+      const [r, g, b] = this.colorMapService.getRGB({
+        val,
+        type: 'redToBlue',
+      });
       return `rgb(${r}, ${g}, ${b})`;
     });
   }
@@ -76,6 +82,7 @@ export class ColorsGeneratorFabric {
     coloringType: ColoringType,
     props
   ): ColorsGenerator {
+    debugger;
     switch (type) {
       case 'class_label':
         switch (coloringType) {

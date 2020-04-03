@@ -103,10 +103,7 @@ export class VisualizationFacade {
       pluck('selectedPointIndex'),
       distinctUntilChanged()
     );
-    this.top100$ = this.state$.pipe(
-      pluck('top100'),
-      distinctUntilChanged()
-    );
+    this.top100$ = this.state$.pipe(pluck('top100'), distinctUntilChanged());
     this.scatterPlotData$ = this.result$.pipe(
       filter(val => !!val),
       map(({ data }) => {
@@ -153,15 +150,15 @@ export class VisualizationFacade {
                 ...this.state.getValue(),
                 taskId: taskInformation.Task_id,
               });
+            }),
+            catchError(err => {
+              this.state.next({
+                ...this.state.getValue(),
+                error: err,
+                status: 'FAILED',
+              });
+              return of();
             })
-            // catchError(err => {
-            //   this.state.next({
-            //     ...this.state.getValue(),
-            //     error: err,
-            //     status: 'FAILED',
-            //   });
-            //   return never();
-            // })
           );
         })
       )
@@ -225,6 +222,7 @@ export class VisualizationFacade {
         this.colorizerFabric.createColorizer('class_label', {
           name,
           data: payload.data,
+          coloring_type: payload.coloring_type,
         })
       );
     }
