@@ -1,6 +1,7 @@
 export interface ScatterPlotPoint {
   x: number;
   y: number;
+  color?: string;
 }
 export interface ScatterPlotData {
   points: ScatterPlotPoint[];

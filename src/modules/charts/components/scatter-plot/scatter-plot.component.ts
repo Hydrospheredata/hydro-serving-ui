@@ -8,44 +8,78 @@ import {
   ChangeDetectionStrategy,
   ViewChild,
   ElementRef,
+  AfterViewInit,
 } from '@angular/core';
 import {
   ScatterPlotData,
   ScatterPlotPoint,
 } from '@charts/models/scatter-plot-data.model';
-import { ChartHelperService } from '@core/services/chart-helper.service';
-import { select } from 'd3';
 import { Colorizer } from '@core/models';
+import { ChartHelperService } from '@core/services/chart-helper.service';
+import { select, mouse } from 'd3';
+import {
+  Subject,
+  from,
+  fromEvent,
+  timer,
+  interval,
+  merge,
+  partition,
+} from 'rxjs';
+import { switchMap, takeUntil, tap } from 'rxjs/operators';
 @Component({
   selector: 'hs-scatter-plot',
   templateUrl: './scatter-plot.component.html',
   styleUrls: ['./scatter-plot.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScatterPlotComponent implements OnChanges {
+export class ScatterPlotComponent implements OnChanges, AfterViewInit {
   @Input() readonly data: ScatterPlotData;
   @Input() readonly colors: string[] = [];
   @Input() readonly top100: number[][] = [];
-  @Input() readonly showTop100: boolean = false;
   @Input() readonly colorizer: Colorizer;
+
   @Output() selectPoint: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild('ccc', { read: ElementRef }) container: ElementRef;
+  @ViewChild('container', { read: ElementRef }) container: ElementRef;
+  @ViewChild('layout', { read: ElementRef }) layout: ElementRef;
+
+  cursorOnLayout: Subject<boolean> = new Subject();
 
   selectedIndex: number;
   hoveredIndex: number;
   links: Array<{ x1: number; x2: number; y1: number; y2: number }>;
   yScale;
   xScale;
+  showTop100: boolean = false;
 
   private yAxisOffset: number = 1;
   constructor(private chartHelper: ChartHelperService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {
-      console.log('change');
       this.render();
     }
+  }
+
+  ngAfterViewInit() {
+    const mouseOnLayout = fromEvent(this.layout.nativeElement, 'mouseenter');
+    const mouseLeft = fromEvent(this.layout.nativeElement, 'mouseleave');
+
+    const [hoveredOnCircle$, leftLayout$] = partition(
+      mouseLeft,
+      (evt: MouseEvent) => {
+        return evt.relatedTarget.tagName === 'circle';
+      }
+    );
+
+    const s3 = mouseOnLayout.pipe(
+      switchMap(() =>
+        hoveredOnCircle$.pipe(tap(console.log), takeUntil(leftLayout$))
+      )
+    );
+
+    merge(hoveredOnCircle$, s3).subscribe();
   }
 
   get chartHeight() {

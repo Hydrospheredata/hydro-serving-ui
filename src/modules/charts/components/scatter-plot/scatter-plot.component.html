@@ -1,9 +1,8 @@
-<div class="scatter-plot" #ccc>
+<div class="scatter-plot" #container>
   <svg
     [attr.width]="chartWidth"
     [attr.height]="chartHeight"
     #svgContainer
-    *ngIf="data; else noData"
   >
     <g
       hsD3Axis
@@ -17,6 +16,7 @@
       [attr.width]="viewWidth"
       [attr.height]="viewHeight"
       [attr.transform]="dataTranslate"
+      #layout
     ></rect>
     <g [attr.transform]="dataTranslate" class="scatter-plot__links"></g>
     <g [attr.transform]="dataTranslate">
