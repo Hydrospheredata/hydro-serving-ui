@@ -237,7 +237,11 @@
     border: 1px $neutral-color-300 solid;
     border-radius: 4px;
     overflow: hidden;
-
+    &-empty {
+      line-height: 36px;
+      text-align: center;
+      color: $neutral-color-400;
+    }
     &-header {
       padding: 12px;
     }
