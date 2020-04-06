@@ -12,7 +12,6 @@ import * as d3 from 'd3';
   template: `<div class="gradient-legend" #anchor></div>`,
   styleUrls: ['./gradient-legend.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
 })
 export class GradientLegendComponent implements AfterViewInit {
   @ViewChild('anchor', { read: ElementRef }) anchorElement: ElementRef;
@@ -46,7 +45,6 @@ export class GradientLegendComponent implements AfterViewInit {
       .scaleLinear()
       .range([1, viewWidth])
       .domain(colorScale.domain());
-    // 1034
 
     const image = ctx.createImageData(viewWidth, 1);
     d3.range(viewWidth).forEach(i => {

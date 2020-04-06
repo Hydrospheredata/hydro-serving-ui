@@ -1,5 +1,5 @@
+import { ColoringType } from '@core/models';
 import { CmpOperators } from '@monitoring/models';
-import { ColoringType } from './ColoringType';
 
 export interface VisualizationRequest {}
 

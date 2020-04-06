@@ -3,6 +3,7 @@ import {
   ScatterPlotData,
   ScatterPlotPoint,
 } from '@charts/models/scatter-plot-data.model';
+import { Colorizer, ColorizerFabric } from '@core/models';
 import { ModelsFacade } from '@models/store';
 import { Check } from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
@@ -21,8 +22,6 @@ import {
   filter,
   startWith,
 } from 'rxjs/operators';
-import { ColorizerFabric, Colorizer } from './models/Colorizer';
-import { ScatterPlotLegendConfig } from './models/ScatterPlotLegendConfig';
 import {
   TaskState,
   VisualizationResponse,
@@ -73,7 +72,6 @@ export interface State {
   selectedPointIndex: number;
   data: number[];
   top100: number[][];
-  legendConfig: ScatterPlotLegendConfig;
 }
 
 const initialState: State = {
@@ -87,7 +85,6 @@ const initialState: State = {
   data: [],
   selectedPointIndex: undefined,
   top100: [],
-  legendConfig: undefined,
 };
 
 @Injectable()
@@ -107,7 +104,6 @@ export class VisualizationFacade {
   modelVersion$: Observable<ModelVersion>;
   selectedCheck$: Observable<Check>;
   colorizers$: Observable<Colorizer[]>;
-  legendConfig$: Observable<ScatterPlotLegendConfig>;
 
   private state: BehaviorSubject<State> = new BehaviorSubject(initialState);
   private createTask: Subject<any> = new Subject();
@@ -166,10 +162,6 @@ export class VisualizationFacade {
           }
         );
       })
-    );
-    this.legendConfig$ = this.selectedColorizer$.pipe(
-      filter(val => !!val),
-      map(colorizer => colorizer.getLegendConfig())
     );
 
     this.colors$ = this.selectedColorizer$.pipe(

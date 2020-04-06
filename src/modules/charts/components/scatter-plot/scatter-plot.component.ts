@@ -15,7 +15,7 @@ import {
 } from '@charts/models/scatter-plot-data.model';
 import { ChartHelperService } from '@core/services/chart-helper.service';
 import { select } from 'd3';
-import { debounce } from 'lodash';
+import { Colorizer } from '@core/models';
 @Component({
   selector: 'hs-scatter-plot',
   templateUrl: './scatter-plot.component.html',
@@ -27,7 +27,7 @@ export class ScatterPlotComponent implements OnChanges {
   @Input() readonly colors: string[] = [];
   @Input() readonly top100: number[][] = [];
   @Input() readonly showTop100: boolean = false;
-
+  @Input() readonly colorizer: Colorizer;
   @Output() selectPoint: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('ccc', { read: ElementRef }) container: ElementRef;
@@ -39,8 +39,7 @@ export class ScatterPlotComponent implements OnChanges {
   xScale;
 
   private yAxisOffset: number = 1;
-  constructor(private chartHelper: ChartHelperService) {
-  }
+  constructor(private chartHelper: ChartHelperService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes) {

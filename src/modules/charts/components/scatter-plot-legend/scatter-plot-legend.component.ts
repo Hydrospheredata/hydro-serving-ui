@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ScatterPlotLegendConfig } from 'modules/visualization/models/ScatterPlotLegendConfig';
-import { SCATTER_PLOT_PALETTE } from 'modules/visualization/models/ScatterPlotPalette';
+import { SCATTER_PLOT_PALETTE, Colorizer } from '@core/models';
 
 @Component({
   selector: 'hs-scatter-plot-legend',
@@ -10,7 +9,7 @@ import { SCATTER_PLOT_PALETTE } from 'modules/visualization/models/ScatterPlotPa
 export class ScatterPlotLegendComponent implements OnInit {
   readonly palette: ReadonlyArray<string>;
 
-  @Input() config: ScatterPlotLegendConfig;
+  @Input() colorizer: Colorizer;
   constructor() {
     this.palette = SCATTER_PLOT_PALETTE;
   }

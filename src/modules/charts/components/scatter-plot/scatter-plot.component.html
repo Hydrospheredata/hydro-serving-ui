@@ -36,5 +36,8 @@
       />
     </g>
   </svg>
+  <div *ngIf="colorizer" class="scatter-plot__legend">
+    <hs-scatter-plot-legend [colorizer]="colorizer"></hs-scatter-plot-legend>
+  </div>
 </div>
 <ng-template #noData>no data</ng-template>

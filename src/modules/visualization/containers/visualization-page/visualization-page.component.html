@@ -48,11 +48,9 @@
           [colors]="colors$ | async"
           [top100]="top100$ | async"
           [showTop100]="false"
+          [colorizer]="colorizer$ | async"
           (selectPoint)="handleSelectPoint($event)"
         ></hs-scatter-plot>
-        <div *ngIf="legendConfig$ | async as config" class="visualization__scatterplot-legend">
-          <hs-scatter-plot-legend [config]="config"></hs-scatter-plot-legend>
-        </div>
       </div>
     </div>
 

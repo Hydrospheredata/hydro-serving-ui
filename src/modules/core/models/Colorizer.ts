@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ColorsGeneratorFabric, ColorsGenerator } from './ColorGenerator';
 import { ColoringType } from './ColoringType';
-import { ScatterPlotLegendConfig } from './ScatterPlotLegendConfig';
 
 type ColorizerType = 'class_label' | 'metric';
 interface ColorizerProps {
@@ -26,8 +25,6 @@ export abstract class Colorizer {
   public getColors(): string[] {
     return this.colorsGenerator.getColors(this.data);
   }
-
-  abstract getLegendConfig(): ScatterPlotLegendConfig;
 }
 
 class ClassLabelColorizer extends Colorizer {
@@ -40,10 +37,6 @@ class ClassLabelColorizer extends Colorizer {
   getColors() {
     return this.colorsGenerator.getColors(this.data);
   }
-
-  getLegendConfig() {
-    return { coloringType: this.coloringType, classes: this.classes };
-  }
 }
 class MetricColorizer extends Colorizer {
   constructor(props: ColorizerProps, colorsGenerator) {
@@ -53,10 +46,6 @@ class MetricColorizer extends Colorizer {
 
   getColors() {
     return [];
-  }
-
-  getLegendConfig() {
-    return { coloringType: this.coloringType };
   }
 }
 

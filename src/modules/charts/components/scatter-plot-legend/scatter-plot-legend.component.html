@@ -1,6 +1,6 @@
 <div class="scatter-plot-legend">
-  <ng-container *ngIf="config">
-    <div [ngSwitch]="config.coloringType">
+  <ng-container *ngIf="colorizer">
+    <div [ngSwitch]="colorizer.coloringType">
       <ng-template
         *ngSwitchCase="'class'"
         [ngTemplateOutlet]="classLegend"

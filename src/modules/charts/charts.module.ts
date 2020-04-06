@@ -1,11 +1,20 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
-import { LinearChartComponent } from './components/linear-chart/linear-chart.component';
-import { ScatterPlotComponent } from './components/scatter-plot/scatter-plot.component';
+import {
+  LinearChartComponent,
+  ScatterPlotLegendComponent,
+  GradientLegendComponent,
+  ScatterPlotComponent,
+} from './components';
 
 @NgModule({
   imports: [SharedModule],
-  declarations: [LinearChartComponent, ScatterPlotComponent],
+  declarations: [
+    LinearChartComponent,
+    ScatterPlotComponent,
+    ScatterPlotLegendComponent,
+    GradientLegendComponent,
+  ],
   exports: [LinearChartComponent, ScatterPlotComponent],
 })
 export class ChartsModule {}
