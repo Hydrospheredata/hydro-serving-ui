@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ColorMapService } from '@core/services/color-map.service';
 import { ColoringType } from './ColoringType';
+import { SCATTER_PLOT_PALETTE } from './ScatterPlotPalette';
 export class ColorsGenerator {
   getColors(data: number[]): string[] {
     return data.map(() => '#00498e');
@@ -26,25 +27,14 @@ class GradientColorsGenerator extends ColorsGenerator {
 }
 
 class ClassLabelsColorsGenerator extends ColorsGenerator {
-  private classes = [0, 1]; // TODO: change
+  private classes: Array<string | number>;
+  constructor(classes: Array<string | number>) {
+    super();
+    this.classes = classes || [];
+  }
   getColors(data: number[]) {
-    const color = [
-      '#418ecc',
-      '#ff716c',
-      '#ffad37',
-      '#ddff64',
-      '#85ff85',
-      '#8cffd9',
-      '#sef3ff',
-      '#f59dfa',
-      '#8a82ff',
-      '#4362ff',
-      '#6db7fa',
-      '#b384f5',
-      '#b366ac',
-    ];
     return data.map(val => {
-      return color[this.classes.indexOf(val)];
+      return SCATTER_PLOT_PALETTE[this.classes.indexOf(val)];
     });
   }
 }
@@ -79,15 +69,13 @@ class MetricColorsGenerator implements ColorsGenerator {
 export class ColorsGeneratorFabric {
   public createColorGenerator(
     type: 'class_label' | 'metric',
-    coloringType: ColoringType,
-    props
+    props: { coloringType: ColoringType; classes?: Array<string | number> }
   ): ColorsGenerator {
-    debugger;
     switch (type) {
       case 'class_label':
-        switch (coloringType) {
+        switch (props.coloringType) {
           case 'class':
-            return new ClassLabelsColorsGenerator();
+            return new ClassLabelsColorsGenerator(props.classes);
           case 'gradient':
             return new GradientColorsGenerator();
         }

@@ -22,11 +22,46 @@ import {
   startWith,
 } from 'rxjs/operators';
 import { ColorizerFabric, Colorizer } from './models/Colorizer';
-import { TaskState, VisualizationResponse } from './models/visualization';
+import { ScatterPlotLegendConfig } from './models/ScatterPlotLegendConfig';
+import {
+  TaskState,
+  VisualizationResponse,
+  TaskInformation,
+} from './models/visualization';
 import { VisualizationApi } from './services/visualization-api.service';
 
 export type ColorBy = 'class_label' | 'metric';
-
+const MockedVisResponse: VisualizationResponse = {
+  data_shape: [5, 2],
+  data: [
+    [-0.1331532746553421, -1.1675983667373657],
+    [0.3755553364753723, -1.4538302421569824],
+    [-0.9820250868797302, 0.007928095757961273],
+    [1.976809024810791, 0.49457478523254395],
+    [1.05886709690094, 0.10462985187768936],
+  ],
+  requests_ids: [7570, 12601, 3659, 2658, 15822],
+  top_100: [[1, 2], [0, 3], [0, 4], [1, 2], [3]],
+  metrics: {},
+  class_labels: {
+    confidence: {
+      coloring_type: 'gradient',
+      data: [
+        0.47196451509596193,
+        0.5190495596548069,
+        0.9319467806068639,
+        0.1880573169325348,
+        0.5233253319370346,
+      ],
+    },
+  },
+  visualization_metrics: {},
+};
+const MockedTaskResponse: TaskInformation = {
+  Task_id: '1',
+  state: 'SUCCESS',
+  result: [{ result: MockedVisResponse }],
+};
 export interface State {
   taskId: string;
   result: VisualizationResponse;
@@ -38,6 +73,7 @@ export interface State {
   selectedPointIndex: number;
   data: number[];
   top100: number[][];
+  legendConfig: ScatterPlotLegendConfig;
 }
 
 const initialState: State = {
@@ -51,6 +87,7 @@ const initialState: State = {
   data: [],
   selectedPointIndex: undefined,
   top100: [],
+  legendConfig: undefined,
 };
 
 @Injectable()
@@ -62,6 +99,7 @@ export class VisualizationFacade {
   error$: Observable<string | null>;
   selectedColorizer$: Observable<Colorizer>;
   selectedPointIndex$: Observable<number>;
+
   // SCATTERPLOT
   scatterPlotData$: Observable<ScatterPlotData>;
   colors$: Observable<string[]>;
@@ -69,6 +107,7 @@ export class VisualizationFacade {
   modelVersion$: Observable<ModelVersion>;
   selectedCheck$: Observable<Check>;
   colorizers$: Observable<Colorizer[]>;
+  legendConfig$: Observable<ScatterPlotLegendConfig>;
 
   private state: BehaviorSubject<State> = new BehaviorSubject(initialState);
   private createTask: Subject<any> = new Subject();
@@ -83,7 +122,6 @@ export class VisualizationFacade {
     this.state$ = this.state.asObservable().pipe(shareReplay(1));
     this.status$ = this.state$.pipe(pluck('status'), distinctUntilChanged());
     this.taskId$ = this.state$.pipe(pluck('taskId'), distinctUntilChanged());
-
     this.result$ = this.state$.pipe(
       pluck('result'),
       distinctUntilChanged(),
@@ -129,6 +167,11 @@ export class VisualizationFacade {
         );
       })
     );
+    this.legendConfig$ = this.selectedColorizer$.pipe(
+      filter(val => !!val),
+      map(colorizer => colorizer.getLegendConfig())
+    );
+
     this.colors$ = this.selectedColorizer$.pipe(
       filter(val => !!val),
       map(colorizer => colorizer.getColors()),
@@ -171,7 +214,8 @@ export class VisualizationFacade {
           console.log(taskId);
           return timer(0, 5000).pipe(
             exhaustMap(_ => {
-              return this.api.getJobResult$(taskId);
+              // return this.api.getJobResult$(taskId);
+              return of(MockedTaskResponse);
             }),
             tap(task => {
               const status = task.state;
@@ -222,7 +266,8 @@ export class VisualizationFacade {
         this.colorizerFabric.createColorizer('class_label', {
           name,
           data: payload.data,
-          coloring_type: payload.coloring_type,
+          coloringType: payload.coloring_type,
+          classes: payload.classes,
         })
       );
     }

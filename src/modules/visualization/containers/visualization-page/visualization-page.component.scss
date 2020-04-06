@@ -36,6 +36,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
     &-icon {
       height: 64px;
       width: 64px;
@@ -64,19 +65,24 @@
     border-radius: 4px;
     border: 1px $neutral-color-200 solid;
     box-shadow: -4px 4px 8px -8px $neutral-color-500;
-    padding: 0 24px;
+    padding: 0 24px 24px 24px;
     width: 100%;
     margin-bottom: 24px;
   }
+
   &__scatterplot {
-    width: 620px;
     margin-right: 24px;
+    width: 100%;
+
+    &-legend {
+      margin-left: 24px;
+    }
   }
 
   &__settings {
     margin-right: 24px;
     margin-top: 24px;
-    max-width: 200px;
+    min-width: 200px;
     width: 200px;
 
     &-item {
@@ -86,8 +92,8 @@
 
     &-label {
       font-size: 14px;
-      color: $primary-color-1000;
-      text-transform: lowercase;
+      color: $neutral-color-1000;
+      text-transform: capitalize;
     }
   }
 
@@ -107,8 +113,10 @@
     padding: 12px;
     box-shadow: -4px 4px 8px -8px $neutral-color-500;
   }
+
   .colorizer {
     font-size: 12px;
+
     &__type {
       font-family: $font-family-bold;
       color: $neutral-color-900;

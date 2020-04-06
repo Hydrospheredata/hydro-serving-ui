@@ -1,62 +1,75 @@
 import { Injectable } from '@angular/core';
 import { ColorsGeneratorFabric, ColorsGenerator } from './ColorGenerator';
 import { ColoringType } from './ColoringType';
+import { ScatterPlotLegendConfig } from './ScatterPlotLegendConfig';
 
 type ColorizerType = 'class_label' | 'metric';
-
+interface ColorizerProps {
+  name: string;
+  data: number[];
+  coloringType: ColoringType;
+  classes?: Array<string | number>;
+}
 export abstract class Colorizer {
   public type: string;
   public name: string;
-
+  public coloringType: ColoringType;
   protected colorsGenerator: ColorsGenerator;
   protected data: number[];
 
-  constructor(
-    props: { name: string; data: number[] },
-    colorsGenerator: ColorsGenerator
-  ) {
+  constructor(props: ColorizerProps, colorsGenerator: ColorsGenerator) {
     this.name = props.name;
     this.data = props.data;
+    this.coloringType = props.coloringType;
     this.colorsGenerator = colorsGenerator;
   }
   public getColors(): string[] {
     return this.colorsGenerator.getColors(this.data);
   }
+
+  abstract getLegendConfig(): ScatterPlotLegendConfig;
 }
 
 class ClassLabelColorizer extends Colorizer {
-  constructor(
-    props: { name: string; data: number[] },
-    colorsGenerator: ColorsGenerator
-  ) {
+  private classes: Array<string | number>;
+  constructor(props: ColorizerProps, colorsGenerator: ColorsGenerator) {
     super(props, colorsGenerator);
     this.type = 'ClassLabel';
+    this.classes = props.classes || [];
   }
   getColors() {
     return this.colorsGenerator.getColors(this.data);
   }
+
+  getLegendConfig() {
+    return { coloringType: this.coloringType, classes: this.classes };
+  }
 }
 class MetricColorizer extends Colorizer {
-  constructor(props: { name: string; data: number[] }, colorsGenerator) {
+  constructor(props: ColorizerProps, colorsGenerator) {
     super(props, colorsGenerator);
     this.type = 'Metric';
   }
+
   getColors() {
     return [];
+  }
+
+  getLegendConfig() {
+    return { coloringType: this.coloringType };
   }
 }
 
 @Injectable({ providedIn: 'root' })
-export class  ColorizerFabric {
+export class ColorizerFabric {
   constructor(private colorGeneratorFabric: ColorsGeneratorFabric) {}
   public createColorizer(
     type: ColorizerType,
-    props: { name: string, data: number[], coloring_type: ColoringType }
+    props: ColorizerProps
   ): Colorizer | null {
     const colorGenerator = this.colorGeneratorFabric.createColorGenerator(
       type,
-      props.coloring_type,
-      {}
+      props
     );
 
     switch (type) {

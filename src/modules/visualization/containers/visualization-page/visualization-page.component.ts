@@ -3,6 +3,7 @@ import { ScatterPlotData } from '@charts/models/scatter-plot-data.model';
 import { Check } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/_index';
 import { Colorizer } from 'modules/visualization/models/Colorizer';
+import { ScatterPlotLegendConfig } from 'modules/visualization/models/ScatterPlotLegendConfig';
 import { VisualizationFacade } from 'modules/visualization/visualization.facade';
 import { Observable, of } from 'rxjs';
 @Component({
@@ -26,6 +27,7 @@ export class VisualizationPageComponent {
   scatterPlotData$: Observable<ScatterPlotData>;
   labelsNames$: Observable<string[]>;
   colorizers$: Observable<Colorizer[]>;
+  legendConfig$: Observable<ScatterPlotLegendConfig>;
   constructor(private service: VisualizationFacade) {
     this.taskId$ = this.service.taskId$;
     this.status$ = this.service.status$;
@@ -37,7 +39,7 @@ export class VisualizationPageComponent {
     this.modelVersion$ = this.service.modelVersion$;
     this.selectedCheck$ = this.service.selectedCheck$;
     this.colorizers$ = this.service.colorizers$;
-
+    this.legendConfig$ = this.service.legendConfig$;
     this.service.loadEmbedding();
   }
 

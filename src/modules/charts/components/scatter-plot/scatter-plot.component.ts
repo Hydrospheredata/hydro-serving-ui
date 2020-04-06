@@ -1,21 +1,21 @@
 import {
   Component,
-  OnInit,
   Input,
   Output,
   EventEmitter,
   SimpleChanges,
   OnChanges,
   ChangeDetectionStrategy,
+  ViewChild,
+  ElementRef,
 } from '@angular/core';
 import {
   ScatterPlotData,
   ScatterPlotPoint,
 } from '@charts/models/scatter-plot-data.model';
-import { ScatterPlotConfig } from '@core/models';
 import { ChartHelperService } from '@core/services/chart-helper.service';
 import { select } from 'd3';
-import { throttle } from 'lodash';
+import { debounce } from 'lodash';
 @Component({
   selector: 'hs-scatter-plot',
   templateUrl: './scatter-plot.component.html',
@@ -27,27 +27,19 @@ export class ScatterPlotComponent implements OnChanges {
   @Input() readonly colors: string[] = [];
   @Input() readonly top100: number[][] = [];
   @Input() readonly showTop100: boolean = false;
+
   @Output() selectPoint: EventEmitter<any> = new EventEmitter();
+
+  @ViewChild('ccc', { read: ElementRef }) container: ElementRef;
+
   selectedIndex: number;
   hoveredIndex: number;
-  throttledFunc: any;
   links: Array<{ x1: number; x2: number; y1: number; y2: number }>;
   yScale;
   xScale;
-  private yAxisOffset: number = 1;
-  private scatterPlotConfig: ScatterPlotConfig = {
-    height: 620,
-    width: 1100,
-    margins: {
-      top: 24,
-      right: 24,
-      bottom: 24,
-      left: 24,
-    },
-  };
 
+  private yAxisOffset: number = 1;
   constructor(private chartHelper: ChartHelperService) {
-    // this.throttledFunc = throttle(this.drawLinksFromHoveredElement, 1000);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -58,13 +50,20 @@ export class ScatterPlotComponent implements OnChanges {
   }
 
   get chartHeight() {
-    return this.scatterPlotConfig.height;
+    return 620;
   }
+
   get chartWidth() {
-    return this.scatterPlotConfig.width;
+    return this.container.nativeElement.offsetWidth || 400;
   }
+
   get margins() {
-    return this.scatterPlotConfig.margins;
+    return {
+      top: 24,
+      right: 24,
+      bottom: 24,
+      left: 24,
+    };
   }
 
   get viewWidth() {
@@ -102,9 +101,7 @@ export class ScatterPlotComponent implements OnChanges {
   }
   onMouseLeave(): void {
     this.hoveredIndex = undefined;
-    select('.scatter-plot__links')
-      .selectAll('line')
-      .remove();
+    select('.scatter-plot__links').selectAll('line').remove();
   }
 
   drawLinksFromHoveredElement() {

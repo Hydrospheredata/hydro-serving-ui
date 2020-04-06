@@ -19,7 +19,7 @@ export interface TaskInformation {
   Task_id: string;
   description?: string;
   state: TaskState;
-  result: { result: VisualizationResponse };
+  result: Array<{ result: VisualizationResponse }>;
 }
 export interface VisualizationResponse {
   data_shape: [number, number];

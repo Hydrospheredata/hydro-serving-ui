@@ -1,0 +1,35 @@
+<div class="scatter-plot-legend">
+  <ng-container *ngIf="config">
+    <div [ngSwitch]="config.coloringType">
+      <ng-template
+        *ngSwitchCase="'class'"
+        [ngTemplateOutlet]="classLegend"
+      ></ng-template>
+      <ng-template
+        *ngSwitchCase="'gradient'"
+        [ngTemplateOutlet]="gradientLegend"
+      ></ng-template>
+    </div>
+  </ng-container>
+</div>
+
+
+<ng-template #classLegend>
+  <div class="class_legend">
+    <div
+      class="class_legend__item"
+      *ngFor="let class of config.classes; let index"
+    >
+      <div
+        class="class_legend__circle"
+        [ngStyle]="{ backgroundColor: palette[index] }"
+      ></div>
+      <span class="class_legend__divider">-</span
+      ><span class="class_legend__label">{{ class }}</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #gradientLegend>
+  <hs-gradient-legend></hs-gradient-legend>
+</ng-template>
