@@ -7,9 +7,11 @@
 
 .sidebar {
   background: white;
-  height: 100%;
+  height: calc(100% - 72px);
   overflow: scroll;
-
+  &__list {
+    overflow: scroll;
+  }
   &__header {
     padding: 4px 12px;
   }
