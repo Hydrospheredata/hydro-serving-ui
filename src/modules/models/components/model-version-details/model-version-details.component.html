@@ -1,6 +1,10 @@
 <div class="model-version">
   <div class="model-version__header">
-    <span class="model-version__header-link" [routerLink]="['../']" queryParamsHandling="merge">
+    <span
+      class="model-version__header-link"
+      [routerLink]="['../']"
+      queryParamsHandling="merge"
+    >
       <hydro-icon
         class="model-version__header-link-icon"
         type="icon-left"
@@ -151,6 +155,9 @@
             </tr>
           </tbody>
         </table>
+        <div *ngIf="modelVersion.applications.length === 0" class="model-version__applications-empty">
+          Application's list is empty
+        </div>
       </div>
     </div>
     <div class="model-version__col-6">
@@ -186,10 +193,7 @@
 <div class="model-version__row">
   <div class="model-version__col-12">
     <div class="model-version__item-header">Metadata</div>
-    <section
-      *ngIf="!isEmpty(modelVersion.metadata)"
-      class="model-version__metadata"
-    >
+    <section class="model-version__metadata">
       <hs-metadata [metadata]="modelVersion.metadata"></hs-metadata>
     </section>
   </div>

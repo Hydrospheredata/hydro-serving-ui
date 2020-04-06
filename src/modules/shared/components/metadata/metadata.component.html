@@ -1,6 +1,15 @@
-<table class="metadata">
-  <tr class="metadata__item" *ngFor="let item of metadata | keyvalue">
-    <td class="metadata__key">{{ item.key }} : </td>
-    <td class="metadata__value">{{ item.value }}</td>
-  </tr>
-</table>
+<div class="metadata">
+  <table class="metadata__table" *ngIf="!isEmpty(); else empty">
+    <tr class="metadata__item" *ngFor="let item of metadata | keyvalue">
+      <td class="metadata__key">{{ item.key }} : </td>
+      <td class="metadata__value">{{ item.value }}</td>
+    </tr>
+  </table>
+</div>
+
+
+<ng-template #empty>
+  <div class="metadata__empty">
+    Metadata is empty
+  </div>
+</ng-template>

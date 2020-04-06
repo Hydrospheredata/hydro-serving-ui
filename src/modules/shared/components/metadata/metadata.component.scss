@@ -1,12 +1,13 @@
 @import 'variables.scss';
 
 .metadata {
-  list-style: none;
-  margin: 0;
-  padding: 0;
 
+  &__empty {
+    text-align: center;
+    color: $neutral-color-400;
+  }
   &__key {
     font-family: $font-family-light;
-    color: $neutral-text-color;
+    color: $neutral-color-1000;
   }
 }
