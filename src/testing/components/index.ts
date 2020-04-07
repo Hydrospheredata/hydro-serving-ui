@@ -22,3 +22,5 @@ export * from './mock-log-metrics-table';
 export * from './mock-application-item-detail';
 export * from './models';
 export * from './mock-scatter-plot';
+export * from './mock-scatter-plot-legend';
+export * from './mock-gradient-legend';

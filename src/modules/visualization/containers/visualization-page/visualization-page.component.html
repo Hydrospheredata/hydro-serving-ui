@@ -33,21 +33,26 @@
             >
           </mdl-select>
         </div>
-        <div class="visualization__settings-item">
-          <mdl-checkbox
-            [(ngModel)]="showTop100"
-            class="visualization__setting-item"
-          >
-            Show nearest points
-          </mdl-checkbox>
-        </div>
+        <mdl-radio
+          *ngFor="let regime of ['all', 'nearest', 'counterfactuals']"
+          [(ngModel)]="linkRegime"
+          [value]="regime"
+          mdl-ripple
+          name="regime"
+        >
+          {{ regime}}
+        </mdl-radio>
+
+
       </div>
       <div class="visualization__scatterplot">
         <hs-scatter-plot
           [data]="scatterPlotData$ | async"
           [colors]="colors$ | async"
           [top100]="top100$ | async"
+          [counterfactuals]="counterfactuals$ | async"
           [colorizer]="colorizer$ | async"
+          [linkRegime]="linkRegime"
           (selectPoint)="handleSelectPoint($event)"
         ></hs-scatter-plot>
       </div>

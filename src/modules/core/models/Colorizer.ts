@@ -28,7 +28,7 @@ export abstract class Colorizer {
 }
 
 class ClassLabelColorizer extends Colorizer {
-  private classes: Array<string | number>;
+  classes: Array<string | number>;
   constructor(props: ColorizerProps, colorsGenerator: ColorsGenerator) {
     super(props, colorsGenerator);
     this.type = 'ClassLabel';

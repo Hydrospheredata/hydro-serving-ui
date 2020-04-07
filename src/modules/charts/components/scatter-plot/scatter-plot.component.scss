@@ -12,12 +12,9 @@
     &:hover {
       opacity: 1;
     }
-    &--hide {
-      opacity: 0.2;
-    }
     &--selected {
       opacity: 1;
-      stroke: $accent-color-700;
+      stroke: #00bb00;
       stroke-width: 2px;
     }
   }

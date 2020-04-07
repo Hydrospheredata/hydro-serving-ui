@@ -1,8 +1,7 @@
 import { ColoringType } from '@core/models';
 import { CmpOperators } from '@monitoring/models';
 
-export interface VisualizationRequest {}
-
+export type LinkRegime = 'all' | 'nearest' | 'counterfactuals';
 export interface ClassLabel {
   classes?: Array<number | string>;
   coloring_type: ColoringType;
@@ -32,6 +31,7 @@ export interface VisualizationResponse {
   };
   requests_ids: number[];
   top_100: number[][];
+  counterfactuals: number[][],
   visualization_metrics: {
     [name: string]: string;
   };

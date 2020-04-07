@@ -1,35 +1,37 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {
-  ModelVersionsTableComponent,
-  MetricComponent,
-  MetricsComponent,
-  HealthTimelineComponent,
-  ChartsComponent,
-  ChartComponent,
-  ModelVersionLogComponent,
-  ReqResLogsComponent,
-  ApplicationFormComponent,
   AggregationComponent,
-  RequestsInformationComponent,
-  LogComponent,
+  ApplicationFormComponent,
+  ApplicationsItemDetailComponent,
+  BatchMetricsComponent,
+  ChartComponent,
+  ChartsComponent,
   CustomCheckComponent,
   CustomChecksComponent,
-  LatencyCheckComponent,
   ErrorCheckComponent,
+  GradientLegendComponent,
+  HealthTimelineComponent,
+  LatencyCheckComponent,
+  LogComponent,
   LogDetailComponent,
-  SignaturesComponent,
-  RawChecksComponent,
-  BatchMetricsComponent,
   LogMetricsTableComponent,
-  ApplicationsItemDetailComponent,
-  ModelVersionsComponent,
+  MetricComponent,
+  MetricsComponent,
   ModelVersionDetailsComponent,
+  ModelVersionLogComponent,
+  ModelVersionsComponent,
   ModelVersionsRowComponent,
+  ModelVersionsTableComponent,
+  RawChecksComponent,
+  ReqResLogsComponent,
+  RequestsInformationComponent,
   ScatterPlotComponent,
+  ScatterPlotLegendComponent,
+  SignaturesComponent
 } from '@testing/components';
-import { ProfilesComponent } from '@testing/components/mock-profiles';
-import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
-import { UpdateModelVersionDirective } from '@testing/directives/test-update-model-version.directive';
+import {ProfilesComponent} from '@testing/components/mock-profiles';
+import {ServablesTableComponent} from '@testing/components/mock-servables-table.component';
+import {UpdateModelVersionDirective} from '@testing/directives/test-update-model-version.directive';
 
 const COMPONENTS = [
   ProfilesComponent,
@@ -60,6 +62,8 @@ const COMPONENTS = [
   ModelVersionDetailsComponent,
   ModelVersionsRowComponent,
   ScatterPlotComponent,
+  ScatterPlotLegendComponent,
+  GradientLegendComponent
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];
@@ -68,4 +72,5 @@ const DIRECTIVES = [UpdateModelVersionDirective];
   declarations: [...COMPONENTS, ...DIRECTIVES],
   exports: [...COMPONENTS],
 })
-export class TestingModule {}
+export class TestingModule {
+}

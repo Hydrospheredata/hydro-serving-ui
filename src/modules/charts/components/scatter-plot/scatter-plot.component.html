@@ -1,9 +1,5 @@
 <div class="scatter-plot" #container>
-  <svg
-    [attr.width]="chartWidth"
-    [attr.height]="chartHeight"
-    #svgContainer
-  >
+  <svg [attr.width]="chartWidth" [attr.height]="chartHeight">
     <g
       hsD3Axis
       [scale]="yScale"
@@ -21,18 +17,19 @@
     <g [attr.transform]="dataTranslate" class="scatter-plot__links"></g>
     <g [attr.transform]="dataTranslate">
       <circle
-        (mouseenter)="onMouseEnter($event, i)"
-        (mouseleave)="onMouseLeave()"
         *ngFor="let point of points; index as i"
         class="scatter-plot__point"
-        [ngClass]="{
-          'scatter-plot__point--hide': hidePoint(i),
-          'scatter-plot__point--selected': i === selectedIndex
-        }"
         r="6"
-        [attr.fill]="pointColor(i)"
-        [attr.transform]="translatePoint(point)"
-        (click)="onSelectPoint(i)"
+        [attr.data-point-idx]="i"
+        [attr.transform]="point.translate"
+        [attr.fill]="point.color"
+        [ngStyle]="{'opacity': point.opacity}"
+        [ngClass]="{
+          'scatter-plot__point--selected': i === (selectedPointIdx$ | async)
+        }"
+        (click)="selectedPointIndex.next(i)"
+        (mouseenter)="hoveredPointIndex.next(i)"
+        (mouseleave)="hoveredPointIndex.next(undefined)"
       />
     </g>
   </svg>
@@ -40,4 +37,3 @@
     <hs-scatter-plot-legend [colorizer]="colorizer"></hs-scatter-plot-legend>
   </div>
 </div>
-<ng-template #noData>no data</ng-template>

@@ -4,7 +4,6 @@ import {
   ElementRef,
   AfterViewInit,
   ChangeDetectionStrategy,
-  ViewEncapsulation,
 } from '@angular/core';
 import * as d3 from 'd3';
 @Component({

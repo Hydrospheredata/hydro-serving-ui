@@ -3,8 +3,9 @@ import { ScatterPlotData } from '@charts/models/scatter-plot-data.model';
 import { Check } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/_index';
 import { VisualizationFacade } from 'modules/visualization/visualization.facade';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Colorizer } from '@core/models';
+import {LinkRegime} from "../../models/visualization";
 @Component({
   selector: 'hs-visualization',
   templateUrl: './visualization-page.component.html',
@@ -12,8 +13,6 @@ import { Colorizer } from '@core/models';
   providers: [VisualizationFacade],
 })
 export class VisualizationPageComponent {
-  selectedLabel: { [name: string]: string };
-  showTop100: boolean = false;
   selectedCheck$: Observable<Check>;
   modelVersion$: Observable<ModelVersion>;
   loading$: Observable<boolean>;
@@ -23,10 +22,12 @@ export class VisualizationPageComponent {
   error$: Observable<string | null>;
   colors$: Observable<string[]>;
   top100$: Observable<number[][]>;
+  counterfactuals$: Observable<number[][]>;
   scatterPlotData$: Observable<ScatterPlotData>;
-  labelsNames$: Observable<string[]>;
   colorizers$: Observable<Colorizer[]>;
   colorizer$: Observable<Colorizer>;
+
+  linkRegime: LinkRegime = 'all';
   constructor(private service: VisualizationFacade) {
     this.taskId$ = this.service.taskId$;
     this.status$ = this.service.status$;
@@ -39,12 +40,12 @@ export class VisualizationPageComponent {
     this.selectedCheck$ = this.service.selectedCheck$;
     this.colorizers$ = this.service.colorizers$;
     this.colorizer$ = this.service.selectedColorizer$;
+    this.counterfactuals$ = this.service.counterfactuals$;
     this.service.loadEmbedding();
   }
 
   handleSelectPoint(index: number) {
-    // this.selectedIndex = index;
-    // this.service.selectIndex(index);
+    this.service.changeSelectedPointIndex(index);
   }
 
   onChangeColorizer(colorizer: Colorizer): void {

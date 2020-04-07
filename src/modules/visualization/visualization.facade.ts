@@ -1,66 +1,29 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
+import {ScatterPlotData, ScatterPlotPoint,} from '@charts/models/scatter-plot-data.model';
+import {Colorizer, ColorizerFabric} from '@core/models';
+import {ModelsFacade} from '@models/store';
+import {Check} from '@monitoring/interfaces';
+import {MonitoringService} from '@monitoring/services';
+import {ModelVersion} from '@shared/_index';
+import {BehaviorSubject, Observable, of, Subject, timer} from 'rxjs';
 import {
-  ScatterPlotData,
-  ScatterPlotPoint,
-} from '@charts/models/scatter-plot-data.model';
-import { Colorizer, ColorizerFabric } from '@core/models';
-import { ModelsFacade } from '@models/store';
-import { Check } from '@monitoring/interfaces';
-import { MonitoringService } from '@monitoring/services';
-import { ModelVersion } from '@shared/_index';
-import { Observable, BehaviorSubject, of, Subject, timer } from 'rxjs';
-import {
-  map,
-  pluck,
-  tap,
-  switchMap,
   catchError,
-  shareReplay,
   distinctUntilChanged,
   exhaustMap,
-  takeWhile,
   filter,
+  map,
+  pluck,
+  shareReplay,
   startWith,
+  switchMap,
+  takeWhile,
+  tap,
 } from 'rxjs/operators';
-import {
-  TaskState,
-  VisualizationResponse,
-  TaskInformation,
-} from './models/visualization';
-import { VisualizationApi } from './services/visualization-api.service';
+import {TaskState, VisualizationResponse,} from './models/visualization';
+import {VisualizationApi} from './services/visualization-api.service';
 
 export type ColorBy = 'class_label' | 'metric';
-const MockedVisResponse: VisualizationResponse = {
-  data_shape: [5, 2],
-  data: [
-    [-0.1331532746553421, -1.1675983667373657],
-    [0.3755553364753723, -1.4538302421569824],
-    [-0.9820250868797302, 0.007928095757961273],
-    [1.976809024810791, 0.49457478523254395],
-    [1.05886709690094, 0.10462985187768936],
-  ],
-  requests_ids: [7570, 12601, 3659, 2658, 15822],
-  top_100: [[1, 2], [0, 3], [0, 4], [1, 2], [3]],
-  metrics: {},
-  class_labels: {
-    confidence: {
-      coloring_type: 'gradient',
-      data: [
-        0.47196451509596193,
-        0.5190495596548069,
-        0.9319467806068639,
-        0.1880573169325348,
-        0.5233253319370346,
-      ],
-    },
-  },
-  visualization_metrics: {},
-};
-const MockedTaskResponse: TaskInformation = {
-  Task_id: '1',
-  state: 'SUCCESS',
-  result: [{ result: MockedVisResponse }],
-};
+
 export interface State {
   taskId: string;
   result: VisualizationResponse;
@@ -72,6 +35,7 @@ export interface State {
   selectedPointIndex: number;
   data: number[];
   top100: number[][];
+  counterfactuals: number[][];
 }
 
 const initialState: State = {
@@ -85,6 +49,7 @@ const initialState: State = {
   data: [],
   selectedPointIndex: undefined,
   top100: [],
+  counterfactuals: []
 };
 
 @Injectable()
@@ -96,11 +61,10 @@ export class VisualizationFacade {
   error$: Observable<string | null>;
   selectedColorizer$: Observable<Colorizer>;
   selectedPointIndex$: Observable<number>;
-
-  // SCATTERPLOT
   scatterPlotData$: Observable<ScatterPlotData>;
   colors$: Observable<string[]>;
   top100$: Observable<number[][]>;
+  counterfactuals$: Observable<number[][]>;
   modelVersion$: Observable<ModelVersion>;
   selectedCheck$: Observable<Check>;
   colorizers$: Observable<Colorizer[]>;
@@ -138,12 +102,13 @@ export class VisualizationFacade {
       distinctUntilChanged()
     );
     this.top100$ = this.state$.pipe(pluck('top100'), distinctUntilChanged());
+    this.counterfactuals$ = this.state$.pipe(pluck('counterfactuals'), distinctUntilChanged());
     this.scatterPlotData$ = this.result$.pipe(
       filter(val => !!val),
-      map(({ data }) => {
+      map(({data}) => {
         return data.reduce(
-          ({ points, minX, maxX, minY, maxY }, [x, y]) => {
-            const point: ScatterPlotPoint = { x, y };
+          ({points, minX, maxX, minY, maxY}, [x, y]) => {
+            const point: ScatterPlotPoint = {x, y};
             const newPoints = [...points, point];
             return {
               points: newPoints,
@@ -175,10 +140,9 @@ export class VisualizationFacade {
     this.selectedCheck$ = of('5e84a88a6839050007b02ac4').pipe(
       switchMap(id => this.monitoringApi.getCheck(id))
     );
-    // SIDE EFFECT
     this.createTask
       .pipe(
-        switchMap(_ => {
+        switchMap(() => {
           return this.api.createTask$().pipe(
             tap(taskInformation => {
               this.state.next({
@@ -203,11 +167,9 @@ export class VisualizationFacade {
       .pipe(
         filter(taskId => !!taskId),
         switchMap(taskId => {
-          console.log(taskId);
           return timer(0, 5000).pipe(
-            exhaustMap(_ => {
-              // return this.api.getJobResult$(taskId);
-              return of(MockedTaskResponse);
+            exhaustMap(() => {
+              return this.api.getJobResult$(taskId);
             }),
             tap(task => {
               const status = task.state;
@@ -219,9 +181,10 @@ export class VisualizationFacade {
                   ? this.buildColorizers(task.result[0].result)
                   : [],
                 top100: task.result ? task.result[0].result.top_100 : [],
+                counterfactuals: task.result ? task.result[0].result.counterfactuals : [],
               });
             }),
-            takeWhile(({ state }) => state !== 'SUCCESS'),
+            takeWhile(({state}) => state !== 'SUCCESS'),
             catchError(err => {
               this.state.next({
                 ...this.state.getValue(),
@@ -241,17 +204,17 @@ export class VisualizationFacade {
   }
 
   changeColorizer(colorizer: Colorizer): void {
-    this.state.next({ ...this.state.getValue(), selectedColorizer: colorizer });
+    this.state.next({...this.state.getValue(), selectedColorizer: colorizer});
   }
 
   changeSelectedPointIndex(index: number): void {
-    this.state.next({ ...this.state.getValue(), selectedPointIndex: index });
+    this.state.next({...this.state.getValue(), selectedPointIndex: index});
   }
 
   private buildColorizers({
-    class_labels,
-    metrics,
-  }: VisualizationResponse): Colorizer[] {
+                            class_labels,
+                            metrics,
+                          }: VisualizationResponse): Colorizer[] {
     const res = [];
     for (const [name, payload] of Object.entries(class_labels)) {
       res.push(
@@ -263,7 +226,7 @@ export class VisualizationFacade {
         })
       );
     }
-    // for (const [_, data] of Object.entries(metrics)) {
+    // for (const [, data] of Object.entries(metrics)) {
     //   res.push(this.colorizerFabric.createColorizer('metric', { name }));
     // }
     return res;
