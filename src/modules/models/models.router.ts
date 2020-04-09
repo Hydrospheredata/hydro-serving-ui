@@ -9,6 +9,7 @@ import {
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
 } from './containers';
+import { StatPageComponent } from "../stat/containers";
 
 @NgModule({
   imports: [
@@ -35,6 +36,10 @@ import {
           {
             path: ':modelId/:modelVersionId/profile/:featureName',
             component: ModelVersionProfilerPageComponent,
+          },
+          {
+            path: ':modelId/:modelVersionId/stat',
+            component: StatPageComponent,
           },
         ],
       },

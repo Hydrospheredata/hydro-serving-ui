@@ -22,14 +22,15 @@ import { reducer, ModelEffects } from '@models/store';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ProfilerModule } from '../profiler/profiler.module';
-import { ServablesModule } from '../servables/servables.module';
+import { ProfilerModule } from '@profiler/profiler.module';
+import { ServablesModule } from '@servables/servables.module';
 import {
   ModelsPageComponent,
   ModelPageComponent,
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
 } from './containers';
+import { StatModule } from "../stat/stat.module";
 
 @NgModule({
   imports: [
@@ -40,6 +41,7 @@ import {
     ProfilerModule,
     MonitoringModule,
     ServablesModule,
+    StatModule
   ],
   declarations: [
     DialogDeleteModelComponent,
@@ -59,4 +61,5 @@ import {
   providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
   exports: [ModelsPageComponent],
 })
-export class ModelsModule {}
+export class ModelsModule {
+}

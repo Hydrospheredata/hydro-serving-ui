@@ -28,7 +28,7 @@ export class ProfilesComparisonHistogramComponent implements AfterViewInit, OnCh
 
   private trainingDataColor = HIGHCHART_COLORS.profiles.training;
   private productionDataColor = HIGHCHART_COLORS.profiles.production;
-  private chart: Highcharts.ChartObject;
+  private chart: Highcharts.Chart;
 
   ngOnChanges(changes: SimpleChanges) {
     const trainingProfile: SimpleChange = changes.trainingProfile;
@@ -43,8 +43,8 @@ export class ProfilesComparisonHistogramComponent implements AfterViewInit, OnCh
       const productionFreqs = this.freqsToPercent(bins, this.productionProfile);
 
       this.chart.xAxis[0].setCategories(bins.map(_ => _.toString()));
-      this.chart.series[0].update({data: trainingFreqs}, true);
-      this.chart.series[1].update({data: productionFreqs}, true);
+      this.chart.series[0].update({type: 'column', data: trainingFreqs}, true);
+      this.chart.series[1].update({type: 'column', data: productionFreqs}, true);
     }
   }
 
@@ -98,10 +98,12 @@ export class ProfilesComparisonHistogramComponent implements AfterViewInit, OnCh
           },
         },
         series: [{
+          type: 'column',
           name: 'Training Data',
           data: trainingCount,
           color: this.trainingDataColor,
         }, {
+          type: 'column',
           name: 'Production Data',
           data: productionCount,
           color: this.productionDataColor,
@@ -109,7 +111,7 @@ export class ProfilesComparisonHistogramComponent implements AfterViewInit, OnCh
       });
   }
 
-  private getBins(): number[] {
+  private getBins(): any[] {
     const trainingBins = (this.trainingProfile && this.trainingProfile.histogram.bins) || [];
     const productionBins = (this.productionProfile && this.productionProfile.histogram.bins) || [];
 
