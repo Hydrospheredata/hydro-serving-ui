@@ -1,0 +1,55 @@
+@import "variables";
+.feature-report {
+  &__input {
+    margin-bottom: 24px;
+    &-label {
+      font-size: 12px;
+      font-family: $font-family-bold;
+      color: $neutral-color-1000;
+      line-height: 16px;
+    }
+    max-width: 240px;
+  }
+  &__drift {
+    font-family: $font-family-bold;
+    color: $neutral-color-1000;
+    margin-bottom: 24px;
+    &-value {}
+  }
+  &__histogram {
+    margin-bottom: 24px;
+  }
+}
+
+.statistics {
+  border: 2px $neutral-color-300 solid;
+  border-radius: 5px;
+  overflow: hidden;
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    & > thead {
+      border-bottom: 1px solid $neutral-color-200;
+      & > tr {
+        & > th {
+          text-align: left;
+          padding: 8px 8px;
+          font-family: $font-family-bold;
+          color: $neutral-color-700;
+        }
+      }
+    }
+    & > tbody {
+      & > tr {
+        & > td {
+          padding: 8px 8px;
+          text-align: left;
+          color: $neutral-color-1000;
+        }
+        &:nth-of-type(2n - 1) {
+          background: $neutral-color-100;
+        }
+      }
+    }
+  }
+}

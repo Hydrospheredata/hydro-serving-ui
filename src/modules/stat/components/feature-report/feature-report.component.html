@@ -1,0 +1,43 @@
+<div class="feature-report">
+  <div class="feature-report__input">
+    <div class="feature-report__input-label">Select a feature for a profile comparison:</div>
+    <mdl-select
+      [(ngModel)]="selectedFeatureReport"
+      label="Choose feature"
+    >
+      <mdl-option
+        *ngFor="let featureReport of perFeatureReport | keyvalue"
+        [value]="featureReport.value"
+      >
+        {{ featureReport.key }}
+      </mdl-option>
+    </mdl-select>
+  </div>
+  <div class="feature-report__drift">Distribution Drift Probability:
+    <span class="feature-report__drift-value">{{selectedFeatureReport['drift-probability'] | percent}}
+    </span>
+  </div>
+  <div class="feature-report__histogram">
+    <hs-histogram [config]="selectedFeatureReport.histogram"></hs-histogram>
+  </div>
+
+  <div class="statistics">
+    <table class="statistics__table">
+      <thead>
+        <tr>
+          <th>name</th>
+          <th>training data</th>
+          <th>production data</th>
+          <th>change probability</th>
+        </tr>
+      </thead>
+      <tr *ngFor="let statistic of selectedFeatureReport.statistics | keyvalue">
+        <td>{{statistic.key}}</td>
+        <td>{{statistic.value.training}}</td>
+        <td>{{statistic.value.deployment}}</td>
+        <td>{{statistic.value.change_probability | percent}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
