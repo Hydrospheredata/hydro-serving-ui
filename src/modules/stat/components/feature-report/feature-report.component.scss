@@ -1,54 +1,81 @@
 @import "variables";
+
 .feature-report {
-  &__input {
+  &__header {
+    align-items: flex-end;
+    display: flex;
     margin-bottom: 24px;
+  }
+
+  &__input {
+    margin-right: 12px;
+
+    max-width: 240px;
+
     &-label {
-      font-size: 12px;
-      font-family: $font-family-bold;
       color: $neutral-color-1000;
+      font-family: $font-family-bold;
+      font-size: 12px;
       line-height: 16px;
     }
-    max-width: 240px;
   }
+
   &__drift {
-    font-family: $font-family-light;
     color: $neutral-color-900;
-    margin-bottom: 24px;
+    font-family: $font-family-light;
+    line-height: 24px;
+
     &-value {
-      font-family: $font-family-bold;
       color: $neutral-color-1000;
+      font-family: $font-family-bold;
     }
   }
+
   &__histogram {
     margin-bottom: 24px;
   }
 }
 
 .statistics {
-  border: 2px $neutral-color-300 solid;
-  border-radius: 5px;
-  overflow: hidden;
+  &__label {
+    color: $neutral-color-900;
+    font-family: $font-family-bold;
+    font-size: 16px;
+    line-height: 32px;
+    padding-left: 8px;
+  }
+
+  &__wrapper {
+    border: 2px $neutral-color-300 solid;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
   &__table {
-    width: 100%;
     border-collapse: collapse;
+    width: 100%;
+
     & > thead {
       border-bottom: 1px solid $neutral-color-200;
+
       & > tr {
         & > th {
-          text-align: left;
-          padding: 8px 8px;
-          font-family: $font-family-bold;
           color: $neutral-color-700;
+          font-family: $font-family-bold;
+          padding: 8px 8px;
+          text-align: left;
         }
       }
     }
+
     & > tbody {
       & > tr {
         & > td {
+          color: $neutral-color-1000;
           padding: 8px 8px;
           text-align: left;
-          color: $neutral-color-1000;
         }
+
         &:nth-of-type(2n - 1) {
           background: $neutral-color-100;
         }

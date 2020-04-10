@@ -11,6 +11,7 @@ import {
 import { FeatureReportHistogram, Stat } from "../../models";
 import * as Highcharts from "highcharts";
 import { Chart } from "highcharts";
+import { ColorPaletteService } from "@core/services/color-palette.service";
 
 @Component({
   selector: 'hs-histogram',
@@ -22,7 +23,7 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
   @ViewChild('anchor', {read: ElementRef}) anchor: ElementRef;
   private chart: Chart;
 
-  constructor(private readonly el: ElementRef) {
+  constructor(private readonly colorPalette: ColorPaletteService) {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -35,6 +36,7 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    const [trainingColor, productionColor] = this.colorPalette.getComplementaryColors();
     this.chart = Highcharts.chart(this.anchor.nativeElement, {
       chart: {
         type: 'column',
@@ -63,7 +65,7 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
       tooltip: {
         headerFormat: '<span style="font-size:10px">{point.key:.1f}</span><table>',
         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
+          '<td style="padding:0"><b>{point.y}</b></td></tr>',
         footerFormat: '</table>',
         shared: true,
         useHTML: true,
@@ -83,12 +85,12 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
         type: 'column',
         name: 'Training Data',
         data: this.config.training,
-        color: 'red',
+        color: trainingColor,
       }, {
         type: 'column',
         name: 'Production Data',
         data: this.config.deployment,
-        color: 'blue',
+        color: productionColor,
       }],
     });
   }
