@@ -15,7 +15,8 @@
       </mdl-select>
     </div>
     <div class="feature-report__drift">Distribution Drift Probability:
-      <span class="feature-report__drift-value">{{selectedFeatureReport['drift-probability'] | percent}}
+      <span [drift]="selectedFeatureReport['drift-probability']" class="feature-report__drift-value"
+            hsColorByDrift>{{selectedFeatureReport['drift-probability'] | percent}}
     </span>
     </div>
   </div>
@@ -39,7 +40,11 @@
           <td>{{statistic.key}}</td>
           <td>{{statistic.value.training}}</td>
           <td>{{statistic.value.deployment}}</td>
-          <td>{{statistic.value.change_probability | percent}}</td>
+          <td
+            [drift]="statistic.value.change_probability"
+            class="statistics__drift"
+            hsColorByDrift
+          >{{statistic.value.change_probability | percent}}</td>
         </tr>
       </table>
     </div>

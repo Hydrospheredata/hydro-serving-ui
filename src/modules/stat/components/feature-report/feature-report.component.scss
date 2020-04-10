@@ -51,6 +51,10 @@
     overflow: hidden;
   }
 
+  &__drift {
+    font-family: $font-family-bold;
+  }
+
   &__table {
     border-collapse: collapse;
     width: 100%;

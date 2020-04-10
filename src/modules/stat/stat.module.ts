@@ -4,9 +4,10 @@ import { StatPageComponent } from './containers';
 import { HistogramComponent } from './components';
 import { FeatureReportComponent } from './components/feature-report/feature-report.component';
 import { SharedModule } from "@shared/shared.module";
+import { ColorByDriftDirective } from './directives/color-by-drift.directive';
 
 @NgModule({
-  declarations: [StatPageComponent, HistogramComponent, FeatureReportComponent],
+  declarations: [StatPageComponent, HistogramComponent, FeatureReportComponent, ColorByDriftDirective],
   imports: [
     SharedModule,
     CommonModule,

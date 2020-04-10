@@ -103,12 +103,12 @@ export const mockStat: Stat = {
       },
       "statistics": {
         "mean": {
-          "change_probability": 1.0,
+          "change_probability": .0,
           "deployment": 54260379.42714889,
           "training": 33558627.974042684
         },
         "median": {
-          "change_probability": 1.0,
+          "change_probability": 0.2,
           "deployment": 50591900.0,
           "training": 40171900.0
         },
@@ -171,11 +171,11 @@ export const mockStat: Stat = {
     "final_decision": "there is a change",
     "report": [
       {
-        "drift_probability_per_feature": 1.0,
+        "drift_probability_per_feature": 0.2,
         "message": "the feature \"Segment\" has changed."
       },
       {
-        "drift_probability_per_feature": 1.0,
+        "drift_probability_per_feature": .7,
         "message": "the feature \"Family\" has changed."
       },
       {

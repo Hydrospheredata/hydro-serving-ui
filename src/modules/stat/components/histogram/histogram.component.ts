@@ -28,7 +28,7 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.config && changes.config.currentValue && this.chart) {
-      const {bins,training, deployment} = changes.config.currentValue as FeatureReportHistogram;
+      const {bins, training, deployment} = changes.config.currentValue as FeatureReportHistogram;
       this.chart.series[0].update({type: 'column', data: training});
       this.chart.series[1].update({type: 'column', data: deployment});
       this.chart.axes[0].update({categories: bins as string[]});
@@ -37,60 +37,103 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     const [trainingColor, productionColor] = this.colorPalette.getComplementaryColors();
+    // this.chart = Highcharts.chart({
+    //   chart: {
+    //     type: 'column',
+    //     renderTo: this.anchor.nativeElement
+    //   },
+    //   title: {
+    //     text: '',
+    //   },
+    //   subtitle: {
+    //     text: '',
+    //   },
+    //   xAxis: {
+    //     categories: this.config.bins as string[],
+    //     crosshair: true,
+    //   },
+    //   yAxis:
+    //     [
+    //       {
+    //         title: {
+    //           text: '',
+    //         },
+    //         labels: {
+    //           format: '{value}',
+    //         },
+    //       },
+    //     ],
+    //   tooltip: {
+    //     headerFormat: '<span style="font-size:10px">{point.key:.1f}</span><table>',
+    //     pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+    //       '<td style="padding:0"><b>{point.y}</b></td></tr>',
+    //     footerFormat: '</table>',
+    //     shared: true,
+    //     useHTML: true,
+    //   },
+    //   legend: {
+    //     layout: 'horizontal',
+    //   },
+    //   plotOptions: {
+    //       column: {
+    //         grouping: true,
+    //         pointPadding: 0,
+    //         borderWidth: 0,
+    //         groupPadding: 0,
+    //         shadow: false,
+    //       },
+    //   },
+    //   series: [{
+    //     type: 'column',
+    //     name: 'Training Data',
+    //     data: this.config.training,
+    //     color: trainingColor,
+    //   }, {
+    //     type: 'column',
+    //     name: 'Production Data',
+    //     data: this.config.deployment,
+    //     color: productionColor,
+    //   }],
+    // });
+
     this.chart = Highcharts.chart(this.anchor.nativeElement, {
       chart: {
-        type: 'column',
+        type: 'histogram',
+      },
+      yAxis: {
+        min: 0,
       },
       title: {
-        text: '',
+        text: ''
       },
-      subtitle: {
-        text: '',
+      tooltip: {
+        shared: true,
+      },
+      plotOptions: {
+        column: {
+          grouping: false,
+          shadow: false,
+          groupPadding: 0,
+          borderWidth: 0,
+          pointPadding: 0
+        }
       },
       xAxis: {
         categories: this.config.bins as string[],
         crosshair: true,
-      },
-      yAxis:
-        [
-          {
-            title: {
-              text: '',
-            },
-            labels: {
-              format: '{value}',
-            },
-          },
-        ],
-      tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key:.1f}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-          '<td style="padding:0"><b>{point.y}</b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true,
-      },
-      legend: {
-        layout: 'horizontal',
-      },
-      plotOptions: {
-        column: {
-          pointPadding: 0,
-          borderWidth: 0,
-          groupPadding: 0,
-          shadow: false,
-        },
       },
       series: [{
         type: 'column',
         name: 'Training Data',
         data: this.config.training,
         color: trainingColor,
+        opacity: .8,
       }, {
         type: 'column',
         name: 'Production Data',
         data: this.config.deployment,
         color: productionColor,
+        opacity: .8
       }],
     });
   }

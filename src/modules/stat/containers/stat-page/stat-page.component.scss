@@ -33,7 +33,6 @@
       }
 
       &-icon {
-        color: $supportive-color-red-700;
         display: inline-block;
         height: 24px;
         width: 24px;
@@ -71,12 +70,10 @@
     padding: 6px;
 
     &-drift {
-      color: $neutral-color-900;
       font-family: $font-family-bold;
     }
 
     &-icon {
-      color: $supportive-color-red-700;
       display: inline-block;
       height: 24px;
       margin-right: 12px;

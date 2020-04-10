@@ -17,4 +17,14 @@ export class ColorPaletteService {
   getTrueFalseColors(): Readonly<[string, string]> {
     return ['red', 'blue'];
   }
+
+  warningColor(): Readonly<string> {
+    return '#CF1124'
+  }
+  alertColor(): Readonly<string> {
+    return '#DE911D'
+  }
+  successColor(): Readonly<string> {
+    return '#199473'
+  }
 }
