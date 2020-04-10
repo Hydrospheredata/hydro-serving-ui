@@ -27,9 +27,10 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.config && changes.config.currentValue && this.chart) {
-      const {training, deployment} = changes.config.currentValue as FeatureReportHistogram;
+      const {bins,training, deployment} = changes.config.currentValue as FeatureReportHistogram;
       this.chart.series[0].update({type: 'column', data: training});
       this.chart.series[1].update({type: 'column', data: deployment});
+      this.chart.axes[0].update({categories: bins as string[]});
     }
   }
 
@@ -55,7 +56,7 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
               text: '',
             },
             labels: {
-              format: '{value}%',
+              format: '{value}',
             },
           },
         ],

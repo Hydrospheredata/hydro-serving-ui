@@ -11,10 +11,13 @@
     max-width: 240px;
   }
   &__drift {
-    font-family: $font-family-bold;
-    color: $neutral-color-1000;
+    font-family: $font-family-light;
+    color: $neutral-color-900;
     margin-bottom: 24px;
-    &-value {}
+    &-value {
+      font-family: $font-family-bold;
+      color: $neutral-color-1000;
+    }
   }
   &__histogram {
     margin-bottom: 24px;

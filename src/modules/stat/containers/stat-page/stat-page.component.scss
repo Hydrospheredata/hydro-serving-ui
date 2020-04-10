@@ -2,6 +2,49 @@
 
 .report {
   margin-bottom: 24px;
+
+  &__overall {
+    align-items: center;
+    color: $neutral-color-900;
+    display: flex;
+    font-family: $font-family-light;
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 12px;
+
+    &-drift {
+      font-family: $font-family-bold;
+      padding-right: 8px;
+    }
+
+    &-decision {
+      align-items: center;
+      background: $supportive-color-red-100;
+      //padding: 0px 12px;
+      border-radius: 12px;
+      color: $supportive-color-red-700;
+      display: flex;
+      font-family: $font-family-bold;
+
+      &-text {
+        font-family: $font-family-regular;
+        font-size: 12px;
+        padding: 0px 8px;
+      }
+
+      &-icon {
+        color: $supportive-color-red-700;
+        display: inline-block;
+        height: 24px;
+        width: 24px;
+      }
+
+      &::first-letter {
+        text-transform: capitalize;
+      }
+    }
+  }
+
   &__title {
     color: $neutral-color-1000;
     font-family: $font-family-bold;
@@ -22,25 +65,26 @@
 
   &__warning {
     align-items: center;
-    border: 1px $neutral-color-100 solid;
+    background: $neutral-color-100;
+    border-radius: 24px;
     display: flex;
-    height: 48px;
+    padding: 6px;
 
     &-drift {
-      background: $neutral-color-100;
-      display: flex;
-      height: 48px;
-      margin-right: 12px;
-      text-align: center;
-      width: 48px;
-      justify-content: center;
-      align-items: center;
+      color: $neutral-color-900;
       font-family: $font-family-bold;
-      font-size: 16px;
+    }
+
+    &-icon {
+      color: $supportive-color-red-700;
+      display: inline-block;
+      height: 24px;
+      margin-right: 12px;
+      width: 24px;
     }
 
     &-msg {
-
+      color: $neutral-color-700;
     }
   }
 
@@ -51,12 +95,14 @@
 
 .feature-analysis {
   margin-bottom: 24px;
+
   &__title {
     color: $neutral-color-1000;
     font-family: $font-family-bold;
     font-size: 16px;
     line-height: 32px;
   }
+
   &__body {
     background: white;
     border: 1px $neutral-color-200 solid;
