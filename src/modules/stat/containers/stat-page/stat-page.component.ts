@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { StatService } from "../../services/stat.service";
-import { Observable } from "@node_modules/rxjs";
+import { BehaviorSubject, Observable, of } from "@node_modules/rxjs";
 import { Stat } from "../../models/stat";
-import { tap } from "@node_modules/rxjs/internal/operators";
+import { catchError } from "@node_modules/rxjs/internal/operators";
 
 @Component({
   templateUrl: './stat-page.component.html',
   styleUrls: ['./stat-page.component.scss'],
   providers: [StatService]
 })
-export class StatPageComponent implements OnInit {
+export class StatPageComponent {
   stat$: Observable<Stat>;
-  constructor(private statService: StatService) { }
+  error$: Observable<string>;
+  private error: BehaviorSubject<string> = new BehaviorSubject<string>(undefined)
 
-  ngOnInit() {
-    this.stat$ = this.statService.stat$.pipe(tap(console.log))
+  constructor(private statService: StatService) {
+    this.error$ = this.error.asObservable();
+    this.stat$ = this.statService.stat$.pipe(catchError(err => {
+      this.error.next(err)
+      return of(null)
+    }))
   }
 }

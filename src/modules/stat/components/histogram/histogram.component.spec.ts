@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HistogramComponent } from './histogram.component';
+import { mockStat } from "../../models";
 
 describe('HistogramComponent', () => {
   let component: HistogramComponent;
@@ -16,6 +17,7 @@ describe('HistogramComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HistogramComponent);
     component = fixture.componentInstance;
+    component.config = mockStat.per_feature_report['Class'].histogram;
     fixture.detectChanges();
   });
 

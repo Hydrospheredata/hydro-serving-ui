@@ -1,14 +1,5 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
-import { FeatureReportHistogram, Stat } from "../../models";
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { FeatureReportHistogram } from "../../models";
 import * as Highcharts from "highcharts";
 import { Chart } from "highcharts";
 import { ColorPaletteService } from "@core/services/color-palette.service";
@@ -37,65 +28,6 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
 
   ngAfterViewInit(): void {
     const [trainingColor, productionColor] = this.colorPalette.getComplementaryColors();
-    // this.chart = Highcharts.chart({
-    //   chart: {
-    //     type: 'column',
-    //     renderTo: this.anchor.nativeElement
-    //   },
-    //   title: {
-    //     text: '',
-    //   },
-    //   subtitle: {
-    //     text: '',
-    //   },
-    //   xAxis: {
-    //     categories: this.config.bins as string[],
-    //     crosshair: true,
-    //   },
-    //   yAxis:
-    //     [
-    //       {
-    //         title: {
-    //           text: '',
-    //         },
-    //         labels: {
-    //           format: '{value}',
-    //         },
-    //       },
-    //     ],
-    //   tooltip: {
-    //     headerFormat: '<span style="font-size:10px">{point.key:.1f}</span><table>',
-    //     pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-    //       '<td style="padding:0"><b>{point.y}</b></td></tr>',
-    //     footerFormat: '</table>',
-    //     shared: true,
-    //     useHTML: true,
-    //   },
-    //   legend: {
-    //     layout: 'horizontal',
-    //   },
-    //   plotOptions: {
-    //       column: {
-    //         grouping: true,
-    //         pointPadding: 0,
-    //         borderWidth: 0,
-    //         groupPadding: 0,
-    //         shadow: false,
-    //       },
-    //   },
-    //   series: [{
-    //     type: 'column',
-    //     name: 'Training Data',
-    //     data: this.config.training,
-    //     color: trainingColor,
-    //   }, {
-    //     type: 'column',
-    //     name: 'Production Data',
-    //     data: this.config.deployment,
-    //     color: productionColor,
-    //   }],
-    // });
-
     this.chart = Highcharts.chart(this.anchor.nativeElement, {
       chart: {
         type: 'histogram',
@@ -120,7 +52,6 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
       },
       xAxis: {
         categories: this.config.bins as string[],
-        crosshair: true,
       },
       series: [{
         type: 'column',

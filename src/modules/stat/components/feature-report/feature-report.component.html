@@ -10,14 +10,20 @@
           *ngFor="let featureReport of perFeatureReport | keyvalue"
           [value]="featureReport.value"
         >
-          {{ featureReport.key }}
+          <div class="feature-report__select-option">
+            <span>{{ featureReport.key }}</span>
+            <span
+              class="feature-report__select-option-drift"
+            >
+              drift: <span
+                [drift]="featureReport.value['drift-probability']"
+                class="feature-report__select-option-drift-value"
+                hsColorByDrift>{{featureReport.value['drift-probability'] | percent}}
+              </span>
+            </span>
+          </div>
         </mdl-option>
       </mdl-select>
-    </div>
-    <div class="feature-report__drift">Distribution Drift Probability:
-      <span [drift]="selectedFeatureReport['drift-probability']" class="feature-report__drift-value"
-            hsColorByDrift>{{selectedFeatureReport['drift-probability'] | percent}}
-    </span>
     </div>
   </div>
   <div class="feature-report__histogram">

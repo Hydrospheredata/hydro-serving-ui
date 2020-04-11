@@ -20,6 +20,18 @@
     }
   }
 
+  &__select {
+    &-option {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      &-drift {
+        font-size: 12px;
+        font-family: $font-family-bold;
+      }
+    }
+  }
+
   &__drift {
     color: $neutral-color-900;
     font-family: $font-family-light;
