@@ -9,7 +9,7 @@ import { StatService } from "../../services/stat.service";
 import { mockStat } from "../../models";
 import { of } from "@node_modules/rxjs";
 
-const x = {
+const mockedStatService = {
   stat$: of(mockStat)
 }
 describe('StatPageComponent', () => {
@@ -25,9 +25,12 @@ describe('StatPageComponent', () => {
         ColorByDriftDirective
       ],
       imports: [SharedModule],
-      providers: [{
-        provide: StatService, useValue: x
-      }]
+    }).overrideComponent(StatPageComponent, {
+      set: {
+        providers: [{
+          provide: StatService, useValue: mockedStatService
+        }]
+      }
     })
       .compileComponents();
   });
