@@ -23,10 +23,19 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
       this.chart.series[0].update({type: 'column', data: training});
       this.chart.series[1].update({type: 'column', data: deployment});
       this.chart.axes[0].update({categories: bins as string[]});
+
+
+      this.chart.tooltip.update({
+        formatter: function () {
+          return chooseFormatter.call(this, bins, deployment)
+        }
+      })
     }
   }
 
   ngAfterViewInit(): void {
+    const bins = this.config.bins as string[];
+    const deployment = this.config.deployment;
     const [trainingColor, productionColor] = this.colorPalette.getComplementaryColors();
     this.chart = Highcharts.chart(this.anchor.nativeElement, {
       chart: {
@@ -40,6 +49,10 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
       },
       tooltip: {
         shared: true,
+        useHTML: true,
+        formatter: function () {
+          return chooseFormatter.call(this, bins, deployment)
+        }
       },
       plotOptions: {
         column: {
@@ -67,5 +80,22 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
         opacity: .8
       }],
     });
+  }
+}
+
+function chooseFormatter(bins, deployment) {
+  if (bins.length > deployment.length) {
+    const binIndex = bins.indexOf((this as any).x);
+    return `
+            <div style="color: #102A43;line-height: 24px;font-weight: bold">${bins[binIndex]} - ${bins[binIndex + 1]}</div>
+            <div style="color: #334E68;line-height: 18px">${this.points[0].series.name}: <span style="color: ${this.points[0].color};font-weight: bold">${this.points[0].y}</span></div>
+            <div style="color: #334E68;line-height: 18px">${this.points[1].series.name}: <span style="color: ${this.points[1].color};font-weight: bold">${this.points[1].y}</span></div> 
+          `
+  } else {
+    return `
+            <div style="color: #102A43;line-height: 24px;font-weight: bold">${this.x}</div>
+            <div style="color: #334E68;line-height: 18px">${this.points[0].series.name}: <span style="color: ${this.points[0].color};font-weight: bold">${this.points[0].y}</span></div>
+            <div style="color: #334E68;line-height: 18px">${this.points[1].series.name}: <span style="color: ${this.points[1].color};font-weight: bold">${this.points[1].y}</span></div> 
+          `;
   }
 }
