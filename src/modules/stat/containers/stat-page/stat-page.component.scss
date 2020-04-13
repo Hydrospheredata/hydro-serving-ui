@@ -19,10 +19,8 @@
 
     &-decision {
       align-items: center;
-      background: $supportive-color-red-100;
-      //padding: 0px 12px;
+      background: $neutral-color-100;
       border-radius: 12px;
-      color: $supportive-color-red-700;
       display: flex;
       font-family: $font-family-bold;
 
@@ -30,6 +28,7 @@
         font-family: $font-family-regular;
         font-size: 12px;
         padding: 0px 8px;
+        color: $neutral-color-700
       }
 
       &-icon {
