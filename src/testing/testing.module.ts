@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 import {
   AggregationComponent,
   ApplicationFormComponent,
@@ -27,11 +27,12 @@ import {
   RequestsInformationComponent,
   ScatterPlotComponent,
   ScatterPlotLegendComponent,
-  SignaturesComponent
+  SignaturesComponent,
+  VisualizationMetricsComponent
 } from '@testing/components';
-import {ProfilesComponent} from '@testing/components/mock-profiles';
-import {ServablesTableComponent} from '@testing/components/mock-servables-table.component';
-import {UpdateModelVersionDirective} from '@testing/directives/test-update-model-version.directive';
+import { ProfilesComponent } from '@testing/components/mock-profiles';
+import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
+import { UpdateModelVersionDirective } from '@testing/directives/test-update-model-version.directive';
 
 const COMPONENTS = [
   ProfilesComponent,
@@ -63,7 +64,8 @@ const COMPONENTS = [
   ModelVersionsRowComponent,
   ScatterPlotComponent,
   ScatterPlotLegendComponent,
-  GradientLegendComponent
+  GradientLegendComponent,
+  VisualizationMetricsComponent
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];

@@ -1,9 +1,9 @@
 import { DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedModule } from '@shared/shared.module';
-import { ScatterPlotComponent, LogDetailComponent } from '@testing/components';
+import { LogDetailComponent, ScatterPlotComponent, VisualizationMetricsComponent } from '@testing/components';
 import { VisualizationPageComponent } from './visualization-page.component';
-import {VisualizationFacade} from "../../visualization.facade";
+import { VisualizationFacade } from "../../visualization.facade";
 
 describe('VisualizationComponent', () => {
   let component: VisualizationPageComponent;
@@ -13,12 +13,17 @@ describe('VisualizationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [VisualizationPageComponent, ScatterPlotComponent, LogDetailComponent],
+      declarations: [VisualizationPageComponent, ScatterPlotComponent, LogDetailComponent, VisualizationMetricsComponent],
       imports: [SharedModule],
-      providers: [{ provide: VisualizationFacade, useValue: {}}]
+      providers: [{provide: VisualizationFacade, useValue: {}}]
     }).overrideComponent(VisualizationPageComponent, {
       set: {
-        providers: [{ provide: VisualizationFacade, useValue: { loadEmbedding: () => {}}}]
+        providers: [{
+          provide: VisualizationFacade, useValue: {
+            loadEmbedding: () => {
+            }
+          }
+        }]
       }
     }).compileComponents();
   }));
