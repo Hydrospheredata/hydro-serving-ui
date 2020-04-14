@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {ScatterPlotData, ScatterPlotPoint,} from '@charts/models/scatter-plot-data.model';
-import {Colorizer, ColorizerFabric} from '@core/models';
-import {ModelsFacade} from '@models/store';
-import {Check} from '@monitoring/interfaces';
-import {MonitoringService} from '@monitoring/services';
-import {ModelVersion} from '@shared/_index';
-import {BehaviorSubject, Observable, of, Subject, timer} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { ScatterPlotData, ScatterPlotPoint, } from '@charts/models/scatter-plot-data.model';
+import { Colorizer, ColorizerFabric } from '@core/models';
+import { ModelsFacade } from '@models/store';
+import { Check } from '@monitoring/interfaces';
+import { MonitoringService } from '@monitoring/services';
+import { ModelVersion } from '@shared/_index';
+import { BehaviorSubject, combineLatest, Observable, of, Subject, timer } from 'rxjs';
 import {
   catchError,
   distinctUntilChanged,
@@ -19,8 +19,8 @@ import {
   takeWhile,
   tap,
 } from 'rxjs/operators';
-import {TaskState, VisualizationResponse,} from './models/visualization';
-import {VisualizationApi} from './services/visualization-api.service';
+import { TaskState, VisualizationResponse, } from './models/visualization';
+import { VisualizationApi } from './services';
 
 export type ColorBy = 'class_label' | 'metric';
 
@@ -36,6 +36,8 @@ export interface State {
   data: number[];
   top100: number[][];
   counterfactuals: number[][];
+  visualizationMetrics: { [name: string]: string };
+  requestsIds: string[];
 }
 
 const initialState: State = {
@@ -49,7 +51,9 @@ const initialState: State = {
   data: [],
   selectedPointIndex: undefined,
   top100: [],
-  counterfactuals: []
+  counterfactuals: [],
+  visualizationMetrics: undefined,
+  requestsIds: []
 };
 
 @Injectable()
@@ -68,6 +72,9 @@ export class VisualizationFacade {
   modelVersion$: Observable<ModelVersion>;
   selectedCheck$: Observable<Check>;
   colorizers$: Observable<Colorizer[]>;
+  visualizationMetrics$: Observable<{ [name: string]: string }>;
+  requestsIds$: Observable<string[]>;
+  selectedId$: Observable<string>;
 
   private state: BehaviorSubject<State> = new BehaviorSubject(initialState);
   private createTask: Subject<any> = new Subject();
@@ -103,6 +110,10 @@ export class VisualizationFacade {
     );
     this.top100$ = this.state$.pipe(pluck('top100'), distinctUntilChanged());
     this.counterfactuals$ = this.state$.pipe(pluck('counterfactuals'), distinctUntilChanged());
+    this.visualizationMetrics$ = this.state$.pipe(pluck('visualizationMetrics'), distinctUntilChanged());
+    this.requestsIds$ = this.state$.pipe(pluck('requestsIds'), distinctUntilChanged());
+    this.selectedId$ = combineLatest(this.requestsIds$, this.selectedPointIndex$)
+      .pipe(map(([ids, index]) => ids[index]))
     this.scatterPlotData$ = this.result$.pipe(
       filter(val => !!val),
       map(({data}) => {
@@ -136,14 +147,14 @@ export class VisualizationFacade {
       shareReplay(1)
     );
     this.modelVersion$ = this.modelsFacade.selectedModelVersion$;
-    // TODO: dynamic select id
-    this.selectedCheck$ = of('5e84a88a6839050007b02ac4').pipe(
+    this.selectedCheck$ = this.selectedId$.pipe(
+      filter(val => val !== undefined),
       switchMap(id => this.monitoringApi.getCheck(id))
     );
-    this.createTask
+    combineLatest(this.createTask, this.modelsFacade.selectedModelVersion$)
       .pipe(
-        switchMap(() => {
-          return this.api.createTask$().pipe(
+        switchMap(([_, mv]) => {
+          return this.api.createTask$(undefined, mv).pipe(
             tap(taskInformation => {
               this.state.next({
                 ...this.state.getValue(),
@@ -182,6 +193,8 @@ export class VisualizationFacade {
                   : [],
                 top100: task.result ? task.result[0].result.top_100 : [],
                 counterfactuals: task.result ? task.result[0].result.counterfactuals : [],
+                visualizationMetrics: task.result ? task.result[0].result.visualization_metrics : undefined,
+                requestsIds: task.result ? task.result[0].result.requests_ids : []
               });
             }),
             takeWhile(({state}) => state !== 'SUCCESS'),
@@ -227,7 +240,7 @@ export class VisualizationFacade {
       );
     }
     // for (const [, data] of Object.entries(metrics)) {
-    //   res.push(this.colorizerFabric.createColorizer('metric', { name }));
+    //   res.push(this.colorizerFabric.createColorizer('metric', { name: dat }));
     // }
     return res;
   }

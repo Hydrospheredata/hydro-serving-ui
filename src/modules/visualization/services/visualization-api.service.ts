@@ -3,33 +3,38 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { TaskInformation } from '../models/visualization';
+import { ModelVersion } from "@shared/models/model-version.model";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class VisualizationApi {
-  constructor(private http: HttpClient) {}
-  createTask$(transformer: string = 'umap'): Observable<TaskInformation> {
-    const body = {
-      model_name: 'adult_scalar',
-      model_version: 1,
-      data: {
-        bucket: 'hydro-vis',
-        production_data_file: 'adult/requests.parquet',
-        profile_data_file: 'adult/training.parquet',
-      },
-      visualization_metrics: [
-        'global_score',
-        'sammon_error',
-        'auc_score',
-        'stability_score',
-        'msid',
-        'clustering',
-      ],
-    };
+  constructor(private http: HttpClient) {
+  }
 
+  private get metrics(): ReadonlyArray<string> {
+    return [
+      'global_score',
+      'sammon_error',
+      'auc_score',
+      'stability_score',
+      'msid',
+      'clustering',
+    ]
+  }
+
+  createTask$(transformer: string = 'umap', modelVersion: ModelVersion): Observable<TaskInformation> {
     return this.http
       .post<TaskInformation>(
         `http://localhost:5000/plottable_embeddings/${transformer}`,
-        body
+        {
+          model_name: modelVersion.model.name,
+          model_version: modelVersion.id,
+          visualization_metrics: this.metrics,
+          data: {
+            "bucket": "hydro-vis",
+            "production_data_file": "adult/requests.parquet",
+            "profile_data_file": "adult/training.parquet"
+          }
+        }
       )
       .pipe(catchError(err => throwError(err)));
   }

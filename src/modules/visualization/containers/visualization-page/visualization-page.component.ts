@@ -5,7 +5,8 @@ import { ModelVersion } from '@shared/_index';
 import { VisualizationFacade } from 'modules/visualization/visualization.facade';
 import { Observable } from 'rxjs';
 import { Colorizer } from '@core/models';
-import {LinkRegime} from "../../models/visualization";
+import { LinkRegime } from "../../models/visualization";
+
 @Component({
   selector: 'hs-visualization',
   templateUrl: './visualization-page.component.html',
@@ -26,8 +27,10 @@ export class VisualizationPageComponent {
   scatterPlotData$: Observable<ScatterPlotData>;
   colorizers$: Observable<Colorizer[]>;
   colorizer$: Observable<Colorizer>;
+  visualizationMetrics$: Observable<{[name: string]: string }>;
+  selectedId$: Observable<string>;
 
-  linkRegime: LinkRegime = 'all';
+  linkRegime: LinkRegime = 'nearest';
   constructor(private service: VisualizationFacade) {
     this.taskId$ = this.service.taskId$;
     this.status$ = this.service.status$;
@@ -41,6 +44,8 @@ export class VisualizationPageComponent {
     this.colorizers$ = this.service.colorizers$;
     this.colorizer$ = this.service.selectedColorizer$;
     this.counterfactuals$ = this.service.counterfactuals$;
+    this.visualizationMetrics$ = this.service.visualizationMetrics$;
+    this.selectedId$ = this.service.selectedId$;
     this.service.loadEmbedding();
   }
 
