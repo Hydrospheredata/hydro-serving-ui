@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'hs-alert-message',
@@ -11,8 +11,5 @@ import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation } from '@
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class AlertMessageComponent implements OnInit {
-  ngOnInit() {
-  }
-
+export class AlertMessageComponent {
 }
