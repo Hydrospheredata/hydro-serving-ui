@@ -2,13 +2,11 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpParams,
-  HttpHeaders,
-  HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '@environments/environment';
 import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 type HydroHttpParams =
   | string
@@ -41,9 +39,9 @@ export class HttpService {
     }
   }
 
-  get(url: string, options?: IHydroHttpOptions): Observable<any> {
+  get<T>(url: string, options?: IHydroHttpOptions) {
     return this.http
-      .get(this.getFullUrl(url), this.hydroOptions(options))
+      .get<T>(this.getFullUrl(url), this.hydroOptions(options))
       .pipe(catchError(err => this.handleError(err)));
   }
 
@@ -53,10 +51,10 @@ export class HttpService {
       .pipe(catchError(err => this.handleError(err)));
   }
 
-  post(url: string, body, options?: IHydroHttpOptions) {
+  post<T>(url: string, body, options?: IHydroHttpOptions) {
     return this.http
-      .post(this.getFullUrl(url), body, this.hydroOptions(options))
-      .pipe(catchError(err => this.handleError(err)));
+      .post<T>(this.getFullUrl(url), body, this.hydroOptions(options))
+      .pipe(catchError(this.handleError));
   }
 
   put(url: string, body, options?: IHydroHttpOptions) {
@@ -69,7 +67,7 @@ export class HttpService {
     return `${this.baseUrl}${url}`;
   }
 
-  private handleError(error: HttpErrorResponse): Observable<string> {
+  private handleError(error: HttpErrorResponse): Observable<never> {
     let message: string;
     if (error.error instanceof ErrorEvent) {
       message = `An error occurred: ${error.error.message}`;

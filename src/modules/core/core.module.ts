@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { ModelBuilder, ModelVersionBuilder } from '@core/builders/_index';
+import { ModelBuilder, ModelVersionBuilder } from '@core/builders';
 import {
   FormsService,
   SvgSpriteService,
@@ -25,6 +25,7 @@ import {
   BuildInformationDialogComponent,
   NavigationComponent,
 } from './components';
+import { ChartHelperService } from './services/chart-helper.service';
 @NgModule({
   entryComponents: [BuildInformationDialogComponent],
   imports: [
@@ -66,6 +67,7 @@ import {
     BuildInformationService,
     SnackbarService,
     NameGenerator,
+    ChartHelperService,
   ],
 })
 export class CoreModule {}

@@ -7,7 +7,7 @@
   &__label {
     left: 10px;
     top: 4px;
-    color: $neutral-color-500;
+    color: $neutral-color-700;
     font-size: 14px;
     font-family: $font-family-light;
     &:after {
@@ -17,10 +17,10 @@
 
   &__input {
     border: none;
-    padding: 4px 8px;
+    padding: 3px 8px 4px 4px;
     border-radius: 0px;
     border-bottom: 1px $neutral-color-500 solid;
-    color: $neutral-color-900;
+    color: $neutral-color-1000;
     font-size: 14px;
 
     &:focus {

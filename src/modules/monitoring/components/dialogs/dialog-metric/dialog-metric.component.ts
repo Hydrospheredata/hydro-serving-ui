@@ -51,9 +51,7 @@ export class DialogMetricComponent implements OnInit {
     this.createForm();
 
     const modelChange = this.form.get('config').get('model').valueChanges;
-    modelChange.subscribe(_ => {
-      console.log(_);
-    });
+    modelChange.subscribe();
 
     this.modelVersions$ = combineLatest(
       modelChange,

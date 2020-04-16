@@ -1,0 +1,20 @@
+@import "variables";
+.mdl-radio {
+  line-height: 20px;
+  &.is-upgraded {
+    padding-left: 20px;
+  }
+}
+.mdl-radio__inner-circle {
+  background: $primary-color-700;
+}
+.mdl-radio__outer-circle {
+  border: 2px solid $neutral-color-500;
+}
+.mdl-radio.is-checked .mdl-radio__outer-circle {
+  border: 2px solid $primary-color-700;
+}
+
+.mdl-radio__label {
+  font-size: 12px;
+}

@@ -1,0 +1,78 @@
+<div class="visualization">
+  <div *ngIf="(status$ | async) === 'PENDING'" class="visualization__loader">
+    <hydro-icon class="visualization__loader-icon" type="scatter"></hydro-icon>
+    <span class="visualization__loader-status"
+    >Task id: {{ taskId$ | async }}</span
+    >
+  </div>
+  <div *ngIf="(status$ | async) === 'FAILED'" class="visualization__error">
+    <hydro-icon class="visualization__error-icon" type="circle-x"></hydro-icon>
+    <div class="visualization__error-message">
+      <hs-error-message>
+        {{ error$ | async | json }}
+      </hs-error-message>
+    </div>
+    <button (click)="retryRequest()" color="cyan" hs-button kind="flat">
+      Create new task
+    </button>
+  </div>
+  <div *ngIf="(status$ | async) === 'SUCCESS'" class="visualization__body">
+    <div class="visualization__chart">
+      <div class="visualization__settings">
+        <div class="visualization__settings-item">
+          <span class="visualization__settings-label">Colorize: </span>
+          <mdl-select (change)="onChangeColorizer($event)" label="Choose colorizer">
+            <mdl-option
+              *ngFor="let colorizer of colorizers$ | async"
+              [value]="colorizer"
+            >
+              <span class="colorizer">
+                <span class="colorizer__type">{{ colorizer.type }}: </span
+                >{{ colorizer.name }}
+              </span></mdl-option
+            >
+          </mdl-select>
+        </div>
+        <div class="visualization__settings-regimes">
+          <span class="visualization__settings-label">Accent points: </span>
+          <mdl-radio
+            *ngFor="let regime of ['all', 'nearest', 'counterfactuals']"
+            [(ngModel)]="linkRegime"
+            [value]="regime"
+            name="regime"
+          >
+            {{ regime}}
+          </mdl-radio>
+        </div>
+
+      </div>
+      <div class="visualization__scatterplot">
+        <hs-visualization-metrics [visualizationMetrics]="visualizationMetrics$ | async"></hs-visualization-metrics>
+        <hs-scatter-plot
+          (selectPoint)="handleSelectPoint($event)"
+          [colorizer]="colorizer$ | async"
+          [colors]="colors$ | async"
+          [counterfactuals]="counterfactuals$ | async"
+          [data]="scatterPlotData$ | async"
+          [linkRegime]="linkRegime"
+          [top100]="top100$ | async"
+        ></hs-scatter-plot>
+      </div>
+    </div>
+
+    <div *ngIf="selectedId$ | async as id" class="visualization__detail">
+      <ng-container *ngIf="selectedCheck$ | async as check; else err">
+        <hs-log-detail
+          *ngIf="modelVersion$ | async"
+          [check]="selectedCheck$ | async"
+          [modelVersion]="modelVersion$ | async"
+        ></hs-log-detail>
+      </ng-container>
+      <ng-template #err>
+        <div class="visualization__detail-alert">
+          Couldn't find request with id: {{id}}
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

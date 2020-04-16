@@ -1,30 +1,34 @@
 import { NgModule } from '@angular/core';
 import {
-  ModelVersionsTableComponent,
-  MetricComponent,
-  MetricsComponent,
-  HealthTimelineComponent,
-  ChartsComponent,
-  ChartComponent,
-  ModelVersionLogComponent,
-  ReqResLogsComponent,
-  ApplicationFormComponent,
   AggregationComponent,
-  RequestsInformationComponent,
-  LogComponent,
+  ApplicationFormComponent,
+  ApplicationsItemDetailComponent,
+  BatchMetricsComponent,
+  ChartComponent,
+  ChartsComponent,
   CustomCheckComponent,
   CustomChecksComponent,
-  LatencyCheckComponent,
   ErrorCheckComponent,
+  GradientLegendComponent,
+  HealthTimelineComponent,
+  LatencyCheckComponent,
+  LogComponent,
   LogDetailComponent,
-  SignaturesComponent,
-  RawChecksComponent,
-  BatchMetricsComponent,
   LogMetricsTableComponent,
-  ApplicationsItemDetailComponent,
-  ModelVersionsComponent,
+  MetricComponent,
+  MetricsComponent,
   ModelVersionDetailsComponent,
+  ModelVersionLogComponent,
+  ModelVersionsComponent,
   ModelVersionsRowComponent,
+  ModelVersionsTableComponent,
+  RawChecksComponent,
+  ReqResLogsComponent,
+  RequestsInformationComponent,
+  ScatterPlotComponent,
+  ScatterPlotLegendComponent,
+  SignaturesComponent,
+  VisualizationMetricsComponent
 } from '@testing/components';
 import { ProfilesComponent } from '@testing/components/mock-profiles';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
@@ -58,6 +62,10 @@ const COMPONENTS = [
   ModelVersionsComponent,
   ModelVersionDetailsComponent,
   ModelVersionsRowComponent,
+  ScatterPlotComponent,
+  ScatterPlotLegendComponent,
+  GradientLegendComponent,
+  VisualizationMetricsComponent
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];
@@ -66,4 +74,5 @@ const DIRECTIVES = [UpdateModelVersionDirective];
   declarations: [...COMPONENTS, ...DIRECTIVES],
   exports: [...COMPONENTS],
 })
-export class TestingModule {}
+export class TestingModule {
+}

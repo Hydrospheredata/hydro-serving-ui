@@ -31,6 +31,7 @@ import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
+import { VisualizationModule } from 'modules/visualization/visualization.module';
 import {
   MonitoringAvailabilityComponent,
   MetricsComponent,
@@ -78,7 +79,7 @@ import {
       MetricsEffects,
     ]),
   ],
-  exports: [MonitoringPageComponent, MetricsComponent],
+  exports: [MonitoringPageComponent, MetricsComponent, LogDetailComponent],
   providers: [
     MetricsFacade,
     MetricsService,

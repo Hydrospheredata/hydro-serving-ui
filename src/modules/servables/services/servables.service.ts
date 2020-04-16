@@ -36,7 +36,7 @@ export class ServablesService {
   }
 
   get(name: string) {
-    return this.http.get(`${this.url}/${name}`);
+    return this.http.get<Servable>(`${this.url}/${name}`);
   }
 
   getLog(name: string): Observable<string[]> {
@@ -63,7 +63,6 @@ export class ServablesService {
       }
 
       eventSource.addEventListener('EndOfStream', () => {
-        console.log('event stream closed by command');
         eventSource.close();
         subscribe.complete();
       });
@@ -87,7 +86,6 @@ export class ServablesService {
       refCount(),
       finalize(() => {
         eventSource.close();
-        console.log('event stream closed');
       })
     );
   }

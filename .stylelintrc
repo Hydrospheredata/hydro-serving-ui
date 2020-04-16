@@ -1,0 +1,7 @@
+{
+  "rules": {
+    "color-no-invalid-hex": true,
+    "max-empty-lines": 2,
+    "declaration-block-no-duplicate-properties": true
+  }
+}

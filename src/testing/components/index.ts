@@ -16,9 +16,12 @@ export * from './mock-latency-check';
 export * from './mock-error-check';
 export * from './mock-log-detail';
 export * from './mock-signatures';
-export * from  './mock-row-checks';
+export * from './mock-row-checks';
 export * from './mock-batch-metrics';
 export * from './mock-log-metrics-table';
 export * from './mock-application-item-detail';
-
 export * from './models';
+export * from './mock-scatter-plot';
+export * from './mock-scatter-plot-legend';
+export * from './mock-gradient-legend';
+export * from './visualization';

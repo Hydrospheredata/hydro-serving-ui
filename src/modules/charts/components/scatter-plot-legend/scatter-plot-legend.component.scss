@@ -1,0 +1,33 @@
+@import "variables";
+
+.scatter-plot-legend {
+  width: 100%;
+
+  .class_legend {
+    display: flex;
+    justify-content: center;
+
+    &__item {
+      display: flex;
+      align-items: center;
+    }
+
+    &__circle {
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+    }
+
+    &__divider {
+      padding: 0 4px;
+    }
+
+    &__item+&__item {
+      margin-left: 24px;
+    }
+
+    &__label {
+      font-family: $font-family-light;
+    }
+  }
+}

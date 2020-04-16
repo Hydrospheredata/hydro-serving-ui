@@ -1,16 +1,18 @@
 import {
-  Component,
-  Input,
-  ViewChild,
-  ElementRef,
   AfterViewInit,
-  SimpleChanges,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
   SimpleChange,
-  OnChanges
+  SimpleChanges,
+  ViewChild
 } from '@angular/core';
 import { DoubleProfile } from '@shared/models/_index';
 import * as Highcharts from 'highcharts';
 import { HIGHCHART_COLORS } from './highchart-colors';
+import { ChartObject } from "@node_modules/@types/highcharts";
+
 @Component({
   selector: 'hs-profiles-comparison-histogram',
   template: `
@@ -28,7 +30,7 @@ export class ProfilesComparisonHistogramComponent implements AfterViewInit, OnCh
 
   private trainingDataColor = HIGHCHART_COLORS.profiles.training;
   private productionDataColor = HIGHCHART_COLORS.profiles.production;
-  private chart: Highcharts.ChartObject;
+  private chart: ChartObject;
 
   ngOnChanges(changes: SimpleChanges) {
     const trainingProfile: SimpleChange = changes.trainingProfile;
@@ -43,31 +45,31 @@ export class ProfilesComparisonHistogramComponent implements AfterViewInit, OnCh
       const productionFreqs = this.freqsToPercent(bins, this.productionProfile);
 
       this.chart.xAxis[0].setCategories(bins.map(_ => _.toString()));
-      this.chart.series[0].update({data: trainingFreqs}, true);
-      this.chart.series[1].update({data: productionFreqs}, true);
+      this.chart.series[0].update({type: 'column', data: trainingFreqs as any}, true);
+      this.chart.series[1].update({type: 'column', data: productionFreqs as any}, true);
     }
   }
 
   ngAfterViewInit() {
-      const bins = this.getBins();
-      const trainingCount = this.freqsToPercent(bins, this.trainingProfile);
-      const productionCount = this.freqsToPercent(bins, this.productionProfile);
+    const bins = this.getBins();
+    const trainingCount = this.freqsToPercent(bins, this.trainingProfile);
+    const productionCount = this.freqsToPercent(bins, this.productionProfile);
 
-      this.chart = Highcharts.chart(this.chartContainerRef.nativeElement, {
-        chart: {
-          type: 'column',
-        },
-        title: {
-          text: '',
-        },
-        subtitle: {
-          text: '',
-        },
-        xAxis: {
-          categories: bins,
-          crosshair: true,
-        },
-        yAxis:
+    this.chart = Highcharts.chart(this.chartContainerRef.nativeElement, {
+      chart: {
+        type: 'column',
+      },
+      title: {
+        text: '',
+      },
+      subtitle: {
+        text: '',
+      },
+      xAxis: {
+        categories: bins as any,
+        crosshair: true,
+      },
+      yAxis:
         [
           {
             title: {
@@ -78,35 +80,37 @@ export class ProfilesComparisonHistogramComponent implements AfterViewInit, OnCh
             },
           },
         ],
-        tooltip: {
-          headerFormat: '<span style="font-size:10px">{point.key:.1f}</span><table>',
-          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
-          footerFormat: '</table>',
-          shared: true,
-          useHTML: true,
+      tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key:.1f}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+          '<td style="padding:0"><b>{point.y:.2f}%</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true,
+      },
+      legend: {
+        layout: 'horizontal',
+      },
+      plotOptions: {
+        column: {
+          pointPadding: 0,
+          borderWidth: 0,
+          groupPadding: 0,
+          shadow: false,
         },
-        legend: {
-          layout: 'horizontal',
-        },
-        plotOptions: {
-          column: {
-            pointPadding: 0,
-            borderWidth: 0,
-            groupPadding: 0,
-            shadow: false,
-          },
-        },
-        series: [{
-          name: 'Training Data',
-          data: trainingCount,
-          color: this.trainingDataColor,
-        }, {
-          name: 'Production Data',
-          data: productionCount,
-          color: this.productionDataColor,
-        }],
-      });
+      },
+      series: [{
+        type: 'column',
+        name: 'Training Data',
+        data: trainingCount as any,
+        color: this.trainingDataColor,
+      }, {
+        type: 'column',
+        name: 'Production Data',
+        data: productionCount as any,
+        color: this.productionDataColor,
+      }],
+    });
   }
 
   private getBins(): number[] {
@@ -130,7 +134,9 @@ export class ProfilesComparisonHistogramComponent implements AfterViewInit, OnCh
       count = profile.commonStatistics.count - profile.commonStatistics.missing;
     }
     return (bin: number): number => {
-      if (count === 0) { return 0; }
+      if (count === 0) {
+        return 0;
+      }
 
       const idx = oldBins.indexOf(bin);
       if (idx >= 0) {

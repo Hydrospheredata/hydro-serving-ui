@@ -3,7 +3,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
 
 import { Router } from '@angular/router';
-import { ModelBuilder, ModelVersionBuilder } from '@core/builders/_index';
+import { ModelBuilder, ModelVersionBuilder } from '@core/builders';
 import { SnackbarService } from '@core/services';
 import { FavoriteStorageLocal } from '@core/services/favorite-storage-local.service';
 import { ModelsService } from '@models/services';
