@@ -14,7 +14,6 @@ export * from './mock-custom-check';
 export * from './mock-custom-checks';
 export * from './mock-latency-check';
 export * from './mock-error-check';
-export * from './mock-log-detail';
 export * from './mock-signatures';
 export * from './mock-row-checks';
 export * from './mock-batch-metrics';

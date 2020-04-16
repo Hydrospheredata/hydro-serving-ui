@@ -1,31 +1,30 @@
-import { NgModule } from '@angular/core';
 import { ModelsPublicUiModule } from '@models/shared/models-public-ui.module';
 import {
-  DialogMetricComponent,
+  CheckChartComponent,
   DialogDeleteMetricComponent,
-  TimeIntervalSelectComponent,
-  LatencyCheckComponent,
+  DialogMetricComponent,
+  DialogRequestsErrorsComponent,
   ErrorCheckComponent,
+  LatencyCheckComponent,
   LogComponent,
   LogDetailComponent,
+  LogMetricsTableComponent,
   MetricSpecConfigComponent,
+  RawChecksComponent,
+  RegimeSelectorComponent,
   ReqstoreMetricsComponent,
   RequestsInformationComponent,
-  CheckChartComponent,
-  DialogRequestsErrorsComponent,
-  RawChecksComponent,
-  LogMetricsTableComponent,
-  RegimeSelectorComponent,
+  TimeIntervalSelectComponent,
 } from '@monitoring/components';
-import {CheckIdToTimePipe} from '@monitoring/pipes';
-import {MonitoringService} from '@monitoring/services';
-import {MetricsService} from '@monitoring/services/api/metrics.service';
-import {MetricsEffects, MonitoringServiceStatusEffects, reducer,} from '@monitoring/store';
-import {MonitoringPageFacade} from '@monitoring/store/facades';
-import {MetricsFacade} from '@monitoring/store/facades/metrics.facade';
-import {EffectsModule} from '@ngrx/effects';
-import {StoreModule} from '@ngrx/store';
-import {SharedModule} from '@shared/shared.module';
+import { CheckIdToTimePipe } from '@monitoring/pipes';
+import { MonitoringService } from '@monitoring/services';
+import { MetricsService } from '@monitoring/services/api/metrics.service';
+import { MetricsEffects, MonitoringServiceStatusEffects, reducer, } from '@monitoring/store';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { SharedModule } from '@shared/shared.module';
 import {
   AggregationComponent,
   BatchMetricsComponent,
@@ -34,6 +33,9 @@ import {
   MonitoringPageComponent,
 } from './containers';
 import { CustomMetricsComponent } from './containers/custom-metrics/custom-metrics.component';
+import { RootCauseModule } from "@rootcause/root-cause.module";
+import { NgModule } from "@angular/core";
+
 @NgModule({
   entryComponents: [
     DialogDeleteMetricComponent,
@@ -75,7 +77,7 @@ import { CustomMetricsComponent } from './containers/custom-metrics/custom-metri
     ]),
     RootCauseModule
   ],
-  exports: [MonitoringPageComponent, MetricsComponent],
+  exports: [MonitoringPageComponent, MetricsComponent, LogDetailComponent],
   providers: [
     MetricsFacade,
     MetricsService,

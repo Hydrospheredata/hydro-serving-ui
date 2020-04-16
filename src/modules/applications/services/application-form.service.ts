@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
-import {
-  ModelVariantFormService,
-  IModelVariantFormData,
-} from '@applications/services/model-variant-form.service';
+import { IModelVariantFormData, ModelVariantFormService, } from '@applications/services/model-variant-form.service';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { Application } from '@shared/_index';
 
@@ -41,13 +38,13 @@ export class ApplicationFormService {
     }
     this.form = this.fb.group({
       applicationName: [
-        data.name,
         [
           this.customValidators.required(),
           this.customValidators.uniqNameValidation(data.name),
           this.customValidators.applicationNameformat(),
           this.customValidators.lengthValidation(128),
         ],
+        data.name,
       ],
       kafkaStreaming: this.fb.array([]),
       stages: this.fb.array(this.getStagesArray(data.executionGraph.stages)),

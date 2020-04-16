@@ -205,7 +205,7 @@ fill: #CB6E17;
    </g>
   </g>
  </g>
-</symbol><symbol viewBox="0 0 24 24" id="monitoring" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></symbol><symbol viewBox="0 0 24 24" id="profiler" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zm2.5 2.1h-15V5h15v14.1zm0-16.1h-15c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/><path fill="none" d="M0 0h24v24H0z"/></symbol><symbol viewBox="0 0 394 394.00013" id="scatter" xmlns="http://www.w3.org/2000/svg">
+</symbol><symbol viewBox="0 0 24 24" id="merge" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/><path d="M0 0h24v24H0z" fill="none"/></symbol><symbol viewBox="0 0 24 24" id="monitoring" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></symbol><symbol viewBox="0 0 24 24" id="profiler" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zm2.5 2.1h-15V5h15v14.1zm0-16.1h-15c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/><path fill="none" d="M0 0h24v24H0z"/></symbol><symbol viewBox="0 0 394 394.00013" id="scatter" xmlns="http://www.w3.org/2000/svg">
   <g fill="currentColor">
   <path d="m99.253906 90c-14.160156.003906-25.640625 11.484375-25.636718 25.644531 0 14.160157 11.480468 25.640625 25.640624 25.640625 14.164063-.003906 25.640626-11.480468 25.640626-25.644531-.015626-14.15625-11.488282-25.628906-25.644532-25.640625zm0 0"/>
   <path d="m43.609375 225.640625c0 14.164063 11.480469 25.644531 25.644531 25.644531 14.160156 0 25.640625-11.480468 25.640625-25.644531 0-14.160156-11.480469-25.640625-25.640625-25.640625-14.15625.015625-25.625 11.488281-25.644531 25.640625zm0 0"/>
@@ -222,8 +222,7 @@ fill: #CB6E17;
   <path d="m69.253906 350.285156c14.160156 0 25.640625-11.480468 25.640625-25.644531 0-14.160156-11.480469-25.640625-25.640625-25.640625-14.164062 0-25.644531 11.480469-25.644531 25.640625.019531 14.15625 11.488281 25.628906 25.644531 25.644531zm0 0"/>
 </g>
 </symbol><symbol viewBox="0 0 24 24" id="show">
-</symbol><symbol viewBox="0 0 24 24" id="merge" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/><path d="M0 0h24v24H0z" fill="none"/></symbol><symbol viewBox="0 0 24 24" id="monitoring" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></symbol><symbol viewBox="0 0 24 24" id="profiler" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4zm2.5 2.1h-15V5h15v14.1zm0-16.1h-15c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z"/><path fill="none" d="M0 0h24v24H0z"/></symbol><symbol viewBox="0 0 24 24" id="show">
-  <path d="M2,12
+  <path d="M2,12 
            C6,4 18,4 22,12 
            C18,20 6,20 2,12" fill="none" stroke="black" strokeWidth="2"/>
   <circle cx="12" cy="12" r="4"/>

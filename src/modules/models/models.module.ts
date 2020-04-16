@@ -1,4 +1,4 @@
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { ModelsRoutingModule } from './models.router';
 
@@ -14,13 +14,14 @@ import {
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
 import { ModelDetailsGuard, ModelsService, ModelVersionDetailsGuard, } from '@models/services';
-import { reducer, ModelEffects } from '@models/store';
+import { ModelEffects, reducer } from '@models/store';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilerModule } from '@profiler/profiler.module';
 import { ServablesModule } from '@servables/servables.module';
 import {
+  ModelPageComponent,
   ModelsPageComponent,
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
@@ -43,7 +44,6 @@ import { StatModule } from "../stat/stat.module";
   declarations: [
     DialogDeleteModelComponent,
     ModelsComponent,
-    ModelsPageComponent,
     ModelVersionDetailsComponent,
     ModelVersionLogComponent,
     ModelVersionPageComponent,
@@ -52,6 +52,8 @@ import { StatModule } from "../stat/stat.module";
     SignaturesComponent,
     ModelVersionStatusComponent,
     ModelVersionsRowComponent,
+    ModelsPageComponent,
+    ModelPageComponent
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],

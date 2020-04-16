@@ -62,11 +62,7 @@
 
     <div *ngIf="selectedId$ | async as id" class="visualization__detail">
       <ng-container *ngIf="selectedCheck$ | async as check; else err">
-        <hs-log-detail
-          *ngIf="modelVersion$ | async"
-          [check]="selectedCheck$ | async"
-          [modelVersion]="modelVersion$ | async"
-        ></hs-log-detail>
+        <hs-log-detail [check]="check" [modelVersion]="modelVersion$ | async"></hs-log-detail>
       </ng-container>
       <ng-template #err>
         <div class="visualization__detail-alert">
