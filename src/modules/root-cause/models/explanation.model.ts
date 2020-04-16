@@ -1,5 +1,3 @@
-import { ExplanationTaskStatus } from '@rootcause/interfaces';
-
 interface Explanation {
   celery_task_id: string;
   completed_at: string;
@@ -33,7 +31,7 @@ export type RiseExplanation = Explanation & { result: RiseExplanationResult };
 
 export class ExplanationTask {
   method: string;
-  status: ExplanationTaskStatus;
+  status: any;
   explanation: any;
   error: string;
 }

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {
   CheckChartComponent,
   CustomCheckComponent,
@@ -17,15 +17,15 @@ import {
   RequestsInformationComponent,
   TimeIntervalSelectComponent,
 } from '@monitoring/components';
-import { CheckIdToTimePipe } from '@monitoring/pipes';
-import { MonitoringService } from '@monitoring/services';
-import { MetricsService } from '@monitoring/services/api/metrics.service';
-import { MetricsEffects, MonitoringServiceStatusEffects, reducer, } from '@monitoring/store';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
-import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { SharedModule } from '@shared/shared.module';
+import {CheckIdToTimePipe} from '@monitoring/pipes';
+import {MonitoringService} from '@monitoring/services';
+import {MetricsService} from '@monitoring/services/api/metrics.service';
+import {MetricsEffects, MonitoringServiceStatusEffects, reducer,} from '@monitoring/store';
+import {MonitoringPageFacade} from '@monitoring/store/facades';
+import {MetricsFacade} from '@monitoring/store/facades/metrics.facade';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreModule} from '@ngrx/store';
+import {SharedModule} from '@shared/shared.module';
 import {
   AggregationComponent,
   BatchMetricsComponent,
@@ -33,6 +33,7 @@ import {
   MonitoringAvailabilityComponent,
   MonitoringPageComponent
 } from './containers';
+import {RootCauseModule} from '@rootcause/root-cause.module';
 
 @NgModule({
   entryComponents: [
@@ -72,8 +73,9 @@ import {
       MonitoringServiceStatusEffects,
       MetricsEffects,
     ]),
+    RootCauseModule
   ],
-  exports: [MonitoringPageComponent, MetricsComponent, LogDetailComponent],
+  exports: [MonitoringPageComponent, MetricsComponent],
   providers: [
     MetricsFacade,
     MetricsService,
@@ -81,4 +83,5 @@ import {
     MonitoringService,
   ],
 })
-export class MonitoringModule {}
+export class MonitoringModule {
+}

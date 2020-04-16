@@ -7,15 +7,23 @@
     border-collapse: collapse;
     width: 100%;
     table-layout: fixed;
+    &__row:nth-of-type(2n) {
+      background: $neutral-color-100;
+    }
+    border-collapse: collapse;
+  }
+
+  &__row:nth-of-type(2n) {
+    background: $neutral-color-100;
   }
 
   &__cell {
-    padding: 6px 12px;
     color: $neutral-color-1000;
-    border: 1px $neutral-color-200 solid;
     font-family: $font-family-light;
     overflow: scroll;
-
+    padding: 4px;
+    font-size: 12px;
+    line-height: 14px;
   }
 
   &__check {
@@ -30,13 +38,27 @@
     }
   }
 
+  &__head-row {
+    background: $neutral-color-200;
+  }
   &__head-cell {
     color: $neutral-color-900;
     font-family: $font-family-bold;
+    padding: 8px 4px;
   }
 
   &__label {
     font-family: $font-family-bold;
     color: $neutral-color-1000;
+    text-align: center;
+    font-size: 18px;
+    line-height: 32px;
+    position: relative
+  }
+  &__explanation {
+    position: absolute;
+    right: 0;
+    top: 2px;
+    width: 140px;
   }
 }

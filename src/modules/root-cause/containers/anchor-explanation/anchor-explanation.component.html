@@ -6,11 +6,18 @@
     </div>
   </div>
 </div>
-<div class="explanation__item">
-  <div class="explanation__item-key">coverage</div>
-  <div class="explanation__item-value">{{ coverage < 0.01 ? '< 0.01%' : coverage | percent }}</div>
+
+<div class="explanation__tiles">
+  <div class="explanation__tile">
+    <div class="explanation__tile-key">coverage</div>
+    <div class="explanation__tile-value">{{ coverage < 0.01 ? '< 0.01%' : coverage | percent }}</div>
+  </div>
+  <div class="explanation__tile">
+    <div class="explanation__tile-key">precision</div>
+    <div class="explanation__tile-value">{{ precision < 0.01 ? '0.01%' : precision | percent }}</div>
+  </div>
 </div>
-<div class="explanation__item">
-  <div class="explanation__item-key">precision</div>
-  <div class="explanation__item-value">{{ precision < 0.01 ? '0.01%' : precision | percent }}</div>
-</div>
+
+
+
+
