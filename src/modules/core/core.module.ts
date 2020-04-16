@@ -1,31 +1,23 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ModelBuilder, ModelVersionBuilder } from '@core/builders';
-import {
-  FormsService,
-  SvgSpriteService,
-  SnackbarService,
-  NameGenerator,
-} from '@core/services';
+import { FormsService, NameGenerator, SnackbarService, SvgSpriteService, } from '@core/services';
 import { BuildInformationService } from '@core/services/build-information.service';
 import { HttpService } from '@core/services/http';
-import { ReqstoreService } from '@core/services/reqstore.service';
-import { reducers, CustomRouterStateSerializer } from '@core/store';
+import { CustomRouterStateSerializer, reducers } from '@core/store';
 import { EffectsModule } from '@ngrx/effects';
-import {
-  RouterStateSerializer,
-  StoreRouterConnectingModule,
-} from '@ngrx/router-store';
+import { RouterStateSerializer, StoreRouterConnectingModule, } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SharedModule } from '@shared/shared.module';
 import {
-  HeaderComponent,
-  PageNotFoundComponent,
   BuildInformationDialogComponent,
+  HeaderComponent,
   NavigationComponent,
+  PageNotFoundComponent,
 } from './components';
 import { ChartHelperService } from './services/chart-helper.service';
+
 @NgModule({
   entryComponents: [BuildInformationDialogComponent],
   imports: [
@@ -63,7 +55,6 @@ import { ChartHelperService } from './services/chart-helper.service';
     HttpService,
     { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
     SvgSpriteService,
-    ReqstoreService,
     BuildInformationService,
     SnackbarService,
     NameGenerator,

@@ -1,7 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { create } from 'domain';
-import { Observable } from 'rxjs';
-import { Deployable } from '../interfaces';
 import { Servable } from '../models';
 
 export const getAll = createAction('[Servables] get all');

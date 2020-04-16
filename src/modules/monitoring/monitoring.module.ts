@@ -1,44 +1,39 @@
 import { NgModule } from '@angular/core';
 import {
-  DialogMetricComponent,
-  DialogDeleteMetricComponent,
-  MetricSpecConfigComponent,
-  ReqstoreMetricsComponent,
-  InputOutputComponent,
-  TimeIntervalSelectComponent,
-  CustomChecksComponent,
-  LatencyCheckComponent,
-  ErrorCheckComponent,
+  CheckChartComponent,
   CustomCheckComponent,
+  CustomChecksComponent,
+  DialogDeleteMetricComponent,
+  DialogMetricComponent,
+  DialogRequestsErrorsComponent,
+  ErrorCheckComponent,
+  LatencyCheckComponent,
   LogComponent,
   LogDetailComponent,
-  RequestsInformationComponent,
-  CheckChartComponent,
-  DialogRequestsErrorsComponent,
-  RawChecksComponent,
   LogMetricsTableComponent,
+  MetricSpecConfigComponent,
+  RawChecksComponent,
+  ReqstoreMetricsComponent,
+  RequestsInformationComponent,
+  TimeIntervalSelectComponent,
 } from '@monitoring/components';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { MonitoringService } from '@monitoring/services';
 import { MetricsService } from '@monitoring/services/api/metrics.service';
-import {
-  reducer,
-  MonitoringServiceStatusEffects,
-  MetricsEffects,
-} from '@monitoring/store';
+import { MetricsEffects, MonitoringServiceStatusEffects, reducer, } from '@monitoring/store';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
-import { VisualizationModule } from 'modules/visualization/visualization.module';
 import {
-  MonitoringAvailabilityComponent,
-  MetricsComponent,
-  MonitoringPageComponent,
   AggregationComponent,
-  BatchMetricsComponent
+  BatchMetricsComponent,
+  MetricsComponent,
+  MonitoringAvailabilityComponent,
+  MonitoringPageComponent
 } from './containers';
+
 @NgModule({
   entryComponents: [
     DialogDeleteMetricComponent,
@@ -54,7 +49,6 @@ import {
     DialogMetricComponent,
     DialogRequestsErrorsComponent,
     ErrorCheckComponent,
-    InputOutputComponent,
     LatencyCheckComponent,
     MetricsComponent,
     MetricSpecConfigComponent,
