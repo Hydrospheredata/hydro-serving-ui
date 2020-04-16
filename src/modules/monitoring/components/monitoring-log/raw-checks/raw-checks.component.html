@@ -1,58 +1,50 @@
 <div class="raw-checks">
-  <table class="raw-checks__table">
-    <colgroup>
-      <col width="120px"/>
-      <col width="430px"/>
-      <col width="120px"/>
-      <col width="120px"/>
-      <col width="120px"/>
-    </colgroup>
-    <tr>
-      <td class="raw-checks__cell raw-checks__label" colspan="5">inputs</td>
-    </tr>
-    <tr class="raw-checks__head-row">
-      <td class="raw-checks__cell raw-checks__head-cell">
-        name
-      </td>
-      <td class="raw-checks__cell raw-checks__head-cell" [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4">
-        value
-      </td>
-      <ng-container *ngIf="hasRawChecksExceptOverall">
-        <td class="raw-checks__cell raw-checks__head-cell">description</td>
-        <td class="raw-checks__cell raw-checks__head-cell">threshold</td>
-        <td class="raw-checks__cell raw-checks__head-cell">check</td>
-      </ng-container>
-    </tr>
-    <ng-container *ngTemplateOutlet="row; context: { $implicit: inputKeys }"></ng-container>
-    <tr>
-      <td class="raw-checks__cell raw-checks__label" colspan="5">outputs
-        <div class="raw-checks__explanation">
-          <hs-explanation [modelVersionId]="modelVersion.id" [requestId]="check._id"></hs-explanation>
+  <div class="raw-checks__table-wrapper">
+    <table class="raw-checks__table">
+      <tr class="raw-checks__head-row">
+        <td class="raw-checks__cell raw-checks__head-cell">
+          name
+        </td>
+        <td [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4" class="raw-checks__cell raw-checks__head-cell">
+          value
+        </td>
+        <ng-container *ngIf="hasRawChecksExceptOverall">
+          <td class="raw-checks__cell raw-checks__head-cell">description</td>
+          <td class="raw-checks__cell raw-checks__head-cell">threshold</td>
+          <td class="raw-checks__cell raw-checks__head-cell">check</td>
+        </ng-container>
+      </tr>
+      <ng-container *ngTemplateOutlet="row; context: { $implicit: inputKeys }"></ng-container>
+    </table>
+  </div>
 
-        </div>
-      </td>
+  <hs-explanation [modelVersionId]="modelVersion.id" [requestId]="check._id"></hs-explanation>
+  <div class="raw-checks__table-wrapper">
 
-    </tr>
-    <tr class="raw-checks__head-row">
-      <td class="raw-checks__cell raw-checks__head-cell">
-        name
-      </td>
-      <td class="raw-checks__cell raw-checks__head-cell" [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4">
-        value
-      </td>
-      <ng-container *ngIf="hasRawChecksExceptOverall">
-        <td class="raw-checks__cell raw-checks__head-cell">description</td>
-        <td class="raw-checks__cell raw-checks__head-cell">threshold</td>
-        <td class="raw-checks__cell raw-checks__head-cell">check</td>
-      </ng-container>
-    </tr>
-    <ng-container *ngTemplateOutlet="row; context: { $implicit: outputKeys }"></ng-container>
-  </table>
+    <table class="raw-checks__table">
+      <tr class="raw-checks__head-row">
+        <td class="raw-checks__cell raw-checks__head-cell">
+          name
+        </td>
+        <td [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4" class="raw-checks__cell raw-checks__head-cell">
+          value
+        </td>
+        <ng-container *ngIf="hasRawChecksExceptOverall">
+          <td class="raw-checks__cell raw-checks__head-cell">description</td>
+          <td class="raw-checks__cell raw-checks__head-cell">threshold</td>
+          <td class="raw-checks__cell raw-checks__head-cell">check</td>
+        </ng-container>
+      </tr>
+      <ng-container *ngTemplateOutlet="row; context: { $implicit: outputKeys }"></ng-container>
+    </table>
+  </div>
+
 </div>
+
 <ng-template #row let-keys>
-  <tr class="raw-checks__row" *ngFor="let key of keys">
+  <tr *ngFor="let key of keys" class="raw-checks__row">
     <td class="raw-checks__cell">{{ key }}</td>
-    <td class="raw-checks__cell" [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4">
+    <td [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4" class="raw-checks__cell">
       <ng-container *ngTemplateOutlet="isImage(key) ? image : plainText"></ng-container>
       <ng-template #image>
         <hs-tensor-image-list [pixels]="check[key]" [tensorProto]="getTensorShape(key)"></hs-tensor-image-list>

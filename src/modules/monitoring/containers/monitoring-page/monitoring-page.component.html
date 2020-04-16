@@ -13,17 +13,17 @@
       back to model version
     </div>
     <div
-      class="monitoring__header-path"
+      class="monitoring__path"
       *ngIf="modelVersion$ | async as modelVersion"
     >
       <span
-        class="monitoring__header-path-link"
+        class="monitoring__path-link"
         [routerLink]="['../../']"
         queryParamsHandling="merge"
         >{{ modelVersion.model.name }}</span
-      ><span class="monitoring__header-path-separator">/</span
+      ><span class="monitoring__path-separator">/</span
       ><span
-        class="monitoring__header-path-link"
+        class="monitoring__path-link"
         [routerLink]="['../']"
         queryParamsHandling="merge"
         >{{ modelVersion.modelVersion }}</span

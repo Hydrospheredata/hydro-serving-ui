@@ -1,24 +1,18 @@
 import {
-  Component,
-  OnInit,
   ChangeDetectionStrategy,
-  Input,
-  ViewChild,
-  ElementRef,
   ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { ChartConfig } from '@monitoring/interfaces';
-import { scaleLinear, extent, select, mouse } from 'd3';
+import { extent, mouse, scaleLinear, select } from 'd3';
 import { isEmpty } from 'lodash';
-import { Observable, combineLatest, BehaviorSubject } from 'rxjs';
-import { pluck, map, shareReplay, filter } from 'rxjs/operators';
-
-interface Point {
-  x: number;
-  y: number;
-  color: string;
-}
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { filter, map, pluck, shareReplay } from 'rxjs/operators';
 
 interface Tooltip {
   name: string;
@@ -34,36 +28,11 @@ interface Tooltip {
   encapsulation: ViewEncapsulation.None,
 })
 export class CheckChartComponent implements OnInit {
-  @ViewChild('trackableRect', { read: ElementRef }) rectRef: ElementRef;
-  @ViewChild('tooltip', { read: ElementRef }) tooltipRef: ElementRef;
+  @ViewChild('trackableRect', {read: ElementRef}) rectRef: ElementRef;
+  @ViewChild('tooltip', {read: ElementRef}) tooltipRef: ElementRef;
 
   // TODO: FIX
-  // tslint:disable-next-line:variable-name
-  _config: BehaviorSubject<ChartConfig> = new BehaviorSubject({
-    size: {
-      width: 0,
-      height: 0,
-      margins: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-      },
-    },
-    name: 'default',
-    data: {
-      default: {
-        x: [1],
-        y: [2],
-      },
-    },
-    plotBands: [],
-  });
-  @Input() set config(cfg: ChartConfig) {
-    this._config.next(cfg);
-  }
   tooltipTranslate: string;
-
   activeCircles$: Observable<Array<{ x: number; y: number; color: string }>>;
   activeLinePosition$: Observable<{ x: number; y: number }>;
   chartHeight$: Observable<ChartConfig['size']['height']>;
@@ -87,12 +56,44 @@ export class CheckChartComponent implements OnInit {
   noData$: Observable<boolean>;
   threshold$: Observable<number>;
   plotBands$: Observable<any>;
-
+  @ViewChild('containerEl', {read: ElementRef}) containerEl: ElementRef;
   private mouseIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private excludedUids: BehaviorSubject<string[]> = new BehaviorSubject([]);
 
   constructor(private cdr: ChangeDetectorRef) {
-    // TODO: shit subscribe
+  }
+
+  // tslint:disable-next-line:variable-name
+  _config: BehaviorSubject<ChartConfig> = new BehaviorSubject({
+    size: {
+      width: 0,
+      height: 0,
+      margins: {
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+      },
+    },
+    name: 'default',
+    data: {
+      default: {
+        x: [1],
+        y: [2],
+      },
+    },
+    plotBands: [],
+  });
+
+  @Input() set config(cfg: ChartConfig) {
+    this._config.next(cfg);
+  }
+
+  ngOnInit() {
+    select(this.rectRef.nativeElement).on('mouseout', () => this.onMouseOut());
+    select(this.rectRef.nativeElement).on('mousemove', () =>
+      this.onMouseMove()
+    );
     this.config$ = this._config.asObservable().pipe(
       filter(val => !!val),
       shareReplay(1)
@@ -103,28 +104,27 @@ export class CheckChartComponent implements OnInit {
     this.clipUrl$ = this.name$.pipe(map(name => `url(#${name})`));
     this.size$ = this.config$.pipe(pluck('size'));
     this.chartHeight$ = this.size$.pipe(pluck('height'));
-    this.chartWidth$ = this.size$.pipe(pluck('width'));
+    this.chartWidth$ = of(this.containerEl.nativeElement.offsetWidth);
     this.viewWidth$ = this.size$.pipe(
       map(config => {
         const {
-          width,
-          margins: { left, right },
+          margins: {left, right},
         } = config;
-        return width - left - right;
+        return this.containerEl.nativeElement.offsetWidth - left - right;
       })
     );
     this.viewHeight$ = this.size$.pipe(
       map(config => {
         const {
           height,
-          margins: { top, bottom },
+          margins: {top, bottom},
         } = config;
         return height - top - bottom;
       })
     );
     this.dataTranslate$ = this.config$.pipe(
       map(config => {
-        const { left: x, top: y } = config.size.margins;
+        const {left: x, top: y} = config.size.margins;
         return `translate(${x}, ${y})`;
       }),
       shareReplay(1)
@@ -160,8 +160,8 @@ export class CheckChartComponent implements OnInit {
     );
     this.xScale$ = combineLatest(this.viewWidth$, this.config$).pipe(
       map(([width, config]) => {
-        console.log({ width, config });
-        const requests = Object.values(config.data).map(({ x }) => x.length);
+        console.log({width, config});
+        const requests = Object.values(config.data).map(({x}) => x.length);
         const [, maxRequests] = extent(requests);
         return scaleLinear()
           .domain([1, maxRequests])
@@ -171,14 +171,14 @@ export class CheckChartComponent implements OnInit {
     );
     this.yAxisTranslate$ = this.config$.pipe(
       map(config => {
-        const { left: x, top: y } = config.size.margins;
+        const {left: x, top: y} = config.size.margins;
         return `translate(${x}, ${y})`;
       })
     );
     this.xAxisTranslate$ = combineLatest(this.size$, this.viewHeight$).pipe(
       map(([size, height]) => {
         const {
-          margins: { top, left: x },
+          margins: {top, left: x},
         } = size;
         const y = top + height;
         return `translate(${x}, ${y})`;
@@ -212,10 +212,10 @@ export class CheckChartComponent implements OnInit {
         if (mouseIn) {
           const [xCoordinate] = mouse(this.rectRef.nativeElement);
           const xValue = Math.round(xScale.invert(xCoordinate));
-          const { left, top } = size.margins;
-          return { x: xScale(xValue) + left, y: viewHeight + top };
+          const {left, top} = size.margins;
+          return {x: xScale(xValue) + left, y: viewHeight + top};
         } else {
-          return { x: 0, y: 0 };
+          return {x: 0, y: 0};
         }
       })
     );
@@ -229,7 +229,7 @@ export class CheckChartComponent implements OnInit {
     ).pipe(
       map(([mouseIn, mappedData, size, xScale, yScale]) => {
         if (mouseIn) {
-          const { top, left } = size.margins;
+          const {top, left} = size.margins;
           const [xCoordinate] = mouse(this.rectRef.nativeElement);
           const xValue = Math.round(xScale.invert(xCoordinate));
 
@@ -253,7 +253,7 @@ export class CheckChartComponent implements OnInit {
         if (mouseIn && !isEmpty(mappedData)) {
           const [xCoordinate] = mouse(this.rectRef.nativeElement);
           const xValue = Math.round(xScale.invert(xCoordinate));
-          const { top, left } = size.margins;
+          const {top, left} = size.margins;
           const x = xScale(xValue) + left;
           const z = Object.values(mappedData)[0][xValue - 1][1];
           const y = yScale(z) + top;
@@ -274,13 +274,6 @@ export class CheckChartComponent implements OnInit {
     );
     this.noData$ = this.mappedData$.pipe(map(data => isEmpty(data)));
     this.config$.subscribe();
-  }
-
-  ngOnInit() {
-    select(this.rectRef.nativeElement).on('mouseout', () => this.onMouseOut());
-    select(this.rectRef.nativeElement).on('mousemove', () =>
-      this.onMouseMove()
-    );
   }
 
   lineColor(index: number) {

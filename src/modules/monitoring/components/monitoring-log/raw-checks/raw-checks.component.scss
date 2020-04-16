@@ -3,14 +3,21 @@
 .raw-checks {
   margin-bottom: 12px;
 
+  &__table-wrapper {
+    border: 2px $neutral-color-200 solid;
+    border-radius: 5px;
+    margin-bottom: 24px;
+  }
+
   &__table {
     border-collapse: collapse;
-    width: 100%;
     table-layout: fixed;
+
+    width: 100%;
+
     &__row:nth-of-type(2n) {
       background: $neutral-color-100;
     }
-    border-collapse: collapse;
   }
 
   &__row:nth-of-type(2n) {
@@ -19,42 +26,43 @@
 
   &__cell {
     color: $neutral-color-1000;
-    font-family: $font-family-light;
-    overflow: scroll;
-    padding: 4px;
     font-size: 12px;
     line-height: 14px;
+    overflow: scroll;
+    padding: 8px 6px;
   }
 
   &__check {
     &--success {
-      font-family: $font-family-bold;
       color: $supportive-color-green-700;
+      font-family: $font-family-bold;
     }
 
     &--failed {
-      font-family: $font-family-bold;
       color: $supportive-color-red-700;
+      font-family: $font-family-bold;
     }
   }
 
   &__head-row {
-    background: $neutral-color-200;
+    border-bottom: 1px solid $neutral-color-200;
   }
+
   &__head-cell {
-    color: $neutral-color-900;
+    color: $neutral-color-600;
     font-family: $font-family-bold;
-    padding: 8px 4px;
+    padding: 12px 6px;
   }
 
   &__label {
-    font-family: $font-family-bold;
     color: $neutral-color-1000;
-    text-align: center;
+    font-family: $font-family-bold;
     font-size: 18px;
     line-height: 32px;
-    position: relative
+    position: relative;
+    text-align: center;
   }
+
   &__explanation {
     position: absolute;
     right: 0;
