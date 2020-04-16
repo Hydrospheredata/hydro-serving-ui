@@ -1,18 +1,10 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ChartConfig } from '@monitoring/interfaces';
-import {
-  ScaleLinear,
-  extent,
-  scaleLinear,
-  select,
-  mouse,
-  bisectLeft,
-} from 'd3';
-
 @Component({
   selector: 'hs-latency-check',
   templateUrl: 'latency-check.component.html',
   styleUrls: ['latency-check.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LatencyCheckComponent {
   @Input()
@@ -21,8 +13,10 @@ export class LatencyCheckComponent {
       this.chartConfig = {
         ...this.chartConfig,
         data: {
-          x: data.map((_, i) => i + 1),
-          y: data,
+          latency: {
+            x: data.map((_, i) => i + 1),
+            y: data,
+          },
         },
       };
     }
@@ -30,8 +24,10 @@ export class LatencyCheckComponent {
 
   chartConfig: ChartConfig = {
     data: {
-      x: [],
-      y: [],
+      latency: {
+        x: [],
+        y: [],
+      },
     },
     size: {
       width: 340,
@@ -45,6 +41,6 @@ export class LatencyCheckComponent {
     },
     plotBands: [],
     area: true,
-    name: 'latency',
+    name: '',
   };
 }

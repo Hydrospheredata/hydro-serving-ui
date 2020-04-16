@@ -22,6 +22,7 @@ import { VisualizationModule } from 'modules/visualization/visualization.module'
     DialogModule,
     ModelsModule,
     SharedModule,
+    MonitoringModule,
     AppRoutingModule,
     MonitoringModule,
     VisualizationModule,

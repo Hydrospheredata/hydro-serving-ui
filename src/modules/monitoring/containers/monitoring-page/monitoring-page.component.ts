@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
+import { ModelsFacade } from '@models/store';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
@@ -14,7 +15,6 @@ import { Observable } from 'rxjs';
 export class MonitoringPageComponent implements OnInit {
   checks$ = this.facade.checks$;
   checksAggregation$ = this.facade.checksAggregations$;
-  customChecks$ = this.facade.customChecks$;
   customMetrics$ = this.facade.customMetrics$;
   errorsChecks$ = this.facade.errorsChecks$;
   latency$ = this.facade.latency$;
@@ -33,22 +33,12 @@ export class MonitoringPageComponent implements OnInit {
 
   constructor(
     private dialogService: DialogService,
+    private mF: ModelsFacade,
     private facade: MonitoringPageFacade
   ) {}
 
   ngOnInit(): void {
     this.facade.loadMetrics();
-  }
-
-  openSettings() {
-    this.dialogService.createDialog({
-      component: MetricsComponent,
-      styles: {
-        width: '800px',
-        height: '600px',
-        padding: '0px',
-      },
-    });
   }
 
   onSelectedAggregationColumn(id: string) {

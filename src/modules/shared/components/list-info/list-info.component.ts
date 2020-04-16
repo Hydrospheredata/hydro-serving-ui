@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Model } from '@shared/models/_index';
+import { Model } from '@shared/models';
 
 @Component({
     selector: 'hydro-list-info',

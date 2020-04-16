@@ -1,14 +1,23 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Check } from '@monitoring/interfaces';
-import { ModelVersion } from '@shared/_index';
+import { ModelVersion } from '@shared/models';
+import { debug } from 'util';
 
 @Component({
   selector: 'hs-log',
   templateUrl: 'log.component.html',
   styleUrls: ['log.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogComponent implements OnChanges {
   selectedIndex: number;
+  size: 'mini' | 'full' = 'full';
   @Input() modelVersion: ModelVersion;
   @Input() checks: Check[] = [];
   @Input() loading: boolean = false;
@@ -30,10 +39,34 @@ export class LogComponent implements OnChanges {
   }
 
   isFailed(check: Check): boolean {
-    return check._hs_overall_score === 0;
+    return check._hs_overall_score < 1;
   }
 
   get haveSomeData(): boolean {
     return this.checks !== null && this.checks.length > 0;
+  }
+
+  get requestsSummaryInfo(): {
+    count: number;
+    failed: number;
+    success: number;
+  } {
+    const checks = this.checks;
+    const count = checks.length;
+    const success = checks.reduce((acc, check) => {
+      if (check._hs_overall_score === 1) {
+        acc = acc + 1;
+      }
+      return acc;
+    }, 0);
+    return {
+      count,
+      success,
+      failed: count - success,
+    };
+  }
+
+  changeSize(size: 'mini' | 'full'): void {
+    this.size = size;
   }
 }

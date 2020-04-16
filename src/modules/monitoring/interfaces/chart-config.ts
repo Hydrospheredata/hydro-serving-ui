@@ -12,8 +12,12 @@ export interface ChartConfig {
   plotBands: Array<{ from: number; to: number }>;
   name: string;
   data?: {
-    x: number[];
-    y: number[];
+    [metricName: string]: {
+      color?: string;
+      x: number[];
+      y: number[];
+      threshold?: number;
+    };
   };
   area?: boolean;
   threshold?: number;

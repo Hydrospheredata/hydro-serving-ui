@@ -25,3 +25,4 @@ export * from './mock-scatter-plot';
 export * from './mock-scatter-plot-legend';
 export * from './mock-gradient-legend';
 export * from './visualization';
+export * from './monitoring';

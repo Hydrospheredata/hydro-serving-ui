@@ -21,6 +21,7 @@ import {
   selectSelectedMetrics,
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
+import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { isNumber, isEqual } from 'lodash';
 import {
@@ -44,6 +45,7 @@ import {
   publishReplay,
   startWith,
   tap,
+  shareReplay,
 } from 'rxjs/operators';
 import { AggregationPaginator } from '../../services/aggregation-paginator';
 
@@ -120,7 +122,10 @@ export class MonitoringPageFacade {
     })
   );
 
-  checksAggregations$ = combineLatest(this.checksAggregationResponse$, this.selectedMetrics$).pipe(
+  checksAggregations$ = combineLatest(
+    this.checksAggregationResponse$,
+    this.selectedMetrics$
+  ).pipe(
     map(([aggregationResponse, metrics]) => {
       if (aggregationResponse.results === undefined) {
         return [];
@@ -167,7 +172,7 @@ export class MonitoringPageFacade {
 
       return res;
     }),
-    share()
+    shareReplay(1)
   );
 
   checks$ = this.selectedAggregation$.pipe(
@@ -187,7 +192,7 @@ export class MonitoringPageFacade {
     tap(() => this.detailedLoading$.next(false)),
     catchError(err => {
       this.detailedLoading$.next(false);
-      return of({});
+      return of([] as Check[]);
     }),
     share()
   );
@@ -207,42 +212,6 @@ export class MonitoringPageFacade {
     filter(val => val !== undefined),
     share()
   );
-  customChecks$ = combineLatest(this.checks$, this.customMetrics$).pipe(
-    map(([checks, metrics]) => {
-      const rawMetrics: Array<[string, CustomCheck]> = metrics.map(
-        ({ id, name, config: { threshold } }) =>
-          [id, { data: [], name, threshold, health: [] }] as [
-            string,
-            CustomCheck
-          ]
-      );
-
-      const customChecks: Map<string, CustomCheck> = new Map(rawMetrics);
-
-      const updateValue = (check: CustomCheck, value, health) => {
-        return {
-          ...check,
-          data: [...check.data, value],
-          health: [...check.health, health],
-        };
-      };
-
-      checks.forEach(check => {
-        const overall = Object.values(check._hs_metric_checks || {});
-        overall.forEach(({ metricSpecId, value, check: health }) => {
-          if (customChecks.has(metricSpecId)) {
-            customChecks.set(
-              metricSpecId,
-              updateValue(customChecks.get(metricSpecId), value, health)
-            );
-          }
-        });
-      });
-
-      return customChecks;
-    }),
-    share()
-  );
   private limit: number = 60;
 
   constructor(
@@ -251,7 +220,8 @@ export class MonitoringPageFacade {
     private monitoring: MonitoringService,
     private checkAggBuilder: CheckAggregationBuilder,
     private paginator: AggregationPaginator
-  ) { }
+  ) {}
+
   loadMetrics(): void {
     this.store.dispatch(LoadMetrics());
   }
@@ -259,6 +229,7 @@ export class MonitoringPageFacade {
   deleteMetric(id: string) {
     this.store.dispatch(DeleteMetric({ id }));
   }
+
   addMetric(metric: any) {
     this.store.dispatch(AddMetric({ aggregation: metric }));
   }

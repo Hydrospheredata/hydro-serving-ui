@@ -47,29 +47,25 @@
         </hs-aggregation>
       </section>
 
-      <hs-requests-information
-        [aggregation]="selectedAggregationColumn$ | async"
-        [latency]="latency$ | async"
-        [errors]="errorsChecks$ | async"
-      >
-      </hs-requests-information>
-      <hs-batch-metrics
-        *ngIf="showBatchMetricsBlock(selectedAggregationColumn$ | async)"
-        [aggregation]="selectedAggregationColumn$ | async"
-      ></hs-batch-metrics>
+    <hs-requests-information
+      [aggregation]="selectedAggregationColumn$ | async"
+      [latency]="latency$ | async"
+      [errors]="errorsChecks$ | async"
+    >
+    </hs-requests-information>
+    <hs-batch-metrics
+      *ngIf="showBatchMetricsBlock(selectedAggregationColumn$ | async)"
+      [aggregation]="selectedAggregationColumn$ | async"
+    ></hs-batch-metrics>
+    <div class="monitoring__log">
       <hs-log
         [checks]="checks$ | async"
         [modelVersion]="modelVersion$ | async"
         [loading]="detailedCheckLoading$ | async"
       ></hs-log>
-      <hs-custom-checks
-        [customMetrics]="customMetrics$ | async"
-        [customChecks]="customChecks$ | async"
-        [loading]="detailedCheckLoading$ | async"
-        (openSettings)="openSettings()"
-      ></hs-custom-checks>
-    </ng-container>
-  </hs-monitoring-availability>
+    </div>
+    <hs-custom-metrics></hs-custom-metrics>
+  </ng-container>
 </div>
 
 <ng-template #errorSection>

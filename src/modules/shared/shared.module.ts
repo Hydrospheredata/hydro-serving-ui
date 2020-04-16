@@ -20,7 +20,7 @@ import {
   FieldShapePipe,
   TimeAgoPipe,
   FormatDatePipe
-} from './pipes/_index';
+} from './pipes';
 
 // Components
 import {
@@ -42,7 +42,7 @@ import {
   ExpanderComponent,
   ProbabilitiesListComponent,
   LoaderComponent,
-} from './components/_index';
+} from './components';
 
 // Directives
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 import { ModelsRoutingModule } from './models.router';
 
@@ -14,34 +14,34 @@ import {
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
 import { ModelDetailsGuard, ModelsService, ModelVersionDetailsGuard, } from '@models/services';
-import { ModelEffects, reducer } from '@models/store';
+import { reducer, ModelEffects } from '@models/store';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilerModule } from '@profiler/profiler.module';
 import { ServablesModule } from '@servables/servables.module';
 import {
-  ModelPageComponent,
   ModelsPageComponent,
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
 } from './containers';
+import { ModelsPublicUiModule } from './shared/models-public-ui.module';
 import { StatModule } from "../stat/stat.module";
 
 @NgModule({
   imports: [
+    MonitoringModule,
+    ModelsPublicUiModule,
     ModelsRoutingModule,
     SharedModule,
     StoreModule.forFeature('models', reducer),
     EffectsModule.forFeature([ModelEffects]),
     ProfilerModule,
-    MonitoringModule,
     ServablesModule,
     StatModule
   ],
   declarations: [
     DialogDeleteModelComponent,
-    ModelPageComponent,
     ModelsComponent,
     ModelsPageComponent,
     ModelVersionDetailsComponent,

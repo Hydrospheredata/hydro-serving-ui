@@ -6,7 +6,7 @@ import {
   Stage,
   ModelVersion,
   IModelVariant,
-} from '@shared/models/_index';
+} from '@shared/models';
 import { Observable, Subject, of } from 'rxjs';
 import { tap, catchError, takeUntil, take, map } from 'rxjs/operators';
 

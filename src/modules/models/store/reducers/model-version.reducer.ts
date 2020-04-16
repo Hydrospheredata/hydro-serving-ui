@@ -1,6 +1,6 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on, Action } from '@ngrx/store';
-import { ModelVersion } from '@shared/models/_index';
+import { ModelVersion } from '@shared/models';
 import {
   GetModelVersions,
   GetModelVersionsSuccess,

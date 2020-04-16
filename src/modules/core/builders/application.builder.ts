@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Application, ISignature } from '@shared/models/_index';
+import { Application, ISignature } from '@shared/models';
 @Injectable()
 export class ApplicationBuilder {
   public build(props): Application {

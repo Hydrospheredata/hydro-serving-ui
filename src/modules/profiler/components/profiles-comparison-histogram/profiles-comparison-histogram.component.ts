@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { DoubleProfile } from '@shared/models/_index';
+import { DoubleProfile } from '@shared/models';
 import * as Highcharts from 'highcharts';
 import { HIGHCHART_COLORS } from './highchart-colors';
 

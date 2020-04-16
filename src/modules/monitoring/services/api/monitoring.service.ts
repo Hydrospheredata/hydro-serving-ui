@@ -24,7 +24,11 @@ export class MonitoringService {
   getCheck(id: string): Observable<Check> {
     return this.http.get<Check>(`${this.baseUrl}/checks/${id}`);
   }
-  getChecks({ modelVersionId, from, to }: GetChecksParams): Observable<any> {
+  getChecks({
+    modelVersionId,
+    from,
+    to,
+  }: GetChecksParams): Observable<Check[]> {
     return this.http.get(`${this.baseUrl}/checks/${modelVersionId}`, {
       params: { from, to },
     });

@@ -1,21 +1,21 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
+import { ModelsPublicUiModule } from '@models/shared/models-public-ui.module';
 import {
-  CheckChartComponent,
-  CustomCheckComponent,
-  CustomChecksComponent,
-  DialogDeleteMetricComponent,
   DialogMetricComponent,
-  DialogRequestsErrorsComponent,
-  ErrorCheckComponent,
+  DialogDeleteMetricComponent,
+  TimeIntervalSelectComponent,
   LatencyCheckComponent,
+  ErrorCheckComponent,
   LogComponent,
   LogDetailComponent,
-  LogMetricsTableComponent,
   MetricSpecConfigComponent,
-  RawChecksComponent,
   ReqstoreMetricsComponent,
   RequestsInformationComponent,
-  TimeIntervalSelectComponent,
+  CheckChartComponent,
+  DialogRequestsErrorsComponent,
+  RawChecksComponent,
+  LogMetricsTableComponent,
+  RegimeSelectorComponent,
 } from '@monitoring/components';
 import {CheckIdToTimePipe} from '@monitoring/pipes';
 import {MonitoringService} from '@monitoring/services';
@@ -31,10 +31,9 @@ import {
   BatchMetricsComponent,
   MetricsComponent,
   MonitoringAvailabilityComponent,
-  MonitoringPageComponent
+  MonitoringPageComponent,
 } from './containers';
-import {RootCauseModule} from '@rootcause/root-cause.module';
-
+import { CustomMetricsComponent } from './containers/custom-metrics/custom-metrics.component';
 @NgModule({
   entryComponents: [
     DialogDeleteMetricComponent,
@@ -44,8 +43,6 @@ import {RootCauseModule} from '@rootcause/root-cause.module';
   ],
   declarations: [
     AggregationComponent,
-    CustomChecksComponent,
-    CustomCheckComponent,
     DialogDeleteMetricComponent,
     DialogMetricComponent,
     DialogRequestsErrorsComponent,
@@ -65,8 +62,11 @@ import {RootCauseModule} from '@rootcause/root-cause.module';
     RawChecksComponent,
     BatchMetricsComponent,
     LogMetricsTableComponent,
+    RegimeSelectorComponent,
+    CustomMetricsComponent,
   ],
   imports: [
+    ModelsPublicUiModule,
     SharedModule,
     StoreModule.forFeature('monitoring', reducer),
     EffectsModule.forFeature([
