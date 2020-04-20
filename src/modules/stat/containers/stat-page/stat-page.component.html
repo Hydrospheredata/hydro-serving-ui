@@ -1,43 +1,47 @@
-<ng-container *ngIf="error$ | async as error">
-  <hs-error-message>{{error}}</hs-error-message>
-</ng-container>
-<ng-container *ngIf="stat$ | async as stat">
-  <div class="report">
-    <div class="report__title">Report</div>
-    <div class="report__body">
-      <div class="report__overall">
-        <div>
-          Overall probability drift: <span
-          class="report__overall-drift">{{stat.overall_probability_drift | percent}}</span>
+<div class="stat">
+  <hs-services-header [modelVersion]="modelVersion$ | async"></hs-services-header>
+  <ng-container *ngIf="error$ | async as error">
+    <hs-error-message>{{error}}</hs-error-message>
+  </ng-container>
+  <ng-container *ngIf="stat$ | async as stat">
+    <div class="report">
+      <div class="report__title">Report</div>
+      <div class="report__body">
+        <div class="report__overall">
+          <div>
+            Overall probability drift: <span
+            class="report__overall-drift">{{stat.overall_probability_drift | percent}}</span>
+          </div>
+          <div class="report__overall-decision">
+            <hydro-icon [drift]="stat.overall_probability_drift" class="report__overall-decision-icon" hsColorByDrift
+                        type="icon-error-outline"></hydro-icon>
+            <span class="report__overall-decision-text">{{ stat.warnings.final_decision }}</span>
+          </div>
         </div>
-        <div class="report__overall-decision">
-          <hydro-icon [drift]="stat.overall_probability_drift" class="report__overall-decision-icon" hsColorByDrift
-                      type="icon-error-outline"></hydro-icon>
-          <span class="report__overall-decision-text">{{ stat.warnings.final_decision }}</span>
-        </div>
-      </div>
-      <div class="report__warnings">
-        <div *ngFor="let warning of stat.warnings.report" class="report__warning">
+        <div class="report__warnings">
+          <div *ngFor="let warning of stat.warnings.report" class="report__warning">
           <span [drift]="warning.drift_probability_per_feature" hsColorByDrift>
             <hydro-icon class="report__warning-icon" type="icon-error-outline"></hydro-icon>
           </span>
-          <div class="report__warning-msg"> {{ warning.message }}
-            Drift: <span class="report__warning-drift"
-            >{{ warning.drift_probability_per_feature | percent}}</span>
+            <div class="report__warning-msg"> {{ warning.message }}
+              Drift: <span class="report__warning-drift"
+              >{{ warning.drift_probability_per_feature | percent}}</span>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="feature-analysis">
-    <div class="feature-analysis__title">Feature Analysis</div>
-    <div class="feature-analysis__body">
-      <hs-feature-report
-        [perFeatureReport]="stat.per_feature_report"
-      ></hs-feature-report>
+    <div class="feature-analysis">
+      <div class="feature-analysis__title">Feature Analysis</div>
+      <div class="feature-analysis__body">
+        <hs-feature-report
+          [perFeatureReport]="stat.per_feature_report"
+        ></hs-feature-report>
+      </div>
     </div>
-  </div>
-</ng-container>
+  </ng-container>
+</div>
+
 
 

@@ -9,5 +9,6 @@ export const environment = {
     timemachineUrl: '/timemachine',
     servableUrl: '/servable',
     rootCauseUrl: '/rootcause',
-    statUrl: '/stat'
+    statUrl: '/stat',
+    visualizationUrl: '/visualization'
 };

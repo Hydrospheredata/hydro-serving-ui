@@ -9,10 +9,10 @@
     >
     </hs-raw-checks>
   </section>
-  <section class="log-detail__section">
-    <div class="log-detail__label">Metrics</div>
-    <hs-log-metrics-table
+  <section *ngIf="hasMetrics">
+    <div class="log-detail__label">metrics</div>
+    <hs-metrics-checks
       [metrics]="check._hs_metric_checks"
-    ></hs-log-metrics-table>
+    ></hs-metrics-checks>
   </section>
 </div>

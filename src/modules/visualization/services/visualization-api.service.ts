@@ -1,16 +1,19 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { TaskInformation } from '../models/visualization';
 import { ModelVersion } from "@shared/models/model-version.model";
+import { HttpService } from "@core/services/http";
+import { environment } from "@environments/environment";
 
 @Injectable({providedIn: 'root'})
 export class VisualizationApi {
-  constructor(private http: HttpClient) {
+  private baseUrl: string;
+  constructor(private http: HttpService) {
+    this.baseUrl = `${environment.visualizationUrl}`
   }
 
-  private get metrics(): ReadonlyArray<string> {
+  private static get metrics(): ReadonlyArray<string> {
     return [
       'global_score',
       'sammon_error',
@@ -24,11 +27,11 @@ export class VisualizationApi {
   createTask$(transformer: string = 'umap', modelVersion: ModelVersion): Observable<TaskInformation> {
     return this.http
       .post<TaskInformation>(
-        `http://localhost:5000/plottable_embeddings/${transformer}`,
+        `${this.baseUrl}/plottable_embeddings/${transformer}`,
         {
           model_name: modelVersion.model.name,
           model_version: modelVersion.id,
-          visualization_metrics: this.metrics,
+          visualization_metrics: VisualizationApi.metrics,
           data: {
             "bucket": "hydro-vis",
             "production_data_file": "adult/requests.parquet",
@@ -41,7 +44,7 @@ export class VisualizationApi {
 
   getJobResult$(taskId: string): Observable<TaskInformation> {
     return this.http.get<TaskInformation>(
-      `http://localhost:5000/jobs?task_id=${taskId}`
+      `${this.baseUrl}/jobs?task_id=${taskId}`
     ).pipe(catchError(err => throwError(err)));
   }
 }

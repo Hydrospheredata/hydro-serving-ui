@@ -3,9 +3,9 @@
     {{ name$ | async }}
   </div>
   <svg
-    #svgContainer
-    [attr.height]="chartHeight$ | async"
-    [attr.width]="chartWidth$ | async"
+      #svgContainer
+      [attr.height]="chartHeight$ | async"
+      [attr.width]="chartWidth$ | async"
   >
     <defs>
       <clipPath [attr.id]="name$ | async">
@@ -60,11 +60,11 @@
     ></g>
 
     <rect
-      #trackableRect
-      [attr.height]="viewHeight$ | async"
-      [attr.transform]="dataTranslate$ | async"
-      [attr.width]="viewWidth$ | async"
-      opacity="0"
+        #trackableRect
+        [attr.height]="viewHeight$ | async"
+        [attr.transform]="dataTranslate$ | async"
+        [attr.width]="viewWidth$ | async"
+        opacity="0"
     ></rect>
     <g
       *ngIf="(threshold$ | async) && !(noData$ | async)"
@@ -87,7 +87,7 @@
       (click)="toggleExclude(legend)"
       *ngFor="let legend of legends$ | async; index as i"
       [ngStyle]="{
-        opacity: (excludedUids$ | async).includes(legend) ? 0.5 : 1
+        opacity: (excludedUids$ | async).includes(legend) ? '0.5' : '1'
       }"
       class="legend__item"
     >
@@ -99,12 +99,12 @@
     </div>
   </div>
   <div
-    #tooltip
-    [ngStyle]="{
+      #tooltip
+      [ngStyle]="{
       display: (mouseIn$ | async) ? 'block' : 'none',
       transform: tooltipTranslate
     }"
-    class="check-chart__tooltip"
+      class="check-chart__tooltip"
   >
     <div *ngFor="let tooltip of tooltips$ | async">
       <span [ngStyle]="{ color: tooltip.color }">{{ tooltip.name }}: </span

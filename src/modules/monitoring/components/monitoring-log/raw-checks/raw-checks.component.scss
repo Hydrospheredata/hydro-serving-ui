@@ -2,7 +2,6 @@
 
 .raw-checks {
   margin-bottom: 12px;
-
   &__table-wrapper {
     border: 2px $neutral-color-200 solid;
     border-radius: 5px;
@@ -55,12 +54,10 @@
   }
 
   &__label {
-    color: $neutral-color-1000;
+    color: $neutral-color-900;
     font-family: $font-family-bold;
-    font-size: 18px;
-    line-height: 32px;
-    position: relative;
-    text-align: center;
+    font-size: 16px;
+    line-height: 24px;
   }
 
   &__explanation {

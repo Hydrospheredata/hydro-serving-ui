@@ -27,10 +27,11 @@ export class VisualizationPageComponent {
   scatterPlotData$: Observable<ScatterPlotData>;
   colorizers$: Observable<Colorizer[]>;
   colorizer$: Observable<Colorizer>;
-  visualizationMetrics$: Observable<{[name: string]: string }>;
+  visualizationMetrics$: Observable<{ [name: string]: string }>;
   selectedId$: Observable<string>;
 
   linkRegime: LinkRegime = 'nearest';
+
   constructor(private service: VisualizationFacade) {
     this.taskId$ = this.service.taskId$;
     this.status$ = this.service.status$;

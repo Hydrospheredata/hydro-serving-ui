@@ -1,0 +1,43 @@
+@import 'variables';
+
+.metric-checks {
+  border: 2px $neutral-color-200 solid;
+  border-radius: 5px;
+  overflow: hidden;
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    text-align: left;
+    & > thead {
+      font-family: $font-family-bold;
+      & > tr {
+        border-bottom: 1px $neutral-color-300 solid;
+        & > td {
+          padding: 6px 8px;
+          color: $neutral-color-600;
+          font-size: 12px;
+        }
+      }
+    }
+    & > tbody {
+      & > tr {
+        &:nth-of-type(2n) {
+          background: $neutral-color-100;
+        }
+        & > td {
+          text-align: left;
+          padding: 4px 8px;
+          color: $neutral-color-1000;
+          vertical-align: top;
+          font-size: 12px;
+          &.error {
+            color: $supportive-color-red-600;
+            font-family: $font-family-bold;
+          }
+
+        }
+      }
+    }
+  }
+}
+

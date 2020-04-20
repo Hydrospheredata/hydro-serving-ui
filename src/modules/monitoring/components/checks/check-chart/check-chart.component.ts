@@ -61,13 +61,12 @@ export class CheckChartComponent implements OnInit {
   private excludedUids: BehaviorSubject<string[]> = new BehaviorSubject([]);
 
   constructor(private cdr: ChangeDetectorRef) {
+    console.log('created')
   }
 
   // tslint:disable-next-line:variable-name
   _config: BehaviorSubject<ChartConfig> = new BehaviorSubject({
     size: {
-      width: 0,
-      height: 0,
       margins: {
         left: 0,
         right: 0,
@@ -88,6 +87,7 @@ export class CheckChartComponent implements OnInit {
   @Input() set config(cfg: ChartConfig) {
     this._config.next(cfg);
   }
+
 
   ngOnInit() {
     select(this.rectRef.nativeElement).on('mouseout', () => this.onMouseOut());
@@ -110,7 +110,8 @@ export class CheckChartComponent implements OnInit {
         const {
           margins: {left, right},
         } = config;
-        return this.containerEl.nativeElement.offsetWidth - left - right;
+        const width = this.containerEl.nativeElement.offsetWidth - left - right;
+        return width > 0 ? width : 0;
       })
     );
     this.viewHeight$ = this.size$.pipe(
@@ -158,16 +159,18 @@ export class CheckChartComponent implements OnInit {
       }),
       shareReplay()
     );
-    this.xScale$ = combineLatest(this.viewWidth$, this.config$).pipe(
-      map(([width, config]) => {
-        console.log({width, config});
+    this.xScale$ = combineLatest(this.config$).pipe(
+      map(([config]) => {
+        const {
+          margins: {left, right},
+        } = config.size;
         const requests = Object.values(config.data).map(({x}) => x.length);
         const [, maxRequests] = extent(requests);
         return scaleLinear()
           .domain([1, maxRequests])
-          .range([0, width]);
+          .range([0, this.containerEl.nativeElement.offsetWidth - left - right]);
       }),
-      shareReplay()
+      shareReplay(1)
     );
     this.yAxisTranslate$ = this.config$.pipe(
       map(config => {

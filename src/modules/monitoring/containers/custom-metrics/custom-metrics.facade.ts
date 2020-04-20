@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import {
-  ChartConfig,
-  Check,
-  ChecksAggregationItem,
-} from '@monitoring/interfaces';
+import { ChartConfig, Check, ChecksAggregationItem, } from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { ModelVersion } from '@shared/_index';
-import { BehaviorSubject, Observable, forkJoin, combineLatest, of } from 'rxjs';
-import { switchMap, map, startWith } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { map, startWith, switchMap } from 'rxjs/operators';
 
 export type ComparisonRegime = 'split' | 'merge';
 interface ModelVersionMetricsChecks {
@@ -20,7 +16,7 @@ interface ModelVersionMetricsChecks {
     [metricName: string]: {
       data: number[];
       threshold: number;
-      health: boolean[];
+      health: boolean[]
     };
   };
 }
@@ -29,9 +25,9 @@ interface ModelVersionMetricsChecks {
 export class CustomMetricsFacade {
   customMetrics$: Observable<any>;
   chartConfigs$: Observable<Array<{ [metricName: string]: ChartConfig }>>;
-  currentCustomChecks$: Observable<any>;
   regime$: Observable<ComparisonRegime>;
   comparableModelVersions$: Observable<ModelVersion[]>;
+
   private regime: BehaviorSubject<ComparisonRegime> = new BehaviorSubject(
     'merge' as ComparisonRegime
   );
@@ -103,12 +99,9 @@ export class CustomMetricsFacade {
       this.allModelVersionMetricsChecks$
     ).pipe(
       map(([regime, customChecks]) => {
-        const newConfigs =
-          regime === 'split'
-            ? this.splitChectToChartConfigs(customChecks)
-            : this.mergeChecksToChartConfig(customChecks);
-
-        return newConfigs;
+        return regime === 'split'
+          ? this.splitChectToChartConfigs(customChecks)
+          : this.mergeChecksToChartConfig(customChecks);
       })
     );
     this.comparableModelVersions$ = this.comparableModelVersions.asObservable();
@@ -130,8 +123,7 @@ export class CustomMetricsFacade {
   ): Array<{ [metricName: string]: ChartConfig }> {
     const result = [];
     const size: ChartConfig['size'] = {
-      width: 420,
-      height: 240,
+      height: 300,
       margins: {
         left: 40,
         right: 20,
@@ -171,7 +163,6 @@ export class CustomMetricsFacade {
   ): Array<{ [metricName: string]: ChartConfig }> {
     const result: Array<{ [metricName: string]: ChartConfig }> = [{}];
     const size: ChartConfig['size'] = {
-      width: 1080,
       height: 300,
       margins: {
         left: 40,
@@ -181,7 +172,7 @@ export class CustomMetricsFacade {
       },
     };
     modelVersionsMetricsChecks.forEach(
-      ({ id, version, name, metricsChecks }) => {
+      ({ version, metricsChecks }) => {
         for (const metricName in metricsChecks) {
           if (metricsChecks.hasOwnProperty(metricName)) {
             const { data, threshold, health } = metricsChecks[metricName];

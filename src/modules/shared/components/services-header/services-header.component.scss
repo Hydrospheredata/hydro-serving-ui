@@ -1,0 +1,32 @@
+@import "variables";
+.services-header {
+  &__link {
+    color: $neutral-color-1000;
+    cursor: pointer;
+    font-family: $font-family-bold;
+    font-size: 14px;
+  }
+  &__icon {
+    height: 12px;
+    width: 12px;
+  }
+
+  &__path {
+    color: $neutral-color-700;
+    font-style: italic;
+
+    &-link {
+      color: $neutral-color-700;
+      cursor: pointer;
+
+      &:hover {
+        color: $neutral-color-900;
+      }
+    }
+
+    &-separator {
+      color: $neutral-color-500;
+      padding: 0 4px;
+    }
+  }
+}

@@ -1,7 +1,6 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
-import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { Observable } from 'rxjs';
@@ -11,10 +10,10 @@ import { Observable } from 'rxjs';
   templateUrl: './monitoring-page.component.html',
   styleUrls: ['./monitoring-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [MonitoringPageFacade]
 })
 export class MonitoringPageComponent implements OnInit {
   checks$ = this.facade.checks$;
-  checksAggregation$ = this.facade.checksAggregations$;
   customMetrics$ = this.facade.customMetrics$;
   errorsChecks$ = this.facade.errorsChecks$;
   latency$ = this.facade.latency$;
@@ -23,12 +22,7 @@ export class MonitoringPageComponent implements OnInit {
   selectedMetrics$ = this.facade.selectedMetrics$;
   siblingModelVersions$ = this.facade.siblingModelVersions$;
   error$ = this.facade.error$;
-  totalRequests$ = this.facade.requestsCount$;
-  currentRequests$ = this.facade.receivedRequestCount$;
-  canLoadRight$ = this.facade.canLoadRight$;
-  canLoadLeft$ = this.facade.canLoadLeft$;
 
-  aggregationLoading$: Observable<boolean> = this.facade.aggregationLoading$;
   detailedCheckLoading$: Observable<boolean> = this.facade.detailedLoading$;
 
   constructor(
@@ -39,17 +33,6 @@ export class MonitoringPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.facade.loadMetrics();
-  }
-
-  onSelectedAggregationColumn(id: string) {
-    this.facade.selectAggregationColumn(id);
-  }
-
-  loadOlder() {
-    this.facade.loadOlder();
-  }
-  loadNewest() {
-    this.facade.loadNewest();
   }
 
   showBatchMetricsBlock(aggregationItem: ChecksAggregationItem): boolean {

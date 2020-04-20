@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import {
-  MetricSpecificationRequest,
-  MetricSpecification,
-} from '@shared/models/metric-specification.model';
+import { MetricSpecification, MetricSpecificationRequest, } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class MetricsService {
   private baseUrl: string;
 

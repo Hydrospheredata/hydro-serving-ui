@@ -1,8 +1,8 @@
 @import "variables";
 
 .column {
-  opacity: .5;
   cursor: pointer;
+  opacity: .5;
   transition: .1s all ease;
 
   &:hover,
@@ -13,24 +13,25 @@
 
 .aggregation {
   background: white;
-  border-radius: 4px;
   border: 1px $neutral-color-200 solid;
+  border-radius: 4px;
   height: 100%;
   margin-right: 12px;
   padding: 20px 24px;
   position: relative;
-  width: 1100px;
+  width: 100%;
 
   &__loader {
+    color: $neutral-color-300;
+    font-family: $font-family-light;
     left: calc(50% - 12px);
     position: absolute;
     top: calc(100% - 20px);
-    color: $neutral-color-300;
-    font-family: $font-family-light;
+
     &-icon {
-      width: 20px;
-      height: 20px;
       display: inline-block;
+      height: 20px;
+      width: 20px;
     }
   }
 
@@ -47,38 +48,42 @@
     justify-content: center;
     line-height: 14px;
     margin-bottom: 8px;
+
     &-selected {
-      text-align: center;
       margin: 0 12px;
+      text-align: center;
     }
+
     &-nav-button {
       color: $neutral-color-600;
       cursor: pointer;
       height: 16px;
-      width: 16px;
       transition: .3s all ease;
+      width: 16px;
+
       &:hover {
-       color: $neutral-color-900;
+        color: $neutral-color-900;
       }
     }
+
     &-count {
-      font-family: $font-family-regular;
       color: $neutral-color-900;
+      font-family: $font-family-regular;
     }
   }
 
   &__labels {
-    margin: 0;
-    padding: 0;
     list-style: none;
+    margin: 0;
     margin-right: 8px;
+    padding: 0;
 
     &-item {
+      color: $neutral-color-1000;
       font-family: $font-family-light;
-      line-height: 12px;
       font-size: 10px;
-      margin-bottom: 2px;
-      color: $neutral-color-700;
+      line-height: 12px;
+      margin-bottom: 1px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -89,11 +94,13 @@
   &__batches-label {
     color: $neutral-color-900;
     font-family: $font-family-bold;
+    font-size: 12px;
   }
 
   &__message {
-    text-align: center;
     color: $neutral-color-600;
-    font-family: $font-family-light;
+    font-family: $font-family-bold;
+    font-size: 12px;
+    text-align: center;
   }
 }

@@ -1,27 +1,73 @@
-import {
-  Component,
-  Input,
-  ViewChild,
-  ElementRef,
-  ChangeDetectionStrategy,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, } from '@angular/core';
 import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { interpolateRdYlGn } from 'd3';
+import { AggregationFacade } from "@monitoring/containers/aggregation/aggregation.facade";
+import { Observable } from "@node_modules/rxjs";
+import { tap } from "@node_modules/rxjs/internal/operators";
+import { union } from 'lodash';
 
 @Component({
   selector: 'hs-aggregation',
   templateUrl: './aggregation.component.html',
   styleUrls: ['./aggregation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [AggregationFacade]
 })
-export class AggregationComponent implements OnChanges {
+export class AggregationComponent {
+  @ViewChild('svgContainer', {read: ElementRef})
+
+  svgContainer: ElementRef;
+
+  totalRequests$: Observable<number>;
+  showedRequests$: Observable<number>;
+
+  a$: Observable<ChecksAggregationItem[]>;
+  canLoadLeft: boolean;
+  canLoadRight: boolean;
+  loading: boolean = false;
+  labelsWidth: number = 100;
+  canvasWidth: number = 880;
+  selectedColumnId: string;
+
+  aggregation: ChecksAggregationItem[];
+  featureNames: string[] = [];
+  metricNames: string[] = [];
+  batchNames: string[] = [];
+
+  readonly CELL_SIZE = 12;
+  private COLUMN_MARGIN_RIGHT = 1;
+  private CELL_MARGIN_TOP = 1;
+
+  constructor(private readonly facade: AggregationFacade) {
+    this.totalRequests$ = this.facade.totalRequests$;
+    this.showedRequests$ = this.facade.showedRequests$;
+    this.a$ = this.facade.aggregation$.pipe(tap(aggregation => {
+      console.log(aggregation);
+      this.aggregation = aggregation;
+      if (aggregation) {
+        if (aggregation.length) {
+          this.featureNames = Object.keys(aggregation[0].features);
+          this.metricNames = Object.keys(aggregation[0].metrics);
+          this.batchNames = this.getBatchNames(aggregation);
+
+          // TODO MOVE IT
+          const selectedColumn = aggregation.find(
+            agg => agg.additionalInfo._id === this.selectedColumnId
+          );
+
+          this.update(selectedColumn, aggregation);
+          if (selectedColumn === undefined) {
+            this.changeActiveColumn(aggregation[aggregation.length - 1]);
+          }
+        }
+      }
+    }));
+  };
+
   get blockSize(): number {
     return 14;
   }
+
   get canvasHeight() {
     return this.featureNames.length * this.blockSize;
   }
@@ -29,8 +75,9 @@ export class AggregationComponent implements OnChanges {
   get metricsCanvasHeight() {
     return this.metricNames.length * this.blockSize;
   }
+
   get batchMetricsCanvasHeight() {
-    return this.batchNames.size * this.blockSize;
+    return this.batchNames.length * this.blockSize;
   }
 
   get firstId(): string {
@@ -38,6 +85,7 @@ export class AggregationComponent implements OnChanges {
       return this.aggregation[0].additionalInfo._hs_first_id;
     }
   }
+
   get lastId(): string {
     if (this.aggregation.length) {
       return this.aggregation[this.aggregation.length - 1].additionalInfo
@@ -45,85 +93,24 @@ export class AggregationComponent implements OnChanges {
     }
   }
 
-  get featureNames(): string[] {
-    return Object.keys(this.aggregation[0].features);
-  }
-
-  get metricNames(): string[] {
-    return Object.keys(this.aggregation[0].metrics);
-  }
-  get batchNames() {
-    const names = new Set([]);
-    this.aggregation.forEach(aggregation => {
-      const batch = aggregation.batch;
-      if (batch !== undefined) {
-        const firstFeature = Object.values(batch)[0];
-
-        if (firstFeature) {
-          Object.keys(firstFeature).forEach(n => {
-            names.add(n);
-          });
-        }
-      }
-    }, []);
-
-    return names;
-  }
-
   get dataAvailable(): boolean {
     return this.aggregation && this.aggregation.length > 0;
   }
 
-  @ViewChild('svgContainer', { read: ElementRef })
-  svgContainer: ElementRef;
-
-  @Input() aggregation: ChecksAggregationItem[] = [];
-  @Input() latency: number[] = [];
-  @Input() errors: boolean[] = [];
-  @Input() canLoadLeft: boolean;
-  @Input() canLoadRight: boolean;
-  @Input() totalRequests: number;
-  @Input() currentRequests: number;
-  @Input() loading: boolean = false;
-  @Output() changedSelectedColumn = new EventEmitter<string>();
-  @Output() loadedOlder = new EventEmitter<string>();
-  @Output() loadedNewest = new EventEmitter<string>();
-
-  labelsWidth: number = 100;
-  canvasWidth: number = 880;
-  selectedColumnId: string;
-
-  readonly CELL_SIZE = 12;
-  private COLUMN_MARGIN_RIGHT = 2;
-  private CELL_MARGIN_TOP = 2;
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.aggregation) {
-      const aggregation: ChecksAggregationItem[] = changes.aggregation.currentValue;
-      if (aggregation && aggregation.length) {
-        const selectedColumn = aggregation.find(
-          agg => agg.additionalInfo._id === this.selectedColumnId
-        );
-
-        this.update(selectedColumn, aggregation);
-      }
-    }
-  }
-
   columnTranslate(index): string {
     return `translate(${index * this.CELL_SIZE +
-      this.COLUMN_MARGIN_RIGHT * index}, 0)`;
+    this.COLUMN_MARGIN_RIGHT * index}, 0)`;
   }
 
   rowTranslate(index): string {
     return `translate(0, ${index * this.CELL_SIZE +
-      index * this.CELL_MARGIN_TOP})`;
+    index * this.CELL_MARGIN_TOP})`;
   }
 
   changeActiveColumn(aggregation: ChecksAggregationItem) {
     const id = aggregation.additionalInfo._id;
     this.selectedColumnId = id;
-    this.changedSelectedColumn.next(id);
+    this.facade.selectAggregation(aggregation);
   }
 
   cellColor(column: ChecksAggregationItem, featureName: string) {
@@ -131,7 +118,7 @@ export class AggregationComponent implements OnChanges {
       return 'url(#repeat)';
     }
 
-    const { passed, checked } = column.features[featureName];
+    const {passed, checked} = column.features[featureName];
 
     const ratio = checked / passed;
 
@@ -147,7 +134,7 @@ export class AggregationComponent implements OnChanges {
       return 'url(#repeat)';
     }
 
-    const { passed, checked } = column.metrics[metricName];
+    const {passed, checked} = column.metrics[metricName];
 
     const ratio = checked / passed;
 
@@ -157,6 +144,7 @@ export class AggregationComponent implements OnChanges {
       return 'url(#repeat)';
     }
   }
+
   batchMetricCellColor(column: ChecksAggregationItem, batchName: string) {
     const batch = column.batch;
     if (batch === undefined) {
@@ -191,10 +179,19 @@ export class AggregationComponent implements OnChanges {
   }
 
   loadOlder() {
-    this.loadedOlder.emit();
+    // this.loadedOlder.emit();
   }
+
   loadNewest() {
-    this.loadedNewest.emit();
+    // this.loadedNewest.emit();
+  }
+
+  private getBatchNames(aggregation: ChecksAggregationItem[]): string[] {
+    return aggregation
+      .filter(agg => agg.batch)
+      .reduce((names, {batch}) => {
+        return union(names, Object.keys(Object.values(batch)[0]))
+      }, [])
   }
 
   private update(

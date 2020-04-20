@@ -28,6 +28,7 @@
   }
 
   &__list {
+    background: white;
     border: 1px $neutral-color-200 solid;
     border-radius: 16px;
     height: 32px;
@@ -38,7 +39,7 @@
   }
 
   &__button {
-    margin: 0 4px;
+    margin: 0 2px;
   }
 
   &__item {

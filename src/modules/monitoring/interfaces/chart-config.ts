@@ -1,7 +1,7 @@
 export interface ChartConfig {
   size: {
-    width: number;
-    height: number;
+    width?: number;
+    height?: number;
     margins?: {
       bottom?: number;
       left?: number;

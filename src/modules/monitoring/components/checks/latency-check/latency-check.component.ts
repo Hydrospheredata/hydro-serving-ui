@@ -1,5 +1,6 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ChartConfig } from '@monitoring/interfaces';
+
 @Component({
   selector: 'hs-latency-check',
   templateUrl: 'latency-check.component.html',
@@ -7,6 +8,9 @@ import { ChartConfig } from '@monitoring/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LatencyCheckComponent {
+  constructor() {
+    console.log('created latency check')
+  }
   @Input()
   set data(data: number[]) {
     if (data) {
@@ -30,7 +34,6 @@ export class LatencyCheckComponent {
       },
     },
     size: {
-      width: 340,
       height: 68,
       margins: {
         left: 24,

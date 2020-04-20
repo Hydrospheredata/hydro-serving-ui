@@ -1,4 +1,4 @@
-<div class="aggregation">
+<div class="aggregation" *ngIf="a$ | async as aggregation">
   <ng-container *ngIf="loading">
     <div class="aggregation__loader">
       <hs-loader class="aggregation__loader-icon"></hs-loader>
@@ -6,23 +6,23 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="dataAvailable; else noDataAvailable">
+  <ng-container *ngIf="aggregation.length; else noDataAvailable">
     <div class="aggregation__header">
       <hydro-icon
-        *ngIf="canLoadLeft"
-        type="icon-left"
         (click)="loadOlder()"
+        *ngIf="canLoadLeft"
         class="aggregation__header-nav-button"
+        type="icon-left"
       >
       </hydro-icon>
       <div class="aggregation__header-selected">
         <div>
           Requests:
-          <span class="aggregation__header-count">{{ totalRequests }} </span>
+          <span class="aggregation__header-count">{{ totalRequests$ | async }} </span>
         </div>
         <div>
           Showed:
-          <span class="aggregation__header-count">{{ currentRequests }} </span>
+          <span class="aggregation__header-count">{{ showedRequests$ | async }} </span>
         </div>
         <div>
           <span>{{ firstId | checkIdToTime | hsFormatDate }}</span> -
@@ -30,49 +30,49 @@
         </div>
       </div>
       <hydro-icon
-        *ngIf="canLoadRight"
-        type="icon-right"
         (click)="loadNewest()"
+        *ngIf="canLoadRight"
         class="aggregation__header-nav-button"
+        type="icon-right"
       >
       </hydro-icon>
     </div>
     <div class="aggregation__features-label">Features</div>
-    <div class="aggregation__body" *ngIf="featureNames">
-      <ul class="aggregation__labels" [ngStyle]="{ 'width.px': labelsWidth }">
-        <li class="aggregation__labels-item" *ngFor="let label of featureNames">
+    <div *ngIf="featureNames" class="aggregation__body">
+      <ul [ngStyle]="{ 'width.px': labelsWidth }" class="aggregation__labels">
+        <li *ngFor="let label of featureNames" class="aggregation__labels-item">
           {{ label }}
         </li>
       </ul>
       <div class="aggregation__checks">
-        <svg [attr.width]="canvasWidth" [attr.height]="canvasHeight">
+        <svg [attr.height]="canvasHeight" [attr.width]="canvasWidth">
           <defs>
-            <linearGradient id="Gradient-1" x1="0" y1="0" x2="25%" y2="25%">
-              <stop offset="0%" stop-color="black" />
-              <stop offset="50%" stop-color="black" />
-              <stop offset="50%" stop-color="white" />
-              <stop offset="100%" stop-color="white" />
+            <linearGradient id="Gradient-1" x1="0" x2="25%" y1="0" y2="25%">
+              <stop offset="0%" stop-color="black"/>
+              <stop offset="50%" stop-color="black"/>
+              <stop offset="50%" stop-color="white"/>
+              <stop offset="100%" stop-color="white"/>
             </linearGradient>
 
             <linearGradient
               id="repeat"
-              xlink:href="#Gradient-1"
               spreadMethod="repeat"
+              xlink:href="#Gradient-1"
             />
           </defs>
           <g
-            *ngFor="let column of aggregation; let columnIndex = index"
-            class="column"
-            [attr.transform]="columnTranslate(columnIndex)"
             (click)="changeActiveColumn(column)"
+            *ngFor="let column of aggregation; let columnIndex = index"
+            [attr.transform]="columnTranslate(columnIndex)"
             [ngClass]="{ 'column--active': isSelected(column) }"
+            class="column"
           >
             <rect
               *ngFor="let featureName of featureNames; let rowIndex = index"
-              [attr.width]="CELL_SIZE"
-              [attr.height]="CELL_SIZE"
               [attr.fill]="cellColor(column, featureName)"
+              [attr.height]="CELL_SIZE"
               [attr.transform]="rowTranslate(rowIndex)"
+              [attr.width]="CELL_SIZE"
             ></rect>
           </g>
         </svg>
@@ -80,30 +80,30 @@
     </div>
     <ng-container *ngIf="metricNames && metricNames.length">
       <div class="aggregation__metrics-label">Metrics</div>
-      <div class="aggregation__body" *ngIf="metricNames">
-        <ul class="aggregation__labels" [ngStyle]="{ 'width.px': labelsWidth }">
+      <div *ngIf="metricNames" class="aggregation__body">
+        <ul [ngStyle]="{ 'width.px': labelsWidth }" class="aggregation__labels">
           <li
-            class="aggregation__labels-item"
             *ngFor="let label of metricNames"
+            class="aggregation__labels-item"
           >
             {{ label }}
           </li>
         </ul>
         <div class="aggregation__checks">
-          <svg [attr.width]="canvasWidth" [attr.height]="metricsCanvasHeight">
+          <svg [attr.height]="metricsCanvasHeight" [attr.width]="canvasWidth">
             <g
-              *ngFor="let column of aggregation; let columnIndex = index"
-              class="column"
-              [attr.transform]="columnTranslate(columnIndex)"
               (click)="changeActiveColumn(column)"
+              *ngFor="let column of aggregation; let columnIndex = index"
+              [attr.transform]="columnTranslate(columnIndex)"
               [ngClass]="{ 'column--active': isSelected(column) }"
+              class="column"
             >
               <rect
                 *ngFor="let metricName of metricNames; let rowIndex = index"
-                [attr.width]="CELL_SIZE"
-                [attr.height]="CELL_SIZE"
                 [attr.fill]="metricCellColor(column, metricName)"
+                [attr.height]="CELL_SIZE"
                 [attr.transform]="rowTranslate(rowIndex)"
+                [attr.width]="CELL_SIZE"
               ></rect>
             </g>
           </svg>
@@ -113,33 +113,33 @@
 
     <ng-container *ngIf="metricNames && metricNames.length">
       <div class="aggregation__batches-label">Batch metrics</div>
-      <div class="aggregation__body" *ngIf="metricNames">
-        <ul class="aggregation__labels" [ngStyle]="{ 'width.px': labelsWidth }">
+      <div *ngIf="metricNames" class="aggregation__body">
+        <ul [ngStyle]="{ 'width.px': labelsWidth }" class="aggregation__labels">
           <li
-            class="aggregation__labels-item"
             *ngFor="let batchName of batchNames"
+            class="aggregation__labels-item"
           >
             {{ batchName }}
           </li>
         </ul>
         <div class="aggregation__checks">
           <svg
-            [attr.width]="canvasWidth"
             [attr.height]="batchMetricsCanvasHeight"
+            [attr.width]="canvasWidth"
           >
             <g
-              *ngFor="let column of aggregation; let columnIndex = index"
-              class="column"
-              [attr.transform]="columnTranslate(columnIndex)"
               (click)="changeActiveColumn(column)"
+              *ngFor="let column of aggregation; let columnIndex = index"
+              [attr.transform]="columnTranslate(columnIndex)"
               [ngClass]="{ 'column--active': isSelected(column) }"
+              class="column"
             >
               <rect
                 *ngFor="let batchMetricName of batchNames; let rowIndex = index"
-                [attr.width]="CELL_SIZE"
-                [attr.height]="CELL_SIZE"
                 [attr.fill]="batchMetricCellColor(column, batchMetricName)"
+                [attr.height]="CELL_SIZE"
                 [attr.transform]="rowTranslate(rowIndex)"
+                [attr.width]="CELL_SIZE"
               ></rect>
             </g>
           </svg>

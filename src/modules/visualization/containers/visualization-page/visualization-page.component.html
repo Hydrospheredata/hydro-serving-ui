@@ -1,12 +1,12 @@
 <div class="visualization">
+  <hs-services-header [modelVersion]="modelVersion$ | async"></hs-services-header>
   <div *ngIf="(status$ | async) === 'PENDING'" class="visualization__loader">
-    <hydro-icon class="visualization__loader-icon" type="scatter"></hydro-icon>
+    Loading...
     <span class="visualization__loader-status"
     >Task id: {{ taskId$ | async }}</span
     >
   </div>
   <div *ngIf="(status$ | async) === 'FAILED'" class="visualization__error">
-    <hydro-icon class="visualization__error-icon" type="circle-x"></hydro-icon>
     <div class="visualization__error-message">
       <hs-error-message>
         {{ error$ | async | json }}

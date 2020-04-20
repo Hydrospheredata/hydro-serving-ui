@@ -1,71 +1,33 @@
 <div class="monitoring">
-  <div class="monitoring__header">
-    <div
-      class="monitoring__header-link"
-      [routerLink]="['../']"
-      queryParamsHandling="merge"
-    >
-      <hydro-icon
-        class="monitoring__header-link-icon"
-        type="icon-left"
-      ></hydro-icon>
-
-      back to model version
-    </div>
-    <div
-      class="monitoring__path"
-      *ngIf="modelVersion$ | async as modelVersion"
-    >
-      <span
-        class="monitoring__path-link"
-        [routerLink]="['../../']"
-        queryParamsHandling="merge"
-        >{{ modelVersion.model.name }}</span
-      ><span class="monitoring__path-separator">/</span
-      ><span
-        class="monitoring__path-link"
-        [routerLink]="['../']"
-        queryParamsHandling="merge"
-        >{{ modelVersion.modelVersion }}</span
-      >
-    </div>
-  </div>
+  <hs-services-header [modelVersion]="modelVersion$ | async"></hs-services-header>
   <hs-monitoring-availability>
     <ng-container *ngIf="!(error$ | async); else errorSection">
       <section class="monitoring__aggregation">
-        <hs-aggregation
-          [totalRequests]="totalRequests$ | async"
-          [currentRequests]="currentRequests$ | async"
-          [aggregation]="checksAggregation$ | async"
-          [canLoadLeft]="canLoadLeft$ | async"
-          [canLoadRight]="canLoadRight$ | async"
-          [loading]="aggregationLoading$ | async"
-          (changedSelectedColumn)="onSelectedAggregationColumn($event)"
-          (loadedOlder)="loadOlder()"
-          (loadedNewest)="loadNewest()"
-        >
+        <hs-aggregation>
         </hs-aggregation>
       </section>
+      <ng-container *ngIf="selectedAggregationColumn$ | async as aggregation">
+        <hs-requests-information
+          [aggregation]="aggregation"
+          [errors]="errorsChecks$ | async"
+          [latency]="latency$ | async"
+        >
+        </hs-requests-information>
+        <hs-batch-metrics
+          *ngIf="showBatchMetricsBlock(aggregation)"
+          [aggregation]="aggregation"
+        ></hs-batch-metrics>
+        <div class="monitoring__log">
+          <hs-log
+            [checks]="checks$ | async"
+            [loading]="detailedCheckLoading$ | async"
+            [modelVersion]="modelVersion$ | async"
+          ></hs-log>
+        </div>
+      </ng-container>
 
-    <hs-requests-information
-      [aggregation]="selectedAggregationColumn$ | async"
-      [latency]="latency$ | async"
-      [errors]="errorsChecks$ | async"
-    >
-    </hs-requests-information>
-    <hs-batch-metrics
-      *ngIf="showBatchMetricsBlock(selectedAggregationColumn$ | async)"
-      [aggregation]="selectedAggregationColumn$ | async"
-    ></hs-batch-metrics>
-    <div class="monitoring__log">
-      <hs-log
-        [checks]="checks$ | async"
-        [modelVersion]="modelVersion$ | async"
-        [loading]="detailedCheckLoading$ | async"
-      ></hs-log>
-    </div>
-    <hs-custom-metrics></hs-custom-metrics>
-  </ng-container>
+      <hs-custom-metrics></hs-custom-metrics>
+    </ng-container>
   </hs-monitoring-availability>
 </div>
 

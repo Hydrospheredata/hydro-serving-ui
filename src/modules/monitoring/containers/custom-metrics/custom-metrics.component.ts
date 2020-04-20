@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelVersion } from '@shared/models';
 import { Observable } from 'rxjs';
-import { MetricsComponent } from '../metrics/metrics.component';
-import { CustomMetricsFacade, ComparisonRegime } from './custom-metrics.facade';
+import { MetricsComponent } from '@monitoring/containers';
+import { ComparisonRegime, CustomMetricsFacade } from './custom-metrics.facade';
+import { MonitoringPageFacade } from "@monitoring/store/facades";
 
 @Component({
   selector: 'hs-custom-metrics',
@@ -15,9 +16,10 @@ export class CustomMetricsComponent {
   customMetricsChecks$: Observable<any>;
   comparisonRegime$: Observable<ComparisonRegime>;
   comparableModelVersions$: Observable<ModelVersion[]>;
-  comparableCustomMetrics$: Observable<any>;
   chartConfigs: any;
+
   constructor(
+    private monitoringPageFacade: MonitoringPageFacade,
     private facade: CustomMetricsFacade,
     private dialog: DialogService
   ) {
@@ -32,12 +34,14 @@ export class CustomMetricsComponent {
   }
 
   changeRegime(regime: ComparisonRegime): void {
-    this.facade.changeRegime(regime);
+    // TODO: check performance
+    // this.facade.changeRegime(regime);
   }
 
   openSettings() {
     this.dialog.createDialog({
       component: MetricsComponent,
+      providers: [{ provide: MonitoringPageFacade, useValue: this.monitoringPageFacade}],
       styles: {
         width: '800px',
         height: '600px',
@@ -45,4 +49,8 @@ export class CustomMetricsComponent {
       },
     });
   }
+
+  trackByFn(index) {
+    return index
+  };
 }
