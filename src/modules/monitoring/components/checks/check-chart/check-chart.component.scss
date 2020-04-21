@@ -3,9 +3,9 @@
   position: relative;
   &__title {
     color: $neutral-color-900;
-    font-family: $font-family-light;
+    font-family: $font-family-bold;
     line-height: 24px;
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 12px;
     text-align: center;
   }
@@ -19,13 +19,12 @@
     left: 0;
     background: white;
     border-radius: 4px;
-    border: 1px $neutral-color-200 solid;
+    border: 2px $neutral-color-200 solid;
     position: absolute;
     padding: 8px;
     font-size: 12px;
     color: $neutral-color-800;
     pointer-events: none;
-    padding: 4px;
     font-family: $font-family-bold;
   }
 
@@ -37,9 +36,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $neutral-color-600;
-    font-family: $font-family-light;
-    font-size: 16px;
+    color: $neutral-color-300;
+    font-family: $font-family-bold;
+    font-size: 14px;
   }
 }
 

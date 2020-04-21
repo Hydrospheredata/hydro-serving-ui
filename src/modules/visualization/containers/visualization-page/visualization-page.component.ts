@@ -47,6 +47,7 @@ export class VisualizationPageComponent {
     this.counterfactuals$ = this.service.counterfactuals$;
     this.visualizationMetrics$ = this.service.visualizationMetrics$;
     this.selectedId$ = this.service.selectedId$;
+
     this.service.loadEmbedding();
   }
 

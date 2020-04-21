@@ -1,79 +1,79 @@
 <div #containerEl class="check-chart">
-  <div *ngIf="name$ | async" class="check-chart__title">
-    {{ name$ | async }}
+  <div class="check-chart__title">
+    {{ name }}
   </div>
   <svg
       #svgContainer
-      [attr.height]="chartHeight$ | async"
-      [attr.width]="chartWidth$ | async"
+      [attr.height]="chartHeight"
+      [attr.width]="chartWidth"
   >
     <defs>
-      <clipPath [attr.id]="name$ | async">
+      <clipPath [attr.id]="name">
         <rect
-          [attr.height]="viewHeight$ | async"
-          [attr.transform]="dataTranslate$ | async"
-          [attr.width]="viewWidth$ | async"
-          x="0"
-          y="0"
+          [attr.height]="viewHeight"
+          [attr.width]="viewWidth"
+          [attr.x]="margins.left"
+          [attr.y]="margins.top"
         ></rect>
       </clipPath>
     </defs>
     <g
-      *ngIf="!(noData$ | async)"
-      [attr.transform]="yAxisTranslate$ | async"
-      [scale]="yScale$ | async"
+      *ngIf="!noData"
+      [attr.transform]="dataTranslate"
+      [scale]="scaleY"
       hsD3Axis
       position="left"
     ></g>
     <g
-      *ngIf="!(noData$ | async)"
-      [attr.transform]="xAxisTranslate$ | async"
-      [scale]="xScale$ | async"
+      *ngIf="!noData"
+      [attr.transform]="xAxisTranslate"
+      [scale]="scaleX"
       hsD3Axis
     ></g>
     <line
-      [attr.x1]="(activeLinePosition$ | async).x"
-      [attr.x2]="(activeLinePosition$ | async).x"
+      *ngIf="activePoint"
+      [attr.x1]="activePoint.x"
+      [attr.x2]="activePoint.x"
       [attr.y1]="0"
-      [attr.y2]="(activeLinePosition$ | async).y"
-      [ngStyle]="{ display: (mouseIn$ | async) ? 'block' : 'none' }"
+      [attr.y2]="viewHeight + margins.top"
       style="stroke:rgba(78, 112, 151, 0.336);stroke-width:1"
     />
-    <g *ngIf="!(noData$ | async)">
+    <g *ngIf="!noData">
       <g
-        *ngFor="let plotBand of plotBands$ | async"
-        [attr.transform]="dataTranslate$ | async"
-        [height]="viewHeight$ | async"
+        *ngFor="let plotBand of plotBands"
+        [attr.transform]="dataTranslate"
+        [height]="viewHeight"
         [hs-d3-plot-band]="plotBand"
-        [xScale]="xScale$ | async"
+        [xScale]="scaleX"
         fill="#e12d393d"
       ></g>
     </g>
     <g
-      *ngFor="let item of mappedData$ | async | keyvalue; index as i"
-      [attr.stroke]="lineColor(i)"
-      [attr.transform]="dataTranslate$ | async"
-      [data]="item.value"
+      *ngFor="let s of visibleSeries"
+      [attr.stroke]="s.color"
+      [attr.transform]="dataTranslate"
+      [data]="s.data"
       [hs-d3line]
-      [xScale]="xScale$ | async"
-      [yScale]="yScale$ | async"
+      [xScale]="scaleX"
+      [yScale]="scaleY"
     ></g>
-
     <rect
         #trackableRect
-        [attr.height]="viewHeight$ | async"
-        [attr.transform]="dataTranslate$ | async"
-        [attr.width]="viewWidth$ | async"
+        [attr.height]="viewHeight"
+        [attr.transform]="dataTranslate"
+        [attr.width]="viewWidth"
         opacity="0"
     ></rect>
     <g
-      *ngIf="(threshold$ | async) && !(noData$ | async)"
-      [attr.transform]="dataTranslate$ | async"
-      [hs-d3threshold]="threshold$ | async"
-      [yScale]="yScale$ | async"
+      *ngIf="threshold !== undefined && !noData"
+      [attr.clip-path]="clipUrl"
+      [attr.transform]="thresholdTranslate"
+      [hs-d3threshold]="threshold"
+      [width]="chartWidth"
+      [yScale]="scaleY"
     ></g>
     <circle
-      *ngFor="let circle of activeCircles$ | async"
+      *ngFor="let circle of activeCircles"
       [attr.cx]="circle.x"
       [attr.cy]="circle.y"
       [attr.fill]="circle.color"
@@ -84,34 +84,29 @@
   </svg>
   <div class="legend">
     <div
-      (click)="toggleExclude(legend)"
-      *ngFor="let legend of legends$ | async; index as i"
-      [ngStyle]="{
-        opacity: (excludedUids$ | async).includes(legend) ? '0.5' : '1'
-      }"
+      *ngFor="let s of series"
       class="legend__item"
+      (click)="toggleExclude(s.name)"
+      [ngStyle]="{'opacity': excludedSeries.includes(s.name) ? '0.5' : '1'}"
     >
       <span
-        [ngStyle]="{ backgroundColor: lineColor(i) }"
+        [ngStyle]="{ backgroundColor: s.color }"
         class="legend__item-color"
       ></span>
-      <span>{{ legend }}</span>
+      <span>{{ s.name }}</span>
     </div>
   </div>
   <div
-      #tooltip
-      [ngStyle]="{
-      display: (mouseIn$ | async) ? 'block' : 'none',
-      transform: tooltipTranslate
-    }"
-      class="check-chart__tooltip"
+    *ngIf="tooltip"
+    [ngStyle]="{'left': tooltip.x + 'px', 'top': tooltip.y+'px'}"
+    class="check-chart__tooltip"
   >
-    <div *ngFor="let tooltip of tooltips$ | async">
-      <span [ngStyle]="{ color: tooltip.color }">{{ tooltip.name }}: </span
-      ><span>{{ tooltip.value }}</span>
+    <div *ngFor="let value of tooltip.values" >
+      <span [ngStyle]="{ color: value.color }">{{ value.name }}: </span
+      ><span>{{ value.value }}</span>
     </div>
   </div>
-  <div *ngIf="noData$ | async" class="check-chart__no-data">
+  <div *ngIf="noData" class="check-chart__no-data">
     <span>no data available</span>
   </div>
 </div>

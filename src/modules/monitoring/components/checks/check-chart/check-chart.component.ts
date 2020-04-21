@@ -1,88 +1,65 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation, } from '@angular/core';
 import { ChartConfig } from '@monitoring/interfaces';
-import { extent, mouse, scaleLinear, select } from 'd3';
-import { isEmpty } from 'lodash';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { filter, map, pluck, shareReplay } from 'rxjs/operators';
+import { extent, mouse, scaleLinear, ScaleLinear, select } from 'd3';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { filter, shareReplay, tap } from 'rxjs/operators';
 
 interface Tooltip {
-  name: string;
-  value: number;
-  color: string;
+  x: number;
+  y: number;
+  values: Array<{
+    name: string,
+    color: string,
+    value: number,
+  }>
 }
 
 @Component({
   selector: 'hs-check-chart',
   templateUrl: './check-chart.component.html',
   styleUrls: ['./check-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
 export class CheckChartComponent implements OnInit {
   @ViewChild('trackableRect', {read: ElementRef}) rectRef: ElementRef;
-  @ViewChild('tooltip', {read: ElementRef}) tooltipRef: ElementRef;
 
-  // TODO: FIX
-  tooltipTranslate: string;
-  activeCircles$: Observable<Array<{ x: number; y: number; color: string }>>;
-  activeLinePosition$: Observable<{ x: number; y: number }>;
-  chartHeight$: Observable<ChartConfig['size']['height']>;
-  chartWidth$: Observable<ChartConfig['size']['width']>;
-  clipUrl$: Observable<string>;
   config$: Observable<ChartConfig>;
-  dataTranslate$: Observable<string>;
-  legends$: Observable<string[]>;
-  mappedData$: Observable<{ [name: string]: number[][] }>;
-  mouseIn$: Observable<boolean>;
-  name$: Observable<ChartConfig['name']>;
-  size$: Observable<ChartConfig['size']>;
-  tooltips$: Observable<Tooltip[]>;
-  viewHeight$: Observable<number>;
-  viewWidth$: Observable<number>;
-  xAxisTranslate$: Observable<string>;
-  xScale$: Observable<any>;
-  yAxisTranslate$: Observable<string>;
-  yScale$: Observable<any>;
-  excludedUids$: Observable<string[]>;
-  noData$: Observable<boolean>;
-  threshold$: Observable<number>;
-  plotBands$: Observable<any>;
+  // config vars
+  name: string = '';
+  threshold: number;
+  margins: ChartConfig['size']['margins'];
+
+  // chart vars
+  chartWidth: number;
+  chartHeight: number;
+  viewHeight: number = 0;
+  viewWidth: number;
+  scaleX: ScaleLinear<any, any>;
+  scaleY: ScaleLinear<any, any>;
+  series: ChartConfig["series"];
+  visibleSeries: ChartConfig["series"];
+  plotBands: any[];
+  activePoint: { x: number, y: number } | null;
+  activeCircles: Array<{ x: number; y: number, color: string }>;
+  tooltip: Tooltip | null;
+  // translates
+  dataTranslate: string;
+  yAxisTranslate: string;
+  xAxisTranslate: string;
+  thresholdTranslate: string;
+  noData: boolean = false;
+  clipUrl: string;
   @ViewChild('containerEl', {read: ElementRef}) containerEl: ElementRef;
   private mouseIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private excludedUids: BehaviorSubject<string[]> = new BehaviorSubject([]);
+  private excludedSeries: string[] = [];
 
   constructor(private cdr: ChangeDetectorRef) {
-    console.log('created')
+    setInterval(() => {
+    }, 1000);
   }
 
-  // tslint:disable-next-line:variable-name
-  _config: BehaviorSubject<ChartConfig> = new BehaviorSubject({
-    size: {
-      margins: {
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-      },
-    },
-    name: 'default',
-    data: {
-      default: {
-        x: [1],
-        y: [2],
-      },
-    },
-    plotBands: [],
-  });
+  _config: BehaviorSubject<ChartConfig> = new BehaviorSubject(null);
+  cfg: ChartConfig;
 
   @Input() set config(cfg: ChartConfig) {
     this._config.next(cfg);
@@ -96,219 +73,125 @@ export class CheckChartComponent implements OnInit {
     );
     this.config$ = this._config.asObservable().pipe(
       filter(val => !!val),
-      shareReplay(1)
-    );
-    this.threshold$ = this.config$.pipe(pluck('threshold'));
-    this.plotBands$ = this.config$.pipe(pluck('plotBands'));
-    this.name$ = this.config$.pipe(pluck('name'));
-    this.clipUrl$ = this.name$.pipe(map(name => `url(#${name})`));
-    this.size$ = this.config$.pipe(pluck('size'));
-    this.chartHeight$ = this.size$.pipe(pluck('height'));
-    this.chartWidth$ = of(this.containerEl.nativeElement.offsetWidth);
-    this.viewWidth$ = this.size$.pipe(
-      map(config => {
-        const {
-          margins: {left, right},
-        } = config;
-        const width = this.containerEl.nativeElement.offsetWidth - left - right;
-        return width > 0 ? width : 0;
-      })
-    );
-    this.viewHeight$ = this.size$.pipe(
-      map(config => {
-        const {
-          height,
-          margins: {top, bottom},
-        } = config;
-        return height - top - bottom;
-      })
-    );
-    this.dataTranslate$ = this.config$.pipe(
-      map(config => {
-        const {left: x, top: y} = config.size.margins;
-        return `translate(${x}, ${y})`;
+      tap(cfg => {
+        this.cfg = cfg;
+
+        this.name = cfg.name;
+        this.clipUrl = `url(#${this.name})`
+        this.threshold = cfg.threshold;
+        this.chartWidth = this.containerEl.nativeElement.offsetWidth;
+        this.chartHeight = cfg.size.height || this.containerEl.nativeElement.offsetHeight;
+        this.margins = cfg.size.margins;
+        // calculate some properties
+        const {top, bottom, left, right} = cfg.size.margins;
+        const viewWidth = this.chartWidth - left - right;
+        this.viewWidth = viewWidth > 0 ? viewWidth : 0;
+        this.viewHeight = this.chartHeight - top - bottom;
+
+        this.dataTranslate = `translate(${left}, ${top})`;
+        this.xAxisTranslate = `translate(${left}, ${top + this.viewHeight})`;
+        this.thresholdTranslate = `translate(0, ${top})`
+        // scales
+        this.render();
+
       }),
       shareReplay(1)
     );
-    this.excludedUids$ = this.excludedUids.asObservable();
-    this.mappedData$ = combineLatest(this.config$, this.excludedUids$).pipe(
-      map(([config, excludedUids]) => {
-        const entries = Object.entries(config.data);
-        return entries.reduce((acc, [name, data]) => {
-          if (!excludedUids.includes(name)) {
-            acc[name] = data.x.map((value, idx) => [value, data.y[idx]]);
-          }
-          return acc;
-        }, {});
-      })
-    );
-    this.yScale$ = combineLatest(this.viewHeight$, this.mappedData$).pipe(
-      map(([height, mappedData]) => {
-        if (isEmpty(mappedData)) {
-          return null;
-        }
-        const allYData = Object.values(mappedData)
-          .map(arr => arr.map(i => i[1]))
-          .reduce((acc, cur) => [...acc, ...extent(cur)]);
-
-        const [min, max] = extent(allYData);
-
-        return scaleLinear()
-          .domain([max, min])
-          .range([0, height]);
-      }),
-      shareReplay()
-    );
-    this.xScale$ = combineLatest(this.config$).pipe(
-      map(([config]) => {
-        const {
-          margins: {left, right},
-        } = config.size;
-        const requests = Object.values(config.data).map(({x}) => x.length);
-        const [, maxRequests] = extent(requests);
-        return scaleLinear()
-          .domain([1, maxRequests])
-          .range([0, this.containerEl.nativeElement.offsetWidth - left - right]);
-      }),
-      shareReplay(1)
-    );
-    this.yAxisTranslate$ = this.config$.pipe(
-      map(config => {
-        const {left: x, top: y} = config.size.margins;
-        return `translate(${x}, ${y})`;
-      })
-    );
-    this.xAxisTranslate$ = combineLatest(this.size$, this.viewHeight$).pipe(
-      map(([size, height]) => {
-        const {
-          margins: {top, left: x},
-        } = size;
-        const y = top + height;
-        return `translate(${x}, ${y})`;
-      })
-    );
-    this.legends$ = this.config$.pipe(
-      map(config => {
-        return Object.keys(config.data);
-      })
-    );
-
-    this.mouseIn$ = combineLatest(
-      this.mappedData$,
-      this.mouseIn.asObservable()
-    ).pipe(
-      map(([mappedData, mouseIn]) => {
-        if (isEmpty(mappedData)) {
-          return false;
-        }
-
-        return mouseIn;
-      })
-    );
-    this.activeLinePosition$ = combineLatest(
-      this.mouseIn$,
-      this.xScale$,
-      this.size$,
-      this.viewHeight$
-    ).pipe(
-      map(([mouseIn, xScale, size, viewHeight]) => {
-        if (mouseIn) {
-          const [xCoordinate] = mouse(this.rectRef.nativeElement);
-          const xValue = Math.round(xScale.invert(xCoordinate));
-          const {left, top} = size.margins;
-          return {x: xScale(xValue) + left, y: viewHeight + top};
-        } else {
-          return {x: 0, y: 0};
-        }
-      })
-    );
-
-    this.activeCircles$ = combineLatest(
-      this.mouseIn,
-      this.mappedData$,
-      this.size$,
-      this.xScale$,
-      this.yScale$
-    ).pipe(
-      map(([mouseIn, mappedData, size, xScale, yScale]) => {
-        if (mouseIn) {
-          const {top, left} = size.margins;
-          const [xCoordinate] = mouse(this.rectRef.nativeElement);
-          const xValue = Math.round(xScale.invert(xCoordinate));
-
-          return Object.values(mappedData).map((coordinatesTyples, idx) => ({
-            x: xScale(xValue) + left,
-            y: yScale(coordinatesTyples[xValue - 1][1]) + top,
-            color: this.lineColor(idx),
-          }));
-        }
-      })
-    );
-
-    this.tooltips$ = combineLatest(
-      this.mouseIn,
-      this.mappedData$,
-      this.size$,
-      this.xScale$,
-      this.yScale$
-    ).pipe(
-      map(([mouseIn, mappedData, size, xScale, yScale]) => {
-        if (mouseIn && !isEmpty(mappedData)) {
-          const [xCoordinate] = mouse(this.rectRef.nativeElement);
-          const xValue = Math.round(xScale.invert(xCoordinate));
-          const {top, left} = size.margins;
-          const x = xScale(xValue) + left;
-          const z = Object.values(mappedData)[0][xValue - 1][1];
-          const y = yScale(z) + top;
-
-          this.tooltipTranslate = `translate(${x + 8}px, ${y}px)`;
-
-          return Object.entries(mappedData).map(
-            ([name, coordinatesTyples], idx) => ({
-              name: `${name}`,
-              value: coordinatesTyples[xValue - 1][1],
-              color: this.lineColor(idx),
-            })
-          );
-        } else {
-          return [];
-        }
-      })
-    );
-    this.noData$ = this.mappedData$.pipe(map(data => isEmpty(data)));
     this.config$.subscribe();
   }
 
-  lineColor(index: number) {
-    return ['#2680C2', '#F0B429', '#009688'][index];
+  toggleExclude(seriesName: string): void {
+    if (this.excludedSeries.includes(seriesName)) {
+      this.removeFromExcludeList(seriesName);
+    } else {
+      this.addToExcludeList(seriesName);
+    }
+    this.render()
   }
 
-  toggleExclude(id: string): void {
-    if (this.excludedUids.getValue().includes(id)) {
-      this.removeFromExcludeList(id);
-    } else {
-      this.addToExcludeList(id);
+  private render() {
+    const cfg = this.cfg;
+    this.series = cfg.series;
+    this.visibleSeries = cfg.series.filter(series => !this.excludedSeries.includes(series.name));
+    this.noData = this.visibleSeries.length === 0;
+
+    if(!this.noData) {
+      const allValues = cfg.series.reduce((acc, cur) => [...acc, ...cur.data], []);
+      const countPoints = cfg.series[0].data.length;
+      const [min, max] = extent(allValues);
+      this.scaleY = scaleLinear()
+        .domain([max, min])
+        .range([0, this.viewHeight]);
+      this.scaleX = scaleLinear()
+        .domain([1, countPoints])
+        .range([0, this.viewWidth]);
     }
 
-    this.cdr.detectChanges();
+    this.cdr.detectChanges()
   }
 
-  private addToExcludeList(id: string): void {
-    this.excludedUids.next([...this.excludedUids.getValue(), id]);
+  private addToExcludeList(seriesName: string): void {
+    this.excludedSeries = [...this.excludedSeries, seriesName];
   }
 
-  private removeFromExcludeList(id: string): void {
-    this.excludedUids.next(
-      this.excludedUids.getValue().filter(idx => idx !== id)
-    );
+  private removeFromExcludeList(seriesName: string): void {
+    this.excludedSeries = this.excludedSeries.filter(name => name !== seriesName);
   }
 
   private onMouseMove(): void {
-    this.mouseIn.next(true);
+    if (this.noData) {
+      if (this.activePoint) {
+        this.activePoint = null;
+        this.activeCircles = [];
+        this.tooltip = null;
+        this.cdr.detectChanges();
+      }
+    } else {
+      const [xCoordinate] = mouse(this.rectRef.nativeElement);
+      const xValue = Math.round(this.scaleX.invert(xCoordinate));
+      const {left, top} = this.margins;
+
+      const newXPosition = this.scaleX(xValue) + left;
+
+      if(this.activePoint == null || newXPosition !== this.activePoint.x) {
+        this.activePoint = {x: newXPosition, y: 0};
+        const index = Math.floor(this.scaleX.invert(newXPosition));
+
+        // generate circles
+        this.activeCircles = this.series.map((series, idx) => ({
+          x: newXPosition,
+          y: this.scaleY(series.data[index-1]) + top,
+          color: series.color,
+        }), []);
+
+        // generate tooltip
+        const l = this.series[0].data.length;
+        const tXPos = index === l ? newXPosition - 100 : newXPosition;
+        const tYPos = this.scaleY(this.series.map(({data}) => data[index-1]).reduce((acc,cur) => acc + cur, 0) / this.series.length);
+        this.tooltip = {
+          x: tXPos + 4,
+          y: tYPos + 4,
+          values: this.series.map(series => {
+            return {
+              name: series.name,
+              color: series.color,
+              value: series.data[index-1]
+            }
+          })
+        }
+
+
+        this.cdr.detectChanges();
+      }
+    }
   }
 
   private onMouseOut(): void {
-    this.mouseIn.next(false);
-    this.cdr.detectChanges();
+    if(!this.noData) {
+      this.activePoint = null;
+      this.activeCircles = [];
+      this.tooltip = null;
+      this.cdr.detectChanges();
+    }
   }
 }

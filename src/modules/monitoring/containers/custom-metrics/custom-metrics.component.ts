@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelVersion } from '@shared/models';
 import { Observable } from 'rxjs';
-import { MetricsComponent } from '@monitoring/containers';
+import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { ComparisonRegime, CustomMetricsFacade } from './custom-metrics.facade';
 import { MonitoringPageFacade } from "@monitoring/store/facades";
+import { ChartConfig } from "@monitoring/interfaces";
 
 @Component({
   selector: 'hs-custom-metrics',
@@ -16,8 +17,7 @@ export class CustomMetricsComponent {
   customMetricsChecks$: Observable<any>;
   comparisonRegime$: Observable<ComparisonRegime>;
   comparableModelVersions$: Observable<ModelVersion[]>;
-  chartConfigs: any;
-
+  chartConfigs$: Observable<ChartConfig[]>;
   constructor(
     private monitoringPageFacade: MonitoringPageFacade,
     private facade: CustomMetricsFacade,
@@ -26,7 +26,7 @@ export class CustomMetricsComponent {
     this.customMetricsChecks$ = this.facade.customMetrics$;
     this.comparisonRegime$ = this.facade.regime$;
     this.comparableModelVersions$ = this.facade.comparableModelVersions$;
-    this.chartConfigs = this.facade.chartConfigs$;
+    this.chartConfigs$ = this.facade.chartConfigs$;
   }
 
   comparableModelVersionsChanged(modelVersions: ModelVersion[]): void {
@@ -41,7 +41,7 @@ export class CustomMetricsComponent {
   openSettings() {
     this.dialog.createDialog({
       component: MetricsComponent,
-      providers: [{ provide: MonitoringPageFacade, useValue: this.monitoringPageFacade}],
+      providers: [{provide: MonitoringPageFacade, useValue: this.monitoringPageFacade}],
       styles: {
         width: '800px',
         height: '600px',
@@ -50,7 +50,7 @@ export class CustomMetricsComponent {
     });
   }
 
-  trackByFn(index) {
-    return index
+  trackByFn(_, chartConfig: ChartConfig) {
+    return chartConfig.name
   };
 }

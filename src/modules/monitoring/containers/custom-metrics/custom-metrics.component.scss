@@ -16,8 +16,6 @@
 }
 
 .charts {
-  display: flex;
-  overflow: scroll;
   &__column {
     width: 100%;
     min-width: calc(100%/2 - 120px);

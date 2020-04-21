@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { ScatterPlotData, ScatterPlotPoint, } from '@charts/models/scatter-plot-data.model';
 import { Colorizer, ColorizerFabric } from '@core/models';
 import { ModelsFacade } from '@models/store';
@@ -16,6 +16,7 @@ import {
   shareReplay,
   startWith,
   switchMap,
+  takeUntil,
   takeWhile,
   tap,
 } from 'rxjs/operators';
@@ -57,7 +58,7 @@ const initialState: State = {
 };
 
 @Injectable()
-export class VisualizationFacade {
+export class VisualizationFacade implements OnDestroy {
   state$: Observable<State>;
   taskId$: Observable<string>;
   status$: Observable<TaskState>;
@@ -78,6 +79,7 @@ export class VisualizationFacade {
 
   private state: BehaviorSubject<State> = new BehaviorSubject(initialState);
   private createTask: Subject<any> = new Subject();
+  private destroy: Subject<any> = new Subject<any>();
 
   constructor(
     private api: VisualizationApi,
@@ -151,6 +153,7 @@ export class VisualizationFacade {
       filter(val => val !== undefined),
       switchMap(id => this.monitoringApi.getCheck(id))
     );
+
     combineLatest(this.createTask, this.modelsFacade.selectedModelVersion$)
       .pipe(
         switchMap(([_, mv]) => {
@@ -170,7 +173,8 @@ export class VisualizationFacade {
               return of();
             })
           );
-        })
+        }),
+        takeUntil(this.destroy.asObservable())
       )
       .subscribe();
 
@@ -207,9 +211,16 @@ export class VisualizationFacade {
               return of();
             })
           );
-        })
+        }),
+        takeUntil(this.destroy.asObservable())
       )
       .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
+    this.destroy = null;
   }
 
   loadEmbedding(): void {
