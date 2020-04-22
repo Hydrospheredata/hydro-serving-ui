@@ -47,9 +47,11 @@ export class CheckChartComponent implements OnInit {
   yAxisTranslate: string;
   xAxisTranslate: string;
   thresholdTranslate: string;
+
   noData: boolean = false;
   clipUrl: string;
   @ViewChild('containerEl', {read: ElementRef}) containerEl: ElementRef;
+  cfg: ChartConfig;
   private mouseIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private excludedSeries: string[] = [];
 
@@ -59,7 +61,6 @@ export class CheckChartComponent implements OnInit {
   }
 
   _config: BehaviorSubject<ChartConfig> = new BehaviorSubject(null);
-  cfg: ChartConfig;
 
   @Input() set config(cfg: ChartConfig) {
     this._config.next(cfg);
@@ -115,7 +116,7 @@ export class CheckChartComponent implements OnInit {
     this.visibleSeries = cfg.series.filter(series => !this.excludedSeries.includes(series.name));
     this.noData = this.visibleSeries.length === 0;
 
-    if(!this.noData) {
+    if (!this.noData) {
       const allValues = cfg.series.reduce((acc, cur) => [...acc, ...cur.data], []);
       const countPoints = cfg.series[0].data.length;
       const [min, max] = extent(allValues);
@@ -153,21 +154,21 @@ export class CheckChartComponent implements OnInit {
 
       const newXPosition = this.scaleX(xValue) + left;
 
-      if(this.activePoint == null || newXPosition !== this.activePoint.x) {
+      if (this.activePoint == null || newXPosition !== this.activePoint.x) {
         this.activePoint = {x: newXPosition, y: 0};
         const index = Math.floor(this.scaleX.invert(newXPosition));
 
         // generate circles
         this.activeCircles = this.series.map((series, idx) => ({
           x: newXPosition,
-          y: this.scaleY(series.data[index-1]) + top,
+          y: this.scaleY(series.data[index - 1]) + top,
           color: series.color,
         }), []);
 
         // generate tooltip
         const l = this.series[0].data.length;
         const tXPos = index === l ? newXPosition - 100 : newXPosition;
-        const tYPos = this.scaleY(this.series.map(({data}) => data[index-1]).reduce((acc,cur) => acc + cur, 0) / this.series.length);
+        const tYPos = this.scaleY(this.series.map(({data}) => data[index - 1]).reduce((acc, cur) => acc + cur, 0) / this.series.length);
         this.tooltip = {
           x: tXPos + 4,
           y: tYPos + 4,
@@ -175,7 +176,7 @@ export class CheckChartComponent implements OnInit {
             return {
               name: series.name,
               color: series.color,
-              value: series.data[index-1]
+              value: series.data[index - 1]
             }
           })
         }
@@ -187,7 +188,7 @@ export class CheckChartComponent implements OnInit {
   }
 
   private onMouseOut(): void {
-    if(!this.noData) {
+    if (!this.noData) {
       this.activePoint = null;
       this.activeCircles = [];
       this.tooltip = null;
