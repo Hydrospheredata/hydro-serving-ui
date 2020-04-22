@@ -1,4 +1,4 @@
-import { TestBed, fakeAsync, tick, flush } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HydroServingState } from '@core/store';
 import { ModelsFacade } from '@models/store';
 import { selectSelectedModelVersion } from '@models/store/selectors/model-versions.selectors';
@@ -6,8 +6,8 @@ import { MonitoringService } from '@monitoring/services';
 import { CheckAggregationBuilder } from '@monitoring/services/builders/check-aggregation.builder';
 import { MonitoringPageFacade } from '@monitoring/store/facades/monitoring-page.facade';
 import { selectSelectedMetrics } from '@monitoring/store/selectors';
-import { Store, MemoizedSelector } from '@ngrx/store';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { MemoizedSelector, Store } from '@ngrx/store';
+import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
@@ -61,31 +61,5 @@ describe('Monitoring page facade', () => {
 
   it('should be created', () => {
     expect(monitoringPageFacade).toBeTruthy();
-  });
-
-  describe('checkAggregationsResponse stream', () => {
-    it('get new data at first frame and every 5 seconds', fakeAsync(() => {
-      spyOn(monitoringService, 'getChecksAggregation').and.returnValue(
-        of({count: 0, results: []})
-      );
-      const sub = monitoringPageFacade.checksAggregationResponse$.subscribe();
-
-      tick(10000);
-
-      expect(monitoringService.getChecksAggregation).toHaveBeenCalled();
-      expect(monitoringService.getChecksAggregation).toHaveBeenCalledTimes(3);
-      sub.unsubscribe();
-    }));
-    it('won\'t emit value, if got equal response', fakeAsync(() => {
-      let count = 0;
-      spyOn(monitoringService, 'getChecksAggregation').and.callThrough();
-      const sub = monitoringPageFacade.checksAggregationResponse$.subscribe(res => {
-        count = count + 1;
-      });
-      tick(20000);
-
-      expect(count).toBe(1);
-      sub.unsubscribe();
-    }));
   });
 });

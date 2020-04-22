@@ -4,6 +4,7 @@ import { SharedModule } from '@shared/shared.module';
 import { LogDetailComponent, ScatterPlotComponent, VisualizationMetricsComponent } from '@testing/components';
 import { VisualizationPageComponent } from './visualization-page.component';
 import { VisualizationFacade } from "../../visualization.facade";
+import { RouterTestingModule } from "@node_modules/@angular/router/testing";
 
 describe('VisualizationComponent', () => {
   let component: VisualizationPageComponent;
@@ -14,7 +15,7 @@ describe('VisualizationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [VisualizationPageComponent, ScatterPlotComponent, LogDetailComponent, VisualizationMetricsComponent],
-      imports: [SharedModule],
+      imports: [SharedModule, RouterTestingModule],
       providers: [{provide: VisualizationFacade, useValue: {}}]
     }).overrideComponent(VisualizationPageComponent, {
       set: {

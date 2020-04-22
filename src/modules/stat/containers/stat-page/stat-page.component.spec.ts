@@ -8,6 +8,7 @@ import { ColorByDriftDirective } from "../../directives";
 import { StatService } from "../../services/stat.service";
 import { mockStat } from "../../models";
 import { of } from "@node_modules/rxjs";
+import { RouterTestingModule } from "@node_modules/@angular/router/testing";
 
 const mockedStatService = {
   stat$: of(mockStat)
@@ -16,7 +17,7 @@ describe('StatPageComponent', () => {
   let component: StatPageComponent;
   let fixture: ComponentFixture<StatPageComponent>;
 
-  beforeEach(( )=> {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [
         StatPageComponent,
@@ -24,7 +25,7 @@ describe('StatPageComponent', () => {
         HistogramComponent,
         ColorByDriftDirective
       ],
-      imports: [SharedModule],
+      imports: [SharedModule, RouterTestingModule],
     }).overrideComponent(StatPageComponent, {
       set: {
         providers: [{

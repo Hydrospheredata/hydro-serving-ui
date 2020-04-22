@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ModelVersion } from "@shared/models";
 
 @Component({
@@ -6,11 +6,6 @@ import { ModelVersion } from "@shared/models";
   templateUrl: './services-header.component.html',
   styleUrls: ['./services-header.component.scss']
 })
-export class ServicesHeaderComponent implements OnInit {
+export class ServicesHeaderComponent {
   @Input() modelVersion: ModelVersion;
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }
