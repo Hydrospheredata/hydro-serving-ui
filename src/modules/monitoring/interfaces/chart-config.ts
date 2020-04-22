@@ -1,6 +1,6 @@
 interface Point {
-  x: number,
-  y: number,
+  x: number;
+  y: number;
 }
 interface Series {
   name: string;
@@ -28,11 +28,10 @@ export interface ChartConfig {
       threshold?: number;
     };
   };
-  series: Array<Series>
+  series: Series[];
   area?: boolean;
   threshold?: number;
 }
-
 
 export const mockChartConfig: ChartConfig = {
   size: {
@@ -43,8 +42,8 @@ export const mockChartConfig: ChartConfig = {
       right: 20,
       top: 10,
       bottom: 24,
-    }
+    },
   },
   series: [],
-  name: ''
-}
+  name: '',
+};

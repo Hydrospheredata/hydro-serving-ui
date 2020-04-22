@@ -8,9 +8,8 @@ describe('VisualizationMetricsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ VisualizationMetricsComponent ]
-    })
-    .compileComponents();
+      declarations: [VisualizationMetricsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

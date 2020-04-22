@@ -20,7 +20,10 @@ export class LogDetailComponent implements OnInit {
     this.outputKeys = outputs.map(el => el.name);
   }
 
-  get hasMetrics():boolean {
-    return this.check._hs_metric_checks && Object.keys(this.check._hs_metric_checks).length > 0;
+  get hasMetrics(): boolean {
+    return (
+      this.check._hs_metric_checks &&
+      Object.keys(this.check._hs_metric_checks).length > 0
+    );
   }
 }

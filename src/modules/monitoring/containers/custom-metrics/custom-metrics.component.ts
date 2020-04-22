@@ -4,8 +4,8 @@ import { ModelVersion } from '@shared/models';
 import { Observable } from 'rxjs';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { ComparisonRegime, CustomMetricsFacade } from './custom-metrics.facade';
-import { MonitoringPageFacade } from "@monitoring/store/facades";
-import { ChartConfig } from "@monitoring/interfaces";
+import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { ChartConfig } from '@monitoring/interfaces';
 
 @Component({
   selector: 'hs-custom-metrics',
@@ -41,7 +41,9 @@ export class CustomMetricsComponent {
   openSettings() {
     this.dialog.createDialog({
       component: MetricsComponent,
-      providers: [{provide: MonitoringPageFacade, useValue: this.monitoringPageFacade}],
+      providers: [
+        { provide: MonitoringPageFacade, useValue: this.monitoringPageFacade },
+      ],
       styles: {
         width: '800px',
         height: '600px',
@@ -51,6 +53,6 @@ export class CustomMetricsComponent {
   }
 
   trackByFn(_, chartConfig: ChartConfig) {
-    return chartConfig.name
-  };
+    return chartConfig.name;
+  }
 }

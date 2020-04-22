@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ColorPaletteService {
   private readonly colors: ReadonlyArray<string> = [];
@@ -21,7 +21,7 @@ export class ColorPaletteService {
       '#6db7fa',
       '#b384f5',
       '#b366ac',
-    ]
+    ];
   }
   getColors(): ReadonlyArray<string> {
     return this.colors;
@@ -36,12 +36,12 @@ export class ColorPaletteService {
   }
 
   warningColor(): Readonly<string> {
-    return '#CF1124'
+    return '#CF1124';
   }
   alertColor(): Readonly<string> {
-    return '#DE911D'
+    return '#DE911D';
   }
   successColor(): Readonly<string> {
-    return '#199473'
+    return '#199473';
   }
 }

@@ -17,7 +17,7 @@ export class ApplicationStatusComponent {
       case ApplicationStatus.Failed:
         return 'circle-x';
       case ApplicationStatus.Assembling:
-        return 'clock'
+        return 'clock';
     }
   }
 
@@ -26,8 +26,9 @@ export class ApplicationStatusComponent {
     return {
       [rootClass]: true,
       [`${rootClass}--released`]: this.status === ApplicationStatus.Ready,
-      [`${rootClass}--assembling`]: this.status === ApplicationStatus.Assembling,
-      [`${rootClass}--failed`]: this.status === ApplicationStatus.Failed
-    }
+      [`${rootClass}--assembling`]:
+        this.status === ApplicationStatus.Assembling,
+      [`${rootClass}--failed`]: this.status === ApplicationStatus.Failed,
+    };
   }
 }

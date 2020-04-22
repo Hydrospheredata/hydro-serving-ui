@@ -1,1 +1,1 @@
-export * from './color-by-drift.directive'
+export * from './color-by-drift.directive';

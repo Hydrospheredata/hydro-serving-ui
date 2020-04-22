@@ -1,6 +1,11 @@
 <div class="visualization-metrics">
-  <div class="visualization-metrics__item" *ngFor="let item of visualizationMetrics | keyvalue">
-    <div class="visualization-metrics__item-label">{{item.key}}</div>
-    <div class="visualization-metrics__item-value">{{item.value | number:'1.0-5'}}</div>
+  <div
+    class="visualization-metrics__item"
+    *ngFor="let item of visualizationMetrics | keyvalue"
+  >
+    <div class="visualization-metrics__item-label">{{ item.key }}</div>
+    <div class="visualization-metrics__item-value">
+      {{ item.value | number: '1.0-5' }}
+    </div>
   </div>
 </div>

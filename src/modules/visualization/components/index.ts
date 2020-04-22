@@ -1,1 +1,1 @@
-export * from './visualization-metrics/visualization-metrics.component'
+export * from './visualization-metrics/visualization-metrics.component';

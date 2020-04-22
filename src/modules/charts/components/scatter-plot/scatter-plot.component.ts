@@ -11,13 +11,16 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import {ScatterPlotData, ScatterPlotPoint,} from '@charts/models/scatter-plot-data.model';
-import {Colorizer} from '@core/models';
-import {ChartHelperService} from '@core/services/chart-helper.service';
-import {select} from 'd3';
-import {BehaviorSubject, combineLatest, Observable,} from 'rxjs';
-import {distinctUntilChanged, shareReplay, tap,} from 'rxjs/operators';
-import {LinkRegime} from '../../../visualization/models/visualization';
+import {
+  ScatterPlotData,
+  ScatterPlotPoint,
+} from '@charts/models/scatter-plot-data.model';
+import { Colorizer } from '@core/models';
+import { ChartHelperService } from '@core/services/chart-helper.service';
+import { select } from 'd3';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { distinctUntilChanged, shareReplay, tap } from 'rxjs/operators';
+import { LinkRegime } from '../../../visualization/models/visualization';
 
 interface Link {
   x1: number;
@@ -33,14 +36,18 @@ interface Link {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ScatterPlotComponent implements OnChanges, AfterViewInit {
+  private static removeLines() {
+    select('.scatter-plot__links').selectAll('line').remove();
+  }
+
   @Input() readonly data: ScatterPlotData;
   @Input() readonly colors: string[] = [];
   @Input() readonly top100: number[][] = [];
   @Input() readonly counterfactuals: number[][] = [];
   @Input() readonly colorizer: Colorizer;
   @Output() selectPoint: EventEmitter<any> = new EventEmitter();
-  @ViewChild('container', {read: ElementRef}) container: ElementRef;
-  @ViewChild('layout', {read: ElementRef}) layout: ElementRef;
+  @ViewChild('container', { read: ElementRef }) container: ElementRef;
+  @ViewChild('layout', { read: ElementRef }) layout: ElementRef;
   points: ScatterPlotPoint[];
   links: Link[];
   selectedPointIdx$: Observable<number>;
@@ -87,36 +94,36 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit {
   }
 
   get viewWidth() {
-    const {left, right} = this.margins;
+    const { left, right } = this.margins;
     return this.chartWidth - left - right;
   }
 
   get viewHeight() {
-    const {top, bottom} = this.margins;
+    const { top, bottom } = this.margins;
     return this.chartHeight - top - bottom;
   }
 
   get yAxisTranslate() {
-    const {left: x, top: y} = this.margins;
+    const { left: x, top: y } = this.margins;
     return `translate(${x}, ${y})`;
   }
 
   get xAxisTranslate() {
-    const {top, left: x} = this.margins;
+    const { top, left: x } = this.margins;
     const y = top + this.viewHeight;
 
     return `translate(${x}, ${y})`;
   }
 
   get dataTranslate() {
-    const {left: x, top: y} = this.margins;
+    const { left: x, top: y } = this.margins;
     return `translate(${x + 1}, ${y})`;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);
     if (changes.data && changes.data.currentValue) {
-      const {minX, maxX, minY, maxY} = changes.data.currentValue;
+      const { minX, maxX, minY, maxY } = changes.data.currentValue;
 
       this.xScale = this.chartHelper
         .scaleLinear()
@@ -191,10 +198,6 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit {
         })
       )
       .subscribe();
-  }
-
-  private static removeLines() {
-    select('.scatter-plot__links').selectAll('line').remove();
   }
 
   private drawLinks(hoveredIndex: number, pointsTo: number[]) {

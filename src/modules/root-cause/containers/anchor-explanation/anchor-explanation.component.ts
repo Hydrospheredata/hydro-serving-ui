@@ -9,7 +9,6 @@ import { AnchorExplanationResult } from '@rootcause/models';
 export class AnchorExplanationComponent {
   @Input() explanation: AnchorExplanationResult;
 
-
   get coverage(): number {
     return this.explanation.coverage;
   }

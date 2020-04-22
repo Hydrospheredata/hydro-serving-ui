@@ -17,7 +17,11 @@ import {
   TimeIntervalSelectComponent,
 } from '@monitoring/components';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
-import { MetricsEffects, MonitoringServiceStatusEffects, reducer, } from '@monitoring/store';
+import {
+  MetricsEffects,
+  MonitoringServiceStatusEffects,
+  reducer,
+} from '@monitoring/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
@@ -29,15 +33,15 @@ import {
   MonitoringPageComponent,
 } from './containers';
 import { CustomMetricsComponent } from '@monitoring/containers';
-import { RootCauseModule } from "@rootcause/root-cause.module";
-import { NgModule } from "@angular/core";
+import { RootCauseModule } from '@rootcause/root-cause.module';
+import { NgModule } from '@angular/core';
 
 @NgModule({
   entryComponents: [
     DialogDeleteMetricComponent,
     DialogMetricComponent,
     MetricsComponent,
-    DialogRequestsErrorsComponent
+    DialogRequestsErrorsComponent,
   ],
   declarations: [
     AggregationComponent,
@@ -61,20 +65,16 @@ import { NgModule } from "@angular/core";
     BatchMetricsComponent,
     RegimeSelectorComponent,
     CustomMetricsComponent,
-    MetricsChecksComponent
+    MetricsChecksComponent,
   ],
   imports: [
     ModelsPublicUiModule,
     SharedModule,
     StoreModule.forFeature('monitoring', reducer),
-    EffectsModule.forFeature([
-      MonitoringServiceStatusEffects,
-      MetricsEffects,
-    ]),
-    RootCauseModule
+    EffectsModule.forFeature([MonitoringServiceStatusEffects, MetricsEffects]),
+    RootCauseModule,
   ],
   exports: [MonitoringPageComponent, MetricsComponent, LogDetailComponent],
   providers: [],
 })
-export class MonitoringModule {
-}
+export class MonitoringModule {}

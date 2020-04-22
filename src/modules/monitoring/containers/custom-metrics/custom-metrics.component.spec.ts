@@ -1,15 +1,17 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DialogService } from '@dialog/dialog.service';
-import { CheckChartComponent, ModelVersionsTagsComponent, RegimeSelectorComponent, } from '@testing/components';
+import {
+  CheckChartComponent,
+  ModelVersionsTagsComponent,
+  RegimeSelectorComponent,
+} from '@testing/components';
 import { of } from 'rxjs';
 import { CustomMetricsComponent } from './custom-metrics.component';
 import { CustomMetricsFacade } from './custom-metrics.facade';
-import { MonitoringPageFacade } from "@monitoring/store/facades";
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 
-const monitoringPageFacade: Partial<MonitoringPageFacade> = {
-
-}
+const monitoringPageFacade: Partial<MonitoringPageFacade> = {};
 describe('CustomMetricsComponent', () => {
   let component: CustomMetricsComponent;
   let fixture: ComponentFixture<CustomMetricsComponent>;
@@ -28,7 +30,7 @@ describe('CustomMetricsComponent', () => {
           providers: [
             {
               provide: MonitoringPageFacade,
-              useValue: monitoringPageFacade
+              useValue: monitoringPageFacade,
             },
             {
               provide: CustomMetricsFacade,

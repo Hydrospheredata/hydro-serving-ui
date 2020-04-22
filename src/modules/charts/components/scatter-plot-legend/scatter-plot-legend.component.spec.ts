@@ -1,7 +1,7 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { GradientLegendComponent } from '@testing/components';
 
-import {ScatterPlotLegendComponent} from './scatter-plot-legend.component';
-import {GradientLegendComponent} from "@testing/components";
+import { ScatterPlotLegendComponent } from './scatter-plot-legend.component';
 
 describe('ScatterPlotLegendComponent', () => {
   let component: ScatterPlotLegendComponent;
@@ -9,9 +9,8 @@ describe('ScatterPlotLegendComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ScatterPlotLegendComponent, GradientLegendComponent]
-    })
-      .compileComponents();
+      declarations: [ScatterPlotLegendComponent, GradientLegendComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

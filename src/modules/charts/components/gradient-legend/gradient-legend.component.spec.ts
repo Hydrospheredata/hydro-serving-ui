@@ -8,9 +8,8 @@ describe('GradientLegendComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GradientLegendComponent ]
-    })
-    .compileComponents();
+      declarations: [GradientLegendComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

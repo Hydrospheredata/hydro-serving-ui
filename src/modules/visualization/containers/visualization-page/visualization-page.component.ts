@@ -5,7 +5,7 @@ import { ModelVersion } from '@shared/_index';
 import { VisualizationFacade } from 'modules/visualization/visualization.facade';
 import { Observable } from 'rxjs';
 import { Colorizer } from '@core/models';
-import { LinkRegime } from "../../models/visualization";
+import { LinkRegime } from '../../models/visualization';
 
 @Component({
   selector: 'hs-visualization',

@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { TaskInformation } from '../models/visualization';
-import { ModelVersion } from "@shared/models/model-version.model";
-import { HttpService } from "@core/services/http";
-import { environment } from "@environments/environment";
+import { ModelVersion } from '@shared/models/model-version.model';
+import { HttpService } from '@core/services/http';
+import { environment } from '@environments/environment';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class VisualizationApi {
   private baseUrl: string;
   constructor(private http: HttpService) {
-    this.baseUrl = `${environment.visualizationUrl}`
+    this.baseUrl = `${environment.visualizationUrl}`;
   }
 
   private static get metrics(): ReadonlyArray<string> {
@@ -21,10 +21,13 @@ export class VisualizationApi {
       'stability_score',
       'msid',
       'clustering',
-    ]
+    ];
   }
 
-  createTask$(transformer: string = 'umap', modelVersion: ModelVersion): Observable<TaskInformation> {
+  createTask$(
+    transformer: string = 'umap',
+    modelVersion: ModelVersion
+  ): Observable<TaskInformation> {
     return this.http
       .post<TaskInformation>(
         `${this.baseUrl}/plottable_embeddings/${transformer}`,
@@ -33,18 +36,18 @@ export class VisualizationApi {
           model_version: modelVersion.id,
           visualization_metrics: VisualizationApi.metrics,
           data: {
-            "bucket": "hydro-vis",
-            "production_data_file": "adult/requests.parquet",
-            "profile_data_file": "adult/training.parquet"
-          }
+            bucket: 'hydro-vis',
+            production_data_file: 'adult/requests.parquet',
+            profile_data_file: 'adult/training.parquet',
+          },
         }
       )
       .pipe(catchError(err => throwError(err)));
   }
 
   getJobResult$(taskId: string): Observable<TaskInformation> {
-    return this.http.get<TaskInformation>(
-      `${this.baseUrl}/jobs?task_id=${taskId}`
-    ).pipe(catchError(err => throwError(err)));
+    return this.http
+      .get<TaskInformation>(`${this.baseUrl}/jobs?task_id=${taskId}`)
+      .pipe(catchError(err => throwError(err)));
   }
 }

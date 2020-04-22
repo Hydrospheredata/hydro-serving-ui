@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, of, timer } from "@node_modules/rxjs";
-import { ChecksAggregationItem, ChecksAggregationResponse } from "@monitoring/interfaces";
-import { ModelsFacade } from "@models/store";
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  of,
+  timer,
+} from '@node_modules/rxjs';
+import {
+  ChecksAggregationItem,
+  ChecksAggregationResponse,
+} from '@monitoring/interfaces';
+import { ModelsFacade } from '@models/store';
 import {
   catchError,
   filter,
@@ -10,18 +19,18 @@ import {
   shareReplay,
   startWith,
   switchMap,
-  tap
-} from "@node_modules/rxjs/operators";
-import { isEqual } from "lodash";
-import { MonitoringService } from "@monitoring/services";
-import { CheckAggregationBuilder } from "@monitoring/services/builders/check-aggregation.builder";
-import { select, Store } from "@node_modules/@ngrx/store";
-import { selectSelectedMetrics, State } from "@monitoring/store";
-import { AggregationPaginator } from "@monitoring/services/aggregation-paginator";
-import { MonitoringPageFacade } from "@monitoring/store/facades";
+  tap,
+} from '@node_modules/rxjs/operators';
+import { isEqual } from 'lodash';
+import { MonitoringService } from '@monitoring/services';
+import { CheckAggregationBuilder } from '@monitoring/services/builders/check-aggregation.builder';
+import { select, Store } from '@node_modules/@ngrx/store';
+import { selectSelectedMetrics, State } from '@monitoring/store';
+import { AggregationPaginator } from '@monitoring/services/aggregation-paginator';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AggregationFacade {
   groupedBy$: BehaviorSubject<number> = new BehaviorSubject(10);
@@ -30,13 +39,17 @@ export class AggregationFacade {
   totalRequests$: Observable<number>;
   showedRequests$: Observable<number>;
   aggregation$: Observable<ChecksAggregationItem[]>;
-  canLoadRight$: Observable<boolean>
-  canLoadLeft$: Observable<boolean>
+  canLoadRight$: Observable<boolean>;
+  canLoadLeft$: Observable<boolean>;
 
   checksAggregationResponse$: Observable<ChecksAggregationResponse>;
-  private currentOffset: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  private currentOffset: BehaviorSubject<number> = new BehaviorSubject<number>(
+    0
+  );
   private error: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-  private loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
 
   constructor(
     private monitoringPageFacade: MonitoringPageFacade,
@@ -78,7 +91,7 @@ export class AggregationFacade {
           filter(([prev, cur]) => {
             return !isEqual(prev, cur);
           }),
-          map(([_, cur]) => cur),
+          map(([_, cur]) => cur)
         );
       }),
       shareReplay(1)
@@ -103,30 +116,33 @@ export class AggregationFacade {
     this.totalRequests$ = this.checksAggregationResponse$.pipe(
       map(response => {
         const batches = response.count;
-        const countInOneBatch = response.results[response.results.length - 1]._hs_requests
+        const countInOneBatch =
+          response.results[response.results.length - 1]._hs_requests;
         if (batches === 1) {
           return countInOneBatch;
         } else {
-          return (countInOneBatch * (batches - 1)) + response.results[0]._hs_requests;
+          return (
+            countInOneBatch * (batches - 1) + response.results[0]._hs_requests
+          );
         }
       })
     );
     this.showedRequests$ = this.checksAggregationResponse$.pipe(
       filter(val => val !== undefined),
-      map(({results}) => {
+      map(({ results }) => {
         if (results === undefined) {
           return 0;
         }
         return results.reduce(
-          (result, {_hs_requests}) => result + _hs_requests,
+          (result, { _hs_requests }) => result + _hs_requests,
           0
         );
       })
     );
 
-    this.canLoadLeft$ = this.currentOffset.asObservable().pipe(
-      map(offset => this.paginator.canLoadNewest(offset))
-    );
+    this.canLoadLeft$ = this.currentOffset
+      .asObservable()
+      .pipe(map(offset => this.paginator.canLoadNewest(offset)));
     this.canLoadLeft$ = combineLatest(
       this.totalRequests$,
       this.showedRequests$,

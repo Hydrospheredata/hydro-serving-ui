@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AggregationComponent } from '@monitoring/containers/aggregation/aggregation.component';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { SharedModule } from '@shared/shared.module';
-import { AggregationFacade } from "@monitoring/containers/aggregation/aggregation.facade";
-import { of } from "@node_modules/rxjs";
+import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
+import { of } from '@node_modules/rxjs';
 
 const aggregationFacade: Partial<AggregationFacade> = {
   totalRequests$: of(0),
@@ -24,7 +24,9 @@ describe('Aggregation component', () => {
       .overrideComponent(AggregationComponent, {
         set: {
           changeDetection: ChangeDetectionStrategy.Default,
-          providers: [{provide: AggregationFacade, useValue: aggregationFacade}]
+          providers: [
+            { provide: AggregationFacade, useValue: aggregationFacade },
+          ],
         },
       })
       .compileComponents();

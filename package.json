@@ -85,6 +85,7 @@
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
     "node-sass": "^4.13.1",
+    "prettier": "2.0.5",
     "protractor": "^5.4.1",
     "size-limit": "^0.11.4",
     "svg-inline-loader": "^0.8.0",

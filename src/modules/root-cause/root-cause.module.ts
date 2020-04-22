@@ -15,9 +15,7 @@ import { ExplanationComponent } from './containers/explanation/explanation.compo
     AnchorExplanationComponent,
     ExplanationComponent,
   ],
-  imports: [
-    SharedModule,
-  ],
-  exports: [ExplanationComponent]
+  imports: [SharedModule],
+  exports: [ExplanationComponent],
 })
 export class RootCauseModule {}

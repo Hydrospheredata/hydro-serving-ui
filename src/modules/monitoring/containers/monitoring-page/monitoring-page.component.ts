@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   templateUrl: './monitoring-page.component.html',
   styleUrls: ['./monitoring-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [MonitoringPageFacade]
+  providers: [MonitoringPageFacade],
 })
 export class MonitoringPageComponent implements OnInit {
   checks$ = this.facade.checks$;

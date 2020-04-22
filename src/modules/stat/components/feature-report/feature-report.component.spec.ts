@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeatureReportComponent } from './feature-report.component';
-import { SharedModule } from "@shared/shared.module";
-import { ColorByDriftDirective } from "../../directives";
-import { HistogramComponent } from "..";
-import { mockStat } from "../../models";
+import { SharedModule } from '@shared/shared.module';
+import { ColorByDriftDirective } from '../../directives';
+import { HistogramComponent } from '..';
+import { mockStat } from '../../models';
 
 describe('FeatureReportComponent', () => {
   let component: FeatureReportComponent;
@@ -15,11 +15,10 @@ describe('FeatureReportComponent', () => {
       declarations: [
         FeatureReportComponent,
         ColorByDriftDirective,
-        HistogramComponent
+        HistogramComponent,
       ],
-      imports: [SharedModule]
-    })
-      .compileComponents();
+      imports: [SharedModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

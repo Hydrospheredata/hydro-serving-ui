@@ -1,62 +1,104 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "codelyzer",
-        "tslint:recommended"
+  "defaultSeverity": "error",
+  "extends": [
+    "codelyzer",
+    "tslint:recommended"
+  ],
+  "jsRules": {},
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      [
+        "hs",
+        "hydro"
+      ],
+      "camelCase"
     ],
-    "jsRules": {},
-    "rules":   {
-        "directive-selector": [true, "attribute", ["hs", "hydro"], "camelCase"],
-        "component-selector": [true, ["element", "attribute"], ["hs", "hydro"], ["kebab-case", "camelCase"]],
-        "angular-whitespace": [true, "check-interpolation", "check-semicolon"],
-        "use-input-property-decorator": true,
-        "use-output-property-decorator": true,
-        "use-host-property-decorator": true,
-        "no-attribute-parameter-decorator": true,
-        "no-input-rename": true,
-        "no-output-on-prefix": true,
-        "no-output-rename": true,
-        "no-forward-ref": true,
-        "use-life-cycle-interface": true,
-        "use-pipe-transform-interface": true,
-        "no-output-named-after-standard-event": true,
-        "quotemark": [true, "single"],
-        "component-class-suffix": [true, "Component"],
-        "directive-class-suffix": [true, "Directive"],
-        "arrow-parens": [true, "ban-single-arg-parens"],
-        "ordered-imports": [
-            true,
-            {
-              "import-sources-order": "lowercase-last",
-              "named-imports-order": "any"
-            }
-        ],
-        "object-literal-sort-keys": false,
-        "no-string-literal": true,
-        "trailing-comma": [
-            true,
-            {
-                "multiline": {
-                    "objects": "always",
-                    "arrays": "always",
-                    "functions": "never",
-                    "typeLiterals": "ignore"
-                }
-            }
-        ],
-        "member-access": false,
-        "no-bitwise": false,
-        "no-console": false,
-        "max-classes-per-file": false,
-        "interface-name": false,
-        "no-empty-interface": false,
-        "no-empty": [true, "allow-empty-functions"],
-        "jsdoc-format": false,
-        "no-unused-expression": true
-    },
-    "linterOptions": {
-        "exclude": [
-            "node_modules/**"
-        ]
-    }
+    "component-selector": [
+      true,
+      [
+        "element",
+        "attribute"
+      ],
+      [
+        "hs",
+        "hydro"
+      ],
+      [
+        "kebab-case",
+        "camelCase"
+      ]
+    ],
+    "angular-whitespace": [
+      true,
+      "check-interpolation",
+      "check-semicolon"
+    ],
+    "use-input-property-decorator": true,
+    "use-output-property-decorator": true,
+    "use-host-property-decorator": true,
+    "no-attribute-parameter-decorator": true,
+    "no-input-rename": true,
+    "no-output-on-prefix": true,
+    "no-output-rename": true,
+    "no-forward-ref": true,
+    "use-life-cycle-interface": true,
+    "use-pipe-transform-interface": true,
+    "no-output-named-after-standard-event": true,
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "component-class-suffix": [
+      true,
+      "Component"
+    ],
+    "directive-class-suffix": [
+      true,
+      "Directive"
+    ],
+    "arrow-parens": [
+      true,
+      "ban-single-arg-parens"
+    ],
+    "ordered-imports": [
+      false,
+      {
+        "import-sources-order": "lowercase-last",
+        "named-imports-order": "any"
+      }
+    ],
+    "object-literal-key-quotes": false,
+    "object-literal-sort-keys": false,
+    "no-string-literal": true,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": {
+          "objects": "always",
+          "arrays": "always",
+          "functions": "never",
+          "typeLiterals": "ignore"
+        }
+      }
+    ],
+    "member-access": false,
+    "no-bitwise": false,
+    "no-console": false,
+    "max-classes-per-file": false,
+    "interface-name": false,
+    "no-empty-interface": false,
+    "no-empty": [
+      true,
+      "allow-empty-functions"
+    ],
+    "jsdoc-format": false,
+    "no-unused-expression": true
+  },
+  "linterOptions": {
+    "exclude": [
+      "node_modules/**"
+    ]
+  }
 }

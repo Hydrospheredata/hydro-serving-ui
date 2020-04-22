@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ChartConfig } from '@monitoring/interfaces';
-import { ColorPaletteService } from "@core/services/color-palette.service";
+import { ColorPaletteService } from '@core/services/color-palette.service';
 
 @Component({
   selector: 'hs-latency-check',
@@ -9,20 +9,21 @@ import { ColorPaletteService } from "@core/services/color-palette.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LatencyCheckComponent {
-  constructor(private colorPalette: ColorPaletteService) {
-  }
   @Input()
   set data(data: number[]) {
     if (data) {
       this.chartConfig = {
         ...this.chartConfig,
-        series: [{name: 'latency', color: this.colorPalette.getPalette()[0], data}],
+        series: [
+          { name: 'latency', color: this.colorPalette.getPalette()[0], data },
+        ],
       };
     }
   }
-
   chartConfig: ChartConfig = {
-    series: [{name: 'latency', color: this.colorPalette.getPalette()[0], data: []}],
+    series: [
+      { name: 'latency', color: this.colorPalette.getPalette()[0], data: [] },
+    ],
     size: {
       height: 54,
       margins: {
@@ -36,4 +37,6 @@ export class LatencyCheckComponent {
     area: true,
     name: '',
   };
+
+  constructor(private colorPalette: ColorPaletteService) {}
 }

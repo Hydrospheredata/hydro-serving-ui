@@ -4,8 +4,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
   selector: 'hs-visualization-metrics',
   templateUrl: './visualization-metrics.component.html',
   styleUrls: ['./visualization-metrics.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VisualizationMetricsComponent {
-  @Input() visualizationMetrics: {[name: string]: string};
+  @Input() visualizationMetrics: { [name: string]: string };
 }

@@ -1,11 +1,21 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { ScatterPlotData, ScatterPlotPoint, } from '@charts/models/scatter-plot-data.model';
+import {
+  ScatterPlotData,
+  ScatterPlotPoint,
+} from '@charts/models/scatter-plot-data.model';
 import { Colorizer, ColorizerFabric } from '@core/models';
 import { ModelsFacade } from '@models/store';
 import { Check } from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
 import { ModelVersion } from '@shared/_index';
-import { BehaviorSubject, combineLatest, Observable, of, Subject, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  of,
+  Subject,
+  timer,
+} from 'rxjs';
 import {
   catchError,
   distinctUntilChanged,
@@ -20,7 +30,7 @@ import {
   takeWhile,
   tap,
 } from 'rxjs/operators';
-import { TaskState, VisualizationResponse, } from './models/visualization';
+import { TaskState, VisualizationResponse } from './models/visualization';
 import { VisualizationApi } from './services';
 
 export type ColorBy = 'class_label' | 'metric';
@@ -54,7 +64,7 @@ const initialState: State = {
   top100: [],
   counterfactuals: [],
   visualizationMetrics: undefined,
-  requestsIds: []
+  requestsIds: [],
 };
 
 @Injectable()
@@ -111,17 +121,28 @@ export class VisualizationFacade implements OnDestroy {
       distinctUntilChanged()
     );
     this.top100$ = this.state$.pipe(pluck('top100'), distinctUntilChanged());
-    this.counterfactuals$ = this.state$.pipe(pluck('counterfactuals'), distinctUntilChanged());
-    this.visualizationMetrics$ = this.state$.pipe(pluck('visualizationMetrics'), distinctUntilChanged());
-    this.requestsIds$ = this.state$.pipe(pluck('requestsIds'), distinctUntilChanged());
-    this.selectedId$ = combineLatest(this.requestsIds$, this.selectedPointIndex$)
-      .pipe(map(([ids, index]) => ids[index]))
+    this.counterfactuals$ = this.state$.pipe(
+      pluck('counterfactuals'),
+      distinctUntilChanged()
+    );
+    this.visualizationMetrics$ = this.state$.pipe(
+      pluck('visualizationMetrics'),
+      distinctUntilChanged()
+    );
+    this.requestsIds$ = this.state$.pipe(
+      pluck('requestsIds'),
+      distinctUntilChanged()
+    );
+    this.selectedId$ = combineLatest(
+      this.requestsIds$,
+      this.selectedPointIndex$
+    ).pipe(map(([ids, index]) => ids[index]));
     this.scatterPlotData$ = this.result$.pipe(
       filter(val => !!val),
-      map(({data}) => {
+      map(({ data }) => {
         return data.reduce(
-          ({points, minX, maxX, minY, maxY}, [x, y]) => {
-            const point: ScatterPlotPoint = {x, y};
+          ({ points, minX, maxX, minY, maxY }, [x, y]) => {
+            const point: ScatterPlotPoint = { x, y };
             const newPoints = [...points, point];
             return {
               points: newPoints,
@@ -196,12 +217,18 @@ export class VisualizationFacade implements OnDestroy {
                   ? this.buildColorizers(task.result[0].result)
                   : [],
                 top100: task.result ? task.result[0].result.top_100 : [],
-                counterfactuals: task.result ? task.result[0].result.counterfactuals : [],
-                visualizationMetrics: task.result ? task.result[0].result.visualization_metrics : undefined,
-                requestsIds: task.result ? task.result[0].result.requests_ids : []
+                counterfactuals: task.result
+                  ? task.result[0].result.counterfactuals
+                  : [],
+                visualizationMetrics: task.result
+                  ? task.result[0].result.visualization_metrics
+                  : undefined,
+                requestsIds: task.result
+                  ? task.result[0].result.requests_ids
+                  : [],
               });
             }),
-            takeWhile(({state}) => state !== 'SUCCESS'),
+            takeWhile(({ state }) => state !== 'SUCCESS'),
             catchError(err => {
               this.state.next({
                 ...this.state.getValue(),
@@ -228,17 +255,17 @@ export class VisualizationFacade implements OnDestroy {
   }
 
   changeColorizer(colorizer: Colorizer): void {
-    this.state.next({...this.state.getValue(), selectedColorizer: colorizer});
+    this.state.next({ ...this.state.getValue(), selectedColorizer: colorizer });
   }
 
   changeSelectedPointIndex(index: number): void {
-    this.state.next({...this.state.getValue(), selectedPointIndex: index});
+    this.state.next({ ...this.state.getValue(), selectedPointIndex: index });
   }
 
   private buildColorizers({
-                            class_labels,
-                            metrics,
-                          }: VisualizationResponse): Colorizer[] {
+    class_labels,
+    metrics,
+  }: VisualizationResponse): Colorizer[] {
     const res = [];
     for (const [name, payload] of Object.entries(class_labels)) {
       res.push(

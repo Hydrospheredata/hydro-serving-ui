@@ -1,16 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FeatureReport, Stat } from "../../models";
+import { FeatureReport, Stat } from '../../models';
 
 @Component({
   selector: 'hs-feature-report',
   templateUrl: './feature-report.component.html',
-  styleUrls: ['./feature-report.component.scss']
+  styleUrls: ['./feature-report.component.scss'],
 })
 export class FeatureReportComponent implements OnInit {
-  @Input() perFeatureReport: Stat["per_feature_report"];
+  @Input() perFeatureReport: Stat['per_feature_report'];
 
   selectedFeatureReport: FeatureReport;
-  constructor() { }
 
   ngOnInit() {
     this.selectedFeatureReport = this.perFeatureReport[this.featureNames[0]];

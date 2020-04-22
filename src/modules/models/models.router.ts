@@ -10,7 +10,7 @@ import {
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
 } from './containers';
-import { StatPageComponent } from "../stat/containers";
+import { StatPageComponent } from '../stat/containers';
 
 @NgModule({
   imports: [

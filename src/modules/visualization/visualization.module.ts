@@ -7,6 +7,6 @@ import { VisualizationMetricsComponent } from './components';
 
 @NgModule({
   imports: [SharedModule, ChartsModule, MonitoringModule],
-  declarations: [VisualizationPageComponent, VisualizationMetricsComponent ],
+  declarations: [VisualizationPageComponent, VisualizationMetricsComponent],
 })
 export class VisualizationModule {}

@@ -1,8 +1,8 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {ScatterPlotComponent} from './scatter-plot.component';
-import {ScatterPlotLegendComponent} from "@testing/components";
-import {SharedModule} from "@shared/shared.module";
+import { ScatterPlotComponent } from './scatter-plot.component';
+import { ScatterPlotLegendComponent } from '@testing/components';
+import { SharedModule } from '@shared/shared.module';
 
 describe('ScatterPlotComponent', () => {
   let component: ScatterPlotComponent;
@@ -11,9 +11,8 @@ describe('ScatterPlotComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ScatterPlotComponent, ScatterPlotLegendComponent],
-      imports: [SharedModule]
-    })
-      .compileComponents();
+      imports: [SharedModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

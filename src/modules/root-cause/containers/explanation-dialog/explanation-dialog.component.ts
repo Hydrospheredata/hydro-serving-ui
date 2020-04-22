@@ -1,6 +1,11 @@
-import {ChangeDetectionStrategy, Component, Inject, InjectionToken,} from '@angular/core';
-import {DialogService} from '@dialog/dialog.service';
-import {AnchorExplanation, AnchorExplanationResult} from '@rootcause/models';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  InjectionToken,
+} from '@angular/core';
+import { DialogService } from '@dialog/dialog.service';
+import { AnchorExplanation, AnchorExplanationResult } from '@rootcause/models';
 
 export const EXPLANATION = new InjectionToken<AnchorExplanation>('explanation');
 
@@ -12,9 +17,8 @@ export const EXPLANATION = new InjectionToken<AnchorExplanation>('explanation');
 export class ExplanationDialogComponent {
   constructor(
     private dialogService: DialogService,
-    @Inject(EXPLANATION) public explanation: AnchorExplanationResult,
-  ) {
-  }
+    @Inject(EXPLANATION) public explanation: AnchorExplanationResult
+  ) {}
   close() {
     this.dialogService.closeDialog();
   }

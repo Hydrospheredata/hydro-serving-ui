@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {Colorizer} from "@core/models";
-import {LinkRegime} from "../../modules/visualization/models/visualization";
+import { Colorizer } from '@core/models';
+import { LinkRegime } from '../../modules/visualization/models/visualization';
 
 @Component({
   selector: 'hs-scatter-plot',

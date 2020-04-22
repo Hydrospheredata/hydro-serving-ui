@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import { Check, ChecksAggregationItem, } from '@monitoring/interfaces';
+import { Check, ChecksAggregationItem } from '@monitoring/interfaces';
 import { MonitoringService } from '@monitoring/services';
-import { AddMetric, DeleteMetric, GetServiceStatusAction, LoadMetrics, } from '@monitoring/store/actions';
+import {
+  AddMetric,
+  DeleteMetric,
+  GetServiceStatusAction,
+  LoadMetrics,
+} from '@monitoring/store/actions';
 import { State } from '@monitoring/store/reducers';
 import {
   getMonitoringServiceError,
@@ -12,8 +17,15 @@ import {
 import { select, Store } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { isNumber } from 'lodash';
-import { BehaviorSubject, Observable, of, Subject, } from 'rxjs';
-import { catchError, exhaustMap, filter, map, shareReplay, tap, } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import {
+  catchError,
+  exhaustMap,
+  filter,
+  map,
+  shareReplay,
+  tap,
+} from 'rxjs/operators';
 
 @Injectable()
 export class MonitoringPageFacade {
@@ -41,10 +53,12 @@ export class MonitoringPageFacade {
   constructor(
     private store: Store<State>,
     private modelsFacade: ModelsFacade,
-    private monitoring: MonitoringService,
+    private monitoring: MonitoringService
   ) {
     this.selectedAggregation = new BehaviorSubject(null);
-    this.selectedAggregation$ = this.selectedAggregation.asObservable().pipe(shareReplay(1));
+    this.selectedAggregation$ = this.selectedAggregation
+      .asObservable()
+      .pipe(shareReplay(1));
 
     this.checks$ = this.selectedAggregation$.pipe(
       filter(val => !!val),
@@ -90,11 +104,11 @@ export class MonitoringPageFacade {
   }
 
   deleteMetric(id: string) {
-    this.store.dispatch(DeleteMetric({id}));
+    this.store.dispatch(DeleteMetric({ id }));
   }
 
   addMetric(metric: any) {
-    this.store.dispatch(AddMetric({aggregation: metric}));
+    this.store.dispatch(AddMetric({ aggregation: metric }));
   }
 
   getServiceStatus() {

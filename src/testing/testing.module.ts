@@ -71,7 +71,7 @@ const COMPONENTS = [
   ScatterPlotComponent,
   ScatterPlotLegendComponent,
   GradientLegendComponent,
-  VisualizationMetricsComponent
+  VisualizationMetricsComponent,
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];
@@ -80,5 +80,4 @@ const DIRECTIVES = [UpdateModelVersionDirective];
   declarations: [...COMPONENTS, ...DIRECTIVES],
   exports: [...COMPONENTS],
 })
-export class TestingModule {
-}
+export class TestingModule {}

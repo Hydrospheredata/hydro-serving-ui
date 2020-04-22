@@ -1,9 +1,14 @@
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { interpolateRdYlGn } from 'd3';
-import { AggregationFacade } from "@monitoring/containers/aggregation/aggregation.facade";
-import { Observable } from "@node_modules/rxjs";
-import { tap } from "@node_modules/rxjs/internal/operators";
+import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
+import { Observable } from '@node_modules/rxjs';
+import { tap } from '@node_modules/rxjs/internal/operators';
 import { union } from 'lodash';
 
 @Component({
@@ -11,11 +16,10 @@ import { union } from 'lodash';
   templateUrl: './aggregation.component.html',
   styleUrls: ['./aggregation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AggregationFacade]
+  providers: [AggregationFacade],
 })
 export class AggregationComponent {
-  @ViewChild('svgContainer', {read: ElementRef})
-
+  @ViewChild('svgContainer', { read: ElementRef })
   svgContainer: ElementRef;
 
   totalRequests$: Observable<number>;
@@ -41,28 +45,30 @@ export class AggregationComponent {
   constructor(private readonly facade: AggregationFacade) {
     this.totalRequests$ = this.facade.totalRequests$;
     this.showedRequests$ = this.facade.showedRequests$;
-    this.a$ = this.facade.aggregation$.pipe(tap(aggregation => {
-      console.log(aggregation);
-      this.aggregation = aggregation;
-      if (aggregation) {
-        if (aggregation.length) {
-          this.featureNames = Object.keys(aggregation[0].features);
-          this.metricNames = Object.keys(aggregation[0].metrics);
-          this.batchNames = this.getBatchNames(aggregation);
+    this.a$ = this.facade.aggregation$.pipe(
+      tap(aggregation => {
+        console.log(aggregation);
+        this.aggregation = aggregation;
+        if (aggregation) {
+          if (aggregation.length) {
+            this.featureNames = Object.keys(aggregation[0].features);
+            this.metricNames = Object.keys(aggregation[0].metrics);
+            this.batchNames = this.getBatchNames(aggregation);
 
-          // TODO MOVE IT
-          const selectedColumn = aggregation.find(
-            agg => agg.additionalInfo._id === this.selectedColumnId
-          );
+            // TODO MOVE IT
+            const selectedColumn = aggregation.find(
+              agg => agg.additionalInfo._id === this.selectedColumnId
+            );
 
-          this.update(selectedColumn, aggregation);
-          if (selectedColumn === undefined) {
-            this.changeActiveColumn(aggregation[aggregation.length - 1]);
+            this.update(selectedColumn, aggregation);
+            if (selectedColumn === undefined) {
+              this.changeActiveColumn(aggregation[aggregation.length - 1]);
+            }
           }
         }
-      }
-    }));
-  };
+      })
+    );
+  }
 
   get blockSize(): number {
     return 14;
@@ -98,13 +104,15 @@ export class AggregationComponent {
   }
 
   columnTranslate(index): string {
-    return `translate(${index * this.CELL_SIZE +
-    this.COLUMN_MARGIN_RIGHT * index}, 0)`;
+    return `translate(${
+      index * this.CELL_SIZE + this.COLUMN_MARGIN_RIGHT * index
+    }, 0)`;
   }
 
   rowTranslate(index): string {
-    return `translate(0, ${index * this.CELL_SIZE +
-    index * this.CELL_MARGIN_TOP})`;
+    return `translate(0, ${
+      index * this.CELL_SIZE + index * this.CELL_MARGIN_TOP
+    })`;
   }
 
   changeActiveColumn(aggregation: ChecksAggregationItem) {
@@ -118,7 +126,7 @@ export class AggregationComponent {
       return 'url(#repeat)';
     }
 
-    const {passed, checked} = column.features[featureName];
+    const { passed, checked } = column.features[featureName];
 
     const ratio = checked / passed;
 
@@ -134,7 +142,7 @@ export class AggregationComponent {
       return 'url(#repeat)';
     }
 
-    const {passed, checked} = column.metrics[metricName];
+    const { passed, checked } = column.metrics[metricName];
 
     const ratio = checked / passed;
 
@@ -189,9 +197,9 @@ export class AggregationComponent {
   private getBatchNames(aggregation: ChecksAggregationItem[]): string[] {
     return aggregation
       .filter(agg => agg.batch)
-      .reduce((names, {batch}) => {
-        return union(names, Object.keys(Object.values(batch)[0]))
-      }, [])
+      .reduce((names, { batch }) => {
+        return union(names, Object.keys(Object.values(batch)[0]));
+      }, []);
   }
 
   private update(

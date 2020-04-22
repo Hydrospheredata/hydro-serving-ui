@@ -13,7 +13,11 @@ import {
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
-import { ModelDetailsGuard, ModelsService, ModelVersionDetailsGuard, } from '@models/services';
+import {
+  ModelDetailsGuard,
+  ModelsService,
+  ModelVersionDetailsGuard,
+} from '@models/services';
 import { ModelEffects, reducer } from '@models/store';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
@@ -27,7 +31,7 @@ import {
   ModelVersionProfilerPageComponent,
 } from './containers';
 import { ModelsPublicUiModule } from './shared/models-public-ui.module';
-import { StatModule } from "../stat/stat.module";
+import { StatModule } from '../stat/stat.module';
 
 @NgModule({
   imports: [
@@ -39,7 +43,7 @@ import { StatModule } from "../stat/stat.module";
     EffectsModule.forFeature([ModelEffects]),
     ProfilerModule,
     ServablesModule,
-    StatModule
+    StatModule,
   ],
   declarations: [
     DialogDeleteModelComponent,
@@ -53,11 +57,10 @@ import { StatModule } from "../stat/stat.module";
     ModelVersionStatusComponent,
     ModelVersionsRowComponent,
     ModelsPageComponent,
-    ModelPageComponent
+    ModelPageComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
   exports: [ModelsPageComponent],
 })
-export class ModelsModule {
-}
+export class ModelsModule {}
