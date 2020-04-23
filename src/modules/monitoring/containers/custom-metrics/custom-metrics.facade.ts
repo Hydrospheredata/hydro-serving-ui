@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
+import { ColorPaletteService } from '@core/services/color-palette.service';
 import { ModelsFacade } from '@models/store';
-import {
-  ChartConfig,
-  Check,
-  ChecksAggregationItem,
-} from '@monitoring/interfaces';
+import { ChartConfig, Check } from '@monitoring/interfaces';
+import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
-import { ModelVersion } from '@shared/_index';
-import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
-import { map, startWith, switchMap } from 'rxjs/operators';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
+import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { ColorPaletteService } from '@core/services/color-palette.service';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { map, switchMap, startWith } from 'rxjs/operators';
 
 export type ComparisonRegime = 'split' | 'merge';
 
@@ -77,14 +74,19 @@ export class CustomMetricsFacade {
     );
 
     this.comparableModelVersionMetricsChecks$ = combineLatest(
+      this.facade.modelVersion$,
       this.facade.selectedAggregation$,
       this.comparableModelVersions.asObservable()
     ).pipe(
-      switchMap(([aggregation, modelVersions]) => {
+      switchMap(([currentModelVersion, aggregation, modelVersions]) => {
         if (modelVersions.length === 0) {
           return of([]);
         }
-        return this.loadComparableChecks(aggregation, modelVersions).pipe(
+        return this.loadComparableChecks(
+          currentModelVersion,
+          aggregation,
+          modelVersions
+        ).pipe(
           map(response => {
             return modelVersions.map(
               ({ id, model: { name }, modelVersion }) => {
@@ -129,47 +131,6 @@ export class CustomMetricsFacade {
 
   changeRegime(regime: ComparisonRegime): void {
     this.regime.next(regime);
-  }
-
-  private splitCheckToChartConfigs(
-    modelVersionsMetricsChecks: ModelVersionMetricsChecks[]
-  ): Array<{ [metricName: string]: ChartConfig }> {
-    const result = [];
-    const size: ChartConfig['size'] = {
-      height: 300,
-      margins: {
-        left: 40,
-        right: 20,
-        top: 10,
-        bottom: 24,
-      },
-    };
-    modelVersionsMetricsChecks.forEach(({ version, metricsChecks }) => {
-      const currentConfig = {};
-      for (const metricName in metricsChecks) {
-        if (metricsChecks.hasOwnProperty(metricName)) {
-          const { data, threshold, health } = metricsChecks[metricName];
-          if (currentConfig[metricName] === undefined) {
-            currentConfig[metricName] = {
-              size,
-              data: {
-                [`${metricName}:${version}`]: {
-                  color: 'blue',
-                  x: data.map((_, i) => i + 1),
-                  y: data,
-                },
-              },
-              name: metricName,
-              plotBands: this.buildPlotBands(health),
-              threshold,
-            };
-          }
-        }
-      }
-      result.push(currentConfig);
-    });
-
-    return result;
   }
 
   private mergeChecksToChartConfig(
@@ -218,18 +179,19 @@ export class CustomMetricsFacade {
   }
 
   private loadComparableChecks(
-    selectedAggregation: ChecksAggregationItem,
-    modelVersions: ModelVersion[]
+    originalModelVersion: ModelVersion,
+    aggregation: Aggregation,
+    comparedModelVersions: ModelVersion[]
   ): Observable<{
     [modelVersionId: number]: Check[];
   }> {
     const request: {
       [modelVersionId: number]: Observable<Check[]>;
-    } = modelVersions.reduce((req, { id }) => {
-      req[id] = this.monitoring.getChecks({
-        modelVersionId: id,
-        from: selectedAggregation.additionalInfo._hs_first_id,
-        to: selectedAggregation.additionalInfo._hs_last_id,
+    } = comparedModelVersions.reduce((req, { id }) => {
+      req[id] = this.monitoring.getChecksForComparision({
+        originalModelVersion: originalModelVersion.id,
+        aggregationId: aggregation.id,
+        comparedModelVersionId: id,
       });
       return req;
     }, {});

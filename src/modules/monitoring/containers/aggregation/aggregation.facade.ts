@@ -1,33 +1,15 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  Observable,
-  of,
-  timer,
-} from '@node_modules/rxjs';
-import {
-  ChecksAggregationItem,
-  ChecksAggregationResponse,
-} from '@monitoring/interfaces';
-import { ModelsFacade } from '@models/store';
-import {
-  catchError,
-  filter,
-  map,
-  pairwise,
-  shareReplay,
-  startWith,
-  switchMap,
-  tap,
-} from '@node_modules/rxjs/operators';
-import { isEqual } from 'lodash';
+import { ChecksAggregationResponse } from '@monitoring/interfaces';
+import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
-import { CheckAggregationBuilder } from '@monitoring/services/builders/check-aggregation.builder';
-import { select, Store } from '@node_modules/@ngrx/store';
-import { selectSelectedMetrics, State } from '@monitoring/store';
 import { AggregationPaginator } from '@monitoring/services/aggregation-paginator';
+import { CheckAggregationBuilder } from '@monitoring/services/builders/check-aggregation.builder';
+import { State } from '@monitoring/store';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { Store } from '@ngrx/store';
+import { isEqual } from 'lodash';
+import { BehaviorSubject, combineLatest, Observable, of, timer } from 'rxjs';
+import { catchError, filter, map, pairwise, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +20,7 @@ export class AggregationFacade {
   error$: Observable<string>;
   totalRequests$: Observable<number>;
   showedRequests$: Observable<number>;
-  aggregation$: Observable<ChecksAggregationItem[]>;
+  aggregations$: Observable<AggregationsList>;
   canLoadRight$: Observable<boolean>;
   canLoadLeft$: Observable<boolean>;
 
@@ -53,7 +35,6 @@ export class AggregationFacade {
 
   constructor(
     private monitoringPageFacade: MonitoringPageFacade,
-    private modelsFacade: ModelsFacade,
     private monitoring: MonitoringService,
     private checkAggBuilder: CheckAggregationBuilder,
     private store: Store<State>,
@@ -62,7 +43,7 @@ export class AggregationFacade {
     this.loading$ = this.loading.asObservable();
     this.error$ = this.error.asObservable();
     this.checksAggregationResponse$ = combineLatest(
-      this.modelsFacade.selectedModelVersion$,
+      this.monitoringPageFacade.modelVersion$,
       this.currentOffset.asObservable()
     ).pipe(
       switchMap(([modelVersion, offset]) => {
@@ -97,21 +78,17 @@ export class AggregationFacade {
       shareReplay(1)
     );
 
-    this.aggregation$ = combineLatest(
+    this.aggregations$ = combineLatest(
       this.checksAggregationResponse$,
-      this.store.pipe(
-        select(selectSelectedMetrics),
-        filter(val => val !== undefined)
-      )
+      this.monitoringPageFacade.selectedMetrics$
     ).pipe(
       map(([aggregationResponse, metrics]) => {
-        if (aggregationResponse.results === undefined) {
-          return [];
-        }
-        return aggregationResponse.results
-          .map(rawCheck => this.checkAggBuilder.build(rawCheck, metrics))
+        const aggregations = aggregationResponse.results
+          .map(aggregation => new Aggregation(aggregation))
           .reverse();
-      })
+        return new AggregationsList(aggregations);
+      }),
+      shareReplay(1)
     );
     this.totalRequests$ = this.checksAggregationResponse$.pipe(
       map(response => {
@@ -160,7 +137,7 @@ export class AggregationFacade {
     );
   }
 
-  selectAggregation(agg: ChecksAggregationItem): void {
+  selectAggregation(agg: Aggregation): void {
     this.monitoringPageFacade.selectAggregation(agg);
   }
 

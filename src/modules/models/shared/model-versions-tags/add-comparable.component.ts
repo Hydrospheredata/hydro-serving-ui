@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit } from '@angular/core';
+import { FormControl } from '@node_modules/@angular/forms';
+import { takeUntil } from '@node_modules/rxjs/internal/operators';
 import { ModelVersion } from '@shared/_index';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AddComparableFacade } from './add-comparable.facade';
 
 @Component({
@@ -8,10 +10,26 @@ import { AddComparableFacade } from './add-comparable.facade';
   styleUrls: ['./add-comparable.component.scss'],
   providers: [AddComparableFacade],
 })
-export class AddComparableComponent {
+export class AddComparableComponent implements OnDestroy, AfterViewInit {
+  modelVerFilter = new FormControl();
   modelVersions$: Observable<ModelVersion[]>;
+
+  private readonly destroy: Subject<any> = new Subject<any>();
   constructor(private facade: AddComparableFacade) {
     this.modelVersions$ = this.facade.modelVersions$;
+  }
+
+  ngAfterViewInit(): void {
+    this.modelVerFilter.valueChanges
+      .pipe(takeUntil(this.destroy))
+      .subscribe(value => {
+        this.facade.onFilterChange(value);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.next();
+    this.destroy.complete();
   }
 
   onSelectModelVersion(modelVersion: ModelVersion): void {

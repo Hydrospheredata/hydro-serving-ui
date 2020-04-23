@@ -37,6 +37,7 @@
 
   &__body {
     display: flex;
+    align-items: center;
   }
 
   &__header {
@@ -49,9 +50,12 @@
     line-height: 14px;
     margin-bottom: 8px;
 
-    &-selected {
+    &-range {
       margin: 0 12px;
       text-align: center;
+      font-size: 12px;
+      color: $neutral-color-900;
+      font-family: $font-family-bold;
     }
 
     &-nav-button {
@@ -79,10 +83,11 @@
     padding: 0;
 
     &-item {
-      color: $neutral-color-1000;
-      font-family: $font-family-light;
+      text-align: right;
+      color: $neutral-color-800;
+      font-family: $font-family-regular;
       font-size: 10px;
-      line-height: 12px;
+      line-height: 14px;
       margin-bottom: 1px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -92,7 +97,7 @@
   &__metrics-label,
   &__features-label,
   &__batches-label {
-    color: $neutral-color-900;
+    color: $neutral-color-800;
     font-family: $font-family-bold;
     font-size: 12px;
   }

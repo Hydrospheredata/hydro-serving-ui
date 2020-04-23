@@ -8,15 +8,12 @@ import {
 } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
-import {
-  DialogDeleteMetricComponent,
-  DialogMetricComponent,
-} from '@monitoring/components';
+import { DialogDeleteMetricComponent, DialogMetricComponent } from '@monitoring/components';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
 
 @Component({
   selector: 'hs-metrics',
@@ -39,12 +36,9 @@ export class MetricsComponent implements OnInit {
     private metricsFacade: MetricsFacade,
     private modelsFacade: ModelsFacade,
     private monitoringPageFacade: MonitoringPageFacade
-  ) {
-    console.log(monitoringPageFacade);
-  }
+  ) {}
 
   onAddMetric(modelVersion: ModelVersion) {
-    console.log('click');
     event.preventDefault();
     try {
       this.layout = true;

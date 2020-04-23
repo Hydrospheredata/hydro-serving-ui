@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
-import { ChecksAggregationItem } from '@monitoring/interfaces';
+import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -18,7 +19,7 @@ export class MonitoringPageComponent implements OnInit {
   errorsChecks$ = this.facade.errorsChecks$;
   latency$ = this.facade.latency$;
   modelVersion$ = this.facade.modelVersion$;
-  selectedAggregationColumn$ = this.facade.selectedAggregation$;
+  selectedAggregation$ = this.facade.selectedAggregation$;
   selectedMetrics$ = this.facade.selectedMetrics$;
   siblingModelVersions$ = this.facade.siblingModelVersions$;
   error$ = this.facade.error$;
@@ -35,7 +36,7 @@ export class MonitoringPageComponent implements OnInit {
     this.facade.loadMetrics();
   }
 
-  showBatchMetricsBlock(aggregationItem: ChecksAggregationItem): boolean {
-    return aggregationItem && aggregationItem.batch !== undefined;
+  showBatchMetricsBlock(aggregation: Aggregation): boolean {
+    return isEmptyObj(aggregation.batchesChecks) === false;
   }
 }

@@ -1,12 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Input,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ChartConfig } from '@monitoring/interfaces';
 import { extent, mouse, scaleLinear, ScaleLinear, select } from 'd3';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -99,6 +91,7 @@ export class CheckChartComponent implements OnInit {
         this.dataTranslate = `translate(${left}, ${top})`;
         this.xAxisTranslate = `translate(${left}, ${top + this.viewHeight})`;
         this.thresholdTranslate = `translate(0, ${top})`;
+        this.plotBands = cfg.plotBands;
         // scales
         this.render();
       }),

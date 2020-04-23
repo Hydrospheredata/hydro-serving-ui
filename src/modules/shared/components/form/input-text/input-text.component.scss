@@ -1,17 +1,18 @@
-@import "variables.scss";
+@import 'variables.scss';
 
 .control {
   &-label {
     color: $neutral-color-900;
-    font-size: 12px;
     font-family: $font-family-bold;
+    font-size: 12px;
+
     &__postfix {
+      color: $neutral-color-400;
       font-size: 12px;
       font-style: italic;
-      color: $neutral-color-400;
 
       &:before {
-        content: ", ";
+        content: ', ';
         display: inline;
       }
     }
@@ -20,32 +21,38 @@
 
 .input-text {
   &__error {
-    color: $error-text-color;
+    color: $supportive-color-red-700;
   }
 
   &--copy-link {
     .input-text__input {
-      height: 30px;
       border-width: 1px;
+      height: 30px;
     }
 
     hydro-icon.input-icon {
-      top: 20%;
       font-size: 20px;
+      top: 20%;
     }
   }
 }
 
 .input-text__flex-container {
   display: flex;
-  flex-wrap: wrap;
   flex-flow: row;
+  flex-wrap: wrap;
 
   &.reverse {
     flex-flow: row-reverse;
   }
 
   input.form-control {
+    display: flex;
+
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 6px 12px !important;
+    width: 100% !important;
     &.sibling {
       &.left {
         margin-left: 0.5rem;
@@ -55,44 +62,38 @@
         margin-right: 0.5rem;
       }
     }
-
-    flex-direction: column;
-    display: flex;
-    justify-content: flex-start;
-    padding: 6px 12px !important;
-    width: 100% !important;
   }
 
   hydro-icon.input-text__icon {
-    flex-direction: column;
-    display: flex;
-    position: static;
-    top: 0;
-    left: 0;
-    right: 0;
     align-items: center;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    left: 0;
+    position: static;
+    right: 0;
+    top: 0;
   }
 }
 
 .form-control {
-  height: 26px;
-  box-shadow: none;
   background-color: transparent;
   border: none;
   border-bottom: 1px solid $neutral-color-400;
-  color:$neutral-color-800;
+  box-shadow: none;
+  color: $neutral-color-800;
+  height: 26px;
+
   &::placeholder {
     color: $neutral-color-500;
-    letter-spacing: 1px;
     font-family: $font-family-light;
     font-size: 14px;
+    letter-spacing: 1px;
   }
 
   &--is-bordered {
-    border: 1px solid $neutral-color-500;  
+    border: 1px solid $neutral-color-500;
   }
-  
 
   &.input-icon {
     &.left {
@@ -109,12 +110,11 @@
   }
 
   &.__kafkaInput {
-    border: none;
-    padding: 7px 12px;
-    border-radius: 2px;
     border: 1px $neutral-color-200 solid;
+    border-radius: 2px;
     color: $neutral-color-800;
     height: 28px;
+    padding: 7px 12px;
   }
 
   &.__small {
@@ -128,25 +128,24 @@
   position: relative;
 
   &__inline {
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
     padding: 0 10px;
 
-    >.control-label {
-      margin: 0;
-      margin-right: 8px;
+    > .control-label {
+      margin: 0 0 8px 0;
     }
 
-    >.cs-relative {
+    > .cs-relative {
       flex: 1;
     }
   }
 }
 
 hydro-icon.input-icon {
-  width: 18px;
-  height: 18px;
   color: $neutral-color-500;
+  height: 18px;
+  width: 18px;
 
   &.left {
     left: 4px;

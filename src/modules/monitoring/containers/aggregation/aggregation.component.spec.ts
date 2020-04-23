@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AggregationComponent } from '@monitoring/containers/aggregation/aggregation.component';
-import { CheckIdToTimePipe } from '@monitoring/pipes';
-import { SharedModule } from '@shared/shared.module';
 import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
+import { AggregationsList } from '@monitoring/models/Aggregation';
+import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { of } from '@node_modules/rxjs';
+import { SharedModule } from '@shared/shared.module';
 
 const aggregationFacade: Partial<AggregationFacade> = {
   totalRequests$: of(0),
   showedRequests$: of(0),
-  aggregation$: of(null),
+  aggregations$: of(new AggregationsList([])),
 };
 
 describe('Aggregation component', () => {

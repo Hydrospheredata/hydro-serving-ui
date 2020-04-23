@@ -8,7 +8,7 @@
         <td class="batch-metrics__table-cell">Metric name</td>
         <td
           class="batch-metrics__table-cell"
-          *ngFor="let feature of aggregation.batch | keyvalue"
+          *ngFor="let feature of aggregation.batchesChecks | keyvalue"
         >
           {{ feature.key }}
         </td>
@@ -22,7 +22,7 @@
         </td>
         <td
           class="batch-metrics__table-cell batch-metrics__table-result"
-          *ngFor="let feature of aggregation.batch | keyvalue"
+          *ngFor="let feature of aggregation.batchesChecks | keyvalue"
         >
           <div [ngSwitch]="checkStatus(feature.value[batchName])">
             <hydro-icon

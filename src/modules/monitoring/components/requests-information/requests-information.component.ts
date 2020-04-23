@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { ChecksAggregationItem } from '@monitoring/interfaces';
+import { Aggregation } from '@monitoring/models/Aggregation';
 
 @Component({
   selector: 'hs-requests-information',
@@ -8,21 +8,21 @@ import { ChecksAggregationItem } from '@monitoring/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RequestsInformationComponent {
-  @Input() aggregation: ChecksAggregationItem;
+  @Input() aggregation: Aggregation;
   @Input() latency;
   @Input() errors = [];
 
   get additionalInfo() {
-    return this.aggregation.additionalInfo;
+    return this.aggregation;
   }
 
   get firstId() {
-    return this.additionalInfo._hs_first_id;
+    return this.aggregation.from;
   }
   get lastId() {
-    return this.additionalInfo._hs_last_id;
+    return this.aggregation.to;
   }
   get requests() {
-    return this.additionalInfo._hs_requests;
+    return this.aggregation.hs_requests;
   }
 }

@@ -1,13 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import { Check, ChecksAggregationItem } from '@monitoring/interfaces';
+import { Check } from '@monitoring/interfaces';
+import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
-import {
-  AddMetric,
-  DeleteMetric,
-  GetServiceStatusAction,
-  LoadMetrics,
-} from '@monitoring/store/actions';
+import { AddMetric, DeleteMetric, GetServiceStatusAction, LoadMetrics } from '@monitoring/store/actions';
 import { State } from '@monitoring/store/reducers';
 import {
   getMonitoringServiceError,
@@ -18,14 +14,7 @@ import { select, Store } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { isNumber } from 'lodash';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import {
-  catchError,
-  exhaustMap,
-  filter,
-  map,
-  shareReplay,
-  tap,
-} from 'rxjs/operators';
+import { catchError, exhaustMap, filter, map, shareReplay, tap } from 'rxjs/operators';
 
 @Injectable()
 export class MonitoringPageFacade {
@@ -35,20 +24,21 @@ export class MonitoringPageFacade {
   serviceStatus$ = this.store.pipe(select(getMonitoringServiceStatus));
   serviceStatusError$ = this.store.pipe(select(getMonitoringServiceError));
   modelVersion$ = this.modelsFacade.selectedModelVersion$;
+
   selectedMetrics$ = this.store.pipe(
     select(selectSelectedMetrics),
-    filter(val => val !== undefined)
+    filter(val => val !== undefined),
+    shareReplay(1)
   );
   customMetrics$ = this.selectedMetrics$.pipe(
     map(metrics => metrics.filter(isCustomMetric))
   );
 
-  selectedAggregation$: Observable<ChecksAggregationItem>;
+  selectedAggregation$: Observable<Aggregation>;
   checks$: Observable<any>;
   latency$: Observable<any>;
   errorsChecks$: Observable<any>;
-
-  private selectedAggregation: BehaviorSubject<ChecksAggregationItem>;
+  private selectedAggregation: BehaviorSubject<Aggregation>;
 
   constructor(
     private store: Store<State>,
@@ -63,11 +53,7 @@ export class MonitoringPageFacade {
     this.checks$ = this.selectedAggregation$.pipe(
       filter(val => !!val),
       exhaustMap(aggregation => {
-        const {
-          _hs_first_id: from,
-          _hs_last_id: to,
-          _hs_model_version_id: modelVersionId,
-        } = aggregation.additionalInfo;
+        const { from, to, modelVersionId } = aggregation;
         this.detailedLoading$.next(true);
         return this.monitoring.getChecks({
           modelVersionId,
@@ -115,7 +101,7 @@ export class MonitoringPageFacade {
     this.store.dispatch(GetServiceStatusAction());
   }
 
-  selectAggregation(agg: ChecksAggregationItem): void {
+  selectAggregation(agg: Aggregation): void {
     this.selectedAggregation.next(agg);
   }
 }
