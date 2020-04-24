@@ -6,45 +6,53 @@
     </div>
   </ng-container>
 
-  <ng-container *ngIf="aggregationList.aggregations.length; else noDataAvailable">
+  <ng-container
+    *ngIf="aggregationList.aggregations.length; else noDataAvailable"
+  >
     <div class="aggregation__header">
       <hydro-icon
+        *ngIf="canLoadLeft$ | async"
         (click)="loadOlder()"
-        *ngIf="canLoadLeft"
-        class="aggregation__header-nav-button"
-        type="icon-left"
+        class="aggregation__icon"
+        type="next"
       >
       </hydro-icon>
       <div class="aggregation__header-range">
-<!--        <div>-->
-<!--          Requests:-->
-<!--          <span class="aggregation__header-count">{{ totalRequests$ | async }} </span>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--          Showed:-->
-<!--          <span class="aggregation__header-count">{{ showedRequests$ | async }} </span>-->
-<!--        </div>-->
+        <!--        <div>-->
+        <!--          Requests:-->
+        <!--          <span class="aggregation__header-count">{{ totalRequests$ | async }} </span>-->
+        <!--        </div>-->
+        <!--        <div>-->
+        <!--          Showed:-->
+        <!--          <span class="aggregation__header-count">{{ showedRequests$ | async }} </span>-->
+        <!--        </div>-->
         <div>
-          <span>{{ aggregationList.dateFrom }}</span> -
-          <span>{{ aggregationList.dateTo }}</span>
+          <span>{{ aggregationList.dateFrom | hsFormatDate }}</span> -
+          <span>{{ aggregationList.dateTo | hsFormatDate }}</span>
         </div>
       </div>
       <hydro-icon
+        *ngIf="canLoadRight$ | async"
         (click)="loadNewest()"
-        *ngIf="canLoadRight"
-        class="aggregation__header-nav-button"
-        type="icon-right"
+        class="aggregation__icon aggregation__icon--rotated"
+        type="next"
       >
       </hydro-icon>
     </div>
     <div class="aggregation__features-label">Features</div>
     <div *ngIf="featureNames" class="aggregation__body">
-      <ng-container [ngTemplateOutlet]="rowLabels" [ngTemplateOutletContext]="{$implicit: featureNames}"></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="rowLabels"
+        [ngTemplateOutletContext]="{ $implicit: featureNames }"
+      ></ng-container>
       <div class="aggregation__checks">
         <svg [attr.height]="canvasHeight" [attr.width]="canvasWidth">
           <g
             (click)="changeActiveColumn(column)"
-            *ngFor="let column of aggregationList.aggregations; let columnIndex = index"
+            *ngFor="
+              let column of aggregationList.aggregations;
+              let columnIndex = index
+            "
             [attr.transform]="columnTranslate(columnIndex)"
             [ngClass]="{ 'column--active': column === selectedAggregation }"
             class="column"
@@ -63,12 +71,18 @@
     <ng-container *ngIf="metricNames.length">
       <div class="aggregation__metrics-label">Metrics</div>
       <div class="aggregation__body">
-        <ng-container [ngTemplateOutlet]="rowLabels" [ngTemplateOutletContext]="{$implicit: metricNames}"></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="rowLabels"
+          [ngTemplateOutletContext]="{ $implicit: metricNames }"
+        ></ng-container>
         <div class="aggregation__checks">
           <svg [attr.height]="metricsCanvasHeight" [attr.width]="canvasWidth">
             <g
               (click)="changeActiveColumn(column)"
-              *ngFor="let column of aggregationList.aggregations; let columnIndex = index"
+              *ngFor="
+                let column of aggregationList.aggregations;
+                let columnIndex = index
+              "
               [attr.transform]="columnTranslate(columnIndex)"
               [ngClass]="{ 'column--active': column === selectedAggregation }"
               class="column"
@@ -89,7 +103,10 @@
     <ng-container *ngIf="batchNames && batchNames.length">
       <div class="aggregation__batches-label">Batch metrics</div>
       <div class="aggregation__body">
-        <ng-container [ngTemplateOutlet]="rowLabels" [ngTemplateOutletContext]="{$implicit: batchNames}"></ng-container>
+        <ng-container
+          [ngTemplateOutlet]="rowLabels"
+          [ngTemplateOutletContext]="{ $implicit: batchNames }"
+        ></ng-container>
         <div class="aggregation__checks">
           <svg
             [attr.height]="batchMetricsCanvasHeight"
@@ -97,7 +114,10 @@
           >
             <g
               (click)="changeActiveColumn(column)"
-              *ngFor="let column of aggregationList.aggregations; let columnIndex = index"
+              *ngFor="
+                let column of aggregationList.aggregations;
+                let columnIndex = index
+              "
               [attr.transform]="columnTranslate(columnIndex)"
               [ngClass]="{ 'column--active': column === selectedAggregation }"
               class="column"
@@ -118,7 +138,7 @@
 </div>
 
 <ng-template #rowLabels let-names>
-  <ul [ngStyle]="{ 'width': labelsWidth+'px' }" class="aggregation__labels">
+  <ul [ngStyle]="{ width: labelsWidth + 'px' }" class="aggregation__labels">
     <li *ngFor="let label of names" class="aggregation__labels-item">
       {{ label }}
     </li>

@@ -1,9 +1,9 @@
-@import "variables";
+@import 'variables';
 
 .column {
   cursor: pointer;
-  opacity: .5;
-  transition: .1s all ease;
+  opacity: 0.5;
+  transition: 0.1s all ease;
 
   &:hover,
   &--active {
@@ -39,16 +39,25 @@
     display: flex;
     align-items: center;
   }
+  &__icon {
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    color: $neutral-color-600;
+    transition: 0.3s ease all;
+    cursor: pointer;
+    &:hover {
+      color: $primary-color-1000;
+    }
+    &--rotated {
+      transform: rotate(180deg);
+    }
+  }
 
   &__header {
     align-items: center;
-    color: $neutral-color-700;
     display: flex;
-    font-family: $font-family-light;
-    font-size: 12px;
     justify-content: center;
-    line-height: 14px;
-    margin-bottom: 8px;
 
     &-range {
       margin: 0 12px;
@@ -56,18 +65,6 @@
       font-size: 12px;
       color: $neutral-color-900;
       font-family: $font-family-bold;
-    }
-
-    &-nav-button {
-      color: $neutral-color-600;
-      cursor: pointer;
-      height: 16px;
-      transition: .3s all ease;
-      width: 16px;
-
-      &:hover {
-        color: $neutral-color-900;
-      }
     }
 
     &-count {

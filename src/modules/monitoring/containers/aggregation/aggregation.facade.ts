@@ -52,7 +52,7 @@ export class AggregationFacade {
             this.loading.next(true);
             return this.monitoring
               .getChecksAggregation({
-                limit: 60,
+                limit: 80,
                 modelVersionId: modelVersion.id,
                 offset,
               })
@@ -82,7 +82,7 @@ export class AggregationFacade {
       this.checksAggregationResponse$,
       this.monitoringPageFacade.selectedMetrics$
     ).pipe(
-      map(([aggregationResponse, metrics]) => {
+      map(([aggregationResponse]) => {
         const aggregations = aggregationResponse.results
           .map(aggregation => new Aggregation(aggregation))
           .reverse();
@@ -117,7 +117,7 @@ export class AggregationFacade {
       })
     );
 
-    this.canLoadLeft$ = this.currentOffset
+    this.canLoadRight$ = this.currentOffset
       .asObservable()
       .pipe(map(offset => this.paginator.canLoadNewest(offset)));
     this.canLoadLeft$ = combineLatest(

@@ -6,7 +6,6 @@ import { Observable } from '@node_modules/rxjs';
 import { tap } from '@node_modules/rxjs/internal/operators';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { interpolateRdYlGn } from 'd3';
-import { union } from 'lodash';
 
 @Component({
   selector: 'hs-aggregation',
@@ -23,8 +22,8 @@ export class AggregationComponent {
   showedRequests$: Observable<number>;
 
   aggregations$: Observable<AggregationsList>;
-  canLoadLeft: boolean;
-  canLoadRight: boolean;
+  canLoadLeft$: Observable<boolean>;
+  canLoadRight$: Observable<boolean>;
   loading: boolean = false;
   labelsWidth: number = 100;
   canvasWidth: number = 880;
@@ -51,6 +50,8 @@ export class AggregationComponent {
         this.checkAndUpdateActiveColumn(aggregationList);
       })
     );
+    this.canLoadLeft$ = this.facade.canLoadLeft$;
+    this.canLoadRight$ = this.facade.canLoadRight$;
   }
 
   get canvasHeight() {
@@ -150,19 +151,11 @@ export class AggregationComponent {
   }
 
   loadOlder() {
-    // this.loadedOlder.emit();
+    this.facade.loadOlder();
   }
 
   loadNewest() {
-    // this.loadedNewest.emit();
-  }
-
-  private getBatchNames(aggregation: ChecksAggregationItem[]): string[] {
-    return aggregation
-      .filter(agg => agg.batch)
-      .reduce((names, { batch }) => {
-        return union(names, Object.keys(Object.values(batch)[0]));
-      }, []);
+    this.facade.loadNewest();
   }
 
   private checkAndUpdateActiveColumn(aggregationList: AggregationsList): void {

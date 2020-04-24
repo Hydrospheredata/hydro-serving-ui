@@ -1,5 +1,6 @@
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { union } from 'lodash';
+import { compose } from 'lodash/fp';
 
 interface Check {
   checks: number;
@@ -37,10 +38,26 @@ export class AggregationsList {
   }
 
   get dateFrom(): Date | null {
+    if (this.aggregations.length) {
+      return this.extractDateFromId(this.aggregations[0].id);
+    }
     return null;
   }
   get dateTo(): Date | null {
+    if (this.aggregations.length) {
+      return this.extractDateFromId(
+        this.aggregations[this.aggregations.length - 1].id
+      );
+    }
     return null;
+  }
+
+  private extractDateFromId(id: string): Date {
+    const getFirst4Bytes = str => str.slice(0, 8);
+    const convertToMicroseconds = str => parseInt(str, 16) * 1000;
+    const convertToDate = ms => new Date(ms);
+
+    return compose(convertToDate, convertToMicroseconds, getFirst4Bytes)(id);
   }
 }
 
