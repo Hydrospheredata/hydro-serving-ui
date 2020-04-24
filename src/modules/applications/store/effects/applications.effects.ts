@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { HydroServingState } from '@core/store';
-import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-
 import { ApplicationsService } from '@applications/services/applications.service';
-import { Application } from '@shared/models';
 
 import {
   Get,
@@ -35,15 +30,13 @@ import { selectSelectedApplication } from '@applications/store/selectors';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { SnackbarService } from '@core/services';
 import { ApplicationsFavoriteStorage } from '@core/services/applications-favorite-storage.service';
+
+import { HydroServingState } from '@core/store';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { Application } from '@shared/models';
 import { of } from 'rxjs';
-import {
-  switchMap,
-  catchError,
-  withLatestFrom,
-  skip,
-  map,
-  tap,
-} from 'rxjs/operators';
+import { switchMap, catchError, withLatestFrom, skip, map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ApplicationsEffects {
@@ -63,7 +56,10 @@ export class ApplicationsEffects {
               });
             return GetSuccess({ payload: applications });
           }),
-          catchError(error => of(GetFail({ error })))
+          catchError(error => {
+            this.snackbar.show({ message: 'Failed to load applications' });
+            return of(GetFail({ error }));
+          })
         )
       )
     )

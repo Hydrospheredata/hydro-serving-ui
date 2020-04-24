@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { ApplicationsFacade } from '@applications/store';
+import { Observable } from '@node_modules/rxjs';
+import { Application } from '@shared/models';
 
 @Component({
   selector: 'hs-application-page',
@@ -7,6 +9,8 @@ import { ApplicationsFacade } from '@applications/store';
   styleUrls: ['./application-page.component.scss'],
 })
 export class ApplicationPageComponent {
-  application$ = this.facade.selectedApplication$;
-  constructor(private facade: ApplicationsFacade) {}
+  application$: Observable<Application>;
+  constructor(private facade: ApplicationsFacade) {
+    this.application$ = this.facade.selectedApplication$;
+  }
 }

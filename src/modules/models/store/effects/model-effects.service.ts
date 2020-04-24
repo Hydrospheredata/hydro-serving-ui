@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { of } from 'rxjs';
 
 import { Router } from '@angular/router';
 import { ModelBuilder, ModelVersionBuilder } from '@core/builders';
@@ -17,6 +15,8 @@ import {
   DeleteModelSuccess,
   DeleteModelFail,
 } from '@models/store/actions';
+import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { of } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
 
 @Injectable()
@@ -38,6 +38,7 @@ export class ModelEffects {
             return GetModelsSuccess({ payload: models });
           }),
           catchError(error => {
+            this.snackbar.show({ message: 'Failed to load models' });
             return of(GetModelsFail({ error }));
           })
         )
@@ -57,7 +58,10 @@ export class ModelEffects {
             );
             return GetModelVersionsSuccess({ payload: modelVersions });
           }),
-          catchError(error => of(GetModelsFail({ error })))
+          catchError(error => {
+            this.snackbar.show({ message: 'Failed to load model versions' });
+            return of(GetModelsFail({ error }));
+          })
         )
       )
     )

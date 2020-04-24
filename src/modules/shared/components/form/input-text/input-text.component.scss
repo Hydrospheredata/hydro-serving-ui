@@ -1,155 +1,47 @@
 @import 'variables.scss';
 
-.control {
-  &-label {
-    color: $neutral-color-900;
-    font-family: $font-family-bold;
-    font-size: 12px;
-
-    &__postfix {
-      color: $neutral-color-400;
-      font-size: 12px;
-      font-style: italic;
-
-      &:before {
-        content: ', ';
-        display: inline;
-      }
-    }
+.hs-input {
+  &__control {
+    position: relative;
   }
-}
-
-.input-text {
-  &__error {
-    color: $supportive-color-red-700;
+  &__label {
+    color: $neutral-color-1000;
+    text-transform: uppercase;
+    font-size: 10px;
+    line-height: 12px;
   }
 
-  &--copy-link {
-    .input-text__input {
-      border-width: 1px;
-      height: 30px;
-    }
-
-    hydro-icon.input-icon {
-      font-size: 20px;
-      top: 20%;
-    }
-  }
-}
-
-.input-text__flex-container {
-  display: flex;
-  flex-flow: row;
-  flex-wrap: wrap;
-
-  &.reverse {
-    flex-flow: row-reverse;
-  }
-
-  input.form-control {
-    display: flex;
-
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 6px 12px !important;
-    width: 100% !important;
-    &.sibling {
-      &.left {
-        margin-left: 0.5rem;
-      }
-
-      &.right {
-        margin-right: 0.5rem;
-      }
-    }
-  }
-
-  hydro-icon.input-text__icon {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    left: 0;
-    position: static;
-    right: 0;
-    top: 0;
-  }
-}
-
-.form-control {
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid $neutral-color-400;
-  box-shadow: none;
-  color: $neutral-color-800;
-  height: 26px;
-
-  &::placeholder {
-    color: $neutral-color-500;
-    font-family: $font-family-light;
-    font-size: 14px;
-    letter-spacing: 1px;
-  }
-
-  &--is-bordered {
-    border: 1px solid $neutral-color-500;
-  }
-
-  &.input-icon {
-    &.left {
-      padding-left: 24px;
-    }
-  }
-
-  &.sibling {
-    width: 84%;
-  }
-
-  &:after {
-    clear: both;
-  }
-
-  &.__kafkaInput {
-    border: 1px $neutral-color-200 solid;
-    border-radius: 2px;
-    color: $neutral-color-800;
-    height: 28px;
-    padding: 7px 12px;
-  }
-
-  &.__small {
-    height: 36px;
-  }
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
-  &__inline {
-    align-items: center;
-    flex-direction: row;
-    padding: 0 10px;
-
-    > .control-label {
-      margin: 0 0 8px 0;
-    }
-
-    > .cs-relative {
-      flex: 1;
-    }
-  }
-}
-
-hydro-icon.input-icon {
-  color: $neutral-color-500;
-  height: 18px;
-  width: 18px;
-
-  &.left {
+  &__icon {
+    color: $neutral-color-300;
+    height: 24px;
     left: 4px;
     position: absolute;
-    top: 4px;
+    top: 2px;
+    width: 24px;
+  }
+
+  &__input {
+    border: 1px $neutral-color-300 solid;
+    border-radius: 4px;
+    color: $neutral-color-800;
+    font-size: 14px;
+    height: 28px;
+    padding: 2px 8px;
+    width: 100%;
+    &--with-icon {
+      padding-left: 28px;
+    }
+  }
+
+  &__errors {
+    background: $supportive-color-red-500;
+    color: $neutral-color-100;
+    position: absolute;
+    font-size: 12px;
+    padding: 4px;
+    line-height: 14px;
+    width: 100%;
+    top: calc(100% + 4px);
+    border-radius: 4px;
   }
 }

@@ -1,14 +1,13 @@
 <aside class="sidebar">
   <div class="sidebar__header">
-    <ng-content></ng-content>
-    <div class="sidebar__filter">
-      <div class="sidebar__filter-label"></div>
-      <hydro-icon class="sidebar__filter-icon" type="icon-search"></hydro-icon>
-      <input
-        class="sidebar__filter-input"
-        type="text"
-        (input)="handleFilter($event.target.value)"
-      />
+    <div class="sidebar__button" *ngIf="button">
+      <ng-content select="button"></ng-content>
+    </div>
+    <div class="sidebar__input">
+      <hydro-input-text
+        [formControl]="filter"
+        icon="icon-search"
+      ></hydro-input-text>
     </div>
   </div>
   <ng-container *ngIf="!isEmpty; else message">

@@ -8,37 +8,32 @@
     />
     <span></span>
   </label>
-  <div
-    *ngFor="let kafkaSource of kafkaFormArray.controls; index as i"
-    class="kafka-sources__list"
-  >
-    <div [formGroup]="kafkaSource" class="kafka-sources__item">
+  <div *ngFor="let kafkaSource of kafkaFormArray.controls; index as i">
+    <div [formGroup]="kafkaSource" class="kafka__item">
       <hydro-input-text
-        [wrapClassName]="'form-group__inline'"
-        [inputClass]="'__kafkaInput'"
-        [label]="'input topic = '"
+        class="kafka__input"
         name="inputTopic"
         formControlName="sourceTopic"
+        label="input topic"
       >
       </hydro-input-text>
       <hydro-input-text
-        [wrapClassName]="'form-group__inline'"
-        [inputClass]="'__kafkaInput'"
-        [label]="'output topic = '"
+        class="kafka__input"
         name="outputTopic"
         formControlName="destinationTopic"
+        label="destination topic"
       >
       </hydro-input-text>
       <hydro-icon
         type="icon-remove"
-        class="icon kafka-sources__item-delete-icon"
+        class="icon kafka__icon"
         (click)="removeKafkaControlAtIndex(i)"
       ></hydro-icon>
     </div>
   </div>
 
-  <div *ngIf="isKafkaEnabled" (click)="addKafkaControl()">
-    <button class="button button--flat kafka-sources__add-button">
+  <div *ngIf="isKafkaEnabled" class="kafka__button">
+    <button hs-button (click)="addKafkaControl()">
       add kafka source
     </button>
   </div>

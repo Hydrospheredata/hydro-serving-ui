@@ -1,46 +1,16 @@
-<div
-  class="input-text form-group {{ wrapClassName }}"
-  [class.has-error]="formErrors"
->
-  <label *ngIf="label" class="control-label" [attr.for]="name"
-    >{{ label }}<span *ngIf="postfix" class="control-label__postfix">{{ postfix }}</span>
-  </label>
-  <div
-    class="cs-relative"
-    [ngClass]="{
-      'input-text__flex-container': iconAsSibling,
-      reverse: iconAsSibling && iconDirection == 'left'
-    }"
-  >
-    <input
-      [disabled]="disabled"
-      [readonly]="readonly"
-      class="input-text__input form-control {{ inputClass }}"
-      [ngClass]="{
-        'input-icon': iconName,
-        sibling: iconAsSibling,
-        right: iconDirection == 'right',
-        left: iconDirection == 'left',
-        'form-control--is-bordered': bordered
-      }"
-      [placeholder]="placeholder ? placeholder : ''"
-      type="text"
-      [name]="name"
-      [(ngModel)]="value"
-      #input="ngModel"
-      [id]="name"
-    />
-
-    <hydro-icon
-      [type]="iconName"
-      class="input-text__icon {{ iconClass }} input-icon"
-      (click)="iconClickHandle(input)"
-      [ngClass]="{
-        left: iconDirection == 'left',
-        right: iconDirection == 'right'
-      }"
-      *ngIf="iconName"
-    ></hydro-icon>
+<div class="hs-input">
+  <label *ngIf="label" class="hs-input__label" [attr.for]="name">{{
+    label
+  }}</label>
+  <div class="hs-input__control">
+    <hydro-icon *ngIf="icon" class="hs-input__icon" [type]="icon"></hydro-icon>
+    <input [ngClass]="inputClassMap" [(ngModel)]="value" [attr.id]="name" />
+    <ng-container *ngIf="errors">
+      <div class="hs-input__errors">
+        <div class="hs-input__error" *ngFor="let error of errors | keyvalue">
+          {{ error.value }}
+        </div>
+      </div>
+    </ng-container>
   </div>
-  <div class="input-text__error" *ngIf="formErrors">{{ formErrors }}</div>
 </div>

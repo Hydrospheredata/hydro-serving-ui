@@ -1,27 +1,8 @@
-@import "variables.scss";
-@import "hydro_input.scss";
+@import 'variables.scss';
+@import 'hydro_input.scss';
 
 .application-name {
-  display: flex;
-  flex-direction: column;
-  margin: 16px 0 9px;
-  position: relative;
-  &__label {
-    font-size: 14px;
-    color:  $neutral-color-900;
-    font-family: $font-family-bold;
-    line-height: 16px;
-  }
-
-  &__input {
-    font-size: 14px;
-    padding: 4px;
-    border: 1px solid $neutral-color-200;
-
-    &:focus {
-      border-color: $primary-color-700;
-    }
-  }
+  margin-bottom: 18px;
 }
 
 .application-form {
@@ -50,7 +31,7 @@
     background-color: $neutral-color-700;
     color: $neutral-color-100;
     position: relative;
-    text-align: center
+    text-align: center;
   }
 
   &__name {

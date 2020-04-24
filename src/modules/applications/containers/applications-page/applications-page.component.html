@@ -13,6 +13,7 @@
         color="primary"
         (click)="addApplication()"
         [disabled]="!(someModelVersionIsReleased$ | async)"
+        #button
       >
         create application
       </button></hs-sidebar
