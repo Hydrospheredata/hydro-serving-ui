@@ -1,14 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormArray, FormGroup, FormControl } from '@angular/forms';
+import { FormArray, FormGroup, AbstractControl } from '@angular/forms';
 
-import {
-  ApplicationFormService,
-  StageFormData,
-} from '@applications/services/application-form.service';
-import {
-  ModelVariantFormService,
-  IModelVariantFormData,
-} from '@applications/services/model-variant-form.service';
+import { ApplicationFormService, StageFormData } from '@applications/services/application-form.service';
+import { ModelVariantFormService, IModelVariantFormData } from '@applications/services/model-variant-form.service';
 import { Application } from '@shared/_index';
 
 @Component({
@@ -41,7 +35,7 @@ export class ApplicationFormComponent implements OnInit {
     this.formService.addStageControl();
   }
 
-  public addModelVariantToStage(stage: FormGroup) {
+  public addModelVariantToStage(stage: AbstractControl) {
     this.formService.addModelVariantToStage(stage);
   }
 
@@ -82,12 +76,12 @@ export class ApplicationFormComponent implements OnInit {
     this.applicationStagesFormArray.removeAt(stageIdx);
   }
 
-  public showRemoveModelVariantIcon(stage: FormControl): boolean {
+  public showRemoveModelVariantIcon(stage: AbstractControl): boolean {
     return stage.get('modelVariants').value.length > 1;
   }
 
   public onModelVariantDelete(
-    stage: FormControl,
+    stage: AbstractControl,
     modelVariantIdx: number
   ): void {
     const modelVariants = stage.get('modelVariants') as FormArray;
