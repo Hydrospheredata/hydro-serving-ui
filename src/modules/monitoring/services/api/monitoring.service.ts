@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import { Check, ChecksAggregationResponse, GetChecksAggregationParams, GetChecksParams } from '@monitoring/interfaces';
+import {
+  Check,
+  ChecksAggregationResponse,
+  GetChecksAggregationParams,
+  GetChecksParams,
+} from '@monitoring/interfaces';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

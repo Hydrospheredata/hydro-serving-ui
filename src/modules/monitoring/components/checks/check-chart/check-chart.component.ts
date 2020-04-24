@@ -1,4 +1,12 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { ChartConfig } from '@monitoring/interfaces';
 import { extent, mouse, scaleLinear, ScaleLinear, select } from 'd3';
 import { BehaviorSubject, Observable } from 'rxjs';

@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
-import { IModelVariantFormData, ModelVariantFormService } from '@applications/services/model-variant-form.service';
+import {
+  IModelVariantFormData,
+  ModelVariantFormService,
+} from '@applications/services/model-variant-form.service';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { Application } from '@shared/_index';
 

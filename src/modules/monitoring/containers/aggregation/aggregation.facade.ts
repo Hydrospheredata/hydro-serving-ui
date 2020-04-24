@@ -9,7 +9,16 @@ import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { Store } from '@ngrx/store';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, combineLatest, Observable, of, timer } from 'rxjs';
-import { catchError, filter, map, pairwise, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  map,
+  pairwise,
+  shareReplay,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',

@@ -3,7 +3,12 @@ import { ModelsFacade } from '@models/store';
 import { Check } from '@monitoring/interfaces';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
-import { AddMetric, DeleteMetric, GetServiceStatusAction, LoadMetrics } from '@monitoring/store/actions';
+import {
+  AddMetric,
+  DeleteMetric,
+  GetServiceStatusAction,
+  LoadMetrics,
+} from '@monitoring/store/actions';
 import { State } from '@monitoring/store/reducers';
 import {
   getMonitoringServiceError,
@@ -14,7 +19,14 @@ import { select, Store } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { isNumber } from 'lodash';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { catchError, exhaustMap, filter, map, shareReplay, tap } from 'rxjs/operators';
+import {
+  catchError,
+  exhaustMap,
+  filter,
+  map,
+  shareReplay,
+  tap,
+} from 'rxjs/operators';
 
 @Injectable()
 export class MonitoringPageFacade {

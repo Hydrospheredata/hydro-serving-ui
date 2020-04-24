@@ -8,7 +8,10 @@ import {
 } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
-import { DialogDeleteMetricComponent, DialogMetricComponent } from '@monitoring/components';
+import {
+  DialogDeleteMetricComponent,
+  DialogMetricComponent,
+} from '@monitoring/components';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { ModelVersion } from '@shared/_index';
