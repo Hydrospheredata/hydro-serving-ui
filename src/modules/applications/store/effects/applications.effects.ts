@@ -36,7 +36,14 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Application } from '@shared/models';
 import { of } from 'rxjs';
-import { switchMap, catchError, withLatestFrom, skip, map, tap } from 'rxjs/operators';
+import {
+  switchMap,
+  catchError,
+  withLatestFrom,
+  skip,
+  map,
+  tap,
+} from 'rxjs/operators';
 
 @Injectable()
 export class ApplicationsEffects {
