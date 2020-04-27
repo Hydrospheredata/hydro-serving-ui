@@ -1,156 +1,47 @@
-@import "variables.scss";
+@import 'variables.scss';
 
-.control {
-  &-label {
-    color: $neutral-color-900;
-    font-size: 12px;
-    font-family: $font-family-bold;
-    &__postfix {
-      font-size: 12px;
-      font-style: italic;
-      color: $neutral-color-400;
-
-      &:before {
-        content: ", ";
-        display: inline;
-      }
-    }
+.hs-input {
+  &__control {
+    position: relative;
   }
-}
-
-.input-text {
-  &__error {
-    color: $error-text-color;
+  &__label {
+    color: $neutral-color-1000;
+    text-transform: uppercase;
+    font-size: 10px;
+    line-height: 12px;
   }
 
-  &--copy-link {
-    .input-text__input {
-      height: 30px;
-      border-width: 1px;
-    }
-
-    hydro-icon.input-icon {
-      top: 20%;
-      font-size: 20px;
-    }
-  }
-}
-
-.input-text__flex-container {
-  display: flex;
-  flex-wrap: wrap;
-  flex-flow: row;
-
-  &.reverse {
-    flex-flow: row-reverse;
-  }
-
-  input.form-control {
-    &.sibling {
-      &.left {
-        margin-left: 0.5rem;
-      }
-
-      &.right {
-        margin-right: 0.5rem;
-      }
-    }
-
-    flex-direction: column;
-    display: flex;
-    justify-content: flex-start;
-    padding: 6px 12px !important;
-    width: 100% !important;
-  }
-
-  hydro-icon.input-text__icon {
-    flex-direction: column;
-    display: flex;
-    position: static;
-    top: 0;
-    left: 0;
-    right: 0;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-.form-control {
-  height: 26px;
-  box-shadow: none;
-  background-color: transparent;
-  border: none;
-  border-bottom: 1px solid $neutral-color-400;
-  color:$neutral-color-800;
-  &::placeholder {
-    color: $neutral-color-500;
-    letter-spacing: 1px;
-    font-family: $font-family-light;
-    font-size: 14px;
-  }
-
-  &--is-bordered {
-    border: 1px solid $neutral-color-500;  
-  }
-  
-
-  &.input-icon {
-    &.left {
-      padding-left: 24px;
-    }
-  }
-
-  &.sibling {
-    width: 84%;
-  }
-
-  &:after {
-    clear: both;
-  }
-
-  &.__kafkaInput {
-    border: none;
-    padding: 7px 12px;
-    border-radius: 2px;
-    border: 1px $neutral-color-200 solid;
-    color: $neutral-color-800;
-    height: 28px;
-  }
-
-  &.__small {
-    height: 36px;
-  }
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
-  &__inline {
-    flex-direction: row;
-    align-items: center;
-    padding: 0 10px;
-
-    >.control-label {
-      margin: 0;
-      margin-right: 8px;
-    }
-
-    >.cs-relative {
-      flex: 1;
-    }
-  }
-}
-
-hydro-icon.input-icon {
-  width: 18px;
-  height: 18px;
-  color: $neutral-color-500;
-
-  &.left {
+  &__icon {
+    color: $neutral-color-300;
+    height: 24px;
     left: 4px;
     position: absolute;
-    top: 4px;
+    top: 2px;
+    width: 24px;
+  }
+
+  &__input {
+    border: 1px $neutral-color-300 solid;
+    border-radius: 4px;
+    color: $neutral-color-800;
+    font-size: 14px;
+    height: 28px;
+    padding: 2px 8px;
+    width: 100%;
+    &--with-icon {
+      padding-left: 28px;
+    }
+  }
+
+  &__errors {
+    background: $supportive-color-red-500;
+    color: $neutral-color-100;
+    position: absolute;
+    font-size: 12px;
+    padding: 4px;
+    line-height: 14px;
+    width: 100%;
+    top: calc(100% + 4px);
+    border-radius: 4px;
   }
 }

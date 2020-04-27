@@ -1,0 +1,15 @@
+export const SCATTER_PLOT_PALETTE: ReadonlyArray<string> = [
+  '#418ecc',
+  '#ff716c',
+  '#ffad37',
+  '#ddff64',
+  '#85ff85',
+  '#8cffd9',
+  '#sef3ff',
+  '#f59dfa',
+  '#8a82ff',
+  '#4362ff',
+  '#6db7fa',
+  '#b384f5',
+  '#b366ac',
+];

@@ -9,6 +9,7 @@ describe('ApplicationStatusComponent', () => {
   let fixture: ComponentFixture<ApplicationStatusComponent>;
   let debugElement: DebugElement;
   let nativeElement: HTMLElement;
+  const rootClass = 'app-status';
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
@@ -35,31 +36,24 @@ describe('ApplicationStatusComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('show default text if status is undefined', () => {
-    component.status = 'unknown_status' as ApplicationStatus;
-    const statusEl = nativeElement.querySelector('.application__status-unknown');
-    expect(statusEl).toBeTruthy();
-  });
-
   it('show success icon', () => {
-    component.status =  ApplicationStatus.Ready;
+    component.status = ApplicationStatus.Ready;
     fixture.detectChanges();
     const statusEl = nativeElement.querySelector(
-      '.application__status-icon--released'
+      `.${rootClass}--released`
     );
     expect(statusEl).toBeTruthy();
   });
   it('show failed icon', () => {
-    component.status =  ApplicationStatus.Failed;
+    component.status = ApplicationStatus.Failed;
     fixture.detectChanges();
-    const statusEl = nativeElement.querySelector('.application__status-icon--failed');
+    const statusEl = nativeElement.querySelector(`.${rootClass}--failed`);
     expect(statusEl).toBeTruthy();
   });
   it('show serving icon', () => {
-    component.status =  ApplicationStatus.Assembling;
+    component.status = ApplicationStatus.Assembling;
     fixture.detectChanges();
-    const statusEl = nativeElement.querySelector('.application__status-icon--assembling');
+    const statusEl = nativeElement.querySelector(`.${rootClass}--assembling`);
     expect(statusEl).toBeTruthy();
   });
-
 });

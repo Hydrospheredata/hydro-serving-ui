@@ -1,0 +1,24 @@
+@import "variables.scss";
+
+.scatter-plot {
+  width: 100%;
+  &__layout {
+    fill: white;
+  }
+  &__point {
+    opacity: .9;
+    transition: .2s ease all;
+
+    &:hover {
+      opacity: 1;
+    }
+    &--selected {
+      opacity: 1;
+      stroke: #00bb00;
+      stroke-width: 2px;
+    }
+  }
+  &__legend {
+    margin-left: 24px;
+  }
+}

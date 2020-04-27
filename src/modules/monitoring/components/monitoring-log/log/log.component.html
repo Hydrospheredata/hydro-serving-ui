@@ -1,30 +1,68 @@
 <div class="log">
+  <div class="log__header">
+    <div class="log__title">Requests</div>
+    <div class="log__size">
+      <span
+        class="log__size-trigger  log__size-trigger--mini"
+        (click)="changeSize('mini')"
+      ></span>
+      <span
+        class="log__size-trigger  log__size-trigger--full"
+        (click)="changeSize('full')"
+      ></span>
+    </div>
+  </div>
   <div class="log__loader" *ngIf="loading">
     <hs-loader class="log__loader-icon"></hs-loader>
   </div>
-  <div class="log__body" *ngIf="haveSomeData; else noDataAvailable">
-    <ul class="log__ids">
-      <li
-        *ngFor="let check of checks; let i = index"
-        class="log__ids-item"
-        [ngClass]="{
-          'log__ids-item--selected': i === selectedIndex,
-          'log__ids-item--failed': isFailed(check)
-        }"
-        (click)="selectItem(i)"
-      >
-        {{ check._id | checkIdToTime | hsFormatDate }}
-      </li>
-    </ul>
-    <div class="log__detailed">
-      <hs-log-detail
-        *ngIf="selectedCheck"
-        [check]="selectedCheck"
-        [modelVersion]="modelVersion"
-      ></hs-log-detail>
+  <ng-container *ngIf="size === 'full'; else minified">
+    <div class="log__body" *ngIf="haveSomeData; else noDataAvailable">
+      <ul class="log__ids">
+        <li
+          *ngFor="let check of checks; let i = index"
+          class="log__ids-item"
+          [ngClass]="{
+            'log__ids-item--selected': i === selectedIndex,
+            'log__ids-item--failed': isFailed(check)
+          }"
+          (click)="selectItem(i)"
+        >
+          {{ check._id | checkIdToTime | hsFormatDate }}
+        </li>
+      </ul>
+      <div class="log__detailed">
+        <hs-log-detail
+          *ngIf="selectedCheck"
+          [check]="selectedCheck"
+          [modelVersion]="modelVersion"
+        ></hs-log-detail>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #minified>
+  <div class="log__body">
+    <div class="log__mini">
+      <div class="log__mini-item">
+        <div class="log__mini-item-count">{{ requestsSummaryInfo.count }}</div>
+        <div class="log__mini-item-label">requests</div>
+      </div>
+      <div class="log__mini-item">
+        <div class="log__mini-item-count log__mini-item-count--success">
+          {{ requestsSummaryInfo.success }}
+        </div>
+        <div class="log__mini-item-label">success</div>
+      </div>
+      <div class="log__mini-item">
+        <div class="log__mini-item-count log__mini-item-count--failed">
+          {{ requestsSummaryInfo.failed }}
+        </div>
+        <div class="log__mini-item-label">failed</div>
+      </div>
     </div>
   </div>
-</div>
+</ng-template>
 <ng-template #noDataAvailable>
   <div class="log__message">
     No data available

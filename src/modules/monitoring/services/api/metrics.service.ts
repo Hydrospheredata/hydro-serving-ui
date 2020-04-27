@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import {
-  MetricSpecificationRequest,
-  MetricSpecification,
-} from '@shared/models/metric-specification.model';
+import { MetricSpecification, MetricSpecificationRequest, } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class MetricsService {
   private baseUrl: string;
 
@@ -19,11 +16,15 @@ export class MetricsService {
   public getMetricSpecifications(
     modelVersionId: string
   ): Observable<MetricSpecification[]> {
-    return this.http.get(`${this.baseUrl}/modelversion/${modelVersionId}`).pipe(
-      catchError(_ => {
-        throw new Error(`Can't fetch data from monitoring service`);
-      })
-    );
+    return this.http
+      .get<MetricSpecification[]>(
+        `${this.baseUrl}/modelversion/${modelVersionId}`
+      )
+      .pipe(
+        catchError(_ => {
+          throw new Error(`Can't fetch data from monitoring service`);
+        })
+      );
   }
 
   public addMetricSpecification(

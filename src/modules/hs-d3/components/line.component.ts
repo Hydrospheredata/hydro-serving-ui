@@ -1,37 +1,36 @@
 import {
-  Component,
-  Input,
-  ViewChild,
-  ElementRef,
   ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  ViewChild,
 } from '@angular/core';
-import { line, select, easeLinear } from 'd3';
+import { easeLinear, line, select } from 'd3';
 
 @Component({
   selector: '[hs-d3line]',
-  template: `
-    <svg:path #path></svg:path>
-  `,
+  template: ` <svg:path #path></svg:path> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class D3LineComponent {
+export class D3LineComponent implements OnChanges {
   @ViewChild('path', { read: ElementRef })
   path: ElementRef;
   @Input() 'hs-d3line';
   @Input() xScale;
   @Input() yScale;
-  @Input() set data(data: number[][]) {
-    if (data === undefined) {
-      return;
-    }
+  @Input() data: number[];
 
-    if (data.some(([x, y]) => x === undefined || y === undefined)) {
-      return;
-    }
+  ngOnChanges(changes) {
+    const xScale = changes.xScale.currentValue;
+    const yScale = changes.yScale.currentValue;
+    const data = changes.data
+      ? changes.data.currentValue.map((v, i) => [i + 1, v])
+      : this.data.map((v, i) => [i + 1, v]);
 
     const valueline = line()
-      .x(d => this.xScale(d[0]))
-      .y(d => this.yScale(d[1]));
+      .x(d => xScale(d[0]))
+      .y(d => yScale(d[1]));
 
     select(this.path.nativeElement)
       .data([data])

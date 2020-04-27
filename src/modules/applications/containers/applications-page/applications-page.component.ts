@@ -4,7 +4,7 @@ import { DialogAddApplicationComponent } from '@applications/components';
 import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
-import { Application } from '@shared/_index';
+import { Application } from '@shared/models';
 import { Observable, Subscription } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
 
@@ -53,7 +53,6 @@ export class ApplicationsPageComponent implements OnDestroy {
   }
 
   handleBookmark(application: Application): void {
-    console.log('handle toggle', { application });
     this.facade.toggleFavorite(application);
   }
 

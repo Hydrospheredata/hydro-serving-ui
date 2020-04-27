@@ -3,49 +3,51 @@ import { SharedModule } from '@shared/shared.module';
 import { ModelsRoutingModule } from './models.router';
 
 import {
-  SignaturesComponent,
   ModelsComponent,
   ModelVersionDetailsComponent,
   ModelVersionLogComponent,
   ModelVersionsComponent,
-  ModelVersionStatusComponent,
   ModelVersionsRowComponent,
+  ModelVersionStatusComponent,
+  SignaturesComponent,
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
 import {
-  ModelsService,
   ModelDetailsGuard,
+  ModelsService,
   ModelVersionDetailsGuard,
 } from '@models/services';
-import { reducer, ModelEffects } from '@models/store';
+import { ModelEffects, reducer } from '@models/store';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { ProfilerModule } from '../profiler/profiler.module';
-import { ServablesModule } from '../servables/servables.module';
+import { ProfilerModule } from '@profiler/profiler.module';
+import { ServablesModule } from '@servables/servables.module';
 import {
-  ModelsPageComponent,
   ModelPageComponent,
+  ModelsPageComponent,
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
 } from './containers';
+import { ModelsPublicUiModule } from './shared/models-public-ui.module';
+import { StatModule } from '../stat/stat.module';
 
 @NgModule({
   imports: [
+    MonitoringModule,
+    ModelsPublicUiModule,
     ModelsRoutingModule,
     SharedModule,
     StoreModule.forFeature('models', reducer),
     EffectsModule.forFeature([ModelEffects]),
     ProfilerModule,
-    MonitoringModule,
     ServablesModule,
+    StatModule,
   ],
   declarations: [
     DialogDeleteModelComponent,
-    ModelPageComponent,
     ModelsComponent,
-    ModelsPageComponent,
     ModelVersionDetailsComponent,
     ModelVersionLogComponent,
     ModelVersionPageComponent,
@@ -54,6 +56,8 @@ import {
     SignaturesComponent,
     ModelVersionStatusComponent,
     ModelVersionsRowComponent,
+    ModelsPageComponent,
+    ModelPageComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],

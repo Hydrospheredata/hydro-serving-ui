@@ -1,43 +1,41 @@
-import { NgModule } from '@angular/core';
+import { ModelsPublicUiModule } from '@models/shared/models-public-ui.module';
 import {
-  DialogMetricComponent,
+  CheckChartComponent,
   DialogDeleteMetricComponent,
-  MetricSpecConfigComponent,
-  ReqstoreMetricsComponent,
-  InputOutputComponent,
-  TimeIntervalSelectComponent,
-  CustomChecksComponent,
-  LatencyCheckComponent,
+  DialogMetricComponent,
+  DialogRequestsErrorsComponent,
   ErrorCheckComponent,
-  CustomCheckComponent,
+  LatencyCheckComponent,
   LogComponent,
   LogDetailComponent,
-  RequestsInformationComponent,
-  CheckChartComponent,
-  DialogRequestsErrorsComponent,
+  MetricsChecksComponent,
+  MetricSpecConfigComponent,
   RawChecksComponent,
-  LogMetricsTableComponent,
+  RegimeSelectorComponent,
+  ReqstoreMetricsComponent,
+  RequestsInformationComponent,
+  TimeIntervalSelectComponent,
 } from '@monitoring/components';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
-import { MonitoringService } from '@monitoring/services';
-import { MetricsService } from '@monitoring/services/api/metrics.service';
 import {
-  reducer,
-  MonitoringServiceStatusEffects,
   MetricsEffects,
+  MonitoringServiceStatusEffects,
+  reducer,
 } from '@monitoring/store';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
-import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 import {
-  MonitoringAvailabilityComponent,
-  MetricsComponent,
-  MonitoringPageComponent,
   AggregationComponent,
-  BatchMetricsComponent
+  BatchMetricsComponent,
+  MetricsComponent,
+  MonitoringAvailabilityComponent,
+  MonitoringPageComponent,
 } from './containers';
+import { CustomMetricsComponent } from '@monitoring/containers';
+import { RootCauseModule } from '@rootcause/root-cause.module';
+import { NgModule } from '@angular/core';
+
 @NgModule({
   entryComponents: [
     DialogDeleteMetricComponent,
@@ -47,13 +45,10 @@ import {
   ],
   declarations: [
     AggregationComponent,
-    CustomChecksComponent,
-    CustomCheckComponent,
     DialogDeleteMetricComponent,
     DialogMetricComponent,
     DialogRequestsErrorsComponent,
     ErrorCheckComponent,
-    InputOutputComponent,
     LatencyCheckComponent,
     MetricsComponent,
     MetricSpecConfigComponent,
@@ -68,22 +63,18 @@ import {
     CheckChartComponent,
     RawChecksComponent,
     BatchMetricsComponent,
-    LogMetricsTableComponent,
+    RegimeSelectorComponent,
+    CustomMetricsComponent,
+    MetricsChecksComponent,
   ],
   imports: [
+    ModelsPublicUiModule,
     SharedModule,
     StoreModule.forFeature('monitoring', reducer),
-    EffectsModule.forFeature([
-      MonitoringServiceStatusEffects,
-      MetricsEffects,
-    ]),
+    EffectsModule.forFeature([MonitoringServiceStatusEffects, MetricsEffects]),
+    RootCauseModule,
   ],
-  exports: [MonitoringPageComponent, MetricsComponent],
-  providers: [
-    MetricsFacade,
-    MetricsService,
-    MonitoringPageFacade,
-    MonitoringService,
-  ],
+  exports: [MonitoringPageComponent, MetricsComponent, LogDetailComponent],
+  providers: [],
 })
 export class MonitoringModule {}

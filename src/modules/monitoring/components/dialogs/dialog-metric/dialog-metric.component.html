@@ -5,15 +5,11 @@
       name="metricName"
       label="Metric Name"
       formControlName="name"
-      bordered="true"
     >
     </hydro-input-text>
     <ng-container
       *ngIf="
-        form.get('name').dirty &&
-          form
-            .get('name')
-            .getError('format');
+        form.get('name').dirty && form.get('name').getError('format');
         let error
       "
     >
@@ -48,4 +44,3 @@
     </button>
   </div>
 </div>
-

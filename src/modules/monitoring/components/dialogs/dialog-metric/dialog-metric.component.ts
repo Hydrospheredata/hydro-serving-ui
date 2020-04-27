@@ -1,24 +1,24 @@
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
-
 import {
   Component,
-  OnInit,
+  EventEmitter,
   InjectionToken,
   Input,
+  OnInit,
   Output,
-  EventEmitter,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { ModelsFacade } from '@models/store';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
-import { ModelVersion, Model } from '@shared/_index';
+import { Model, ModelVersion } from '@shared/_index';
 import {
   MetricSpecification,
   MetricSpecificationRequest,
 } from '@shared/models/metric-specification.model';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { cmpOperators } from '../../../models';
+
 export const metricSpec = new InjectionToken<MetricSpecification>(
   'metric spec id'
 );
@@ -42,7 +42,6 @@ export class DialogMetricComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-
     private facade: MonitoringPageFacade,
     private modelsFacade: ModelsFacade,
     private customValidators: CustomValidatorsService
@@ -51,9 +50,7 @@ export class DialogMetricComponent implements OnInit {
     this.createForm();
 
     const modelChange = this.form.get('config').get('model').valueChanges;
-    modelChange.subscribe(_ => {
-      console.log(_);
-    });
+    modelChange.subscribe();
 
     this.modelVersions$ = combineLatest(
       modelChange,
@@ -72,7 +69,6 @@ export class DialogMetricComponent implements OnInit {
 
     const getName = output => output.name;
     const res = modelVersion.modelContract.predict.outputs.map(getName);
-    console.log(res);
     return res;
   }
 

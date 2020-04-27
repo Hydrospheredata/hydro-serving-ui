@@ -2,41 +2,68 @@
 
 .raw-checks {
   margin-bottom: 12px;
+  &__table-wrapper {
+    border: 2px $neutral-color-200 solid;
+    border-radius: 5px;
+    margin-bottom: 24px;
+  }
 
   &__table {
     border-collapse: collapse;
-    width: 910px;
     table-layout: fixed;
+
+    width: 100%;
+
+    &__row:nth-of-type(2n) {
+      background: $neutral-color-100;
+    }
+  }
+
+  &__row:nth-of-type(2n) {
+    background: $neutral-color-100;
   }
 
   &__cell {
-    padding: 6px 12px;
     color: $neutral-color-1000;
-    border: 1px $neutral-color-200 solid;
-    font-family: $font-family-light;
+    font-size: 12px;
+    line-height: 14px;
     overflow: scroll;
-
+    padding: 8px 6px;
   }
 
   &__check {
     &--success {
-      font-family: $font-family-bold;
       color: $supportive-color-green-700;
+      font-family: $font-family-bold;
     }
 
     &--failed {
-      font-family: $font-family-bold;
       color: $supportive-color-red-700;
+      font-family: $font-family-bold;
     }
   }
 
+  &__head-row {
+    border-bottom: 1px solid $neutral-color-200;
+  }
+
   &__head-cell {
-    color: $neutral-color-900;
+    color: $neutral-color-600;
     font-family: $font-family-bold;
+    padding: 12px 6px;
   }
 
   &__label {
+    color: $neutral-color-900;
     font-family: $font-family-bold;
-    color: $neutral-color-1000;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  &__explanation {
+    position: absolute;
+    right: 0;
+    top: 2px;
+    width: 140px;
   }
 }

@@ -1,28 +1,14 @@
 <form class="application-form" [formGroup]="applicationForm" #formElement>
   <div class="application-name">
-    <label class="application-name__label" for="applicationName"
-      >Application name</label
-    >
-    <input
-      class="hydro-input application-name__input"
-      type="text"
+    <hydro-input-text
+      label="application name"
       formControlName="applicationName"
-      id="applicationName"
-      hsAutofocused
-    />
-    <ng-container
-      *ngIf="
+      name="applicationName"
+      [errors]="
         applicationForm.get('applicationName').dirty &&
-          applicationForm.get('applicationName').errors;
-        let errors
+        applicationForm.get('applicationName').errors
       "
-    >
-      <ul class="error__list">
-        <li class="error__item" *ngFor="let error of errors | iterateAsArray">
-          {{ errors[error] }}
-        </li>
-      </ul>
-    </ng-container>
+    ></hydro-input-text>
   </div>
   <hs-kafka-form
     class="application__kafka"
@@ -55,7 +41,7 @@
           </hydro-icon>
         </span>
       </div>
-      <ng-container *ngIf="stage.get('modelVariants');let  modelVariants">
+      <ng-container *ngIf="stage.get('modelVariants'); let modelVariants">
         <div formArrayName="modelVariants" class="services__list">
           <div
             *ngFor="

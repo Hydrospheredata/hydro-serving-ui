@@ -1,35 +1,61 @@
 @import "variables";
-
 .check-chart {
-  height: 100%;
   position: relative;
+  &__title {
+    color: $neutral-color-900;
+    font-family: $font-family-bold;
+    line-height: 24px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
   &__dot {
-    fill: $supportive-color-cyan-700;
     pointer-events: none;
   }
+
   &__tooltip {
     top: 0;
     left: 0;
     background: white;
     border-radius: 4px;
-    border: 1px $neutral-color-200 solid;
+    border: 2px $neutral-color-200 solid;
     position: absolute;
-    padding: 4px;
-    font-size: 10px;
+    padding: 8px;
+    font-size: 12px;
     color: $neutral-color-800;
     pointer-events: none;
+    font-family: $font-family-bold;
   }
+
   &__no-data {
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 0;
     right: 0;
-    bottom: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: $neutral-color-600;
-    font-family: $font-family-light;
-    font-size: 16px;
+    color: $neutral-color-300;
+    font-family: $font-family-bold;
+    font-size: 14px;
+  }
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+
+  &__item {
+    margin-right: 12px;
+    cursor: pointer;
+
+    &-color {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      margin-right: 4px;
+      border-radius: 50%;
+    }
   }
 }

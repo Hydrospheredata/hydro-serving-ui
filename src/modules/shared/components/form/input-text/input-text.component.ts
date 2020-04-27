@@ -1,16 +1,6 @@
 // tslint:disable:variable-name
-import {
-  Component,
-  Input,
-  forwardRef,
-  Output,
-  EventEmitter,
-} from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  NgModel,
-} from '@angular/forms';
+import { Component, Input, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
 
 const noop = (_?: any) => {};
 
@@ -39,33 +29,22 @@ export class InputTextComponent implements ControlValueAccessor {
     }
   }
 
-  @Input() public inputClass: string = '';
-  @Input() public label: string;
-  @Input() public postfix: string = '';
   @Input() public name: string;
-  @Input() public iconName: string;
-  @Input() public iconClass: string;
-  @Input() public formErrors: string;
-  @Input() public wrapClassName: string = '';
-  @Input() public disabled: string;
-  @Input() public readonly: string;
-  /**
-   * true show icon next to input
-   * false show icon over on input
-   **/
-  @Input() public iconAsSibling: boolean;
+  @Input() public label: string;
+  @Input() public icon: string;
+  @Input() public errors: { [err: string]: string } | null;
+  @Input() public disabled: boolean;
   @Input() public placeholder: string;
-  @Input() public errors: any;
-  /** left of right */
-  @Input() public iconDirection: string;
-  @Input() public bordered: boolean = false;
-  @Output() iconClick = new EventEmitter<NgModel>();
   protected _value: any;
   protected onChange: (_: any) => void = noop;
   protected onTouched: () => void = noop;
 
-  public iconClickHandle(model: NgModel) {
-    this.iconClick.emit(model);
+  get inputClassMap(): { [p: string]: boolean } {
+    const rootClass = 'hs-input__input';
+    return {
+      [rootClass]: true,
+      [`${rootClass}--with-icon`]: this.icon !== undefined,
+    };
   }
 
   public writeValue(value: any) {

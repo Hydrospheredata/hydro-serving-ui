@@ -31,7 +31,6 @@ export class ModelVersionLogService {
       });
 
       eventSource.addEventListener('EndOfStream', () => {
-        console.log('event stream closed by EndOfStream message');
         eventSource.close();
         subscribe.complete();
       });
@@ -49,7 +48,6 @@ export class ModelVersionLogService {
       refCount(),
       finalize(() => {
         eventSource.close();
-        console.log('event stream closed');
       })
     );
   }

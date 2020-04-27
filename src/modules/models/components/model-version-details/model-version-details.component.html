@@ -69,6 +69,7 @@
             class="model-version__services-item-icon"
           ></hydro-icon>
           <button
+            class="model-version__services-button"
             hs-button
             kind="flat"
             color="primary"
@@ -78,26 +79,39 @@
             monitoring
           </button>
         </div>
+        <div class="model-version__services-item">
+          <hydro-icon
+            type="monitoring"
+            class="model-version__services-item-icon"
+          ></hydro-icon>
+          <button
+            class="model-version__services-button"
+            hs-button
+            kind="flat"
+            color="primary"
+            [routerLink]="['./visualization']"
+            queryParamsHandling="merge"
+          >
+            visualization
+          </button>
+        </div>
+        <div class="model-version__services-item">
+          <hydro-icon
+            type="monitoring"
+            class="model-version__services-item-icon"
+          ></hydro-icon>
+          <button
+            class="model-version__services-button"
+            hs-button
+            kind="flat"
+            color="primary"
+            [routerLink]="['./stat']"
+            queryParamsHandling="merge"
+          >
+            stat
+          </button>
+        </div>
       </div>
-
-      <!-- <div class="model-version__services">
-        <table class="hydro-table">
-          <thead class="hydro-table-head">
-            <tr>
-              <th class="hydro-table-head__cell">service</th>
-              <th class="hydro-table-head__cell">status</th>
-              <th class="hydro-table-head__cell"></th>
-            </tr>
-          </thead>
-          <tbody class="hydro-table-body">
-            <tr *ngFor="let service of services">
-              <td class="hydro-table-body__cell">{{ service.name }}</td>
-              <td class="hydro-table-body__cell">{{ service.status }}</td>
-              <td class="hydro-table-body__cell">{{ service.link }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div> -->
     </div>
   </div>
 

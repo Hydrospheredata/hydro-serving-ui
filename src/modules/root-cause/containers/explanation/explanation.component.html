@@ -1,30 +1,22 @@
-<div class="explanation__meta">
-  <div class="explanation__meta-item">
-    <span class="explanation__meta-key">method: </span>
-    <span class="explanation__meta-value">{{ method }}</span>
-  </div>
-  <div class="explanation__meta-item">
-    <span class="explanation__meta-key">started_at: </span>
-    <span class="explanation__meta-value">{{ started_at }}</span>
-  </div>
-  <div class="explanation__meta-item">
-    <span class="explanation__meta-key">completed_at: </span>
-    <span class="explanation__meta-value">{{ completed_at }}</span>
-  </div>
-</div>
-<ng-container
-  *ngTemplateOutlet="isRise ? riseTemplate : anchorTemplate"
-></ng-container>
-<ng-template #riseTemplate>
-  <hs-rise-explanation
-    [explanation]="explanation"
-    [modelVersion]="modelVersion"
-    [reqstoreEntry]="reqstoreEntry"
-  ></hs-rise-explanation>
-</ng-template>
-<ng-template #anchorTemplate>
-  <hs-anchor-explanation
-    [explanation]="explanation"
-    [reqstoreEntry]="reqstoreEntry"
-  ></hs-anchor-explanation>
-</ng-template>
+<ng-container *ngIf="explanation$ | async as explanation">
+  <ng-container [ngSwitch]="explanation.state">
+    <button *ngSwitchCase="'SUCCESS'"
+            (click)="showExplanation(explanation.result)"
+            kind="base"
+            color="primary"
+            hs-button>show explanation
+    </button>
+    <button *ngSwitchCase="'NOT_CALLED'"
+            (click)="getExplanationCommand.next('something')"
+            kind="base"
+            color="cyan"
+            hs-button>get explanation
+    </button>
+    <button *ngSwitchDefault
+            (click)="getExplanationCommand.next('something')"
+            kind="base"
+            color="cyan"
+            hs-button disabled>{{explanation.state}}
+    </button>
+  </ng-container>
+</ng-container>

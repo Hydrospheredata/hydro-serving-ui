@@ -1,76 +1,112 @@
-<div class="check-chart">
-  <svg [attr.height]="chartHeight" [attr.width]="chartWidth" #svgContainer>
+<div #containerEl class="check-chart">
+  <div class="check-chart__title">
+    {{ name }}
+  </div>
+  <svg
+      #svgContainer
+      [attr.height]="chartHeight"
+      [attr.width]="chartWidth"
+  >
     <defs>
       <clipPath [attr.id]="name">
         <rect
-          x="0"
-          y="0"
-          [attr.width]="viewWidth"
           [attr.height]="viewHeight"
-          [attr.transform]="dataTranslate"
+          [attr.width]="viewWidth"
+          [attr.x]="margins.left"
+          [attr.y]="margins.top"
         ></rect>
       </clipPath>
     </defs>
     <g
+      *ngIf="!noData"
+      [attr.transform]="dataTranslate"
+      [scale]="scaleY"
       hsD3Axis
-      [scale]="yScale"
       position="left"
-      [attr.transform]="yAxisTranslate"
-      *ngIf="!noData"
     ></g>
     <g
-      hsD3Axis
-      [scale]="xScale"
+      *ngIf="!noData"
       [attr.transform]="xAxisTranslate"
-      *ngIf="!noData"
+      [scale]="scaleX"
+      hsD3Axis
     ></g>
+    <line
+      *ngIf="activePoint"
+      [attr.x1]="activePoint.x"
+      [attr.x2]="activePoint.x"
+      [attr.y1]="0"
+      [attr.y2]="viewHeight + margins.top"
+      style="stroke:rgba(78, 112, 151, 0.336);stroke-width:1"
+    />
+    <g *ngIf="!noData">
+      <g
+        *ngFor="let plotBand of plotBands"
+        [attr.transform]="dataTranslate"
+        [height]="viewHeight"
+        [hs-d3-plot-band]="plotBand"
+        [xScale]="scaleX"
+        fill="#e12d393d"
+      ></g>
+    </g>
     <g
-      *ngFor="let plotBand of plotBands"
-      [hs-d3-plot-band]="plotBand"
-      [height]="viewHeight"
-      [xScale]="xScale"
+      *ngFor="let s of visibleSeries"
+      [attr.stroke]="s.color"
       [attr.transform]="dataTranslate"
-      fill="#e12d393d"
-    ></g>
-    <g
+      [data]="s.data"
       [hs-d3line]
-      [data]="mappedData"
-      [xScale]="xScale"
-      [yScale]="yScale"
-      [attr.transform]="dataTranslate"
-      stroke="#14919B"
+      [xScale]="scaleX"
+      [yScale]="scaleY"
     ></g>
     <rect
-      [attr.width]="viewWidth"
-      [attr.height]="viewHeight"
-      opacity="0"
-      [attr.transform]="dataTranslate"
-      #trackableRect
+        #trackableRect
+        [attr.height]="viewHeight"
+        [attr.transform]="dataTranslate"
+        [attr.width]="viewWidth"
+        opacity="0"
     ></rect>
     <g
-      *ngIf="threshold && !noData"
+      *ngIf="threshold !== undefined && !noData"
       [attr.clip-path]="clipUrl"
-      [hs-d3threshold]="threshold"
-      [yScale]="yScale"
       [attr.transform]="thresholdTranslate"
+      [hs-d3threshold]="threshold"
+      [width]="chartWidth"
+      [yScale]="scaleY"
     ></g>
     <circle
+      *ngFor="let circle of activeCircles"
+      [attr.cx]="circle.x"
+      [attr.cy]="circle.y"
+      [attr.fill]="circle.color"
       [ngStyle]="{ display: mouseIn ? 'block' : 'none' }"
-      [attr.cx]="dotXPosition"
-      [attr.cy]="dotYPosition"
-      r="4"
       class="check-chart__dot"
+      r="4"
     />
   </svg>
-  <div
-    class="check-chart__tooltip"
-    [attr.transform]="tooltipTranslate"
-    [ngStyle]="{ display: mouseIn ? 'block' : 'none' }"
-    #tooltip
-  >
-    {{ tooltipText }}
+  <div class="legend">
+    <div
+      *ngFor="let s of series"
+      class="legend__item"
+      (click)="toggleExclude(s.name)"
+      [ngStyle]="{'opacity': excludedSeries.includes(s.name) ? '0.5' : '1'}"
+    >
+      <span
+        [ngStyle]="{ backgroundColor: s.color }"
+        class="legend__item-color"
+      ></span>
+      <span>{{ s.name }}</span>
+    </div>
   </div>
-  <div class="check-chart__no-data" *ngIf="noData">
+  <div
+    *ngIf="tooltip"
+    [ngStyle]="{'left': tooltip.x + 'px', 'top': tooltip.y+'px'}"
+    class="check-chart__tooltip"
+  >
+    <div *ngFor="let value of tooltip.values" >
+      <span [ngStyle]="{ color: value.color }">{{ value.name }}: </span
+      ><span>{{ value.value }}</span>
+    </div>
+  </div>
+  <div *ngIf="noData" class="check-chart__no-data">
     <span>no data available</span>
   </div>
 </div>

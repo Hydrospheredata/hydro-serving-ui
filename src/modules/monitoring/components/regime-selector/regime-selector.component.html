@@ -1,0 +1,11 @@
+<div class="regimes">
+  <div class="regimes__label">Regime:</div>
+  <span
+    class="regimes__item"
+    [ngClass]="{ 'regimes__item--active': regime === selectedRegime }"
+    *ngFor="let regime of regimes"
+    (click)="changeRegime(regime)"
+  >
+    {{ regime }}
+  </span>
+</div>

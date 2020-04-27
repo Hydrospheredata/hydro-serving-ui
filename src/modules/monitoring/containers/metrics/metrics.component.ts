@@ -1,21 +1,23 @@
 import {
+  ChangeDetectionStrategy,
   Component,
+  ComponentFactoryResolver,
   OnInit,
   ViewChild,
   ViewContainerRef,
-  ComponentFactoryResolver,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
 import {
-  DialogMetricComponent,
   DialogDeleteMetricComponent,
+  DialogMetricComponent,
 } from '@monitoring/components';
+import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { Observable } from 'rxjs';
+
 @Component({
   selector: 'hs-metrics',
   templateUrl: './metrics.component.html',
@@ -35,7 +37,8 @@ export class MetricsComponent implements OnInit {
     private dialog: DialogService,
     private resolver: ComponentFactoryResolver,
     private metricsFacade: MetricsFacade,
-    private modelsFacade: ModelsFacade
+    private modelsFacade: ModelsFacade,
+    private monitoringPageFacade: MonitoringPageFacade
   ) {}
 
   onAddMetric(modelVersion: ModelVersion) {
@@ -53,6 +56,7 @@ export class MetricsComponent implements OnInit {
         this.vcr.clear();
       });
     } catch (error) {
+      console.error(error);
       this.vcr.clear();
     }
   }

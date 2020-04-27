@@ -7,7 +7,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Model, IApplication } from '@shared/models/_index';
+import { Model, IApplication } from '@shared/models';
 import { Observable, Observer, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 

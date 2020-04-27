@@ -8,7 +8,7 @@ import { DialogService } from '@dialog/dialog.service';
 import {
   Application,
   ApplicationStatus,
-} from '@shared/models/_index';
+} from '@shared/models';
 
 import {
   DialogDeleteApplicationComponent,

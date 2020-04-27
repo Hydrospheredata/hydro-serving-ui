@@ -16,6 +16,7 @@ import { DialogModule } from '@dialog/dialog.module';
 import { ModelsModule } from '@models/models.module';
 import { Store } from '@ngrx/store';
 import { ProfilerModule } from '@profiler/profiler.module';
+import { VisualizationModule } from '../modules/visualization/visualization.module';
 
 describe('AppComponent', () => {
   beforeEach(() => {
@@ -34,6 +35,7 @@ describe('AppComponent', () => {
         ProfilerModule,
         AppRoutingModule,
         DialogModule,
+        VisualizationModule,
       ],
       providers: [Store, { provide: APP_BASE_HREF, useValue: '/' }],
     }).compileComponents();

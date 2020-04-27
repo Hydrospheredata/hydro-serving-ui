@@ -1,11 +1,13 @@
 @import "variables";
 
 .error {
-    padding: 8px 14px;
-    text-align: center;
-    background: $error-container-background-color;
-    color: $error-text-color;
-    & a {
-        color: #3a3a79 !important; 
-    }
+  background: white;
+  border: 1px $supportive-color-red-300 solid;
+  border-left: 6px solid $supportive-color-red-500;
+  border-radius: 5px;
+  padding: 12px;
+
+  & a {
+    color: #3a3a79 !important;
+  }
 }

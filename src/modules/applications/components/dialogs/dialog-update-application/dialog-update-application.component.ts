@@ -1,7 +1,7 @@
 import { Component, InjectionToken, Inject } from '@angular/core';
 import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
-import { Application } from '@shared/models/_index';
+import { Application } from '@shared/models';
 
 export let SELECTED_UPD_APPLICATION = new InjectionToken<Application>(
   'selectedApplication'

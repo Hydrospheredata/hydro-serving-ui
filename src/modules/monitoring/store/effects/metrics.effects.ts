@@ -18,7 +18,13 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { of } from 'rxjs';
-import { switchMap, map, catchError, withLatestFrom } from 'rxjs/operators';
+import {
+  switchMap,
+  map,
+  catchError,
+  concatMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Injectable()
 export class MetricsEffects {
@@ -67,7 +73,7 @@ export class MetricsEffects {
     this.actions$.pipe(
       ofType(LoadMetrics),
       switchMap(() => this.modelsFacade.selectedModelVersion$),
-      switchMap(({ id }) => {
+      switchMap(({id}) => {
         return this.metricsService.getMetricSpecifications(`${id}`).pipe(
           map(metricSettings =>
             LoadMetricsSuccess({ payload: metricSettings })

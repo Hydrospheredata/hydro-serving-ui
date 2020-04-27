@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IShape } from '@shared/models/_index';
+import { IShape } from '@shared/models';
 
 @Pipe({name: 'fieldShape'})
 export class FieldShapePipe implements PipeTransform {

@@ -5,57 +5,55 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { SelectModule } from 'ng2-select';
-
 // Pipes
 import {
-  SidebarFilterPipe,
-  PositiveNumbersPipe,
-  SearchPipe,
-  SortByPipe,
-  IterateAsArrayPipe,
-  ToNumberPipe,
-  MatchSorterPipe,
   DockerImageSplitPipe,
-  ReverseArrayPipe,
   FieldShapePipe,
+  FormatDatePipe,
+  IterateAsArrayPipe,
+  MatchSorterPipe,
+  PositiveNumbersPipe,
+  ReverseArrayPipe,
+  SearchPipe,
+  SidebarFilterPipe,
+  SortByPipe,
   TimeAgoPipe,
-  FormatDatePipe
-} from './pipes/_index';
-
+  ToNumberPipe
+} from './pipes';
 // Components
 import {
-  InputTextComponent,
-  HydroSelectComponent,
-  TextareaComponent,
-  SidebarComponent,
-  ListInfoComponent,
-  IconComponent,
-  FilterComponent,
-  CommandTemplateComponent,
-  ApplicationStatusComponent,
-  MetadataComponent,
-  TensorImageListComponent,
   AlertMessageComponent,
-  LogsComponent,
+  ApplicationStatusComponent,
   ButtonComponent,
-  TooltipComponent,
+  CommandTemplateComponent,
   ExpanderComponent,
-  ProbabilitiesListComponent,
+  FilterComponent,
+  HydroSelectComponent,
+  IconComponent,
+  InputTextComponent,
+  ListInfoComponent,
   LoaderComponent,
-} from './components/_index';
-
+  LogsComponent,
+  MetadataComponent,
+  ProbabilitiesListComponent,
+  SidebarComponent,
+  TensorImageListComponent,
+  TextareaComponent,
+  TooltipComponent,
+} from './components';
 // Directives
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HsD3Module } from '../hs-d3/hs-d3.module';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import {
-  CopyToBufferDirective,
-  BuildInformationDirective,
-  PixelToCanvasDirective,
   AutofocusedDirective,
-  ScaleImageDirective,
+  BuildInformationDirective,
+  CopyToBufferDirective,
   HideInZenModeDirective,
+  PixelToCanvasDirective,
+  ScaleImageDirective,
 } from './directives/_index';
+import { ServicesHeaderComponent } from './components/services-header/services-header.component';
 
 const PIPES = [
   SidebarFilterPipe,
@@ -121,7 +119,8 @@ const RE_EXPORTED_MODULES = [
     ...PIPES,
     ...COMPONENTS,
     ...DIRECTIVES,
+    ServicesHeaderComponent,
   ],
-  exports: [...PIPES, ...COMPONENTS, ...DIRECTIVES, ...RE_EXPORTED_MODULES],
+  exports: [...PIPES, ...COMPONENTS, ...DIRECTIVES, ...RE_EXPORTED_MODULES, ServicesHeaderComponent],
 })
 export class SharedModule {}

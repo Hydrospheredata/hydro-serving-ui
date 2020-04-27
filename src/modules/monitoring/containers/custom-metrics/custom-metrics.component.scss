@@ -1,0 +1,31 @@
+@import 'variables';
+
+.custom-metrics {
+  &__header {
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+
+    &-title {
+      font-size: 14px;
+      color: $neutral-color-1000;
+      font-family: $font-family-bold;
+      line-height: 20px;
+    }
+  }
+}
+
+.charts {
+  &__column {
+    width: 100%;
+    min-width: calc(100%/2 - 120px);
+  }
+  &__column + &__column { margin-left: 24px;}
+  &__item {
+    background: white;
+    border: 1px $neutral-color-200 solid;
+    border-radius: 5px;
+    margin-bottom: 18px;
+    padding: 12px;
+  }
+}

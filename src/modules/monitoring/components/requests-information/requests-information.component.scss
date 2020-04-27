@@ -5,6 +5,7 @@
   display: flex;
   position: relative;
   &__section {
+    height: 120px;
     border: 1px $neutral-color-200 solid;
     width: 100%;
     padding: 8px;

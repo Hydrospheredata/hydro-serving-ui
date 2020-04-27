@@ -1,11 +1,17 @@
-import { DebugElement, ChangeDetectionStrategy } from '@angular/core';
-import { TestBed, ComponentFixture } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, DebugElement } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AggregationComponent } from '@monitoring/containers/aggregation/aggregation.component';
-import { ChecksAggregationItem } from '@monitoring/interfaces';
+import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
+import { AggregationsList } from '@monitoring/models/Aggregation';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
+import { of } from '@node_modules/rxjs';
 import { SharedModule } from '@shared/shared.module';
-import { getNativeElement } from '@testing/helpers';
+
+const aggregationFacade: Partial<AggregationFacade> = {
+  totalRequests$: of(0),
+  showedRequests$: of(0),
+  aggregations$: of(new AggregationsList([])),
+};
 
 describe('Aggregation component', () => {
   let fixture: ComponentFixture<AggregationComponent>;
@@ -17,7 +23,12 @@ describe('Aggregation component', () => {
       imports: [SharedModule],
     })
       .overrideComponent(AggregationComponent, {
-        set: { changeDetection: ChangeDetectionStrategy.Default },
+        set: {
+          changeDetection: ChangeDetectionStrategy.Default,
+          providers: [
+            { provide: AggregationFacade, useValue: aggregationFacade },
+          ],
+        },
       })
       .compileComponents();
   });
@@ -32,63 +43,5 @@ describe('Aggregation component', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
-  });
-
-  describe('if aggregation list is empty', () => {
-    it('shows message', () => {
-      const message = debugEl.query(By.css('.aggregation__message'));
-
-      expect(message).toBeTruthy();
-      expect(getNativeElement(message).textContent).toContain(
-        'No data available. Waiting data ...'
-      );
-    });
-  });
-
-  describe('with some data', () => {
-    beforeEach(() => {
-      const mockAggregation: ChecksAggregationItem = {
-        features: {
-          fake_check: {
-            passed: 0,
-            checked: 1,
-          },
-        },
-        metrics: {},
-        additionalInfo: {
-          _hs_first_id: '1',
-          _hs_last_id: '2',
-          _hs_model_version_id: 1,
-          _hs_requests: 10,
-          _id: '1',
-        },
-        batch: {},
-      };
-
-      component.aggregation = [mockAggregation];
-
-      fixture.detectChanges();
-    });
-    it('alert message hidden', () => {
-      const message = debugEl.query(By.css('.aggregation__message'));
-      expect(message).toBeFalsy();
-    });
-  });
-
-  it('loader isn\'t shown', () => {
-    const loadingEl = debugEl.query(By.css('.aggregation__loader'));
-    expect(loadingEl).toBeFalsy();
-  });
-
-  describe('when is loading', () => {
-    beforeEach(() => {
-      component.loading = true;
-      fixture.detectChanges();
-    });
-
-    it('show loader', () => {
-      const loadingEl = debugEl.query(By.css('.aggregation__loader'));
-      expect(getNativeElement(loadingEl)).toBeTruthy();
-    });
   });
 });

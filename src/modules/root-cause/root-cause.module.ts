@@ -1,29 +1,21 @@
 import { NgModule } from '@angular/core';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 import {
-  ExplanationComponent,
+  ExplanationDialogComponent,
   AnchorExplanationComponent,
   RiseExplanationComponent,
 } from './containers';
+import { ExplanationComponent } from './containers/explanation/explanation.component';
 
-import { RootCauseEffects } from './store/root-cause.effects';
-import { RootCauseFacade } from './store/root-cause.facade';
-import { reducer } from './store/root-cause.reducer';
 @NgModule({
-  entryComponents: [ExplanationComponent],
+  entryComponents: [ExplanationDialogComponent],
   declarations: [
-    ExplanationComponent,
+    ExplanationDialogComponent,
     RiseExplanationComponent,
     AnchorExplanationComponent,
+    ExplanationComponent,
   ],
-  imports: [
-    StoreModule.forFeature('rootCause', reducer),
-    EffectsModule.forFeature([RootCauseEffects]),
-    SharedModule,
-  ],
-  providers: [RootCauseFacade],
+  imports: [SharedModule],
   exports: [ExplanationComponent],
 })
 export class RootCauseModule {}

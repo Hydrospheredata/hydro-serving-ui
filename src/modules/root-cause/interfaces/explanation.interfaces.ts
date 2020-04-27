@@ -9,13 +9,6 @@ export interface ExplanationRequestBody {
   };
 }
 
-export interface GetAllStatusesParams {
-  model_name: string;
-  model_version: string;
-  ts: string;
-  uid: string;
-}
-
 export const enum ExplanationJobStatus {
   notQueued = 'NOT_QUEUED',
   queued = 'QUEUED',
@@ -23,11 +16,4 @@ export const enum ExplanationJobStatus {
   started = 'STARTED',
   success = 'SUCCESS',
   failure = 'FAILURE',
-}
-
-export interface ExplanationTaskStatus {
-  state: ExplanationJobStatus;
-  progress?: number;
-  task_id?: string;
-  result?: string;
 }

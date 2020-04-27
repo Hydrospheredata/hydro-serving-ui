@@ -22,11 +22,11 @@
       "@shared/*": ["modules/shared/*"],
       "@monitoring/*": ["modules/monitoring/*"],
       "@profiler/*": ["modules/profiler/*"],
-      "@timemachine/*": ["modules/timemachine/*"],
       "@dialog/*": ["modules/dialog/*"],
       "@servables/*": ["modules/servables/*"],
       "@rootcause/*": ["modules/root-cause/*"],
-      "@testing/*": ["testing/*"]
+      "@testing/*": ["testing/*"],
+      "@charts/*": ["modules/charts/*"],
     },
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2015", "es2017", "dom"]

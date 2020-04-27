@@ -1,15 +1,10 @@
-import {
-  Component,
-  Input,
-  ViewChild,
-  ElementRef,
-  ChangeDetectionStrategy,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
 import { ChecksAggregationItem } from '@monitoring/interfaces';
+import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
+import { Observable } from '@node_modules/rxjs';
+import { tap } from '@node_modules/rxjs/internal/operators';
+import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { interpolateRdYlGn } from 'd3';
 
 @Component({
@@ -17,192 +12,166 @@ import { interpolateRdYlGn } from 'd3';
   templateUrl: './aggregation.component.html',
   styleUrls: ['./aggregation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [AggregationFacade],
 })
-export class AggregationComponent implements OnChanges {
-  get blockSize(): number {
-    return 14;
-  }
-  get canvasHeight() {
-    return this.featureNames.length * this.blockSize;
-  }
-
-  get metricsCanvasHeight() {
-    return this.metricNames.length * this.blockSize;
-  }
-  get batchMetricsCanvasHeight() {
-    return this.batchNames.size * this.blockSize;
-  }
-
-  get firstId(): string {
-    if (this.aggregation.length) {
-      return this.aggregation[0].additionalInfo._hs_first_id;
-    }
-  }
-  get lastId(): string {
-    if (this.aggregation.length) {
-      return this.aggregation[this.aggregation.length - 1].additionalInfo
-        ._hs_last_id;
-    }
-  }
-
-  get featureNames(): string[] {
-    return Object.keys(this.aggregation[0].features);
-  }
-
-  get metricNames(): string[] {
-    return Object.keys(this.aggregation[0].metrics);
-  }
-  get batchNames() {
-    const names = new Set([]);
-    this.aggregation.forEach(aggregation => {
-      const batch = aggregation.batch;
-      if (batch !== undefined) {
-        const firstFeature = Object.values(batch)[0];
-
-        if (firstFeature) {
-          Object.keys(firstFeature).forEach(n => {
-            names.add(n);
-          });
-        }
-      }
-    }, []);
-
-    return names;
-  }
-
-  get dataAvailable(): boolean {
-    return this.aggregation && this.aggregation.length > 0;
-  }
-
+export class AggregationComponent {
   @ViewChild('svgContainer', { read: ElementRef })
   svgContainer: ElementRef;
 
-  @Input() aggregation: ChecksAggregationItem[] = [];
-  @Input() latency: number[] = [];
-  @Input() errors: boolean[] = [];
-  @Input() canLoadLeft: boolean;
-  @Input() canLoadRight: boolean;
-  @Input() totalRequests: number;
-  @Input() currentRequests: number;
-  @Input() loading: boolean = false;
-  @Output() changedSelectedColumn = new EventEmitter<string>();
-  @Output() loadedOlder = new EventEmitter<string>();
-  @Output() loadedNewest = new EventEmitter<string>();
+  totalRequests$: Observable<number>;
+  showedRequests$: Observable<number>;
 
+  aggregations$: Observable<AggregationsList>;
+  canLoadLeft$: Observable<boolean>;
+  canLoadRight$: Observable<boolean>;
+  loading: boolean = false;
   labelsWidth: number = 100;
   canvasWidth: number = 880;
-  selectedColumnId: string;
+  selectedAggregation: Aggregation | null;
 
-  readonly CELL_SIZE = 12;
-  private COLUMN_MARGIN_RIGHT = 2;
-  private CELL_MARGIN_TOP = 2;
+  aggregation: ChecksAggregationItem[];
+  featureNames: string[] = [];
+  metricNames: string[] = [];
+  batchNames: string[] = [];
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.aggregation) {
-      const aggregation: ChecksAggregationItem[] = changes.aggregation.currentValue;
-      if (aggregation && aggregation.length) {
-        const selectedColumn = aggregation.find(
-          agg => agg.additionalInfo._id === this.selectedColumnId
-        );
+  readonly CELL_SIZE = { width: 8, height: 14 };
+  private readonly COLUMN_MARGIN_RIGHT = 1;
+  private readonly CELL_MARGIN_TOP = 1;
 
-        this.update(selectedColumn, aggregation);
-      }
-    }
+  constructor(private readonly facade: AggregationFacade) {
+    this.totalRequests$ = this.facade.totalRequests$;
+    this.showedRequests$ = this.facade.showedRequests$;
+    this.aggregations$ = this.facade.aggregations$.pipe(
+      tap(aggregationList => {
+        this.featureNames = aggregationList.featureNames;
+        this.metricNames = aggregationList.metricNames;
+        this.batchNames = aggregationList.batchNames;
+
+        this.checkAndUpdateActiveColumn(aggregationList);
+      })
+    );
+    this.canLoadLeft$ = this.facade.canLoadLeft$;
+    this.canLoadRight$ = this.facade.canLoadRight$;
+  }
+
+  get canvasHeight() {
+    return (
+      this.featureNames.length * (this.CELL_SIZE.height + this.CELL_MARGIN_TOP)
+    );
+  }
+
+  get metricsCanvasHeight() {
+    return (
+      this.metricNames.length * (this.CELL_SIZE.height + this.CELL_MARGIN_TOP)
+    );
+  }
+
+  get batchMetricsCanvasHeight() {
+    return (
+      this.batchNames.length * (this.CELL_SIZE.height + this.CELL_MARGIN_TOP)
+    );
   }
 
   columnTranslate(index): string {
-    return `translate(${index * this.CELL_SIZE +
-      this.COLUMN_MARGIN_RIGHT * index}, 0)`;
+    return `translate(${
+      index * this.CELL_SIZE.width + this.COLUMN_MARGIN_RIGHT * index
+    }, 0)`;
   }
 
   rowTranslate(index): string {
-    return `translate(0, ${index * this.CELL_SIZE +
-      index * this.CELL_MARGIN_TOP})`;
+    return `translate(0, ${
+      index * this.CELL_SIZE.height + index * this.CELL_MARGIN_TOP
+    })`;
   }
 
-  changeActiveColumn(aggregation: ChecksAggregationItem) {
-    const id = aggregation.additionalInfo._id;
-    this.selectedColumnId = id;
-    this.changedSelectedColumn.next(id);
+  changeActiveColumn(aggregation: Aggregation) {
+    this.selectedAggregation = aggregation;
+    this.facade.selectAggregation(aggregation);
   }
 
-  cellColor(column: ChecksAggregationItem, featureName: string) {
-    if (column.features[featureName] === undefined) {
-      return 'url(#repeat)';
+  cellColor(agg: Aggregation, featureName: string) {
+    const featureCheck = agg.featuresChecks[featureName];
+
+    if (featureCheck === undefined) {
+      return 'lightgrey';
+    }
+    const { passed, checks } = featureCheck;
+
+    const ratio = checks / passed;
+    if (ratio) {
+      return interpolateRdYlGn(1 / ratio);
+    } else {
+      return 'lightgrey';
+    }
+  }
+
+  metricCellColor(aggregation: Aggregation, metricName: string) {
+    if (aggregation.metricsChecks[metricName] === undefined) {
+      return 'lightgrey';
     }
 
-    const { passed, checked } = column.features[featureName];
+    const { passed, checked } = aggregation.metricsChecks[metricName];
 
     const ratio = checked / passed;
 
     if (ratio) {
       return interpolateRdYlGn(1 / ratio);
     } else {
-      return 'url(#repeat)';
+      return 'lightgrey';
     }
   }
 
-  metricCellColor(column: ChecksAggregationItem, metricName: string) {
-    if (column.metrics[metricName] === undefined) {
-      return 'url(#repeat)';
-    }
-
-    const { passed, checked } = column.metrics[metricName];
-
-    const ratio = checked / passed;
-
-    if (ratio) {
-      return interpolateRdYlGn(1 / ratio);
-    } else {
-      return 'url(#repeat)';
-    }
-  }
-  batchMetricCellColor(column: ChecksAggregationItem, batchName: string) {
-    const batch = column.batch;
-    if (batch === undefined) {
-      return 'url(#repeat)';
+  batchMetricCellColor(aggregation: Aggregation, batchName: string) {
+    const batchChecks = aggregation.batchesChecks;
+    if (isEmptyObj(batchChecks)) {
+      return 'lightgrey';
     }
 
     let checked = 0;
     let passed = 0;
 
-    for (const featureName in batch) {
-      if (batch.hasOwnProperty(featureName)) {
-        const element = batch[featureName];
+    for (const featureName in batchChecks) {
+      if (batchChecks.hasOwnProperty(featureName)) {
+        const element = batchChecks[featureName];
 
         if (element[batchName]) {
           checked = checked + element[batchName].checked;
           passed = passed + element[batchName].passed;
         } else {
-          return 'url(#repeat)';
+          return 'lightgrey';
         }
       }
     }
 
     if (checked === 0) {
-      return 'url(#repeat)';
+      return 'lightgrey';
     } else {
       return checked === passed ? 'fill: rgb(0, 104, 55)' : 'rgb(165, 0, 38)';
     }
   }
 
-  isSelected(column: ChecksAggregationItem): boolean {
-    return this.selectedColumnId === column.additionalInfo._id;
-  }
-
   loadOlder() {
-    this.loadedOlder.emit();
-  }
-  loadNewest() {
-    this.loadedNewest.emit();
+    this.facade.loadOlder();
   }
 
-  private update(
-    selectedColumn: ChecksAggregationItem,
-    aggregation: ChecksAggregationItem[]
-  ) {
-    if (selectedColumn === undefined) {
-      this.changeActiveColumn(aggregation[aggregation.length - 1]);
+  loadNewest() {
+    this.facade.loadNewest();
+  }
+
+  private checkAndUpdateActiveColumn(aggregationList: AggregationsList): void {
+    if (aggregationList.aggregations.length === 0) {
+      this.selectedAggregation = null;
+      return;
+    }
+
+    const newAggListHasCurrentColumn = aggregationList.aggregations.find(
+      agg => agg === this.selectedAggregation
+    );
+
+    if (!newAggListHasCurrentColumn) {
+      this.changeActiveColumn(
+        aggregationList.aggregations[aggregationList.aggregations.length - 1]
+      );
     }
   }
 }

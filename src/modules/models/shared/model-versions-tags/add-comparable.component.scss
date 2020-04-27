@@ -1,0 +1,35 @@
+@import 'variables';
+
+.comparable {
+  min-width: 420px;
+  &__filter {
+    margin-bottom: 12px;
+  }
+  &__item {
+    display: flex;
+    border: 1px $neutral-color-800 solid;
+    color: $neutral-color-800;
+    border-radius: 4px;
+    padding: 4px;
+    justify-content: space-between;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: 0.3s ease all;
+    &:hover {
+      opacity: 1;
+      border-color: $primary-color-700;
+      color: $primary-color-700;
+    }
+    & + & {
+      margin-top: 6px;
+    }
+  }
+  &__version {
+    font-family: $font-family-bold;
+    &::before {
+      display: inline-block;
+      font-size: 12px;
+      text-emphasis: 'ver:';
+    }
+  }
+}

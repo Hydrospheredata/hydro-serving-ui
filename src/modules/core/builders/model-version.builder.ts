@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ModelVersion, ModelVersionStatus } from '@shared/models/_index';
+import { ModelVersion, ModelVersionStatus } from '@shared/models';
 
 @Injectable()
 export class ModelVersionBuilder {

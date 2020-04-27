@@ -3,12 +3,14 @@ import { RouterModule } from '@angular/router';
 
 import { ModelDetailsGuard, ModelVersionDetailsGuard } from '@models/services';
 import { MonitoringPageComponent } from '@monitoring/containers';
+import { VisualizationPageComponent } from 'modules/visualization/containers';
 import {
-  ModelsPageComponent,
   ModelPageComponent,
+  ModelsPageComponent,
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
 } from './containers';
+import { StatPageComponent } from '../stat/containers';
 
 @NgModule({
   imports: [
@@ -33,8 +35,16 @@ import {
             component: MonitoringPageComponent,
           },
           {
+            path: ':modelId/:modelVersionId/visualization',
+            component: VisualizationPageComponent,
+          },
+          {
             path: ':modelId/:modelVersionId/profile/:featureName',
             component: ModelVersionProfilerPageComponent,
+          },
+          {
+            path: ':modelId/:modelVersionId/stat',
+            component: StatPageComponent,
           },
         ],
       },

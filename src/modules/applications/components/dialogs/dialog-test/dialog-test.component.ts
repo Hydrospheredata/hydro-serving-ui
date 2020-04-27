@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { MdlSnackbarService } from '@angular-mdl/core';
-import { TestStatus, Application } from '@shared/models/_index';
+import { TestStatus, Application } from '@shared/models';
 import { Observable } from 'rxjs';
 
 import { ApplicationsFacade } from '@applications/store';

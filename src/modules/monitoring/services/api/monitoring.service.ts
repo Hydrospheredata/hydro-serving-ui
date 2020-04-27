@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 import {
+  Check,
+  ChecksAggregationResponse,
   GetChecksAggregationParams,
   GetChecksParams,
-  ChecksAggregationResponse,
 } from '@monitoring/interfaces';
 import { Observable } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class MonitoringService {
   private baseUrl: string;
 
@@ -20,7 +21,15 @@ export class MonitoringService {
     return this.http.get(`${this.baseUrl}/buildinfo`);
   }
 
-  getChecks({ modelVersionId, from, to }: GetChecksParams): Observable<any> {
+  getCheck(id: string): Observable<Check> {
+    return this.http.get<Check>(`${this.baseUrl}/checks/${id}`);
+  }
+
+  getChecks({
+    modelVersionId,
+    from,
+    to,
+  }: GetChecksParams): Observable<Check[]> {
     return this.http.get(`${this.baseUrl}/checks/${modelVersionId}`, {
       params: { from, to },
     });
@@ -28,7 +37,7 @@ export class MonitoringService {
 
   getChecksAggregation({
     modelVersionId,
-    limit = 60,
+    limit = 90,
     offset,
   }: GetChecksAggregationParams): Observable<ChecksAggregationResponse> {
     const params = {
@@ -41,6 +50,22 @@ export class MonitoringService {
       {
         params,
       }
+    );
+  }
+
+  getChecksForComparision(params: {
+    originalModelVersion: number;
+    aggregationId: String;
+    comparedModelVersionId: number;
+  }): Observable<Check[]> {
+    const {
+      originalModelVersion: omv,
+      aggregationId: aggId,
+      comparedModelVersionId: cmv,
+    } = params;
+
+    return this.http.get(
+      `${this.baseUrl}/checks/comparision/${omv}/${aggId}/${cmv}`
     );
   }
 }
