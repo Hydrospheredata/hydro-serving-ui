@@ -9,16 +9,7 @@ import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { Store } from '@ngrx/store';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, combineLatest, Observable, of, timer } from 'rxjs';
-import {
-  catchError,
-  filter,
-  map,
-  pairwise,
-  shareReplay,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { catchError, filter, map, pairwise, startWith, switchMap, tap, share } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -84,7 +75,7 @@ export class AggregationFacade {
           map(([_, cur]) => cur)
         );
       }),
-      shareReplay(1)
+      share()
     );
 
     this.aggregations$ = combineLatest(
@@ -96,8 +87,7 @@ export class AggregationFacade {
           .map(aggregation => new Aggregation(aggregation))
           .reverse();
         return new AggregationsList(aggregations);
-      }),
-      shareReplay(1)
+      })
     );
     this.totalRequests$ = this.checksAggregationResponse$.pipe(
       map(response => {
