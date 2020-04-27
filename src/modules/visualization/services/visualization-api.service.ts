@@ -33,13 +33,8 @@ export class VisualizationApi {
         `${this.baseUrl}/plottable_embeddings/${transformer}`,
         {
           model_name: modelVersion.model.name,
-          model_version: modelVersion.id,
+          model_version: modelVersion.modelVersion,
           visualization_metrics: VisualizationApi.metrics,
-          data: {
-            bucket: 'hydro-vis',
-            production_data_file: 'adult/requests.parquet',
-            profile_data_file: 'adult/training.parquet',
-          },
         }
       )
       .pipe(catchError(err => throwError(err)));

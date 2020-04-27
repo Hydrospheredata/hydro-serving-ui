@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpService } from '@core/services/http';
 import { Observable } from 'rxjs';
 import { environment } from '@environments/environment';
 
@@ -32,7 +33,7 @@ export interface ExplanationRequestParams {
 export class RootCauseService {
   private readonly url: string;
 
-  constructor(private readonly http: HttpClient) {
+  constructor(private readonly http: HttpService) {
     this.url = environment.rootCauseUrl;
   }
 
