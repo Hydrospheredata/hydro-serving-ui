@@ -10,6 +10,7 @@ export interface ClassLabel {
 }
 
 export interface Metric {
+  coloring_type: ColoringType;
   scores: number[];
   operation: CmpOperators;
   threshold: number;
@@ -18,7 +19,7 @@ export interface Metric {
 export type TaskState = 'SUCCESS' | 'PENDING' | 'FAILED';
 
 export interface TaskInformation {
-  Task_id: string;
+  task_id: string;
   description?: string;
   state: TaskState;
   result: VisualizationResponse;
@@ -34,11 +35,12 @@ export interface VisualizationResponse {
     [name: string]: Metric;
   };
   requests_ids: string[];
-  top_100: number[][];
+  top_N: number[][];
   counterfactuals: number[][];
   visualization_metrics: {
     [name: string]: string;
   };
+  parametres?: any;
 }
 
 export const mockVisualizationResult: VisualizationResponse = {
@@ -90,7 +92,7 @@ export const mockVisualizationResult: VisualizationResponse = {
     '69',
     '98',
   ],
-  top_100: [
+  top_N: [
     [1, 2],
     [2, 3],
     [3, 4],
@@ -123,7 +125,7 @@ export const mockVisualizationResult: VisualizationResponse = {
 };
 
 export const mockSuccessTask: TaskInformation = {
-  Task_id: 'any',
-  state: 'SUCCESS',
   result: mockVisualizationResult,
+  state: 'SUCCESS',
+  task_id: 'b2ea3dd1-6d68-4d3f-a709-fd639ef2d7d6',
 };
