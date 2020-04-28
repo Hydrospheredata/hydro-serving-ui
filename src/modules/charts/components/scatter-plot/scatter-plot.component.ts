@@ -10,6 +10,8 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  OnInit,
+  ViewEncapsulation,
 } from '@angular/core';
 import {
   ScatterPlotData,
@@ -17,8 +19,15 @@ import {
 } from '@charts/models/scatter-plot-data.model';
 import { Colorizer } from '@core/models';
 import { ChartHelperService } from '@core/services/chart-helper.service';
-import { select } from 'd3';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import {
+  select,
+  ScaleLinear,
+  extent,
+  scaleLinear,
+  axisBottom,
+  axisLeft,
+} from 'd3';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, shareReplay, tap } from 'rxjs/operators';
 import { LinkRegime } from '../../../visualization/models/visualization';
 
@@ -33,9 +42,10 @@ interface Link {
   selector: 'hs-scatter-plot',
   templateUrl: './scatter-plot.component.html',
   styleUrls: ['./scatter-plot.component.scss'],
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScatterPlotComponent implements OnChanges, AfterViewInit {
+export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
   private static removeLines() {
     select('.scatter-plot__links').selectAll('line').remove();
   }
@@ -45,9 +55,18 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit {
   @Input() readonly top100: number[][] = [];
   @Input() readonly counterfactuals: number[][] = [];
   @Input() readonly colorizer: Colorizer;
-  @Output() selectPoint: EventEmitter<any> = new EventEmitter();
+
+  @Output() selectPoint: EventEmitter<number> = new EventEmitter();
+
   @ViewChild('container', { read: ElementRef }) container: ElementRef;
   @ViewChild('layout', { read: ElementRef }) layout: ElementRef;
+  @ViewChild('svg', { read: ElementRef }) svg: ElementRef;
+  @ViewChild('axisGroup', { read: ElementRef }) axisGroup: ElementRef;
+  @ViewChild('circles', { read: ElementRef }) circlesGroup: ElementRef;
+  @ViewChild('links', { read: ElementRef }) linksGroup: ElementRef;
+  @ViewChild('supportiveLines', { read: ElementRef })
+  supportiveLinesGroup: ElementRef;
+
   points: ScatterPlotPoint[] = [];
   links: Link[];
   selectedPointIdx$: Observable<number>;
@@ -59,10 +78,16 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit {
     undefined
   );
 
+  width: number = 800;
+  height: number = 600;
+  selectedIndex: number;
+  regime: LinkRegime;
+
   constructor(
     private chartHelper: ChartHelperService,
     private cdr: ChangeDetectorRef
   ) {
+    console.log('constructor');
     this.selectedPointIdx$ = this.selectedPointIndex.asObservable().pipe(
       distinctUntilChanged(),
       shareReplay(1),
@@ -73,6 +98,8 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit {
   }
 
   @Input() set linkRegime(regime: LinkRegime) {
+    console.log('input');
+    this.regime = regime;
     this.changeLinkRegime.next(regime);
   }
 
@@ -93,139 +120,237 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit {
     };
   }
 
-  get viewWidth() {
-    const { left, right } = this.margins;
-    return this.chartWidth - left - right;
-  }
-
-  get viewHeight() {
-    const { top, bottom } = this.margins;
-    return this.chartHeight - top - bottom;
-  }
-
-  get yAxisTranslate() {
-    const { left: x, top: y } = this.margins;
-    return `translate(${x}, ${y})`;
-  }
-
-  get xAxisTranslate() {
-    const { top, left: x } = this.margins;
-    const y = top + this.viewHeight;
-
-    return `translate(${x}, ${y})`;
-  }
-
-  get dataTranslate() {
-    const { left: x, top: y } = this.margins;
-    return `translate(${x + 1}, ${y})`;
-  }
-
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
-    if (changes.data && changes.data.currentValue) {
-      const { minX, maxX, minY, maxY } = changes.data.currentValue;
-
-      this.xScale = this.chartHelper
-        .scaleLinear()
-        .domain([minX, maxX])
-        .range([0, this.viewWidth]);
-
-      this.yScale = this.chartHelper
-        .scaleLinear()
-        .domain([maxY, minY])
-        .range([0, this.viewHeight]);
-
-      this.points = this.data.points.map((point: ScatterPlotPoint, idx) => ({
-        ...point,
-        translate: `translate(${this.xScale(point.x)}, ${this.yScale(
-          point.y
-        )})`,
-        opacity: 0.85,
-      }));
-    }
-
-    if (changes.colors && changes.colors.currentValue) {
-      this.points = this.points.map((point: ScatterPlotPoint, idx) => ({
-        ...point,
-        color: this.colors[idx] || '#c3d6ee',
-      }));
-    }
+    console.log('changes', { changes });
+    const dataChanges =
+      (changes.data && changes.data.currentValue) || this.data;
+    this.render(dataChanges);
   }
 
-  ngAfterViewInit() {
-    combineLatest([
-      this.hoveredPointIndex.asObservable(),
-      this.selectedPointIndex.asObservable(),
-      this.changeLinkRegime.asObservable(),
-    ])
-      .pipe(
-        tap(([hoveredIndex, selectedIndex, regime]) => {
-          if (hoveredIndex === undefined || regime === 'all') {
-            ScatterPlotComponent.removeLines();
-            this.points.forEach(p => {
-              p.opacity = 0.85;
-            });
-          }
+  ngOnInit(): void {}
+  ngAfterViewInit() {}
 
-          if (
-            hoveredIndex === undefined &&
-            selectedIndex !== undefined &&
-            regime !== 'all'
-          ) {
-            const top100 =
-              regime === 'nearest'
-                ? this.top100[selectedIndex]
-                : this.counterfactuals[selectedIndex];
-            const set = new Set(top100);
-            this.points.forEach((p, idx) => {
-              p.opacity = idx === selectedIndex || set.has(idx) ? 1 : 0.25;
-            });
-          }
+  private render({ points }: ScatterPlotData) {
+    this.width = this.container.nativeElement.offsetWidth;
+    const xScale = this.generateXScale(points);
+    const yScale = this.generateYScale(points);
 
-          if (hoveredIndex !== undefined && regime !== 'all') {
-            const top100 =
-              regime === 'nearest'
-                ? this.top100[hoveredIndex]
-                : this.counterfactuals[hoveredIndex];
-            this.drawLinks(hoveredIndex, top100);
-            const set = new Set(top100);
-            this.points.forEach((p, idx) => {
-              p.opacity = idx === hoveredIndex || set.has(idx) ? 1 : 0.25;
-            });
-          }
-
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe();
+    this.drawAxis({ xScale, yScale });
+    this.drawSupportiveLines({ xScale, yScale });
+    this.drawCircles({ points, xScale, yScale });
   }
 
-  private drawLinks(hoveredIndex: number, pointsTo: number[]) {
-    const currentTop100 = pointsTo;
+  private drawCircles({
+    points,
+    yScale,
+    xScale,
+  }: {
+    points: ScatterPlotPoint[];
+    xScale: ScaleLinear<number, number>;
+    yScale: ScaleLinear<number, number>;
+  }): void {
     const self = this;
-    const x1 = this.xScale(this.points[hoveredIndex].x);
-    const y1 = this.yScale(this.points[hoveredIndex].y);
-    select('.scatter-plot__links')
-      .selectAll('line')
-      .data(currentTop100)
+    const circles = select(this.circlesGroup.nativeElement)
+      .selectAll('circle')
+      .data(points)
       .join(
         enter =>
           enter
-            .append('line')
-            .attr('x1', x1)
-            .attr('y1', y1)
-            .attr('x2', i => self.xScale(this.points[i].x))
-            .attr('y2', i => self.yScale(this.points[i].y))
-            .attr('stroke', 'rgba(100,100,125, .15)')
-            .attr('stroke-width', '1px'),
+            .append('circle')
+            .attr('cx', point => xScale(point.x) + this.margins.left)
+            .attr('cy', point => yScale(point.y) + this.margins.top)
+            .attr('r', 6)
+            .attr('fill', (point, idx) => this.colors[idx] || 'lightblue')
+            .attr('data-id', (d, i) => i),
         update =>
           update
-            .attr('x1', x1)
-            .attr('y1', y1)
-            .attr('x2', i => self.xScale(this.points[i].x))
-            .attr('y2', i => self.yScale(this.points[i].y))
-            .attr('stroke', 'rgba(100,100,125, .15)')
-            .attr('stroke-width', '1px')
+            .attr('cx', point => xScale(point.x) + this.margins.left)
+            .attr('cy', point => yScale(point.y) + this.margins.top)
+            .attr('fill', (point, idx) => this.colors[idx] || 'lightblue')
+      );
+
+    circles.attr('opacity', function (point, index) {
+      return self.chooseOpacityOnLeave(index);
+    });
+
+    circles.on('click', function (_, idx) {
+      requestAnimationFrame(() => {
+        const selectedIndex = +(this as SVGElement).dataset.id;
+        self.selectedIndex = selectedIndex;
+        self.selectPoint.next(selectedIndex);
+        circles.classed('selected', function (_, index) {
+          return index === selectedIndex;
+        });
+      });
+    });
+    circles.on('mouseenter', function (point) {
+      requestAnimationFrame(() => {
+        const hoveredIndex = +(this as SVGElement).dataset.id;
+        const x = point.x;
+        const y = point.y;
+        let linkIndexes = [];
+        switch (self.regime) {
+          case 'nearest': {
+            linkIndexes = self.top100[hoveredIndex];
+            break;
+          }
+          case 'counterfactuals': {
+            linkIndexes = self.counterfactuals[hoveredIndex];
+            break;
+          }
+        }
+
+        select(self.linksGroup.nativeElement).selectAll('line.link').remove();
+        select(self.linksGroup.nativeElement)
+          .selectAll('line')
+          .data(linkIndexes)
+          .join(enter =>
+            enter
+              .append('line')
+              .attr('class', 'link')
+              .attr('x1', xScale(x) + self.margins.left)
+              .attr('y1', yScale(y) + self.margins.top)
+              .attr('x2', index => xScale(points[index].x) + self.margins.left)
+              .attr('y2', index => yScale(points[index].y) + self.margins.top)
+              .style('stroke', '#D9E2EC')
+          );
+
+        circles.attr('opacity', (point, idx) => {
+          return self.chooseOpacityOnHover(hoveredIndex, idx);
+        });
+      });
+    });
+
+    circles.on('mouseleave', () => {
+      requestAnimationFrame(() => {
+        circles.attr('opacity', function (point, index) {
+          return self.chooseOpacityOnLeave(index);
+        });
+        select(self.linksGroup.nativeElement).selectAll('line.link').remove();
+      });
+    });
+  }
+
+  private chooseOpacityOnHover(hoveredIndex: number, index: number): string {
+    if (this.regime === 'all') {
+      return '1';
+    }
+    const linkIndexes =
+      this.regime === 'nearest'
+        ? this.top100[hoveredIndex]
+        : this.counterfactuals[hoveredIndex];
+    if (hoveredIndex === index || linkIndexes.includes(index)) {
+      return '1';
+    } else {
+      return '.3';
+    }
+  }
+
+  private chooseOpacityOnLeave(index: number): string {
+    if (this.regime === 'all' || this.selectedIndex === undefined) {
+      return '1';
+    }
+    const linkIndexes =
+      this.regime === 'nearest'
+        ? this.top100[this.selectedIndex]
+        : this.counterfactuals[this.selectedIndex];
+    if (this.selectedIndex === index || linkIndexes.includes(index)) {
+      return '1';
+    } else {
+      return '.3';
+    }
+  }
+
+  private generateXScale(
+    points: ScatterPlotPoint[]
+  ): ScaleLinear<number, number> {
+    const [min, max] = extent(points.map(({ x }) => x));
+    return scaleLinear()
+      .domain([min, max])
+      .range([0, this.width - (this.margins.left + this.margins.right)]);
+  }
+  private generateYScale(
+    points: ScatterPlotPoint[]
+  ): ScaleLinear<number, number> {
+    const [min, max] = extent(points.map(({ y }) => y));
+    return scaleLinear()
+      .domain([max, min])
+      .range([0, this.height - (this.margins.bottom + this.margins.top)]);
+  }
+
+  private drawAxis({
+    xScale,
+    yScale,
+  }: {
+    xScale: ScaleLinear<number, number>;
+    yScale: ScaleLinear<number, number>;
+  }) {
+    this.drawXAxis(xScale);
+    this.drawYAxis(yScale);
+    select(this.axisGroup.nativeElement).selectAll('path.domain').remove();
+    select(this.axisGroup.nativeElement).selectAll('.tick > line').remove();
+    select(this.axisGroup.nativeElement)
+      .selectAll('.tick > text')
+      .attr('font-size', '11px')
+      .attr('font-weight', 'bold')
+      .attr('fill', '#486581');
+  }
+  private drawYAxis(yScale: ScaleLinear<number, number>): void {
+    const yAxis = axisLeft(yScale);
+    select(this.axisGroup.nativeElement).select('g.yAxis').remove();
+    select(this.axisGroup.nativeElement)
+      .append('g')
+      .attr('transform', `translate(${this.margins.left}, ${this.margins.top})`)
+      .attr('class', 'yAxis')
+      .call(yAxis);
+  }
+  private drawXAxis(xScale: ScaleLinear<number, number>): void {
+    const xAxis = axisBottom(xScale);
+    select(this.axisGroup.nativeElement).select('g.xAxis').remove();
+    select(this.axisGroup.nativeElement)
+      .append('g')
+      .attr(
+        'transform',
+        `translate(${this.margins.left}, ${this.height - this.margins.top})`
+      )
+      .attr('class', 'xAxis')
+      .call(xAxis);
+  }
+  private drawSupportiveLines({
+    xScale,
+    yScale,
+  }: {
+    xScale: ScaleLinear<number, number>;
+    yScale: ScaleLinear<number, number>;
+  }): void {
+    const groupSelection = select(this.supportiveLinesGroup.nativeElement);
+    const lineColor = 'rgb(237, 239, 243)';
+
+    groupSelection
+      .selectAll('line.yLine')
+      .data(yScale.ticks())
+      .join(enter =>
+        enter
+          .append('line')
+          .attr('class', 'yLine')
+          .attr('x1', this.margins.left)
+          .attr('y1', d => yScale(d) + this.margins.top)
+          .attr('x2', this.width - this.margins.left)
+          .attr('y2', d => yScale(d) + this.margins.top)
+          .style('stroke', lineColor)
+      );
+    groupSelection
+      .selectAll('line.xLine')
+      .data(xScale.ticks())
+      .join(enter =>
+        enter
+          .append('line')
+          .attr('class', 'xLine')
+          .attr('x1', d => xScale(d) + this.margins.left)
+          .attr('y1', this.margins.top)
+          .attr('x2', d => xScale(d) + this.margins.left)
+          .attr('y2', this.height - this.margins.top)
+          .style('stroke', lineColor)
       );
   }
 }

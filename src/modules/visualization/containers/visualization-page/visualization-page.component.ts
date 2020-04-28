@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ScatterPlotData } from '@charts/models/scatter-plot-data.model';
+import { Colorizer } from '@core/models';
 import { Check } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/_index';
 import { VisualizationFacade } from 'modules/visualization/visualization.facade';
 import { Observable } from 'rxjs';
-import { Colorizer } from '@core/models';
 import { LinkRegime } from '../../models/visualization';
 
 @Component({
