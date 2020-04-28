@@ -11,18 +11,19 @@
       Configure metrics
     </button>
   </div>
-  <div class="custom-metrics__config">
+  <div class="custom-metrics__config" *ngIf="chartConfigs$ | async as configs">
     <hs-model-versions-tags
+      *ngIf="configs.length"
       (listChanged)="comparableModelVersionsChanged($event)"
     ></hs-model-versions-tags>
     <div
       *ngIf="(comparableModelVersions$ | async).length"
       class="custom-metrics__header-regime-selector"
     >
-<!--      <hs-regime-selector-->
-<!--        [selectedRegime]="comparisonRegime$ | async"-->
-<!--        (changedRegime)="changeRegime($event)"-->
-<!--      ></hs-regime-selector>-->
+      <!--      <hs-regime-selector-->
+      <!--        [selectedRegime]="comparisonRegime$ | async"-->
+      <!--        (changedRegime)="changeRegime($event)"-->
+      <!--      ></hs-regime-selector>-->
     </div>
   </div>
 </div>

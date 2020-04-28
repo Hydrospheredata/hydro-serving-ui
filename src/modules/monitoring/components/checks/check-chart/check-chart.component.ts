@@ -84,7 +84,7 @@ export class CheckChartComponent implements OnInit {
         this.cfg = cfg;
 
         this.name = cfg.name;
-        this.clipUrl = `url(#${this.name})`;
+        this.clipUrl = `url(#${this.name}-clip-url)`;
         this.threshold = cfg.threshold;
         this.chartWidth = this.containerEl.nativeElement.offsetWidth;
         this.chartHeight =
