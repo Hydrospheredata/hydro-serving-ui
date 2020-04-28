@@ -30,7 +30,11 @@ import {
   takeWhile,
   tap,
 } from 'rxjs/operators';
-import { TaskState, VisualizationResponse } from './models/visualization';
+import {
+  TaskState,
+  VisualizationResponse,
+  mockSuccessTask,
+} from './models/visualization';
 import { VisualizationApi } from './services';
 
 export type ColorBy = 'class_label' | 'metric';
@@ -212,20 +216,16 @@ export class VisualizationFacade implements OnDestroy {
               this.state.next({
                 ...this.state.getValue(),
                 status,
-                result: task.result ? task.result[0].result : undefined,
+                result: task.result,
                 colorizers: task.result
-                  ? this.buildColorizers(task.result[0].result)
+                  ? this.buildColorizers(task.result)
                   : [],
-                top100: task.result ? task.result[0].result.top_100 : [],
-                counterfactuals: task.result
-                  ? task.result[0].result.counterfactuals
-                  : [],
+                top100: task.result ? task.result.top_100 : [],
+                counterfactuals: task.result ? task.result.counterfactuals : [],
                 visualizationMetrics: task.result
-                  ? task.result[0].result.visualization_metrics
+                  ? task.result.visualization_metrics
                   : undefined,
-                requestsIds: task.result
-                  ? task.result[0].result.requests_ids
-                  : [],
+                requestsIds: task.result ? task.result.requests_ids : [],
               });
             }),
             takeWhile(({ state }) => state !== 'SUCCESS'),

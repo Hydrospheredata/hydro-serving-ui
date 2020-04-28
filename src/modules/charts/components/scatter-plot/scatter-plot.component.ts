@@ -48,7 +48,7 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit {
   @Output() selectPoint: EventEmitter<any> = new EventEmitter();
   @ViewChild('container', { read: ElementRef }) container: ElementRef;
   @ViewChild('layout', { read: ElementRef }) layout: ElementRef;
-  points: ScatterPlotPoint[];
+  points: ScatterPlotPoint[] = [];
   links: Link[];
   selectedPointIdx$: Observable<number>;
   yScale;
