@@ -21,7 +21,7 @@ export interface TaskInformation {
   Task_id: string;
   description?: string;
   state: TaskState;
-  result: Array<{ result: VisualizationResponse }>;
+  result: VisualizationResponse;
 }
 
 export interface VisualizationResponse {
@@ -125,5 +125,5 @@ export const mockVisualizationResult: VisualizationResponse = {
 export const mockSuccessTask: TaskInformation = {
   Task_id: 'any',
   state: 'SUCCESS',
-  result: [{ result: mockVisualizationResult }],
+  result: mockVisualizationResult,
 };
