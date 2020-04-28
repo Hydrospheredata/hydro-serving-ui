@@ -6,13 +6,11 @@ import { SCATTER_PLOT_PALETTE, Colorizer } from '@core/models';
   templateUrl: './scatter-plot-legend.component.html',
   styleUrls: ['./scatter-plot-legend.component.scss'],
 })
-export class ScatterPlotLegendComponent implements OnInit {
+export class ScatterPlotLegendComponent {
   readonly palette: ReadonlyArray<string>;
 
   @Input() colorizer: Colorizer;
   constructor() {
     this.palette = SCATTER_PLOT_PALETTE;
   }
-
-  ngOnInit() {}
 }

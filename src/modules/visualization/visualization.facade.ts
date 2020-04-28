@@ -277,9 +277,16 @@ export class VisualizationFacade implements OnDestroy {
         })
       );
     }
-    // for (const [, data] of Object.entries(metrics)) {
-    //   res.push(this.colorizerFabric.createColorizer('metric', { name: dat }));
-    // }
+
+    for (const [name, payload] of Object.entries(metrics)) {
+      res.push(
+        this.colorizerFabric.createColorizer('metric', {
+          name,
+          data: payload.scores,
+          metric: payload,
+        })
+      );
+    }
     return res;
   }
 }

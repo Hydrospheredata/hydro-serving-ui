@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Metric } from '../../visualization/models/visualization';
 import { ColorsGeneratorFabric, ColorsGenerator } from './ColorGenerator';
 import { ColoringType } from './ColoringType';
 
@@ -6,13 +7,15 @@ type ColorizerType = 'class_label' | 'metric';
 interface ColorizerProps {
   name: string;
   data: number[];
-  coloringType: ColoringType;
+  coloringType?: ColoringType;
   classes?: Array<string | number>;
+  metric?: Metric;
 }
 export abstract class Colorizer {
   public type: string;
   public name: string;
   public coloringType: ColoringType;
+  public classes: any[];
   protected colorsGenerator: ColorsGenerator;
   protected data: number[];
 
@@ -21,6 +24,7 @@ export abstract class Colorizer {
     this.data = props.data;
     this.coloringType = props.coloringType;
     this.colorsGenerator = colorsGenerator;
+    this.classes = props.classes;
   }
   public getColors(): string[] {
     return this.colorsGenerator.getColors(this.data);
@@ -45,7 +49,7 @@ class MetricColorizer extends Colorizer {
   }
 
   getColors() {
-    return [];
+    return this.colorsGenerator.getColors(this.data);
   }
 }
 

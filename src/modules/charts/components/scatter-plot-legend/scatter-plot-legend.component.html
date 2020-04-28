@@ -12,17 +12,15 @@
     </div>
   </ng-container>
 </div>
-
-
 <ng-template #classLegend>
   <div class="class_legend">
     <div
       class="class_legend__item"
-      *ngFor="let className of colorizer.classes; let index"
+      *ngFor="let className of colorizer.classes; index as i"
     >
       <div
         class="class_legend__circle"
-        [ngStyle]="{ backgroundColor: palette[index] }"
+        [ngStyle]="{ backgroundColor: palette[i] }"
       ></div>
       <span class="class_legend__divider">-</span
       ><span class="class_legend__label">{{ className }}</span>
