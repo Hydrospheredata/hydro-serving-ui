@@ -7,16 +7,19 @@ import {
   Input,
   Output,
   EventEmitter,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { ModelsFacade } from '@models/store';
 import { ModelVersion, ModelVersionStatus } from '@shared/_index';
 import { Subscription } from 'rxjs';
-import { tap, filter } from 'rxjs/operators';
+import { tap, filter, take } from 'rxjs/operators';
 
 @Directive({
   selector: '[hsUpdateModelVersion]',
 })
-export class UpdateModelVersionDirective implements OnInit, OnDestroy {
+export class UpdateModelVersionDirective
+  implements OnInit, OnDestroy, OnChanges {
   @Input() modelVersion: ModelVersion;
   @Output() handleClick: EventEmitter<any> = new EventEmitter();
 
@@ -33,7 +36,7 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit() {
+  ngOnChanges(changes: SimpleChanges): void {
     const {
       model: { id },
       modelVersion,
@@ -59,10 +62,13 @@ export class UpdateModelVersionDirective implements OnInit, OnDestroy {
             this.latestModelVersion = undefined;
             el.style.display = 'none';
           }
-        })
+        }),
+        take(1)
       )
       .subscribe();
   }
+
+  ngOnInit() {}
 
   ngOnDestroy() {
     this.modelVersionSub.unsubscribe();

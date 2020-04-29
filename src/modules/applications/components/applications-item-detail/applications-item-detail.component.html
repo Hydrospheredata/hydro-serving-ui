@@ -76,11 +76,7 @@
           <div
             class="application__model-variant"
             *ngFor="let modelVariant of stage.modelVariants; let j = index"
-            [routerLink]="[
-              '/models',
-              modelVariant.modelVersion.model.id,
-              modelVariant.modelVersion.id
-            ]"
+            (click)="onClickModelVariant($event, modelVariant)"
           >
             <div
               class="application__model-variant-update tooltip"
@@ -113,3 +109,66 @@
     </div>
   </div>
 </div>
+
+<ng-container *ngIf="menu$ | async as menu">
+  <div
+    class="menu"
+    [ngClass]="{ 'menu--showed': menu.showed }"
+    [ngStyle]="{ left: menu.left + 'px', top: menu.top + 'px' }"
+    (mouseleave)="onMouseLeave()"
+  >
+    <ng-container *ngIf="menu.context">
+      <div
+        class="menu__item menu__item--accent"
+        hsUpdateModelVersion
+        [modelVersion]="menu.context.modelVersion"
+        (handleClick)="updateModelVersionDialog($event, menu.context)"
+      >
+        update to latest
+      </div>
+      <div
+        class="menu__item"
+        [routerLink]="[
+          '/models',
+          menu.context.modelVersion.model.id,
+          menu.context?.modelVersion.id
+        ]"
+      >
+        details
+      </div>
+      <div
+        class="menu__item"
+        [routerLink]="[
+          '/models',
+          menu.context.modelVersion.model.id,
+          menu.context.modelVersion.id,
+          'monitoring'
+        ]"
+      >
+        monitoring
+      </div>
+      <div
+        class="menu__item"
+        [routerLink]="[
+          '/models',
+          menu.context.modelVersion.model.id,
+          menu.context.modelVersion.id,
+          'visualization'
+        ]"
+      >
+        visualization
+      </div>
+      <div
+        class="menu__item"
+        [routerLink]="[
+          '/models',
+          menu.context.modelVersion.model.id,
+          menu.context.modelVersion.id,
+          'stat'
+        ]"
+      >
+        stat
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
