@@ -164,7 +164,6 @@ export class AggregationComponent {
   }
 
   private checkAndUpdateActiveColumn(aggregationList: AggregationsList): void {
-    debugger;
     if (aggregationList.aggregations.length === 0) {
       this.selectedAggregation = null;
       return;

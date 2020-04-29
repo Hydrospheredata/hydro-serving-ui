@@ -104,42 +104,42 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="batchNames && batchNames.length">
-      <div class="aggregation__batches-label">Batch metrics</div>
-      <div class="aggregation__body">
-        <ng-container
-          [ngTemplateOutlet]="rowLabels"
-          [ngTemplateOutletContext]="{ $implicit: batchNames }"
-        ></ng-container>
-        <div class="aggregation__checks">
-          <svg
-            [attr.height]="batchMetricsCanvasHeight"
-            [attr.width]="canvasWidth"
-          >
-            <g
-              (click)="changeActiveColumn(column)"
-              *ngFor="
-                let column of aggregationList.aggregations;
-                let columnIndex = index
-              "
-              [attr.transform]="columnTranslate(columnIndex)"
-              [ngClass]="{
-                'column--active': column.id === selectedAggregation.id
-              }"
-              class="column"
-            >
-              <rect
-                *ngFor="let batchMetricName of batchNames; let rowIndex = index"
-                [attr.fill]="batchMetricCellColor(column, batchMetricName)"
-                [attr.height]="CELL_SIZE.height"
-                [attr.transform]="rowTranslate(rowIndex)"
-                [attr.width]="CELL_SIZE.width"
-              ></rect>
-            </g>
-          </svg>
-        </div>
-      </div>
-    </ng-container>
+    <!--    <ng-container *ngIf="batchNames && batchNames.length">-->
+    <!--      <div class="aggregation__batches-label">Batch metrics</div>-->
+    <!--      <div class="aggregation__body">-->
+    <!--        <ng-container-->
+    <!--          [ngTemplateOutlet]="rowLabels"-->
+    <!--          [ngTemplateOutletContext]="{ $implicit: batchNames }"-->
+    <!--        ></ng-container>-->
+    <!--        <div class="aggregation__checks">-->
+    <!--          <svg-->
+    <!--            [attr.height]="batchMetricsCanvasHeight"-->
+    <!--            [attr.width]="canvasWidth"-->
+    <!--          >-->
+    <!--            <g-->
+    <!--              (click)="changeActiveColumn(column)"-->
+    <!--              *ngFor="-->
+    <!--                let column of aggregationList.aggregations;-->
+    <!--                let columnIndex = index-->
+    <!--              "-->
+    <!--              [attr.transform]="columnTranslate(columnIndex)"-->
+    <!--              [ngClass]="{-->
+    <!--                'column&#45;&#45;active': column.id === selectedAggregation.id-->
+    <!--              }"-->
+    <!--              class="column"-->
+    <!--            >-->
+    <!--              <rect-->
+    <!--                *ngFor="let batchMetricName of batchNames; let rowIndex = index"-->
+    <!--                [attr.fill]="batchMetricCellColor(column, batchMetricName)"-->
+    <!--                [attr.height]="CELL_SIZE.height"-->
+    <!--                [attr.transform]="rowTranslate(rowIndex)"-->
+    <!--                [attr.width]="CELL_SIZE.width"-->
+    <!--              ></rect>-->
+    <!--            </g>-->
+    <!--          </svg>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </ng-container>-->
   </ng-container>
 </div>
 
