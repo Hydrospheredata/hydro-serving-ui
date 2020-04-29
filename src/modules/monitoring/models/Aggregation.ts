@@ -22,9 +22,15 @@ export class AggregationsList {
   }
 
   get metricNames(): string[] {
-    const firstAggregation = this.aggregations[0];
-    if (firstAggregation) {
-      return Object.keys(firstAggregation.metricsChecks);
+    if (this.aggregations.length > 0) {
+      const set = new Set();
+      this.aggregations.forEach(agg => {
+        console.log(agg.metricsChecks);
+        Object.keys(agg.metricsChecks).forEach(metricName =>
+          set.add(metricName)
+        );
+      });
+      return [...set];
     }
     return [];
   }

@@ -1,10 +1,11 @@
 <div class="monitoring">
-  <hs-services-header [modelVersion]="modelVersion$ | async"></hs-services-header>
+  <hs-services-header
+    [modelVersion]="modelVersion$ | async"
+  ></hs-services-header>
   <hs-monitoring-availability>
     <ng-container *ngIf="!(error$ | async); else errorSection">
       <section class="monitoring__aggregation">
-        <hs-aggregation>
-        </hs-aggregation>
+        <hs-aggregation> </hs-aggregation>
       </section>
       <ng-container *ngIf="selectedAggregation$ | async as aggregation">
         <hs-requests-information
@@ -13,10 +14,10 @@
           [latency]="latency$ | async"
         >
         </hs-requests-information>
-        <hs-batch-metrics
-          *ngIf="showBatchMetricsBlock(aggregation)"
-          [aggregation]="aggregation"
-        ></hs-batch-metrics>
+        <!--        <hs-batch-metrics-->
+        <!--          *ngIf="showBatchMetricsBlock(aggregation)"-->
+        <!--          [aggregation]="aggregation"-->
+        <!--        ></hs-batch-metrics>-->
         <div class="monitoring__log">
           <hs-log
             [checks]="checks$ | async"

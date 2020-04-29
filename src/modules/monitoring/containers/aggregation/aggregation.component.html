@@ -54,7 +54,9 @@
               let columnIndex = index
             "
             [attr.transform]="columnTranslate(columnIndex)"
-            [ngClass]="{ 'column--active': column === selectedAggregation }"
+            [ngClass]="{
+              'column--active': column.id === selectedAggregation.id
+            }"
             class="column"
           >
             <rect
@@ -84,7 +86,9 @@
                 let columnIndex = index
               "
               [attr.transform]="columnTranslate(columnIndex)"
-              [ngClass]="{ 'column--active': column === selectedAggregation }"
+              [ngClass]="{
+                'column--active': column.id === selectedAggregation.id
+              }"
               class="column"
             >
               <rect
@@ -119,7 +123,9 @@
                 let columnIndex = index
               "
               [attr.transform]="columnTranslate(columnIndex)"
-              [ngClass]="{ 'column--active': column === selectedAggregation }"
+              [ngClass]="{
+                'column--active': column.id === selectedAggregation.id
+              }"
               class="column"
             >
               <rect
