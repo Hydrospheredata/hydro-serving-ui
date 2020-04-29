@@ -20,12 +20,12 @@
       >
         <hydro-icon
           type="bookmark"
-          class="sidebar__item-bookmark"
+          class="sidebar__bookmark"
           (click)="toggleBookmark(item)"
-          [ngClass]="{ 'sidebar__item-bookmark--selected': item.favorite }"
+          [ngClass]="{ 'sidebar__bookmark--selected': item.favorite }"
         ></hydro-icon>
-        <span class="sidebar__item-name">{{ item.name }}</span>
-        <span *ngIf="item.status" class="sidebar__item-status">
+        <span class="sidebar__name">{{ item.name }}</span>
+        <span *ngIf="item.status" class="sidebar__status">
           <hs-application-status [status]="item.status"></hs-application-status>
         </span>
       </div>

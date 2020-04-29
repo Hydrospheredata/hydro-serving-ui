@@ -1,4 +1,4 @@
-<div class="application " *ngIf="application">
+<div class="application" *ngIf="application">
   <div class="application__header">
     <div class="application__header-buttons application__header-buttons--right">
       <button
@@ -34,12 +34,9 @@
 
   <div class="application__body">
     <div class="application__signature">
-      <ng-container
-        *ngTemplateOutlet="
-          signature;
-          context: { $implicit: application.signature }
-        "
-      ></ng-container>
+      <hs-application-signature
+        [signature]="application.signature"
+      ></hs-application-signature>
     </div>
     <div class="content-info">
       <ul class="content-info__list" *ngIf="application.kafkaStreaming?.length">
@@ -116,42 +113,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #signature let-signature>
-  <div class="signature">
-    <div class="signature__header">
-      <span class="signature__title">Signature </span>
-    </div>
-    <div class="signature__io">
-      <div class="signature__io-field">
-        <div class="signature__io-field-title">inputs</div>
-        <div
-          class="signature__io-field-item"
-          *ngFor="let input of signature.inputs"
-        >
-          <div class="signature__io-field-name">{{ input.name }}</div>
-          <div class="signature__io-field-additional-info">
-            {{ input.profile }} :
-            {{ input.dtype }}
-          </div>
-        </div>
-      </div>
-      <div class="signature__io-separator"></div>
-      <div class="signature__io-field">
-        <div class="signature__io-field-title">outputs</div>
-        <div
-          class="signature__io-field-item"
-          *ngFor="let output of signature.outputs"
-        >
-          <div class="signature__io-field-name">
-            {{ output.name }}
-          </div>
-          <div class="signature__io-field-additional-info">
-            {{ output.profile }} :
-            {{ output.dtype }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</ng-template>
