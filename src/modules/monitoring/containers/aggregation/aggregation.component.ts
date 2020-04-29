@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
 import { ChecksAggregationItem } from '@monitoring/interfaces';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
@@ -159,13 +164,21 @@ export class AggregationComponent {
   }
 
   private checkAndUpdateActiveColumn(aggregationList: AggregationsList): void {
+    debugger;
     if (aggregationList.aggregations.length === 0) {
       this.selectedAggregation = null;
       return;
     }
 
+    if (!this.selectedAggregation) {
+      this.changeActiveColumn(
+        aggregationList.aggregations[aggregationList.aggregations.length - 1]
+      );
+      return;
+    }
+
     const newAggListHasCurrentColumn = aggregationList.aggregations.find(
-      agg => agg === this.selectedAggregation
+      agg => agg.id === this.selectedAggregation.id
     );
 
     if (!newAggListHasCurrentColumn) {
