@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ColorMapService } from '@core/services/color-map.service';
+import { Metric } from '../../visualization/models/visualization';
 import { ColoringType } from './ColoringType';
 import { SCATTER_PLOT_PALETTE } from './ScatterPlotPalette';
 export class ColorsGenerator {
@@ -40,27 +41,31 @@ class ClassLabelsColorsGenerator extends ColorsGenerator {
 }
 
 class MetricColorsGenerator implements ColorsGenerator {
-  public getColors() {
-    // const { scores, operation, threshold } = this.metric;
+  metric: Metric;
+  constructor(metric: Metric) {
+    this.metric = metric;
+  }
+  public getColors(data: number[]) {
+    const { scores, operation, threshold } = this.metric;
     const [successColor, failedColor] = ['#418ecc', '#ff716c'];
-    // return scores.map(score => {
-    //   switch (operation) {
-    //     case 'Eq':
-    //       return score === threshold ? successColor : failedColor;
-    //     case 'NotEq':
-    //       return score !== threshold ? successColor : failedColor;
-    //     case 'Greater':
-    //       return score > threshold ? successColor : failedColor;
-    //     case 'Less':
-    //       return score < threshold ? successColor : failedColor;
-    //     case 'GreaterEq':
-    //       return score >= threshold ? successColor : failedColor;
-    //     case 'LessEq':
-    //       return score <= threshold ? successColor : failedColor;
-    //     default:
-    //       return successColor;
-    //   }
-    // });
+    return scores.map(score => {
+      switch (operation) {
+        case 'Eq':
+          return score === threshold ? successColor : failedColor;
+        case 'NotEq':
+          return score !== threshold ? successColor : failedColor;
+        case 'Greater':
+          return score > threshold ? successColor : failedColor;
+        case 'Less':
+          return score < threshold ? successColor : failedColor;
+        case 'GreaterEq':
+          return score >= threshold ? successColor : failedColor;
+        case 'LessEq':
+          return score <= threshold ? successColor : failedColor;
+        default:
+          return successColor;
+      }
+    });
     return [];
   }
 }
@@ -69,7 +74,11 @@ class MetricColorsGenerator implements ColorsGenerator {
 export class ColorsGeneratorFabric {
   public createColorGenerator(
     type: 'class_label' | 'metric',
-    props: { coloringType: ColoringType; classes?: Array<string | number> }
+    props: {
+      coloringType?: ColoringType;
+      classes?: Array<string | number>;
+      metric?: Metric;
+    }
   ): ColorsGenerator {
     switch (type) {
       case 'class_label':
@@ -80,7 +89,7 @@ export class ColorsGeneratorFabric {
             return new GradientColorsGenerator();
         }
       case 'metric':
-        return new MetricColorsGenerator();
+        return new MetricColorsGenerator(props.metric);
       default:
         return new ColorsGenerator();
     }

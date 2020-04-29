@@ -2,13 +2,9 @@
   <div class="check-chart__title">
     {{ name }}
   </div>
-  <svg
-      #svgContainer
-      [attr.height]="chartHeight"
-      [attr.width]="chartWidth"
-  >
+  <svg #svgContainer [attr.height]="chartHeight" [attr.width]="chartWidth">
     <defs>
-      <clipPath [attr.id]="name">
+      <clipPath [attr.id]="name + '-clip-url'">
         <rect
           [attr.height]="viewHeight"
           [attr.width]="viewWidth"
@@ -36,7 +32,7 @@
       [attr.x2]="activePoint.x"
       [attr.y1]="0"
       [attr.y2]="viewHeight + margins.top"
-      style="stroke:rgba(78, 112, 151, 0.336);stroke-width:1"
+      style="stroke: rgba(78, 112, 151, 0.336); stroke-width: 1;"
     />
     <g *ngIf="!noData">
       <g
@@ -58,11 +54,11 @@
       [yScale]="scaleY"
     ></g>
     <rect
-        #trackableRect
-        [attr.height]="viewHeight"
-        [attr.transform]="dataTranslate"
-        [attr.width]="viewWidth"
-        opacity="0"
+      #trackableRect
+      [attr.height]="viewHeight"
+      [attr.transform]="dataTranslate"
+      [attr.width]="viewWidth"
+      opacity="0"
     ></rect>
     <g
       *ngIf="threshold !== undefined && !noData"
@@ -87,7 +83,7 @@
       *ngFor="let s of series"
       class="legend__item"
       (click)="toggleExclude(s.name)"
-      [ngStyle]="{'opacity': excludedSeries.includes(s.name) ? '0.5' : '1'}"
+      [ngStyle]="{ opacity: excludedSeries.includes(s.name) ? '0.5' : '1' }"
     >
       <span
         [ngStyle]="{ backgroundColor: s.color }"
@@ -98,10 +94,10 @@
   </div>
   <div
     *ngIf="tooltip"
-    [ngStyle]="{'left': tooltip.x + 'px', 'top': tooltip.y+'px'}"
+    [ngStyle]="{ left: tooltip.x + 'px', top: tooltip.y + 'px' }"
     class="check-chart__tooltip"
   >
-    <div *ngFor="let value of tooltip.values" >
+    <div *ngFor="let value of tooltip.values">
       <span [ngStyle]="{ color: value.color }">{{ value.name }}: </span
       ><span>{{ value.value }}</span>
     </div>

@@ -9,7 +9,7 @@ import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
-import { map, switchMap, startWith } from 'rxjs/operators';
+import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
 
 export type ComparisonRegime = 'split' | 'merge';
 
@@ -58,7 +58,6 @@ export class CustomMetricsFacade {
     private colorPalette: ColorPaletteService
   ) {
     this.selectedMetrics$ = this.metricsFacade.selectedMetrics$;
-    this.metricsFacade.selectedMetrics$.subscribe(console.dir);
     this.currentModelVersionMetricsChecks$ = combineLatest(
       this.modelsFacade.selectedModelVersion$,
       this.facade.checks$
@@ -117,7 +116,8 @@ export class CustomMetricsFacade {
     ).pipe(
       map(([metrics, customChecks]) => {
         return this.mergeChecksToChartConfig(metrics, customChecks);
-      })
+      }),
+      startWith([])
     );
     this.comparableModelVersions$ = this.comparableModelVersions.asObservable();
   }

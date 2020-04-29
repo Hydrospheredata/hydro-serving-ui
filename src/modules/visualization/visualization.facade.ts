@@ -186,7 +186,7 @@ export class VisualizationFacade implements OnDestroy {
             tap(taskInformation => {
               this.state.next({
                 ...this.state.getValue(),
-                taskId: taskInformation.Task_id,
+                taskId: taskInformation.task_id,
               });
             }),
             catchError(err => {
@@ -220,7 +220,7 @@ export class VisualizationFacade implements OnDestroy {
                 colorizers: task.result
                   ? this.buildColorizers(task.result)
                   : [],
-                top100: task.result ? task.result.top_100 : [],
+                top100: task.result ? task.result.top_N : [],
                 counterfactuals: task.result ? task.result.counterfactuals : [],
                 visualizationMetrics: task.result
                   ? task.result.visualization_metrics
@@ -277,9 +277,16 @@ export class VisualizationFacade implements OnDestroy {
         })
       );
     }
-    // for (const [, data] of Object.entries(metrics)) {
-    //   res.push(this.colorizerFabric.createColorizer('metric', { name: dat }));
-    // }
+
+    for (const [name, payload] of Object.entries(metrics)) {
+      res.push(
+        this.colorizerFabric.createColorizer('metric', {
+          name,
+          data: payload.scores,
+          metric: payload,
+        })
+      );
+    }
     return res;
   }
 }
