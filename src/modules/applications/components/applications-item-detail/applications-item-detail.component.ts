@@ -1,14 +1,4 @@
-import {
-  Component,
-  ViewEncapsulation,
-  Input,
-} from '@angular/core';
-
-import { DialogService } from '@dialog/dialog.service';
-import {
-  Application,
-  ApplicationStatus,
-} from '@shared/models';
+import { Component, ViewEncapsulation, Input } from '@angular/core';
 
 import {
   DialogDeleteApplicationComponent,
@@ -22,6 +12,23 @@ import {
   SELECTED_DEL_APPLICATION,
 } from '@applications/components/dialogs';
 
+import { DialogService } from '@dialog/dialog.service';
+import { BehaviorSubject, Observable } from '@node_modules/rxjs';
+import { Application, ApplicationStatus, IModelVariant } from '@shared/models';
+
+interface MenuState {
+  showed: boolean;
+  context?: IModelVariant | null;
+  top: number;
+  left: number;
+}
+const initialMenuState: MenuState = {
+  showed: false,
+  context: null,
+  top: 0,
+  left: 0,
+};
+
 @Component({
   selector: 'hs-applications-item-detail',
   templateUrl: './applications-item-detail.component.html',
@@ -31,9 +38,12 @@ import {
 export class ApplicationsItemDetailComponent {
   @Input() application: Application;
 
-  constructor(
-    private dialog: DialogService
-  ) {
+  public menu$: Observable<MenuState>;
+  private menu: BehaviorSubject<MenuState> = new BehaviorSubject(
+    initialMenuState
+  );
+  constructor(private dialog: DialogService) {
+    this.menu$ = this.menu.asObservable();
   }
 
   public updateModelVersionDialog(lastModelVersion, modelVariant) {
@@ -49,18 +59,14 @@ export class ApplicationsItemDetailComponent {
   public testApplication(application): void {
     this.dialog.createDialog({
       component: DialogTestComponent,
-      providers: [
-        { provide: SELECTED_APPLICATION, useValue: application },
-      ],
+      providers: [{ provide: SELECTED_APPLICATION, useValue: application }],
     });
   }
 
   public editApplication(application): void {
     this.dialog.createDialog({
       component: DialogUpdateApplicationComponent,
-      providers: [
-        { provide: SELECTED_UPD_APPLICATION, useValue: application },
-      ],
+      providers: [{ provide: SELECTED_UPD_APPLICATION, useValue: application }],
       styles: {
         height: '100%',
       },
@@ -70,9 +76,7 @@ export class ApplicationsItemDetailComponent {
   public removeApplication(application: Application) {
     this.dialog.createDialog({
       component: DialogDeleteApplicationComponent,
-      providers: [
-        { provide: SELECTED_DEL_APPLICATION, useValue: application },
-      ],
+      providers: [{ provide: SELECTED_DEL_APPLICATION, useValue: application }],
     });
   }
 
@@ -82,5 +86,26 @@ export class ApplicationsItemDetailComponent {
 
   public isFailed(status: string): boolean {
     return status === ApplicationStatus.Failed;
+  }
+
+  public onClickModelVariant(
+    evt: MouseEvent,
+    modelVariant: IModelVariant
+  ): void {
+    this.menu.next({
+      showed: true,
+      context: modelVariant,
+      left: evt.clientX - 12,
+      top: evt.clientY - 12,
+    });
+  }
+
+  public onMouseLeave(): void {
+    this.menu.next({
+      showed: false,
+      context: this.menu.getValue().context,
+      top: this.menu.getValue().top,
+      left: this.menu.getValue().left,
+    });
   }
 }

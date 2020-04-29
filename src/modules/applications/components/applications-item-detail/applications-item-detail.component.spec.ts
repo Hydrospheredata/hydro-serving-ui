@@ -1,15 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RouterModule } from '@angular/router';
-import { SharedModule } from '@shared/shared.module';
-import { ApplicationsItemDetailComponent } from './applications-item-detail.component';
-
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ApplicationSignatureComponent } from '@applications/components/application-signature/application-signature.component';
 import { ApplicationsFacade } from '@applications/store';
 import { DialogService } from '@dialog/dialog.service';
+import { SharedModule } from '@shared/shared.module';
 import { UpdateModelVersionDirective } from '@testing/directives/test-update-model-version.directive';
 import { MockApplication } from '@testing/factories/application';
+import { ApplicationsItemDetailComponent } from './applications-item-detail.component';
 
 const applicationsFacadeMock = {};
 describe('ApplicationsItemDetailComponent', () => {
@@ -21,6 +21,7 @@ describe('ApplicationsItemDetailComponent', () => {
       declarations: [
         ApplicationsItemDetailComponent,
         UpdateModelVersionDirective,
+        ApplicationSignatureComponent,
       ],
       imports: [
         SharedModule,

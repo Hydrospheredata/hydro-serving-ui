@@ -1,0 +1,66 @@
+@import 'variables';
+
+.signature {
+  min-width: 240px;
+  max-width: 240px;
+  overflow: scroll;
+  padding: 8px;
+  background-color: white;
+  border: 1px $neutral-color-300 solid;
+  border-radius: 4px;
+  max-height: 100%;
+
+  &__header {
+    line-height: 28px;
+  }
+
+  &__title {
+    color: $neutral-color-500;
+    font-family: $font-family-light;
+    text-transform: uppercase;
+    font-size: 10px;
+  }
+
+  &__label {
+    color: $neutral-color-600;
+    font-family: $font-family-light;
+  }
+
+  &__name {
+    color: $neutral-color-600;
+    text-transform: none;
+  }
+
+  &__io {
+    display: flex;
+
+    &-field {
+      &-title {
+        font-size: 10px;
+        font-family: $font-family-light;
+        color: $neutral-color-500;
+        text-transform: uppercase;
+      }
+
+      &-name {
+        color: $neutral-color-600;
+      }
+
+      &-additional-info {
+        font-style: italic;
+        color: $neutral-color-400;
+        font-size: 8px;
+        font-style: $font-family-light;
+        line-height: 10px;
+      }
+
+      &-item {
+        margin-bottom: 4px;
+      }
+    }
+
+    &-separator {
+      margin: 0 12px;
+    }
+  }
+}

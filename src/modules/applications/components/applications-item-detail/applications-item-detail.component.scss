@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .application {
   padding: 24px;
@@ -11,86 +11,18 @@
     &-separator {
       color: $neutral-color-300;
       margin: 0 2px;
-
     }
   }
 
   &__signature {
     height: calc(100% - 40px);
     overflow: scroll;
-
-    .signature {
-      min-width: 240px;
-      max-width: 240px;
-      overflow: scroll;
-      padding: 8px;
-      background-color: white;
-      border: 1px $neutral-color-300 solid;
-      border-radius: 4px;
-      max-height: 100%;
-
-      &__header {
-        line-height: 28px;
-      }
-
-      &__title {
-        color: $neutral-color-500;
-        font-family: $font-family-light;
-        text-transform: uppercase;
-        font-size: 10px;
-      }
-
-      &__label {
-        color: $neutral-color-600;
-        font-family: $font-family-light;
-      }
-
-      &__name {
-        color: $neutral-color-600;
-        text-transform: none;
-      }
-
-      &__io {
-        display: flex;
-
-        &-field {
-          &-title {
-            font-size: 10px;
-            font-family: $font-family-light;
-            color: $neutral-color-500;
-            text-transform: uppercase;
-          }
-
-          &-name {
-            color: $neutral-color-600;
-          }
-
-          &-additional-info {
-            font-style: italic;
-            color: $neutral-color-400;
-            font-size: 8px;
-            font-style: $font-family-light;
-            line-height: 10px;
-          }
-
-          &-item {
-            margin-bottom: 4px;
-          }
-        }
-
-        &-separator {
-          margin: 0 12px;
-        }
-
-      }
-    }
   }
 
   &__error {
     width: 100%;
     position: fixed;
     bottom: 0;
-    left: 0;
     right: 0;
     left: 250px;
   }
@@ -114,7 +46,7 @@
       display: flex;
       justify-content: flex-end;
 
-      button+button {
+      button + button {
         margin-left: 8px;
       }
     }
@@ -147,9 +79,9 @@
     }
   }
 
-  &__stage+&__stage:before {
+  &__stage + &__stage:before {
     display: block;
-    content: "";
+    content: '';
     width: 1px;
     height: 36px;
     background: #5e6ca03d;
@@ -171,7 +103,7 @@
     position: relative;
     justify-content: space-between;
     align-items: flex-end;
-    transition: .3s ease linear;
+    transition: 0.3s ease linear;
     cursor: pointer;
 
     &:hover {
@@ -191,7 +123,6 @@
       bottom: -16px;
       left: calc(50% - 20px);
       width: 40px;
-      text-align: center;
     }
 
     &-model-version {
@@ -210,12 +141,12 @@
     }
   }
 
-  &__model-variant+&__model-variant {
+  &__model-variant + &__model-variant {
     margin-left: 12px;
   }
 
-  &__model-variant+&__model-variant::before {
-    content: "";
+  &__model-variant + &__model-variant::before {
+    content: '';
     display: block;
     width: 12px;
     position: absolute;
@@ -233,7 +164,6 @@
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   &__version {
@@ -305,6 +235,32 @@
       width: 100%;
     }
   }
-
-
+}
+.menu {
+  position: absolute;
+  border: 1px $neutral-color-700 solid;
+  border-radius: 5px;
+  background: white;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  &__item {
+    color: $neutral-color-500;
+    cursor: pointer;
+    line-height: 20px;
+    padding: 6px 18px;
+    text-transform: uppercase;
+    font-size: 12px;
+    &:hover {
+      color: $neutral-color-900;
+    }
+    &--accent {
+      background: $supportive-color-green-100;
+      color: $supportive-color-green-700;
+    }
+  }
+  &--showed {
+    visibility: visible;
+    opacity: 1;
+  }
 }

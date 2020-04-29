@@ -35,38 +35,39 @@
       color: $primary-color-700;
       font-family: $font-family-bold;
     }
+  }
 
-    &-name {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 100%;
+  &__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  &__status {
+    margin-left: 8px;
+  }
+
+  &__bookmark {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    margin-right: 4px;
+    width: 24px;
+    height: 24px;
+    color: $neutral-color-200;
+    transition: 0.3s ease all;
+    opacity: 0.5;
+
+    &:hover,
+    &--selected {
+      opacity: 1;
+      color: $accent-color-600;
     }
 
-    &-bookmark {
-      position: absolute;
-      top: -1px;
-      left: 0;
-      margin-right: 4px;
-      width: 24px;
-      height: 24px;
-      color: $neutral-color-200;
-      transition: 0.3s ease all;
-      opacity: 0.5;
-
-      &:hover,
-      &--selected {
-        opacity: 1;
-        color: $accent-color-600;
+    &--selected {
+      &:hover {
+        color: $neutral-color-200;
       }
-
-      &--selected {
-        &:hover {
-          color: $neutral-color-200;
-        }
-      }
-    }
-    &-status {
-      margin-left: 8px;
     }
   }
 
