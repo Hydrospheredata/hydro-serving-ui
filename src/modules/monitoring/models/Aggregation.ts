@@ -25,7 +25,6 @@ export class AggregationsList {
     if (this.aggregations.length > 0) {
       const set = new Set();
       this.aggregations.forEach(agg => {
-        console.log(agg.metricsChecks);
         Object.keys(agg.metricsChecks).forEach(metricName =>
           set.add(metricName)
         );
