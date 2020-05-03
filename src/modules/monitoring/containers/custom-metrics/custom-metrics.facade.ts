@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ColorPaletteService } from '@core/services/color-palette.service';
 import { ModelsFacade } from '@models/store';
-import { ChartConfig, Check } from '@monitoring/interfaces';
+import { ChartConfig, CCheck, CheckCollection } from '@monitoring/interfaces';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
@@ -9,7 +9,7 @@ import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
-import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
+import { map, switchMap, startWith } from 'rxjs/operators';
 
 export type ComparisonRegime = 'split' | 'merge';
 
@@ -60,7 +60,7 @@ export class CustomMetricsFacade {
     this.selectedMetrics$ = this.metricsFacade.selectedMetrics$;
     this.currentModelVersionMetricsChecks$ = combineLatest(
       this.modelsFacade.selectedModelVersion$,
-      this.facade.checks$
+      this.facade.checks$()
     ).pipe(
       map(([modelVersion, checks]) => {
         return {
@@ -74,7 +74,7 @@ export class CustomMetricsFacade {
 
     this.comparableModelVersionMetricsChecks$ = combineLatest(
       this.facade.modelVersion$,
-      this.facade.selectedAggregation$,
+      this.facade.selectedAggregation$(),
       this.comparableModelVersions.asObservable()
     ).pipe(
       switchMap(([currentModelVersion, aggregation, modelVersions]) => {
@@ -141,7 +141,7 @@ export class CustomMetricsFacade {
   }
 
   private fillMetricsCheksData(
-    checks: Check[]
+    checks: CheckCollection
   ): {
     [metricName: string]: {
       data: number[];
@@ -156,11 +156,11 @@ export class CustomMetricsFacade {
         health: boolean[];
       };
     } = {};
-    checks.forEach(check => {
-      const metricChecks = check._hs_metric_checks;
+    checks.getChecks().forEach(check => {
+      const metricChecks = check.metricChecks;
       for (const metricName in metricChecks) {
         if (metricChecks.hasOwnProperty(metricName)) {
-          const metricCheck = check._hs_metric_checks[metricName];
+          const metricCheck = check.metricChecks[metricName];
           if (res[metricName] === undefined) {
             res[metricName] = {
               data: [metricCheck.value],
@@ -183,16 +183,23 @@ export class CustomMetricsFacade {
     aggregation: Aggregation,
     comparedModelVersions: ModelVersion[]
   ): Observable<{
-    [modelVersionId: number]: Check[];
+    [modelVersionId: number]: CheckCollection;
   }> {
     const request: {
-      [modelVersionId: number]: Observable<Check[]>;
+      [modelVersionId: number]: Observable<CheckCollection>;
     } = comparedModelVersions.reduce((req, { id }) => {
-      req[id] = this.monitoring.getChecksForComparision({
-        originalModelVersion: originalModelVersion.id,
-        aggregationId: aggregation.id,
-        comparedModelVersionId: id,
-      });
+      req[id] = this.monitoring
+        .getChecksForComparision({
+          originalModelVersion: originalModelVersion.id,
+          aggregationId: aggregation.id,
+          comparedModelVersionId: id,
+        })
+        .pipe(
+          map(bareChecks => {
+            const checks = bareChecks.map(bareCheck => new CCheck(bareCheck));
+            return new CheckCollection(checks);
+          })
+        );
       return req;
     }, {});
     return forkJoin(request);

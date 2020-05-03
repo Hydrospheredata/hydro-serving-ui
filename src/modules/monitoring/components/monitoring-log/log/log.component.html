@@ -3,40 +3,39 @@
     <div class="log__title">Requests</div>
     <div class="log__size">
       <span
-        class="log__size-trigger  log__size-trigger--mini"
+        class="log__size-trigger log__size-trigger--mini"
         (click)="changeSize('mini')"
       ></span>
       <span
-        class="log__size-trigger  log__size-trigger--full"
+        class="log__size-trigger log__size-trigger--full"
         (click)="changeSize('full')"
       ></span>
     </div>
   </div>
+  {{ loading }}
   <div class="log__loader" *ngIf="loading">
     <hs-loader class="log__loader-icon"></hs-loader>
   </div>
   <ng-container *ngIf="size === 'full'; else minified">
-    <div class="log__body" *ngIf="haveSomeData; else noDataAvailable">
-      <ul class="log__ids">
-        <li
-          *ngFor="let check of checks; let i = index"
-          class="log__ids-item"
-          [ngClass]="{
-            'log__ids-item--selected': i === selectedIndex,
-            'log__ids-item--failed': isFailed(check)
-          }"
-          (click)="selectItem(i)"
-        >
-          {{ check._id | checkIdToTime | hsFormatDate }}
-        </li>
-      </ul>
-      <div class="log__detailed">
-        <hs-log-detail
-          *ngIf="selectedCheck"
-          [check]="selectedCheck"
-          [modelVersion]="modelVersion"
-        ></hs-log-detail>
-      </div>
+    <ul class="log__ids">
+      <li
+        *ngFor="let check of checks.getChecks(); let i = index"
+        class="log__ids-item"
+        [ngClass]="{
+          'log__ids-item--selected': check === selectedCheck,
+          'log__ids-item--failed': check.isFailed()
+        }"
+        (click)="selectItem(check)"
+      >
+        {{ check.id | checkIdToTime | hsFormatDate }}
+      </li>
+    </ul>
+    <div class="log__detailed">
+      <hs-log-detail
+        *ngIf="selectedCheck"
+        [check]="selectedCheck"
+        [modelVersion]="modelVersion"
+      ></hs-log-detail>
     </div>
   </ng-container>
 </div>

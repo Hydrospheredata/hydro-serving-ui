@@ -106,3 +106,14 @@ export class Aggregation {
     return featuresChecks;
   }
 }
+
+export const MockAggregation: Aggregation = {
+  batchesChecks: {},
+  featuresChecks: {},
+  from: undefined,
+  hs_requests: 0,
+  id: '',
+  metricsChecks: {},
+  modelVersionId: 0,
+  to: undefined,
+};

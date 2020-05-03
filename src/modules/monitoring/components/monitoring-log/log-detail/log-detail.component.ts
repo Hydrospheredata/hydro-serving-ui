@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Check } from '@monitoring/interfaces';
+import { CCheck } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/_index';
 
 @Component({
@@ -8,7 +8,7 @@ import { ModelVersion } from '@shared/_index';
   styleUrls: ['log-detail.component.scss'],
 })
 export class LogDetailComponent implements OnInit {
-  @Input() check: Check;
+  @Input() check: CCheck;
   @Input() modelVersion: ModelVersion;
 
   inputKeys: string[];
@@ -18,12 +18,5 @@ export class LogDetailComponent implements OnInit {
     const { inputs, outputs } = this.modelVersion.modelContract.predict;
     this.inputKeys = inputs.map(el => el.name);
     this.outputKeys = outputs.map(el => el.name);
-  }
-
-  get hasMetrics(): boolean {
-    return (
-      this.check._hs_metric_checks &&
-      Object.keys(this.check._hs_metric_checks).length > 0
-    );
   }
 }

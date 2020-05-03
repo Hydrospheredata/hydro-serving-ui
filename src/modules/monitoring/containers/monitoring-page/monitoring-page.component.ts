@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
+import { CheckCollection } from '@monitoring/interfaces';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
@@ -14,15 +15,13 @@ import { Observable } from 'rxjs';
   providers: [MonitoringPageFacade],
 })
 export class MonitoringPageComponent implements OnInit {
-  checks$ = this.facade.checks$;
   customMetrics$ = this.facade.customMetrics$;
-  errorsChecks$ = this.facade.errorsChecks$;
-  latency$ = this.facade.latency$;
   modelVersion$ = this.facade.modelVersion$;
-  selectedAggregation$ = this.facade.selectedAggregation$;
   selectedMetrics$ = this.facade.selectedMetrics$;
   siblingModelVersions$ = this.facade.siblingModelVersions$;
-  error$ = this.facade.error$;
+  error$: Observable<string | null>;
+  checks$: Observable<CheckCollection>;
+  selectedAggregation$: Observable<Aggregation | null>;
 
   detailedCheckLoading$: Observable<boolean> = this.facade.detailedLoading$;
 
@@ -33,6 +32,9 @@ export class MonitoringPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.error$ = this.facade.error$();
+    this.selectedAggregation$ = this.facade.selectedAggregation$();
+    this.checks$ = this.facade.checks$();
     this.facade.loadMetrics();
   }
 

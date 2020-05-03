@@ -1,16 +1,6 @@
-import {
-  Component,
-  OnInit,
-  ChangeDetectionStrategy,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, TemplateRef, ViewChild } from '@angular/core';
 import { MonitoringServiceStatus } from '@monitoring/models/monitoring-service-status';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
-import {
-  getMonitoringServiceStatus,
-  getMonitoringServiceError,
-} from '@monitoring/store/selectors';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -32,8 +22,9 @@ export class MonitoringAvailabilityComponent implements OnInit {
   constructor(private facade: MonitoringPageFacade) {}
 
   ngOnInit() {
-    this.activeTemplate$ = this.facade.serviceStatus$
-      .pipe(map(status => this.statusToTemplate(status)));
+    this.activeTemplate$ = this.facade.serviceStatus$.pipe(
+      map(status => this.statusToTemplate(status))
+    );
 
     this.facade.getServiceStatus();
   }

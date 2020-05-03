@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SnackbarService } from '@core/services';
 import { HydroServingState } from '@core/store';
-import { selectSelectedModelVersion, ModelsFacade } from '@models/store';
+import { ModelsFacade } from '@models/store';
 import { MetricsService } from '@monitoring/services';
 import {
   LoadMetrics,
@@ -15,16 +15,10 @@ import {
   DeleteMetricFail,
 } from '@monitoring/store/actions';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { of } from 'rxjs';
-import {
-  switchMap,
-  map,
-  catchError,
-  concatMap,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { switchMap, map, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class MetricsEffects {
@@ -57,7 +51,10 @@ export class MetricsEffects {
       ofType(DeleteMetric),
       switchMap(({ id }) => {
         return this.metricsService.deleteMetricSpecification(id).pipe(
-          map(() => DeleteMetricSuccess({ payload: { id } })),
+          map(() => {
+            this.snackbar.show({ message: 'Metric was deleted' });
+            return DeleteMetricSuccess({ payload: { id } });
+          }),
           catchError(error => {
             this.snackbar.show({
               message: `Error: ${error}`,
@@ -73,7 +70,7 @@ export class MetricsEffects {
     this.actions$.pipe(
       ofType(LoadMetrics),
       switchMap(() => this.modelsFacade.selectedModelVersion$),
-      switchMap(({id}) => {
+      switchMap(({ id }) => {
         return this.metricsService.getMetricSpecifications(`${id}`).pipe(
           map(metricSettings =>
             LoadMetricsSuccess({ payload: metricSettings })
