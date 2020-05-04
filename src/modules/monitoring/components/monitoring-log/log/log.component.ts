@@ -1,5 +1,11 @@
-import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { Check, CheckCollection, CCheck } from '@monitoring/interfaces';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { Check, CheckCollection } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/models';
 
 @Component({
@@ -9,14 +15,14 @@ import { ModelVersion } from '@shared/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LogComponent implements OnChanges {
-  selectedCheck: CCheck;
+  selectedCheck: Check;
   size: 'mini' | 'full' = 'full';
 
   @Input() modelVersion: ModelVersion;
   @Input() checks: CheckCollection;
   @Input() loading: boolean;
 
-  selectItem(check: CCheck) {
+  selectItem(check: Check) {
     this.selectedCheck = check;
   }
 
@@ -25,14 +31,6 @@ export class LogComponent implements OnChanges {
       const checks = changes.checks.currentValue as CheckCollection;
       this.selectItem(checks.getFirstElement());
     }
-  }
-
-  isFailed(check: Check): boolean {
-    return check._hs_overall_score < 1;
-  }
-
-  get haveSomeData(): boolean {
-    return !this.checks.isEmpty();
   }
 
   get requestsSummaryInfo(): {

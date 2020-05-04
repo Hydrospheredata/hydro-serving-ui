@@ -1,4 +1,4 @@
-export interface Check {
+export interface BareCheck {
   _id: string;
   _hs_prediction_score: number;
   _hs_raw_checks: {
@@ -35,20 +35,22 @@ export interface CustomCheck {
   threshold: number;
 }
 
-type BareCheck = Check;
-
-export class CCheck {
+export class Check {
   id: string;
   error: string | null;
   latency: number;
   overallScore: number;
   metricChecks: { [metricName: string]: MetricCheck };
+  rawChecks: {
+    overall: RawCheck[];
+  };
   constructor(params: BareCheck) {
     this.id = params._id;
     this.error = params._hs_error;
     this.latency = params._hs_latency;
     this.overallScore = params._hs_overall_score;
     this.metricChecks = params._hs_metric_checks || {};
+    this.rawChecks = params._hs_raw_checks || { overall: [] };
   }
 
   isFailed(): boolean {
@@ -61,22 +63,22 @@ export class CCheck {
 }
 
 export class CheckCollection {
-  private checks: CCheck[];
-  constructor(checks: CCheck[]) {
+  private checks: Check[];
+  constructor(checks: Check[]) {
     this.checks = checks || [];
   }
 
-  getChecks(): CCheck[] {
+  getChecks(): Check[] {
     return this.checks;
   }
 
   getLatency(): number[] {
-    const getLatencyField = (check: CCheck) => check.latency;
+    const getLatencyField = (check: Check) => check.latency;
     return this.checks.map(getLatencyField);
   }
 
   getErrorChecks(): Array<string | []> {
-    const getErrorField = (check: CCheck) => check.error;
+    const getErrorField = (check: Check) => check.error;
     return this.checks.map(getErrorField) || [];
   }
 
@@ -100,7 +102,7 @@ export class CheckCollection {
     };
   }
 
-  getFirstElement(): CCheck {
+  getFirstElement(): Check {
     return this.checks[0];
   }
 
@@ -108,7 +110,7 @@ export class CheckCollection {
     return this.checks.length === 0;
   }
 }
-export const mockCheck: CCheck = new CCheck({
+export const mockCheck: Check = new Check({
   _id: 'id',
   _hs_error: '',
   _hs_latency: 1,

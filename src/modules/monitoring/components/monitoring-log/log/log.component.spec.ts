@@ -1,4 +1,8 @@
-import { DebugElement, ChangeDetectionStrategy, SimpleChange } from '@angular/core';
+import {
+  DebugElement,
+  ChangeDetectionStrategy,
+  SimpleChange,
+} from '@angular/core';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { mockCheckCollection } from '@monitoring/interfaces';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
@@ -8,7 +12,7 @@ import { SharedModule } from '@shared/shared.module';
 import { LogDetailComponent } from '@testing/components';
 import { LogComponent } from './log.component';
 
-fdescribe('Log component', () => {
+describe('Log component', () => {
   let fixture: ComponentFixture<LogComponent>;
   let component: LogComponent;
   let debugElement: DebugElement;

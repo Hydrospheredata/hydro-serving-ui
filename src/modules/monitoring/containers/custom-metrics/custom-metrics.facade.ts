@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ColorPaletteService } from '@core/services/color-palette.service';
 import { ModelsFacade } from '@models/store';
-import { ChartConfig, CCheck, CheckCollection } from '@monitoring/interfaces';
+import { ChartConfig, Check, CheckCollection } from '@monitoring/interfaces';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
@@ -196,7 +196,7 @@ export class CustomMetricsFacade {
         })
         .pipe(
           map(bareChecks => {
-            const checks = bareChecks.map(bareCheck => new CCheck(bareCheck));
+            const checks = bareChecks.map(bareCheck => new Check(bareCheck));
             return new CheckCollection(checks);
           })
         );

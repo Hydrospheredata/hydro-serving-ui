@@ -6,7 +6,6 @@ import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
 import { MonitoringAvailabilityComponent } from '@monitoring/containers';
 import { MonitoringServiceStatus } from '@monitoring/models';
-import { MockAggregation } from '@monitoring/models/Aggregation';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { ErrorMessageComponent } from '@shared/components/error-message/error-message.component';
 import { ServicesHeaderComponent } from '@shared/components/services-header/services-header.component';
@@ -22,12 +21,14 @@ import {
 import { MockZenModeServiceProvider } from '@testing/services/zenMode.service';
 import { of } from 'rxjs';
 import { MonitoringPageComponent } from './monitoring-page.component';
+import { mockCheckCollection } from '@monitoring/interfaces';
 
 const modelsFacade = {};
 const monitoringPageFacade: Partial<MonitoringPageFacade> = {
   loadMetrics(): void {
     console.log('load');
   },
+  checks$: () => of(null),
   error$: () => of(null),
   selectedAggregation$: () => of(null),
   serviceStatus$: of(MonitoringServiceStatus.AVAILABLE),
@@ -129,9 +130,7 @@ describe('MonitoringPageComponent', () => {
 
   describe('WITH selected aggregation', () => {
     beforeEach(() => {
-      spyOn(facade, 'selectedAggregation$').and.returnValue(
-        of(MockAggregation)
-      );
+      spyOn(facade, 'checks$').and.returnValue(of(mockCheckCollection));
       fixture.detectChanges();
     });
     it('should SHOW request information component', () => {

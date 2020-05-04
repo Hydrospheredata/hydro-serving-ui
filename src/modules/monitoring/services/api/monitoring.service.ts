@@ -6,6 +6,7 @@ import {
   ChecksAggregationResponse,
   GetChecksAggregationParams,
   GetChecksParams,
+  BareCheck,
 } from '@monitoring/interfaces';
 import { Observable } from 'rxjs';
 
@@ -29,7 +30,7 @@ export class MonitoringService {
     modelVersionId,
     from,
     to,
-  }: GetChecksParams): Observable<Check[]> {
+  }: GetChecksParams): Observable<BareCheck[]> {
     return this.http.get(`${this.baseUrl}/checks/${modelVersionId}`, {
       params: { from, to },
     });
@@ -57,7 +58,7 @@ export class MonitoringService {
     originalModelVersion: number;
     aggregationId: String;
     comparedModelVersionId: number;
-  }): Observable<Check[]> {
+  }): Observable<BareCheck[]> {
     const {
       originalModelVersion: omv,
       aggregationId: aggId,

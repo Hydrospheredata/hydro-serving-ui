@@ -12,30 +12,30 @@
       ></span>
     </div>
   </div>
-  {{ loading }}
   <div class="log__loader" *ngIf="loading">
     <hs-loader class="log__loader-icon"></hs-loader>
   </div>
   <ng-container *ngIf="size === 'full'; else minified">
-    <ul class="log__ids">
-      <li
-        *ngFor="let check of checks.getChecks(); let i = index"
-        class="log__ids-item"
-        [ngClass]="{
-          'log__ids-item--selected': check === selectedCheck,
-          'log__ids-item--failed': check.isFailed()
-        }"
-        (click)="selectItem(check)"
-      >
-        {{ check.id | checkIdToTime | hsFormatDate }}
-      </li>
-    </ul>
-    <div class="log__detailed">
-      <hs-log-detail
-        *ngIf="selectedCheck"
-        [check]="selectedCheck"
-        [modelVersion]="modelVersion"
-      ></hs-log-detail>
+    <div class="log__body">
+      <ul class="log__ids">
+        <li
+          *ngFor="let check of checks.getChecks(); let i = index"
+          class="log__ids-item"
+          [ngClass]="{
+            'log__ids-item--selected': check === selectedCheck,
+            'log__ids-item--failed': check.isFailed()
+          }"
+          (click)="selectItem(check)"
+        >
+          {{ check.id | checkIdToTime | hsFormatDate }}
+        </li>
+      </ul>
+      <div class="log__detailed">
+        <hs-log-detail
+          [check]="selectedCheck"
+          [modelVersion]="modelVersion"
+        ></hs-log-detail>
+      </div>
     </div>
   </ng-container>
 </div>

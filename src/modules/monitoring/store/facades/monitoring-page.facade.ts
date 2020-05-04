@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import { Check, CheckCollection, CCheck } from '@monitoring/interfaces';
+import { Check, CheckCollection } from '@monitoring/interfaces';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
-import { AddMetric, DeleteMetric, GetServiceStatusAction, LoadMetrics } from '@monitoring/store/actions';
+import {
+  AddMetric,
+  DeleteMetric,
+  GetServiceStatusAction,
+  LoadMetrics,
+} from '@monitoring/store/actions';
 import { State } from '@monitoring/store/reducers';
 import {
   getMonitoringServiceError,
@@ -13,7 +18,14 @@ import {
 import { select, Store } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, exhaustMap, filter, map, shareReplay, tap } from 'rxjs/operators';
+import {
+  catchError,
+  exhaustMap,
+  filter,
+  map,
+  shareReplay,
+  tap,
+} from 'rxjs/operators';
 
 @Injectable()
 export class MonitoringPageFacade {
@@ -55,11 +67,11 @@ export class MonitoringPageFacade {
         });
       }),
       map(bareChecks => {
-        const checks = bareChecks.map(bareCheck => new CCheck(bareCheck));
+        const checks = bareChecks.map(bareCheck => new Check(bareCheck));
         return new CheckCollection(checks);
       }),
       tap(() => this.detailedLoading$.next(false)),
-      catchError(err => {
+      catchError(() => {
         this.error.next('something goes wrong');
         this.detailedLoading$.next(false);
         return of([] as Check[]);

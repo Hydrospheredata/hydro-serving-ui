@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CCheck } from '@monitoring/interfaces';
+import { Check } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/_index';
 
 @Component({
@@ -8,7 +8,7 @@ import { ModelVersion } from '@shared/_index';
   styleUrls: ['log-detail.component.scss'],
 })
 export class LogDetailComponent implements OnInit {
-  @Input() check: CCheck;
+  @Input() check: Check;
   @Input() modelVersion: ModelVersion;
 
   inputKeys: string[];
