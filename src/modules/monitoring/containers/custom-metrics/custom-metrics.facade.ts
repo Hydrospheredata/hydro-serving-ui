@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ColorPaletteService } from '@core/services/color-palette.service';
 import { ModelsFacade } from '@models/store';
-import { ChartConfig, Check, CheckCollection } from '@monitoring/interfaces';
-import { Aggregation } from '@monitoring/models/Aggregation';
+import { ChartConfig, Aggregation } from '@monitoring/models';
+import { Check, CheckCollection } from '@monitoring/models';
 import { MonitoringService } from '@monitoring/services';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';

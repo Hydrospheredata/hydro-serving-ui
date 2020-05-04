@@ -5,7 +5,7 @@ import {
 } from '@charts/models/scatter-plot-data.model';
 import { Colorizer, ColorizerFabric } from '@core/models';
 import { ModelsFacade } from '@models/store';
-import { Check } from '@monitoring/interfaces';
+import { Check } from '@monitoring/models';
 import { MonitoringService } from '@monitoring/services';
 import { ModelVersion } from '@shared/_index';
 import {
@@ -176,7 +176,8 @@ export class VisualizationFacade implements OnDestroy {
     this.modelVersion$ = this.modelsFacade.selectedModelVersion$;
     this.selectedCheck$ = this.selectedId$.pipe(
       filter(val => val !== undefined),
-      switchMap(id => this.monitoringApi.getCheck(id))
+      switchMap(id => this.monitoringApi.getCheck(id)),
+      map(bareCheck => new Check(bareCheck))
     );
 
     combineLatest(this.createTask, this.modelsFacade.selectedModelVersion$)

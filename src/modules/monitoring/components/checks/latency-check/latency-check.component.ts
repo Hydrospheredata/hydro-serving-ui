@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { ChartConfig } from '@monitoring/interfaces';
+import { ChartConfig } from '@monitoring/models';
 import { ColorPaletteService } from '@core/services/color-palette.service';
 
 @Component({

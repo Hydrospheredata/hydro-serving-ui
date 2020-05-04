@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChecksAggregationResponse } from '@monitoring/interfaces';
+import { ChecksAggregationResponse } from '@monitoring/models';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
 import { AggregationPaginator } from '@monitoring/services/aggregation-paginator';
@@ -69,7 +69,7 @@ export class AggregationFacade {
                 catchError(err => {
                   this.loading.next(false);
                   this.error.next(err);
-                  return of({}) as Observable<ChecksAggregationResponse>;
+                  return of(null);
                 })
               );
           }),

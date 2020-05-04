@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {
   CheckAggregationResponseItem,
   ChecksAggregationItem,
-} from '@monitoring/interfaces';
+} from '@monitoring/models';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 
 @Injectable({ providedIn: 'root' })

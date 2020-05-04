@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
-import { CheckCollection } from '@monitoring/interfaces';
+import { CheckCollection } from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { isEmptyObj } from '@shared/utils/is-empty-object';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import { Check, CheckCollection } from '@monitoring/interfaces';
+import { Check, CheckCollection } from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
 import {

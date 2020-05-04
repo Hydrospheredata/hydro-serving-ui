@@ -4,7 +4,7 @@ import {
   SimpleChange,
 } from '@angular/core';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
-import { mockCheckCollection } from '@monitoring/interfaces';
+import { mockCheckCollection } from '@monitoring/mocks';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import { By } from '@node_modules/@angular/platform-browser';
 import { LoaderComponent } from '@shared/components';

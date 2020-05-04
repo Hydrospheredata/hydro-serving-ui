@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ScatterPlotData } from '@charts/models/scatter-plot-data.model';
 import { Colorizer } from '@core/models';
-import { Check } from '@monitoring/interfaces';
+import { Check } from '@monitoring/models';
 import { ModelVersion } from '@shared/_index';
 import { VisualizationFacade } from 'modules/visualization/visualization.facade';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { LinkRegime } from '../../models/visualization';
   styleUrls: ['./visualization-page.component.scss'],
   providers: [VisualizationFacade],
 })
-export class VisualizationPageComponent {
+export class VisualizationPageComponent implements OnInit {
   selectedCheck$: Observable<Check>;
   modelVersion$: Observable<ModelVersion>;
   loading$: Observable<boolean>;
@@ -32,7 +32,9 @@ export class VisualizationPageComponent {
 
   linkRegime: LinkRegime = 'nearest';
 
-  constructor(private service: VisualizationFacade) {
+  constructor(private service: VisualizationFacade) {}
+
+  ngOnInit(): void {
     this.taskId$ = this.service.taskId$;
     this.status$ = this.service.status$;
     this.result$ = this.service.result$;
@@ -47,7 +49,6 @@ export class VisualizationPageComponent {
     this.counterfactuals$ = this.service.counterfactuals$;
     this.visualizationMetrics$ = this.service.visualizationMetrics$;
     this.selectedId$ = this.service.selectedId$;
-
     this.service.loadEmbedding();
   }
 

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
 import { ComparisonRegime, CustomMetricsFacade } from './custom-metrics.facade';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
-import { ChartConfig } from '@monitoring/interfaces';
+import { ChartConfig } from '@monitoring/models';
 
 @Component({
   selector: 'hs-custom-metrics',

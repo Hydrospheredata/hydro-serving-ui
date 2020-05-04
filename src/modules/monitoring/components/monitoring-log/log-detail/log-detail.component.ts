@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Check } from '@monitoring/interfaces';
+import { Check } from '@monitoring/models';
 import { ModelVersion } from '@shared/_index';
 
 @Component({

@@ -5,7 +5,7 @@ import {
   SimpleChanges,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Check, CheckCollection } from '@monitoring/interfaces';
+import { Check, CheckCollection } from '@monitoring/models';
 import { ModelVersion } from '@shared/models';
 
 @Component({

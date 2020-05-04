@@ -5,7 +5,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
-import { ChecksAggregationItem } from '@monitoring/interfaces';
+import { ChecksAggregationItem } from '@monitoring/models';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
 import { Observable } from '@node_modules/rxjs';
 import { tap } from '@node_modules/rxjs/internal/operators';

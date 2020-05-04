@@ -21,7 +21,7 @@ import {
 import { MockZenModeServiceProvider } from '@testing/services/zenMode.service';
 import { of } from 'rxjs';
 import { MonitoringPageComponent } from './monitoring-page.component';
-import { mockCheckCollection } from '@monitoring/interfaces';
+import { mockCheckCollection } from '@monitoring/mocks';
 
 const modelsFacade = {};
 const monitoringPageFacade: Partial<MonitoringPageFacade> = {
