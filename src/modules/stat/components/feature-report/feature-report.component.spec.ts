@@ -4,7 +4,7 @@ import { FeatureReportComponent } from './feature-report.component';
 import { SharedModule } from '@shared/shared.module';
 import { ColorByDriftDirective } from '../../directives';
 import { HistogramComponent } from '..';
-import { mockStat } from '../../models';
+import { mockStat } from '../../mocks';
 
 describe('FeatureReportComponent', () => {
   let component: FeatureReportComponent;

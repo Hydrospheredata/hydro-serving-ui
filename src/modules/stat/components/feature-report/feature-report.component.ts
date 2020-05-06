@@ -1,10 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { FeatureReport, Stat } from '../../models';
 
 @Component({
   selector: 'hs-feature-report',
   templateUrl: './feature-report.component.html',
   styleUrls: ['./feature-report.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatureReportComponent implements OnInit {
   @Input() perFeatureReport: Stat['per_feature_report'];

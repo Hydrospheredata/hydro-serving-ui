@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from '@node_modules/rxjs';
-import { Stat } from '../models/stat';
+import { Stat } from '../models';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
 
@@ -14,8 +14,8 @@ export class StatApiService {
   }
   getStat(params: {
     model_name: string;
-    model_version: number;
+    model_version_id: string;
   }): Observable<Stat> {
-    return this.http.get(`${this.baseUrl}/metrics`, params);
+    return this.http.get(`${this.baseUrl}/metrics`, { params });
   }
 }

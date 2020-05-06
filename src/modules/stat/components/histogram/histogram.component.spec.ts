@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HistogramComponent } from './histogram.component';
-import { mockStat } from '../../models';
+import { mockStat } from '../../mocks';
 
 describe('HistogramComponent', () => {
   let component: HistogramComponent;

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { StatApiService } from './stat-api.service';
+import { StatApiService } from './services/stat-api.service';
 import { Observable } from '@node_modules/rxjs';
-import { Stat } from '../models';
+import { Stat } from './models';
 import { ModelsFacade } from '@models/store';
 import { switchMap } from '@node_modules/rxjs/internal/operators';
-import { ModelVersion } from '@shared/models';
+import { ModelVersion, Model } from '@shared/models';
 
 @Injectable()
-export class StatService {
-  stat$: Observable<Stat>;
-  modelVersion$: Observable<ModelVersion>;
+export class StatFacade {
+  private readonly stat$: Observable<Stat>;
+  private readonly modelVersion$: Observable<ModelVersion>;
 
   constructor(
     private statApi: StatApiService,
@@ -20,9 +20,17 @@ export class StatService {
       switchMap(modelVersion =>
         this.statApi.getStat({
           model_name: modelVersion.model.name,
-          model_version: modelVersion.id,
+          model_version_id: `${modelVersion.id}`,
         })
       )
     );
+  }
+
+  public getStat(): Observable<Stat> {
+    return this.stat$;
+  }
+
+  public getModelVersion(): Observable<ModelVersion> {
+    return this.modelVersion$;
   }
 }

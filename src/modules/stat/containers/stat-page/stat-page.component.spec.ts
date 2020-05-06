@@ -1,18 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { StatFacade } from '../../stat.facade';
 
 import { StatPageComponent } from './stat-page.component';
 import { SharedModule } from '@shared/shared.module';
 import { FeatureReportComponent } from '../../components/feature-report/feature-report.component';
 import { HistogramComponent } from '../../components';
 import { ColorByDriftDirective } from '../../directives';
-import { StatService } from '../../services/stat.service';
-import { mockStat } from '../../models';
+import { mockStat } from '../../mocks';
 import { of } from '@node_modules/rxjs';
 import { RouterTestingModule } from '@node_modules/@angular/router/testing';
 
-const mockedStatService = {
+const mockedStatFacade = {
   stat$: of(mockStat),
 };
+
 describe('StatPageComponent', () => {
   let component: StatPageComponent;
   let fixture: ComponentFixture<StatPageComponent>;
@@ -31,8 +32,8 @@ describe('StatPageComponent', () => {
         set: {
           providers: [
             {
-              provide: StatService,
-              useValue: mockedStatService,
+              provide: StatFacade,
+              useValue: mockedStatFacade,
             },
           ],
         },
@@ -43,7 +44,6 @@ describe('StatPageComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(StatPageComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
