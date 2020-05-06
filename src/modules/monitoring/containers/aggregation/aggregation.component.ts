@@ -3,12 +3,13 @@ import {
   Component,
   ElementRef,
   ViewChild,
+  OnInit,
 } from '@angular/core';
 import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
 import { ChecksAggregationItem } from '@monitoring/models';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
-import { Observable } from '@node_modules/rxjs';
-import { tap } from '@node_modules/rxjs/internal/operators';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { interpolateRdYlGn } from 'd3';
 
@@ -19,7 +20,7 @@ import { interpolateRdYlGn } from 'd3';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [AggregationFacade],
 })
-export class AggregationComponent {
+export class AggregationComponent implements OnInit {
   @ViewChild('svgContainer', { read: ElementRef })
   svgContainer: ElementRef;
 
@@ -33,6 +34,7 @@ export class AggregationComponent {
   labelsWidth: number = 100;
   canvasWidth: number = 880;
   selectedAggregation: Aggregation | null;
+  selectedAggregation$: Observable<Aggregation | null>;
 
   aggregation: ChecksAggregationItem[];
   featureNames: string[] = [];
@@ -43,9 +45,9 @@ export class AggregationComponent {
   private readonly COLUMN_MARGIN_RIGHT = 1;
   private readonly CELL_MARGIN_TOP = 1;
 
-  constructor(private readonly facade: AggregationFacade) {
-    this.totalRequests$ = this.facade.totalRequests$;
-    this.showedRequests$ = this.facade.showedRequests$;
+  constructor(private readonly facade: AggregationFacade) {}
+
+  ngOnInit(): void {
     this.aggregations$ = this.facade.aggregations$.pipe(
       tap(aggregationList => {
         this.featureNames = aggregationList.featureNames;

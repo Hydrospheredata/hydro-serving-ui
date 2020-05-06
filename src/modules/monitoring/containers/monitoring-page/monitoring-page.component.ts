@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
-import { ModelsFacade } from '@models/store';
 import { CheckCollection } from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
@@ -27,7 +26,6 @@ export class MonitoringPageComponent implements OnInit {
 
   constructor(
     private dialogService: DialogService,
-    private mF: ModelsFacade,
     private facade: MonitoringPageFacade
   ) {}
 

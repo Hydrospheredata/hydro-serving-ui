@@ -3,10 +3,7 @@ import { ChecksAggregationResponse } from '@monitoring/models';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
 import { AggregationPaginator } from '@monitoring/services/aggregation-paginator';
-import { CheckAggregationBuilder } from '@monitoring/services/builders/check-aggregation.builder';
-import { State } from '@monitoring/store';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
-import { Store } from '@ngrx/store';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, combineLatest, Observable, of, timer } from 'rxjs';
 import {
@@ -27,13 +24,15 @@ export class AggregationFacade {
   groupedBy$: BehaviorSubject<number> = new BehaviorSubject(10);
   loading$: Observable<boolean>;
   error$: Observable<string>;
-  totalRequests$: Observable<number>;
-  showedRequests$: Observable<number>;
   aggregations$: Observable<AggregationsList>;
   canLoadRight$: Observable<boolean>;
   canLoadLeft$: Observable<boolean>;
-
+  selectedAggregation$: Observable<Aggregation>;
   checksAggregationResponse$: Observable<ChecksAggregationResponse>;
+
+  private selectedAggregation: BehaviorSubject<
+    Aggregation
+  > = new BehaviorSubject<Aggregation>(null);
   private currentOffset: BehaviorSubject<number> = new BehaviorSubject<number>(
     0
   );
@@ -45,12 +44,12 @@ export class AggregationFacade {
   constructor(
     private monitoringPageFacade: MonitoringPageFacade,
     private monitoring: MonitoringService,
-    private checkAggBuilder: CheckAggregationBuilder,
-    private store: Store<State>,
     private paginator: AggregationPaginator
   ) {
+    this.selectedAggregation$ = this.selectedAggregation.asObservable();
     this.loading$ = this.loading.asObservable();
     this.error$ = this.error.asObservable();
+
     this.checksAggregationResponse$ = combineLatest(
       this.monitoringPageFacade.modelVersion$,
       this.currentOffset.asObservable()
@@ -76,7 +75,10 @@ export class AggregationFacade {
           tap(_ => {
             this.loading.next(false);
           }),
-          startWith(null),
+          startWith({
+            result: [],
+            count: 0,
+          }),
           pairwise(),
           filter(([prev, cur]) => {
             return !isEqual(prev, cur);
@@ -87,57 +89,31 @@ export class AggregationFacade {
       share()
     );
 
-    this.aggregations$ = combineLatest(
-      this.checksAggregationResponse$,
-      this.monitoringPageFacade.selectedMetrics$
-    ).pipe(
-      map(([aggregationResponse]) => {
-        const aggregations = aggregationResponse.results
-          .map(aggregation => new Aggregation(aggregation))
-          .reverse();
-        return new AggregationsList(aggregations);
-      })
-    );
-    this.totalRequests$ = this.checksAggregationResponse$.pipe(
-      map(response => {
-        const batches = response.count;
-        const countInOneBatch =
-          response.results[response.results.length - 1]._hs_requests;
-        if (batches === 1) {
-          return countInOneBatch;
-        } else {
-          return (
-            countInOneBatch * (batches - 1) + response.results[0]._hs_requests
-          );
-        }
-      })
-    );
-    this.showedRequests$ = this.checksAggregationResponse$.pipe(
-      filter(val => val !== undefined),
-      map(({ results }) => {
-        if (results === undefined) {
-          return 0;
-        }
-        return results.reduce(
-          (result, { _hs_requests }) => result + _hs_requests,
-          0
-        );
-      })
-    );
+    this.aggregations$ = this.checksAggregationResponse$
+      .pipe(tap(console.log))
+      .pipe(
+        map(([{ results, count }]) => {
+          console.log('here');
+          const aggregations = results
+            .map(aggregation => new Aggregation(aggregation))
+            .reverse();
+          return new AggregationsList(aggregations, count);
+        }),
+        share()
+      );
 
     this.canLoadRight$ = this.currentOffset
       .asObservable()
       .pipe(map(offset => this.paginator.canLoadNewest(offset)));
     this.canLoadLeft$ = combineLatest(
-      this.totalRequests$,
-      this.showedRequests$,
+      this.aggregations$,
       this.currentOffset.asObservable(),
       of(10)
     ).pipe(
-      map(([count, receivedCount, offset, groupedBy]) => {
+      map(([aggregations, offset, groupedBy]) => {
         return this.paginator.canLoadOlder(
-          count,
-          receivedCount,
+          aggregations.totalRequests,
+          aggregations.showedRequests,
           offset,
           groupedBy
         );
