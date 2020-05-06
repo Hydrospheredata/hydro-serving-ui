@@ -6,16 +6,18 @@ import {
   OnChanges,
   SimpleChanges,
   ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
-import { FeatureReportHistogram } from '../../models';
+import { ColorPaletteService } from '@core/services/color-palette.service';
 import * as Highcharts from 'highcharts';
 import { Chart } from 'highcharts';
-import { ColorPaletteService } from '@core/services/color-palette.service';
+import { FeatureReportHistogram } from '../../models';
 
 @Component({
   selector: 'hs-histogram',
   templateUrl: './histogram.component.html',
   styleUrls: ['./histogram.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HistogramComponent implements OnChanges, AfterViewInit {
   @Input() config: FeatureReportHistogram;
