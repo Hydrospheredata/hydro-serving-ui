@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { CheckCollection } from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
+import { MonitoringPageState } from '@monitoring/store/monitoring-page-state.service';
 import { filter } from '@node_modules/rxjs/internal/operators';
 import { ModelVersion } from '@shared/models';
 import { MonitoringPageFacade } from './monitoring-page.facade';
@@ -13,7 +14,7 @@ import { Observable } from 'rxjs';
   templateUrl: './monitoring-page.component.html',
   styleUrls: ['./monitoring-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [MonitoringPageFacade],
+  providers: [MonitoringPageState, MonitoringPageFacade],
 })
 export class MonitoringPageComponent implements OnInit {
   modelVersion$: Observable<ModelVersion>;

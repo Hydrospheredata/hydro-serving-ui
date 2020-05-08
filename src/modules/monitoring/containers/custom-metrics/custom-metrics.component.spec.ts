@@ -35,7 +35,8 @@ describe('CustomMetricsComponent', () => {
             {
               provide: CustomMetricsFacade,
               useValue: {
-                comparableModelVersions$: of([]),
+                getModelVersionsToCompare: () => of([]),
+                getChartConfigs: () => of([]),
               },
             },
             { provide: DialogService, useValue: {} },

@@ -19,7 +19,6 @@ export class StatFacade {
     this.stat$ = this.modelsFacade.selectedModelVersion$.pipe(
       switchMap(modelVersion =>
         this.statApi.getStat({
-          model_name: modelVersion.model.name,
           model_version_id: `${modelVersion.id}`,
         })
       )

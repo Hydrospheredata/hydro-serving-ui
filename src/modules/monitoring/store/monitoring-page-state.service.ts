@@ -18,9 +18,7 @@ const initialState: State = {
   checks: null,
 };
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MonitoringPageState {
   private readonly state$: Observable<State>;
   private state: BehaviorSubject<State> = new BehaviorSubject<State>(
