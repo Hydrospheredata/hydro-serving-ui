@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Explanation, RootCauseService } from '@rootcause/services';
 import { Observable } from '@node_modules/rxjs';
+import { Explanation } from '@rootcause/models';
+import { RootCauseApiService } from '@rootcause/services';
 
 @Injectable()
-export class ExplanationService {
-  constructor(private readonly rootCauseService: RootCauseService) {}
+export class ExplanationFacade {
+  constructor(private readonly rootCauseService: RootCauseApiService) {}
 
   createExplanation(modelVersionId, requestId) {
     return this.rootCauseService.createExplanation({

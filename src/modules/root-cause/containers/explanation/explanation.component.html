@@ -1,22 +1,25 @@
 <ng-container *ngIf="explanation$ | async as explanation">
   <ng-container [ngSwitch]="explanation.state">
-    <button *ngSwitchCase="'SUCCESS'"
-            (click)="showExplanation(explanation.result)"
-            kind="base"
-            color="primary"
-            hs-button>show explanation
+    <button
+      *ngSwitchCase="'SUCCESS'"
+      (click)="showExplanation(explanation.result)"
+      kind="base"
+      color="primary"
+      hs-button
+    >
+      show explanation
     </button>
-    <button *ngSwitchCase="'NOT_CALLED'"
-            (click)="getExplanationCommand.next('something')"
-            kind="base"
-            color="cyan"
-            hs-button>get explanation
+    <button
+      *ngSwitchCase="'NOT_CALLED'"
+      (click)="getExplanationCommand.next('')"
+      kind="base"
+      color="cyan"
+      hs-button
+    >
+      get explanation
     </button>
-    <button *ngSwitchDefault
-            (click)="getExplanationCommand.next('something')"
-            kind="base"
-            color="cyan"
-            hs-button disabled>{{explanation.state}}
+    <button *ngSwitchDefault kind="base" color="cyan" hs-button disabled>
+      {{ explanation.state }}
     </button>
   </ng-container>
 </ng-container>

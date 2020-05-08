@@ -1,1 +1,1 @@
-export * from './root-cause.service';
+export * from './root-cause-api.service';

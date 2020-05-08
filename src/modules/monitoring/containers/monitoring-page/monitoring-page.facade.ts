@@ -6,7 +6,7 @@ import {
   MonitoringServiceStatus,
 } from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
-import { MonitoringPageState } from '@monitoring/monitoring-page-state.service';
+import { MonitoringPageState } from '@monitoring/store/monitoring-page-state.service';
 import { MonitoringService } from '@monitoring/services';
 import {
   AddMetric,
@@ -49,6 +49,7 @@ export class MonitoringPageFacade implements OnDestroy {
   loadChecks(): void {
     this.getAggregation()
       .pipe(
+        filter(val => val !== null),
         exhaustMap(aggregation => {
           this.monitoringPageState.setChecksLoading(true);
 
@@ -67,8 +68,8 @@ export class MonitoringPageFacade implements OnDestroy {
           );
         }),
         tap(() => this.monitoringPageState.setChecksLoading(false)),
-        catchError(() => {
-          this.monitoringPageState.setError('Something goes wrong');
+        catchError(err => {
+          this.monitoringPageState.setError(err);
           this.monitoringPageState.setChecksLoading(false);
 
           return of(new CheckCollection([]));
@@ -104,9 +105,7 @@ export class MonitoringPageFacade implements OnDestroy {
   }
 
   getAggregation(): Observable<Aggregation | null> {
-    return this.monitoringPageState
-      .getAggregation()
-      .pipe(filter(val => val !== null));
+    return this.monitoringPageState.getAggregation();
   }
 
   getChecks(): Observable<CheckCollection> {

@@ -86,6 +86,22 @@ export class AggregationsList {
     );
   }
 
+  get lastAggregation(): Aggregation | null {
+    if (this.aggregations.length) {
+      return this.aggregations[this.aggregations.length - 1];
+    } else {
+      return null;
+    }
+  }
+
+  has(aggregation: Aggregation): boolean {
+    if (this.aggregations.length) {
+      return this.aggregations.some(({ id }) => id === aggregation.id);
+    } else {
+      return false;
+    }
+  }
+
   private extractDateFromId(id: string): Date {
     const getFirst4Bytes = str => str.slice(0, 8);
     const convertToMicroseconds = str => parseInt(str, 16) * 1000;
