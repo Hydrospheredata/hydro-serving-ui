@@ -58,25 +58,26 @@ export class CustomMetricsFacade {
     private colorPalette: ColorPaletteService
   ) {
     this.selectedMetrics$ = this.metricsFacade.selectedMetrics$;
-    this.currentModelVersionMetricsChecks$ = combineLatest(
+
+    this.currentModelVersionMetricsChecks$ = combineLatest([
       this.modelsFacade.selectedModelVersion$,
-      this.facade.checks$()
-    ).pipe(
+      this.facade.getChecks(),
+    ]).pipe(
       map(([modelVersion, checks]) => {
         return {
           id: modelVersion.id,
           name: modelVersion.model.name,
           version: modelVersion.modelVersion,
-          metricsChecks: this.fillMetricsCheksData(checks),
+          metricsChecks: this.fillMetricsChecksData(checks),
         };
       })
     );
 
-    this.comparableModelVersionMetricsChecks$ = combineLatest(
-      this.facade.modelVersion$,
-      this.facade.selectedAggregation$(),
-      this.comparableModelVersions.asObservable()
-    ).pipe(
+    this.comparableModelVersionMetricsChecks$ = combineLatest([
+      this.facade.getModelVersion(),
+      this.facade.getAggregation(),
+      this.comparableModelVersions.asObservable(),
+    ]).pipe(
       switchMap(([currentModelVersion, aggregation, modelVersions]) => {
         if (modelVersions.length === 0) {
           return of([]);
@@ -93,7 +94,7 @@ export class CustomMetricsFacade {
                   id,
                   name,
                   version: modelVersion,
-                  metricsChecks: this.fillMetricsCheksData(response[id]),
+                  metricsChecks: this.fillMetricsChecksData(response[id]),
                 };
               }
             );
@@ -103,17 +104,17 @@ export class CustomMetricsFacade {
       startWith([])
     );
 
-    this.allModelVersionMetricsChecks$ = combineLatest(
+    this.allModelVersionMetricsChecks$ = combineLatest([
       this.currentModelVersionMetricsChecks$,
-      this.comparableModelVersionMetricsChecks$
-    ).pipe(map(([current, comparable]) => [current, ...comparable]));
+      this.comparableModelVersionMetricsChecks$,
+    ]).pipe(map(([current, comparable]) => [current, ...comparable]));
 
     this.regime$ = this.regime.asObservable();
 
-    this.chartConfigs$ = combineLatest(
+    this.chartConfigs$ = combineLatest([
       this.selectedMetrics$,
-      this.allModelVersionMetricsChecks$
-    ).pipe(
+      this.allModelVersionMetricsChecks$,
+    ]).pipe(
       map(([metrics, customChecks]) => {
         return this.mergeChecksToChartConfig(metrics, customChecks);
       }),
@@ -140,7 +141,7 @@ export class CustomMetricsFacade {
     return this.generateConfigs(metrics, modelVersionsMetricsChecks);
   }
 
-  private fillMetricsCheksData(
+  private fillMetricsChecksData(
     checks: CheckCollection
   ): {
     [metricName: string]: {
@@ -156,6 +157,11 @@ export class CustomMetricsFacade {
         health: boolean[];
       };
     } = {};
+
+    if (checks === null) {
+      return {};
+    }
+
     checks.getChecks().forEach(check => {
       const metricChecks = check.metricChecks;
       for (const metricName in metricChecks) {
@@ -251,18 +257,18 @@ export class CustomMetricsFacade {
       series: [],
     });
 
-    const cfgs: ChartConfig[] = metrics.map(metric => {
+    const configs: ChartConfig[] = metrics.map(metric => {
       return createConfig(metric.name, metric.config.threshold);
     });
 
     checksByModelVer.forEach(({ name, metricsChecks, version }) => {
       const seriesName = `${name}_v:${version}`;
       Object.entries(metricsChecks).forEach(([metricName, metricCheck]) => {
-        const existingConfig = cfgs.find(cfg => cfg.name === metricName);
+        const existingConfig = configs.find(cfg => cfg.name === metricName);
         let config: ChartConfig = existingConfig;
         if (!existingConfig) {
           config = createConfig(metricName);
-          cfgs.push(config);
+          configs.push(config);
         }
         config.series.push({
           name: seriesName,
@@ -283,6 +289,6 @@ export class CustomMetricsFacade {
       });
     });
 
-    return cfgs;
+    return configs;
   }
 }

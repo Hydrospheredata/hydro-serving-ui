@@ -1,11 +1,4 @@
 <div class="aggregation" *ngIf="aggregations$ | async as aggregationList">
-  <ng-container *ngIf="loading">
-    <div class="aggregation__loader">
-      <hs-loader class="aggregation__loader-icon"></hs-loader>
-      <span>loading</span>
-    </div>
-  </ng-container>
-
   <ng-container
     *ngIf="aggregationList.aggregations.length; else noDataAvailable"
   >

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AggregationState } from '@monitoring/aggregation.state';
 import { ChecksAggregationResponse } from '@monitoring/models';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
@@ -14,7 +15,8 @@ import {
   startWith,
   switchMap,
   tap,
-  share,
+  shareReplay,
+  take,
 } from 'rxjs/operators';
 
 @Injectable({
@@ -22,94 +24,85 @@ import {
 })
 export class AggregationFacade {
   groupedBy$: BehaviorSubject<number> = new BehaviorSubject(10);
-  loading$: Observable<boolean>;
-  error$: Observable<string>;
-  aggregations$: Observable<AggregationsList>;
+
   canLoadRight$: Observable<boolean>;
   canLoadLeft$: Observable<boolean>;
-  selectedAggregation$: Observable<Aggregation>;
-  checksAggregationResponse$: Observable<ChecksAggregationResponse>;
 
-  private selectedAggregation: BehaviorSubject<
-    Aggregation
-  > = new BehaviorSubject<Aggregation>(null);
-  private currentOffset: BehaviorSubject<number> = new BehaviorSubject<number>(
-    0
-  );
-  private error: BehaviorSubject<string> = new BehaviorSubject<string>(null);
-  private loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    false
-  );
+  private readonly aggregations$: Observable<AggregationsList>;
 
   constructor(
     private monitoringPageFacade: MonitoringPageFacade,
     private monitoring: MonitoringService,
-    private paginator: AggregationPaginator
+    private paginator: AggregationPaginator,
+    private state: AggregationState
   ) {
-    this.selectedAggregation$ = this.selectedAggregation.asObservable();
-    this.loading$ = this.loading.asObservable();
-    this.error$ = this.error.asObservable();
-
-    this.checksAggregationResponse$ = combineLatest(
-      this.monitoringPageFacade.modelVersion$,
-      this.currentOffset.asObservable()
-    ).pipe(
-      switchMap(([modelVersion, offset]) => {
-        return timer(0, 5000).pipe(
-          switchMap(() => {
-            this.loading.next(true);
-            return this.monitoring
-              .getChecksAggregation({
-                limit: 80,
-                modelVersionId: modelVersion.id,
-                offset,
-              })
-              .pipe(
-                catchError(err => {
-                  this.loading.next(false);
-                  this.error.next(err);
-                  return of(null);
-                })
-              );
-          }),
-          tap(_ => {
-            this.loading.next(false);
-          }),
-          startWith({
-            result: [],
-            count: 0,
-          }),
-          pairwise(),
-          filter(([prev, cur]) => {
-            return !isEqual(prev, cur);
-          }),
-          map(([_, cur]) => cur)
-        );
-      }),
-      share()
+    this.aggregations$ = this.state.getAggregations().pipe(
+      filter(val => val !== null),
+      shareReplay(1)
     );
+  }
 
-    this.aggregations$ = this.checksAggregationResponse$
-      .pipe(tap(console.log))
+  selectAggregation(agg: Aggregation): void {
+    this.monitoringPageFacade.selectAggregation(agg);
+  }
+
+  loadAggregations(): void {
+    combineLatest(
+      this.monitoringPageFacade.getModelVersion(),
+      this.state.getOffset()
+    )
       .pipe(
-        map(([{ results, count }]) => {
-          console.log('here');
-          const aggregations = results
-            .map(aggregation => new Aggregation(aggregation))
-            .reverse();
-          return new AggregationsList(aggregations, count);
-        }),
-        share()
-      );
+        tap(console.log),
+        switchMap(([modelVersion, offset]) => {
+          return timer(0, 5000).pipe(
+            switchMap(() => {
+              return this.monitoring
+                .getChecksAggregation({
+                  limit: 80,
+                  modelVersionId: modelVersion.id,
+                  offset,
+                })
+                .pipe(
+                  catchError(err => {
+                    this.state.setError(err);
 
-    this.canLoadRight$ = this.currentOffset
-      .asObservable()
+                    return of(null);
+                  })
+                );
+            }),
+            startWith(null),
+            pairwise<ChecksAggregationResponse>(),
+            filter(([prev, cur]) => {
+              return !isEqual(prev, cur);
+            }),
+            map(([_, cur]) => cur),
+            map(res => {
+              const { count, results } = res;
+              const aggregations = results
+                .map(aggregation => new Aggregation(aggregation))
+                .reverse();
+              this.state.addAggregations(
+                new AggregationsList(aggregations, count)
+              );
+            })
+          );
+        })
+      )
+      .subscribe();
+  }
+
+  canLoadRight(): Observable<boolean> {
+    return this.state
+      .getOffset()
       .pipe(map(offset => this.paginator.canLoadNewest(offset)));
-    this.canLoadLeft$ = combineLatest(
+  }
+
+  canLoadLeft(): Observable<boolean> {
+    return combineLatest([
       this.aggregations$,
-      this.currentOffset.asObservable(),
-      of(10)
-    ).pipe(
+      this.state.getOffset(),
+      of(10),
+    ]).pipe(
       map(([aggregations, offset, groupedBy]) => {
         return this.paginator.canLoadOlder(
           aggregations.totalRequests,
@@ -121,15 +114,19 @@ export class AggregationFacade {
     );
   }
 
-  selectAggregation(agg: Aggregation): void {
-    this.monitoringPageFacade.selectAggregation(agg);
+  getAggregations(): Observable<AggregationsList> {
+    return this.aggregations$;
   }
 
-  loadOlder() {
-    this.currentOffset.next(this.currentOffset.getValue() + 1);
+  loadOlder(): void {
+    this.state.setOffset(1);
   }
 
-  loadNewest() {
-    this.currentOffset.next(this.currentOffset.getValue() - 1);
+  loadNewest(): void {
+    this.state.setOffset(-1);
+  }
+
+  getError(): Observable<string | null> {
+    return this.state.getError();
   }
 }

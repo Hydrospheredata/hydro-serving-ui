@@ -2,7 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
 import { CheckCollection } from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { ModelVersion } from '@shared/models';
+import { MonitoringPageFacade } from './monitoring-page.facade';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { Observable } from 'rxjs';
 
@@ -14,10 +15,7 @@ import { Observable } from 'rxjs';
   providers: [MonitoringPageFacade],
 })
 export class MonitoringPageComponent implements OnInit {
-  customMetrics$ = this.facade.customMetrics$;
-  modelVersion$ = this.facade.modelVersion$;
-  selectedMetrics$ = this.facade.selectedMetrics$;
-  siblingModelVersions$ = this.facade.siblingModelVersions$;
+  modelVersion$: Observable<ModelVersion>;
   error$: Observable<string | null>;
   checks$: Observable<CheckCollection>;
   selectedAggregation$: Observable<Aggregation | null>;
@@ -30,10 +28,13 @@ export class MonitoringPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.error$ = this.facade.error$();
-    this.selectedAggregation$ = this.facade.selectedAggregation$();
-    this.checks$ = this.facade.checks$();
+    this.modelVersion$ = this.facade.getModelVersion();
+    this.error$ = this.facade.getError();
+    this.selectedAggregation$ = this.facade.getAggregation();
+    this.checks$ = this.facade.getChecks();
+
     this.facade.loadMetrics();
+    this.facade.loadChecks();
   }
 
   showBatchMetricsBlock(aggregation: Aggregation): boolean {

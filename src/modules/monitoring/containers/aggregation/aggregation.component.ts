@@ -24,19 +24,15 @@ export class AggregationComponent implements OnInit {
   @ViewChild('svgContainer', { read: ElementRef })
   svgContainer: ElementRef;
 
-  totalRequests$: Observable<number>;
-  showedRequests$: Observable<number>;
-
   aggregations$: Observable<AggregationsList>;
   canLoadLeft$: Observable<boolean>;
   canLoadRight$: Observable<boolean>;
-  loading: boolean = false;
+
   labelsWidth: number = 100;
   canvasWidth: number = 880;
-  selectedAggregation: Aggregation | null;
-  selectedAggregation$: Observable<Aggregation | null>;
 
-  aggregation: ChecksAggregationItem[];
+  selectedAggregation: Aggregation | null;
+
   featureNames: string[] = [];
   metricNames: string[] = [];
   batchNames: string[] = [];
@@ -48,7 +44,7 @@ export class AggregationComponent implements OnInit {
   constructor(private readonly facade: AggregationFacade) {}
 
   ngOnInit(): void {
-    this.aggregations$ = this.facade.aggregations$.pipe(
+    this.aggregations$ = this.facade.getAggregations().pipe(
       tap(aggregationList => {
         this.featureNames = aggregationList.featureNames;
         this.metricNames = aggregationList.metricNames;
@@ -57,8 +53,10 @@ export class AggregationComponent implements OnInit {
         this.checkAndUpdateActiveColumn(aggregationList);
       })
     );
-    this.canLoadLeft$ = this.facade.canLoadLeft$;
-    this.canLoadRight$ = this.facade.canLoadRight$;
+
+    this.canLoadLeft$ = this.facade.canLoadLeft();
+    this.canLoadRight$ = this.facade.canLoadRight();
+    this.facade.loadAggregations();
   }
 
   get canvasHeight() {
