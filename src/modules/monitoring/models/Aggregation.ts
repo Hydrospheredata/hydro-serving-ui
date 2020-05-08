@@ -9,8 +9,11 @@ interface Check {
 
 export class AggregationsList {
   aggregations: Aggregation[] = [];
-  constructor(aggregations: Aggregation[]) {
+  private batchesCount: number;
+
+  constructor(aggregations: Aggregation[], batchesCount: number) {
     this.aggregations = aggregations;
+    this.batchesCount = batchesCount || 0;
   }
 
   get featureNames(): string[] {
@@ -55,6 +58,32 @@ export class AggregationsList {
       );
     }
     return null;
+  }
+
+  get totalRequests(): number {
+    if (this.batchesCount === 0) {
+      return 0;
+    }
+    const countInOneBatch = this.aggregations[this.aggregations.length - 1]
+      .hs_requests;
+    if (this.batchesCount === 1) {
+      return countInOneBatch;
+    } else {
+      return (
+        countInOneBatch * (this.batchesCount - 1) +
+        this.aggregations[0].hs_requests
+      );
+    }
+  }
+
+  get showedRequests(): number {
+    if (this.batchesCount === 0) {
+      return 0;
+    }
+    return this.aggregations.reduce(
+      (result, { hs_requests }) => result + hs_requests,
+      0
+    );
   }
 
   private extractDateFromId(id: string): Date {

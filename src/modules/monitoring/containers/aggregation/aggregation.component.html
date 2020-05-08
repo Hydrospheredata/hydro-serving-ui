@@ -1,11 +1,4 @@
 <div class="aggregation" *ngIf="aggregations$ | async as aggregationList">
-  <ng-container *ngIf="loading">
-    <div class="aggregation__loader">
-      <hs-loader class="aggregation__loader-icon"></hs-loader>
-      <span>loading</span>
-    </div>
-  </ng-container>
-
   <ng-container
     *ngIf="aggregationList.aggregations.length; else noDataAvailable"
   >
@@ -18,14 +11,6 @@
       >
       </hydro-icon>
       <div class="aggregation__header-range">
-        <!--        <div>-->
-        <!--          Requests:-->
-        <!--          <span class="aggregation__header-count">{{ totalRequests$ | async }} </span>-->
-        <!--        </div>-->
-        <!--        <div>-->
-        <!--          Showed:-->
-        <!--          <span class="aggregation__header-count">{{ showedRequests$ | async }} </span>-->
-        <!--        </div>-->
         <div>
           <span>{{ aggregationList.dateFrom | hsFormatDate }}</span> -
           <span>{{ aggregationList.dateTo | hsFormatDate }}</span>

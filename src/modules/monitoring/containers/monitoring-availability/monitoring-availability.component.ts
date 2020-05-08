@@ -7,12 +7,8 @@ import {
 } from '@angular/core';
 import { MonitoringServiceStatus } from '@monitoring/models/monitoring-service-status';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
-import {
-  getMonitoringServiceStatus,
-  getMonitoringServiceError,
-} from '@monitoring/store/selectors';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-monitoring-availability',
@@ -22,7 +18,7 @@ import { map } from 'rxjs/operators';
 })
 export class MonitoringAvailabilityComponent implements OnInit {
   activeTemplate$: Observable<TemplateRef<any>>;
-  error$ = this.facade.serviceStatusError$;
+  error$: Observable<string>;
 
   @ViewChild('loadingTemplate', { read: TemplateRef }) loadingTemplate;
   @ViewChild('errorTemplate', { read: TemplateRef }) errorTemplate;
@@ -32,10 +28,11 @@ export class MonitoringAvailabilityComponent implements OnInit {
   constructor(private facade: MonitoringPageFacade) {}
 
   ngOnInit() {
-    this.activeTemplate$ = this.facade.serviceStatus$
+    this.activeTemplate$ = this.facade
+      .getServiceStatus()
       .pipe(map(status => this.statusToTemplate(status)));
-
-    this.facade.getServiceStatus();
+    this.error$ = this.facade.getServiceStatusError();
+    this.facade.checkServiceStatus();
   }
 
   private statusToTemplate(status: MonitoringServiceStatus): TemplateRef<any> {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RawCheck } from '@monitoring/interfaces';
+import { RawCheck } from '@monitoring/models';
 
 @Component({
   selector: 'hs-metrics-checks',

@@ -32,6 +32,7 @@ import {
   ScatterPlotLegendComponent,
   SignaturesComponent,
   VisualizationMetricsComponent,
+  CustomMetricsComponent,
 } from '@testing/components';
 import { ProfilesComponent } from '@testing/components/mock-profiles';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
@@ -72,6 +73,7 @@ const COMPONENTS = [
   ScatterPlotLegendComponent,
   GradientLegendComponent,
   VisualizationMetricsComponent,
+  CustomMetricsComponent,
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];

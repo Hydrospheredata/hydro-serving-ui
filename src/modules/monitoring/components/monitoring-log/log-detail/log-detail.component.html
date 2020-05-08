@@ -1,4 +1,4 @@
-<div *ngIf="check" class="log-detail">
+<div class="log-detail">
   <section class="log-detail__section">
     <hs-raw-checks
       class="log-detail__section"
@@ -9,10 +9,8 @@
     >
     </hs-raw-checks>
   </section>
-  <section *ngIf="hasMetrics">
+  <section *ngIf="check.hasMetricChecks()">
     <div class="log-detail__label">metrics</div>
-    <hs-metrics-checks
-      [metrics]="check._hs_metric_checks"
-    ></hs-metrics-checks>
+    <hs-metrics-checks [metrics]="check.metricChecks"></hs-metrics-checks>
   </section>
 </div>

@@ -7,7 +7,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { ChartConfig } from '@monitoring/interfaces';
+import { ChartConfig } from '@monitoring/models';
 import { extent, mouse, scaleLinear, ScaleLinear, select } from 'd3';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, shareReplay, tap } from 'rxjs/operators';

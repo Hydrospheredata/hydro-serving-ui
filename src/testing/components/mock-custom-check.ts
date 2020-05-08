@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { CustomCheck } from '@monitoring/interfaces';
 
 @Component({
   selector: 'hs-custom-check',
@@ -7,5 +6,5 @@ import { CustomCheck } from '@monitoring/interfaces';
 })
 export class CustomCheckComponent {
   @Input()
-  check: CustomCheck;
+  check: any;
 }

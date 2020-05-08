@@ -1,18 +1,12 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  Input,
-} from '@angular/core';
-import { Check } from '@monitoring/interfaces';
-import { ModelVersion } from '@shared/_index';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'hs-raw-checks',
   template: '',
 })
 export class RawChecksComponent {
-  @Input() check: Check;
-  @Input() modelVersion: ModelVersion;
+  @Input() check: any;
+  @Input() modelVersion: any;
   @Input() inputKeys: string[] = [];
   @Input() outputKeys: string[] = [];
 }

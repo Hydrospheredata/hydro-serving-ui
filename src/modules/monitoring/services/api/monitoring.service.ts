@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
 import { environment } from '@environments/environment';
-import {
-  Check,
-  ChecksAggregationResponse,
-  GetChecksAggregationParams,
-  GetChecksParams,
-} from '@monitoring/interfaces';
+import { BareCheck, ChecksAggregationResponse } from '@monitoring/models';
 import { Observable } from 'rxjs';
+
+export interface GetChecksAggregationParams {
+  modelVersionId: number;
+  limit?: number;
+  offset?: number;
+}
+interface GetChecksParams {
+  modelVersionId: number;
+  from: string;
+  to: string;
+}
 
 @Injectable({ providedIn: 'root' })
 export class MonitoringService {
@@ -21,15 +27,15 @@ export class MonitoringService {
     return this.http.get(`${this.baseUrl}/buildinfo`);
   }
 
-  getCheck(id: string): Observable<Check> {
-    return this.http.get<Check>(`${this.baseUrl}/checks/${id}`);
+  getCheck(id: string): Observable<BareCheck> {
+    return this.http.get<BareCheck>(`${this.baseUrl}/checks/${id}`);
   }
 
   getChecks({
     modelVersionId,
     from,
     to,
-  }: GetChecksParams): Observable<Check[]> {
+  }: GetChecksParams): Observable<BareCheck[]> {
     return this.http.get(`${this.baseUrl}/checks/${modelVersionId}`, {
       params: { from, to },
     });
@@ -57,7 +63,7 @@ export class MonitoringService {
     originalModelVersion: number;
     aggregationId: String;
     comparedModelVersionId: number;
-  }): Observable<Check[]> {
+  }): Observable<BareCheck[]> {
     const {
       originalModelVersion: omv,
       aggregationId: aggId,

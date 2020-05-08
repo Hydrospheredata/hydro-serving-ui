@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Check } from '@monitoring/interfaces';
 import { ModelVersion } from '@shared/_index';
 
 @Component({
@@ -8,6 +7,6 @@ import { ModelVersion } from '@shared/_index';
 })
 export class LogComponent {
   @Input() modelVersion: ModelVersion;
-  @Input() checks: Check[] = [];
+  @Input() checks: any[] = [];
   @Input() loading: boolean;
 }

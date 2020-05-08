@@ -1,9 +1,5 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  Input,
-} from '@angular/core';
-import { Check } from '@monitoring/interfaces';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Check } from '@monitoring/models';
 import { ModelVersion } from '@shared/_index';
 
 @Component({
@@ -19,10 +15,9 @@ export class RawChecksComponent {
   @Input() outputKeys: string[] = [];
 
   isImage(inputName: string): boolean {
-    const isImage = this.modelVersion.modelContract.predict.inputs.some(
+    return this.modelVersion.modelContract.predict.inputs.some(
       p => p.name === inputName && p.profile === 'IMAGE'
     );
-    return isImage;
   }
 
   getValueAsText(data): any {
@@ -41,21 +36,16 @@ export class RawChecksComponent {
   }
 
   showAsList(name: string) {
-    if (name === 'probabilities') {
-      return true;
-    }
-    return false;
+    return name === 'probabilities';
   }
 
   get rawChecks() {
-    return this.check._hs_raw_checks;
+    return this.check.rawChecks;
   }
 
   get hasRawChecksExceptOverall(): boolean {
     return (
-      Object.keys(this.rawChecks)
-            .filter(key => key !== 'overall')
-            .length > 0
+      Object.keys(this.rawChecks).filter(key => key !== 'overall').length > 0
     );
   }
 }

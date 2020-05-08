@@ -18,18 +18,22 @@ export interface AdditionalCheckInfo {
 export interface Features {
   [featureName: string]: { checks: number; passed: number };
 }
+export interface ChecksAggregationItem {
+  features: {
+    [featureName: string]: { checked: number; passed: number };
+  };
+  metrics: {
+    [metricName: string]: { checked: number; passed: number };
+  };
+  additionalInfo: Partial<AdditionalCheckInfo>;
+  batch: {
+    [featureName: string]: {
+      [metricName: string]: { checked: number; passed: number };
+    };
+  };
+}
 
 export type CheckAggregationResponseItem = Features & AdditionalCheckInfo;
-export interface GetChecksParams {
-  modelVersionId: number;
-  from: string;
-  to: string;
-}
-export interface GetChecksAggregationParams {
-  modelVersionId: number;
-  limit?: number;
-  offset?: number;
-}
 export interface ChecksAggregationResponse {
   results: CheckAggregationResponseItem[];
   count: number;
