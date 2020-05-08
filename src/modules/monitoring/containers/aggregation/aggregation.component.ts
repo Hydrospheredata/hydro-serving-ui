@@ -24,14 +24,13 @@ export class AggregationComponent implements OnInit {
   @ViewChild('svgContainer', { read: ElementRef })
   svgContainer: ElementRef;
 
+  selectedAggregation$: Observable<Aggregation>;
   aggregations$: Observable<AggregationsList>;
   canLoadLeft$: Observable<boolean>;
   canLoadRight$: Observable<boolean>;
 
   labelsWidth: number = 100;
   canvasWidth: number = 880;
-
-  selectedAggregation: Aggregation | null;
 
   featureNames: string[] = [];
   metricNames: string[] = [];
@@ -49,11 +48,10 @@ export class AggregationComponent implements OnInit {
         this.featureNames = aggregationList.featureNames;
         this.metricNames = aggregationList.metricNames;
         this.batchNames = aggregationList.batchNames;
-
-        this.checkAndUpdateActiveColumn(aggregationList);
       })
     );
 
+    this.selectedAggregation$ = this.facade.getSelectedAggregation();
     this.canLoadLeft$ = this.facade.canLoadLeft();
     this.canLoadRight$ = this.facade.canLoadRight();
     this.facade.loadAggregations();
@@ -90,7 +88,6 @@ export class AggregationComponent implements OnInit {
   }
 
   changeActiveColumn(aggregation: Aggregation) {
-    this.selectedAggregation = aggregation;
     this.facade.selectAggregation(aggregation);
   }
 
@@ -161,29 +158,5 @@ export class AggregationComponent implements OnInit {
 
   loadNewest() {
     this.facade.loadNewest();
-  }
-
-  private checkAndUpdateActiveColumn(aggregationList: AggregationsList): void {
-    if (aggregationList.aggregations.length === 0) {
-      this.selectedAggregation = null;
-      return;
-    }
-
-    if (!this.selectedAggregation) {
-      this.changeActiveColumn(
-        aggregationList.aggregations[aggregationList.aggregations.length - 1]
-      );
-      return;
-    }
-
-    const newAggListHasCurrentColumn = aggregationList.aggregations.find(
-      agg => agg.id === this.selectedAggregation.id
-    );
-
-    if (!newAggListHasCurrentColumn) {
-      this.changeActiveColumn(
-        aggregationList.aggregations[aggregationList.aggregations.length - 1]
-      );
-    }
   }
 }

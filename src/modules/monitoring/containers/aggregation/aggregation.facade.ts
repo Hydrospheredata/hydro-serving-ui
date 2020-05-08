@@ -1,12 +1,19 @@
-import { Injectable } from '@angular/core';
-import { AggregationState } from '@monitoring/aggregation.state';
+import { Injectable, OnInit, OnDestroy } from '@angular/core';
+import { AggregationState } from '@monitoring/store/aggregation.state';
 import { ChecksAggregationResponse } from '@monitoring/models';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
 import { AggregationPaginator } from '@monitoring/services/aggregation-paginator';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { isEqual } from 'lodash';
-import { BehaviorSubject, combineLatest, Observable, of, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  of,
+  timer,
+  Subject,
+} from 'rxjs';
 import {
   catchError,
   filter,
@@ -17,18 +24,16 @@ import {
   tap,
   shareReplay,
   take,
+  takeUntil,
+  withLatestFrom,
 } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AggregationFacade {
-  groupedBy$: BehaviorSubject<number> = new BehaviorSubject(10);
-
-  canLoadRight$: Observable<boolean>;
-  canLoadLeft$: Observable<boolean>;
-
+export class AggregationFacade implements OnDestroy {
   private readonly aggregations$: Observable<AggregationsList>;
+  private destroy$: Subject<any> = new Subject<any>();
 
   constructor(
     private monitoringPageFacade: MonitoringPageFacade,
@@ -40,8 +45,38 @@ export class AggregationFacade {
       filter(val => val !== null),
       shareReplay(1)
     );
+
+    this.aggregations$
+      .pipe(
+        withLatestFrom(this.monitoringPageFacade.getAggregation()),
+        tap(([aggregations, currentSelectedAggregation]) => {
+          if (aggregations === null || aggregations.totalRequests === 0) {
+            this.selectAggregation(null);
+            return;
+          }
+          if (
+            currentSelectedAggregation === null ||
+            !aggregations.has(currentSelectedAggregation)
+          ) {
+            this.selectAggregation(aggregations.lastAggregation);
+            return;
+          }
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  getSelectedAggregation(): Observable<Aggregation> {
+    return this.monitoringPageFacade
+      .getAggregation()
+      .pipe(filter(val => val !== null));
+  }
   selectAggregation(agg: Aggregation): void {
     this.monitoringPageFacade.selectAggregation(agg);
   }
@@ -52,7 +87,6 @@ export class AggregationFacade {
       this.state.getOffset()
     )
       .pipe(
-        tap(console.log),
         switchMap(([modelVersion, offset]) => {
           return timer(0, 5000).pipe(
             switchMap(() => {
@@ -76,8 +110,7 @@ export class AggregationFacade {
               return !isEqual(prev, cur);
             }),
             map(([_, cur]) => cur),
-            map(res => {
-              const { count, results } = res;
+            map(({ count, results }) => {
               const aggregations = results
                 .map(aggregation => new Aggregation(aggregation))
                 .reverse();
@@ -86,7 +119,8 @@ export class AggregationFacade {
               );
             })
           );
-        })
+        }),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }

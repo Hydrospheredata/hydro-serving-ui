@@ -1,17 +1,15 @@
-interface Explanation {
-  celery_task_id: string;
-  completed_at: string;
-  created_at: string;
-  explained_instance: {
-    timestamp: number;
-    uid: number;
+import { ExplanationStatuses } from '@rootcause/models/explanation-status.model';
+
+export interface Explanation {
+  description: string;
+  result?: {
+    coverage: number;
+    explanation: string[];
+    precision: number;
   };
-  model: {
-    name: string;
-    version: number;
-  };
-  started_at: string;
+  state: ExplanationStatuses;
 }
+
 export interface AnchorExplanationResult {
   coverage: number;
   explanation: string[];
