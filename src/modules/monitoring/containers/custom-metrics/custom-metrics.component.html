@@ -19,16 +19,14 @@
     <div
       *ngIf="(comparableModelVersions$ | async).length"
       class="custom-metrics__header-regime-selector"
-    >
-      <!--      <hs-regime-selector-->
-      <!--        [selectedRegime]="comparisonRegime$ | async"-->
-      <!--        (changedRegime)="changeRegime($event)"-->
-      <!--      ></hs-regime-selector>-->
-    </div>
+    ></div>
   </div>
 </div>
 <div class="charts">
-  <div class="charts__item" *ngFor="let chartConfig of chartConfigs$ | async">
+  <div
+    class="charts__item"
+    *ngFor="let chartConfig of chartConfigs$ | async; trackBy: trackByFn"
+  >
     <hs-check-chart [config]="chartConfig"></hs-check-chart>
   </div>
 </div>

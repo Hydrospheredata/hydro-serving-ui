@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { ColorPaletteService } from '@core/services/color-palette.service';
-import { ModelsFacade } from '@models/store';
 import { ChartConfig, Aggregation } from '@monitoring/models';
 import { Check, CheckCollection } from '@monitoring/models';
 import { MonitoringService } from '@monitoring/services';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
+import { MetricChartsState } from '@monitoring/store/metric-charts.state';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
-import { map, switchMap, startWith } from 'rxjs/operators';
+import { neitherNullNorUndefined } from '@shared/utils';
+import { combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { map, switchMap, startWith, tap, shareReplay } from 'rxjs/operators';
 
 export type ComparisonRegime = 'split' | 'merge';
 
@@ -29,16 +30,8 @@ interface ModelVersionMetricsChecks {
 @Injectable()
 export class CustomMetricsFacade {
   customMetrics$: Observable<any>;
-  chartConfigs$: Observable<ChartConfig[]>;
-  regime$: Observable<ComparisonRegime>;
-  comparableModelVersions$: Observable<ModelVersion[]>;
 
-  private regime: BehaviorSubject<ComparisonRegime> = new BehaviorSubject(
-    'merge' as ComparisonRegime
-  );
-  private comparableModelVersions: BehaviorSubject<
-    ModelVersion[]
-  > = new BehaviorSubject([]);
+  private readonly chartConfigs$: Observable<ChartConfig[]>;
   private currentModelVersionMetricsChecks$: Observable<
     ModelVersionMetricsChecks
   >;
@@ -52,16 +45,16 @@ export class CustomMetricsFacade {
 
   constructor(
     private metricsFacade: MetricsFacade,
-    private modelsFacade: ModelsFacade,
-    private facade: MonitoringPageFacade,
-    private monitoring: MonitoringService,
-    private colorPalette: ColorPaletteService
+    private monitoringPageFacade: MonitoringPageFacade,
+    private monitoringApi: MonitoringService,
+    private colorPalette: ColorPaletteService,
+    private state: MetricChartsState
   ) {
     this.selectedMetrics$ = this.metricsFacade.selectedMetrics$;
 
     this.currentModelVersionMetricsChecks$ = combineLatest([
-      this.modelsFacade.selectedModelVersion$,
-      this.facade.getChecks(),
+      this.monitoringPageFacade.getModelVersion(),
+      this.monitoringPageFacade.getChecks().pipe(neitherNullNorUndefined),
     ]).pipe(
       map(([modelVersion, checks]) => {
         return {
@@ -70,13 +63,14 @@ export class CustomMetricsFacade {
           version: modelVersion.modelVersion,
           metricsChecks: this.fillMetricsChecksData(checks),
         };
-      })
+      }),
+      shareReplay(1)
     );
 
     this.comparableModelVersionMetricsChecks$ = combineLatest([
-      this.facade.getModelVersion(),
-      this.facade.getAggregation(),
-      this.comparableModelVersions.asObservable(),
+      this.monitoringPageFacade.getModelVersion(),
+      this.monitoringPageFacade.getAggregation().pipe(neitherNullNorUndefined),
+      this.state.getModelVersionsToCompare(),
     ]).pipe(
       switchMap(([currentModelVersion, aggregation, modelVersions]) => {
         if (modelVersions.length === 0) {
@@ -101,7 +95,8 @@ export class CustomMetricsFacade {
           })
         );
       }),
-      startWith([])
+      startWith([]),
+      shareReplay(1)
     );
 
     this.allModelVersionMetricsChecks$ = combineLatest([
@@ -109,29 +104,28 @@ export class CustomMetricsFacade {
       this.comparableModelVersionMetricsChecks$,
     ]).pipe(map(([current, comparable]) => [current, ...comparable]));
 
-    this.regime$ = this.regime.asObservable();
-
     this.chartConfigs$ = combineLatest([
       this.selectedMetrics$,
       this.allModelVersionMetricsChecks$,
     ]).pipe(
-      map(([metrics, customChecks]) => {
-        return this.mergeChecksToChartConfig(metrics, customChecks);
+      tap(_ => console.log('chartConfigs$')),
+      map(([metrics, checks]) => {
+        return this.mergeChecksToChartConfig(metrics, checks);
       }),
-      startWith([])
+      shareReplay(1)
     );
-    this.comparableModelVersions$ = this.comparableModelVersions.asObservable();
+  }
+
+  getChartConfigs(): Observable<ChartConfig[]> {
+    return this.chartConfigs$;
   }
 
   comparableModelVersionsChanged(modelVersions: ModelVersion[]): void {
-    if (modelVersions.length === 0) {
-      this.changeRegime('merge');
-    }
-    this.comparableModelVersions.next(modelVersions);
+    this.state.addModelVersionToCompare(modelVersions);
   }
 
-  changeRegime(regime: ComparisonRegime): void {
-    this.regime.next(regime);
+  getModelVersionsToCompare(): Observable<ModelVersion[]> {
+    return this.state.getModelVersionsToCompare();
   }
 
   private mergeChecksToChartConfig(
@@ -194,7 +188,7 @@ export class CustomMetricsFacade {
     const request: {
       [modelVersionId: number]: Observable<CheckCollection>;
     } = comparedModelVersions.reduce((req, { id }) => {
-      req[id] = this.monitoring
+      req[id] = this.monitoringApi
         .getChecksForComparision({
           originalModelVersion: originalModelVersion.id,
           aggregationId: aggregation.id,
@@ -249,9 +243,9 @@ export class CustomMetricsFacade {
       size: {
         margins: {
           left: 40,
-          right: 20,
-          top: 10,
-          bottom: 24,
+          right: 12,
+          top: 2,
+          bottom: 16,
         },
       },
       series: [],

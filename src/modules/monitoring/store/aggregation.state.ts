@@ -23,9 +23,7 @@ const initialState: State = {
   offset: 0,
 };
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class AggregationState {
   private readonly state$: Observable<State>;
   private state: BehaviorSubject<State> = new BehaviorSubject<State>(

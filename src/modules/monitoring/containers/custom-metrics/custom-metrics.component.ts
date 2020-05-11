@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
+import { MetricChartsState } from '@monitoring/store/metric-charts.state';
 import { ModelVersion } from '@shared/models';
 import { Observable } from 'rxjs';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
@@ -11,31 +12,28 @@ import { ChartConfig } from '@monitoring/models';
   selector: 'hs-custom-metrics',
   templateUrl: './custom-metrics.component.html',
   styleUrls: ['./custom-metrics.component.scss'],
-  providers: [CustomMetricsFacade],
+  providers: [MetricChartsState, CustomMetricsFacade],
 })
-export class CustomMetricsComponent {
+export class CustomMetricsComponent implements OnInit {
   customMetricsChecks$: Observable<any>;
   comparisonRegime$: Observable<ComparisonRegime>;
   comparableModelVersions$: Observable<ModelVersion[]>;
   chartConfigs$: Observable<ChartConfig[]>;
+
   constructor(
     private monitoringPageFacade: MonitoringPageFacade,
     private facade: CustomMetricsFacade,
     private dialog: DialogService
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.customMetricsChecks$ = this.facade.customMetrics$;
-    this.comparisonRegime$ = this.facade.regime$;
-    this.comparableModelVersions$ = this.facade.comparableModelVersions$;
-    this.chartConfigs$ = this.facade.chartConfigs$;
+    this.comparableModelVersions$ = this.facade.getModelVersionsToCompare();
+    this.chartConfigs$ = this.facade.getChartConfigs();
   }
 
   comparableModelVersionsChanged(modelVersions: ModelVersion[]): void {
     this.facade.comparableModelVersionsChanged(modelVersions);
-  }
-
-  changeRegime(regime: ComparisonRegime): void {
-    // TODO: check performance
-    // this.facade.changeRegime(regime);
   }
 
   openSettings() {

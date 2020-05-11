@@ -6,8 +6,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
-import { ChecksAggregationItem } from '@monitoring/models';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
+import { AggregationState } from '@monitoring/store/aggregation.state';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
@@ -18,7 +18,7 @@ import { interpolateRdYlGn } from 'd3';
   templateUrl: './aggregation.component.html',
   styleUrls: ['./aggregation.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AggregationFacade],
+  providers: [AggregationState, AggregationFacade],
 })
 export class AggregationComponent implements OnInit {
   @ViewChild('svgContainer', { read: ElementRef })

@@ -1,13 +1,21 @@
 <div class="build-info">
   <div class="build-info__title">Build information</div>
-  <div class="build-info__service service" *ngFor="let serviceInfo of buildInfo$ | async | keyvalue">
+  <div
+    class="build-info__service service"
+    *ngFor="let serviceInfo of buildInfo$ | async | keyvalue"
+  >
     <div class="service__title">
-      {{ serviceInfo.value.name }}
+      {{ serviceInfo.value.name || serviceInfo.key }}
     </div>
     <table class="service__table">
-      <tr class="serice__table-row" *ngFor="let item of serviceInfo.value | keyvalue">
+      <tr
+        class="serice__table-row"
+        *ngFor="let item of serviceInfo.value | keyvalue"
+      >
         <td class="service__table-cell service__table-key">{{ item.key }}</td>
-        <td class="service__table-cell service__table-value">{{ item.value }}</td>
+        <td class="service__table-cell service__table-value">
+          {{ item.value }}
+        </td>
       </tr>
     </table>
   </div>

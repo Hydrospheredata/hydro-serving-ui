@@ -9,7 +9,9 @@ export class BuildInformationService {
   private buildInfoApi = '/api/buildinfo';
   private gatewayInfoApi = '/gateway/buildinfo';
   private sonarApi = '/monitoring/buildinfo';
-  private rootcauseApi = '/rootcause/buildInfo';
+  private rootcauseApi = '/rootcause/buildinfo';
+  private statApi = '/stat/buildinfo';
+  private visualizationApi = '/visualization/buildinfo';
 
   constructor(private http: HttpService) {}
 
@@ -21,7 +23,9 @@ export class BuildInformationService {
       build: toRequest(this.buildInfoApi),
       gateway: toRequest(this.gatewayInfoApi),
       sonar: toRequest(this.sonarApi),
-      // rootcause: toRequest(this.rootcauseApi),
+      rootcause: toRequest(this.rootcauseApi),
+      stat: toRequest(this.statApi),
+      visualization: toRequest(this.visualizationApi),
     });
   }
 }

@@ -6,6 +6,8 @@ import {
   OnInit,
   ViewChild,
   ViewEncapsulation,
+  ChangeDetectionStrategy,
+  OnDestroy,
 } from '@angular/core';
 import { ChartConfig } from '@monitoring/models';
 import { extent, mouse, scaleLinear, ScaleLinear, select } from 'd3';
@@ -27,8 +29,9 @@ interface Tooltip {
   templateUrl: './check-chart.component.html',
   styleUrls: ['./check-chart.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CheckChartComponent implements OnInit {
+export class CheckChartComponent implements OnInit, OnDestroy {
   @ViewChild('trackableRect', { read: ElementRef }) rectRef: ElementRef;
   @ViewChild('containerEl', { read: ElementRef }) containerEl: ElementRef;
 
@@ -41,7 +44,7 @@ export class CheckChartComponent implements OnInit {
   // chart vars
   chartWidth: number;
   chartHeight: number;
-  viewHeight: number = 0;
+  viewHeight: number;
   viewWidth: number;
   scaleX: ScaleLinear<any, any>;
   scaleY: ScaleLinear<any, any>;
@@ -53,7 +56,6 @@ export class CheckChartComponent implements OnInit {
   tooltip: Tooltip | null;
   // translates
   dataTranslate: string;
-  yAxisTranslate: string;
   xAxisTranslate: string;
   thresholdTranslate: string;
 
@@ -65,12 +67,34 @@ export class CheckChartComponent implements OnInit {
   private mouseIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private excludedSeries: string[] = [];
 
-  constructor(private cdr: ChangeDetectorRef) {
-    setInterval(() => {}, 1000);
-  }
+  constructor(private cdr: ChangeDetectorRef) {}
 
   @Input() set config(cfg: ChartConfig) {
-    this._config.next(cfg);
+    console.log('input');
+    console.log(cfg);
+    this.cfg = cfg;
+
+    this.name = cfg.name;
+    this.clipUrl = `url(#${this.name}-clip-url)`;
+    this.threshold = cfg.threshold;
+    this.chartWidth = this.containerEl.nativeElement.offsetWidth;
+
+    this.chartHeight = cfg.size.height || 180;
+    this.margins = cfg.size.margins;
+    // calculate some properties
+    const { top, bottom, left, right } = cfg.size.margins;
+
+    const viewWidth = this.chartWidth - left - right;
+    this.viewWidth = viewWidth > 0 ? viewWidth : 0;
+
+    this.viewHeight = this.chartHeight - top - bottom;
+
+    this.dataTranslate = `translate(${left}, ${top})`;
+    this.xAxisTranslate = `translate(${left}, ${top + this.viewHeight})`;
+    this.thresholdTranslate = `translate(0, ${top})`;
+    this.plotBands = cfg.plotBands;
+    // scales
+    this.render();
   }
 
   ngOnInit() {
@@ -78,34 +102,6 @@ export class CheckChartComponent implements OnInit {
     select(this.rectRef.nativeElement).on('mousemove', () =>
       this.onMouseMove()
     );
-    this.config$ = this._config.asObservable().pipe(
-      filter(val => !!val),
-      tap(cfg => {
-        this.cfg = cfg;
-
-        this.name = cfg.name;
-        this.clipUrl = `url(#${this.name}-clip-url)`;
-        this.threshold = cfg.threshold;
-        this.chartWidth = this.containerEl.nativeElement.offsetWidth;
-        this.chartHeight =
-          cfg.size.height || this.containerEl.nativeElement.offsetHeight;
-        this.margins = cfg.size.margins;
-        // calculate some properties
-        const { top, bottom, left, right } = cfg.size.margins;
-        const viewWidth = this.chartWidth - left - right;
-        this.viewWidth = viewWidth > 0 ? viewWidth : 0;
-        this.viewHeight = this.chartHeight - top - bottom;
-
-        this.dataTranslate = `translate(${left}, ${top})`;
-        this.xAxisTranslate = `translate(${left}, ${top + this.viewHeight})`;
-        this.thresholdTranslate = `translate(0, ${top})`;
-        this.plotBands = cfg.plotBands;
-        // scales
-        this.render();
-      }),
-      shareReplay(1)
-    );
-    this.config$.subscribe();
   }
 
   toggleExclude(seriesName: string): void {
@@ -119,10 +115,13 @@ export class CheckChartComponent implements OnInit {
 
   private render() {
     const cfg = this.cfg;
+
     this.series = cfg.series;
+
     this.visibleSeries = cfg.series.filter(
       series => !this.excludedSeries.includes(series.name)
     );
+
     this.noData = this.visibleSeries.length === 0;
 
     if (!this.noData) {
@@ -132,6 +131,7 @@ export class CheckChartComponent implements OnInit {
       );
       const countPoints = cfg.series[0].data.length;
       const [min, max] = extent(allValues);
+
       this.scaleY = scaleLinear()
         .domain([max, min])
         .range([0, this.viewHeight]);
@@ -206,6 +206,8 @@ export class CheckChartComponent implements OnInit {
       }
     }
   }
+
+  ngOnDestroy() {}
 
   private onMouseOut(): void {
     if (!this.noData) {
