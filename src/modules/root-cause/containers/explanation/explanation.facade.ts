@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { log } from '@shared/utils/operators/log';
+import { SnackbarService } from '@core/services';
 import { Observable, Subject, timer, of, merge } from 'rxjs';
 import {
   exhaustMap,
@@ -21,7 +21,8 @@ export class ExplanationFacade implements OnDestroy {
 
   constructor(
     private readonly state: RootCauseState,
-    private readonly api: RootCauseApiService
+    private readonly api: RootCauseApiService,
+    private readonly snackbar: SnackbarService
   ) {}
 
   ngOnDestroy() {
@@ -44,7 +45,13 @@ export class ExplanationFacade implements OnDestroy {
         switchMap(() => this.poll(model_version_id, explained_request_id)),
         takeUntil(this.destroy$)
       )
-      .subscribe(explanation => this.state.setExplanation(explanation));
+      .subscribe(
+        explanation => this.state.setExplanation(explanation),
+        error => {
+          console.error(error);
+          this.snackbar.show({ message: `Couldn't get explanation` });
+        }
+      );
   }
 
   getExplanation(): Observable<Explanation | null> {
@@ -72,7 +79,13 @@ export class ExplanationFacade implements OnDestroy {
           }
         })
       )
-      .subscribe(explanation => this.state.setExplanation(explanation));
+      .subscribe(
+        explanation => this.state.setExplanation(explanation),
+        error => {
+          console.error(error);
+          this.snackbar.show({ message: `Couldn't get explanation` });
+        }
+      );
   }
 
   private poll(model_version_id, explained_request_id) {
