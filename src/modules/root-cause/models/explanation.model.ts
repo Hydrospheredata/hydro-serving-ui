@@ -1,4 +1,9 @@
-import { ExplanationStatuses } from '@rootcause/models/explanation-status.model';
+export const enum ExplanationStatus {
+  success = 'SUCCESS',
+  failed = 'FAILED',
+  notSupported = 'NOT_SUPPORTED',
+  notCalled = 'NOT_CALLED',
+}
 
 export interface Explanation {
   description: string;
@@ -7,7 +12,7 @@ export interface Explanation {
     explanation: string[];
     precision: number;
   };
-  state: ExplanationStatuses;
+  state: ExplanationStatus;
 }
 
 export interface AnchorExplanationResult {
@@ -26,10 +31,3 @@ export type AnchorExplanation = Explanation & {
   result: AnchorExplanationResult;
 };
 export type RiseExplanation = Explanation & { result: RiseExplanationResult };
-
-export class ExplanationTask {
-  method: string;
-  status: any;
-  explanation: any;
-  error: string;
-}
