@@ -40,7 +40,7 @@
             "
             [attr.transform]="columnTranslate(columnIndex)"
             [ngClass]="{
-              'column--active': column.id === (selectedAggregation$ | async).id
+              'column--active': column.id === (selectedAggregation$ | async)?.id
             }"
             class="column"
           >
@@ -73,7 +73,7 @@
               [attr.transform]="columnTranslate(columnIndex)"
               [ngClass]="{
                 'column--active':
-                  column.id === (selectedAggregation$ | async).id
+                  column.id === (selectedAggregation$ | async)?.id
               }"
               class="column"
             >

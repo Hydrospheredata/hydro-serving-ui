@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ColorPaletteService } from '@core/services/color-palette.service';
-import { ModelsFacade } from '@models/store';
 import { ChartConfig, Aggregation } from '@monitoring/models';
 import { Check, CheckCollection } from '@monitoring/models';
 import { MonitoringService } from '@monitoring/services';
@@ -9,15 +8,9 @@ import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { MetricChartsState } from '@monitoring/store/metric-charts.state';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
+import { neitherNullNorUndefined } from '@shared/utils';
 import { combineLatest, forkJoin, Observable, of } from 'rxjs';
-import {
-  map,
-  switchMap,
-  startWith,
-  tap,
-  shareReplay,
-  filter,
-} from 'rxjs/operators';
+import { map, switchMap, startWith, tap, shareReplay } from 'rxjs/operators';
 
 export type ComparisonRegime = 'split' | 'merge';
 
@@ -52,24 +45,16 @@ export class CustomMetricsFacade {
 
   constructor(
     private metricsFacade: MetricsFacade,
-    private modelsFacade: ModelsFacade,
     private monitoringPageFacade: MonitoringPageFacade,
-    private monitoring: MonitoringService,
+    private monitoringApi: MonitoringService,
     private colorPalette: ColorPaletteService,
     private state: MetricChartsState
   ) {
-    this.selectedMetrics$ = this.metricsFacade.selectedMetrics$.pipe(
-      tap(_ => {
-        console.log('change selected metrics');
-        console.log(_);
-      })
-    );
+    this.selectedMetrics$ = this.metricsFacade.selectedMetrics$;
 
     this.currentModelVersionMetricsChecks$ = combineLatest([
-      this.modelsFacade.selectedModelVersion$,
-      this.monitoringPageFacade
-        .getChecks()
-        .pipe(filter(checks => checks !== null)),
+      this.monitoringPageFacade.getModelVersion(),
+      this.monitoringPageFacade.getChecks().pipe(neitherNullNorUndefined),
     ]).pipe(
       map(([modelVersion, checks]) => {
         return {
@@ -84,9 +69,7 @@ export class CustomMetricsFacade {
 
     this.comparableModelVersionMetricsChecks$ = combineLatest([
       this.monitoringPageFacade.getModelVersion(),
-      this.monitoringPageFacade
-        .getAggregation()
-        .pipe(filter(val => val !== null)),
+      this.monitoringPageFacade.getAggregation().pipe(neitherNullNorUndefined),
       this.state.getModelVersionsToCompare(),
     ]).pipe(
       switchMap(([currentModelVersion, aggregation, modelVersions]) => {
@@ -205,7 +188,7 @@ export class CustomMetricsFacade {
     const request: {
       [modelVersionId: number]: Observable<CheckCollection>;
     } = comparedModelVersions.reduce((req, { id }) => {
-      req[id] = this.monitoring
+      req[id] = this.monitoringApi
         .getChecksForComparision({
           originalModelVersion: originalModelVersion.id,
           aggregationId: aggregation.id,

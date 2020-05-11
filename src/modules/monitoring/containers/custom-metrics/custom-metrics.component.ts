@@ -30,8 +30,6 @@ export class CustomMetricsComponent implements OnInit {
     this.customMetricsChecks$ = this.facade.customMetrics$;
     this.comparableModelVersions$ = this.facade.getModelVersionsToCompare();
     this.chartConfigs$ = this.facade.getChartConfigs();
-
-    this.chartConfigs$.subscribe(_ => console.log(_));
   }
 
   comparableModelVersionsChanged(modelVersions: ModelVersion[]): void {

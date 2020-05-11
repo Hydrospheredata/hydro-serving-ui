@@ -94,8 +94,8 @@ export class AggregationsList {
     }
   }
 
-  has(aggregation: Aggregation): boolean {
-    if (this.aggregations.length) {
+  has(aggregation: Aggregation | null): boolean {
+    if (this.aggregations.length && aggregation !== null) {
       return this.aggregations.some(({ id }) => id === aggregation.id);
     } else {
       return false;

@@ -23,15 +23,9 @@ import {
 import { select, Store } from '@ngrx/store';
 import { ModelVersion } from '@shared/models';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
+import { neitherNullNorUndefined } from '@shared/utils';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import {
-  catchError,
-  exhaustMap,
-  filter,
-  map,
-  tap,
-  takeUntil,
-} from 'rxjs/operators';
+import { catchError, exhaustMap, map, tap, takeUntil } from 'rxjs/operators';
 
 @Injectable()
 export class MonitoringPageFacade implements OnDestroy {
@@ -49,7 +43,7 @@ export class MonitoringPageFacade implements OnDestroy {
   loadChecks(): void {
     this.getAggregation()
       .pipe(
-        filter(val => val !== null),
+        neitherNullNorUndefined,
         exhaustMap(aggregation => {
           this.monitoringPageState.setChecksLoading(true);
 
@@ -90,7 +84,7 @@ export class MonitoringPageFacade implements OnDestroy {
   getSelectedMetrics(): Observable<MetricSpecification[]> {
     return this.store.pipe(
       select(selectSelectedMetrics),
-      filter(val => val !== undefined)
+      neitherNullNorUndefined
     );
   }
 
