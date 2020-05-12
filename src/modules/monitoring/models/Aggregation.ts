@@ -2,8 +2,8 @@ import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { union } from 'lodash';
 import { compose } from 'lodash/fp';
 
-interface Check {
-  checks: number;
+export interface AggregationCheck {
+  checked: number;
   passed: number;
 }
 
@@ -117,13 +117,14 @@ export class Aggregation {
   id: string;
   hs_requests: number;
   modelVersionId: number;
-  metricsChecks: { [metricName: string]: { checked: number; passed: number } };
+  metricsChecks: { [metricName: string]: AggregationCheck };
   batchesChecks: {
     [featureName: string]: {
-      [metricName: string]: { checked: number; passed: number };
+      [metricName: string]: AggregationCheck;
     };
   };
-  featuresChecks: { [featureName: string]: Check };
+  featuresChecks: { [featureName: string]: AggregationCheck };
+
   constructor(params: any) {
     this.id = params._id;
     this.hs_requests = params._hs_requests || {};
@@ -137,13 +138,18 @@ export class Aggregation {
 
   private static extractFeatureChecks(
     params: any
-  ): { [featureName: string]: Check } {
+  ): { [featureName: string]: AggregationCheck } {
     const featuresChecks = Object.create(null);
 
     for (const featureNameKey in params) {
       if (params.hasOwnProperty(featureNameKey)) {
         if (!featureNameKey.startsWith('_')) {
-          featuresChecks[featureNameKey] = params[featureNameKey];
+          const check: { checks: number; passed: number } =
+            params[featureNameKey];
+          featuresChecks[featureNameKey] = {
+            checked: check.checks,
+            passed: check.passed,
+          };
         }
       }
     }

@@ -6,11 +6,14 @@ import {
   OnInit,
 } from '@angular/core';
 import { AggregationFacade } from '@monitoring/containers/aggregation/aggregation.facade';
-import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
+import {
+  Aggregation,
+  AggregationsList,
+  AggregationCheck,
+} from '@monitoring/models/Aggregation';
 import { AggregationState } from '@monitoring/store/aggregation.state';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { interpolateRdYlGn } from 'd3';
 
 @Component({
@@ -91,28 +94,58 @@ export class AggregationComponent implements OnInit {
     this.facade.selectAggregation(aggregation);
   }
 
-  cellColor(agg: Aggregation, featureName: string) {
-    const featureCheck = agg.featuresChecks[featureName];
-
-    if (featureCheck === undefined) {
-      return 'lightgrey';
-    }
-    const { passed, checks } = featureCheck;
-
-    const ratio = checks / passed;
-    if (ratio) {
-      return interpolateRdYlGn(1 / ratio);
-    } else {
-      return 'lightgrey';
-    }
+  cellColor(aggregation: Aggregation, featureName: string) {
+    const featureCheck = aggregation.featuresChecks[featureName];
+    return this.getColor(featureCheck);
   }
 
   metricCellColor(aggregation: Aggregation, metricName: string) {
-    if (aggregation.metricsChecks[metricName] === undefined) {
+    const metricCheck = aggregation.metricsChecks[metricName];
+    return this.getColor(metricCheck);
+  }
+
+  // batchMetricCellColor(aggregation: Aggregation, batchName: string) {
+  //   const batchChecks = aggregation.batchesChecks;
+  //   if (isEmptyObj(batchChecks)) {
+  //     return 'lightgrey';
+  //   }
+  //
+  //   let checked = 0;
+  //   let passed = 0;
+  //
+  //   for (const featureName in batchChecks) {
+  //     if (batchChecks.hasOwnProperty(featureName)) {
+  //       const element = batchChecks[featureName];
+  //
+  //       if (element[batchName]) {
+  //         checked = checked + element[batchName].checked;
+  //         passed = passed + element[batchName].passed;
+  //       } else {
+  //         return 'lightgrey';
+  //       }
+  //     }
+  //   }
+  //
+  //   if (checked === 0) {
+  //     return 'lightgrey';
+  //   } else {
+  //     return checked === passed ? 'fill: rgb(0, 104, 55)' : 'rgb(165, 0, 38)';
+  //   }
+  // }
+
+  loadOlder() {
+    this.facade.loadOlder();
+  }
+
+  loadNewest() {
+    this.facade.loadNewest();
+  }
+
+  private getColor(check: AggregationCheck): string {
+    if (check === undefined) {
       return 'lightgrey';
     }
-
-    const { passed, checked } = aggregation.metricsChecks[metricName];
+    const { passed, checked } = check;
 
     const ratio = checked / passed;
 
@@ -121,42 +154,5 @@ export class AggregationComponent implements OnInit {
     } else {
       return 'lightgrey';
     }
-  }
-
-  batchMetricCellColor(aggregation: Aggregation, batchName: string) {
-    const batchChecks = aggregation.batchesChecks;
-    if (isEmptyObj(batchChecks)) {
-      return 'lightgrey';
-    }
-
-    let checked = 0;
-    let passed = 0;
-
-    for (const featureName in batchChecks) {
-      if (batchChecks.hasOwnProperty(featureName)) {
-        const element = batchChecks[featureName];
-
-        if (element[batchName]) {
-          checked = checked + element[batchName].checked;
-          passed = passed + element[batchName].passed;
-        } else {
-          return 'lightgrey';
-        }
-      }
-    }
-
-    if (checked === 0) {
-      return 'lightgrey';
-    } else {
-      return checked === passed ? 'fill: rgb(0, 104, 55)' : 'rgb(165, 0, 38)';
-    }
-  }
-
-  loadOlder() {
-    this.facade.loadOlder();
-  }
-
-  loadNewest() {
-    this.facade.loadNewest();
   }
 }
