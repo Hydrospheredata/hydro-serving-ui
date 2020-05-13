@@ -16,6 +16,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'hs-explanation',
   templateUrl: './explanation.component.html',
+  styleUrls: ['./explanation.component.scss'],
   viewProviders: [RootCauseState, ExplanationFacade],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
