@@ -2,6 +2,9 @@
   <hs-services-header
     [modelVersion]="modelVersion$ | async"
   ></hs-services-header>
+  <div class="stat__loader" *ngIf="isLoading$ | async">
+    <hs-loader class="stat__loader-icon"></hs-loader>
+  </div>
   <hs-error-message *ngIf="error$ | async as error">{{
     error
   }}</hs-error-message>

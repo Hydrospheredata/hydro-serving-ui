@@ -1,5 +1,12 @@
-@import "variables";
-
+@import 'variables';
+.stat__loader {
+  display: flex;
+  justify-content: center;
+  &-icon {
+    width: 40px;
+    height: 40px;
+  }
+}
 .report {
   margin-bottom: 24px;
 
@@ -28,7 +35,7 @@
         font-family: $font-family-regular;
         font-size: 12px;
         padding: 0px 8px;
-        color: $neutral-color-700
+        color: $neutral-color-700;
       }
 
       &-icon {
@@ -58,7 +65,6 @@
   }
 
   &__warnings {
-
   }
 
   &__warning {
