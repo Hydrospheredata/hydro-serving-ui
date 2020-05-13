@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ColorPaletteService } from '@core/services/color-palette.service';
-import { ChartConfig, Aggregation } from '@monitoring/models';
+import { MetricsChecksComponent } from '@monitoring/components';
+import { ChartConfig, Aggregation, MetricCheck } from '@monitoring/models';
 import { Check, CheckCollection } from '@monitoring/models';
 import { MonitoringService } from '@monitoring/services';
 import { MonitoringPageFacade } from '@monitoring/store/facades';
@@ -10,9 +11,38 @@ import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
 import { neitherNullNorUndefined } from '@shared/utils';
 import { combineLatest, forkJoin, Observable, of } from 'rxjs';
-import { map, switchMap, startWith, tap, shareReplay } from 'rxjs/operators';
+import {
+  map,
+  switchMap,
+  startWith,
+  shareReplay,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 export type ComparisonRegime = 'split' | 'merge';
+
+enum ChartExistence {
+  IN_AGG,
+  IN_MONITORING,
+  BOTH,
+}
+
+interface ChartInfo {
+  count: number;
+  avg: number;
+  threshold?: number;
+  operator?: string;
+}
+
+interface MCC {
+  metricName: string;
+  data: number[];
+  threshold: number;
+  health: boolean[];
+  modelVersionId: number;
+  modelName: string;
+  modelVersion: number;
+}
 
 interface ModelVersionMetricsChecks {
   id: number;
@@ -32,6 +62,7 @@ export class CustomMetricsFacade {
   customMetrics$: Observable<any>;
 
   private readonly chartConfigs$: Observable<ChartConfig[]>;
+
   private currentModelVersionMetricsChecks$: Observable<
     ModelVersionMetricsChecks
   >;
@@ -52,52 +83,41 @@ export class CustomMetricsFacade {
   ) {
     this.selectedMetrics$ = this.metricsFacade.selectedMetrics$;
 
-    this.currentModelVersionMetricsChecks$ = combineLatest([
-      this.monitoringPageFacade.getModelVersion(),
-      this.monitoringPageFacade.getChecks().pipe(neitherNullNorUndefined),
-    ]).pipe(
-      map(([modelVersion, checks]) => {
-        return {
-          id: modelVersion.id,
-          name: modelVersion.model.name,
-          version: modelVersion.modelVersion,
-          metricsChecks: this.fillMetricsChecksData(checks),
-        };
-      }),
-      shareReplay(1)
-    );
+    this.currentModelVersionMetricsChecks$ = this.monitoringPageFacade
+      .getChecks()
+      .pipe(neitherNullNorUndefined)
+      .pipe(
+        map(checks => prepareCheckCollection(checks)),
+        shareReplay(1)
+      );
 
-    this.comparableModelVersionMetricsChecks$ = combineLatest([
-      this.monitoringPageFacade.getModelVersion(),
-      this.monitoringPageFacade.getAggregation().pipe(neitherNullNorUndefined),
-      this.state.getModelVersionsToCompare(),
-    ]).pipe(
-      switchMap(([currentModelVersion, aggregation, modelVersions]) => {
-        if (modelVersions.length === 0) {
-          return of([]);
-        }
-        return this.loadComparableChecks(
-          currentModelVersion,
-          aggregation,
-          modelVersions
-        ).pipe(
-          map(response => {
-            return modelVersions.map(
-              ({ id, model: { name }, modelVersion }) => {
-                return {
-                  id,
-                  name,
-                  version: modelVersion,
-                  metricsChecks: this.fillMetricsChecksData(response[id]),
-                };
-              }
-            );
-          })
-        );
-      }),
-      startWith([]),
-      shareReplay(1)
-    );
+    this.comparableModelVersionMetricsChecks$ = this.state
+      .getModelVersionsToCompare()
+      .pipe(
+        withLatestFrom(
+          this.monitoringPageFacade.getModelVersion(),
+          this.monitoringPageFacade.getAggregation()
+        ),
+        switchMap(([modelVersions, currentModelVersion, aggregation]) => {
+          if (modelVersions.length === 0) {
+            return of([]);
+          }
+
+          return this.loadComparableChecks(
+            currentModelVersion,
+            aggregation,
+            modelVersions
+          ).pipe(
+            map(response => {
+              return modelVersions.map(({ id }) =>
+                prepareCheckCollection(response[id])
+              );
+            })
+          );
+        }),
+        startWith([]),
+        shareReplay(1)
+      );
 
     this.allModelVersionMetricsChecks$ = combineLatest([
       this.currentModelVersionMetricsChecks$,
@@ -108,9 +128,8 @@ export class CustomMetricsFacade {
       this.selectedMetrics$,
       this.allModelVersionMetricsChecks$,
     ]).pipe(
-      tap(_ => console.log('chartConfigs$')),
       map(([metrics, checks]) => {
-        return this.mergeChecksToChartConfig(metrics, checks);
+        return generateConfigs(metrics, checks, this.colorPalette);
       }),
       shareReplay(1)
     );
@@ -128,56 +147,6 @@ export class CustomMetricsFacade {
     return this.state.getModelVersionsToCompare();
   }
 
-  private mergeChecksToChartConfig(
-    metrics,
-    modelVersionsMetricsChecks: ModelVersionMetricsChecks[]
-  ): ChartConfig[] {
-    return this.generateConfigs(metrics, modelVersionsMetricsChecks);
-  }
-
-  private fillMetricsChecksData(
-    checks: CheckCollection
-  ): {
-    [metricName: string]: {
-      data: number[];
-      threshold: number;
-      health: boolean[];
-    };
-  } {
-    const res: {
-      [metricName: string]: {
-        data: number[];
-        threshold: number;
-        health: boolean[];
-      };
-    } = {};
-
-    if (checks === null) {
-      return {};
-    }
-
-    checks.getChecks().forEach(check => {
-      const metricChecks = check.metricChecks;
-      for (const metricName in metricChecks) {
-        if (metricChecks.hasOwnProperty(metricName)) {
-          const metricCheck = check.metricChecks[metricName];
-          if (res[metricName] === undefined) {
-            res[metricName] = {
-              data: [metricCheck.value],
-              threshold: metricCheck.threshold,
-              health: [metricCheck.check],
-            };
-          } else {
-            res[metricName].data.push(metricCheck.value);
-            res[metricName].threshold = metricCheck.threshold;
-            res[metricName].health.push(metricCheck.check);
-          }
-        }
-      }
-    });
-    return res;
-  }
-
   private loadComparableChecks(
     originalModelVersion: ModelVersion,
     aggregation: Aggregation,
@@ -187,8 +156,8 @@ export class CustomMetricsFacade {
   }> {
     const request: {
       [modelVersionId: number]: Observable<CheckCollection>;
-    } = comparedModelVersions.reduce((req, { id }) => {
-      req[id] = this.monitoringApi
+    } = comparedModelVersions.reduce((request, { id }) => {
+      request[id] = this.monitoringApi
         .getChecksForComparision({
           originalModelVersion: originalModelVersion.id,
           aggregationId: aggregation.id,
@@ -200,89 +169,154 @@ export class CustomMetricsFacade {
             return new CheckCollection(checks);
           })
         );
-      return req;
+      return request;
     }, {});
     return forkJoin(request);
   }
+}
 
-  private buildPlotBands(
-    health: boolean[]
-  ): Array<{ from: number; to: number }> {
-    let currentBand: { from: number; to: number };
-    const res = [];
-    health.forEach((check, idx) => {
-      if (!check) {
-        if (currentBand) {
-          currentBand.to = idx + 1;
+function prepareCheckCollection(
+  checksCollection: CheckCollection
+): ModelVersionMetricsChecks | null {
+  if (checksCollection.isEmpty()) {
+    return null;
+  }
+
+  const {
+    modelName: name,
+    modelVersion: version,
+    modelVersionId: id,
+  }: Check = checksCollection.getFirstElement();
+
+  return {
+    metricsChecks: mapChecksToChartMappedCheck(checksCollection.getChecks()),
+    name,
+    version,
+    id,
+  };
+}
+
+interface MappedCheck {
+  data: number[];
+  threshold: number;
+  health: boolean[];
+}
+
+function mapChecksToChartMappedCheck(
+  checks: Check[]
+): {
+  [metricName: string]: MappedCheck;
+} {
+  if (checks === null) {
+    return {};
+  }
+
+  function createMappedCheck(metricCheck: MetricCheck) {
+    return {
+      data: [metricCheck.value],
+      threshold: metricCheck.threshold,
+      health: [metricCheck.check],
+    };
+  }
+
+  return checks.reduce((acc, check) => {
+    const metricChecks = check.metricChecks;
+
+    for (const metricName in metricChecks) {
+      if (metricChecks.hasOwnProperty(metricName)) {
+        const metricCheck = check.metricChecks[metricName];
+
+        if (acc[metricName] === undefined) {
+          acc[metricName] = createMappedCheck(metricCheck);
         } else {
-          currentBand = { from: idx + 1, to: idx + 1 };
-        }
-      } else {
-        if (currentBand) {
-          res.push({ ...currentBand });
-          currentBand = undefined;
+          acc[metricName].data.push(metricCheck.value);
+          acc[metricName].threshold = metricCheck.threshold;
+          acc[metricName].health.push(metricCheck.check);
         }
       }
-    });
-
-    if (currentBand) {
-      res.push({ ...currentBand });
     }
 
-    return res;
+    return acc;
+  }, {});
+}
+
+function buildPlotBands(
+  health: boolean[]
+): Array<{ from: number; to: number }> {
+  let currentBand: { from: number; to: number };
+  const res = [];
+  health.forEach((check, idx) => {
+    if (!check) {
+      if (currentBand) {
+        currentBand.to = idx + 1;
+      } else {
+        currentBand = { from: idx + 1, to: idx + 1 };
+      }
+    } else {
+      if (currentBand) {
+        res.push({ ...currentBand });
+        currentBand = undefined;
+      }
+    }
+  });
+
+  if (currentBand) {
+    res.push({ ...currentBand });
   }
 
-  private generateConfigs(
-    metrics: MetricSpecification[],
-    checksByModelVer: ModelVersionMetricsChecks[]
-  ): ChartConfig[] {
-    const palette = this.colorPalette.getPalette();
-    const createConfig = (name, threshold?) => ({
-      name,
-      threshold,
-      size: {
-        margins: {
-          left: 40,
-          right: 12,
-          top: 2,
-          bottom: 16,
-        },
+  return res;
+}
+
+function generateConfigs(
+  metrics: MetricSpecification[],
+  checksByModelVer: ModelVersionMetricsChecks[],
+  palette: ColorPaletteService
+): ChartConfig[] {
+  const createConfig = (name, threshold?) => ({
+    name,
+    threshold,
+    size: {
+      margins: {
+        left: 40,
+        right: 12,
+        top: 2,
+        bottom: 16,
       },
-      series: [],
-    });
+    },
+    series: [],
+  });
 
-    const configs: ChartConfig[] = metrics.map(metric => {
-      return createConfig(metric.name, metric.config.threshold);
-    });
+  const configs: ChartConfig[] = metrics.map(metric => {
+    return createConfig(metric.name, metric.config.threshold);
+  });
 
-    checksByModelVer.forEach(({ name, metricsChecks, version }) => {
-      const seriesName = `${name}_v:${version}`;
-      Object.entries(metricsChecks).forEach(([metricName, metricCheck]) => {
-        const existingConfig = configs.find(cfg => cfg.name === metricName);
-        let config: ChartConfig = existingConfig;
-        if (!existingConfig) {
-          config = createConfig(metricName);
-          configs.push(config);
-        }
-        config.series.push({
-          name: seriesName,
-          data: metricCheck.data,
-          color: palette[config.series.length],
-        });
-
-        if (config.threshold === undefined && config.series.length === 1) {
-          config.threshold = metricCheck.threshold;
-        }
-        if (config.plotBands === undefined && config.series.length === 1) {
-          config.plotBands = this.buildPlotBands(metricCheck.health);
-        }
-        if (config.series.length > 1) {
-          config.threshold = undefined;
-          config.plotBands = undefined;
-        }
+  checksByModelVer.forEach(({ name, metricsChecks, version }) => {
+    const seriesName = `${name}_v:${version}`;
+    Object.entries(metricsChecks).forEach(([metricName, metricCheck]) => {
+      const existingConfig = configs.find(cfg => cfg.name === metricName);
+      let config: ChartConfig = existingConfig;
+      if (!existingConfig) {
+        config = createConfig(metricName);
+        configs.push(config);
+      }
+      config.series.push({
+        name: seriesName,
+        data: metricCheck.data,
+        color: palette[config.series.length],
       });
-    });
 
-    return configs;
-  }
+      if (config.threshold === undefined && config.series.length === 1) {
+        config.threshold = metricCheck.threshold;
+      }
+      if (config.plotBands === undefined && config.series.length === 1) {
+        config.plotBands = buildPlotBands(metricCheck.health);
+      }
+      if (config.series.length > 1) {
+        config.threshold = undefined;
+        config.plotBands = undefined;
+      }
+    });
+  });
+
+  return configs;
 }

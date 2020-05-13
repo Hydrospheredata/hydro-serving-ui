@@ -66,14 +66,14 @@
       ></ng-container>
       <ng-template #image>
         <hs-tensor-image-list
-          [pixels]="check[key]"
+          [pixels]="check.inputsOutputs[key]"
           [tensorProto]="getTensorShape(key)"
         ></hs-tensor-image-list>
       </ng-template>
       <ng-template #plainText>
         <div hs-expander maxHeight="170">
           <div #expand>
-            {{ getValueAsText(check[key]) }}
+            {{ getValueAsText(check.inputsOutputs[key]) }}
           </div>
         </div>
       </ng-template>

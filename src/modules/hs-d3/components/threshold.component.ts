@@ -1,6 +1,5 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
@@ -30,8 +29,6 @@ export class D3ThresholdComponent implements OnChanges {
   y2: number = 0;
   x2: number = 0;
 
-  constructor(private cdr: ChangeDetectorRef) {}
-
   ngOnChanges(changes: SimpleChanges): void {
     const threshold = changes['hs-d3threshold']
       ? changes['hs-d3threshold']
@@ -40,13 +37,10 @@ export class D3ThresholdComponent implements OnChanges {
     const width = changes.width ? changes.width.currentValue : this.width;
 
     if (threshold !== undefined && yScale) {
-      console.log('changes scale');
       const y = yScale(threshold) || 0;
-      console.log(y);
       this.y1 = y;
       this.y2 = y;
       this.x2 = width;
-      this.cdr.detectChanges();
     }
   }
 }

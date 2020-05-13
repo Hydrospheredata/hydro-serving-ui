@@ -1,3 +1,5 @@
+import { Injectable } from '@node_modules/@angular/core';
+
 interface Point {
   x: number;
   y: number;
@@ -31,4 +33,9 @@ export interface ChartConfig {
   series: Series[];
   area?: boolean;
   threshold?: number;
+}
+
+@Injectable()
+export class ChartConfigBuilder {
+  constructor() {}
 }
