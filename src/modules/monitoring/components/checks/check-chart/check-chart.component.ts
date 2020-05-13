@@ -70,8 +70,6 @@ export class CheckChartComponent implements OnInit, OnDestroy {
   constructor(private cdr: ChangeDetectorRef) {}
 
   @Input() set config(cfg: ChartConfig) {
-    console.log('input');
-    console.log(cfg);
     this.cfg = cfg;
 
     this.name = cfg.name;
@@ -81,10 +79,10 @@ export class CheckChartComponent implements OnInit, OnDestroy {
 
     this.chartHeight = cfg.size.height || 180;
     this.margins = cfg.size.margins;
-    // calculate some properties
-    const { top, bottom, left, right } = cfg.size.margins;
 
+    const { top, bottom, left, right } = cfg.size.margins;
     const viewWidth = this.chartWidth - left - right;
+
     this.viewWidth = viewWidth > 0 ? viewWidth : 0;
 
     this.viewHeight = this.chartHeight - top - bottom;
@@ -93,7 +91,7 @@ export class CheckChartComponent implements OnInit, OnDestroy {
     this.xAxisTranslate = `translate(${left}, ${top + this.viewHeight})`;
     this.thresholdTranslate = `translate(0, ${top})`;
     this.plotBands = cfg.plotBands;
-    // scales
+
     this.render();
   }
 

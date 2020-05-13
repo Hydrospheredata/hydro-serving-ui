@@ -1,4 +1,4 @@
-export interface BareCheck {
+export interface SystemKeys {
   _id: string;
   _hs_prediction_score: number;
   _hs_raw_checks: {
@@ -12,4 +12,8 @@ export interface BareCheck {
   _hs_score: number;
   _hs_overall_score: number;
   _hs_model_version_id: number;
+  _hs_model_name: string;
+  _hs_model_incremental_version: number;
 }
+
+export type BareCheck = SystemKeys & { [IOkey: string]: any };

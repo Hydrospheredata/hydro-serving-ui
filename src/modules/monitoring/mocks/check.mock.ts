@@ -10,4 +10,6 @@ export const mockCheck: Check = new Check({
   _hs_raw_checks: { overall: [] },
   _hs_metric_checks: {},
   _hs_score: 0,
+  _hs_model_incremental_version: 1,
+  _hs_model_name: 'model',
 });

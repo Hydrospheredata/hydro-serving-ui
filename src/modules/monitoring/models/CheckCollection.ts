@@ -1,7 +1,7 @@
 import { Check } from '@monitoring/models/Check';
 
 export class CheckCollection {
-  private checks: Check[];
+  private readonly checks: Check[];
   constructor(checks: Check[]) {
     this.checks = checks || [];
   }
