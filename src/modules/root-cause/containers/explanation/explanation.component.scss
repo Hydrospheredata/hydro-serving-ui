@@ -1,0 +1,7 @@
+@import 'variables';
+.explanation {
+  &__label {
+    font-size: 12px;
+    color: $neutral-color-900;
+  }
+}

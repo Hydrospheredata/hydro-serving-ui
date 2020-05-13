@@ -6,3 +6,4 @@ export * from './BareCheck';
 export * from './ChartConfig';
 export * from './Aggregation';
 export * from './ChecksAggregationResponse';
+export * from './MetricCheckAggregation';

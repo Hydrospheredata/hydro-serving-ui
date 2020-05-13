@@ -70,6 +70,7 @@ export class CheckChartComponent implements OnInit, OnDestroy {
   constructor(private cdr: ChangeDetectorRef) {}
 
   @Input() set config(cfg: ChartConfig) {
+    console.log(cfg);
     this.cfg = cfg;
 
     this.name = cfg.name;
@@ -171,14 +172,17 @@ export class CheckChartComponent implements OnInit, OnDestroy {
         const index = Math.floor(this.scaleX.invert(newXPosition));
 
         // generate circles
-        this.activeCircles = this.series.map(
-          (series, idx) => ({
-            x: newXPosition,
-            y: this.scaleY(series.data[index - 1]) + top,
-            color: series.color,
-          }),
-          []
-        );
+        this.activeCircles = this.series.reduce((acc, series) => {
+          if (series.data[index - 1]) {
+            acc.push({
+              x: newXPosition,
+              y: this.scaleY(series.data[index - 1]) + top,
+              color: series.color,
+            });
+          }
+
+          return acc;
+        }, []);
 
         // generate tooltip
         const l = this.series[0].data.length;
@@ -191,13 +195,17 @@ export class CheckChartComponent implements OnInit, OnDestroy {
         this.tooltip = {
           x: tXPos + 4,
           y: tYPos + 4,
-          values: this.series.map(series => {
-            return {
-              name: series.name,
-              color: series.color,
-              value: series.data[index - 1],
-            };
-          }),
+          values: this.series.reduce((acc, series) => {
+            if (series.data[index - 1]) {
+              acc.push({
+                name: series.name,
+                color: series.color,
+                value: series.data[index - 1],
+              });
+            }
+
+            return acc;
+          }, []),
         };
 
         this.cdr.detectChanges();
