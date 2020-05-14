@@ -6,12 +6,13 @@ import { ModelVersion } from '@shared/_index';
 import { VisualizationFacade } from 'modules/visualization/visualization.facade';
 import { Observable } from 'rxjs';
 import { LinkRegime } from '../../models/visualization';
+import { VisualizationState } from '../../store';
 
 @Component({
   selector: 'hs-visualization',
   templateUrl: './visualization-page.component.html',
   styleUrls: ['./visualization-page.component.scss'],
-  providers: [VisualizationFacade],
+  providers: [VisualizationState, VisualizationFacade],
 })
 export class VisualizationPageComponent implements OnInit {
   selectedCheck$: Observable<Check>;
@@ -29,26 +30,28 @@ export class VisualizationPageComponent implements OnInit {
   colorizer$: Observable<Colorizer>;
   visualizationMetrics$: Observable<{ [name: string]: string }>;
   selectedId$: Observable<string>;
-
+  message$: Observable<string>;
   linkRegime: LinkRegime = 'nearest';
 
   constructor(private service: VisualizationFacade) {}
 
   ngOnInit(): void {
-    this.taskId$ = this.service.taskId$;
-    this.status$ = this.service.status$;
-    this.result$ = this.service.result$;
-    this.scatterPlotData$ = this.service.scatterPlotData$;
-    this.error$ = this.service.error$;
-    this.colors$ = this.service.colors$;
-    this.top100$ = this.service.top100$;
-    this.modelVersion$ = this.service.modelVersion$;
-    this.selectedCheck$ = this.service.selectedCheck$;
-    this.colorizers$ = this.service.colorizers$;
-    this.colorizer$ = this.service.selectedColorizer$;
-    this.counterfactuals$ = this.service.counterfactuals$;
-    this.visualizationMetrics$ = this.service.visualizationMetrics$;
-    this.selectedId$ = this.service.selectedId$;
+    this.taskId$ = this.service.getTaskId();
+    this.status$ = this.service.getStatus();
+    this.result$ = this.service.getResult();
+    this.scatterPlotData$ = this.service.getScatterPlotData();
+    this.error$ = this.service.getError();
+    this.colors$ = this.service.getColors();
+    this.top100$ = this.service.getTop100();
+    this.modelVersion$ = this.service.getModelVersion();
+    this.selectedCheck$ = this.service.getSelectedCheck();
+    this.colorizers$ = this.service.getColorizers();
+    this.colorizer$ = this.service.getSelectedColorizer();
+    this.counterfactuals$ = this.service.getCounterfactuals();
+    this.visualizationMetrics$ = this.service.getVisualizationMetrics();
+    this.selectedId$ = this.service.getSelectedId();
+    this.message$ = this.service.getMessage();
+
     this.service.loadEmbedding();
   }
 

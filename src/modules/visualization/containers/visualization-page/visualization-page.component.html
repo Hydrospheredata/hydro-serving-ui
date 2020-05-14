@@ -1,9 +1,14 @@
 <div class="visualization">
-  <hs-services-header [modelVersion]="modelVersion$ | async"></hs-services-header>
+  <hs-services-header
+    [modelVersion]="modelVersion$ | async"
+  ></hs-services-header>
+  <hs-alert-message *ngIf="message$ | async as message">{{
+    message
+  }}</hs-alert-message>
   <div *ngIf="(status$ | async) === 'PENDING'" class="visualization__loader">
     Loading...
     <span class="visualization__loader-status"
-    >Task id: {{ taskId$ | async }}</span
+      >Task id: {{ taskId$ | async }}</span
     >
   </div>
   <div *ngIf="(status$ | async) === 'FAILED'" class="visualization__error">
@@ -16,12 +21,18 @@
       Create new task
     </button>
   </div>
-  <div *ngIf="(status$ | async) === 'SUCCESS'" class="visualization__body">
+  <div
+    *ngIf="(status$ | async) === 'SUCCESS' && !(message$ | async)"
+    class="visualization__body"
+  >
     <div class="visualization__chart">
       <div class="visualization__settings">
         <div class="visualization__settings-item">
           <span class="visualization__settings-label">Colorize: </span>
-          <mdl-select (change)="onChangeColorizer($event)" label="Choose colorizer">
+          <mdl-select
+            (change)="onChangeColorizer($event)"
+            label="Choose colorizer"
+          >
             <mdl-option
               *ngFor="let colorizer of colorizers$ | async"
               [value]="colorizer"
@@ -41,13 +52,14 @@
             [value]="regime"
             name="regime"
           >
-            {{ regime}}
+            {{ regime }}
           </mdl-radio>
         </div>
-
       </div>
       <div class="visualization__scatterplot">
-        <hs-visualization-metrics [visualizationMetrics]="visualizationMetrics$ | async"></hs-visualization-metrics>
+        <hs-visualization-metrics
+          [visualizationMetrics]="visualizationMetrics$ | async"
+        ></hs-visualization-metrics>
         <hs-scatter-plot
           (selectPoint)="handleSelectPoint($event)"
           [colorizer]="colorizer$ | async"
@@ -62,11 +74,14 @@
 
     <div *ngIf="selectedId$ | async as id" class="visualization__detail">
       <ng-container *ngIf="selectedCheck$ | async as check; else err">
-        <hs-log-detail [check]="check" [modelVersion]="modelVersion$ | async"></hs-log-detail>
+        <hs-log-detail
+          [check]="check"
+          [modelVersion]="modelVersion$ | async"
+        ></hs-log-detail>
       </ng-container>
       <ng-template #err>
         <div class="visualization__detail-alert">
-          Couldn't find request with id: {{id}}
+          Couldn't find request with id: {{ id }}
         </div>
       </ng-template>
     </div>

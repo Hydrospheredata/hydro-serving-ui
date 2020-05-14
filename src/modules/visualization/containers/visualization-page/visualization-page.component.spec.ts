@@ -10,7 +10,7 @@ import { VisualizationPageComponent } from './visualization-page.component';
 import { VisualizationFacade } from '../../visualization.facade';
 import { RouterTestingModule } from '@node_modules/@angular/router/testing';
 
-describe('VisualizationComponent', () => {
+xdescribe('VisualizationComponent', () => {
   let component: VisualizationPageComponent;
   let fixture: ComponentFixture<VisualizationPageComponent>;
   let debugElement: DebugElement;

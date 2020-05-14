@@ -16,12 +16,18 @@ export interface Metric {
   threshold: number;
 }
 
-export type TaskState = 'SUCCESS' | 'PENDING' | 'FAILED';
+export enum ETaskState {
+  success = 'SUCCESS',
+  pending = 'PENDING',
+  failed = 'FAILED',
+  unknown = 'UNKNOWN',
+}
 
 export interface TaskInformation {
   task_id: string;
   description?: string;
-  state: TaskState;
+  message?: string;
+  state: ETaskState;
   result: VisualizationResponse;
 }
 
@@ -126,6 +132,6 @@ export const mockVisualizationResult: VisualizationResponse = {
 
 export const mockSuccessTask: TaskInformation = {
   result: mockVisualizationResult,
-  state: 'SUCCESS',
+  state: ETaskState.success,
   task_id: 'b2ea3dd1-6d68-4d3f-a709-fd639ef2d7d6',
 };

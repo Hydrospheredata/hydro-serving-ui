@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { BehaviorSubject, Observable, of } from '@node_modules/rxjs';
-import { catchError } from '@node_modules/rxjs/internal/operators';
+import { Observable } from '@node_modules/rxjs';
 import { ModelVersion } from '@shared/models';
 import { Stat } from '../../models';
 import { StatFacade } from '../../stat.facade';
