@@ -7,10 +7,16 @@ import {
   OnInit,
 } from '@angular/core';
 import { DialogService } from '@dialog/dialog.service';
+import {
+  shareReplay,
+  filter,
+  map,
+} from '@node_modules/rxjs/internal/operators';
 import { EXPLANATION, ExplanationDialogComponent } from '@rootcause/containers';
 import { ExplanationFacade } from '@rootcause/containers/explanation/explanation.facade';
-import { Explanation } from '@rootcause/models';
+import { Explanation, ExplanationStatus } from '@rootcause/models';
 import { RootCauseState } from '@rootcause/store/state';
+import { neitherNullNorUndefined } from '@shared/utils';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -25,6 +31,7 @@ export class ExplanationComponent implements OnInit, OnChanges {
   @Input() modelVersionId: number;
 
   explanation$: Observable<Explanation>;
+  tooltip$: Observable<string>;
 
   constructor(
     private readonly facade: ExplanationFacade,
@@ -32,7 +39,16 @@ export class ExplanationComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    this.explanation$ = this.facade.getExplanation();
+    this.explanation$ = this.facade.getExplanation().pipe(shareReplay(1));
+    this.tooltip$ = this.explanation$.pipe(
+      neitherNullNorUndefined,
+      filter(
+        expl =>
+          expl.state === ExplanationStatus.notSupported ||
+          expl.state === ExplanationStatus.failed
+      ),
+      map(({ description }) => description)
+    );
 
     this.facade.loadExplanation(this.requestId, this.modelVersionId);
   }
