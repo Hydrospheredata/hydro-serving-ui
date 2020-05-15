@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .tooltip-wrapper {
   position: relative;
@@ -13,13 +13,13 @@
   padding: 6px;
   line-height: 14px;
   border-radius: 4px;
-  transition: .4s ease all;
+  transition: 0.4s ease all;
   transform: translateY(0px);
   opacity: 1;
   z-index: 2;
   visibility: visible;
   &::before {
-    content: "";
+    content: '';
     display: block;
     height: 8px;
     width: 8px;
@@ -29,10 +29,9 @@
     top: -4px;
   }
   &--is-hidden {
-    transition: .2s ease all;
+    transition: 0.2s ease all;
     transform: translateY(15px);
     opacity: 0;
     visibility: hidden;
   }
 }
-

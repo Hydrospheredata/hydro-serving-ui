@@ -4,4 +4,13 @@
     font-size: 12px;
     color: $neutral-color-900;
   }
+  &__icon {
+    width: 16px;
+    height: 16px;
+    color: $neutral-color-600;
+    cursor: help;
+    &:hover {
+      color: $neutral-color-800;
+    }
+  }
 }

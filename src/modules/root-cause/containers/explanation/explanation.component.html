@@ -22,5 +22,8 @@
     <button *ngSwitchDefault kind="base" color="cyan" hs-button disabled>
       {{ explanation.state }}
     </button>
+    <span *ngIf="tooltip$ | async as tooltip" [hs-tooltip]="tooltip">
+      <hydro-icon type="help" class="icon explanation__icon"> </hydro-icon>
+    </span>
   </ng-container>
 </ng-container>
