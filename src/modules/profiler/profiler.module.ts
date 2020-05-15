@@ -8,6 +8,7 @@ import {
   ProfilesComparisonHistogramComponent,
 } from './components';
 import { ProfilerPageComponent, ProfilesComponent } from './containers';
+import { ProfilerAvailabilityComponent } from './containers/profiler-availability/profiler-availability.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { ProfilerPageComponent, ProfilesComponent } from './containers';
     ProfilesComponent,
     ProfileStatsComponent,
     ProfilesComparisonHistogramComponent,
+    ProfilerAvailabilityComponent,
   ],
   providers: [ProfilerFacade],
   exports: [ProfilerPageComponent, ProfilesComponent ],

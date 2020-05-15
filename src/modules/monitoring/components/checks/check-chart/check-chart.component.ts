@@ -70,7 +70,6 @@ export class CheckChartComponent implements OnInit, OnDestroy {
   constructor(private cdr: ChangeDetectorRef) {}
 
   @Input() set config(cfg: ChartConfig) {
-    console.log(cfg);
     this.cfg = cfg;
 
     this.name = cfg.name;
