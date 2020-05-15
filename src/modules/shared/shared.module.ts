@@ -18,7 +18,7 @@ import {
   SidebarFilterPipe,
   SortByPipe,
   TimeAgoPipe,
-  ToNumberPipe
+  ToNumberPipe,
 } from './pipes';
 // Components
 import {
@@ -40,6 +40,7 @@ import {
   TensorImageListComponent,
   TextareaComponent,
   TooltipComponent,
+  ServiceAvailabilityComponent,
 } from './components';
 // Directives
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -90,6 +91,7 @@ const COMPONENTS = [
   ExpanderComponent,
   ProbabilitiesListComponent,
   LoaderComponent,
+  ServiceAvailabilityComponent,
 ];
 
 const DIRECTIVES = [
@@ -121,6 +123,12 @@ const RE_EXPORTED_MODULES = [
     ...DIRECTIVES,
     ServicesHeaderComponent,
   ],
-  exports: [...PIPES, ...COMPONENTS, ...DIRECTIVES, ...RE_EXPORTED_MODULES, ServicesHeaderComponent],
+  exports: [
+    ...PIPES,
+    ...COMPONENTS,
+    ...DIRECTIVES,
+    ...RE_EXPORTED_MODULES,
+    ServicesHeaderComponent,
+  ],
 })
 export class SharedModule {}

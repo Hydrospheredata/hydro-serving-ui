@@ -1,31 +1,77 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@core/services/http';
-import { Observable, of, forkJoin } from 'rxjs';
-import { combineLatest } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { ServiceStatus } from '@shared/models/service-status.model';
+import { neitherNullNorUndefined, pluck } from '@shared/utils';
+import { Observable, of, forkJoin, BehaviorSubject } from 'rxjs';
+import {
+  catchError,
+  shareReplay,
+  distinctUntilChanged,
+  map,
+} from 'rxjs/operators';
 
-@Injectable()
+const enum HydroServicesEndpoints {
+  buildInfo = '/api/buildinfo',
+  gateway = '/gateway/buildinfo',
+  monitoring = '/monitoring/buildinfo',
+  rootcause = '/rootcause/buildinfo',
+  stat = '/stat/buildinfo',
+  visualization = '/visualization/buildinfo',
+}
+
+interface BuildInfo {
+  [p: string]: any;
+}
+
+@Injectable({ providedIn: 'root' })
 export class BuildInformationService {
-  private buildInfoApi = '/api/buildinfo';
-  private gatewayInfoApi = '/gateway/buildinfo';
-  private sonarApi = '/monitoring/buildinfo';
-  private rootcauseApi = '/rootcause/buildinfo';
-  private statApi = '/stat/buildinfo';
-  private visualizationApi = '/visualization/buildinfo';
+  private buildInfo$: Observable<BuildInfo>;
+  private buildInfo: BehaviorSubject<{
+    [serviceName: string]: any;
+  }> = new BehaviorSubject<BuildInfo>({});
 
-  constructor(private http: HttpService) {}
+  constructor(private http: HttpService) {
+    this.buildInfo$ = this.buildInfo
+      .asObservable()
+      .pipe(neitherNullNorUndefined, shareReplay(1));
+  }
 
-  getBuildInformation(): Observable<any> {
+  loadBuildInformation() {
     const toRequest = endpoint =>
-      this.http.get(endpoint).pipe(catchError(_ => of([])));
+      this.http.get(endpoint).pipe(
+        map(res => {
+          return { ...res, status: ServiceStatus.AVAILABLE };
+        }),
+        catchError(err => this.handleError(err))
+      );
 
     return forkJoin({
-      build: toRequest(this.buildInfoApi),
-      gateway: toRequest(this.gatewayInfoApi),
-      sonar: toRequest(this.sonarApi),
-      rootcause: toRequest(this.rootcauseApi),
-      stat: toRequest(this.statApi),
-      visualization: toRequest(this.visualizationApi),
-    });
+      build: toRequest(HydroServicesEndpoints.buildInfo),
+      gateway: toRequest(HydroServicesEndpoints.gateway),
+      sonar: toRequest(HydroServicesEndpoints.monitoring),
+      rootcause: toRequest(HydroServicesEndpoints.rootcause),
+      stat: toRequest(HydroServicesEndpoints.stat),
+      visualization: toRequest(HydroServicesEndpoints.visualization),
+    }).subscribe(infos => this.buildInfo.next(infos));
+  }
+
+  getBuildInfo(): Observable<BuildInfo> {
+    return this.buildInfo$.pipe(distinctUntilChanged());
+  }
+
+  getStatus<K extends keyof typeof HydroServicesEndpoints>(
+    serviceName: K
+  ): Observable<{ status: ServiceStatus; message: string }> {
+    return this.buildInfo$.pipe(pluck(serviceName));
+  }
+
+  private handleError(error: string): Observable<any> {
+    const is501Error = /501/i.test(error);
+    if (is501Error) {
+      return of({ status: ServiceStatus.CLOSED_FOR_OSS });
+    } else {
+      const errMsg = error || 'Something went wrong';
+      return of({ status: ServiceStatus.FAILED, message: errMsg });
+    }
   }
 }

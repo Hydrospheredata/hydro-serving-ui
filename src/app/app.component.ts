@@ -2,6 +2,7 @@ import { MdlDialogOutletService } from '@angular-mdl/core';
 import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import * as fromApplications from '@applications/store';
 import { SvgSpriteService } from '@core/services';
+import { BuildInformationService } from '@core/services/build-information.service';
 import { SseService } from '@core/services/sse.service';
 import { HydroServingState } from '@core/store';
 import * as fromModels from '@models/store';
@@ -19,7 +20,8 @@ export class AppComponent implements OnInit {
     private viewContainerRef: ViewContainerRef,
     private store: Store<HydroServingState>,
     private svgSprite: SvgSpriteService,
-    private sse: SseService
+    private sse: SseService,
+    private buildInformationService: BuildInformationService
   ) {
     this.dialogOutletService.setDefaultViewContainerRef(this.viewContainerRef);
   }
@@ -31,5 +33,6 @@ export class AppComponent implements OnInit {
     this.store.dispatch(fromModels.GetModelVersions());
     this.store.dispatch(fromApplications.Get());
     this.store.dispatch(fromServables.getAll());
+    this.buildInformationService.loadBuildInformation();
   }
 }

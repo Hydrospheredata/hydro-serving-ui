@@ -15,3 +15,4 @@ export * from './tooltip/tooltip.component';
 export * from './expander/expander.component';
 export * from './probabilities-list/probabilities-list.component';
 export * from './loader/loader.component';
+export * from './service-availability/service-availability.component';

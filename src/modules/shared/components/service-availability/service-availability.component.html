@@ -1,0 +1,24 @@
+<ng-container [ngTemplateOutlet]="activeTemplate"></ng-container>
+
+<ng-template #loadingTemplate>
+  <div class="loading" #loading>
+    Loading ...
+  </div>
+</ng-template>
+
+<ng-template #errorTemplate>
+  <hs-error-message>
+    <div>{{ error }}</div>
+  </hs-error-message>
+</ng-template>
+
+<ng-template #alertTemplate>
+  <hs-alert-message>
+    {{ name }} isn't available in OSS yet. But you can make request for a
+    <a href="https://hydrosphere.io/">demo</a>
+  </hs-alert-message>
+</ng-template>
+
+<ng-template #contentTemplate>
+  <ng-content></ng-content>
+</ng-template>
