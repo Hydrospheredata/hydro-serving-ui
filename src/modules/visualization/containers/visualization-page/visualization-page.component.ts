@@ -17,7 +17,6 @@ import { VisualizationState } from '../../store';
 export class VisualizationPageComponent implements OnInit {
   selectedCheck$: Observable<Check>;
   modelVersion$: Observable<ModelVersion>;
-  loading$: Observable<boolean>;
   taskId$: Observable<string>;
   status$: Observable<string>;
   result$: Observable<any>;

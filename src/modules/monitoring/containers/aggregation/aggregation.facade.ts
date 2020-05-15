@@ -78,6 +78,7 @@ export class AggregationFacade implements OnDestroy {
                   })
                 );
             }),
+            neitherNullNorUndefined,
             distinctUntilChanged<ChecksAggregationResponse>(
               (prev, cur) => cur.count === prev.count
             ),

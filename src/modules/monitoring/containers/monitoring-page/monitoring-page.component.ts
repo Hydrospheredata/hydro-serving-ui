@@ -3,8 +3,8 @@ import { DialogService } from '@dialog/dialog.service';
 import { CheckCollection } from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringPageState } from '@monitoring/store/monitoring-page-state.service';
-import { filter } from '@node_modules/rxjs/internal/operators';
 import { ModelVersion } from '@shared/models';
+import { neitherNullNorUndefined } from '@shared/utils';
 import { MonitoringPageFacade } from './monitoring-page.facade';
 import { isEmptyObj } from '@shared/utils/is-empty-object';
 import { Observable } from 'rxjs';
@@ -34,7 +34,7 @@ export class MonitoringPageComponent implements OnInit {
     this.error$ = this.facade.getError();
     this.selectedAggregation$ = this.facade
       .getAggregation()
-      .pipe(filter(val => val !== null));
+      .pipe(neitherNullNorUndefined);
     this.checks$ = this.facade.getChecks();
 
     this.facade.loadMetrics();
