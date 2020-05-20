@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  UpdateSuccess,
-  DeleteSuccess,
-} from '@applications/store';
+import { UpdateSuccess, DeleteSuccess } from '@applications/store';
 import { ModelVersionBuilder } from '@core/builders';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { HydroServingState } from '@core/store';
@@ -27,7 +24,9 @@ export class SseService {
     ['ServableUpdate', servable => this.updateServable(servable)],
     ['ServableRemove', servableName => this.deleteServable(servableName)],
   ]);
+
   private eventSource: EventSource;
+
   constructor(
     private store: Store<HydroServingState>,
     private applicationBuilder: ApplicationBuilder,
@@ -58,7 +57,7 @@ export class SseService {
 
   private updateApplication(data: Application) {
     const application = this.applicationBuilder.build(data);
-    return UpdateSuccess({payload: application});
+    return UpdateSuccess({ payload: application });
   }
 
   private deleteApplication(applicationName: string) {
@@ -67,7 +66,7 @@ export class SseService {
 
   private updateModelVersion(data: ModelVersion) {
     const modelVersion = this.modelVersionBuilder.build(data);
-    return fromModels.AddModelVersionSuccess({ modelVersion });
+    return fromModels.AddModelVersion({ modelVersion });
   }
 
   private deleteModelVerions(modelVersionId: number) {
@@ -79,7 +78,7 @@ export class SseService {
   }
 
   private deleteServable(name: string) {
-    return fromServables.deleteServableSuccess({name});
+    return fromServables.deleteServableSuccess({ name });
   }
 
   private addEventHandler(item: [string, any]) {

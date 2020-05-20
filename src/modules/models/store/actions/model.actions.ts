@@ -10,6 +10,12 @@ export const GetModelsFail = createAction(
   '[Model] get all models with fail',
   props<{ error: string }>()
 );
+
+export const AddModel = createAction(
+  '[Model] add model',
+  props<{ model: Model }>()
+);
+
 export const DeleteModel = createAction(
   '[Model] delete',
   props<{ modelId: number }>()

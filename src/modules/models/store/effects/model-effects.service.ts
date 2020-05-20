@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 import { ModelBuilder, ModelVersionBuilder } from '@core/builders';
 import { SnackbarService } from '@core/services';
 import { FavoriteStorageLocal } from '@core/services/favorite-storage-local.service';
+import { HydroServingState } from '@core/store';
 import { ModelsService } from '@models/services';
+import { AddModelVersion, AddModel } from '../actions';
+import { selectAllModels } from '../selectors';
 import {
   GetModels,
   GetModelsSuccess,
@@ -14,10 +17,18 @@ import {
   DeleteModel,
   DeleteModelSuccess,
   DeleteModelFail,
+  AddModelVersionSuccess,
 } from '@models/store/actions';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { map, catchError, switchMap } from 'rxjs/operators';
+import { Store, select } from '@node_modules/@ngrx/store';
+import { of, concat } from 'rxjs';
+import {
+  map,
+  catchError,
+  switchMap,
+  exhaustMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Injectable()
 export class ModelEffects {
@@ -90,6 +101,29 @@ export class ModelEffects {
     )
   );
 
+  addModelVersion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AddModelVersion),
+      withLatestFrom(this.store.pipe(select(selectAllModels))),
+      exhaustMap(([{ modelVersion }, models]) => {
+        const modelExist = models.some(
+          model => model.id === modelVersion.model.id
+        );
+
+        if (modelExist) {
+          return of(AddModelVersionSuccess({ modelVersion }));
+        } else {
+          const model = this.modelBuilder.build(modelVersion.model);
+
+          return concat(
+            of(AddModel({ model })),
+            of(AddModelVersionSuccess({ modelVersion }))
+          );
+        }
+      })
+    )
+  );
+
   constructor(
     private modelBuilder: ModelBuilder,
     private modelVersionBuilder: ModelVersionBuilder,
@@ -97,6 +131,7 @@ export class ModelEffects {
     private actions$: Actions,
     private snackbar: SnackbarService,
     private router: Router,
-    private favoriteStorage: FavoriteStorageLocal
+    private favoriteStorage: FavoriteStorageLocal,
+    private store: Store<HydroServingState>
   ) {}
 }

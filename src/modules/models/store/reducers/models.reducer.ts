@@ -4,6 +4,7 @@ import {
   GetModelsFail,
   DeleteModelSuccess,
   ToggleFavorite,
+  AddModel,
 } from '@models/store/actions';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Action, createReducer, on } from '@ngrx/store';
@@ -27,6 +28,7 @@ const modelsReducer = createReducer(
   on(GetModelsSuccess, (state, { payload }) =>
     adapter.addMany(payload, { ...state, loading: false, loaded: true })
   ),
+  on(AddModel, (state, payload) => adapter.addOne(payload.model, state)),
   on(GetModelsFail, state => ({ ...state, loading: false })),
   on(DeleteModelSuccess, (state, { modelId }) =>
     adapter.removeOne(modelId, state)
