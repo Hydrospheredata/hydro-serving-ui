@@ -13,7 +13,7 @@ import {
 const enum HydroServicesEndpoints {
   buildInfo = '/api/buildinfo',
   gateway = '/gateway/buildinfo',
-  monitoring = '/monitoring/buildinfo',
+  sonar = '/monitoring/buildinfo',
   rootcause = '/rootcause/buildinfo',
   stat = '/stat/buildinfo',
   visualization = '/visualization/buildinfo',
@@ -48,7 +48,7 @@ export class BuildInformationService {
     return forkJoin({
       build: toRequest(HydroServicesEndpoints.buildInfo),
       gateway: toRequest(HydroServicesEndpoints.gateway),
-      sonar: toRequest(HydroServicesEndpoints.monitoring),
+      sonar: toRequest(HydroServicesEndpoints.sonar),
       rootcause: toRequest(HydroServicesEndpoints.rootcause),
       stat: toRequest(HydroServicesEndpoints.stat),
       visualization: toRequest(HydroServicesEndpoints.visualization),

@@ -15,6 +15,6 @@ export class MonitoringAvailabilityComponent implements OnInit {
   constructor(private buildInfo: BuildInformationService) {}
 
   ngOnInit() {
-    this.status$ = this.buildInfo.getStatus('stat');
+    this.status$ = this.buildInfo.getStatus('sonar');
   }
 }

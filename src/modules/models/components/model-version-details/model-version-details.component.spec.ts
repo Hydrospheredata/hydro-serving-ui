@@ -8,6 +8,7 @@ import { SharedModule } from '@shared/shared.module';
 import {
   ModelVersionLogComponent,
   SignaturesComponent,
+  ModelVersionServicesComponent,
 } from '@testing/components';
 import { ServablesTableComponent } from '@testing/components/mock-servables-table.component';
 import {
@@ -29,6 +30,7 @@ describe('ModelVersionDetailsComponent', () => {
         ServablesTableComponent,
         SignaturesComponent,
         ModelVersionStatusComponent,
+        ModelVersionServicesComponent,
       ],
       imports: [SharedModule, RouterTestingModule],
       providers: [

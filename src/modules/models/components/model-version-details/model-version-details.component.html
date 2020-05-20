@@ -61,57 +61,9 @@
       </div>
     </div>
     <div class="model-version__col-6">
-      <div class="model-version__item-header">Services</div>
-      <div class="model-version__services">
-        <div class="model-version__services-item">
-          <hydro-icon
-            type="monitoring"
-            class="model-version__services-item-icon"
-          ></hydro-icon>
-          <button
-            class="model-version__services-button"
-            hs-button
-            kind="flat"
-            color="primary"
-            [routerLink]="['./monitoring']"
-            queryParamsHandling="merge"
-          >
-            monitoring
-          </button>
-        </div>
-        <div class="model-version__services-item">
-          <hydro-icon
-            type="monitoring"
-            class="model-version__services-item-icon"
-          ></hydro-icon>
-          <button
-            class="model-version__services-button"
-            hs-button
-            kind="flat"
-            color="primary"
-            [routerLink]="['./visualization']"
-            queryParamsHandling="merge"
-          >
-            visualization
-          </button>
-        </div>
-        <div class="model-version__services-item">
-          <hydro-icon
-            type="monitoring"
-            class="model-version__services-item-icon"
-          ></hydro-icon>
-          <button
-            class="model-version__services-button"
-            hs-button
-            kind="flat"
-            color="primary"
-            [routerLink]="['./stat']"
-            queryParamsHandling="merge"
-          >
-            stat
-          </button>
-        </div>
-      </div>
+      <hs-model-version-services
+        [modelVersion]="modelVersion"
+      ></hs-model-version-services>
     </div>
   </div>
 
@@ -169,7 +121,10 @@
             </tr>
           </tbody>
         </table>
-        <div *ngIf="modelVersion.applications.length === 0" class="model-version__applications-empty">
+        <div
+          *ngIf="modelVersion.applications.length === 0"
+          class="model-version__applications-empty"
+        >
           Application's list is empty
         </div>
       </div>
