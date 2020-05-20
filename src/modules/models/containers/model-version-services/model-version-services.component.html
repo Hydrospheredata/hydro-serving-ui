@@ -1,0 +1,89 @@
+<div class="mv-services">
+  <div class="mv-services__title">Services</div>
+  <div class="mv-services__list">
+    <div class="mv-services__item">
+      <hydro-icon type="monitoring" class="mv-services__icon"></hydro-icon>
+      <button
+        class="mv-service__button"
+        hs-button
+        kind="flat"
+        color="primary"
+        [routerLink]="['./monitoring']"
+        queryParamsHandling="merge"
+      >
+        monitoring
+      </button>
+    </div>
+
+    <ng-container
+      *ngTemplateOutlet="
+        (serviceSupported$ | async)?.visualization?.supported
+          ? visualizationTile
+          : notSupported;
+        context: {
+          name: 'visualization',
+          message: (serviceSupported$ | async)?.visualization?.message
+        }
+      "
+    >
+    </ng-container>
+    <ng-container
+      *ngTemplateOutlet="
+        (serviceSupported$ | async)?.stat?.supported
+          ? monitoringTile
+          : notSupported;
+        context: {
+          name: 'stat',
+          message: (serviceSupported$ | async)?.stat?.description
+        }
+      "
+    >
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #visualizationTile>
+  <div class="mv-services__item">
+    <hydro-icon type="monitoring" class="mv-services__icon"></hydro-icon>
+    <button
+      class="mv-services__button"
+      hs-button
+      kind="flat"
+      color="primary"
+      [routerLink]="['./visualization']"
+      queryParamsHandling="merge"
+    >
+      visualization
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #monitoringTile>
+  <div class="mv-services__item">
+    <hydro-icon type="monitoring" class="mv-services__icon"></hydro-icon>
+    <button
+      class="mv-services__button"
+      hs-button
+      kind="flat"
+      color="primary"
+      [routerLink]="['./stat']"
+      queryParamsHandling="merge"
+    >
+      stat
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #notSupported let-message="message" let-name="name">
+  <div [hs-tooltip]="message">
+    <div class="mv-services__item mv-services__item--unsupported">
+      <hydro-icon
+        type="monitoring"
+        class="mv-services__icon mv-services__icon--unsupported"
+      ></hydro-icon>
+      <p class="mv-services__text">
+        {{ name }}
+      </p>
+    </div>
+  </div>
+</ng-template>

@@ -29,6 +29,7 @@ import {
   ModelsPageComponent,
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
+  ModelVersionServicesComponent,
 } from './containers';
 import { ModelsPublicUiModule } from './shared/models-public-ui.module';
 import { StatModule } from '../stat/stat.module';
@@ -58,6 +59,7 @@ import { StatModule } from '../stat/stat.module';
     ModelVersionsRowComponent,
     ModelsPageComponent,
     ModelPageComponent,
+    ModelVersionServicesComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
