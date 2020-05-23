@@ -1,0 +1,19 @@
+.header-nav {
+  &__item {
+    text-decoration: none;
+    color: white;
+    opacity: 0.5;
+    &:hover,
+    &--active {
+      opacity: 1;
+    }
+  }
+  &__item + &__item {
+    margin-left: 32px;
+  }
+  &__icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+}

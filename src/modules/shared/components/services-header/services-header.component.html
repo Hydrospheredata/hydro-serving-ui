@@ -4,28 +4,22 @@
     class="services-header__link"
     queryParamsHandling="merge"
   >
-    <hydro-icon
-      class="services-header__icon"
-      type="icon-left"
-    ></hydro-icon>
+    <hydro-icon class="services-header__icon" type="icon-left"></hydro-icon>
 
     back to model version
   </div>
-  <div
-    *ngIf="modelVersion"
-    class="services-header__path"
-  >
-      <span
-        [routerLink]="['../../']"
-        class="services-header__path-link"
-        queryParamsHandling="merge"
+  <div *ngIf="modelVersion" class="services-header__path" hsHideInZenMode>
+    <span
+      [routerLink]="['../../']"
+      class="services-header__path-link"
+      queryParamsHandling="merge"
       >{{ modelVersion.model.name }}</span
-      ><span class="services-header__path-separator">/</span
-  ><span
-    [routerLink]="['../']"
-    class="services-header__path-link"
-    queryParamsHandling="merge"
-  >{{ modelVersion.modelVersion }}</span
-  >
+    ><span class="services-header__path-separator">/</span
+    ><span
+      [routerLink]="['../']"
+      class="services-header__path-link"
+      queryParamsHandling="merge"
+      >{{ modelVersion.modelVersion }}</span
+    >
   </div>
 </div>

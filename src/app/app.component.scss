@@ -1,11 +1,10 @@
-@import "variables";
+@import 'variables';
 .app {
   height: 100%;
   width: 100%;
   overflow: hidden;
   &__header {
-    background: $primary-color-900;
-    height: 56px;
+    height: 72px;
   }
   &__body {
     height: 100%;
