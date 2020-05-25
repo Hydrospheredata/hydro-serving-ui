@@ -1,12 +1,20 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ModelBuilder, ModelVersionBuilder } from '@core/builders';
-import { FormsService, NameGenerator, SnackbarService, SvgSpriteService, } from '@core/services';
+import {
+  FormsService,
+  NameGenerator,
+  SnackbarService,
+  SvgSpriteService,
+} from '@core/services';
 import { BuildInformationService } from '@core/services/build-information.service';
 import { HttpService } from '@core/services/http';
 import { CustomRouterStateSerializer, reducers } from '@core/store';
 import { EffectsModule } from '@ngrx/effects';
-import { RouterStateSerializer, StoreRouterConnectingModule, } from '@ngrx/router-store';
+import {
+  RouterStateSerializer,
+  StoreRouterConnectingModule,
+} from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SharedModule } from '@shared/shared.module';
@@ -17,9 +25,17 @@ import {
   PageNotFoundComponent,
 } from './components';
 import { ChartHelperService } from './services/chart-helper.service';
+import { HeaderNavComponent } from './components/header/header-nav/header-nav.component';
+import { HeaderInfoComponent } from './components/header/header-info/header-info.component';
+import { TmHeaderComponent } from './components/header/tm-header/tm-header.component';
+import { BaseHeaderComponent } from './components/header/base-header/base-header.component';
 
 @NgModule({
-  entryComponents: [BuildInformationDialogComponent],
+  entryComponents: [
+    BuildInformationDialogComponent,
+    TmHeaderComponent,
+    BaseHeaderComponent,
+  ],
   imports: [
     HttpClientModule,
     SharedModule,
@@ -47,6 +63,10 @@ import { ChartHelperService } from './services/chart-helper.service';
     PageNotFoundComponent,
     BuildInformationDialogComponent,
     NavigationComponent,
+    HeaderNavComponent,
+    HeaderInfoComponent,
+    TmHeaderComponent,
+    BaseHeaderComponent,
   ],
   providers: [
     ModelBuilder,

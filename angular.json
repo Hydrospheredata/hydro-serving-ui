@@ -59,11 +59,7 @@
                 "fileReplacements": [
                   {
                     "replace": "src/environments/environment.ts",
-                    "with": "src/environments/environment.prod.ts"
-                  },
-                  {
-                    "replace": "src/assets/images/logo/logo.svg",
-                    "with": "src/assets/images/tm-logo/logo.svg"
+                    "with": "src/environments/environment.tm.ts"
                   }
                 ],
                 "optimization": true,

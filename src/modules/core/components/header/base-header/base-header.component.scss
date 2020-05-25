@@ -1,0 +1,22 @@
+@import 'variables';
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 0 8px;
+  height: 100%;
+  background: $primary-color-700;
+  &__logo {
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    left: 2px;
+    width: 120px;
+    &-icon {
+      width: 152px;
+      height: 42px;
+    }
+  }
+}

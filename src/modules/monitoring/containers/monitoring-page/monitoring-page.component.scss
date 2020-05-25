@@ -1,7 +1,6 @@
-@import "variables";
+@import 'variables';
 
 .monitoring {
-  min-width: 1200px;
   position: relative;
   width: 100%;
 
@@ -25,7 +24,7 @@
       color: $neutral-color-300;
       cursor: pointer;
       height: 24px;
-      transition: .3s ease all;
+      transition: 0.3s ease all;
       width: 24px;
 
       &:hover {
