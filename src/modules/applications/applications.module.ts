@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ApplicationsRoutingModule } from '@applications/applications.router';
+import { ApplicationsRoutingModule } from '@applications/applications-routing.module';
 
 import {
   ApplicationFormComponent,

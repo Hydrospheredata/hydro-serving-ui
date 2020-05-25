@@ -10,11 +10,14 @@ import {
   selectSelectedModel,
   selectModelVersionById,
   selectModelVersionEntities,
+  selectModelsLoaded,
+  selectModelVersionsLoaded,
 } from '@models/store/selectors';
 import { Store, select } from '@ngrx/store';
 import { ProfilerFacade } from '@profiler/store';
 import { ServablesFacade } from '@servables/servables.facade';
-import { ModelVersionStatus, Model } from '@shared/_index';
+import { ModelVersionStatus, Model, ModelVersion } from '@shared/_index';
+import { neitherNullNorUndefined } from '@shared/utils';
 import { isEmpty } from 'lodash';
 import { combineLatest, Observable, BehaviorSubject } from 'rxjs';
 import {
@@ -34,7 +37,7 @@ import { State } from './reducers';
 export class ModelsFacade {
   selectedModelVersion$ = this.store.pipe(
     select(selectSelectedModelVersion),
-    filter(val => val !== undefined)
+    neitherNullNorUndefined
   );
   siblingModelVersions$ = this.selectedModelVersion$.pipe(
     switchMap(({ model: { id: modelId }, id: modelVersionId }) =>
@@ -42,7 +45,7 @@ export class ModelsFacade {
         select(selectSiblingModelVersions({ modelId, modelVersionId }))
       )
     ),
-    filter(modelVersions => modelVersions !== undefined),
+    neitherNullNorUndefined,
     map(modelVersions => {
       return modelVersions.filter(
         mv => mv.status === ModelVersionStatus.Released
@@ -93,7 +96,7 @@ export class ModelsFacade {
 
   selectedModel$ = this.store.pipe(
     select(selectSelectedModel),
-    filter(val => val !== undefined)
+    neitherNullNorUndefined
   );
 
   selectedModelVersions$ = this.selectedModel$.pipe(
@@ -205,7 +208,7 @@ export class ModelsFacade {
   ) {}
 
   selectModelVersionById$ = id =>
-    this.store.pipe(select(selectModelVersionById(id)))
+    this.store.pipe(select(selectModelVersionById(id)));
 
   modelVersionsByModelId(id: number) {
     return this.store.pipe(select(selectAllModelVersionsByModelId(id)));
@@ -223,5 +226,21 @@ export class ModelsFacade {
     } else {
       this.favoriteStorage.add(model.name);
     }
+  }
+
+  isModelsLoaded(): Observable<boolean> {
+    return this.store.pipe(select(selectModelsLoaded));
+  }
+
+  isModelVersionsLoaded(): Observable<boolean> {
+    return this.store.pipe(select(selectModelVersionsLoaded));
+  }
+
+  getAllModels(): Observable<Model[]> {
+    return this.allModels$;
+  }
+
+  getAllModelVersions(): Observable<ModelVersion[]> {
+    return this.allModelVersions$;
   }
 }

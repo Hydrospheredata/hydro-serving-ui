@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
-import { ModelsRoutingModule } from './models.router';
+import { ModelsRoutingModule } from './models-routing.module';
 
 import {
   ModelsComponent,
@@ -13,11 +13,7 @@ import {
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
-import {
-  ModelDetailsGuard,
-  ModelsService,
-  ModelVersionDetailsGuard,
-} from '@models/services';
+import { ModelsService } from '@models/services';
 import { ModelEffects, reducer } from '@models/store';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
@@ -62,7 +58,7 @@ import { StatModule } from '../stat/stat.module';
     ModelVersionServicesComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
-  providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
+  providers: [ModelsService],
   exports: [ModelsPageComponent],
 })
 export class ModelsModule {}
