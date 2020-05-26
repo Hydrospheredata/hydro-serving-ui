@@ -3,6 +3,7 @@
     class="header-nav__item"
     [routerLink]="['/models']"
     routerLinkActive="header-nav__item--active"
+    skipLocationChange
   >
     <hydro-icon type="icon-models" class="header-nav__icon"></hydro-icon>
     <span>Models</span>
@@ -10,6 +11,7 @@
   <a
     class="header-nav__item"
     [routerLink]="['/applications']"
+    skipLocationChange
     routerLinkActive="header-nav__item--active"
   >
     <hydro-icon type="icon-applications" class="header-nav__icon"></hydro-icon>
