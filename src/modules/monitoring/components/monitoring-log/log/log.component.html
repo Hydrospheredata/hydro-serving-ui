@@ -32,6 +32,7 @@
       </ul>
       <div class="log__detailed">
         <hs-log-detail
+          *ngIf="selectedCheck"
           [check]="selectedCheck"
           [modelVersion]="modelVersion"
         ></hs-log-detail>

@@ -4,7 +4,8 @@ import { AggregationState } from '@monitoring/store/aggregation.state';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
 import { MonitoringService } from '@monitoring/services';
 import { AggregationPaginator } from '@monitoring/services/aggregation-paginator';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { MonitoringPageService } from '@monitoring/store/facades';
+import { MonitoringFacade } from '@monitoring/store/monitoring.facade';
 import { neitherNullNorUndefined } from '@shared/utils';
 import { combineLatest, Observable, of, timer, Subject } from 'rxjs';
 import {
@@ -16,26 +17,23 @@ import {
   takeUntil,
   withLatestFrom,
   distinctUntilChanged,
+  take,
 } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AggregationFacade implements OnDestroy {
-  private readonly aggregations$: Observable<AggregationsList>;
-  private readonly limit: number = 80;
-  private readonly interval: number = 5000;
+  private readonly aggregationList$: Observable<AggregationsList>;
   private readonly groupedBy: number = 10;
   private destroy$: Subject<any> = new Subject<any>();
 
   constructor(
-    private monitoringPageFacade: MonitoringPageFacade,
-    private monitoringApi: MonitoringService,
-    private paginator: AggregationPaginator,
-    private state: AggregationState
+    private monitoringStore: MonitoringFacade,
+    private paginator: AggregationPaginator
   ) {
-    this.aggregations$ = this.state
-      .getAggregations()
+    this.aggregationList$ = this.monitoringStore
+      .getAggregationList()
       .pipe(neitherNullNorUndefined, shareReplay(1));
 
     this.checkSelectedAggregation();
@@ -47,64 +45,21 @@ export class AggregationFacade implements OnDestroy {
   }
 
   getSelectedAggregation(): Observable<Aggregation> {
-    return this.monitoringPageFacade
-      .getAggregation()
-      .pipe(neitherNullNorUndefined);
+    return this.monitoringStore.getSelectedAggregation();
   }
 
-  selectAggregation(agg: Aggregation): void {
-    this.monitoringPageFacade.selectAggregation(agg);
+  getAggregationList(): Observable<AggregationsList> {
+    return this.aggregationList$;
   }
 
-  loadAggregations(): void {
-    combineLatest([
-      this.monitoringPageFacade.getModelVersion(),
-      this.state.getOffset(),
-    ])
-      .pipe(
-        switchMap(([modelVersion, offset]) => {
-          return timer(0, this.interval).pipe(
-            switchMap(() => {
-              return this.monitoringApi
-                .getChecksAggregation({
-                  limit: this.limit,
-                  modelVersionId: modelVersion.id,
-                  offset,
-                })
-                .pipe(
-                  catchError(err => {
-                    this.state.setError(err);
-                    return of(null);
-                  })
-                );
-            }),
-            neitherNullNorUndefined,
-            distinctUntilChanged<ChecksAggregationResponse>(
-              (prev, cur) => cur.count === prev.count
-            ),
-            map(({ count, results }) => {
-              const aggregations = results
-                .map(aggregation => new Aggregation(aggregation))
-                .reverse();
-              this.state.addAggregations(
-                new AggregationsList(aggregations, count)
-              );
-            })
-          );
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe();
-  }
-
-  canLoadRight(): Observable<boolean> {
-    return this.state
+  canLoadNewer(): Observable<boolean> {
+    return this.monitoringStore
       .getOffset()
-      .pipe(map(offset => this.paginator.canLoadNewest(offset)));
+      .pipe(map(offset => this.paginator.canLoadNewer(offset)));
   }
 
-  canLoadLeft(): Observable<boolean> {
-    return combineLatest([this.aggregations$, this.state.getOffset()]).pipe(
+  canLoadOlder(): Observable<boolean> {
+    return combineLatest([this.getAggregationList(), of(0)]).pipe(
       map(([aggregations, offset]) => {
         return this.paginator.canLoadOlder(
           aggregations.totalRequests,
@@ -116,30 +71,22 @@ export class AggregationFacade implements OnDestroy {
     );
   }
 
-  getAggregations(): Observable<AggregationsList> {
-    return this.aggregations$;
-  }
-
   loadOlder(): void {
-    this.state.setOffset(1);
+    this.monitoringStore.loadOlderAggregation();
   }
 
-  loadNewest(): void {
-    this.state.setOffset(-1);
-  }
-
-  getError(): Observable<string | null> {
-    return this.state.getError();
+  loadNewer(): void {
+    this.monitoringStore.loadNewerAggregation();
   }
 
   private checkSelectedAggregation() {
-    this.aggregations$
+    this.getAggregationList()
       .pipe(
         neitherNullNorUndefined,
-        withLatestFrom(this.monitoringPageFacade.getAggregation()),
+        withLatestFrom(this.getSelectedAggregation()),
         tap(([aggregations, currentSelectedAggregation]) => {
           if (aggregations.totalRequests === 0) {
-            this.selectAggregation(null);
+            this.selectAggregation(undefined);
             return;
           }
           if (!aggregations.has(currentSelectedAggregation)) {
@@ -150,5 +97,9 @@ export class AggregationFacade implements OnDestroy {
         takeUntil(this.destroy$)
       )
       .subscribe();
+  }
+
+  selectAggregation(agg: Aggregation): void {
+    this.monitoringStore.selectAggregation(agg);
   }
 }

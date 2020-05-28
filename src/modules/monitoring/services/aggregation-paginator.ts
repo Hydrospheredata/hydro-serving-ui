@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class AggregationPaginator {
   elementsPerColumn$: BehaviorSubject<number> = new BehaviorSubject(10);
 
-  canLoadNewest(offset: number): boolean {
+  canLoadNewer(offset: number): boolean {
     return offset !== 0;
   }
 

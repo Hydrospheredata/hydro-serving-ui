@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 import { DialogService } from '@dialog/dialog.service';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { MonitoringPageService } from '@monitoring/store/facades';
 
 export const METRIC_ID_VALUE = new InjectionToken<string>('metric id value');
 
@@ -20,7 +20,7 @@ export class DialogDeleteMetricComponent {
   @Input() metricId: string;
   constructor(
     public dialog: DialogService,
-    private facade: MonitoringPageFacade
+    private facade: MonitoringPageService
   ) {}
 
   public onClose(): void {

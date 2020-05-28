@@ -1,7 +1,4 @@
 <div class="stat">
-  <hs-services-header
-    [modelVersion]="modelVersion$ | async"
-  ></hs-services-header>
   <hs-stat-availability>
     <div class="stat__loader" *ngIf="isLoading$ | async">
       <hs-loader class="stat__loader-icon"></hs-loader>

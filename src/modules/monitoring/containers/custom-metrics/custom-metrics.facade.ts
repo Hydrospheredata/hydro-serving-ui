@@ -7,20 +7,13 @@ import {
 } from '@monitoring/models';
 import { Check, CheckCollection } from '@monitoring/models';
 import { MonitoringService } from '@monitoring/services';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { MetricChartsState } from '@monitoring/store/metric-charts.state';
+import { MonitoringFacade } from '@monitoring/store/monitoring.facade';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
-import { neitherNullNorUndefined } from '@shared/utils';
 import { combineLatest, forkJoin, Observable, of } from 'rxjs';
-import {
-  map,
-  switchMap,
-  startWith,
-  shareReplay,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { map, switchMap, startWith, shareReplay } from 'rxjs/operators';
 
 export type ComparisonRegime = 'split' | 'merge';
 
@@ -38,36 +31,26 @@ export class CustomMetricsFacade {
 
   constructor(
     private metricsFacade: MetricsFacade,
-    private monitoringPageFacade: MonitoringPageFacade,
+    private monitoringStore: MonitoringFacade,
     private monitoringApi: MonitoringService,
     private colorPalette: ColorPaletteService,
     private state: MetricChartsState
   ) {
     this.selectedMetrics$ = this.metricsFacade.selectedMetrics$;
 
-    this.curMetricChecks$ = this.monitoringPageFacade
-      .getChecks()
-      .pipe(neitherNullNorUndefined)
-      .pipe(
-        map(checks => [...checks.getMetricsChecks().values()]),
-        shareReplay(1)
-      );
+    this.curMetricChecks$ = this.monitoringStore.getChecks().pipe(
+      map(checks => (checks ? [...checks.getMetricsChecks().values()] : [])),
+      shareReplay(1)
+    );
 
     this.compMetricChecks$ = combineLatest([
       this.state.getModelVersionsToCompare(),
-      this.monitoringPageFacade.getAggregation(),
-      this.monitoringPageFacade.getModelVersion(),
+      this.monitoringStore.getSelectedAggregation(),
     ]).pipe(
-      switchMap(([modelVersions, aggregation, currentModelVersion]) => {
-        if (modelVersions.length === 0) {
-          return of([]);
-        }
+      switchMap(([modelVersions, aggregation]) => {
+        if (modelVersions.length === 0) return of([]);
 
-        return this.loadComparableChecks(
-          currentModelVersion,
-          aggregation,
-          modelVersions
-        ).pipe(
+        return this.loadComparableChecks(aggregation, modelVersions).pipe(
           map(response => {
             return Object.values(response).reduce((acc, checkCollection) => {
               return [...acc, ...checkCollection.getMetricsChecks().values()];
@@ -108,7 +91,6 @@ export class CustomMetricsFacade {
   }
 
   private loadComparableChecks(
-    originalModelVersion: ModelVersion,
     aggregation: Aggregation,
     comparedModelVersions: ModelVersion[]
   ): Observable<{
@@ -119,7 +101,7 @@ export class CustomMetricsFacade {
     } = comparedModelVersions.reduce((request, { id }) => {
       request[id] = this.monitoringApi
         .getChecksForComparision({
-          originalModelVersion: originalModelVersion.id,
+          originalModelVersion: aggregation.modelVersionId,
           aggregationId: aggregation.id,
           comparedModelVersionId: id,
         })
@@ -162,7 +144,7 @@ function buildPlotBands(
   return res;
 }
 
-function createConfig(name, threshold?): ChartConfig {
+function defaultConfig(name, threshold?): ChartConfig {
   return {
     name,
     threshold,
@@ -187,7 +169,7 @@ function generateConfigs(
 
   // Create configs for MetricSpecs first
   const configs: ChartConfig[] = metrics.map(
-    ({ name, config: { threshold } }) => createConfig(name, threshold)
+    ({ name, config: { threshold } }) => defaultConfig(name, threshold)
   );
 
   // Iterate over MetricCheckAggregations and create(update) charts
@@ -195,7 +177,7 @@ function generateConfigs(
     let config = configs.find(cfg => cfg.name === cur.metricName);
 
     if (config === undefined) {
-      config = createConfig(cur.metricName);
+      config = defaultConfig(cur.metricName);
       configs.push(config);
     }
 

@@ -30,9 +30,11 @@ import {
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
   ModelVersionServicesComponent,
+  ModelVersionDetailsContainerComponent,
 } from './containers';
 import { ModelsPublicUiModule } from './shared/models-public-ui.module';
 import { StatModule } from '../stat/stat.module';
+import { ModelVersionHeaderComponent } from './components/model-version-header/model-version-header.component';
 
 @NgModule({
   imports: [
@@ -60,9 +62,11 @@ import { StatModule } from '../stat/stat.module';
     ModelsPageComponent,
     ModelPageComponent,
     ModelVersionServicesComponent,
+    ModelVersionHeaderComponent,
+    ModelVersionDetailsContainerComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
-  exports: [ModelsPageComponent],
+  exports: [ModelsPageComponent, ModelVersionHeaderComponent],
 })
 export class ModelsModule {}

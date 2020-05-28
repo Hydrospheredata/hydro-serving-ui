@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .visualization {
   display: flex;
@@ -14,13 +14,8 @@
     width: 100%;
 
     &-icon {
-      color: $neutral-color-100;
-      width: 64px;
-      height: 64px;
-      margin-bottom: 12px;
-      animation: blink 2s ease infinite alternate backwards;
-      border-left: 1px $neutral-color-500 solid;
-      border-bottom: 1px $neutral-color-500 solid;
+      width: 40px;
+      height: 40px;
     }
 
     &-status {
@@ -47,7 +42,8 @@
       margin: 24px 0;
     }
 
-    &-button {}
+    &-button {
+    }
   }
 
   &__header {
@@ -101,7 +97,7 @@
   }
 
   &__circle {
-    opacity: .5;
+    opacity: 0.5;
 
     &:hover {
       opacity: 1;
@@ -133,10 +129,10 @@
 
 @keyframes blink {
   0% {
-    color: $neutral-color-100
+    color: $neutral-color-100;
   }
 
   100% {
-    color: $neutral-color-300
+    color: $neutral-color-300;
   }
 }

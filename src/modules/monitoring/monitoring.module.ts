@@ -15,13 +15,17 @@ import {
   ReqstoreMetricsComponent,
   RequestsInformationComponent,
   TimeIntervalSelectComponent,
+  AggregationHeaderComponent,
+  AggregationDataSectionComponent,
 } from '@monitoring/components';
+import { AggregationEffects } from '@monitoring/store/effects/aggregation.effects';
 import { CheckIdToTimePipe } from '@monitoring/pipes';
 import {
   MetricsEffects,
   MonitoringServiceStatusEffects,
   reducer,
 } from '@monitoring/store';
+import { ChecksEffects } from '@monitoring/store/effects/checks.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
@@ -66,15 +70,21 @@ import { NgModule } from '@angular/core';
     RegimeSelectorComponent,
     CustomMetricsComponent,
     MetricsChecksComponent,
+    AggregationHeaderComponent,
+    AggregationDataSectionComponent,
   ],
   imports: [
     ModelsPublicUiModule,
     SharedModule,
     StoreModule.forFeature('monitoring', reducer),
-    EffectsModule.forFeature([MonitoringServiceStatusEffects, MetricsEffects]),
+    EffectsModule.forFeature([
+      MonitoringServiceStatusEffects,
+      MetricsEffects,
+      AggregationEffects,
+      ChecksEffects,
+    ]),
     RootCauseModule,
   ],
   exports: [MonitoringPageComponent, MetricsComponent, LogDetailComponent],
-  providers: [],
 })
 export class MonitoringModule {}

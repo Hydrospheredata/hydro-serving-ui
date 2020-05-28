@@ -6,3 +6,4 @@ export * from './monitoring-log';
 export * from './requests-information/requests-information.component';
 export * from './regime-selector/regime-selector.component';
 export * from './checks';
+export * from './aggregation';

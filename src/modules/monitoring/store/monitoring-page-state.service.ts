@@ -1,32 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Aggregation, CheckCollection } from '@monitoring/models';
 import { BehaviorSubject, Observable } from '@node_modules/rxjs';
-import { distinctUntilChanged } from '@node_modules/rxjs/operators';
+import {
+  distinctUntilChanged,
+  tap,
+  shareReplay,
+} from '@node_modules/rxjs/operators';
+import { log } from '@shared/utils';
 import { map } from 'rxjs/operators';
 
 interface State {
-  aggregation: Aggregation | null;
-  error: string | null;
+  aggregation: Aggregation;
+  error: string;
   checksLoading: boolean;
-  checks: CheckCollection | null;
+  checks: CheckCollection;
 }
 
 const initialState: State = {
-  aggregation: null,
-  error: null,
+  aggregation: undefined,
+  error: undefined,
   checksLoading: false,
-  checks: null,
+  checks: undefined,
 };
 
 @Injectable()
 export class MonitoringPageState {
-  private readonly state$: Observable<State>;
+  state$: Observable<State>;
   private state: BehaviorSubject<State> = new BehaviorSubject<State>(
     initialState
   );
 
   constructor() {
-    this.state$ = this.state.asObservable();
+    console.log('create');
+    this.state$ = this.state.asObservable().pipe(log, shareReplay(1));
   }
 
   getState(): Observable<State> {
@@ -40,21 +46,26 @@ export class MonitoringPageState {
     );
   }
 
-  getChecks(): Observable<CheckCollection | null> {
+  getChecks(): Observable<CheckCollection | undefined> {
     return this.state$.pipe(
+      tap(_ => {
+        console.log('bbb', _);
+      }),
       map(({ checks }) => checks),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      tap(_ => console.log('ffff', _))
     );
   }
 
-  getAggregation(): Observable<Aggregation | null> {
+  getAggregation(): Observable<Aggregation | undefined> {
     return this.state$.pipe(
       map(({ aggregation }) => aggregation),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      tap(_ => console.log('new selected'))
     );
   }
 
-  getError(): Observable<string | null> {
+  getError(): Observable<string | undefined> {
     return this.state$.pipe(
       map(({ error }) => error),
       distinctUntilChanged()
@@ -63,17 +74,17 @@ export class MonitoringPageState {
 
   setError(error: string): void {
     const currentState = this.state.getValue();
-    this.state.next({ ...currentState, error });
+    this.state.next({ ...currentState, error, checksLoading: false });
   }
 
-  selectAggregation(aggregation: Aggregation | null): void {
+  selectAggregation(aggregation: Aggregation | undefined): void {
     const currentState = this.state.getValue();
     this.state.next({ ...currentState, aggregation });
   }
 
   addChecks(checks: CheckCollection): void {
     const currentState = this.state.getValue();
-    this.state.next({ ...currentState, checks });
+    this.state.next({ ...currentState, checks, checksLoading: false });
   }
 
   setChecksLoading(loading: boolean): void {

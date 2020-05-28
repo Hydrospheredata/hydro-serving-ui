@@ -1,0 +1,38 @@
+<div *ngIf="names" class="agg-data">
+  <ng-container
+    [ngTemplateOutlet]="rowLabels"
+    [ngTemplateOutletContext]="{ $implicit: names }"
+  ></ng-container>
+  <div class="agg-data__checks">
+    <svg [attr.height]="canvasHeight" [attr.width]="canvasWidth">
+      <g
+        (click)="onColumnClick(column)"
+        *ngFor="
+          let column of aggregationList.aggregations;
+          let columnIndex = index
+        "
+        [attr.transform]="columnTranslate(columnIndex)"
+        [ngClass]="{
+          'column--active': column.id === selectedAggregation?.id
+        }"
+        class="column"
+      >
+        <rect
+          *ngFor="let name of names; let rowIndex = index"
+          [attr.fill]="cellColor(column, name)"
+          [attr.height]="CELL_SIZE.height"
+          [attr.transform]="rowTranslate(rowIndex)"
+          [attr.width]="CELL_SIZE.width"
+        ></rect>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<ng-template #rowLabels let-names>
+  <ul [ngStyle]="{ width: labelsWidth + 'px' }" class="agg-data__labels">
+    <li *ngFor="let label of names" class="agg-data__label">
+      {{ label }}
+    </li>
+  </ul>
+</ng-template>

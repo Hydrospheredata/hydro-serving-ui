@@ -1,30 +1,25 @@
-<div class="monitoring">
-  <hs-services-header
-    [modelVersion]="modelVersion$ | async"
-  ></hs-services-header>
+<div class="monitoring" *ngIf="modelVersion$ | async">
   <hs-monitoring-availability>
-    <ng-container *ngIf="!(error$ | async); else errorSection">
+    <ng-container *ngIf="true; else errorSection">
       <section class="monitoring__aggregation">
-        <hs-aggregation> </hs-aggregation>
+        <hs-aggregation></hs-aggregation>
       </section>
       <ng-container *ngIf="checks$ | async as checkCollection">
-        <hs-requests-information
-          [aggregation]="selectedAggregation$ | async"
-          [errors]="checkCollection.getErrorChecks()"
-          [latency]="checkCollection.getLatency()"
-        >
-        </hs-requests-information>
-        <!--        <hs-batch-metrics-->
-        <!--          *ngIf="showBatchMetricsBlock(aggregation)"-->
-        <!--          [aggregation]="aggregation"-->
-        <!--        ></hs-batch-metrics>-->
-        <div class="monitoring__log">
-          <hs-log
-            [checks]="checks$ | async"
-            [loading]="detailedCheckLoading$ | async"
-            [modelVersion]="modelVersion$ | async"
-          ></hs-log>
-        </div>
+        <ng-container *ngIf="!checkCollection.isEmpty()">
+          <hs-requests-information
+            [aggregation]="selectedAggregation$ | async"
+            [errors]="checkCollection.getErrorChecks()"
+            [latency]="checkCollection.getLatency()"
+          >
+          </hs-requests-information>
+          <div class="monitoring__log">
+            <hs-log
+              [checks]="checks$ | async"
+              [loading]="false"
+              [modelVersion]="modelVersion$ | async"
+            ></hs-log>
+          </div>
+        </ng-container>
       </ng-container>
       <hs-custom-metrics></hs-custom-metrics>
     </ng-container>
@@ -33,6 +28,6 @@
 
 <ng-template #errorSection>
   <hs-error-message class="monitoring-page__error">
-    {{ error$ | async }}
+    <!--    {{ error$ | async }}-->
   </hs-error-message>
 </ng-template>

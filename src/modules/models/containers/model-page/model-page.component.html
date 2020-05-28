@@ -1,4 +1,10 @@
-<div class="model-version-page">
+<div class="model-page">
+  <div class="model-page__header">
+    <span class="model-page__name">{{ (model$ | async).name }}</span>
+    <button hs-button color="warning" kind="flat" (click)="onDelete()">
+      delete
+    </button>
+  </div>
   <hs-model-versions
     [modelVersions]="modelVersions$ | async"
   ></hs-model-versions>

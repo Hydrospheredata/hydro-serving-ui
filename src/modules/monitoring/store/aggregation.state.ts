@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  Aggregation,
-  CheckCollection,
-  AggregationsList,
-} from '@monitoring/models';
+import { AggregationsList } from '@monitoring/models';
 import { BehaviorSubject, Observable } from '@node_modules/rxjs';
 import { map, distinctUntilChanged } from 'rxjs/operators';
 

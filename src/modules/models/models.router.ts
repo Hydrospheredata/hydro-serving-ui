@@ -9,6 +9,7 @@ import {
   ModelsPageComponent,
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
+  ModelVersionDetailsContainerComponent,
 } from './containers';
 import { StatPageComponent } from '../stat/containers';
 
@@ -28,23 +29,29 @@ import { StatPageComponent } from '../stat/containers';
           {
             path: ':modelId/:modelVersionId',
             component: ModelVersionPageComponent,
-            canActivate: [ModelVersionDetailsGuard],
-          },
-          {
-            path: ':modelId/:modelVersionId/monitoring',
-            component: MonitoringPageComponent,
-          },
-          {
-            path: ':modelId/:modelVersionId/visualization',
-            component: VisualizationPageComponent,
-          },
-          {
-            path: ':modelId/:modelVersionId/profile/:featureName',
-            component: ModelVersionProfilerPageComponent,
-          },
-          {
-            path: ':modelId/:modelVersionId/stat',
-            component: StatPageComponent,
+            children: [
+              {
+                path: '',
+                canActivate: [ModelVersionDetailsGuard],
+                component: ModelVersionDetailsContainerComponent,
+              },
+              {
+                path: 'monitoring',
+                component: MonitoringPageComponent,
+              },
+              {
+                path: 'visualization',
+                component: VisualizationPageComponent,
+              },
+              {
+                path: 'profile/:featureName',
+                component: ModelVersionProfilerPageComponent,
+              },
+              {
+                path: 'stat',
+                component: StatPageComponent,
+              },
+            ],
           },
         ],
       },

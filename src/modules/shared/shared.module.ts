@@ -55,6 +55,7 @@ import {
   ScaleImageDirective,
 } from './directives/_index';
 import { ServicesHeaderComponent } from './components/services-header/services-header.component';
+import { PluckPipe } from './pipes/pluck.pipe';
 
 const PIPES = [
   SidebarFilterPipe,
@@ -122,6 +123,7 @@ const RE_EXPORTED_MODULES = [
     ...COMPONENTS,
     ...DIRECTIVES,
     ServicesHeaderComponent,
+    PluckPipe,
   ],
   exports: [
     ...PIPES,
@@ -129,6 +131,7 @@ const RE_EXPORTED_MODULES = [
     ...DIRECTIVES,
     ...RE_EXPORTED_MODULES,
     ServicesHeaderComponent,
+    PluckPipe,
   ],
 })
 export class SharedModule {}

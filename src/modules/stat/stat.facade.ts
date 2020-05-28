@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { neitherNullNorUndefined } from '@shared/utils';
 import { StatApiService } from './services/stat-api.service';
-import { Observable } from '@node_modules/rxjs';
+import { Observable, of } from '@node_modules/rxjs';
 import { Stat } from './models';
 import { ModelsFacade } from '@models/store';
-import { switchMap, tap } from '@node_modules/rxjs/internal/operators';
+import { switchMap, catchError } from '@node_modules/rxjs/internal/operators';
 import { ModelVersion } from '@shared/models';
 import { StatState } from './store/stat.state';
 
 @Injectable()
 export class StatFacade {
-  private readonly stat$: Observable<Stat>;
   private readonly modelVersion$: Observable<ModelVersion>;
 
   constructor(
@@ -20,9 +19,8 @@ export class StatFacade {
   ) {
     this.modelVersion$ = this.modelsFacade.selectedModelVersion$;
   }
-
   public getStat(): Observable<Stat> {
-    return this.statState.getStat().pipe(neitherNullNorUndefined);
+    return this.statState.getStat();
   }
 
   public isLoading(): Observable<boolean> {
@@ -40,22 +38,22 @@ export class StatFacade {
   public loadingStat(): void {
     this.modelVersion$
       .pipe(
-        tap(() => this.statState.setLoading(true)),
-        switchMap(modelVersion =>
-          this.statApi.getStat({
-            model_version_id: `${modelVersion.id}`,
-          })
-        )
+        switchMap(modelVersion => {
+          this.statState.initLoading();
+          return this.statApi
+            .getStat({
+              model_version_id: `${modelVersion.id}`,
+            })
+            .pipe(
+              catchError(err => {
+                this.statState.setError(err);
+                return of(null);
+              })
+            );
+        })
       )
-      .subscribe(
-        stat => {
-          this.statState.setStat(stat);
-          this.statState.setLoading(false);
-        },
-        error => {
-          this.statState.setLoading(false);
-          this.statState.setError(error);
-        }
-      );
+      .subscribe(stat => {
+        this.statState.setStat(stat);
+      });
   }
 }

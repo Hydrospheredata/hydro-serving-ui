@@ -3,14 +3,10 @@ $base-size: 8px;
 
 // FONT
 // Font family
-$font-family-light: 'Museo Sans Light',
-sans-serif;
-$font-family-regular: 'Museo Sans Regular',
-sans-serif;
-$font-family-bold: 'Museo Sans Bold',
-sans-serif;
-$font-family-ultrabold: 'Museo Sans UltraBold',
-sans-serif;
+$font-family-light: 'Roboto Light', sans-serif;
+$font-family-regular: 'Roboto Regular', sans-serif;
+$font-family-bold: 'Roboto Bold', sans-serif;
+$font-family-ultrabold: 'Roboto UltraBold', sans-serif;
 
 // Font size
 $base-font-size: $base-size * 2;
@@ -24,79 +20,76 @@ $label-color: #818994;
 $label-font-size: 1.125rem;
 $input-font-size: 1.125rem;
 
-// COLORS
-$background-color: hsl(206, 7%, 95%);
 // primary color palette
-$primary-color-100: #DCEEFB;
-$primary-color-200: #B6E0FE;
-$primary-color-300: #84C5F4;
-$primary-color-400: #62B0E8;
-$primary-color-500: #4098D7;
-$primary-color-600: #2680C2;
-$primary-color-700: #186FAF;
-$primary-color-800: #0F609B;
-$primary-color-900: #0A558C;
-$primary-color-1000: #003E6B;
+$primary-color-100: #dceefb;
+$primary-color-200: #b6e0fe;
+$primary-color-300: #84c5f4;
+$primary-color-400: #62b0e8;
+$primary-color-500: #4098d7;
+$primary-color-600: #2680c2;
+$primary-color-700: #186faf;
+$primary-color-800: #0f609b;
+$primary-color-900: #0a558c;
+$primary-color-1000: #003e6b;
 
 //accent color pallete
 
-$accent-color-100: #FFFBEA;
-$accent-color-200: #FFF3C4;
-$accent-color-300: #FCE588;
-$accent-color-400: #FADB5F;
-$accent-color-500: #F7C948;
-$accent-color-600: #F0B429;
-$accent-color-700: #DE911D;
-$accent-color-800: #CB6E17;
-$accent-color-900: #B44D12;
-$accent-color-1000: #8D2B0B;
+$accent-color-100: #fffbea;
+$accent-color-200: #fff3c4;
+$accent-color-300: #fce588;
+$accent-color-400: #fadb5f;
+$accent-color-500: #f7c948;
+$accent-color-600: #f0b429;
+$accent-color-700: #de911d;
+$accent-color-800: #cb6e17;
+$accent-color-900: #b44d12;
+$accent-color-1000: #8d2b0b;
 
-// neutrals color palette 
-$neutral-color-100: #F0F4F8;
-$neutral-color-200: #D9E2EC;
-$neutral-color-300: #BCCCDC;
-$neutral-color-400: #9FB3C8;
-$neutral-color-500: #829AB1;
-$neutral-color-600: #627D98;
+// neutrals color palette
+$neutral-color-100: #f0f4f8;
+$neutral-color-200: #d9e2ec;
+$neutral-color-300: #bcccdc;
+$neutral-color-400: #9fb3c8;
+$neutral-color-500: #829ab1;
+$neutral-color-600: #627d98;
 $neutral-color-700: #486581;
-$neutral-color-800: #334E68;
-$neutral-color-900: #243B53;
-$neutral-color-1000: #102A43;
+$neutral-color-800: #334e68;
+$neutral-color-900: #243b53;
+$neutral-color-1000: #102a43;
 
 // supportive color pallete
-$supportive-color-cyan-100: #E0FCFF;
-$supportive-color-cyan-200: #BEF8FD;
-$supportive-color-cyan-300: #87EAF2;
-$supportive-color-cyan-400: #54D1DB;
-$supportive-color-cyan-500: #38BEC9;
-$supportive-color-cyan-600: #2CB1BC;
-$supportive-color-cyan-700: #14919B;
-$supportive-color-cyan-800: #0E7C86;
-$supportive-color-cyan-900: #0A6C74;
-$supportive-color-cyan-1000: #044E54;
+$supportive-color-cyan-100: #e0fcff;
+$supportive-color-cyan-200: #bef8fd;
+$supportive-color-cyan-300: #87eaf2;
+$supportive-color-cyan-400: #54d1db;
+$supportive-color-cyan-500: #38bec9;
+$supportive-color-cyan-600: #2cb1bc;
+$supportive-color-cyan-700: #14919b;
+$supportive-color-cyan-800: #0e7c86;
+$supportive-color-cyan-900: #0a6c74;
+$supportive-color-cyan-1000: #044e54;
 
-$supportive-color-green-100: #EFFCF6;
-$supportive-color-green-200: #C6F7E2;
-$supportive-color-green-300: #8EEDC7;
-$supportive-color-green-400: #65D6AD;
-$supportive-color-green-500: #3EBD93;
-$supportive-color-green-600: #27AB83;
+$supportive-color-green-100: #effcf6;
+$supportive-color-green-200: #c6f7e2;
+$supportive-color-green-300: #8eedc7;
+$supportive-color-green-400: #65d6ad;
+$supportive-color-green-500: #3ebd93;
+$supportive-color-green-600: #27ab83;
 $supportive-color-green-700: #199473;
-$supportive-color-green-800: #147D64;
-$supportive-color-green-900: #0C6B58;
-$supportive-color-green-1000: #014D40;
+$supportive-color-green-800: #147d64;
+$supportive-color-green-900: #0c6b58;
+$supportive-color-green-1000: #014d40;
 
-$supportive-color-red-100: #FFE3E3;
-$supportive-color-red-200: #FFBDBD;
-$supportive-color-red-300: #FF9B9B;
-$supportive-color-red-400: #F86A6A;
-$supportive-color-red-500: #EF4E4E;
-$supportive-color-red-600: #E12D39;
-$supportive-color-red-700: #CF1124;
-$supportive-color-red-800: #AB091E;
-$supportive-color-red-900: #8A041A;
+$supportive-color-red-100: #ffe3e3;
+$supportive-color-red-200: #ffbdbd;
+$supportive-color-red-300: #ff9b9b;
+$supportive-color-red-400: #f86a6a;
+$supportive-color-red-500: #ef4e4e;
+$supportive-color-red-600: #e12d39;
+$supportive-color-red-700: #cf1124;
+$supportive-color-red-800: #ab091e;
+$supportive-color-red-900: #8a041a;
 $supportive-color-red-1000: #610316;
-
 
 // text colors
 $neutral-text-color: $neutral-color-1000;
@@ -107,12 +100,9 @@ $error-container-border-color: $supportive-color-red-100;
 $error-container-background-color: $supportive-color-red-100;
 $error-text-color: $supportive-color-red-700;
 
-
 // status badges
 $status-success-background-color: $supportive-color-green-200;
 $status-success-text-color: $supportive-color-green-700;
 
-
 $box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-0px 1px 1px 0px rgba(0, 0, 0, 0.14),
-0px 1px 3px 0px rgba(0, 0, 0, .12);
+  0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);

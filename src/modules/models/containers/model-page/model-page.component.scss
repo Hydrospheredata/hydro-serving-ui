@@ -1,0 +1,18 @@
+@import 'variables';
+
+.model-page {
+  &__header {
+    height: 32px;
+    background: $neutral-color-100;
+    color: $neutral-color-900;
+    text-align: center;
+    line-height: 32px;
+    font-size: 16px;
+    font-family: $font-family-bold;
+    display: flex;
+    justify-content: center;
+  }
+  &__name {
+    width: 100%;
+  }
+}

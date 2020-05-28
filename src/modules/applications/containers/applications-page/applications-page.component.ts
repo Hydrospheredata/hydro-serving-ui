@@ -6,7 +6,7 @@ import { DialogService } from '@dialog/dialog.service';
 import { ModelsFacade } from '@models/store';
 import { Application } from '@shared/models';
 import { Observable, Subscription } from 'rxjs';
-import { filter, take, tap } from 'rxjs/operators';
+import { filter, tap, first } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-applications-page',
@@ -56,19 +56,14 @@ export class ApplicationsPageComponent implements OnDestroy {
     this.facade.toggleFavorite(application);
   }
 
-  handleSidebarClick(application: Application): void {
-    this.router.navigate([`applications/${application.name}`]);
+  handleSidebarClick({ name }: Application): void {
+    this.router.navigate([`applications/${name}`]);
   }
 
   private redirectToFirst() {
-    this.applications$
-      .pipe(
-        filter(application => application.length > 0),
-        take(1)
-      )
-      .subscribe(applications => {
-        this.router.navigate([`applications/${applications[0].name}`]);
-      });
+    this.applications$.pipe(first(apps => apps.length > 0)).subscribe(apps => {
+      this.router.navigate([`applications/${apps[0].name}`]);
+    });
   }
 
   private isRootApplicationsUrl(event: Event): boolean {
