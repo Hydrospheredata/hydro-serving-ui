@@ -20,7 +20,6 @@ export class D3AxisDirective {
 
     switch (this.position) {
       case 'left':
-
         axis = d3.axisLeft(scale).ticks(this.ticks);
         break;
       default:

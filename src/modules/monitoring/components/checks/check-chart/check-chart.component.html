@@ -13,19 +13,21 @@
         ></rect>
       </clipPath>
     </defs>
-    <g
-      *ngIf="!noData"
-      [attr.transform]="dataTranslate"
-      [scale]="scaleY"
-      hsD3Axis
-      position="left"
-    ></g>
-    <g
-      *ngIf="!noData"
-      [attr.transform]="xAxisTranslate"
-      [scale]="scaleX"
-      hsD3Axis
-    ></g>
+    <g #supportiveLines></g>
+    <g #axisGroup></g>
+    <!--    <g-->
+    <!--      *ngIf="!noData"-->
+    <!--      [attr.transform]="dataTranslate"-->
+    <!--      [scale]="scaleY"-->
+    <!--      hsD3Axis-->
+    <!--      position="left"-->
+    <!--    ></g>-->
+    <!--    <g-->
+    <!--      *ngIf="!noData"-->
+    <!--      [attr.transform]="xAxisTranslate"-->
+    <!--      [scale]="scaleX"-->
+    <!--      hsD3Axis-->
+    <!--    ></g>-->
     <line
       *ngIf="activePoint"
       [attr.x1]="activePoint.x"

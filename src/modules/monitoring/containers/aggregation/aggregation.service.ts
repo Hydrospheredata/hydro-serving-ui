@@ -23,7 +23,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class AggregationFacade implements OnDestroy {
+export class AggregationService implements OnDestroy {
   private readonly aggregationList$: Observable<AggregationsList>;
   private readonly groupedBy: number = 10;
   private destroy$: Subject<any> = new Subject<any>();
