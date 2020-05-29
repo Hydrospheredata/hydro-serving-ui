@@ -2,16 +2,17 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CheckCollection, AggregationsList } from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MonitoringPageState } from '@monitoring/store/monitoring-page-state.service';
+import { MonitoringFacade } from '@monitoring/store/monitoring.facade';
 import { ModelVersion } from '@shared/models';
-import { MonitoringPageService } from './monitoring-page.service';
 import { Observable } from 'rxjs';
+import { MonitoringPageService } from './monitoring-page.service';
 
 @Component({
   selector: 'hs-monitoring-page',
   templateUrl: './monitoring-page.component.html',
   styleUrls: ['./monitoring-page.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [MonitoringPageState, MonitoringPageService],
+  providers: [MonitoringFacade, MonitoringPageState, MonitoringPageService],
 })
 export class MonitoringPageComponent implements OnInit {
   aggregationList$: Observable<AggregationsList>;

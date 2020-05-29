@@ -10,17 +10,7 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { ChartConfig } from '@monitoring/models';
-import {
-  tickStep,
-  ticks,
-  extent,
-  mouse,
-  scaleLinear,
-  ScaleLinear,
-  select,
-  axisLeft,
-  axisBottom,
-} from 'd3';
+import { format, ticks, extent, mouse, scaleLinear, ScaleLinear, select, axisLeft, axisBottom } from 'd3';
 import { BehaviorSubject } from 'rxjs';
 
 interface Tooltip {
@@ -143,7 +133,8 @@ export class CheckChartComponent implements OnInit, OnDestroy {
 
       this.scaleY = scaleLinear()
         .domain([max, min])
-        .range([0, this.viewHeight]);
+        .range([0, this.viewHeight])
+        .nice();
 
       this.scaleX = scaleLinear()
         .domain([1, countPoints])
@@ -238,7 +229,9 @@ export class CheckChartComponent implements OnInit, OnDestroy {
     this.drawYAxis(yScale);
 
     select(this.axisGroup.nativeElement).selectAll('path.domain').remove();
-    select(this.axisGroup.nativeElement).selectAll('.tick > line').remove();
+    select(this.axisGroup.nativeElement)
+      .selectAll('.tick > line')
+      .attr('color', '#8392a1');
 
     select(this.axisGroup.nativeElement)
       .selectAll('.tick > text')
@@ -248,7 +241,9 @@ export class CheckChartComponent implements OnInit, OnDestroy {
   }
 
   private drawYAxis(yScale: ScaleLinear<number, number>): void {
-    const yAxis = axisLeft(yScale).ticks(this.viewHeight / 40);
+    const yAxis = axisLeft(yScale)
+      .ticks(this.viewHeight / 40)
+      .tickSize(0);
 
     select(this.axisGroup.nativeElement).select('g.yAxis').remove();
     select(this.axisGroup.nativeElement)
@@ -259,7 +254,11 @@ export class CheckChartComponent implements OnInit, OnDestroy {
   }
 
   private drawXAxis(xScale: ScaleLinear<number, number>): void {
-    const xAxis = axisBottom(xScale).tickValues(this.getXAxisValues(xScale));
+    const xAxis = axisBottom(xScale)
+      .tickValues(this.getXTicks(xScale))
+      .tickFormat(format(',.0f'))
+      .tickSize(4);
+
     select(this.axisGroup.nativeElement).select('g.xAxis').remove();
     select(this.axisGroup.nativeElement)
       .append('g')
@@ -271,9 +270,14 @@ export class CheckChartComponent implements OnInit, OnDestroy {
       .call(xAxis);
   }
 
-  private getXAxisValues(xScale: ScaleLinear<number, number>): number[] {
+  private getXTicks(xScale: ScaleLinear<number, number>): number[] {
     const [min, max] = xScale.domain();
-    return ticks(min, max, max - min);
+
+    const lessThan5 = max < 5;
+    const higherThan10 = max > 10;
+    const count = lessThan5 ? 1 : higherThan10 ? 10 : max;
+
+    return ticks(min, max, count);
   }
 
   private drawSupportiveLines({
@@ -285,6 +289,7 @@ export class CheckChartComponent implements OnInit, OnDestroy {
   }): void {
     const groupSelection = select(this.supportiveLinesGroup.nativeElement);
     const lineColor = 'rgb(237, 239, 243)';
+    groupSelection.selectAll('line').remove();
 
     groupSelection
       .selectAll('line.yLine')
@@ -295,21 +300,8 @@ export class CheckChartComponent implements OnInit, OnDestroy {
           .attr('class', 'yLine')
           .attr('x1', this.margins.left)
           .attr('y1', d => yScale(d) + this.margins.top)
-          .attr('x2', this.chartWidth - this.margins.left)
+          .attr('x2', this.chartWidth - this.margins.right)
           .attr('y2', d => yScale(d) + this.margins.top)
-          .style('stroke', lineColor)
-      );
-    groupSelection
-      .selectAll('line.xLine')
-      .data(this.getXAxisValues(xScale))
-      .join(enter =>
-        enter
-          .append('line')
-          .attr('class', 'xLine')
-          .attr('x1', d => xScale(d) + this.margins.left)
-          .attr('y1', this.margins.top)
-          .attr('x2', d => xScale(d) + this.margins.left)
-          .attr('y2', this.chartHeight - this.margins.top)
           .style('stroke', lineColor)
       );
   }

@@ -1,12 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  ViewChild,
-} from '@angular/core';
-import { easeLinear, line, select } from 'd3';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import { easeLinear, line, select, curveMonotoneX } from 'd3';
 
 @Component({
   selector: '[hs-d3line]',
@@ -30,7 +23,8 @@ export class D3LineComponent implements OnChanges {
 
     const valueline = line()
       .x(d => xScale(d[0]))
-      .y(d => yScale(d[1]));
+      .y(d => yScale(d[1]))
+      .curve(curveMonotoneX);
 
     select(this.path.nativeElement)
       .data([data])

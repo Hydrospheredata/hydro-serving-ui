@@ -7,6 +7,7 @@ import {
   LoadNewerAggregation,
 } from '@monitoring/store/actions/aggregation.actions';
 import { Action, createReducer, on } from '@ngrx/store';
+import { ClearMonitoringPage } from '../actions';
 
 export interface State {
   aggregationList: AggregationsList;
@@ -38,7 +39,8 @@ const aggregationReducer = createReducer(
     return { ...state, selectedAggregation: props.aggregation };
   }),
   on(LoadOlderAggregation, state => ({ ...state, offset: state.offset + 1 })),
-  on(LoadNewerAggregation, state => ({ ...state, offset: state.offset - 1 }))
+  on(LoadNewerAggregation, state => ({ ...state, offset: state.offset - 1 })),
+  on(ClearMonitoringPage, () => initialState)
 );
 
 export function reducer(state: State = initialState, action: Action): State {

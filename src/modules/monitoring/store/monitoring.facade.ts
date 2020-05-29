@@ -1,19 +1,12 @@
 import { Injectable } from '@angular/core';
-import {
-  AggregationsList,
-  Aggregation,
-  CheckCollection,
-} from '@monitoring/models';
+import { AggregationsList, Aggregation, CheckCollection } from '@monitoring/models';
 import {
   LoadChecks,
   ClearMonitoringPage,
   LoadOlderAggregation,
   LoadNewerAggregation,
 } from '@monitoring/store/actions';
-import {
-  LoadAggregations,
-  SelectAggregation,
-} from '@monitoring/store/actions/aggregation.actions';
+import { LoadAggregations, SelectAggregation } from '@monitoring/store/actions/aggregation.actions';
 import {
   selectAggregationList,
   selectOffset,
@@ -24,9 +17,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from '@node_modules/rxjs';
 import { State as MonitoringState } from './reducers';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MonitoringFacade {
   constructor(private readonly store: Store<MonitoringState>) {}
 

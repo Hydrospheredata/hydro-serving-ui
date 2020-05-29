@@ -44,6 +44,7 @@ export class MonitoringPageService implements OnDestroy {
   }
 
   ngOnDestroy() {
+    this.monitoringStore.clearMonitoringPage();
     this.destroy$.next();
     this.destroy$.complete();
   }
