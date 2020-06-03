@@ -199,7 +199,7 @@ export class CheckChartComponent implements OnInit, OnDestroy {
           x: tXPos + 4,
           y: tYPos + 4,
           values: this.series.reduce((acc, series) => {
-            if (series.data[index - 1]) {
+            if (series.data[index - 1] !== undefined) {
               acc.push({
                 name: series.name,
                 color: series.color,

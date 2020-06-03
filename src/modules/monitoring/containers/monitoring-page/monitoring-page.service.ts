@@ -27,6 +27,10 @@ export class MonitoringPageService implements OnDestroy {
     return this.monitoringStore.getChecks();
   }
 
+  isChecksLoading(): Observable<boolean> {
+    return this.monitoringStore.isChecksLoading();
+  }
+
   getModelVersion(): Observable<ModelVersion> {
     return this.modelsFacade.selectedModelVersion$;
   }

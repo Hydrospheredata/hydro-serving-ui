@@ -23,10 +23,10 @@ export class AggregationComponent implements OnInit {
 
   ngOnInit(): void {
     this.aggregationList$ = this.aggregationService.getAggregationList().pipe(
-      tap(aggregationList => {
-        this.featureNames = aggregationList.featureNames;
-        this.metricNames = aggregationList.metricNames;
-        this.batchNames = aggregationList.batchNames;
+      tap(agg => {
+        this.featureNames = agg ? agg.featureNames : undefined;
+        this.metricNames = agg ? agg.metricNames : undefined;
+        this.batchNames = agg ? agg.batchNames : undefined;
       })
     );
 

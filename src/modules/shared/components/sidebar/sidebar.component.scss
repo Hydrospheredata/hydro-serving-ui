@@ -9,6 +9,7 @@
   background: white;
   height: calc(100% - 72px);
   overflow: scroll;
+  box-shadow: -6px 0px 8px 3px $neutral-color-600;
   &__button {
     width: 100%;
     margin-bottom: 12px;

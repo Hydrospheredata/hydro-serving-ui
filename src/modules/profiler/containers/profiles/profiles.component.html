@@ -4,7 +4,7 @@
       {{ error }}
     </hs-error-message>
   </div>
-  <div class="profiles__header" *ngIf="featureNames.length > 0">
+  <div class="profiles__header" *ngIf="featureNames.length > 0; else name">
     <div class="profiles__header-row">
       <span class="profiles__header-label">
         Selected field:
@@ -48,3 +48,7 @@
     </div>
   </div>
 </div>
+
+<ng-template #name>
+  <div class="profiles__name">{{ featureName }}</div></ng-template
+>

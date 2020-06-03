@@ -12,6 +12,7 @@ import {
   selectOffset,
   selectSelectedAggregation,
   selectChecks,
+  selectChecksLoading,
 } from '@monitoring/store/selectors';
 import { Store, select } from '@ngrx/store';
 import { Observable } from '@node_modules/rxjs';
@@ -35,6 +36,10 @@ export class MonitoringFacade {
 
   getChecks(): Observable<CheckCollection> {
     return this.store.pipe(select(selectChecks));
+  }
+
+  isChecksLoading(): Observable<boolean> {
+    return this.store.pipe(select(selectChecksLoading));
   }
 
   clearMonitoringPage(): void {

@@ -1,6 +1,6 @@
-@import "variables";
+@import 'variables';
 
-$box-shadow: 0px 1px 2px 0px #e2e2e2; 
+$box-shadow: 0px 1px 2px 0px #e2e2e2;
 
 .container {
   padding: 30px 36px;
@@ -23,6 +23,13 @@ $box-shadow: 0px 1px 2px 0px #e2e2e2;
 }
 
 .profiles {
+  &__name {
+    font-size: 22px;
+    font-family: $font-family-bold;
+    text-align: center;
+    line-height: 24px;
+    margin-bottom: 12px;
+  }
   &__header {
     margin-bottom: 24px;
     background: white;
@@ -57,14 +64,13 @@ $box-shadow: 0px 1px 2px 0px #e2e2e2;
   }
 
   &__body {
-
   }
 }
 
 .profile {
   &__container {
     background: white;
-    padding: 0 24px;  
+    padding: 0 24px;
     width: calc(50% - 12px);
     display: inline-block;
     vertical-align: top;

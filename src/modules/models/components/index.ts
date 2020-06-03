@@ -6,3 +6,4 @@ export * from './model-version-log/model-version-log.component';
 export * from './model-version-status/model-version-status.component';
 export * from './model-versions-row/model-versions-row.component';
 export * from './dialogs';
+export * from './models-header/models-header.component';

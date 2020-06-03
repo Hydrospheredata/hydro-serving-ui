@@ -4,23 +4,25 @@
       <section class="monitoring__aggregation">
         <hs-aggregation></hs-aggregation>
       </section>
-      <ng-container *ngIf="checks$ | async as checkCollection">
-        <ng-container *ngIf="!checkCollection.isEmpty()">
-          <hs-requests-information
-            [aggregation]="selectedAggregation$ | async"
-            [errors]="checkCollection.getErrorChecks()"
-            [latency]="checkCollection.getLatency()"
-          >
-          </hs-requests-information>
-          <div class="monitoring__log">
-            <hs-log
-              [checks]="checks$ | async"
-              [loading]="false"
-              [modelVersion]="modelVersion$ | async"
-            ></hs-log>
-          </div>
+      <hs-loading [loading]="isChecksLoading$ | async">
+        <ng-container *ngIf="checks$ | async as checkCollection">
+          <ng-container *ngIf="!checkCollection.isEmpty()">
+            <hs-requests-information
+              [aggregation]="selectedAggregation$ | async"
+              [errors]="checkCollection.getErrorChecks()"
+              [latency]="checkCollection.getLatency()"
+            >
+            </hs-requests-information>
+            <div class="monitoring__log">
+              <hs-log
+                [checks]="checks$ | async"
+                [loading]="false"
+                [modelVersion]="modelVersion$ | async"
+              ></hs-log>
+            </div>
+          </ng-container>
         </ng-container>
-      </ng-container>
+      </hs-loading>
       <hs-custom-metrics></hs-custom-metrics>
     </ng-container>
   </hs-monitoring-availability>

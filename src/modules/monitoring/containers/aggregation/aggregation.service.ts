@@ -1,24 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { ChecksAggregationResponse } from '@monitoring/models';
-import { AggregationState } from '@monitoring/store/aggregation.state';
 import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
-import { MonitoringService } from '@monitoring/services';
 import { AggregationPaginator } from '@monitoring/services/aggregation-paginator';
-import { MonitoringPageService } from '@monitoring/store/facades';
 import { MonitoringFacade } from '@monitoring/store/monitoring.facade';
 import { neitherNullNorUndefined } from '@shared/utils';
-import { combineLatest, Observable, of, timer, Subject } from 'rxjs';
-import {
-  catchError,
-  map,
-  switchMap,
-  tap,
-  shareReplay,
-  takeUntil,
-  withLatestFrom,
-  distinctUntilChanged,
-  take,
-} from 'rxjs/operators';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
+import { map, tap, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +20,7 @@ export class AggregationService implements OnDestroy {
   ) {
     this.aggregationList$ = this.monitoringStore
       .getAggregationList()
-      .pipe(neitherNullNorUndefined, shareReplay(1));
+      .pipe(shareReplay(1));
 
     this.checkSelectedAggregation();
   }
@@ -61,12 +47,16 @@ export class AggregationService implements OnDestroy {
   canLoadOlder(): Observable<boolean> {
     return combineLatest([this.getAggregationList(), of(0)]).pipe(
       map(([aggregations, offset]) => {
-        return this.paginator.canLoadOlder(
-          aggregations.totalRequests,
-          aggregations.showedRequests,
-          offset,
-          this.groupedBy
-        );
+        if (aggregations) {
+          return this.paginator.canLoadOlder(
+            aggregations.totalRequests,
+            aggregations.showedRequests,
+            offset,
+            this.groupedBy
+          );
+        } else {
+          return false;
+        }
       })
     );
   }

@@ -3,23 +3,11 @@ import { MdlSelectModule } from '@angular-mdl/select';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// Directives
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { SelectModule } from 'ng2-select';
-// Pipes
-import {
-  DockerImageSplitPipe,
-  FieldShapePipe,
-  FormatDatePipe,
-  IterateAsArrayPipe,
-  MatchSorterPipe,
-  PositiveNumbersPipe,
-  ReverseArrayPipe,
-  SearchPipe,
-  SidebarFilterPipe,
-  SortByPipe,
-  TimeAgoPipe,
-  ToNumberPipe,
-} from './pipes';
+import { HsD3Module } from '../hs-d3/hs-d3.module';
 // Components
 import {
   AlertMessageComponent,
@@ -41,10 +29,8 @@ import {
   TextareaComponent,
   TooltipComponent,
   ServiceAvailabilityComponent,
+  LoadingComponent,
 } from './components';
-// Directives
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HsD3Module } from '../hs-d3/hs-d3.module';
 import { ErrorMessageComponent } from './components/error-message/error-message.component';
 import {
   AutofocusedDirective,
@@ -54,7 +40,21 @@ import {
   PixelToCanvasDirective,
   ScaleImageDirective,
 } from './directives/_index';
-import { ServicesHeaderComponent } from './components/services-header/services-header.component';
+// Pipes
+import {
+  DockerImageSplitPipe,
+  FieldShapePipe,
+  FormatDatePipe,
+  IterateAsArrayPipe,
+  MatchSorterPipe,
+  PositiveNumbersPipe,
+  ReverseArrayPipe,
+  SearchPipe,
+  SidebarFilterPipe,
+  SortByPipe,
+  TimeAgoPipe,
+  ToNumberPipe,
+} from './pipes';
 import { PluckPipe } from './pipes/pluck.pipe';
 
 const PIPES = [
@@ -93,6 +93,7 @@ const COMPONENTS = [
   ProbabilitiesListComponent,
   LoaderComponent,
   ServiceAvailabilityComponent,
+  LoadingComponent,
 ];
 
 const DIRECTIVES = [
@@ -118,19 +119,12 @@ const RE_EXPORTED_MODULES = [
 
 @NgModule({
   imports: [...RE_EXPORTED_MODULES],
-  declarations: [
-    ...PIPES,
-    ...COMPONENTS,
-    ...DIRECTIVES,
-    ServicesHeaderComponent,
-    PluckPipe,
-  ],
+  declarations: [...PIPES, ...COMPONENTS, ...DIRECTIVES, PluckPipe],
   exports: [
     ...PIPES,
     ...COMPONENTS,
     ...DIRECTIVES,
     ...RE_EXPORTED_MODULES,
-    ServicesHeaderComponent,
     PluckPipe,
   ],
 })

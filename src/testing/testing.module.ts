@@ -24,6 +24,7 @@ import {
   ModelVersionsRowComponent,
   ModelVersionsTableComponent,
   ModelVersionsTagsComponent,
+  ModelsHeaderComponent,
   RawChecksComponent,
   RegimeSelectorComponent,
   ReqResLogsComponent,
@@ -76,6 +77,7 @@ const COMPONENTS = [
   VisualizationMetricsComponent,
   CustomMetricsComponent,
   ModelVersionServicesComponent,
+  ModelsHeaderComponent,
 ];
 
 const DIRECTIVES = [UpdateModelVersionDirective];
