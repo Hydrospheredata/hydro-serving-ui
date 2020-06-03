@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .feature-report {
   &__header {
@@ -65,6 +65,9 @@
 
   &__drift {
     font-family: $font-family-bold;
+    &--changed {
+      color: $supportive-color-red-700;
+    }
   }
 
   &__table {
@@ -87,7 +90,6 @@
     & > tbody {
       & > tr {
         & > td {
-          color: $neutral-color-1000;
           padding: 8px 8px;
           text-align: left;
         }

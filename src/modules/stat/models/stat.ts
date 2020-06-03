@@ -9,9 +9,10 @@ export interface FeatureReport {
   histogram: FeatureReportHistogram;
   statistics: {
     [statisticName: string]: {
-      change_probability: number;
       deployment: number;
       training: number;
+      message: string;
+      has_changed: boolean;
     };
   };
 }

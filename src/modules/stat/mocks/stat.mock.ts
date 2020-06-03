@@ -76,17 +76,20 @@ export const mockStat: Stat = {
       },
       statistics: {
         mean: {
-          change_probability: 0.0,
+          message: 'Error',
+          has_changed: true,
           deployment: 54260379.42714889,
           training: 33558627.974042684,
         },
         median: {
-          change_probability: 0.2,
+          message: 'Error',
+          has_changed: true,
           deployment: 50591900.0,
           training: 40171900.0,
         },
         std: {
-          change_probability: 1.0,
+          message: 'Error',
+          has_changed: true,
           deployment: 9453600.881636694,
           training: 15655558.710062902,
         },
@@ -110,12 +113,14 @@ export const mockStat: Stat = {
       },
       statistics: {
         entropy: {
-          change_probability: 0.0,
+          message: 'Ok',
+          has_changed: false,
           deployment: 2.0,
           training: 2.0,
         },
         'unique values': {
-          change_probability: 0.0,
+          message: 'Ok',
+          has_changed: false,
           deployment: 4,
           training: 4,
         },
