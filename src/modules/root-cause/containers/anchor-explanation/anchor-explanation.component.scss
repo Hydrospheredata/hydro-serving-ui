@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .explanation {
   &__buttons {
@@ -48,5 +48,41 @@
   }
   &__item + &__item {
     margin-top: 8px;
+  }
+}
+
+.anchor {
+  &__title {
+    font-family: $font-family-bold;
+    text-transform: uppercase;
+    color: $neutral-color-900;
+    margin-bottom: 12px;
+  }
+  &__body {
+    display: flex;
+    color: $neutral-color-800;
+  }
+  &__precision {
+    padding: 0 12px;
+  }
+  &__operator {
+    font-family: $font-family-bold;
+    color: $neutral-color-800;
+    text-transform: uppercase;
+  }
+  &__accent {
+    color: $neutral-color-800;
+  }
+  &__explanations {
+    display: flex;
+    flex-direction: column;
+    & table {
+      & > tbody > tr {
+        line-height: 18px;
+        & > td {
+          padding: 0 2px;
+        }
+      }
+    }
   }
 }

@@ -4,7 +4,7 @@
     <div class="mv-services__item">
       <hydro-icon type="monitoring" class="mv-services__icon"></hydro-icon>
       <button
-        class="mv-service__button"
+        class="mv-services__button"
         hs-button
         kind="flat"
         color="primary"
@@ -21,7 +21,7 @@
           ? visualizationTile
           : notSupported;
         context: {
-          name: 'visualization',
+          name: 'Data projection',
           message: (serviceSupported$ | async)?.visualization?.message
         }
       "
@@ -50,10 +50,10 @@
       hs-button
       kind="flat"
       color="primary"
-      [routerLink]="['./visualization']"
+      [routerLink]="['./data_projection']"
       queryParamsHandling="merge"
     >
-      visualization
+      Data projection
     </button>
   </div>
 </ng-template>

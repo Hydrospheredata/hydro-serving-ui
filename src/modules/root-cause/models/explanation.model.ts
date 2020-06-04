@@ -16,6 +16,8 @@ export interface Explanation {
 }
 
 export interface AnchorExplanationResult {
+  explained_field_name: string;
+  explained_field_value: number | string;
   coverage: number;
   explanation: string[];
   precision: number;
