@@ -1,19 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  CanActivateModelGuard,
-  CanActivateModelVersionGuard,
-} from '@models/guards';
+import { CanActivateModelGuard, CanActivateModelVersionGuard } from '@models/guards';
 
 import { MonitoringPageComponent } from '@monitoring/containers';
 import { VisualizationPageComponent } from 'modules/visualization/containers';
+import { StatPageComponent } from '../stat/containers';
 import {
   ModelPageComponent,
   ModelsPageComponent,
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
 } from './containers';
-import { StatPageComponent } from '../stat/containers';
 
 @NgModule({
   imports: [
@@ -39,7 +36,7 @@ import { StatPageComponent } from '../stat/containers';
             canActivate: [CanActivateModelVersionGuard],
           },
           {
-            path: ':modelId/:modelVersionId/visualization',
+            path: ':modelId/:modelVersionId/data_projection',
             component: VisualizationPageComponent,
             canActivate: [CanActivateModelVersionGuard],
           },

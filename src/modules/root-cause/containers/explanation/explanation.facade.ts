@@ -1,17 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { SnackbarService } from '@core/services';
-import { Observable, Subject, timer, of, merge } from 'rxjs';
-import {
-  exhaustMap,
-  takeUntil,
-  takeWhile,
-  tap,
-  switchMap,
-  debounceTime,
-} from 'rxjs/operators';
 import { Explanation, ExplanationStatus } from '@rootcause/models';
 import { RootCauseApiService } from '@rootcause/services';
 import { RootCauseState } from '@rootcause/store/state';
+import { Observable, Subject, timer, of, merge } from 'rxjs';
+import { exhaustMap, takeUntil, takeWhile, tap, switchMap, debounceTime } from 'rxjs/operators';
 
 @Injectable()
 export class ExplanationFacade implements OnDestroy {
