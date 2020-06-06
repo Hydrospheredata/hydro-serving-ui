@@ -1,23 +1,41 @@
-<div class="explanation__item">
-  <div class="explanation__item-key">explanation</div>
-  <div class="explanation__item-value">
-    <div *ngFor="let explanation of explanations">
-      {{ explanation }}
+<!--<div class="explanation__item">-->
+<!--  <div class="explanation__item-key">explanation</div>-->
+<!--  <div class="explanation__item-value">-->
+<!--    <div *ngFor="let explanation of explanations">-->
+<!--      {{ explanation }}-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class="explanation__tiles">-->
+<!--  <div class="explanation__tile">-->
+<!--    <div class="explanation__tile-key">coverage</div>-->
+<!--    <div class="explanation__tile-value">{{ coverage < 0.01 ? '< 0.01%' : coverage | percent }}</div>-->
+<!--  </div>-->
+<!--  <div class="explanation__tile">-->
+<!--    <div class="explanation__tile-key">precision</div>-->
+<!--    <div class="explanation__tile-value">{{ precision < 0.01 ? '0.01%' : precision | percent }}</div>-->
+<!--  </div>-->
+<!--</div>-->
+
+<div class="anchor">
+  <div class="anchor__title">Explanation</div>
+  <div class="anchor__body">
+    <div class="anchor__class">
+      {{ fieldName }} <span class="anchor__operator">=</span> {{ fieldValue }}
+    </div>
+    <div class="anchor__precision">
+      in
+      <span class="anchor__accent">{{ precision | percent: '0.2-2' }}</span> of
+      cases
+    </div>
+    <div class="anchor__explanations">
+      <table>
+        <tr *ngFor="let expl of explanations; index as i">
+          <td class="anchor__operator">{{ i == 0 ? 'if' : 'and' }}</td>
+          <td>{{ expl }}</td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>
-
-<div class="explanation__tiles">
-  <div class="explanation__tile">
-    <div class="explanation__tile-key">coverage</div>
-    <div class="explanation__tile-value">{{ coverage < 0.01 ? '< 0.01%' : coverage | percent }}</div>
-  </div>
-  <div class="explanation__tile">
-    <div class="explanation__tile-key">precision</div>
-    <div class="explanation__tile-value">{{ precision < 0.01 ? '0.01%' : precision | percent }}</div>
-  </div>
-</div>
-
-
-
-

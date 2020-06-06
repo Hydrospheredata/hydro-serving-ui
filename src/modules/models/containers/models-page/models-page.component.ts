@@ -63,5 +63,4 @@ export class ModelsPageComponent implements OnDestroy {
   private isRootModelsUrl(event: Event): boolean {
     return event instanceof NavigationEnd && event.url.split('/').length <= 2;
   }
-
 }

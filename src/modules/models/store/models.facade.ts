@@ -10,6 +10,8 @@ import {
   selectSelectedModel,
   selectModelVersionById,
   selectModelVersionEntities,
+  selectModelsLoaded,
+  selectModelVersionsLoaded,
 } from '@models/store/selectors';
 import { Store, select } from '@ngrx/store';
 import { ProfilerFacade } from '@profiler/store';
@@ -18,15 +20,7 @@ import { ModelVersionStatus, Model, ModelVersion } from '@shared/_index';
 import { neitherNullNorUndefined } from '@shared/utils';
 import { isEmpty } from 'lodash';
 import { combineLatest, Observable, BehaviorSubject } from 'rxjs';
-import {
-  filter,
-  switchMap,
-  map,
-  publish,
-  refCount,
-  startWith,
-  shareReplay,
-} from 'rxjs/operators';
+import { switchMap, map, publish, refCount, startWith } from 'rxjs/operators';
 import { State } from './reducers';
 
 @Injectable({
@@ -36,7 +30,6 @@ export class ModelsFacade {
   selectedModelVersion$ = this.store.pipe(
     select(selectSelectedModelVersion),
     neitherNullNorUndefined,
-    shareReplay(1)
   );
   siblingModelVersions$ = this.selectedModelVersion$.pipe(
     switchMap(({ model: { id: modelId }, id: modelVersionId }) =>
@@ -233,5 +226,21 @@ export class ModelsFacade {
     } else {
       this.favoriteStorage.add(model.name);
     }
+  }
+
+  isModelsLoaded(): Observable<boolean> {
+    return this.store.pipe(select(selectModelsLoaded));
+  }
+
+  isModelVersionsLoaded(): Observable<boolean> {
+    return this.store.pipe(select(selectModelVersionsLoaded));
+  }
+
+  getAllModels(): Observable<Model[]> {
+    return this.allModels$;
+  }
+
+  getAllModelVersions(): Observable<ModelVersion[]> {
+    return this.allModelVersions$;
   }
 }

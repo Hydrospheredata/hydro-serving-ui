@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  ApplicationsPageComponent,
-  ApplicationPageComponent,
-} from './containers';
+import { CanActivateApplicationGuard } from '@applications/guards/can-activate-application.guard';
+import { ApplicationsPageComponent, ApplicationPageComponent } from './containers';
 
 @NgModule({
   imports: [
@@ -15,6 +13,7 @@ import {
           {
             path: ':name',
             component: ApplicationPageComponent,
+            canActivate: [CanActivateApplicationGuard],
           },
         ],
       },

@@ -12,6 +12,8 @@ export interface FeatureReport {
       change_probability?: number;
       deployment: number;
       training: number;
+      message: string;
+      has_changed: boolean;
     };
   };
 }

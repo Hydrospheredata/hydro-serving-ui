@@ -20,4 +20,12 @@ export class AnchorExplanationComponent {
   get precision(): number {
     return this.explanation.precision;
   }
+
+  get fieldName(): string {
+    return this.explanation.explained_field_name;
+  }
+
+  get fieldValue(): number | string {
+    return this.explanation.explained_field_value;
+  }
 }

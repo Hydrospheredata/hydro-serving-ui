@@ -12,7 +12,7 @@ import {
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
-import { ModelDetailsGuard, ModelsService, ModelVersionDetailsGuard } from '@models/services';
+import { ModelsService } from '@models/services';
 import { ModelEffects, reducer } from '@models/store';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { EffectsModule } from '@ngrx/effects';
@@ -29,7 +29,7 @@ import {
   ModelVersionServicesComponent,
   ModelVersionDetailsContainerComponent,
 } from './containers';
-import { ModelsRoutingModule } from './models.router';
+import { ModelsRoutingModule } from './models-routing.module';
 import { ModelsPublicUiModule } from './shared/models-public-ui.module';
 
 @NgModule({
@@ -62,7 +62,7 @@ import { ModelsPublicUiModule } from './shared/models-public-ui.module';
     ModelsHeaderComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
-  providers: [ModelsService, ModelDetailsGuard, ModelVersionDetailsGuard],
+  providers: [ModelsService],
   exports: [ModelsPageComponent],
 })
 export class ModelsModule {}

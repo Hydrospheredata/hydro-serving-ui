@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ApplicationsRoutingModule } from '@applications/applications.router';
+import { ApplicationsRoutingModule } from '@applications/applications-routing.module';
 
 import {
   ApplicationFormComponent,
@@ -14,7 +14,7 @@ import {
 } from '@applications/components';
 
 import { UpdateModelVersionDirective } from '@applications/directives';
-import { ApplicationsService, ApplicationsGuard, ApplicationFormService } from '@applications/services';
+import { ApplicationsService, ApplicationFormService } from '@applications/services';
 import { reducer, ApplicationsEffects, ApplicationsFacade } from '@applications/store';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
@@ -64,7 +64,6 @@ const DIRECTIVES = [UpdateModelVersionDirective];
     ApplicationsFacade,
     ApplicationsService,
     ApplicationBuilder,
-    ApplicationsGuard,
     ApplicationFormService,
     CustomValidatorsService,
   ],
