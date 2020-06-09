@@ -1,6 +1,7 @@
 @import 'variables.scss';
 
 .model-version {
+  padding: 24px;
   &__header {
     line-height: 32px;
     margin-bottom: 8px;
@@ -255,7 +256,7 @@
   height: 100%;
   right: 0;
   visibility: hidden;
-
+  z-index: 2;
   &__layout {
     background: #000000b5;
     top: 0;

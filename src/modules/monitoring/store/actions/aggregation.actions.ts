@@ -1,9 +1,10 @@
 import { AggregationsList, Aggregation } from '@monitoring/models';
 import { createAction, props } from '@node_modules/@ngrx/store';
+import { ModelVersion } from '@shared/models';
 
 export const LoadAggregations = createAction(
   '[Monitoring] load aggregations',
-  props<{ modelVerId: number; limit: number; offset: number }>()
+  props<{ modelVersion: ModelVersion; limit: number; offset: number }>()
 );
 
 export const LoadAggregationsSuccess = createAction(

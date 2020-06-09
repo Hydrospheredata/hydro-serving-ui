@@ -1,0 +1,26 @@
+@import 'variables';
+.agg-sidebar {
+  background: white;
+  border-bottom: 1px $neutral-color-200 solid;
+  &__row {
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  &__label {
+    font-size: 12px;
+    color: $neutral-color-700;
+  }
+  &__count {
+    font-size: 20px;
+    font-family: $font-family-bold;
+  }
+  &__date {
+    font-size: 12px;
+    font-family: $font-family-bold;
+  }
+  &__info {
+    border-bottom: 1px $neutral-color-200 solid;
+  }
+}

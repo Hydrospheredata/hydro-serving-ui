@@ -1,8 +1,11 @@
 .model-version-page {
+  height: calc(100% - 96px);
+  overflow: scroll;
   &__header {
     margin-bottom: 12px;
   }
   &__body {
-    padding: 24px;
+    height: 100%;
+    position: relative;
   }
 }

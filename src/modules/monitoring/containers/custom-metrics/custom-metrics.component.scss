@@ -18,14 +18,19 @@
 .charts {
   &__column {
     width: 100%;
-    min-width: calc(100%/2 - 120px);
+    min-width: calc(100% / 2 - 120px);
   }
-  &__column + &__column { margin-left: 24px;}
+  &__column + &__column {
+    margin-left: 24px;
+  }
   &__item {
     background: white;
     border: 1px $neutral-color-200 solid;
     border-radius: 5px;
-    margin-bottom: 18px;
+
     padding: 12px;
+  }
+  &__item + &__item {
+    margin-top: 18px;
   }
 }

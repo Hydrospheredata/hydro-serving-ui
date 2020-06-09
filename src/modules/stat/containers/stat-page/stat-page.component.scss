@@ -1,4 +1,10 @@
 @import 'variables';
+.stat {
+  padding: 24px;
+  &__body {
+    width: 100%;
+  }
+}
 .stat__loader {
   display: flex;
   justify-content: center;

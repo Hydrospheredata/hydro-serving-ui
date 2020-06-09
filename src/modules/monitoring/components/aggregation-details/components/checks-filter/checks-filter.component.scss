@@ -1,0 +1,38 @@
+@import 'variables';
+
+.checks-filter {
+  padding: 12px;
+  &__title {
+    font-family: $font-family-bold;
+    color: $neutral-color-800;
+    font-size: 12px;
+    margin-bottom: 8px;
+    height: 100%;
+    overflow: scroll;
+  }
+
+  &__controls {
+  }
+
+  &__control {
+    display: flex;
+    margin-bottom: 4px;
+  }
+
+  &__slider {
+    padding: 0 4px;
+  }
+
+  &__group {
+    margin-bottom: 8px;
+  }
+
+  &__label {
+    font-size: 12px;
+    color: $neutral-color-900;
+  }
+
+  &__submenu {
+    margin-left: 24px;
+  }
+}

@@ -1,5 +1,4 @@
 export * from './application.model';
-export * from './environment.model';
 export * from './hostSelector.model';
 export * from './image.model';
 export * from './model-version.model';

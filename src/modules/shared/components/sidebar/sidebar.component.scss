@@ -6,6 +6,7 @@
 }
 
 .sidebar {
+  position: relative;
   background: white;
   height: calc(100% - 72px);
   overflow: scroll;
@@ -15,6 +16,10 @@
     margin-bottom: 12px;
   }
   &__header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: white;
     padding: 12px;
   }
   &__list {

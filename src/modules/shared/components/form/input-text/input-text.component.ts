@@ -35,6 +35,7 @@ export class InputTextComponent implements ControlValueAccessor {
   @Input() public errors: { [err: string]: string } | null;
   @Input() public disabled: boolean;
   @Input() public placeholder: string;
+
   protected _value: any;
   protected onChange: (_: any) => void = noop;
   protected onTouched: () => void = noop;

@@ -1,0 +1,18 @@
+<div class="agg-sidebar" *ngIf="aggregationsList">
+  <div class="agg-sidebar__row">
+    <span class="agg-sidebar__label">Batches: </span
+    ><span class="agg-sidebar__count">{{ aggregationsList.batchesCount }}</span>
+  </div>
+  <div class="agg-sidebar__row">
+    <span class="agg-sidebar__label">From: </span
+    ><span class="agg-sidebar__date">{{
+      aggregationsList.dateFrom | hsFormatDate
+    }}</span>
+  </div>
+  <div class="agg-sidebar__row">
+    <span class="agg-sidebar__label">To: </span
+    ><span class="agg-sidebar__date">{{
+      aggregationsList.dateTo | hsFormatDate
+    }}</span>
+  </div>
+</div>

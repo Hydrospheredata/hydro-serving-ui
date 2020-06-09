@@ -9,6 +9,7 @@ import {
   ModelVersionStatusComponent,
   SignaturesComponent,
   ModelsHeaderComponent,
+  ModelsHeaderZenModeComponent,
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
@@ -60,6 +61,7 @@ import { ModelsPublicUiModule } from './shared/models-public-ui.module';
     ModelVersionServicesComponent,
     ModelVersionDetailsContainerComponent,
     ModelsHeaderComponent,
+    ModelsHeaderZenModeComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService],

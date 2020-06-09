@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Directives
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { Ng5SliderModule } from '@node_modules/ng5-slider';
 import { SelectModule } from 'ng2-select';
 import { HsD3Module } from '../hs-d3/hs-d3.module';
 // Components
@@ -39,6 +40,7 @@ import {
   HideInZenModeDirective,
   PixelToCanvasDirective,
   ScaleImageDirective,
+  ShowInZenModeDirective,
 } from './directives/_index';
 // Pipes
 import {
@@ -103,9 +105,11 @@ const DIRECTIVES = [
   AutofocusedDirective,
   ScaleImageDirective,
   HideInZenModeDirective,
+  ShowInZenModeDirective,
 ];
 
 const RE_EXPORTED_MODULES = [
+  Ng5SliderModule,
   MdlSelectModule,
   MdlModule,
   CommonModule,

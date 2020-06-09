@@ -1,9 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import {
-  AggregationsList,
-  Aggregation,
-  AggregationCheck,
-} from '@monitoring/models';
+import { AggregationsList, Aggregation, AggregationCheck } from '@monitoring/models';
 import { interpolateRdYlGn } from 'd3';
 
 @Component({
@@ -19,7 +15,7 @@ export class AggregationDataSectionComponent implements OnInit {
   @Output() columnClicked: EventEmitter<any> = new EventEmitter<any>();
 
   readonly labelsWidth: number = 100;
-  readonly canvasWidth: number = 880;
+  readonly canvasWidth: number = 720; // 80 column limit * cell.width + padding
   readonly CELL_SIZE = { width: 8, height: 14 };
   private readonly COLUMN_MARGIN_RIGHT = 1;
   private readonly CELL_MARGIN_TOP = 1;

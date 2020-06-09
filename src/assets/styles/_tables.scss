@@ -1,8 +1,8 @@
-@import "variables";
+@import 'variables';
 
 $table-padding: 12px;
 
-.cell {
+@mixin cell {
   border-bottom: 1px $neutral-color-200 solid;
   padding: 8px $table-padding * 1.5;
 }
@@ -18,8 +18,17 @@ $table-padding: 12px;
     color: $neutral-color-900;
 
     &__cell {
-      @extend .cell;
+      border-bottom: 1px $neutral-color-200 solid;
+      padding: 8px $table-padding * 1.5;
       text-align: left;
+      color: $neutral-color-700;
+      &--sticky {
+        border: none;
+        position: sticky;
+        top: 0;
+        background: white;
+        box-shadow: inset 0 -1px 0 $neutral-color-200;
+      }
     }
   }
 
@@ -33,7 +42,7 @@ $table-padding: 12px;
     &__row {
       outline: none;
 
-      [class$="services"] & {
+      [class$='services'] & {
         background-color: $neutral-color-200;
         border-bottom: 2px solid #ffffff;
       }
@@ -47,7 +56,7 @@ $table-padding: 12px;
     }
 
     &__cell {
-      @extend .cell;
+      @include cell;
       font-size: 12px;
     }
   }

@@ -1,0 +1,14 @@
+<div class="agg-legend">
+  <div class="agg-legend__title">Legend</div>
+  <div class="agg-legend__row">
+    <div class="agg-legend__cell agg-legend__cell--no-metric"></div>
+    <div class="agg-legend__label">- without checks</div>
+  </div>
+  <div *ngFor="let c of cells" class="agg-legend__row">
+    <div
+      class="agg-legend__cell"
+      [ngStyle]="{ backgroundColor: c.color }"
+    ></div>
+    <div class="agg-legend__label">- {{ c.label }}</div>
+  </div>
+</div>

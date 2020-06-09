@@ -1,7 +1,7 @@
-import { IHostSelector } from '@shared/_index';
+import { HostSelector } from '@shared/models';
 
-export const MockHostSelector: IHostSelector = {
-    id: 1,
-    name: 'CPU',
-    placeholder: 'mockHostSelectorPlaceHolder',
+export const MockHostSelector: HostSelector = {
+  id: 1,
+  name: 'CPU',
+  placeholder: 'mockHostSelectorPlaceHolder',
 };

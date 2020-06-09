@@ -1,33 +1,35 @@
-import {
-  ModelVersion,
-  ModelContract,
-  ModelVersionStatus,
-} from '@shared/_index';
-import { MockHostSelector } from '@testing/factories/hostSelector';
+import { ModelVersion, ModelVersionStatus } from '@shared/_index';
+import { ModelContract, Input, Output } from '@shared/interfaces';
 import { MockImage } from '@testing/factories/image';
 import { MockModel1, MockModel2 } from '@testing/factories/model';
-import {
-  MockRuntime,
-  MockRuntime3,
-  MockRuntime2,
-} from '@testing/factories/runtime';
-import { MockSignature1, MockSignature2 } from '@testing/factories/signature';
+import { MockRuntime, MockRuntime3, MockRuntime2 } from '@testing/factories/runtime';
 
 export const MockModelContract: ModelContract = {
+  get inputs(): Input[] {
+    return [];
+  },
+  get outputs(): Output[] {
+    return [];
+  },
+  predict: { inputs: [], outputs: [], signatureName: '' },
   modelName: 'ModelName',
-  predict: MockSignature1,
 };
 
 export const MockModelVersion1Model1: ModelVersion = {
+  get contractInputs(): Input[] {
+    return [];
+  },
+  get contractOutputs(): Output[] {
+    return [];
+  },
   id: 1,
   image: MockImage,
-  created: new Date(),
-  finished: new Date(),
+  created: new Date().toString(),
+  finished: new Date().toString(),
   modelVersion: 1,
-  modelContract: { modelName: 'ModelName', predict: MockSignature1 },
+  modelContract: MockModelContract,
   runtime: MockRuntime,
   model: MockModel1,
-  hostSelector: MockHostSelector,
   status: ModelVersionStatus.Released,
   applications: [],
   metadata: {},
@@ -35,15 +37,20 @@ export const MockModelVersion1Model1: ModelVersion = {
 };
 
 export const MockModelVersion2Model1: ModelVersion = {
+  get contractInputs(): Input[] {
+    return [];
+  },
+  get contractOutputs(): Output[] {
+    return [];
+  },
   id: 2,
   image: MockImage,
-  created: new Date(),
-  finished: new Date(),
+  created: new Date().toString(),
+  finished: new Date().toString(),
   modelVersion: 2,
-  modelContract: { modelName: 'ModelName', predict: MockSignature1 },
+  modelContract: MockModelContract,
   runtime: MockRuntime3,
   model: MockModel1,
-  hostSelector: MockHostSelector,
   status: ModelVersionStatus.Released,
   applications: ['app1', 'app2'],
   metadata: {},
@@ -51,15 +58,20 @@ export const MockModelVersion2Model1: ModelVersion = {
 };
 
 export const MockModelVersion3Model2: ModelVersion = {
+  get contractInputs(): Input[] {
+    return [];
+  },
+  get contractOutputs(): Output[] {
+    return [];
+  },
   id: 3,
   image: MockImage,
-  created: new Date(),
-  finished: new Date(),
+  created: new Date().toString(),
+  finished: new Date().toString(),
   modelVersion: 1,
-  modelContract: { modelName: 'ModelName', predict: MockSignature2 },
+  modelContract: MockModelContract,
   runtime: MockRuntime2,
   model: MockModel2,
-  hostSelector: MockHostSelector,
   status: ModelVersionStatus.Released,
   applications: ['app1', 'app2'],
   metadata: {},
@@ -67,15 +79,20 @@ export const MockModelVersion3Model2: ModelVersion = {
 };
 
 export const FailedModelVersion: ModelVersion = {
+  get contractInputs(): Input[] {
+    return [];
+  },
+  get contractOutputs(): Output[] {
+    return [];
+  },
   id: 4,
   image: MockImage,
-  created: new Date(),
-  finished: new Date(),
+  created: new Date().toString(),
+  finished: new Date().toString(),
   modelVersion: 1,
-  modelContract: { modelName: 'ModelName', predict: MockSignature2 },
+  modelContract: MockModelContract,
   runtime: MockRuntime2,
   model: MockModel2,
-  hostSelector: MockHostSelector,
   status: ModelVersionStatus.Failed,
   applications: [],
   metadata: {},
@@ -83,15 +100,20 @@ export const FailedModelVersion: ModelVersion = {
 };
 
 export const AssemblingModelVersion: ModelVersion = {
+  get contractInputs(): Input[] {
+    return [];
+  },
+  get contractOutputs(): Output[] {
+    return [];
+  },
   id: 5,
   image: MockImage,
-  created: new Date(),
-  finished: new Date(),
+  created: new Date().toString(),
+  finished: new Date().toString(),
   modelVersion: 1,
-  modelContract: { modelName: 'ModelName', predict: MockSignature2 },
+  modelContract: MockModelContract,
   runtime: MockRuntime2,
   model: MockModel2,
-  hostSelector: MockHostSelector,
   status: ModelVersionStatus.Assembling,
   applications: [],
   metadata: {},

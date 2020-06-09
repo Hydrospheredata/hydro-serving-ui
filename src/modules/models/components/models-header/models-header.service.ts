@@ -48,8 +48,10 @@ export class ModelsHeaderService {
       map(state => {
         const urlArray = state.state.url.split('/');
         const serviceIndexInArray = 4;
-
-        return urlArray[serviceIndexInArray];
+        return (
+          urlArray[serviceIndexInArray] &&
+          urlArray[serviceIndexInArray].split('?')[0]
+        );
       })
     );
   }
@@ -61,7 +63,9 @@ export class ModelsHeaderService {
 
   onClickModelVersion(): void {
     const [, root, modelId, modelVerId] = this.router.url.split('/');
-    this.router.navigate([root, modelId, modelVerId]);
+    this.router.navigate([root, modelId, modelVerId], {
+      queryParamsHandling: 'merge',
+    });
   }
 
   onClickSibling(modelVersion: ModelVersion): void {

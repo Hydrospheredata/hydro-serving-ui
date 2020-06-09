@@ -2,36 +2,60 @@
   <ng-container
     *ngIf="aggregationList.aggregations.length; else noDataAvailable"
   >
-    <div class="aggregation__header">
-      <hs-aggregation-header
-        [canLoadNewer]="canLoadNewer$ | async"
-        [canLoadOlder]="canLoadOlder$ | async"
-        [aggregationList]="aggregationList"
-        (loadNewer)="loadNewer()"
-        (loadOlder)="loadOlder()"
-      ></hs-aggregation-header>
-    </div>
-    <div class="aggregation__features-label">Features</div>
-    <hs-aggregation-data-section
-      type="features"
-      [names]="featureNames"
-      [aggregationList]="aggregationList"
-      [selectedAggregation]="selectedAggregation$ | async"
-      (columnClicked)="changeActiveColumn($event)"
-    >
-    </hs-aggregation-data-section>
+    <!--    <div class="aggregation__header">-->
+    <!--      <hs-aggregation-header-->
+    <!--        [canLoadNewer]="canLoadNewer$ | async"-->
+    <!--        [canLoadOlder]="canLoadOlder$ | async"-->
+    <!--        [aggregationList]="aggregationList"-->
+    <!--        (loadNewer)="loadNewer()"-->
+    <!--        (loadOlder)="loadOlder()"-->
+    <!--      ></hs-aggregation-header>-->
+    <!--    </div>-->
 
-    <ng-container *ngIf="metricNames.length">
-      <div class="aggregation__metrics-label">Metrics</div>
+    <span class="aggregation__info">
+      <hydro-icon class="aggregation__info-icon" type="info"></hydro-icon>
+      <div class="aggregation__info-legend">
+        <hs-aggregation-legend></hs-aggregation-legend>
+      </div>
+    </span>
+    <div class="aggregation__sidebar">
+      <hs-aggregation-sidebar
+        [aggregationsList]="aggregationList"
+      ></hs-aggregation-sidebar>
+    </div>
+
+    <div class="aggregation__body">
+      <div class="aggregation__label">Inputs</div>
       <hs-aggregation-data-section
-        type="metrics"
-        [names]="metricNames"
+        type="features"
+        [names]="inputNames"
         [aggregationList]="aggregationList"
         [selectedAggregation]="selectedAggregation$ | async"
         (columnClicked)="changeActiveColumn($event)"
       >
       </hs-aggregation-data-section>
-    </ng-container>
+      <div class="aggregation__label">Outputs</div>
+      <hs-aggregation-data-section
+        type="features"
+        [names]="outputNames"
+        [aggregationList]="aggregationList"
+        [selectedAggregation]="selectedAggregation$ | async"
+        (columnClicked)="changeActiveColumn($event)"
+      >
+      </hs-aggregation-data-section>
+
+      <ng-container *ngIf="metricNames.length">
+        <div class="aggregation__label">Metrics</div>
+        <hs-aggregation-data-section
+          type="metrics"
+          [names]="metricNames"
+          [aggregationList]="aggregationList"
+          [selectedAggregation]="selectedAggregation$ | async"
+          (columnClicked)="changeActiveColumn($event)"
+        >
+        </hs-aggregation-data-section>
+      </ng-container>
+    </div>
   </ng-container>
 </div>
 

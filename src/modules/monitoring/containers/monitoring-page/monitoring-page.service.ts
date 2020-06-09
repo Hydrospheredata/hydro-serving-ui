@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import { CheckCollection, AggregationsList } from '@monitoring/models';
+import { CheckCollection, AggregationsList, CheckId, Check } from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { MonitoringFacade } from '@monitoring/store/monitoring.facade';
@@ -47,6 +47,18 @@ export class MonitoringPageService implements OnDestroy {
     return this.monitoringStore.getAggregationList();
   }
 
+  getCheckToShowInDetails(): Observable<Check> {
+    return this.monitoringStore.getCheckToShowInDetails();
+  }
+
+  showCheckDetails(checkId: CheckId): void {
+    this.monitoringStore.showChecksDetails(checkId);
+  }
+
+  closeCheckDetails(): void {
+    this.monitoringStore.closeChecksDetails();
+  }
+
   ngOnDestroy() {
     this.monitoringStore.clearMonitoringPage();
     this.destroy$.next();
@@ -83,7 +95,7 @@ export class MonitoringPageService implements OnDestroy {
           return timer(0, 10000).pipe(
             tap(() => {
               this.monitoringStore.loadAggregation({
-                modelVerId: modelVersion.id,
+                modelVersion,
                 limit: 80,
                 offset,
               });
