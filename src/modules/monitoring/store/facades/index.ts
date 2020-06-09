@@ -1,1 +1,1 @@
-export * from '../../containers/monitoring-page/monitoring-page.facade';
+export * from '../../containers/monitoring-page/monitoring-page.service';

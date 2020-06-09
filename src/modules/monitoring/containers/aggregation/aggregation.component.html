@@ -1,141 +1,39 @@
-<div class="aggregation" *ngIf="aggregations$ | async as aggregationList">
+<div class="aggregation" *ngIf="aggregationList$ | async as aggregationList">
   <ng-container
     *ngIf="aggregationList.aggregations.length; else noDataAvailable"
   >
     <div class="aggregation__header">
-      <hydro-icon
-        *ngIf="canLoadLeft$ | async"
-        (click)="loadOlder()"
-        class="aggregation__icon"
-        type="next"
-      >
-      </hydro-icon>
-      <div class="aggregation__header-range">
-        <div>
-          <span>{{ aggregationList.dateFrom | hsFormatDate }}</span> -
-          <span>{{ aggregationList.dateTo | hsFormatDate }}</span>
-        </div>
-      </div>
-      <hydro-icon
-        *ngIf="canLoadRight$ | async"
-        (click)="loadNewest()"
-        class="aggregation__icon aggregation__icon--rotated"
-        type="next"
-      >
-      </hydro-icon>
+      <hs-aggregation-header
+        [canLoadNewer]="canLoadNewer$ | async"
+        [canLoadOlder]="canLoadOlder$ | async"
+        [aggregationList]="aggregationList"
+        (loadNewer)="loadNewer()"
+        (loadOlder)="loadOlder()"
+      ></hs-aggregation-header>
     </div>
     <div class="aggregation__features-label">Features</div>
-    <div *ngIf="featureNames" class="aggregation__body">
-      <ng-container
-        [ngTemplateOutlet]="rowLabels"
-        [ngTemplateOutletContext]="{ $implicit: featureNames }"
-      ></ng-container>
-      <div class="aggregation__checks">
-        <svg [attr.height]="canvasHeight" [attr.width]="canvasWidth">
-          <g
-            (click)="changeActiveColumn(column)"
-            *ngFor="
-              let column of aggregationList.aggregations;
-              let columnIndex = index
-            "
-            [attr.transform]="columnTranslate(columnIndex)"
-            [ngClass]="{
-              'column--active': column.id === (selectedAggregation$ | async)?.id
-            }"
-            class="column"
-          >
-            <rect
-              *ngFor="let featureName of featureNames; let rowIndex = index"
-              [attr.fill]="cellColor(column, featureName)"
-              [attr.height]="CELL_SIZE.height"
-              [attr.transform]="rowTranslate(rowIndex)"
-              [attr.width]="CELL_SIZE.width"
-            ></rect>
-          </g>
-        </svg>
-      </div>
-    </div>
+    <hs-aggregation-data-section
+      type="features"
+      [names]="featureNames"
+      [aggregationList]="aggregationList"
+      [selectedAggregation]="selectedAggregation$ | async"
+      (columnClicked)="changeActiveColumn($event)"
+    >
+    </hs-aggregation-data-section>
+
     <ng-container *ngIf="metricNames.length">
       <div class="aggregation__metrics-label">Metrics</div>
-      <div class="aggregation__body">
-        <ng-container
-          [ngTemplateOutlet]="rowLabels"
-          [ngTemplateOutletContext]="{ $implicit: metricNames }"
-        ></ng-container>
-        <div class="aggregation__checks">
-          <svg [attr.height]="metricsCanvasHeight" [attr.width]="canvasWidth">
-            <g
-              (click)="changeActiveColumn(column)"
-              *ngFor="
-                let column of aggregationList.aggregations;
-                let columnIndex = index
-              "
-              [attr.transform]="columnTranslate(columnIndex)"
-              [ngClass]="{
-                'column--active':
-                  column.id === (selectedAggregation$ | async)?.id
-              }"
-              class="column"
-            >
-              <rect
-                *ngFor="let metricName of metricNames; let rowIndex = index"
-                [attr.fill]="metricCellColor(column, metricName)"
-                [attr.height]="CELL_SIZE.height"
-                [attr.transform]="rowTranslate(rowIndex)"
-                [attr.width]="CELL_SIZE.width"
-              ></rect>
-            </g>
-          </svg>
-        </div>
-      </div>
+      <hs-aggregation-data-section
+        type="metrics"
+        [names]="metricNames"
+        [aggregationList]="aggregationList"
+        [selectedAggregation]="selectedAggregation$ | async"
+        (columnClicked)="changeActiveColumn($event)"
+      >
+      </hs-aggregation-data-section>
     </ng-container>
-
-    <!--    <ng-container *ngIf="batchNames && batchNames.length">-->
-    <!--      <div class="aggregation__batches-label">Batch metrics</div>-->
-    <!--      <div class="aggregation__body">-->
-    <!--        <ng-container-->
-    <!--          [ngTemplateOutlet]="rowLabels"-->
-    <!--          [ngTemplateOutletContext]="{ $implicit: batchNames }"-->
-    <!--        ></ng-container>-->
-    <!--        <div class="aggregation__checks">-->
-    <!--          <svg-->
-    <!--            [attr.height]="batchMetricsCanvasHeight"-->
-    <!--            [attr.width]="canvasWidth"-->
-    <!--          >-->
-    <!--            <g-->
-    <!--              (click)="changeActiveColumn(column)"-->
-    <!--              *ngFor="-->
-    <!--                let column of aggregationList.aggregations;-->
-    <!--                let columnIndex = index-->
-    <!--              "-->
-    <!--              [attr.transform]="columnTranslate(columnIndex)"-->
-    <!--              [ngClass]="{-->
-    <!--                'column&#45;&#45;active': column.id === selectedAggregation.id-->
-    <!--              }"-->
-    <!--              class="column"-->
-    <!--            >-->
-    <!--              <rect-->
-    <!--                *ngFor="let batchMetricName of batchNames; let rowIndex = index"-->
-    <!--                [attr.fill]="batchMetricCellColor(column, batchMetricName)"-->
-    <!--                [attr.height]="CELL_SIZE.height"-->
-    <!--                [attr.transform]="rowTranslate(rowIndex)"-->
-    <!--                [attr.width]="CELL_SIZE.width"-->
-    <!--              ></rect>-->
-    <!--            </g>-->
-    <!--          </svg>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </ng-container>-->
   </ng-container>
 </div>
-
-<ng-template #rowLabels let-names>
-  <ul [ngStyle]="{ width: labelsWidth + 'px' }" class="aggregation__labels">
-    <li *ngFor="let label of names" class="aggregation__labels-item">
-      {{ label }}
-    </li>
-  </ul>
-</ng-template>
 
 <ng-template #noDataAvailable>
   <div class="aggregation__message">

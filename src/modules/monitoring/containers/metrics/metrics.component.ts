@@ -12,7 +12,6 @@ import {
   DialogDeleteMetricComponent,
   DialogMetricComponent,
 } from '@monitoring/components';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { ModelVersion } from '@shared/_index';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
@@ -37,8 +36,7 @@ export class MetricsComponent implements OnInit {
     private dialog: DialogService,
     private resolver: ComponentFactoryResolver,
     private metricsFacade: MetricsFacade,
-    private modelsFacade: ModelsFacade,
-    private monitoringPageFacade: MonitoringPageFacade
+    private modelsFacade: ModelsFacade
   ) {}
 
   onAddMetric(modelVersion: ModelVersion) {

@@ -9,7 +9,8 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { ModelsFacade } from '@models/store';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { MonitoringPageService } from '@monitoring/store/facades';
+import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { Model, ModelVersion } from '@shared/_index';
 import {
   MetricSpecification,
@@ -42,9 +43,9 @@ export class DialogMetricComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private facade: MonitoringPageFacade,
     private modelsFacade: ModelsFacade,
-    private customValidators: CustomValidatorsService
+    private customValidators: CustomValidatorsService,
+    private metricsFacade: MetricsFacade
   ) {}
   ngOnInit() {
     this.createForm();
@@ -92,7 +93,7 @@ export class DialogMetricComponent implements OnInit {
       },
     };
 
-    this.facade.addMetric(params);
+    this.metricsFacade.addMetric(params);
     this.onClose();
   }
 

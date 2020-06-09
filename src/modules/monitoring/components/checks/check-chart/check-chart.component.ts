@@ -10,9 +10,8 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { ChartConfig } from '@monitoring/models';
-import { extent, mouse, scaleLinear, ScaleLinear, select } from 'd3';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { filter, shareReplay, tap } from 'rxjs/operators';
+import { format, ticks, extent, mouse, scaleLinear, ScaleLinear, select, axisLeft, axisBottom } from 'd3';
+import { BehaviorSubject } from 'rxjs';
 
 interface Tooltip {
   x: number;
@@ -34,8 +33,10 @@ interface Tooltip {
 export class CheckChartComponent implements OnInit, OnDestroy {
   @ViewChild('trackableRect', { read: ElementRef }) rectRef: ElementRef;
   @ViewChild('containerEl', { read: ElementRef }) containerEl: ElementRef;
+  @ViewChild('axisGroup', { read: ElementRef }) axisGroup: ElementRef;
+  @ViewChild('supportiveLines', { read: ElementRef })
+  supportiveLinesGroup: ElementRef;
 
-  config$: Observable<ChartConfig>;
   // config vars
   name: string = '';
   threshold: number;
@@ -132,10 +133,15 @@ export class CheckChartComponent implements OnInit, OnDestroy {
 
       this.scaleY = scaleLinear()
         .domain([max, min])
-        .range([0, this.viewHeight]);
+        .range([0, this.viewHeight])
+        .nice();
+
       this.scaleX = scaleLinear()
         .domain([1, countPoints])
         .range([0, this.viewWidth]);
+
+      this.drawAxis({ xScale: this.scaleX, yScale: this.scaleY });
+      this.drawSupportiveLines({ xScale: this.scaleX, yScale: this.scaleY });
     }
 
     this.cdr.detectChanges();
@@ -144,13 +150,11 @@ export class CheckChartComponent implements OnInit, OnDestroy {
   private addToExcludeList(seriesName: string): void {
     this.excludedSeries = [...this.excludedSeries, seriesName];
   }
-
   private removeFromExcludeList(seriesName: string): void {
     this.excludedSeries = this.excludedSeries.filter(
       name => name !== seriesName
     );
   }
-
   private onMouseMove(): void {
     if (this.noData) {
       if (this.activePoint) {
@@ -195,7 +199,7 @@ export class CheckChartComponent implements OnInit, OnDestroy {
           x: tXPos + 4,
           y: tYPos + 4,
           values: this.series.reduce((acc, series) => {
-            if (series.data[index - 1]) {
+            if (series.data[index - 1] !== undefined) {
               acc.push({
                 name: series.name,
                 color: series.color,
@@ -213,6 +217,94 @@ export class CheckChartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {}
+
+  private drawAxis({
+    xScale,
+    yScale,
+  }: {
+    xScale: ScaleLinear<number, number>;
+    yScale: ScaleLinear<number, number>;
+  }) {
+    this.drawXAxis(xScale);
+    this.drawYAxis(yScale);
+
+    select(this.axisGroup.nativeElement).selectAll('path.domain').remove();
+    select(this.axisGroup.nativeElement)
+      .selectAll('.tick > line')
+      .attr('color', '#8392a1');
+
+    select(this.axisGroup.nativeElement)
+      .selectAll('.tick > text')
+      .attr('font-size', '11px')
+      .attr('font-weight', 'bold')
+      .attr('fill', '#486581');
+  }
+
+  private drawYAxis(yScale: ScaleLinear<number, number>): void {
+    const yAxis = axisLeft(yScale)
+      .ticks(this.viewHeight / 40)
+      .tickSize(0);
+
+    select(this.axisGroup.nativeElement).select('g.yAxis').remove();
+    select(this.axisGroup.nativeElement)
+      .append('g')
+      .attr('transform', `translate(${this.margins.left}, ${this.margins.top})`)
+      .attr('class', 'yAxis')
+      .call(yAxis);
+  }
+
+  private drawXAxis(xScale: ScaleLinear<number, number>): void {
+    const xAxis = axisBottom(xScale)
+      .tickValues(this.getXTicks(xScale))
+      .tickFormat(format(',.0f'))
+      .tickSize(4);
+
+    select(this.axisGroup.nativeElement).select('g.xAxis').remove();
+    select(this.axisGroup.nativeElement)
+      .append('g')
+      .attr(
+        'transform',
+        `translate(${this.margins.left}, ${this.viewHeight + 2})`
+      )
+      .attr('class', 'xAxis')
+      .call(xAxis);
+  }
+
+  private getXTicks(xScale: ScaleLinear<number, number>): number[] {
+    const [min, max] = xScale.domain();
+
+    const lessThan5 = max < 5;
+    const higherThan10 = max > 10;
+    const count = lessThan5 ? 1 : higherThan10 ? 10 : max;
+
+    return ticks(min, max, count);
+  }
+
+  private drawSupportiveLines({
+    xScale,
+    yScale,
+  }: {
+    xScale: ScaleLinear<number, number>;
+    yScale: ScaleLinear<number, number>;
+  }): void {
+    const groupSelection = select(this.supportiveLinesGroup.nativeElement);
+    const lineColor = 'rgb(237, 239, 243)';
+    groupSelection.selectAll('line').remove();
+
+    groupSelection
+      .selectAll('line.yLine')
+      .data(yScale.ticks(this.viewHeight / 40))
+      .join(enter =>
+        enter
+          .append('line')
+          .attr('class', 'yLine')
+          .attr('x1', this.margins.left)
+          .attr('y1', d => yScale(d) + this.margins.top)
+          .attr('x2', this.chartWidth - this.margins.right)
+          .attr('y2', d => yScale(d) + this.margins.top)
+          .style('stroke', lineColor)
+      );
+  }
 
   private onMouseOut(): void {
     if (!this.noData) {

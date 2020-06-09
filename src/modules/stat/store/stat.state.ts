@@ -47,18 +47,17 @@ export class StatState {
     );
   }
 
-  setLoading(loading: boolean): void {
-    const state = this.state.getValue();
-    this.state.next({ ...state, loading });
+  initLoading(): void {
+    this.state.next({ ...initialState, loading: true });
   }
 
   setError(error: string | null): void {
     const state = this.state.getValue();
-    this.state.next({ ...state, error });
+    this.state.next({ ...state, error, loading: false });
   }
 
   setStat(stat: Stat): void {
     const state = this.state.getValue();
-    this.state.next({ ...state, stat });
+    this.state.next({ ...state, stat, loading: false });
   }
 }

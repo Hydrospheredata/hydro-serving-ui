@@ -1,0 +1,8 @@
+<div class="loading">
+  <ng-container *ngIf="loading; else content">
+    <hs-loader class="loading__icon"></hs-loader>
+  </ng-container>
+  <ng-template #content>
+    <ng-content></ng-content>
+  </ng-template>
+</div>

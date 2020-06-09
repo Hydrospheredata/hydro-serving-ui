@@ -1,7 +1,5 @@
 <div class="model-version-page">
-  <hs-model-version-details
-    [modelVersion]="modelVersion$ | async"
-    [servables]="servables$ | async"
-    [signature]="signature$ | async"
-  ></hs-model-version-details>
+  <div class="model-version-page__body">
+    <router-outlet></router-outlet>
+  </div>
 </div>

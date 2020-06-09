@@ -1,0 +1,130 @@
+@import 'variables';
+
+@mixin modelVersion {
+  font-size: 14px;
+  padding-right: 4px;
+  &:hover {
+    color: $primary-color-900;
+  }
+  &:before {
+    display: inline-block;
+    content: 'ver: ';
+    padding-right: 2px;
+    font-size: 12px;
+    font-family: $font-family-light;
+  }
+}
+
+.models-header {
+  background: white;
+  z-index: 1;
+  box-shadow: 0px 5px 6px -8px $neutral-color-600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 24px;
+  &__tile {
+    min-width: 80px;
+    color: $neutral-color-900;
+    position: relative;
+    &:not(:last-child) {
+      cursor: pointer;
+      background: $neutral-color-100;
+      border-right: 1px $neutral-color-200 solid;
+      &:after {
+        z-index: 2;
+        content: '';
+        display: block;
+        width: 8px;
+        height: 8px;
+        background: $neutral-color-100;
+        border-top: 1px $neutral-color-200 solid;
+        border-right: 1px $neutral-color-200 solid;
+        position: absolute;
+        right: -5px;
+        top: 19px;
+        transform-origin: center;
+        transform: rotate(45deg);
+      }
+      &:hover {
+        color: $neutral-color-1000;
+        background: white;
+        &:after {
+          background: white;
+        }
+      }
+    }
+  }
+  &__path {
+    display: flex;
+  }
+  &__model-name {
+    font-size: 14px;
+    padding: 12px 24px;
+  }
+  &__icon {
+    height: 12px;
+    width: 12px;
+    margin: 0 4px;
+    color: $neutral-color-500;
+    line-height: 45px;
+  }
+  &__service-name {
+    padding: 12px;
+    text-transform: capitalize;
+  }
+  &__model-version {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    padding: 12px;
+    width: 96px;
+    &--no-cursor {
+      cursor: default;
+    }
+    &-icon {
+      height: 10px;
+      width: 10px;
+      display: inline-block;
+      transform: rotate(90deg);
+      transform-origin: 2px 7px;
+      color: $neutral-color-500;
+      margin-left: 8px;
+    }
+    &-ver {
+      @include modelVersion;
+    }
+  }
+
+  &__siblings {
+    visibility: hidden;
+    background: white;
+    position: absolute;
+    //border: 1px $neutral-color-200 solid;
+    //border-top: none;
+    box-shadow: 0px 2px 4px -2px $neutral-color-900;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    left: 0;
+    width: 80px;
+    transform: translate(0px, -8px);
+    transition: 0.3s transform ease;
+    max-height: 124px;
+    width: 96px;
+    overflow-y: scroll;
+    z-index: 2;
+    opacity: 0;
+    &-showed {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(0px, -2px);
+    }
+  }
+  &__sibling {
+    cursor: pointer;
+    padding: 4px 12px;
+    &-ver {
+      @include modelVersion;
+    }
+  }
+}

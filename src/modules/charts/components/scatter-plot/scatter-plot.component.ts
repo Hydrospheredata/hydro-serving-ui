@@ -87,7 +87,6 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
     private chartHelper: ChartHelperService,
     private cdr: ChangeDetectorRef
   ) {
-    console.log('constructor');
     this.selectedPointIdx$ = this.selectedPointIndex.asObservable().pipe(
       distinctUntilChanged(),
       shareReplay(1),
@@ -121,7 +120,6 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changes', { changes });
     const dataChanges =
       (changes.data && changes.data.currentValue) || this.data;
     this.render(dataChanges);

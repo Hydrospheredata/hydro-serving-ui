@@ -1,13 +1,13 @@
 <div class="visualization">
-  <hs-services-header
-    [modelVersion]="modelVersion$ | async"
-  ></hs-services-header>
   <hs-visualization-availability>
     <hs-alert-message *ngIf="message$ | async as message">{{
       message
     }}</hs-alert-message>
-    <div *ngIf="(status$ | async) === 'PENDING'" class="visualization__loader">
-      Loading...
+    <div
+      *ngIf="(status$ | async) === 'PENDING' || (status$ | async) === 'STARTED'"
+      class="visualization__loader"
+    >
+      <hs-loader class="visualization__loader-icon"></hs-loader>
       <span class="visualization__loader-status"
         >Task id: {{ taskId$ | async }}</span
       >

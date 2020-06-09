@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CanActivateApplicationGuard } from '@applications/guards/can-activate-application.guard';
-import {
-  ApplicationsPageComponent,
-  ApplicationPageComponent,
-} from './containers';
+import { ApplicationsPageComponent, ApplicationPageComponent } from './containers';
 
 @NgModule({
   imports: [

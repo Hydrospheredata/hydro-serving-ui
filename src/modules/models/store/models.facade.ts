@@ -20,15 +20,7 @@ import { ModelVersionStatus, Model, ModelVersion } from '@shared/_index';
 import { neitherNullNorUndefined } from '@shared/utils';
 import { isEmpty } from 'lodash';
 import { combineLatest, Observable, BehaviorSubject } from 'rxjs';
-import {
-  filter,
-  switchMap,
-  map,
-  publish,
-  refCount,
-  startWith,
-  tap,
-} from 'rxjs/operators';
+import { switchMap, map, publish, refCount, startWith } from 'rxjs/operators';
 import { State } from './reducers';
 
 @Injectable({
@@ -37,7 +29,7 @@ import { State } from './reducers';
 export class ModelsFacade {
   selectedModelVersion$ = this.store.pipe(
     select(selectSelectedModelVersion),
-    neitherNullNorUndefined
+    neitherNullNorUndefined,
   );
   siblingModelVersions$ = this.selectedModelVersion$.pipe(
     switchMap(({ model: { id: modelId }, id: modelVersionId }) =>
@@ -206,6 +198,14 @@ export class ModelsFacade {
     private profilerFacade: ProfilerFacade,
     private favoriteStorage: FavoriteStorageLocal
   ) {}
+
+  getSelectedModel(): Observable<Model> {
+    return this.selectedModel$;
+  }
+
+  getSelectedModelVersions(): Observable<ModelVersion[]> {
+    return this.selectedModelVersions$;
+  }
 
   selectModelVersionById$ = id =>
     this.store.pipe(select(selectModelVersionById(id)));

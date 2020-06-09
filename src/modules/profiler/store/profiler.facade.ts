@@ -2,13 +2,9 @@ import { Injectable } from '@angular/core';
 import { ProfilerService } from '@core/services';
 import { Store, select } from '@ngrx/store';
 import { Profiles } from '@shared/_index';
+import { neitherNullNorUndefined } from '@shared/utils';
 import { timer, of, Observable, BehaviorSubject } from 'rxjs';
-import {
-  switchMap,
-  map,
-  catchError,
-  filter,
-} from 'rxjs/operators';
+import { switchMap, map, catchError, filter } from 'rxjs/operators';
 import {
   GetProfilerServiceStatus,
   CleanProfiles,
@@ -28,11 +24,11 @@ export class ProfilerFacade {
   selectedField = new BehaviorSubject<string>(undefined);
   selectedField$ = this.selectedField
     .asObservable()
-    .pipe(filter(val => val !== undefined));
+    .pipe(neitherNullNorUndefined);
 
   selectedFeatureName$ = this.store.pipe(
     select(selectSelectedFeatureName),
-    filter(val => val !== undefined)
+    neitherNullNorUndefined
   );
 
   constructor(
@@ -55,9 +51,12 @@ export class ProfilerFacade {
         return of([]);
       })
     );
-  }
+  };
 
-  loadProfiles: (modelVerId, fieldName) => Observable<Profiles> = (modelVerId, fieldName) => {
+  loadProfiles: (modelVerId, fieldName) => Observable<Profiles> = (
+    modelVerId,
+    fieldName
+  ) => {
     return timer(0, 5000).pipe(
       switchMap(() => {
         return this.profilerService.getProfiles(modelVerId, fieldName).pipe(
@@ -69,5 +68,5 @@ export class ProfilerFacade {
         );
       })
     );
-  }
+  };
 }

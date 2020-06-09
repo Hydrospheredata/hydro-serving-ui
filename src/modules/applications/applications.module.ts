@@ -14,15 +14,8 @@ import {
 } from '@applications/components';
 
 import { UpdateModelVersionDirective } from '@applications/directives';
-import {
-  ApplicationsService,
-  ApplicationFormService,
-} from '@applications/services';
-import {
-  reducer,
-  ApplicationsEffects,
-  ApplicationsFacade,
-} from '@applications/store';
+import { ApplicationsService, ApplicationFormService } from '@applications/services';
+import { reducer, ApplicationsEffects, ApplicationsFacade } from '@applications/store';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { CustomValidatorsService } from '@core/services/custom-validators.service';
 import { EffectsModule } from '@ngrx/effects';
@@ -31,10 +24,7 @@ import { SharedModule } from '@shared/shared.module';
 import { ChartsModule } from 'ng2-charts';
 import { CodemirrorModule } from 'ng2-codemirror';
 import { ApplicationSignatureComponent } from './components/application-signature/application-signature.component';
-import {
-  ApplicationsPageComponent,
-  ApplicationPageComponent,
-} from './containers';
+import { ApplicationsPageComponent, ApplicationPageComponent } from './containers';
 
 const DIALOGS = [
   DialogDeleteApplicationComponent,

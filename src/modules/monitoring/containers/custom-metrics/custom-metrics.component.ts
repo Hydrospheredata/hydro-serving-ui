@@ -4,8 +4,7 @@ import { MetricChartsState } from '@monitoring/store/metric-charts.state';
 import { ModelVersion } from '@shared/models';
 import { Observable } from 'rxjs';
 import { MetricsComponent } from '@monitoring/containers/metrics/metrics.component';
-import { ComparisonRegime, CustomMetricsFacade } from './custom-metrics.facade';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { CustomMetricsFacade } from './custom-metrics.facade';
 import { ChartConfig } from '@monitoring/models';
 
 @Component({
@@ -16,12 +15,10 @@ import { ChartConfig } from '@monitoring/models';
 })
 export class CustomMetricsComponent implements OnInit {
   customMetricsChecks$: Observable<any>;
-  comparisonRegime$: Observable<ComparisonRegime>;
   comparableModelVersions$: Observable<ModelVersion[]>;
   chartConfigs$: Observable<ChartConfig[]>;
 
   constructor(
-    private monitoringPageFacade: MonitoringPageFacade,
     private facade: CustomMetricsFacade,
     private dialog: DialogService
   ) {}
@@ -36,12 +33,9 @@ export class CustomMetricsComponent implements OnInit {
     this.facade.comparableModelVersionsChanged(modelVersions);
   }
 
-  openSettings() {
+  openSettings(): void {
     this.dialog.createDialog({
       component: MetricsComponent,
-      providers: [
-        { provide: MonitoringPageFacade, useValue: this.monitoringPageFacade },
-      ],
       styles: {
         width: '800px',
         height: '600px',
@@ -50,7 +44,7 @@ export class CustomMetricsComponent implements OnInit {
     });
   }
 
-  trackByFn(_, chartConfig: ChartConfig) {
+  trackByFn(_, chartConfig: ChartConfig): string {
     return chartConfig.name;
   }
 }

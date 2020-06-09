@@ -4,6 +4,7 @@ import { ActivatedRouteSnapshot, Router, CanActivate } from '@angular/router';
 import { ApplicationsFacade } from '@applications/store';
 import { Observable, of } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root',
 })

@@ -9,8 +9,9 @@ import {
 import { NameGenerator } from '@core/services';
 import { Store, select } from '@ngrx/store';
 import { Application, ModelVersion } from '@shared/_index';
+import { neitherNullNorUndefined } from '@shared/utils';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { filter, share, first, map } from 'rxjs/operators';
+import { share, first, map } from 'rxjs/operators';
 import {
   Add,
   Delete,
@@ -27,7 +28,7 @@ import { State } from './reducers';
 export class ApplicationsFacade {
   public allApplications$ = this.store.pipe(
     select(selectAllApplications),
-    filter(val => val !== undefined)
+    neitherNullNorUndefined
   );
   public filterStr$: BehaviorSubject<string> = new BehaviorSubject('');
   public filteredApplications$: Observable<Application[]> = combineLatest(
@@ -55,14 +56,14 @@ export class ApplicationsFacade {
 
   public selectedApplication$ = this.store.pipe(
     select(selectSelectedApplication),
-    filter(val => val !== undefined)
+    neitherNullNorUndefined
   );
 
   public applicationsLoaded$ = this.store.pipe(select(selectApplicationLoaded));
 
   testingDialogState$ = this.store.pipe(
     select(selectTestingDialogState),
-    filter(val => val !== undefined),
+    neitherNullNorUndefined,
     share()
   );
 
@@ -127,6 +128,7 @@ export class ApplicationsFacade {
   public clearTestingDialog() {
     this.store.dispatch(ClearTestingDialog());
   }
+
   public toggleFavorite(application: Application) {
     this.store.dispatch(ToggleFavorite({ payload: { application } }));
   }

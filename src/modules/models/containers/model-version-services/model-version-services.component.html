@@ -22,6 +22,7 @@
           : notSupported;
         context: {
           name: 'Data projection',
+          iconName: 'data_projection',
           message: (serviceSupported$ | async)?.visualization?.message
         }
       "
@@ -34,6 +35,7 @@
           : notSupported;
         context: {
           name: 'Drift Report',
+          iconName: 'drift_report',
           message: (serviceSupported$ | async)?.stat?.description
         }
       "
@@ -44,7 +46,7 @@
 
 <ng-template #visualizationTile>
   <div class="mv-services__item">
-    <hydro-icon type="monitoring" class="mv-services__icon"></hydro-icon>
+    <hydro-icon type="data_projection" class="mv-services__icon"></hydro-icon>
     <button
       class="mv-services__button"
       hs-button
@@ -60,7 +62,7 @@
 
 <ng-template #monitoringTile>
   <div class="mv-services__item">
-    <hydro-icon type="monitoring" class="mv-services__icon"></hydro-icon>
+    <hydro-icon type="drift_report" class="mv-services__icon"></hydro-icon>
     <button
       class="mv-services__button"
       hs-button
@@ -74,11 +76,16 @@
   </div>
 </ng-template>
 
-<ng-template #notSupported let-message="message" let-name="name">
+<ng-template
+  #notSupported
+  let-message="message"
+  let-name="name"
+  let-iconName="iconName"
+>
   <div [hs-tooltip]="message">
     <div class="mv-services__item mv-services__item--unsupported">
       <hydro-icon
-        type="monitoring"
+        [type]="iconName"
         class="mv-services__icon mv-services__icon--unsupported"
       ></hydro-icon>
       <p class="mv-services__text">

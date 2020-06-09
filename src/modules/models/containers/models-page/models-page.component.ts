@@ -3,7 +3,6 @@ import { Router, NavigationEnd, Event } from '@angular/router';
 import { ZenModeService } from '@core/services/zenmode.service';
 import { ModelsFacade } from '@models/store';
 import { Model } from '@shared/_index';
-import { log } from '@shared/utils';
 import { Observable, Subscription } from 'rxjs';
 import { filter, take, tap } from 'rxjs/operators';
 

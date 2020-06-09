@@ -95,7 +95,11 @@ export class AggregationsList {
   }
 
   has(aggregation: Aggregation | null): boolean {
-    if (this.aggregations.length && aggregation !== null) {
+    if (
+      this.aggregations.length &&
+      aggregation !== null &&
+      aggregation !== undefined
+    ) {
       return this.aggregations.some(({ id }) => id === aggregation.id);
     } else {
       return false;

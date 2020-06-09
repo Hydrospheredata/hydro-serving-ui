@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from '@shared/shared.module';
-import { ModelsRoutingModule } from './models-routing.module';
 
 import {
   ModelsComponent,
@@ -10,6 +8,7 @@ import {
   ModelVersionsRowComponent,
   ModelVersionStatusComponent,
   SignaturesComponent,
+  ModelsHeaderComponent,
 } from '@models/components';
 
 import { DialogDeleteModelComponent } from '@models/components/dialogs';
@@ -20,15 +19,18 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { ProfilerModule } from '@profiler/profiler.module';
 import { ServablesModule } from '@servables/servables.module';
+import { SharedModule } from '@shared/shared.module';
+import { StatModule } from '../stat/stat.module';
 import {
   ModelPageComponent,
   ModelsPageComponent,
   ModelVersionPageComponent,
   ModelVersionProfilerPageComponent,
   ModelVersionServicesComponent,
+  ModelVersionDetailsContainerComponent,
 } from './containers';
+import { ModelsRoutingModule } from './models-routing.module';
 import { ModelsPublicUiModule } from './shared/models-public-ui.module';
-import { StatModule } from '../stat/stat.module';
 
 @NgModule({
   imports: [
@@ -56,6 +58,8 @@ import { StatModule } from '../stat/stat.module';
     ModelsPageComponent,
     ModelPageComponent,
     ModelVersionServicesComponent,
+    ModelVersionDetailsContainerComponent,
+    ModelsHeaderComponent,
   ],
   entryComponents: [DialogDeleteModelComponent, ModelVersionLogComponent],
   providers: [ModelsService],

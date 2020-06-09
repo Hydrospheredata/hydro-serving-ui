@@ -9,9 +9,9 @@ import {
 import { of } from 'rxjs';
 import { CustomMetricsComponent } from './custom-metrics.component';
 import { CustomMetricsFacade } from './custom-metrics.facade';
-import { MonitoringPageFacade } from '@monitoring/store/facades';
+import { MonitoringPageService } from '@monitoring/store/facades';
 
-const monitoringPageFacade: Partial<MonitoringPageFacade> = {};
+const monitoringPageFacade: Partial<MonitoringPageService> = {};
 describe('CustomMetricsComponent', () => {
   let component: CustomMetricsComponent;
   let fixture: ComponentFixture<CustomMetricsComponent>;
@@ -29,7 +29,7 @@ describe('CustomMetricsComponent', () => {
         set: {
           providers: [
             {
-              provide: MonitoringPageFacade,
+              provide: MonitoringPageService,
               useValue: monitoringPageFacade,
             },
             {

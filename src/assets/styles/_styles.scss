@@ -1,40 +1,40 @@
-@import "fonts.scss";
-@import "variables.scss";
-@import "content.scss";
-@import "inputs.scss";
-@import "common.scss";
-@import "codemirror.scss";
-@import "tables.scss";
-@import "forms.scss";
-@import "mdl-textfieled.scss";
-@import "mdl-list.scss";
-@import "mdl-select.scss";
-@import "mdl-popover.scss";
-@import "mdl-tabs.scss";
-@import "mdl-progress.scss";
-@import "mdl-radio.scss";
-@import "mdl-checkbox";
-@import "error.scss";
-@import "expandable.scss";
-@import "icons.scss";
+@import 'fonts.scss';
+@import 'variables.scss';
+@import 'content.scss';
+@import 'inputs.scss';
+@import 'common.scss';
+@import 'codemirror.scss';
+@import 'tables.scss';
+@import 'forms.scss';
+@import 'mdl-textfieled.scss';
+@import 'mdl-list.scss';
+@import 'mdl-select.scss';
+@import 'mdl-popover.scss';
+@import 'mdl-tabs.scss';
+@import 'mdl-progress.scss';
+@import 'mdl-radio.scss';
+@import 'mdl-checkbox';
+@import 'error.scss';
+@import 'expandable.scss';
+@import 'icons.scss';
 
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 :after,
 :before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
-  box-sizing: border-box
+  box-sizing: border-box;
 }
 
 html,
 body {
   font-family: $font-family-regular !important;
-  background-color: $background-color;
+  background-color: $neutral-color-100;
   color: $neutral-color-900;
   height: 100%;
 }
@@ -54,7 +54,7 @@ h6 {
   font-family: $font-family-regular;
   font-weight: 500;
   line-height: 1.1;
-  color: inherit
+  color: inherit;
 }
 
 .h1 .small,
@@ -93,7 +93,7 @@ h1,
 h2,
 h3 {
   margin-top: 20px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
 
 .h1 .small,
@@ -108,7 +108,7 @@ h2 .small,
 h2 small,
 h3 .small,
 h3 small {
-  font-size: 65%
+  font-size: 65%;
 }
 
 .h4,
@@ -118,7 +118,7 @@ h4,
 h5,
 h6 {
   margin-top: 10px;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
 
 .h4 .small,
@@ -133,37 +133,37 @@ h5 .small,
 h5 small,
 h6 .small,
 h6 small {
-  font-size: 75%
+  font-size: 75%;
 }
 
 .h1,
 h1 {
-  font-size: 36px
+  font-size: 36px;
 }
 
 .h2,
 h2 {
-  font-size: 30px
+  font-size: 30px;
 }
 
 .h3,
 h3 {
-  font-size: 24px
+  font-size: 24px;
 }
 
 .h4,
 h4 {
-  font-size: 18px
+  font-size: 18px;
 }
 
 .h5,
 h5 {
-  font-size: 14px
+  font-size: 14px;
 }
 
 .h6,
 h6 {
-  font-size: 12px
+  font-size: 12px;
 }
 
 label {

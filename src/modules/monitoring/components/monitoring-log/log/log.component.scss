@@ -34,7 +34,7 @@
           color: $supportive-color-red-600;
         }
         &--success {
-          color: $supportive-color-green-600
+          color: $supportive-color-green-600;
         }
       }
       &-label {
@@ -105,14 +105,15 @@
     padding: 0;
     background: $neutral-color-100;
     min-width: 146px;
-
+    max-height: 720px;
+    overflow: scroll;
     &-item {
       padding: 8px 12px;
       color: $neutral-color-800;
       cursor: pointer;
       font-family: $font-family-light;
       font-size: 12px;
-      opacity: .7;
+      opacity: 0.7;
 
       &:hover {
         opacity: 1;
@@ -131,6 +132,8 @@
 
   &__detailed {
     padding: 12px;
+    max-height: 720px;
+    overflow: scroll;
   }
 
   &__message {

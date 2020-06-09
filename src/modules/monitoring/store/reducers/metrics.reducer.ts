@@ -1,3 +1,4 @@
+import { ClearMonitoringPage } from '../actions';
 import { EntityState, createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { createReducer, on, Action } from '@ngrx/store';
 import { MetricSpecification } from '@shared/models/metric-specification.model';
@@ -35,7 +36,8 @@ const metricsReducer = createReducer(
   })),
   on(DeleteMetricSuccess, (state, action) =>
     adapter.removeOne(action.payload.id, state)
-  )
+  ),
+  on(ClearMonitoringPage, () => initialState)
 );
 
 export function reducer(state = initialState, action: Action): State {
