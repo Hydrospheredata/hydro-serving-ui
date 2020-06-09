@@ -12,21 +12,21 @@
         <div class="report__body">
           <div class="report__overall">
             <div>
-              Overall probability drift:
-              <span class="report__overall-drift">{{
-                stat.overall_probability_drift | percent
-              }}</span>
+              Overall drift's status
+              <!--              <span class="report__overall-drift">{{-->
+              <!--                stat.overall_probability_drift | percent-->
+              <!--              }}</span>-->
             </div>
             <div class="report__overall-decision">
-              <hydro-icon
+              <hs-drift-status
                 [drift]="stat.overall_probability_drift"
-                class="report__overall-decision-icon"
-                hsColorByDrift
-                type="icon-error-outline"
-              ></hydro-icon>
-              <span class="report__overall-decision-text">{{
-                stat.warnings.final_decision
-              }}</span>
+                size="24"
+              ></hs-drift-status>
+              <span
+                class="report__overall-decision-text"
+                *ngIf="stat.warnings.final_decision"
+                >{{ stat.warnings.final_decision }}</span
+              >
             </div>
           </div>
           <div class="report__warnings">
@@ -34,15 +34,11 @@
               *ngFor="let warning of stat.warnings.report"
               class="report__warning"
             >
-              <span
+              <hs-drift-status
+                class="report__warning-status"
                 [drift]="warning.drift_probability_per_feature"
-                hsColorByDrift
-              >
-                <hydro-icon
-                  class="report__warning-icon"
-                  type="icon-error-outline"
-                ></hydro-icon>
-              </span>
+                size="24"
+              ></hs-drift-status>
               <div class="report__warning-msg">
                 {{ warning.message }} Drift:
                 <span class="report__warning-drift">{{

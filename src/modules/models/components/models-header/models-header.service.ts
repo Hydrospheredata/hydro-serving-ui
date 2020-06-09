@@ -49,7 +49,11 @@ export class ModelsHeaderService {
         const urlArray = state.state.url.split('/');
         const serviceIndexInArray = 4;
 
-        return urlArray[serviceIndexInArray];
+        if (urlArray[serviceIndexInArray]) {
+          return urlArray[serviceIndexInArray].replace('_', ' ');
+        } else {
+          return undefined;
+        }
       })
     );
   }
