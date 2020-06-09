@@ -46,7 +46,7 @@ import {
             canActivate: [CanActivateModelVersionGuard],
           },
           {
-            path: ':modelId/:modelVersionId/stat',
+            path: ':modelId/:modelVersionId/drift_report',
             component: StatPageComponent,
             canActivate: [CanActivateModelVersionGuard],
           },

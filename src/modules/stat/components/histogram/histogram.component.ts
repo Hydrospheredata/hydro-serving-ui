@@ -77,6 +77,9 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
       },
       xAxis: {
         categories: this.config.bins as string[],
+        labels: {
+          format: '{value:,.5f}',
+        },
       },
       series: [
         {

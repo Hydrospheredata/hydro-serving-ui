@@ -12,13 +12,10 @@
           <div class="feature-report__select-option">
             <span>{{ featureReport.key }}</span>
             <span class="feature-report__select-option-drift">
-              drift:
-              <span
+              <hs-drift-status
+                class="feature-report__icon"
                 [drift]="featureReport.value['drift-probability']"
-                class="feature-report__select-option-drift-value"
-                hsColorByDrift
-                >{{ featureReport.value['drift-probability'] | percent }}
-              </span>
+              ></hs-drift-status>
             </span>
           </div>
         </mdl-option>
@@ -38,7 +35,7 @@
             <th>name</th>
             <th>training data</th>
             <th>production data</th>
-            <th>change probability</th>
+            <th>change's status</th>
           </tr>
         </thead>
         <tr

@@ -33,7 +33,7 @@
           ? monitoringTile
           : notSupported;
         context: {
-          name: 'stat',
+          name: 'Drift Report',
           message: (serviceSupported$ | async)?.stat?.description
         }
       "
@@ -66,10 +66,10 @@
       hs-button
       kind="flat"
       color="primary"
-      [routerLink]="['./stat']"
+      [routerLink]="['./drift_report']"
       queryParamsHandling="merge"
     >
-      stat
+      drift report
     </button>
   </div>
 </ng-template>
