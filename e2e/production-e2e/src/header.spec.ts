@@ -1,9 +1,4 @@
-import {
-  Page,
-  Browser,
-  ElementHandle,
-  HTMLOrSVGElementHandle,
-} from 'playwright';
+import { Page, Browser, ElementHandle, HTMLOrSVGElementHandle } from 'playwright';
 import appConfig from '../app-config';
 import initializeBrowser from '../helpers/initializeBrowser';
 
@@ -42,7 +37,7 @@ describe('Header test', () => {
       let navigation: HTMLOrSVGElementHandle;
 
       beforeEach(async () => {
-        navigation = await header.$('.header__navigation');
+        navigation = await header.$('.header-nav');
       });
 
       it('exists', async () => {
