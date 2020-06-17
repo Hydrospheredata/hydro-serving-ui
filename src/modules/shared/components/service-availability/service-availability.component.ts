@@ -13,7 +13,7 @@ import { ServiceStatus } from '@shared/models/service-status.model';
   templateUrl: './service-availability.component.html',
   styleUrls: ['./service-availability.component.css'],
 })
-export class ServiceAvailabilityComponent implements OnInit, OnChanges {
+export class ServiceAvailabilityComponent implements OnChanges {
   @Input() status: ServiceStatus;
   @Input() name: string;
   @Input() error: string;
@@ -24,10 +24,6 @@ export class ServiceAvailabilityComponent implements OnInit, OnChanges {
   @ViewChild('errorTemplate', { read: TemplateRef }) errorTemplate;
   @ViewChild('alertTemplate', { read: TemplateRef }) alertTemplate;
   @ViewChild('contentTemplate', { read: TemplateRef }) contentTemplate;
-
-  constructor() {}
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     const status =
