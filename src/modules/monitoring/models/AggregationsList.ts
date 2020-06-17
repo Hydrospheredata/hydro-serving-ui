@@ -112,6 +112,10 @@ export class AggregationsList {
     }
   }
 
+  get columnsCount(): number {
+    return this.aggregations.length;
+  }
+
   private extractDateFromId(id: string): Date {
     const getFirst4Bytes = str => str.slice(0, 8);
     const convertToMicroseconds = str => parseInt(str, 16) * 1000;

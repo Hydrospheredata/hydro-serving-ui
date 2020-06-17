@@ -91,6 +91,11 @@
     &-msg {
       color: $neutral-color-700;
     }
+    &-icon {
+      width: 28px;
+      height: 28px;
+      margin-right: 8px;
+    }
   }
 
   &__warning + &__warning {
