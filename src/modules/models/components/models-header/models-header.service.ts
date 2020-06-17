@@ -50,7 +50,7 @@ export class ModelsHeaderService {
         const serviceIndexInArray = 4;
         return (
           urlArray[serviceIndexInArray] &&
-          urlArray[serviceIndexInArray].split('?')[0]
+          urlArray[serviceIndexInArray].replace('_', ' ').split('?')[0]
         );
       })
     );

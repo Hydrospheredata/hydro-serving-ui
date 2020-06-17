@@ -48,7 +48,7 @@ import {
                 component: ModelVersionProfilerPageComponent,
               },
               {
-                path: 'stat',
+                path: 'drift_report',
                 component: StatPageComponent,
               },
             ],
