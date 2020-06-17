@@ -1,11 +1,6 @@
-import {
-  Component,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+import { Component, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
 import * as d3 from 'd3';
+
 @Component({
   selector: 'hs-gradient-legend',
   template: `<div class="gradient-legend" #anchor></div>`,
@@ -14,6 +9,7 @@ import * as d3 from 'd3';
 })
 export class GradientLegendComponent implements AfterViewInit {
   @ViewChild('anchor', { read: ElementRef }) anchorElement: ElementRef;
+
   ngAfterViewInit() {
     const colorScale = d3.scaleSequential(d3.interpolateRdBu).domain([0, 1]);
     const legendHeight = 48;
@@ -57,7 +53,12 @@ export class GradientLegendComponent implements AfterViewInit {
 
     const legendAxis = d3
       .axisBottom(legendScale)
-      .scale(d3.scaleLinear().range([0, viewWidth - 1]).domain([0, 1]))
+      .scale(
+        d3
+          .scaleLinear()
+          .range([0, viewWidth - 1])
+          .domain([0, 1])
+      )
       .tickSize(6)
       .ticks(8);
 

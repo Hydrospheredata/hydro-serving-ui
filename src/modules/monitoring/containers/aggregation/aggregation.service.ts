@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { Aggregation, AggregationsList } from '@monitoring/models/Aggregation';
+import { Aggregation, AggregationsList } from '@monitoring/models';
 import { AggregationPaginator } from '@monitoring/services/aggregation-paginator';
 import { MonitoringFacade } from '@monitoring/store/monitoring.facade';
 import { neitherNullNorUndefined } from '@shared/utils';

@@ -1,0 +1,79 @@
+@import 'variables';
+
+@mixin modelVersion {
+  font-size: 14px;
+  padding-right: 4px;
+  font-family: $font-family-bold;
+  &:before {
+    display: inline-block;
+    content: 'ver: ';
+    padding-right: 2px;
+    font-size: 12px;
+    font-family: $font-family-light;
+  }
+}
+
+.models-header {
+  background: white;
+  z-index: 1;
+  box-shadow: 0px 5px 6px -8px $neutral-color-600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 24px;
+  &__container {
+    max-width: 1030px;
+    min-width: 1030px;
+    margin: 0 auto;
+    display: flex;
+  }
+  &__tile {
+    min-width: 80px;
+    color: $neutral-color-900;
+    position: relative;
+    display: flex;
+    padding: 12px;
+    &:not(:last-child) {
+      cursor: pointer;
+      background: $neutral-color-100;
+      border-right: 1px $neutral-color-200 solid;
+      &:after {
+        z-index: 2;
+        content: '';
+        display: block;
+        width: 8px;
+        height: 8px;
+        background: $neutral-color-100;
+        border-top: 1px $neutral-color-200 solid;
+        border-right: 1px $neutral-color-200 solid;
+        position: absolute;
+        right: -5px;
+        top: 19px;
+        transform-origin: center;
+        transform: rotate(45deg);
+      }
+      &:hover {
+        color: $neutral-color-1000;
+        background: white;
+        &:after {
+          background: white;
+        }
+      }
+    }
+  }
+  &__model-name {
+    font-size: 14px;
+    font-family: $font-family-bold;
+  }
+  &__service-name {
+    text-transform: capitalize;
+  }
+  &__model-version {
+    position: relative;
+    display: flex;
+    padding-left: 8px;
+    &-ver {
+      @include modelVersion;
+    }
+  }
+}

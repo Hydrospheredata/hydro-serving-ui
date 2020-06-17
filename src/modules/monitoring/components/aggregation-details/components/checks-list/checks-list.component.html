@@ -1,0 +1,53 @@
+<div class="checks">
+  <table class="hydro-table hydro-table">
+    <thead class="hydro-table-head">
+      <tr>
+        <th class="hydro-table-head__cell hydro-table-head__cell--sticky">
+          Request
+        </th>
+
+        <th class="hydro-table-head__cell hydro-table-head__cell--sticky">
+          Successful checks, %
+        </th>
+        <th class="hydro-table-head__cell hydro-table-head__cell--sticky">
+          Successful metrics, %
+        </th>
+        <th class="hydro-table-head__cell hydro-table-head__cell--sticky">
+          Time
+        </th>
+        <th class="hydro-table-head__cell hydro-table-head__cell--sticky">
+          Has error
+        </th>
+      </tr>
+    </thead>
+    <tbody class="hydro-table-body" [@filterAnimation]="total">
+      <tr *ngFor="let check of checks" class="hydro-table-body__row">
+        <td class="hydro-table-body__cell">
+          <button
+            hs-button
+            kind="flat"
+            color="primary"
+            (click)="onClick(check)"
+          >
+            details
+          </button>
+        </td>
+
+        <td class="hydro-table-body__cell checks__score">
+          {{ check.getRawScore() | number | percent }}
+        </td>
+        <td class="hydro-table-body__cell checks__score">
+          {{ check.getMetricsScore() | number | percent }}
+        </td>
+        <td class="hydro-table-body__cell">
+          {{ check.timestamp | hsFormatDate }}
+        </td>
+        <td class="hydro-table-body__cell">
+          <span *ngIf="check.error" class="checks__error">
+            error
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

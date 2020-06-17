@@ -1,6 +1,7 @@
 import { Check } from '@monitoring/models';
 
 export const mockCheck: Check = new Check({
+  _hs_timestamp: 0,
   _id: 'id',
   _hs_error: '',
   _hs_latency: 1,

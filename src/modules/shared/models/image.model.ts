@@ -1,10 +1,4 @@
-export interface IImage {
-  name: string;
-  tag: string;
-  sha256: string;
-}
-
-export class Image implements IImage {
+export class Image {
   public name: string;
   public tag: string;
   public sha256: string;

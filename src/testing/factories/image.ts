@@ -1,7 +1,7 @@
-import { IImage } from '@shared/_index';
+import { Image } from '@shared/models';
 
-export const MockImage: IImage = {
-    name: 'mockImage',
-    tag: 'mockImageTag',
-    sha256: 'mockSha256',
+export const MockImage: Image = {
+  name: 'mockImage',
+  tag: 'mockImageTag',
+  sha256: 'mockSha256',
 };

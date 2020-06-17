@@ -18,10 +18,12 @@ export class FeatureReportComponent implements OnInit {
   selectedFeatureReport: FeatureReport;
 
   ngOnInit() {
-    this.selectedFeatureReport = this.perFeatureReport[this.featureNames[0]];
+    if (this.perFeatureReport) {
+      this.selectedFeatureReport = this.perFeatureReport[this.featureNames[0]];
+    }
   }
 
   get featureNames(): string[] {
-    return Object.keys(this.perFeatureReport);
+    return this.perFeatureReport ? Object.keys(this.perFeatureReport) : [];
   }
 }

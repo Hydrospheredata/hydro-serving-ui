@@ -14,11 +14,14 @@
 .agg-data {
   display: flex;
   align-items: center;
+  margin-bottom: 16px;
   &__labels {
     list-style: none;
     margin: 0;
     margin-right: 8px;
     padding: 0;
+    overflow: scroll;
+    max-width: 100px;
   }
 
   &__label {

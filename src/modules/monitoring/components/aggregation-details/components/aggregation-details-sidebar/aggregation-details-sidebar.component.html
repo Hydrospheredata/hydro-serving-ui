@@ -1,0 +1,22 @@
+<div class="agg-details-sidebar">
+  <div class="agg-details-sidebar__info">
+    <div class="agg-details-sidebar__row">
+      <span class="agg-details-sidebar__label">Requests</span>
+      <span class="agg-details-sidebar__count">{{
+        checkCollection.getSummaryInformation().count
+      }}</span>
+    </div>
+    <div class="agg-details-sidebar__row">
+      <span class="agg-details-sidebar__label">From</span>
+      <span class="agg-details-sidebar__date">{{
+        checkCollection.getFirstElement().timestamp | hsFormatDate
+      }}</span>
+    </div>
+    <div class="agg-details-sidebar__row">
+      <span class="agg-details-sidebar__label">To</span>
+      <span class="agg-details-sidebar__date">
+        {{ checkCollection.getLastElement().timestamp | hsFormatDate }}</span
+      >
+    </div>
+  </div>
+</div>

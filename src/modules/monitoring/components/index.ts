@@ -7,3 +7,4 @@ export * from './requests-information/requests-information.component';
 export * from './regime-selector/regime-selector.component';
 export * from './checks';
 export * from './aggregation';
+export * from './aggregation-details/aggregation-details.component';

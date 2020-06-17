@@ -1,31 +1,48 @@
 <div class="monitoring" *ngIf="modelVersion$ | async">
   <hs-monitoring-availability>
-    <ng-container *ngIf="true; else errorSection">
-      <section class="monitoring__aggregation">
-        <hs-aggregation></hs-aggregation>
-      </section>
-      <hs-loading [loading]="isChecksLoading$ | async">
-        <ng-container *ngIf="checks$ | async as checkCollection">
-          <ng-container *ngIf="!checkCollection.isEmpty()">
-            <hs-requests-information
-              [aggregation]="selectedAggregation$ | async"
-              [errors]="checkCollection.getErrorChecks()"
-              [latency]="checkCollection.getLatency()"
-            >
-            </hs-requests-information>
-            <div class="monitoring__log">
-              <hs-log
-                [checks]="checks$ | async"
-                [loading]="false"
-                [modelVersion]="modelVersion$ | async"
-              ></hs-log>
-            </div>
-          </ng-container>
-        </ng-container>
-      </hs-loading>
-      <hs-custom-metrics></hs-custom-metrics>
-    </ng-container>
+    <div class="monitoring__body">
+      <ng-container *ngIf="true; else errorSection">
+        <section class="monitoring__aggregation">
+          <hs-aggregation></hs-aggregation>
+        </section>
+        <hs-loading [loading]="isChecksLoading$ | async">
+          <div
+            class="monitoring__aggregation-details"
+            *ngIf="checks$ | async as checkCollection"
+          >
+            <div class="monitoring__label">Batch details</div>
+            <hs-aggregation-details
+              (showCheckDetails)="showCheckDetails($event)"
+            ></hs-aggregation-details>
+          </div>
+        </hs-loading>
+        <hs-custom-metrics></hs-custom-metrics>
+      </ng-container>
+    </div>
   </hs-monitoring-availability>
+  <div *ngIf="checkToShowInDetails$ | async as check" class="check-details">
+    <div
+      @openClosed
+      class="check-details__layout"
+      (click)="closeCheckDetails()"
+    ></div>
+    <div @openClosedContainer class="check-details__container">
+      <div class="check-details__header">
+        <button
+          hs-button
+          kind="flat"
+          color="primary"
+          (click)="closeCheckDetails()"
+        >
+          close
+        </button>
+      </div>
+      <div class="check-details__body">
+        <hs-log-detail [check]="check" [modelVersion]="modelVersion$ | async">
+        </hs-log-detail>
+      </div>
+    </div>
+  </div>
 </div>
 
 <ng-template #errorSection>

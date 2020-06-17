@@ -1,16 +1,24 @@
 <div class="log-detail">
-  <section class="log-detail__section">
-    <hs-raw-checks
-      class="log-detail__section"
-      [check]="check"
-      [inputKeys]="inputKeys"
-      [outputKeys]="outputKeys"
-      [modelVersion]="modelVersion"
-    >
-    </hs-raw-checks>
-  </section>
-  <section *ngIf="check.hasMetricChecks()">
-    <div class="log-detail__label">metrics</div>
-    <hs-metrics-checks [metrics]="check.metricChecks"></hs-metrics-checks>
-  </section>
+  <div *ngIf="check.error">
+    <div>Error:</div>
+    <hs-error-message>
+      {{ check.error }}
+    </hs-error-message>
+  </div>
+  <ng-container>
+    <section class="log-detail__section">
+      <hs-raw-checks
+        class="log-detail__section"
+        [check]="check"
+        [inputKeys]="inputKeys"
+        [outputKeys]="outputKeys"
+        [modelVersion]="modelVersion"
+      >
+      </hs-raw-checks>
+    </section>
+    <section *ngIf="check.hasMetricChecks()">
+      <div class="log-detail__label">metrics</div>
+      <hs-metrics-checks [metrics]="check.metricChecks"></hs-metrics-checks>
+    </section>
+  </ng-container>
 </div>

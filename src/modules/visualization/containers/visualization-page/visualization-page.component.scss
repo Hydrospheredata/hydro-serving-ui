@@ -3,7 +3,7 @@
 .visualization {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  padding: 24px;
 
   &__loader {
     align-items: center;
@@ -53,6 +53,8 @@
   &__body {
     display: flex;
     flex-wrap: wrap;
+    overflow: scroll;
+    max-height: calc(100% + 24px);
   }
 
   &__chart {

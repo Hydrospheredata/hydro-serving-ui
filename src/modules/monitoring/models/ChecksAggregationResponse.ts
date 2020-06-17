@@ -6,13 +6,18 @@ export interface AdditionalCheckInfo {
   _hs_model_name: string;
   _id: string;
   _hs_metrics: {
-    [metricName: string]: { checks: number; passed: number };
+    [metricName: string]: AggregationCheck;
   };
   _hs_batch: {
     [featureName: string]: {
-      [metricName: string]: { checked: number; passed: number };
+      [metricName: string]: AggregationCheck;
     };
   };
+}
+
+interface AggregationCheck {
+  checked: number;
+  passed: number;
 }
 
 export interface Features {

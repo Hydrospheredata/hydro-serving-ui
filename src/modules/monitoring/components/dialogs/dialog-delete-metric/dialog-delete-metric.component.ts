@@ -1,13 +1,7 @@
-import {
-  Component,
-  InjectionToken,
-  Output,
-  EventEmitter,
-  Input,
-} from '@angular/core';
+import { Component, InjectionToken, Output, EventEmitter, Input } from '@angular/core';
 
 import { DialogService } from '@dialog/dialog.service';
-import { MonitoringPageService } from '@monitoring/store/facades';
+import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 
 export const METRIC_ID_VALUE = new InjectionToken<string>('metric id value');
 
@@ -18,10 +12,7 @@ export const METRIC_ID_VALUE = new InjectionToken<string>('metric id value');
 export class DialogDeleteMetricComponent {
   @Output() closed: EventEmitter<any> = new EventEmitter();
   @Input() metricId: string;
-  constructor(
-    public dialog: DialogService,
-    private facade: MonitoringPageService
-  ) {}
+  constructor(public dialog: DialogService, private facade: MetricsFacade) {}
 
   public onClose(): void {
     this.closed.next();

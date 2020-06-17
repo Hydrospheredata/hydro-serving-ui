@@ -1,0 +1,33 @@
+@import 'variables';
+
+.agg-legend {
+  padding: 12px;
+  border: 1px $neutral-color-100 solid;
+  border-radius: 4px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 180px;
+  background: white;
+  &__row {
+    display: flex;
+    align-items: center;
+  }
+  &__cell {
+    height: 14px;
+    width: 8px;
+    min-width: 8px;
+    background: lightgray;
+    border: 1px $neutral-color-300 solid;
+    margin-right: 4px;
+  }
+  &__label {
+    font-size: 12px;
+    color: $neutral-color-800;
+  }
+  &__title {
+    font-size: 10px;
+    font-family: $font-family-bold;
+    color: $neutral-color-900;
+  }
+}

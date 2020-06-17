@@ -1,4 +1,10 @@
 @import 'variables';
+.stat {
+  padding: 24px;
+  &__body {
+    width: 100%;
+  }
+}
 .stat__loader {
   display: flex;
   justify-content: center;
@@ -84,6 +90,11 @@
 
     &-msg {
       color: $neutral-color-700;
+    }
+    &-icon {
+      width: 28px;
+      height: 28px;
+      margin-right: 8px;
     }
   }
 

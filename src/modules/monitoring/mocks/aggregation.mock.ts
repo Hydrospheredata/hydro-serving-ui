@@ -1,7 +1,9 @@
 import { Aggregation } from '@monitoring/models';
+import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
 
 export function mockAggregationWithId(id): Aggregation {
   return {
+    modelVersion: MockModelVersion1Model1,
     batchesChecks: {},
     featuresChecks: {},
     from: undefined,
@@ -10,5 +12,11 @@ export function mockAggregationWithId(id): Aggregation {
     metricsChecks: {},
     modelVersionId: 0,
     to: undefined,
+    get inputFeaturesNames(): string[] {
+      return [];
+    },
+    get outputFeaturesNames(): string[] {
+      return [];
+    },
   };
 }

@@ -24,34 +24,36 @@
     </table>
   </div>
 
-  <span class="raw-checks__label">ouputs</span>
-  <hs-explanation
-    [modelVersionId]="modelVersion.id"
-    [requestId]="check.id"
-  ></hs-explanation>
-  <div class="raw-checks__table-wrapper">
-    <table class="raw-checks__table">
-      <tr class="raw-checks__head-row">
-        <td class="raw-checks__cell raw-checks__head-cell">
-          name
-        </td>
-        <td
-          [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4"
-          class="raw-checks__cell raw-checks__head-cell"
-        >
-          value
-        </td>
-        <ng-container *ngIf="hasRawChecksExceptOverall">
-          <td class="raw-checks__cell raw-checks__head-cell">description</td>
-          <td class="raw-checks__cell raw-checks__head-cell">threshold</td>
-          <td class="raw-checks__cell raw-checks__head-cell">check</td>
-        </ng-container>
-      </tr>
-      <ng-container
-        *ngTemplateOutlet="row; context: { $implicit: outputKeys }"
-      ></ng-container>
-    </table>
-  </div>
+  <ng-container *ngIf="!check.error">
+    <span class="raw-checks__label">ouputs</span>
+    <hs-explanation
+      [modelVersionId]="modelVersion.id"
+      [requestId]="check.id"
+    ></hs-explanation>
+    <div class="raw-checks__table-wrapper">
+      <table class="raw-checks__table">
+        <tr class="raw-checks__head-row">
+          <td class="raw-checks__cell raw-checks__head-cell">
+            name
+          </td>
+          <td
+            [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4"
+            class="raw-checks__cell raw-checks__head-cell"
+          >
+            value
+          </td>
+          <ng-container *ngIf="hasRawChecksExceptOverall">
+            <td class="raw-checks__cell raw-checks__head-cell">description</td>
+            <td class="raw-checks__cell raw-checks__head-cell">threshold</td>
+            <td class="raw-checks__cell raw-checks__head-cell">check</td>
+          </ng-container>
+        </tr>
+        <ng-container
+          *ngTemplateOutlet="row; context: { $implicit: outputKeys }"
+        ></ng-container>
+      </table>
+    </div>
+  </ng-container>
 </div>
 
 <ng-template #row let-keys>

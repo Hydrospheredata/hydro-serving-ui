@@ -1,0 +1,52 @@
+<div class="models-header">
+  <div class="models-header__container">
+    <div
+      class="models-header__tile"
+      *ngIf="service$ | async; else modelsWithoutLink"
+      (click)="onClickModelVersion()"
+    >
+      <ng-container [ngTemplateOutlet]="modelsTile"></ng-container>
+    </div>
+    <ng-container
+      *ngIf="service$ | async as serviceName"
+      [ngTemplateOutlet]="servicesTile"
+      [ngTemplateOutletContext]="{ $implicit: serviceName }"
+    ></ng-container>
+  </div>
+</div>
+
+<ng-template #modelsWithoutLink>
+  <div class="models-header__tile">
+    <ng-container [ngTemplateOutlet]="modelsTile"></ng-container>
+  </div>
+</ng-template>
+
+<ng-template #modelsTile>
+  <span class="models-header__model-name">{{ (model$ | async)?.name }}</span>
+  <div
+    *ngIf="modelVersion$ | async"
+    class="models-header__model-version models-header__model-version--no-cursor"
+  >
+    <span class="models-header__model-version-ver"
+      >{{ (modelVersion$ | async)?.modelVersion }}
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #modelVersionTile>
+  <div class="models-header__tile">
+    <div
+      class="models-header__model-version models-header__model-version--no-cursor"
+    >
+      <span class="models-header__model-version-ver"
+        >{{ (modelVersion$ | async)?.modelVersion }}
+      </span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #servicesTile let-name>
+  <div class="models-header__tile models-header__service-name">
+    {{ name }}
+  </div>
+</ng-template>

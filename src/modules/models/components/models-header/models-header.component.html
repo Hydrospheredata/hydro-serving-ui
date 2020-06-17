@@ -1,4 +1,4 @@
-<div class="models-header" *ngIf="model$ | async">
+<div class="models-header" *ngIf="model$ | async" hsHideInZenMode>
   <div class="models-header__path">
     <div class="models-header__tile" (click)="onClickModel()">
       <div class="models-header__model-name">{{ (model$ | async)?.name }}</div>
@@ -75,3 +75,7 @@
     </div>
   </div>
 </ng-template>
+
+<div hsShowInZenMode>
+  <hs-models-header-zen-mode></hs-models-header-zen-mode>
+</div>

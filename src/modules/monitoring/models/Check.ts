@@ -1,5 +1,7 @@
+import * as _ from 'lodash';
 import { BareCheck } from './BareCheck';
 
+export type CheckId = string;
 export interface MetricCheck {
   check: boolean;
   description: string;
@@ -16,7 +18,7 @@ export interface RawCheck {
 }
 
 export class Check {
-  id: string;
+  id: CheckId;
   error: string | null;
   latency: number;
   overallScore: number;
@@ -28,6 +30,7 @@ export class Check {
   modelVersion: number;
   modelName: string;
   inputsOutputs: { [IOkey: string]: any };
+  timestamp: number;
 
   constructor(params: BareCheck) {
     this.id = params._id;
@@ -39,6 +42,7 @@ export class Check {
     this.modelVersionId = params._hs_model_version_id;
     this.modelName = params._hs_model_name;
     this.modelVersion = params._hs_model_incremental_version;
+    this.timestamp = params._hs_timestamp;
     this.inputsOutputs = this.getInputsOutputs(params);
   }
 
@@ -60,5 +64,27 @@ export class Check {
     }
 
     return res;
+  }
+
+  getMetricsScore(): number {
+    if (this.hasMetricChecks()) {
+      const metricChecksArray = Object.values(this.metricChecks);
+      const count = metricChecksArray.length;
+
+      const successChecksCount = metricChecksArray.filter(({ check }) => check)
+        .length;
+
+      return successChecksCount / count;
+    }
+    return 0;
+  }
+
+  getRawScore(): number {
+    const rawChecksArray = _.flatten(Object.values(this.rawChecks));
+    const count = rawChecksArray.length;
+    const successChecksCount = rawChecksArray.filter(({ check }) => check)
+      .length;
+
+    return successChecksCount / count;
   }
 }

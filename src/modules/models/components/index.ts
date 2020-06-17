@@ -7,3 +7,4 @@ export * from './model-version-status/model-version-status.component';
 export * from './model-versions-row/model-versions-row.component';
 export * from './dialogs';
 export * from './models-header/models-header.component';
+export * from './models-header/models-header-zen-mode/models-header-zen-mode.component';

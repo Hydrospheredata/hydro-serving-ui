@@ -16,17 +16,19 @@ export class AggregationComponent implements OnInit {
   selectedAggregation$: Observable<Aggregation>;
   canLoadOlder$: Observable<boolean>;
   canLoadNewer$: Observable<boolean>;
-  featureNames: string[] = [];
+
+  inputNames: string[] = [];
+  outputNames: string[] = [];
   metricNames: string[] = [];
-  batchNames: string[] = [];
+
   constructor(private readonly aggregationService: AggregationService) {}
 
   ngOnInit(): void {
     this.aggregationList$ = this.aggregationService.getAggregationList().pipe(
       tap(agg => {
-        this.featureNames = agg ? agg.featureNames : undefined;
+        this.inputNames = agg ? agg.inputNames : undefined;
+        this.outputNames = agg ? agg.outputNames : undefined;
         this.metricNames = agg ? agg.metricNames : undefined;
-        this.batchNames = agg ? agg.batchNames : undefined;
       })
     );
 

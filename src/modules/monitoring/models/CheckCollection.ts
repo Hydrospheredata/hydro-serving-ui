@@ -1,6 +1,12 @@
 import { Check, MetricCheck } from '@monitoring/models/Check';
 import { MetricCheckAggregation } from '@monitoring/models/MetricCheckAggregation';
 
+export interface RequestsSummaryInfo {
+  count: number;
+  failed: number;
+  success: number;
+}
+
 export class CheckCollection {
   private readonly checks: Check[];
   constructor(checks: Check[]) {
@@ -21,11 +27,7 @@ export class CheckCollection {
     return this.checks.map(getErrorField) || [];
   }
 
-  getSummaryInformation(): {
-    count: number;
-    failed: number;
-    success: number;
-  } {
+  getSummaryInformation(): RequestsSummaryInfo {
     const checks = this.checks;
     const count = checks.length;
     const success = checks.reduce((acc, check) => {
@@ -41,8 +43,23 @@ export class CheckCollection {
     };
   }
 
+  getTimestampRange(): { from: number; to: number } {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+
+    return {
+      from: this.getFirstElement().timestamp,
+      to: this.getLastElement().timestamp,
+    };
+  }
+
   getFirstElement(): Check {
     return this.checks[0];
+  }
+
+  getLastElement(): Check {
+    return this.checks[this.checks.length - 1];
   }
 
   isEmpty(): boolean {

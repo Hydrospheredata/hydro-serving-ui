@@ -14,6 +14,7 @@ export interface SystemKeys {
   _hs_model_version_id: number;
   _hs_model_name: string;
   _hs_model_incremental_version: number;
+  _hs_timestamp: number;
 }
 
 export type BareCheck = SystemKeys & { [IOkey: string]: any };

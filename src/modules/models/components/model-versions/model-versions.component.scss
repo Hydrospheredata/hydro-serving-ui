@@ -1,6 +1,7 @@
-@import "variables";
+@import 'variables';
 
 .model-versions {
+  height: 100%;
   &__header {
     line-height: 32px;
     font-family: $font-family-bold;
@@ -8,10 +9,10 @@
   }
   &__body {
     width: 100%;
-    overflow: hidden;
+    overflow: scroll;
     border: 1px $neutral-color-300 solid;
     border-radius: 4px;
-
+    max-height: calc(100% - 154px);
   }
 
   &__table {

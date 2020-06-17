@@ -1,0 +1,75 @@
+<div class="checks-filter">
+  <div class="checks-filter__title">Filter</div>
+  <form [formGroup]="form">
+    <div class="checks-filter__controls">
+      <div class="checks-filter__control">
+        <input
+          type="radio"
+          formControlName="filterBy"
+          value="ALL"
+          id="all"
+        /><label class="checks-filter__label" for="all">All</label>
+      </div>
+      <div>
+        <div class="checks-filter__control">
+          <input
+            type="radio"
+            formControlName="filterBy"
+            value="SCORE"
+            id="score"
+          /><label class="checks-filter__label" for="score"
+            >By success percent</label
+          >
+        </div>
+
+        <div
+          class="checks-filter__submenu"
+          *ngIf="form.value.filterBy === 'SCORE'"
+          formGroupName="scoreFilter"
+        >
+          <div class="checks-filter__group">
+            <div class="checks-filter__control">
+              <input type="checkbox" formControlName="byRaw" id="byRaw" /><label
+                for="byRaw"
+                class="checks-filter__label"
+                >Successful checks % in:
+              </label>
+            </div>
+            <div class="hs-slider checks-filter__slider">
+              <ng5-slider
+                formControlName="rawScoreRange"
+                [options]="sliderOptions"
+              ></ng5-slider>
+            </div>
+          </div>
+          <div class="checks-filter__group">
+            <div class="checks-filter__control">
+              <input
+                type="checkbox"
+                formControlName="byMetric"
+                id="byMetric"
+              /><label class="checks-filter__label" for="byMetric"
+                >Successful metrics % in:</label
+              >
+            </div>
+            <div class="hs-slider checks-filter__slider">
+              <ng5-slider
+                formControlName="metricScoreRange"
+                [options]="sliderOptions"
+              ></ng5-slider>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="checks-filter__control">
+        <input
+          type="radio"
+          formControlName="filterBy"
+          value="ERROR"
+          id="withError"
+        />
+        <label class="checks-filter__label" for="withError">Only Errors</label>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AggregationsList, Aggregation, CheckCollection } from '@monitoring/models';
+import { AggregationsList, Aggregation, CheckCollection, CheckId, Check } from '@monitoring/models';
 import {
   LoadChecks,
   ClearMonitoringPage,
   LoadOlderAggregation,
   LoadNewerAggregation,
+  ShowCheckDetails,
+  CloseCheckDetails,
 } from '@monitoring/store/actions';
 import { LoadAggregations, SelectAggregation } from '@monitoring/store/actions/aggregation.actions';
 import {
@@ -14,8 +16,10 @@ import {
   selectChecks,
   selectChecksLoading,
 } from '@monitoring/store/selectors';
+import { selectCheckToShowInDetails } from '@monitoring/store/selectors/ui.selectors';
 import { Store, select } from '@ngrx/store';
 import { Observable } from '@node_modules/rxjs';
+import { ModelVersion } from '@shared/models';
 import { State as MonitoringState } from './reducers';
 
 @Injectable()
@@ -38,6 +42,10 @@ export class MonitoringFacade {
     return this.store.pipe(select(selectChecks));
   }
 
+  getCheckToShowInDetails(): Observable<Check> {
+    return this.store.pipe(select(selectCheckToShowInDetails));
+  }
+
   isChecksLoading(): Observable<boolean> {
     return this.store.pipe(select(selectChecksLoading));
   }
@@ -51,7 +59,7 @@ export class MonitoringFacade {
   }
 
   loadAggregation(props: {
-    modelVerId: number;
+    modelVersion: ModelVersion;
     offset: number;
     limit: number;
   }): void {
@@ -72,5 +80,13 @@ export class MonitoringFacade {
     to: string;
   }): void {
     this.store.dispatch(LoadChecks(props));
+  }
+
+  showChecksDetails(checkId: CheckId): void {
+    this.store.dispatch(ShowCheckDetails({ checkId }));
+  }
+
+  closeChecksDetails(): void {
+    this.store.dispatch(CloseCheckDetails());
   }
 }
