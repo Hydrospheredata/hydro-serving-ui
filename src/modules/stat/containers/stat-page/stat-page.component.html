@@ -18,10 +18,7 @@
     <div class="report__body">
       <div class="report__overall">
         <div>
-          Overall probability drift:
-          <span class="report__overall-drift">{{
-            (stat$ | async)?.overall_probability_drift | percent
-          }}</span>
+          Overall drift's status
         </div>
         <div class="report__overall-decision">
           <hydro-icon
@@ -30,9 +27,11 @@
             hsColorByDrift
             type="icon-error-outline"
           ></hydro-icon>
-          <span class="report__overall-decision-text">{{
-            (stat$ | async)?.warnings.final_decision
-          }}</span>
+          <span
+            class="report__overall-decision-text"
+            *ngIf="(stat$ | async)?.warnings.final_decision as decision"
+            >{{ decision }}</span
+          >
         </div>
       </div>
       <div class="report__warnings">
@@ -47,10 +46,7 @@
             ></hydro-icon>
           </span>
           <div class="report__warning-msg">
-            {{ warning.message }} Drift:
-            <span class="report__warning-drift">{{
-              warning.drift_probability_per_feature | percent
-            }}</span>
+            {{ warning.message }}
           </div>
         </div>
       </div>
