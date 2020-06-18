@@ -3,24 +3,24 @@
 .monitoring {
   width: 100%;
   position: relative;
-  padding: 24px;
   height: 100%;
   &__label {
-    font-size: 18px;
+    font-size: 14px;
     font-family: $font-family-bold;
     color: $neutral-color-900;
     line-height: 24px;
     margin-bottom: 2px;
   }
   &__body {
-    overflow: scroll;
+    overflow: auto;
     height: 100%;
+    padding: 24px;
   }
   &__aggregation {
     margin-bottom: 12px;
     width: 100%;
     &-details {
-      margin-bottom: 12px;
+      margin-bottom: 24px;
     }
   }
 
@@ -102,7 +102,7 @@
     bottom: 0;
     background: white;
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
   }
   &__header {
     position: sticky;
@@ -110,9 +110,26 @@
     z-index: 1;
     background: white;
     padding: 8px 24px;
+    display: flex;
+    align-items: center;
+  }
+  &__title {
+    font-family: $font-family-bold;
+    font-size: 14px;
+    color: $neutral-color-900;
   }
   &__body {
-    padding: 24px;
+    padding: 0 24px 24px;
+  }
+  &__icon {
+    width: 24px;
+    height: 24px;
+    color: $neutral-color-600;
+    transition: 0.3s ease color;
+    cursor: pointer;
+    &:hover {
+      color: $neutral-color-900;
+    }
   }
 }
 

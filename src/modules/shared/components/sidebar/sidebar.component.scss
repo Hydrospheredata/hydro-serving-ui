@@ -9,7 +9,7 @@
   position: relative;
   background: white;
   height: calc(100% - 72px);
-  overflow: scroll;
+  overflow: auto;
   box-shadow: -6px 0px 8px 3px $neutral-color-600;
   &__button {
     width: 100%;
@@ -23,7 +23,7 @@
     padding: 12px;
   }
   &__list {
-    overflow: scroll;
+    overflow: auto;
   }
 
   &__item {

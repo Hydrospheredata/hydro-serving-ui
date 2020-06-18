@@ -15,13 +15,15 @@
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+  min-width: 840px;
+  position: relative;
   &__labels {
     list-style: none;
-    margin: 0;
-    margin-right: 8px;
+    margin: 0 8px 0 0;
     padding: 0;
-    overflow: scroll;
+    overflow: auto;
     max-width: 100px;
+    width: 100px;
   }
 
   &__label {
@@ -33,5 +35,7 @@
     margin-bottom: 1px;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 100px;
+    width: 100px;
   }
 }

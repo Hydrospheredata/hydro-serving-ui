@@ -4,12 +4,13 @@
     class="icon test-application__close-icon"
     (click)="onClose()"
   ></hydro-icon>
-  <p class="application-name">
-    <label>Application: </label>"{{ application.name }}"
-  </p>
+  <p class="application-name">{{ application.name }}</p>
 
-  <div class="test-application__content" *ngIf="state$ | async;let dialogState">
-    <mdl-tabs (mdl-tab-active-changed)="tabChanged($event)" mdl-ripple mdl-tab-active-index="0">
+  <div
+    class="test-application__content"
+    *ngIf="state$ | async; let dialogState"
+  >
+    <mdl-tabs mdl-ripple mdl-tab-active-index="0">
       <mdl-tab-panel mdl-tab-panel-title="web">
         <form (ngSubmit)="onSubmit()">
           <div>
@@ -30,10 +31,7 @@
               <div class="test-fields__item __output">
                 <div class="test-fields__item-header">
                   <label>Output</label>
-                  <span
-                    *ngIf="dialogState.status; let status"
-                    class="status"
-                  >
+                  <span *ngIf="dialogState.status; let status" class="status">
                     status
                     <span class="status__text status__text--{{ status }}">
                       {{ status }}
@@ -57,10 +55,7 @@
                 </ng-container>
               </div>
             </div>
-            <div
-              class="error-container"
-              *ngIf="!(inputValid$ | async)"
-            >
+            <div class="error-container" *ngIf="!(inputValid$ | async)">
               Wrong input's format. JSON validation error
             </div>
             <div class="buttons">

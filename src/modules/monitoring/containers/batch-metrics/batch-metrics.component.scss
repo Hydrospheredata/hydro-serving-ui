@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .batch-metrics {
   background: white;
@@ -7,12 +7,12 @@
   margin-bottom: 12px;
   padding: 12px;
   &__body {
-    overflow: scroll;
+    overflow: auto;
   }
   &__table {
     width: 100%;
     border-collapse: collapse;
-    overflow: scroll;
+    overflow: auto;
     &-cell {
       border: 1px $neutral-color-200 solid;
       color: $neutral-color-600;
@@ -44,10 +44,10 @@
     width: 18px;
     height: 18px;
     &--success {
-      color: $supportive-color-green-500
+      color: $supportive-color-green-500;
     }
     &--fail {
-      color: $supportive-color-red-500
+      color: $supportive-color-red-500;
     }
   }
 }

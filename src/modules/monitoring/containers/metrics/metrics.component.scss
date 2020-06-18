@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .add-metric-button {
   margin: 8px 0;
@@ -7,7 +7,7 @@
 
 .wrap {
   padding: 24px;
-  overflow: scroll;
+  overflow: auto;
   position: relative;
   height: 100%;
   display: flex;
@@ -21,7 +21,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  background: #3c4344ab; 
+  background: #3c4344ab;
 }
 
 .buttons {

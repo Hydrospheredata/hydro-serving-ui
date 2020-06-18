@@ -28,14 +28,12 @@
     ></div>
     <div @openClosedContainer class="check-details__container">
       <div class="check-details__header">
-        <button
-          hs-button
-          kind="flat"
-          color="primary"
+        <hydro-icon
+          class="check-details__icon"
+          type="close"
           (click)="closeCheckDetails()"
-        >
-          close
-        </button>
+        ></hydro-icon>
+        <div class="check-details__title">Request details</div>
       </div>
       <div class="check-details__body">
         <hs-log-detail [check]="check" [modelVersion]="modelVersion$ | async">

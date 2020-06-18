@@ -5,9 +5,7 @@
   border: 1px $neutral-color-200 solid;
   border-radius: 4px;
   height: 100%;
-  margin-right: 12px;
   position: relative;
-  width: 100%;
   display: flex;
 
   &__info {
@@ -39,15 +37,16 @@
   }
 
   &__sidebar {
-    min-width: 220px;
-    width: 220px;
+    min-width: 196px;
+    width: 196px;
     background: $neutral-color-100;
     border-right: 1px $neutral-color-200 solid;
   }
 
   &__body {
+    padding: 8px;
     width: 100%;
-    overflow: scroll;
+    overflow: auto;
   }
 
   &__loader {
@@ -71,15 +70,17 @@
   }
 
   &__message {
-    color: $neutral-color-600;
+    width: 100%;
+    padding: 24px;
+    color: $neutral-color-400;
     font-family: $font-family-bold;
     font-size: 12px;
     text-align: center;
   }
   &__label {
-    font-size: 14px;
+    font-size: 12px;
     font-family: $font-family-bold;
-    color: $neutral-color-900;
+    color: $neutral-color-700;
     margin: 4px 108px 2px;
   }
 }

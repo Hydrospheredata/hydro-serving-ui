@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 .servables-table {
   width: 100%;
@@ -6,6 +6,10 @@
     &-buttons {
       button + button {
         margin-left: 8px;
+      }
+
+      button {
+        padding: 5px 12px;
       }
     }
   }

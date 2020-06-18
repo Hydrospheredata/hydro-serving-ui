@@ -27,7 +27,7 @@
     color: $neutral-color-1000;
     font-size: 12px;
     line-height: 14px;
-    overflow: scroll;
+    overflow: auto;
     padding: 8px 6px;
   }
 
@@ -54,9 +54,9 @@
   }
 
   &__label {
-    color: $neutral-color-900;
+    color: $neutral-color-800;
     font-family: $font-family-bold;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 24px;
     margin-right: 12px;
   }

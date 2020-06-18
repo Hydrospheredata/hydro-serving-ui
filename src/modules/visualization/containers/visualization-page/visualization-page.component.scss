@@ -53,7 +53,7 @@
   &__body {
     display: flex;
     flex-wrap: wrap;
-    overflow: scroll;
+    overflow: auto;
     max-height: calc(100% + 24px);
   }
 

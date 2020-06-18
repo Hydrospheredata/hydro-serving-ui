@@ -9,7 +9,7 @@
   }
   &__body {
     width: 100%;
-    overflow: scroll;
+    overflow: auto;
     border: 1px $neutral-color-300 solid;
     border-radius: 4px;
     max-height: calc(100% - 154px);
