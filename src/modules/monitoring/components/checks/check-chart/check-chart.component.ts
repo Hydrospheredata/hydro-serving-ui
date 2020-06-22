@@ -10,7 +10,17 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { ChartConfig } from '@monitoring/models';
-import { format, ticks, extent, mouse, scaleLinear, ScaleLinear, select, axisLeft, axisBottom } from 'd3';
+import {
+  format,
+  ticks,
+  extent,
+  mouse,
+  scaleLinear,
+  ScaleLinear,
+  select,
+  axisLeft,
+  axisBottom,
+} from 'd3';
 import { BehaviorSubject } from 'rxjs';
 
 interface Tooltip {

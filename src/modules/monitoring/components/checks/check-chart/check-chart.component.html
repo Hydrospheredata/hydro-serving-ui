@@ -63,7 +63,7 @@
       opacity="0"
     ></rect>
     <g
-      *ngIf="threshold !== undefined && !noData"
+      *ngIf="threshold !== undefined"
       [attr.clip-path]="clipUrl"
       [attr.transform]="thresholdTranslate"
       [hs-d3threshold]="threshold"
