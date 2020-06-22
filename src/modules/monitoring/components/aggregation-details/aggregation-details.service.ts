@@ -23,7 +23,7 @@ export interface ChecksFilter {
 }
 
 const initialFilter: ChecksFilter = {
-  filterBy: ChecksHealthFilterOptions.byScore,
+  filterBy: ChecksHealthFilterOptions.all,
   scoreFilter: {
     byMetric: true,
     metricScoreRange: [0, 100],

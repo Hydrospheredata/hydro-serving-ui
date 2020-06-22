@@ -87,18 +87,22 @@
           <tbody class="hydro-table-body">
             <tr
               *ngFor="let application of modelVersion.applications"
-              class="hydro-table-body__row"
+              class="hydro-table-body__row hydro-table-body__row--hoverable"
+              [routerLink]="['/applications', application]"
             >
-              <td class="hydro-table-body__cell">{{ application }}</td>
+              <td class="hydro-table-body__cell">
+                {{ application }}
+              </td>
               <td class="hydro-table-body__cell">
                 <hs-application-status status="ready"></hs-application-status>
               </td>
               <td
-                class="hydro-table-body__cell model-version__applications-link"
+                class="hydro-table-body__cell model-version__applications--small"
               >
-                <button hs-button [routerLink]="['/applications', application]">
-                  GO TO
-                </button>
+                <hydro-icon
+                  class="model-version__applications-icon"
+                  type="icon-arrow-right"
+                ></hydro-icon>
               </td>
             </tr>
           </tbody>

@@ -1,4 +1,10 @@
-import { Component, OnInit, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewEncapsulation,
+} from '@angular/core';
 import {
   ChecksHealthFilterOptions,
   ChecksFilter,
@@ -31,7 +37,7 @@ export class ChecksFilterComponent implements OnInit {
 
   constructor(private readonly fb: FormBuilder) {
     this.form = this.fb.group({
-      filterBy: this.fb.control(ChecksHealthFilterOptions.byScore),
+      filterBy: this.fb.control(ChecksHealthFilterOptions.all),
       scoreFilter: this.fb.group({
         byMetric: this.fb.control(true),
         byRaw: this.fb.control(true),

@@ -8,7 +8,7 @@
     font-size: 12px;
     margin-bottom: 8px;
     height: 100%;
-    overflow: scroll;
+    overflow: auto;
   }
 
   &__controls {
@@ -33,6 +33,6 @@
   }
 
   &__submenu {
-    margin-left: 24px;
+    margin-left: 18px;
   }
 }

@@ -1,6 +1,8 @@
 // BASE
 $base-size: 8px;
 
+$header-height: 72px;
+
 // FONT
 // Font family
 $font-family-light: 'Roboto Light', sans-serif;
@@ -21,7 +23,7 @@ $label-font-size: 1.125rem;
 $input-font-size: 1.125rem;
 
 // primary color palette
-$primary-color-100: #dceefb;
+$primary-color-100: rgba(178, 218, 255, 0.58);
 $primary-color-200: #b6e0fe;
 $primary-color-300: #84c5f4;
 $primary-color-400: #62b0e8;

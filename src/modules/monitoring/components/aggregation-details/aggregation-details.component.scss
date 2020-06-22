@@ -6,8 +6,8 @@
   border-radius: 4px;
   display: flex;
   &__sidebar {
-    min-width: 220px;
-    width: 220px;
+    min-width: 196px;
+    width: 196px;
     border-right: 1px $neutral-color-200 solid;
   }
   &__body {
@@ -30,5 +30,5 @@
   background: white;
   z-index: 1;
   padding: 24px;
-  overflow: scroll;
+  overflow: auto;
 }

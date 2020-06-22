@@ -1,10 +1,14 @@
-@import "variables";
+@import 'variables';
 
 :host {
   display: table-row;
 }
 
 .model-version {
+  &__icon {
+    width: 24px;
+    height: 24px;
+  }
   &__model-version {
     font-family: $font-family-bold;
   }

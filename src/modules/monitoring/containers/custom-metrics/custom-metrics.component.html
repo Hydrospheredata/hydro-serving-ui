@@ -21,12 +21,12 @@
       class="custom-metrics__header-regime-selector"
     ></div>
   </div>
-</div>
-<div class="charts">
-  <div
-    class="charts__item"
-    *ngFor="let chartConfig of chartConfigs$ | async; trackBy: trackByFn"
-  >
-    <hs-check-chart [config]="chartConfig"></hs-check-chart>
+  <div class="charts">
+    <div
+      class="charts__item"
+      *ngFor="let chartConfig of chartConfigs$ | async; trackBy: trackByFn"
+    >
+      <hs-check-chart [config]="chartConfig"></hs-check-chart>
+    </div>
   </div>
 </div>

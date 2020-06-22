@@ -106,7 +106,7 @@
     background: $neutral-color-100;
     min-width: 146px;
     max-height: 720px;
-    overflow: scroll;
+    overflow: auto;
     &-item {
       padding: 8px 12px;
       color: $neutral-color-800;
@@ -133,7 +133,7 @@
   &__detailed {
     padding: 12px;
     max-height: 720px;
-    overflow: scroll;
+    overflow: auto;
   }
 
   &__message {

@@ -8,7 +8,7 @@
     margin: 0 auto;
   }
   &__sidebar {
-    overflow: scroll;
+    overflow: auto;
     max-width: 250px;
     min-width: 250px;
     &--zen-mode {
@@ -31,7 +31,7 @@
   }
 
   &__body {
-    overflow: scroll;
+    overflow: auto;
     width: 100%;
     position: relative;
     padding: 48px 24px;
@@ -72,7 +72,7 @@
           overflow-x: hidden;
           color: #808080;
           font-size: 16px;
-          font-family: "Museo Sans Light";
+          font-family: 'Museo Sans Light';
           text-transform: capitalize;
         }
 
@@ -86,7 +86,7 @@
 
   &__cell {
     background: white;
-    box-shadow: $box-shadow; 
+    box-shadow: $box-shadow;
     border-radius: 2px;
 
     &-title {

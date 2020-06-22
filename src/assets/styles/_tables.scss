@@ -21,7 +21,7 @@ $table-padding: 12px;
       border-bottom: 1px $neutral-color-200 solid;
       padding: 8px $table-padding * 1.5;
       text-align: left;
-      color: $neutral-color-700;
+      color: $neutral-color-800;
       &--sticky {
         border: none;
         position: sticky;
@@ -51,6 +51,15 @@ $table-padding: 12px;
         &:hover {
           background-color: #e6e9ed;
           cursor: pointer;
+        }
+      }
+
+      &--hoverable {
+        cursor: pointer;
+        transition: 0.3s ease-in-out all;
+        &:hover {
+          //background: rgba(178, 218, 255, 0.18);
+          background: $neutral-color-100;
         }
       }
     }

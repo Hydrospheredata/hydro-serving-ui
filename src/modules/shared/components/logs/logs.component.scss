@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 :host {
   width: 100%;
@@ -24,7 +24,7 @@
     flex-direction: column;
     height: calc(100% - 76px);
     min-height: 60px;
-    overflow: scroll;
+    overflow: auto;
     padding: 12px;
     width: 100%;
   }
@@ -57,7 +57,7 @@
     }
 
     &:hover {
-      color: $neutral-color-100
+      color: $neutral-color-100;
     }
   }
 
@@ -78,7 +78,7 @@
     height: 20px;
     cursor: pointer;
     color: $neutral-color-600;
-    transition: .3s ease all;
+    transition: 0.3s ease all;
     &:hover {
       color: $neutral-color-1000;
     }
