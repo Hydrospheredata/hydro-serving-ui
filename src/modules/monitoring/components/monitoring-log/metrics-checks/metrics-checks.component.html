@@ -1,17 +1,27 @@
 <div class="metric-checks">
   <table>
     <thead>
-    <tr>
-      <td>Metric name</td>
-      <td>value</td>
-    </tr>
+      <tr>
+        <td>Metric name</td>
+        <td>value</td>
+        <td>Operator</td>
+        <td>Threshold</td>
+        <td>Check</td>
+      </tr>
     </thead>
     <tr *ngFor="let item of metrics | keyvalue">
       <td>{{ item.value.description }}</td>
-      <td
-        [ngClass]="{ 'error': item.value.check === false }"
-      >
+      <td>
         {{ item.value.value }}
+      </td>
+      <td>{{ item.value.operator }}</td>
+      <td>{{ item.value.threshold }}</td>
+      <td>
+        <span
+          class="metric-checks__check"
+          [ngClass]="{ 'metric-checks__check--failed': !item.value.check }"
+          >{{ item.value.check }}</span
+        >
       </td>
     </tr>
   </table>

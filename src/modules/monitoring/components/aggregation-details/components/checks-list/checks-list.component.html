@@ -31,7 +31,9 @@
           {{ check.getRawScore() | number | percent }}
         </td>
         <td class="hydro-table-body__cell checks__score">
-          {{ check.getMetricsScore() | number | percent }}
+          <span *ngIf="check.hasMetricChecks(); else na">{{
+            check.getMetricsScore() | number | percent
+          }}</span>
         </td>
         <td class="hydro-table-body__cell">
           {{ check.timestamp | hsFormatDate }}
@@ -48,3 +50,7 @@
     </tbody>
   </table>
 </div>
+
+<ng-template #na>
+  <span class="checks__not-available">-</span>
+</ng-template>

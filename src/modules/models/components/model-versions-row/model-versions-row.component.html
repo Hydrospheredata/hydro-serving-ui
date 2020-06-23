@@ -26,13 +26,13 @@
 </td>
 <td class="hydro-table-body__cell" hsHideInZenMode>
   <ng-container *ngIf="!modelVersion.isExternal; else blockIcon">
-    <div
-      class="model-version__application"
-      *ngFor="let application of modelVersion.applications"
-      [routerLink]="['/applications', application]"
-      queryParamsHandling="merge"
-    >
-      {{ application }}
+    <div *ngFor="let application of modelVersion.applications">
+      <span
+        class="model-version__application"
+        [routerLink]="['/applications', application]"
+        queryParamsHandling="merge"
+        >{{ application }}</span
+      >
     </div>
   </ng-container>
 </td>

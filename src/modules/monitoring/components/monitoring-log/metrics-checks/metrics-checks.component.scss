@@ -30,14 +30,15 @@
           color: $neutral-color-1000;
           vertical-align: top;
           font-size: 12px;
-          &.error {
-            color: $supportive-color-red-600;
-            font-family: $font-family-bold;
-          }
-
         }
       }
     }
   }
+  &__check {
+    font-family: $font-family-bold;
+    color: $supportive-color-green-700;
+    &--failed {
+      color: $supportive-color-red-700;
+    }
+  }
 }
-
