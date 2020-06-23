@@ -3,6 +3,9 @@
   width: 100%;
   height: 360px;
   overflow: auto;
+  &__not-available {
+    color: $neutral-color-300;
+  }
   &__score {
     font-size: 14px;
     font-family: $font-family-bold;

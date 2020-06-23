@@ -10,6 +10,7 @@ export interface MetricCheck {
   metricSpecId: string;
 }
 export interface RawCheck {
+  operator?: string;
   check: boolean;
   description: string;
   threshold: number;
