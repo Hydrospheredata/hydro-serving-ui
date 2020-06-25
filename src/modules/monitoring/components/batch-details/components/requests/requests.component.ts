@@ -1,11 +1,25 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { Check } from '@monitoring/models';
-import { trigger, transition, query, style, stagger, animate } from '@node_modules/@angular/animations';
+import {
+  trigger,
+  transition,
+  query,
+  style,
+  stagger,
+  animate,
+} from '@node_modules/@angular/animations';
 
 @Component({
-  selector: 'hs-checks-list',
-  templateUrl: './checks-list.component.html',
-  styleUrls: ['./checks-list.component.scss'],
+  selector: 'hs-requests',
+  templateUrl: './requests.component.html',
+  styleUrls: ['./requests.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
     trigger('filterAnimation', [
@@ -32,8 +46,8 @@ import { trigger, transition, query, style, stagger, animate } from '@node_modul
     ]),
   ],
 })
-export class ChecksListComponent implements OnInit {
-  @Input() checks: Check[];
+export class RequestsComponent implements OnInit {
+  @Input() requests: Check[];
   @Output() checkClicked: EventEmitter<Check> = new EventEmitter();
 
   constructor() {}
@@ -45,6 +59,6 @@ export class ChecksListComponent implements OnInit {
   }
 
   get total() {
-    return this.checks.length;
+    return this.requests.length;
   }
 }

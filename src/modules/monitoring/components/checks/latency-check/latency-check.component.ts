@@ -20,6 +20,7 @@ export class LatencyCheckComponent {
       };
     }
   }
+
   chartConfig: ChartConfig = {
     series: [
       { name: 'latency', color: this.colorPalette.getPalette()[0], data: [] },
