@@ -8,18 +8,18 @@ import {
 import {
   ChecksHealthFilterOptions,
   ChecksFilter,
-} from '@monitoring/components/aggregation-details/aggregation-details.service';
+} from '@monitoring/components/batch-details/batch-details.service';
 import { FormGroup, FormBuilder } from '@node_modules/@angular/forms';
 import { Options } from '@node_modules/ng5-slider';
 import { debounceTime } from '@node_modules/rxjs/internal/operators';
 
 @Component({
-  selector: 'hs-checks-filter',
-  templateUrl: './checks-filter.component.html',
-  styleUrls: ['./checks-filter.component.scss'],
+  selector: 'hs-requests-filter',
+  templateUrl: './requests-filter.component.html',
+  styleUrls: ['./requests-filter.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ChecksFilterComponent implements OnInit {
+export class RequestsFilterComponent implements OnInit {
   @Output() filterChanged: EventEmitter<ChecksFilter> = new EventEmitter<
     ChecksFilter
   >();

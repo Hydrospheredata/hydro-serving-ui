@@ -1,17 +1,23 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { AggregationDetailsService } from '@monitoring/components/aggregation-details/aggregation-details.service';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+import { BatchDetailsService } from '@monitoring/components/batch-details/batch-details.service';
 import { CheckCollection, Check, CheckId } from '@monitoring/models';
 import { Observable, of } from '@node_modules/rxjs';
 import { ModelVersion } from '@shared/models';
 
 @Component({
-  selector: 'hs-aggregation-details',
-  templateUrl: './aggregation-details.component.html',
-  styleUrls: ['./aggregation-details.component.scss'],
+  selector: 'hs-batch-details',
+  templateUrl: './batch-details.component.html',
+  styleUrls: ['./batch-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [AggregationDetailsService],
+  providers: [BatchDetailsService],
 })
-export class AggregationDetailsComponent implements OnInit {
+export class BatchDetailsComponent implements OnInit {
   @Output() showCheckDetails: EventEmitter<CheckId> = new EventEmitter<
     CheckId
   >();
@@ -20,7 +26,7 @@ export class AggregationDetailsComponent implements OnInit {
   checkCollection$: Observable<CheckCollection>;
   modelVersion$: Observable<ModelVersion>;
 
-  constructor(private facade: AggregationDetailsService) {}
+  constructor(private facade: BatchDetailsService) {}
 
   ngOnInit() {
     this.checks$ = this.facade.getVisibleChecks();

@@ -65,6 +65,7 @@ export class CheckChartComponent implements OnInit, OnDestroy {
   activePoint: { x: number; y: number } | null;
   activeCircles: Array<{ x: number; y: number; color: string }>;
   tooltip: Tooltip | null;
+
   // translates
   dataTranslate: string;
   xAxisTranslate: string;
@@ -86,7 +87,8 @@ export class CheckChartComponent implements OnInit, OnDestroy {
     this.name = cfg.name;
     this.clipUrl = `url(#${this.name}-clip-url)`;
     this.threshold = cfg.threshold;
-    this.chartWidth = this.containerEl.nativeElement.offsetWidth;
+    this.chartWidth =
+      cfg.size.width || this.containerEl.nativeElement.offsetWidth;
 
     this.chartHeight = cfg.size.height || 180;
     this.margins = cfg.size.margins;
