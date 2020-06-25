@@ -21,7 +21,7 @@ export class BatchLatencyComponent implements OnInit {
       { name: 'latency', color: this.colorPalette.getPalette()[0], data: [] },
     ],
     size: {
-      height: 200,
+      height: 180,
       margins: {
         left: 24,
         right: 24,
@@ -37,8 +37,6 @@ export class BatchLatencyComponent implements OnInit {
   constructor(private colorPalette: ColorPaletteService) {}
 
   ngOnInit() {
-    // @Input() requests(reqs: CheckCollection) {
-    debugger;
     const data: number[] = this.requests.getLatency();
 
     this.chartConfig = {
@@ -47,6 +45,5 @@ export class BatchLatencyComponent implements OnInit {
         { name: 'latency', color: this.colorPalette.getPalette()[0], data },
       ],
     };
-    // }
   }
 }
