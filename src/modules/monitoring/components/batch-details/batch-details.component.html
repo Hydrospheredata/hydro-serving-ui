@@ -4,14 +4,14 @@
       <hs-aggregation-details-sidebar
         [checkCollection]="checkCollection"
       ></hs-aggregation-details-sidebar>
-      <hs-checks-filter (filterChanged)="onFilterChange($event)">
-      </hs-checks-filter>
+      <hs-requests-filter (filterChanged)="onFilterChange($event)">
+      </hs-requests-filter>
     </ng-container>
   </section>
   <section class="agg-details__body">
-    <hs-checks-list
-      [checks]="checks$ | async"
+    <hs-requests
+      [requests]="checks$ | async"
       (checkClicked)="showDetails($event)"
-    ></hs-checks-list>
+    ></hs-requests>
   </section>
 </div>

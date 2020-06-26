@@ -82,7 +82,6 @@ export class VisualizationFacade implements OnDestroy {
             }),
             takeWhile(({ state }) => state !== ETaskState.success),
             catchError(err => {
-              console.log(err);
               this.state.setError(err);
               return of();
             })

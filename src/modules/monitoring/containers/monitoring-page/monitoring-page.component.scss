@@ -24,6 +24,14 @@
     }
   }
 
+  &__batch-details {
+    margin-bottom: 24px;
+  }
+
+  &__batch-latency {
+    margin-bottom: 24px;
+  }
+
   &__alert {
     color: #80520e;
     cursor: pointer;

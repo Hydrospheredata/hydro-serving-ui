@@ -35,7 +35,7 @@ const initialFilter: ChecksFilter = {
 @Injectable({
   providedIn: 'root',
 })
-export class AggregationDetailsService {
+export class BatchDetailsService {
   private checks$: Observable<Check[]>;
 
   private filter: BehaviorSubject<ChecksFilter> = new BehaviorSubject<
@@ -68,7 +68,6 @@ export class AggregationDetailsService {
   getVisibleChecks(): Observable<Check[]> {
     return combineLatest([this.checks$, this.filter$]).pipe(
       map(([checks, filter]) => {
-        console.log(filter);
         switch (filter.filterBy) {
           case ChecksHealthFilterOptions.all:
             return checks;

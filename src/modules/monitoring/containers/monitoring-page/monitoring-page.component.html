@@ -2,6 +2,7 @@
   <hs-monitoring-availability>
     <div class="monitoring__body">
       <ng-container *ngIf="true; else errorSection">
+        <div class="monitoring__label">Aggregation</div>
         <section class="monitoring__aggregation">
           <hs-aggregation></hs-aggregation>
         </section>
@@ -11,9 +12,15 @@
             *ngIf="checks$ | async as checkCollection"
           >
             <div class="monitoring__label">Batch details</div>
-            <hs-aggregation-details
-              (showCheckDetails)="showCheckDetails($event)"
-            ></hs-aggregation-details>
+            <div class="monitoring__batch-details">
+              <hs-batch-details
+                (showCheckDetails)="showCheckDetails($event)"
+              ></hs-batch-details>
+            </div>
+            <div class="monitoring__label">Batch latency</div>
+            <div class="monitoring__batch-latency">
+              <hs-batch-latency [requests]="checkCollection"></hs-batch-latency>
+            </div>
           </div>
         </hs-loading>
         <hs-custom-metrics></hs-custom-metrics>
