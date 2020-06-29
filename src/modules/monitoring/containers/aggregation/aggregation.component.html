@@ -2,16 +2,6 @@
   <ng-container
     *ngIf="aggregationList.aggregations.length; else noDataAvailable"
   >
-    <!--    <div class="aggregation__header">-->
-    <!--      <hs-aggregation-header-->
-    <!--        [canLoadNewer]="canLoadNewer$ | async"-->
-    <!--        [canLoadOlder]="canLoadOlder$ | async"-->
-    <!--        [aggregationList]="aggregationList"-->
-    <!--        (loadNewer)="loadNewer()"-->
-    <!--        (loadOlder)="loadOlder()"-->
-    <!--      ></hs-aggregation-header>-->
-    <!--    </div>-->
-
     <span class="aggregation__info">
       <hydro-icon class="aggregation__info-icon" type="info"></hydro-icon>
       <div class="aggregation__info-legend">
@@ -20,7 +10,12 @@
     </span>
     <div class="aggregation__sidebar">
       <hs-aggregation-sidebar
+        [minDate]="minDate$ | async"
+        [maxDate]="maxDate$ | async"
+        [filterDateRange]="filterDateRange$ | async"
         [aggregationsList]="aggregationList"
+        (dateTimeRangeChanged)="handleDateTimeRangeChange($event)"
+        (filterDateRangeReset)="handleFilterDateReset()"
       ></hs-aggregation-sidebar>
     </div>
 

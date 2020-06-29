@@ -10,11 +10,10 @@ export class AggregationPaginator {
   }
 
   canLoadOlder(
-    count: number,
-    receivedCount: number,
-    offset: number,
-    groupedBy: number
+    totalBatchesCount: number,
+    showedBatchesCount: number,
+    offset: number
   ): boolean {
-    return receivedCount + offset * groupedBy < count;
+    return showedBatchesCount + offset < totalBatchesCount;
   }
 }

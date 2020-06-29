@@ -29,7 +29,6 @@ import { HeaderNavComponent } from './components/header/header-nav/header-nav.co
 import { HeaderInfoComponent } from './components/header/header-info/header-info.component';
 import { TmHeaderComponent } from './components/header/tm-header/tm-header.component';
 import { BaseHeaderComponent } from './components/header/base-header/base-header.component';
-
 @NgModule({
   entryComponents: [
     BuildInformationDialogComponent,
