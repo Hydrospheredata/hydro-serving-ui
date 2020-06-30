@@ -32,10 +32,7 @@ export class AggregationSidebarComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.dtrange = [
-      this.aggregationsList.minDate,
-      this.aggregationsList.maxDate,
-    ];
+    this.dtrange = [this.minDate, this.maxDate];
   }
 
   handleDateTimeFromChange([from, to]: [Date, Date]): void {

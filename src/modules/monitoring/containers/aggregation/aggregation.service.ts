@@ -4,7 +4,13 @@ import { AggregationPaginator } from '@monitoring/services/aggregation-paginator
 import { MonitoringFacade } from '@monitoring/store/monitoring.facade';
 import { neitherNullNorUndefined } from '@shared/utils';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
-import { map, tap, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
+import {
+  map,
+  tap,
+  shareReplay,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -97,13 +103,13 @@ export class AggregationService implements OnDestroy {
   getMinDate(): Observable<Date> {
     return this.monitoringStore
       .getMinDate()
-      .pipe(map(seconds => new Date(seconds * 1000)));
+      .pipe(map(seconds => seconds && new Date(seconds * 1000)));
   }
 
   getMaxDate(): Observable<Date> {
     return this.monitoringStore
       .getMaxDate()
-      .pipe(map(seconds => new Date(seconds * 1000)));
+      .pipe(map(seconds => seconds && new Date(seconds * 1000)));
   }
 
   getFilterDateRange(): Observable<{ from: Date; to: Date }> {

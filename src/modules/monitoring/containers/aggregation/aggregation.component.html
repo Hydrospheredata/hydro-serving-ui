@@ -1,7 +1,5 @@
 <div class="aggregation" *ngIf="aggregationList$ | async as aggregationList">
-  <ng-container
-    *ngIf="aggregationList.aggregations.length; else noDataAvailable"
-  >
+  <ng-container>
     <span class="aggregation__info">
       <hydro-icon class="aggregation__info-icon" type="info"></hydro-icon>
       <div class="aggregation__info-legend">
@@ -19,7 +17,10 @@
       ></hs-aggregation-sidebar>
     </div>
 
-    <div class="aggregation__body">
+    <div
+      class="aggregation__body"
+      *ngIf="aggregationList.aggregations.length; else noDataAvailable"
+    >
       <div class="aggregation__label">Inputs</div>
       <hs-aggregation-data-section
         type="features"

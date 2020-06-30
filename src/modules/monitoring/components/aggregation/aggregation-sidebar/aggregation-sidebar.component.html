@@ -1,5 +1,5 @@
 <div class="agg-sidebar" *ngIf="aggregationsList">
-  <div class="agg-sidebar__row">
+  <div class="agg-sidebar__row" *ngIf="minDate && maxDate">
     <label class="agg-sidebar__header" for="rangeFilter">Date range: </label>
     <input
       id="rangeFilter"
