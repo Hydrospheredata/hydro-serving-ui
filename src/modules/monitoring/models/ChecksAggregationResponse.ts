@@ -42,4 +42,6 @@ export type CheckAggregationResponseItem = Features & AdditionalCheckInfo;
 export interface ChecksAggregationResponse {
   results: CheckAggregationResponseItem[];
   count: number;
+  minDate: number;
+  maxDate: number;
 }

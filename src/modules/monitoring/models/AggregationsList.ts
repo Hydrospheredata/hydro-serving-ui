@@ -5,11 +5,21 @@ import { compose } from 'lodash/fp';
 
 export class AggregationsList {
   aggregations: Aggregation[] = [];
-  readonly batchesCount: number;
-
-  constructor(aggregations: Aggregation[], batchesCount: number) {
+  readonly totalBatchesCount: number;
+  readonly showedBatchesCount: number;
+  readonly minDate: Date;
+  readonly maxDate: Date;
+  constructor(
+    aggregations: Aggregation[] = [],
+    batchesCount: number = 0,
+    minDate: number,
+    maxDate: number
+  ) {
     this.aggregations = aggregations;
-    this.batchesCount = batchesCount || 0;
+    this.totalBatchesCount = batchesCount;
+    this.showedBatchesCount = aggregations.length;
+    this.minDate = new Date(minDate * 1000);
+    this.maxDate = new Date(maxDate * 1000);
   }
 
   get featureNames(): string[] {
@@ -66,32 +76,6 @@ export class AggregationsList {
     return null;
   }
 
-  get totalRequests(): number {
-    if (this.batchesCount === 0) {
-      return 0;
-    }
-    const countInOneBatch = this.aggregations[this.aggregations.length - 1]
-      .hs_requests;
-    if (this.batchesCount === 1) {
-      return countInOneBatch;
-    } else {
-      return (
-        countInOneBatch * (this.batchesCount - 1) +
-        this.aggregations[0].hs_requests
-      );
-    }
-  }
-
-  get showedRequests(): number {
-    if (this.batchesCount === 0) {
-      return 0;
-    }
-    return this.aggregations.reduce(
-      (result, { hs_requests }) => result + hs_requests,
-      0
-    );
-  }
-
   get lastAggregation(): Aggregation | null {
     if (this.aggregations.length) {
       return this.aggregations[this.aggregations.length - 1];
@@ -110,10 +94,6 @@ export class AggregationsList {
     } else {
       return false;
     }
-  }
-
-  get columnsCount(): number {
-    return this.aggregations.length;
   }
 
   private extractDateFromId(id: string): Date {

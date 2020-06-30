@@ -27,6 +27,7 @@
   <ng-container *ngIf="!check.error">
     <span class="raw-checks__label">ouputs</span>
     <hs-explanation
+      *ngIf="!modelVersion.isExternal"
       [modelVersionId]="modelVersion.id"
       [requestId]="check.id"
     ></hs-explanation>

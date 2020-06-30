@@ -36,6 +36,10 @@ import { AggregationEffects } from '@monitoring/store/effects/aggregation.effect
 import { ChecksEffects } from '@monitoring/store/effects/checks.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import {
+  OwlDateTimeModule,
+  OwlNativeDateTimeModule,
+} from '@node_modules/ng-pick-datetime';
 import { RootCauseModule } from '@rootcause/root-cause.module';
 import { SharedModule } from '@shared/shared.module';
 import {
@@ -88,6 +92,8 @@ import { BatchLatencyComponent } from './components/batch-latency/batch-latency.
     BatchLatencyComponent,
   ],
   imports: [
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
     ModelsPublicUiModule,
     SharedModule,
     StoreModule.forFeature('monitoring', reducer),

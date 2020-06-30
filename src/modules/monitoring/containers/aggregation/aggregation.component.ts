@@ -16,6 +16,9 @@ export class AggregationComponent implements OnInit {
   selectedAggregation$: Observable<Aggregation>;
   canLoadOlder$: Observable<boolean>;
   canLoadNewer$: Observable<boolean>;
+  minDate$: Observable<Date>;
+  maxDate$: Observable<Date>;
+  filterDateRange$: Observable<{ from: Date; to: Date }>;
 
   inputNames: string[] = [];
   outputNames: string[] = [];
@@ -36,6 +39,9 @@ export class AggregationComponent implements OnInit {
 
     this.canLoadOlder$ = this.aggregationService.canLoadOlder();
     this.canLoadNewer$ = this.aggregationService.canLoadNewer();
+    this.minDate$ = this.aggregationService.getMinDate();
+    this.maxDate$ = this.aggregationService.getMaxDate();
+    this.filterDateRange$ = this.aggregationService.getFilterDateRange();
   }
 
   changeActiveColumn(aggregation: Aggregation) {
@@ -48,5 +54,13 @@ export class AggregationComponent implements OnInit {
 
   loadNewer() {
     this.aggregationService.loadNewer();
+  }
+
+  handleDateTimeRangeChange(range: { from: Date; to: Date }): void {
+    this.aggregationService.changeDateTimeRange(range);
+  }
+
+  handleFilterDateReset(): void {
+    this.aggregationService.clearDateTimeFilter();
   }
 }
