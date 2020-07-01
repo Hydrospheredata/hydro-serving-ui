@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HydroConfigService } from '@core/services/hydro-config.service';
 
 // Global components
 import { AppComponent } from './app.component';
@@ -13,6 +14,7 @@ import { ModelsModule } from '@models/models.module';
 import { MonitoringModule } from '@monitoring/monitoring.module';
 import { SharedModule } from '@shared/shared.module';
 import { VisualizationModule } from 'modules/visualization/visualization.module';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -26,6 +28,15 @@ import { VisualizationModule } from 'modules/visualization/visualization.module'
     AppRoutingModule,
     MonitoringModule,
     VisualizationModule,
+  ],
+  providers: [
+    HydroConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (hsCfg: HydroConfigService) => () => hsCfg.loadConfig(),
+      deps: [HydroConfigService],
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

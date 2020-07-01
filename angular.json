@@ -20,6 +20,7 @@
               "tsConfig": "src/tsconfig.app.json",
               "assets": [
                 {"glob": "**/fonts/**", "input": "src/assets", "output": "assets"},
+                {"glob": "**/*.json", "input": "src/assets", "output": "assets"},
                 {"glob": "*.*", "input": "src/assets/images", "output": "assets/images"},
                 {"glob": "**", "input": "src/assets/images/sprites", "output": "assets/images/sprites"},
                 {"glob": "**", "input": "src/assets/images/logo", "output": "assets/images/logo"}
