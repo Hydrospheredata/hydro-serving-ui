@@ -14,7 +14,16 @@ import { CheckCollection, ChartConfig } from '@monitoring/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BatchLatencyComponent implements OnInit {
-  @Input() requests;
+  @Input() set requests(reqs: CheckCollection) {
+    const data: number[] = reqs.getLatency();
+
+    this.chartConfig = {
+      ...this.chartConfig,
+      series: [
+        { name: 'latency', color: this.colorPalette.getPalette()[0], data },
+      ],
+    };
+  }
 
   chartConfig: ChartConfig = {
     series: [
@@ -36,14 +45,5 @@ export class BatchLatencyComponent implements OnInit {
 
   constructor(private colorPalette: ColorPaletteService) {}
 
-  ngOnInit() {
-    const data: number[] = this.requests.getLatency();
-
-    this.chartConfig = {
-      ...this.chartConfig,
-      series: [
-        { name: 'latency', color: this.colorPalette.getPalette()[0], data },
-      ],
-    };
-  }
+  ngOnInit() {}
 }
