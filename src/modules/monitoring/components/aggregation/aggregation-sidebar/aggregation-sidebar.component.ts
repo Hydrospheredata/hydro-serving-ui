@@ -19,6 +19,7 @@ export class AggregationSidebarComponent implements OnInit {
   @Input() maxDate: Date;
   @Input() filterDateRange: { from: Date; to: Date };
   @Input() aggregationsList: AggregationsList;
+
   @Output() dateTimeRangeChanged: EventEmitter<{
     from: Date;
     to: Date;
@@ -27,6 +28,7 @@ export class AggregationSidebarComponent implements OnInit {
     from: Date;
     to: Date;
   }> = new EventEmitter<{ from: Date; to: Date }>();
+
   dtrange: any;
 
   constructor() {}
@@ -44,6 +46,7 @@ export class AggregationSidebarComponent implements OnInit {
   }
 
   resetFilter() {
+    this.dtrange = [this.minDate, this.maxDate];
     this.filterDateRangeReset.next();
   }
 }
