@@ -1,0 +1,12 @@
+@import 'variables';
+
+.heatmap {
+  &__wrapper {
+    overflow: scroll;
+  }
+  &__title {
+    text-align: center;
+    font-size: 14px;
+    font-family: $font-family-bold;
+  }
+}

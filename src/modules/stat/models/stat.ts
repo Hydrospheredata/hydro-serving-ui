@@ -4,18 +4,39 @@ export interface FeatureReportHistogram {
   training: number[];
 }
 
+export interface BivariateReport {
+  drifted: boolean;
+  feature_1: string;
+  feature_2: string;
+  production_heatmap: {
+    density: number[][];
+    x: string[];
+    x_axis_name: string;
+    y: string[];
+    y_axis_name: string;
+  };
+  training_heatmap: {
+    density: number[][];
+    x: string[];
+    x_axis_name: string;
+    y: string[];
+    y_axis_name: string;
+  };
+}
+
 export interface FeatureReport {
   'drift-probability': number;
   histogram: FeatureReportHistogram;
   statistics: {
     [statisticName: string]: {
       change_probability?: number;
-      deployment: number;
-      training: number;
+      deployment: number | string | string[] | number[];
+      training: number | string | string[] | number[];
       message: string;
       has_changed: boolean;
     };
   };
+  bivariate_reports?: BivariateReport[];
 }
 
 export interface Stat {

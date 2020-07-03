@@ -1,0 +1,68 @@
+@import 'variables';
+
+$production-color: rgb(124, 181, 236);
+$training-color: rgb(255, 175, 110);
+
+.bivarite-report {
+  &__select {
+    width: 320px;
+  }
+  &__title {
+    font-size: 16px;
+    font-family: $font-family-bold;
+  }
+  &__tooltip {
+    position: absolute;
+    border: 2px $neutral-color-200 solid;
+    background: white;
+    padding: 12px;
+    transition: 0.3s all ease;
+    z-index: 999;
+    & > table {
+      color: $neutral-color-800;
+      tr {
+      }
+      td {
+        padding: 0px 8px;
+        &:first-child {
+          //font-family: $font-family-bold;
+          text-transform: capitalize;
+        }
+        &:nth-child(2) {
+          text-align: right;
+          color: $neutral-color-800;
+        }
+      }
+    }
+    &-label {
+      font-family: $font-family-bold;
+      &--prod {
+        color: $production-color;
+      }
+      &--train {
+        color: $training-color;
+      }
+    }
+    &-value {
+      color: $neutral-color-800;
+      font-family: $font-family-bold;
+    }
+  }
+  &__header {
+    margin-bottom: 24px;
+  }
+  &__heatmap + &__heatmap {
+    margin-top: 24px;
+  }
+  &__heatmaps {
+    width: 100%;
+  }
+  &__body {
+    position: relative;
+
+    display: flex;
+  }
+  &__legend {
+    width: 48px;
+  }
+}

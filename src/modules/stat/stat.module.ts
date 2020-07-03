@@ -5,10 +5,15 @@ import {
   HistogramComponent,
   DriftStatusComponent,
   FeatureReportComponent,
-  ComparisonComponent,
+  BivariateReportLegendComponent,
 } from './components';
-import { StatPageComponent, StatAvailabilityComponent } from './containers';
+import {
+  StatPageComponent,
+  StatAvailabilityComponent,
+  BivariateReportComponent,
+} from './containers';
 import { ColorByDriftDirective } from './directives';
+import { HeatmapComponent } from './components/heatmap/heatmap.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +23,9 @@ import { ColorByDriftDirective } from './directives';
     ColorByDriftDirective,
     StatAvailabilityComponent,
     DriftStatusComponent,
-    ComparisonComponent,
+    HeatmapComponent,
+    BivariateReportComponent,
+    BivariateReportLegendComponent,
   ],
   imports: [SharedModule, CommonModule],
   exports: [StatPageComponent],
