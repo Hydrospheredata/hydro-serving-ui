@@ -8,7 +8,6 @@ import {
   SvgSpriteService,
 } from '@core/services';
 import { BuildInformationService } from '@core/services/build-information.service';
-import { HttpService } from '@core/services/http';
 import { CustomRouterStateSerializer, reducers } from '@core/store';
 import { EffectsModule } from '@ngrx/effects';
 import {
@@ -71,7 +70,6 @@ import { BaseHeaderComponent } from './components/header/base-header/base-header
     ModelBuilder,
     ModelVersionBuilder,
     FormsService,
-    HttpService,
     { provide: RouterStateSerializer, useClass: CustomRouterStateSerializer },
     SvgSpriteService,
     BuildInformationService,
