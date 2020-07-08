@@ -1,6 +1,24 @@
+FROM node:13.12.0 AS build
+
+WORKDIR /opt/ng
+
+RUN apt-get update && apt-get install git
+
+COPY package.json package-lock.json ./
+RUN npm install 
+
+COPY . ./
+RUN npm run build-prod
+
+RUN printf '{"version":"%s", "gitHeadCommit":"%s","gitCurrentBranch":"%s", "nodeVersion":"%s"}\n' "$(cat version)" "$(git rev-parse HEAD)" "$(git rev-parse --abbrev-ref HEAD)" "$(node --version)" >> buildinfo.json
+
 FROM openresty/openresty:latest
 
 RUN  apt update && apt install -y gettext
+
+RUN useradd -u 42069 --create-home --shell /bin/bash app && \
+    chown -R app:app /usr/local/openresty/
+USER app
 
 ENV OSS=true;
 
@@ -25,11 +43,12 @@ ENV VISUALIZATION_HTTP_PORT=5000
 ENV STAT_PORT=5000
 ENV AUTO_OD_GRPC_PORT=5000
 
-EXPOSE 80
+EXPOSE 8080
 
-COPY nginx/conf.d /etc/nginx/conf.d/
-COPY nginx/config/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
-COPY hydro-serving-ui /usr/share/nginx/html
+COPY --chown=app:app docker/nginx/conf.d /etc/nginx/conf.d/
+COPY --chown=app:app docker/nginx/config/nginx.conf /usr/local/openresty/nginx/conf/nginx.conf
+COPY --chown=app:app --from=build /opt/ng/hydro-serving-ui /usr/share/nginx/html
+COPY --chown=app:app --from=build /opt/ng/buildinfo.json /usr/share/nginx/html/assets/buildinfo.json
 
 CMD envsubst '${GATEWAY_HOST} ${GATEWAY_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.gateway.template > /etc/nginx/conf.d/grpc/include.gateway \
   && envsubst '${MANAGER_HOST} ${MANAGER_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.manager.template > /etc/nginx/conf.d/grpc/include.manager \
