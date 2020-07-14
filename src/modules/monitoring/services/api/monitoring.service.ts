@@ -8,6 +8,8 @@ export interface GetChecksAggregationParams {
   modelVersionId: number;
   limit?: number;
   offset?: number;
+  from?: string;
+  to?: string;
 }
 interface GetChecksParams {
   modelVersionId: number;
@@ -45,10 +47,14 @@ export class MonitoringService {
     modelVersionId,
     limit = 90,
     offset,
+    from,
+    to,
   }: GetChecksAggregationParams): Observable<ChecksAggregationResponse> {
     const params = {
       limit: `${limit}`,
       offset: `${offset}`,
+      from,
+      till: to,
     };
 
     return this.http.get(

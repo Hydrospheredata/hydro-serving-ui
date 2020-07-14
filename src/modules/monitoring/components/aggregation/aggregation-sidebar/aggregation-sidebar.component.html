@@ -1,18 +1,38 @@
 <div class="agg-sidebar" *ngIf="aggregationsList">
-  <div class="agg-sidebar__row">
-    <span class="agg-sidebar__label">Batches: </span
-    ><span class="agg-sidebar__count">{{ aggregationsList.columnsCount }}</span>
+  <div class="agg-sidebar__row" *ngIf="minDate && maxDate">
+    <label class="agg-sidebar__header" for="rangeFilter">Date range: </label>
+    <input
+      id="rangeFilter"
+      class="agg-sidebar__date-picker"
+      [owlDateTimeTrigger]="dt10"
+      [owlDateTime]="dt10"
+      [selectMode]="'range'"
+      [values]="dtrange"
+      (dateTimeChange)="handleDateTimeFromChange($event.value)"
+    />
+    <span
+      *ngIf="showResetFilter"
+      (click)="resetFilter()"
+      class="agg-sidebar__reset"
+    >
+      reset filter
+    </span>
+
+    <owl-date-time #dt10></owl-date-time>
   </div>
+
   <div class="agg-sidebar__row">
-    <span class="agg-sidebar__label">From: </span
-    ><span class="agg-sidebar__date">{{
-      aggregationsList.dateFrom | hsFormatDate
+    <span class="agg-sidebar__header">Total</span>
+    <span class="agg-sidebar__label">Batches: </span
+    ><span class="agg-sidebar__count">{{
+      aggregationsList.totalBatchesCount
     }}</span>
   </div>
   <div class="agg-sidebar__row">
-    <span class="agg-sidebar__label">To: </span
-    ><span class="agg-sidebar__date">{{
-      aggregationsList.dateTo | hsFormatDate
+    <span class="agg-sidebar__header">Displayed</span>
+    <span class="agg-sidebar__label">Batches: </span
+    ><span class="agg-sidebar__count">{{
+      aggregationsList.showedBatchesCount
     }}</span>
   </div>
 </div>

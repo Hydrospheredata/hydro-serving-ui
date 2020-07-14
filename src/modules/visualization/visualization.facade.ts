@@ -62,7 +62,7 @@ export class VisualizationFacade implements OnDestroy {
         switchMap(taskId => {
           return timer(0, 5000).pipe(
             exhaustMap(() => {
-              return this.api.getJobResult$(taskId);
+              return this.api.getJobResult(taskId);
             }),
             tap(task => {
               this.state.setResult({
@@ -82,7 +82,6 @@ export class VisualizationFacade implements OnDestroy {
             }),
             takeWhile(({ state }) => state !== ETaskState.success),
             catchError(err => {
-              console.log(err);
               this.state.setError(err);
               return of();
             })
@@ -193,7 +192,7 @@ export class VisualizationFacade implements OnDestroy {
     this.modelsFacade.selectedModelVersion$
       .pipe(
         switchMap(mv =>
-          this.api.createTask$('umap', mv).pipe(
+          this.api.createTask('umap', mv).pipe(
             tap(task => {
               this.state.setTaskId(task.task_id);
             }),

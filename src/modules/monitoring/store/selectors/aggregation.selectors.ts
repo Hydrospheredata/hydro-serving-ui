@@ -17,3 +17,17 @@ export const selectOffset = createSelector(
   fromFeature.getAggregationState,
   state => state.offset
 );
+
+export const selectMinDate = createSelector(
+  fromFeature.getAggregationState,
+  state => state.minDate
+);
+export const selectMaxDate = createSelector(
+  fromFeature.getAggregationState,
+  state => state.maxDate
+);
+
+export const selectFilterDateRange = createSelector(
+  fromFeature.getAggregationState,
+  state => state.filterDateRange
+);

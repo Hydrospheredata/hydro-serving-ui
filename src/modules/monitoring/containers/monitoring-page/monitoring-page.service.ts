@@ -1,6 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ModelsFacade } from '@models/store';
-import { CheckCollection, AggregationsList, CheckId, Check } from '@monitoring/models';
+import {
+  CheckCollection,
+  AggregationsList,
+  CheckId,
+  Check,
+} from '@monitoring/models';
 import { Aggregation } from '@monitoring/models/Aggregation';
 import { MetricsFacade } from '@monitoring/store/facades/metrics.facade';
 import { MonitoringFacade } from '@monitoring/store/monitoring.facade';
@@ -89,15 +94,22 @@ export class MonitoringPageService implements OnDestroy {
         tap(() => this.monitoringStore.clearMonitoringPage())
       ),
       this.monitoringStore.getOffset(),
+      this.monitoringStore.getFilterDateRange(),
     ])
       .pipe(
-        switchMap(([modelVersion, offset]) => {
+        switchMap(([modelVersion, offset, filterDateRange]) => {
           return timer(0, 10000).pipe(
             tap(() => {
               this.monitoringStore.loadAggregation({
                 modelVersion,
                 limit: 80,
                 offset,
+                from:
+                  filterDateRange &&
+                  Math.round(filterDateRange.from / 1000).toString(),
+                to:
+                  filterDateRange &&
+                  Math.round(filterDateRange.to / 1000).toString(),
               });
             })
           );

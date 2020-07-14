@@ -1,4 +1,11 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { AggregationsList } from '@monitoring/models';
 
 @Component({
@@ -8,8 +15,38 @@ import { AggregationsList } from '@monitoring/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AggregationSidebarComponent implements OnInit {
+  @Input() minDate: Date;
+  @Input() maxDate: Date;
+  @Input() filterDateRange: { from: Date; to: Date };
   @Input() aggregationsList: AggregationsList;
+
+  @Output() dateTimeRangeChanged: EventEmitter<{
+    from: Date;
+    to: Date;
+  }> = new EventEmitter<{ from: Date; to: Date }>();
+  @Output() filterDateRangeReset: EventEmitter<{
+    from: Date;
+    to: Date;
+  }> = new EventEmitter<{ from: Date; to: Date }>();
+
+  dtrange: any;
+
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.dtrange = [this.minDate, this.maxDate];
+  }
+
+  handleDateTimeFromChange([from, to]: [Date, Date]): void {
+    this.dateTimeRangeChanged.next({ from, to });
+  }
+
+  get showResetFilter(): boolean {
+    return this.filterDateRange !== undefined;
+  }
+
+  resetFilter() {
+    this.dtrange = [this.minDate, this.maxDate];
+    this.filterDateRangeReset.next();
+  }
 }

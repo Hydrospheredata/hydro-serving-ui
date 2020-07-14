@@ -3,11 +3,13 @@ import { Injectable } from '@node_modules/@angular/core';
 import { BehaviorSubject, Observable } from '@node_modules/rxjs';
 import { shareReplay } from '@node_modules/rxjs/internal/operators';
 import { pluck } from '@shared/utils';
-import { VisualizationResponse, ETaskState } from '../models/visualization';
+import { VisualizationResponse, ETaskState } from '../models';
+import { VisualizationParams } from '../models/visualization-params';
 import { ColorBy } from '../visualization.facade';
 
+export type VisualizationTaskId = string;
 export interface State {
-  taskId: string | null;
+  taskId: VisualizationTaskId | null;
   result: VisualizationResponse | null;
   error: string | null;
   status: ETaskState;
@@ -21,6 +23,7 @@ export interface State {
   visualizationMetrics: { [name: string]: string };
   requestsIds: string[];
   message: string | null;
+  params: VisualizationParams;
 }
 
 const initialState: State = {
@@ -38,6 +41,7 @@ const initialState: State = {
   visualizationMetrics: undefined,
   requestsIds: [],
   message: null,
+  params: null,
 };
 
 @Injectable()

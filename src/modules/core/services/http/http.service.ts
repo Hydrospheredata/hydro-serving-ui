@@ -19,7 +19,9 @@ interface IHydroHttpOptions {
   [propName: string]: any;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class HttpService {
   private baseUrl: string = '';
 

@@ -3,18 +3,37 @@
   background: white;
   border-bottom: 1px $neutral-color-200 solid;
   padding: 12px;
+  &__header {
+    font-size: 12px;
+    line-height: 16px;
+    font-family: $font-family-bold;
+    color: $neutral-color-800;
+    width: 100%;
+    margin-bottom: 2px;
+  }
+  &__reset {
+    color: $primary-color-400;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 10px;
+    &:hover {
+      color: $primary-color-800;
+    }
+  }
   &__row {
     display: flex;
     line-height: 24px;
     justify-content: space-between;
-    align-items: flex-end;
+    flex-wrap: wrap;
   }
   &__row + &__row {
-    margin-top: 4px;
+    margin-top: 12px;
   }
   &__label {
     font-size: 12px;
     color: $neutral-color-700;
+    display: block;
+    min-width: 36px;
   }
   &__count {
     font-size: 16px;
@@ -22,5 +41,24 @@
   }
   &__date {
     font-size: 12px;
+  }
+  &__date-picker {
+    border: 1px solid $neutral-color-300;
+    border-radius: 4px;
+    font-size: 12px;
+    color: $neutral-color-900;
+    width: 100%;
+    padding: 2px 4px;
+  }
+  &__icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    margin: 0 4px;
+    color: $neutral-color-400;
+    cursor: pointer;
+    &:hover {
+      color: $neutral-color-900;
+    }
   }
 }

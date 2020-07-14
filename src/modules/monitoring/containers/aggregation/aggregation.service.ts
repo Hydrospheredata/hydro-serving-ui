@@ -4,14 +4,19 @@ import { AggregationPaginator } from '@monitoring/services/aggregation-paginator
 import { MonitoringFacade } from '@monitoring/store/monitoring.facade';
 import { neitherNullNorUndefined } from '@shared/utils';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
-import { map, tap, shareReplay, takeUntil, withLatestFrom } from 'rxjs/operators';
+import {
+  map,
+  tap,
+  shareReplay,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AggregationService implements OnDestroy {
   private readonly aggregationList$: Observable<AggregationsList>;
-  private readonly groupedBy: number = 10;
   private destroy$: Subject<any> = new Subject<any>();
 
   constructor(
@@ -45,14 +50,16 @@ export class AggregationService implements OnDestroy {
   }
 
   canLoadOlder(): Observable<boolean> {
-    return combineLatest([this.getAggregationList(), of(0)]).pipe(
+    return combineLatest([
+      this.getAggregationList(),
+      this.monitoringStore.getOffset(),
+    ]).pipe(
       map(([aggregations, offset]) => {
         if (aggregations) {
           return this.paginator.canLoadOlder(
-            aggregations.totalRequests,
-            aggregations.showedRequests,
-            offset,
-            this.groupedBy
+            aggregations.totalBatchesCount,
+            aggregations.showedBatchesCount,
+            offset
           );
         } else {
           return false;
@@ -75,7 +82,7 @@ export class AggregationService implements OnDestroy {
         neitherNullNorUndefined,
         withLatestFrom(this.getSelectedAggregation()),
         tap(([aggregations, currentSelectedAggregation]) => {
-          if (aggregations.totalRequests === 0) {
+          if (aggregations.totalBatchesCount === 0) {
             this.selectAggregation(undefined);
             return;
           }
@@ -91,5 +98,41 @@ export class AggregationService implements OnDestroy {
 
   selectAggregation(agg: Aggregation): void {
     this.monitoringStore.selectAggregation(agg);
+  }
+
+  getMinDate(): Observable<Date> {
+    return this.monitoringStore
+      .getMinDate()
+      .pipe(map(seconds => seconds && new Date(seconds * 1000)));
+  }
+
+  getMaxDate(): Observable<Date> {
+    return this.monitoringStore
+      .getMaxDate()
+      .pipe(map(seconds => seconds && new Date(seconds * 1000)));
+  }
+
+  getFilterDateRange(): Observable<{ from: Date; to: Date }> {
+    return this.monitoringStore.getFilterDateRange().pipe(
+      map(range => {
+        return (
+          range && {
+            from: new Date(range.from * 1000),
+            to: new Date(range.to * 1000),
+          }
+        );
+      })
+    );
+  }
+
+  changeDateTimeRange({ from, to }: { from: Date; to: Date }): void {
+    this.monitoringStore.changeDateTimeRange({
+      from: from.getTime(),
+      to: to.getTime(),
+    });
+  }
+
+  clearDateTimeFilter(): void {
+    this.monitoringStore.clearFilterDateRange();
   }
 }

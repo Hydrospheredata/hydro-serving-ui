@@ -1,4 +1,19 @@
+@import 'variables';
+
 .loading {
+  position: relative;
+  &__layout {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(244, 240, 248, 0.5);
+    z-index: 9999;
+  }
   &__icon {
     display: block;
     margin: 0 auto;
