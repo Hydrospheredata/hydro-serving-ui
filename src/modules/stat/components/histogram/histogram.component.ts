@@ -54,6 +54,9 @@ export class HistogramComponent implements OnChanges, AfterViewInit {
         type: 'histogram',
       },
       yAxis: {
+        title: {
+          text: 'Density',
+        },
         min: 0,
       },
       title: {

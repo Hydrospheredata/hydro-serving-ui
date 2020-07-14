@@ -59,12 +59,12 @@
 }
 
 .statistics {
+  margin-bottom: 24px;
   &__label {
     color: $neutral-color-900;
     font-family: $font-family-bold;
     font-size: 16px;
     line-height: 32px;
-    padding-left: 8px;
   }
 
   &__wrapper {
