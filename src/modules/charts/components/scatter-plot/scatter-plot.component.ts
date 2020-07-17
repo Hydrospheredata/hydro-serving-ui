@@ -55,6 +55,7 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
   @Input() readonly top100: number[][] = [];
   @Input() readonly counterfactuals: number[][] = [];
   @Input() readonly colorizer: Colorizer;
+  @Input() readonly showTrainingData: boolean = false;
 
   @Output() selectPoint: EventEmitter<number> = new EventEmitter();
 
@@ -83,10 +84,7 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
   selectedIndex: number;
   regime: LinkRegime;
 
-  constructor(
-    private chartHelper: ChartHelperService,
-    private cdr: ChangeDetectorRef
-  ) {
+  constructor() {
     this.selectedPointIdx$ = this.selectedPointIndex.asObservable().pipe(
       distinctUntilChanged(),
       shareReplay(1),
@@ -128,14 +126,54 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
   ngOnInit(): void {}
   ngAfterViewInit() {}
 
-  private render({ points }: ScatterPlotData) {
+  private render({
+    points,
+    trainingPoints,
+    minX,
+    minY,
+    maxX,
+    maxY,
+  }: ScatterPlotData) {
     this.width = this.container.nativeElement.offsetWidth;
-    const xScale = this.generateXScale(points);
-    const yScale = this.generateYScale(points);
+    const xScale = this.generateXScale(points, +minX, +maxX);
+    const yScale = this.generateYScale(points, +minY, +maxY);
 
     this.drawAxis({ xScale, yScale });
-    this.drawSupportiveLines({ xScale, yScale });
+    this.drawTrainingData({ trainingPoints, xScale, yScale });
     this.drawCircles({ points, xScale, yScale });
+    this.drawSupportiveLines({ xScale, yScale });
+  }
+
+  private drawTrainingData({
+    trainingPoints,
+    yScale,
+    xScale,
+  }: {
+    trainingPoints: ScatterPlotPoint[];
+    xScale: ScaleLinear<number, number>;
+    yScale: ScaleLinear<number, number>;
+  }) {
+    const self = this;
+    select(this.circlesGroup.nativeElement)
+      .selectAll('rect')
+      .data(trainingPoints)
+      .join(
+        enter =>
+          enter
+            .append('rect')
+            .attr('width', 8)
+            .attr('height', 8)
+            .attr('fill', 'orange')
+            .attr('x', point => xScale(point.x) + this.margins.left)
+            .attr('y', point => yScale(point.y) + this.margins.top)
+            .style('opacity', () => {
+              return self.showTrainingData ? 0.3 : 0;
+            }),
+        update =>
+          update.style('opacity', () => {
+            return self.showTrainingData ? 0.3 : 0;
+          })
+      );
   }
 
   private drawCircles({
@@ -260,17 +298,19 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
   }
 
   private generateXScale(
-    points: ScatterPlotPoint[]
+    points: ScatterPlotPoint[],
+    minX: number,
+    maxX: number
   ): ScaleLinear<number, number> {
-    const [min, max] = extent(points.map(({ x }) => x));
     return scaleLinear()
-      .domain([min, max])
+      .domain([minX, maxX])
       .range([0, this.width - (this.margins.left + this.margins.right)]);
   }
   private generateYScale(
-    points: ScatterPlotPoint[]
+    points: ScatterPlotPoint[],
+    min,
+    max
   ): ScaleLinear<number, number> {
-    const [min, max] = extent(points.map(({ y }) => y));
     return scaleLinear()
       .domain([max, min])
       .range([0, this.height - (this.margins.bottom + this.margins.top)]);

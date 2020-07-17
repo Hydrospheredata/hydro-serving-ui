@@ -31,6 +31,7 @@ export class VisualizationPageComponent implements OnInit {
   selectedId$: Observable<string>;
   message$: Observable<string>;
   linkRegime: LinkRegime = 'nearest';
+  showTrainData: boolean;
 
   constructor(private service: VisualizationFacade) {}
 
@@ -64,5 +65,9 @@ export class VisualizationPageComponent implements OnInit {
 
   retryRequest(): void {
     this.service.loadEmbedding();
+  }
+
+  onChangeShowTrainData(value: boolean) {
+    this.showTrainData = value;
   }
 }

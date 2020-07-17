@@ -68,6 +68,10 @@
     margin-bottom: 24px;
   }
 
+  &__scores {
+    margin-top: 24px;
+  }
+
   &__scatterplot {
     margin-right: 24px;
     width: 100%;
@@ -85,6 +89,7 @@
     &-regimes {
       display: flex;
       flex-direction: column;
+      margin-bottom: 12px;
     }
     &-item {
       display: block;

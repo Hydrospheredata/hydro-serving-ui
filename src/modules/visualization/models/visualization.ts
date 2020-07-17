@@ -34,6 +34,8 @@ export interface TaskInformation {
 export interface VisualizationResponse {
   data_shape: [number, number];
   data: number[][];
+  training_data_shape?: [number, number];
+  training_data?: number[][];
   class_labels: {
     [name: string]: ClassLabel;
   };

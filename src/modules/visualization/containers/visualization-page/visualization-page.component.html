@@ -8,9 +8,6 @@
       class="visualization__loader"
     >
       <hs-loader class="visualization__loader-icon"></hs-loader>
-      <span class="visualization__loader-status"
-        >Task id: {{ taskId$ | async }}</span
-      >
     </div>
     <div *ngIf="(status$ | async) === 'FAILED'" class="visualization__error">
       <div class="visualization__error-message">
@@ -56,11 +53,18 @@
               {{ regime }}
             </mdl-radio>
           </div>
+          <div>
+            <mdl-checkbox (change)="onChangeShowTrainData($event)"
+              >show training data</mdl-checkbox
+            >
+          </div>
+          <div class="visualization__scores">
+            <hs-visualization-metrics
+              [visualizationMetrics]="visualizationMetrics$ | async"
+            ></hs-visualization-metrics>
+          </div>
         </div>
         <div class="visualization__scatterplot">
-          <hs-visualization-metrics
-            [visualizationMetrics]="visualizationMetrics$ | async"
-          ></hs-visualization-metrics>
           <hs-scatter-plot
             (selectPoint)="handleSelectPoint($event)"
             [colorizer]="colorizer$ | async"
@@ -69,6 +73,7 @@
             [data]="scatterPlotData$ | async"
             [linkRegime]="linkRegime"
             [top100]="top100$ | async"
+            [showTrainingData]="showTrainData"
           ></hs-scatter-plot>
         </div>
       </div>
