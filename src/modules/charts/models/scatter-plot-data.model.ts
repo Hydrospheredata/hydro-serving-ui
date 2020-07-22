@@ -6,11 +6,12 @@ export interface ScatterPlotPoint {
   opacity?: number;
 }
 export interface ScatterPlotData {
+  trainingPoints: ScatterPlotPoint[];
   points: ScatterPlotPoint[];
   visiblePoints?: ScatterPlotPoint[];
   opaquePoints?: ScatterPlotPoint[];
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
+  minX: number | string;
+  maxX: number | string;
+  minY: number | string;
+  maxY: number | string;
 }

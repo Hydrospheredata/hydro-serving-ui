@@ -1,18 +1,15 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import {
-  ScatterPlotData,
-  ScatterPlotPoint,
-} from '@charts/models/scatter-plot-data.model';
+import { ScatterPlotData } from '@charts/models/scatter-plot-data.model';
 import { Colorizer, ColorizerFabric } from '@core/models';
 import { ModelsFacade } from '@models/store';
 import { Check } from '@monitoring/models';
 import { MonitoringService } from '@monitoring/services';
+import { ModelVersion } from '@shared/models';
 import { neitherNullNorUndefined } from '@shared/utils';
 import { Observable, of, Subject, timer } from 'rxjs';
 import {
   catchError,
   exhaustMap,
-  filter,
   map,
   shareReplay,
   startWith,
@@ -25,6 +22,8 @@ import {
 import { VisualizationResponse, ETaskState } from './models/visualization';
 import { VisualizationApi } from './services';
 import { VisualizationState } from './store/visualization.state';
+import * as R from 'ramda';
+import * as D3 from 'd3';
 
 export type ColorBy = 'class_label' | 'metric';
 
@@ -144,38 +143,48 @@ export class VisualizationFacade implements OnDestroy {
     );
   }
 
-  getModelVersion() {
+  getModelVersion(): Observable<ModelVersion> {
     return this.modelsFacade.selectedModelVersion$;
   }
 
-  getError() {
+  getError(): Observable<string> {
     return this.state.getError();
   }
 
   getScatterPlotData(): Observable<ScatterPlotData> {
     return this.getResult().pipe(
-      filter(val => !!val),
-      map(({ data }) => {
-        return data.reduce(
-          ({ points, minX, maxX, minY, maxY }, [x, y]) => {
-            const point: ScatterPlotPoint = { x, y };
-            const newPoints = [...points, point];
-            return {
-              points: newPoints,
-              minX: x < minX ? x : minX,
-              maxX: x > maxX ? x : maxX,
-              minY: y < minY ? y : minY,
-              maxY: y > maxY ? y : maxY,
-            };
-          },
-          {
-            points: [],
-            minX: 0,
-            maxX: 0,
-            minY: 0,
-            maxY: 0,
-          }
+      neitherNullNorUndefined,
+      map(({ data = [], training_data = [] }) => {
+        const getXCoordinates = R.compose(R.map(R.head));
+        const getYCoordinates = R.compose(R.flatten, R.map(R.tail));
+        const toScatterPlotPoint = el => {
+          return {
+            x: el[0],
+            y: el[1],
+          };
+        };
+
+        const prodXCoordinates: number[] = getXCoordinates(data);
+        const trainXCoordinates: number[] = getXCoordinates(training_data);
+
+        const prodYCoordinates: number[] = getYCoordinates(data);
+        const trainYCoordinates: number[] = getYCoordinates(training_data);
+
+        const [minX, maxX] = D3.extent(
+          R.concat(prodXCoordinates, trainXCoordinates)
         );
+        const [minY, maxY] = D3.extent(
+          R.concat(prodYCoordinates, trainYCoordinates)
+        );
+
+        return {
+          points: data.map(toScatterPlotPoint),
+          trainingPoints: training_data.map(toScatterPlotPoint),
+          minX,
+          maxX,
+          minY,
+          maxY,
+        };
       })
     );
   }
