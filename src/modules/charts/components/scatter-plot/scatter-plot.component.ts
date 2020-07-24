@@ -1,7 +1,6 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -18,14 +17,14 @@ import {
   ScatterPlotPoint,
 } from '@charts/models/scatter-plot-data.model';
 import { Colorizer } from '@core/models';
-import { ChartHelperService } from '@core/services/chart-helper.service';
 import {
   select,
   ScaleLinear,
-  extent,
   scaleLinear,
   axisBottom,
   axisLeft,
+  contourDensity,
+  geoPath,
 } from 'd3';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, shareReplay, tap } from 'rxjs/operators';
@@ -65,6 +64,7 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
   @ViewChild('axisGroup', { read: ElementRef }) axisGroup: ElementRef;
   @ViewChild('circles', { read: ElementRef }) circlesGroup: ElementRef;
   @ViewChild('links', { read: ElementRef }) linksGroup: ElementRef;
+  @ViewChild('kde', { read: ElementRef }) kdeGroup: ElementRef;
   @ViewChild('supportiveLines', { read: ElementRef })
   supportiveLinesGroup: ElementRef;
 
@@ -154,25 +154,34 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
     yScale: ScaleLinear<number, number>;
   }) {
     const self = this;
-    select(this.circlesGroup.nativeElement)
-      .selectAll('rect')
-      .data(trainingPoints)
-      .join(
-        enter =>
-          enter
-            .append('rect')
-            .attr('width', 8)
-            .attr('height', 8)
-            .attr('fill', 'orange')
-            .attr('x', point => xScale(point.x) + this.margins.left)
-            .attr('y', point => yScale(point.y) + this.margins.top)
-            .style('opacity', () => {
-              return self.showTrainingData ? 0.3 : 0;
-            }),
-        update =>
-          update.style('opacity', () => {
-            return self.showTrainingData ? 0.3 : 0;
-          })
+    const data = trainingPoints.map(({ x, y }) => [x, y]) as [number, number][];
+
+    var color = scaleLinear<string>()
+      .domain([0, 0.1])
+      .range(['white', '#ffad37']);
+
+    var densityData = contourDensity()
+      .x(function (d) {
+        return xScale(d[0]);
+      })
+      .y(function (d) {
+        return yScale(d[1]);
+      })
+      .size([self.chartWidth, self.chartHeight])
+      .bandwidth(12)(data);
+
+    select(this.kdeGroup.nativeElement).selectAll('path').remove();
+    select(this.kdeGroup.nativeElement)
+      .selectAll('path')
+      .data(densityData)
+      .enter()
+      .append('path')
+      .attr('d', geoPath())
+      .attr('fill', ({ value }) => color(value))
+      .style('opacity', self.showTrainingData ? '.9' : '0')
+      .style(
+        'transform',
+        `translate(${self.margins.left}px, ${self.margins.top}px)`
       );
   }
 
