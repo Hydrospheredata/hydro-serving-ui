@@ -1,0 +1,87 @@
+<div class="visualization-params">
+  <div class="visualisation-params__title">Settings</div>
+  <form [formGroup]="form">
+    <div formGroupName="parameters">
+      <div class="visualisation-params__row">
+        <label for="metric">metric</label>
+        <mdl-select
+          formControlName="metric"
+          id="metric"
+          class="visualisation-params__input"
+        >
+          <mdl-option *ngFor="let p of metrics" [value]="p">{{ p }}</mdl-option>
+        </mdl-select>
+      </div>
+      <div class="visualisation-params__row">
+        <label for="min_dist">Min dist</label>
+        <input
+          formControlName="min_dist"
+          class="form-control visualisation-params__input"
+          id="min_dist"
+        />
+      </div>
+      <div class="visualisation-params__row">
+        <label for="n_components">N components</label>
+        <input
+          formControlName="n_components"
+          class="form-control visualisation-params__input"
+          id="n_components"
+        />
+      </div>
+
+      <div class="visualisation-params__row">
+        <label for="n_neighbours">N neighbours</label>
+        <input
+          formControlName="n_neighbours"
+          class="form-control visualisation-params__input"
+          id="n_neighbours"
+        />
+      </div>
+    </div>
+
+    <div class="visualisation-params__row">
+      <label for="production_data_sample_size">
+        Production data sample size</label
+      >
+      <input
+        formControlName="production_data_sample_size"
+        class="form-control visualisation-params__input"
+        id="production_data_sample_size"
+      />
+    </div>
+
+    <div class="visualisation-params__row">
+      <label for="training_data_sample_size"> Training data sample size</label>
+      <input
+        formControlName="training_data_sample_size"
+        class="form-control visualisation-params__input"
+        id="training_data_sample_size"
+      />
+    </div>
+
+    <div class="visualisation-params__row">
+      <mdl-select
+        formControlName="visualization_metrics"
+        [multiple]="true"
+        class="visualisation-params__input"
+      >
+        <mdl-option
+          *ngFor="let c of visualizationMetrics"
+          [value]="c"
+          mdl-ripple
+          >{{ c }}</mdl-option
+        >
+      </mdl-select>
+    </div>
+  </form>
+  <button
+    (click)="sendRequest()"
+    [disabled]="form.invalid"
+    hs-button
+    color="primary"
+    kind="flat"
+    class="visualisation-params__button"
+  >
+    Change Params and refit
+  </button>
+</div>

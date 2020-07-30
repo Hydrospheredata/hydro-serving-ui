@@ -36,8 +36,13 @@ export interface VisualizationResponse {
   data: number[][];
   training_data_shape?: [number, number];
   training_data?: number[][];
-  class_labels: {
-    [name: string]: ClassLabel;
+  output_info: {
+    [outputName: string]: {
+      coloring_type: ColoringType;
+      data: Array<number>;
+      classes?: Array<string | number>;
+      dtype: number;
+    };
   };
   metrics: {
     [name: string]: Metric;
