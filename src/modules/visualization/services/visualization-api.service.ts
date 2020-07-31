@@ -21,8 +21,10 @@ export class VisualizationApi {
   ): Observable<TaskInformation> {
     return this.http
       .post<TaskInformation>(
-        `${this.baseUrl}/plottable_embeddings/${transformer}?model_version_id=${modelVersion.id}`,
-        {}
+        `${this.baseUrl}/plottable_embeddings/${transformer}`,
+        {
+          model_version_id: modelVersion.id,
+        }
       )
       .pipe(catchError(err => throwError(err)));
   }
@@ -33,15 +35,24 @@ export class VisualizationApi {
       .pipe(catchError(err => throwError(err)));
   }
 
-  setParams(params: VisualizationParams): Observable<any> {
-    return this.http.post(`${this.baseUrl}/params`, {
-      params,
-    });
+  setParams(
+    params: VisualizationParams,
+    modelVersion: ModelVersion
+  ): Observable<any> {
+    const method = 'umap';
+    const body = {
+      model_version_id: modelVersion.id,
+      ...params,
+    };
+
+    return this.http.post(`${this.baseUrl}/params/${method}`, body);
   }
 
-  getParams(modelVersion: ModelVersion): Observable<VisualizationParams> {
-    return this.http.get(`${this.baseUrl}/params`, {
-      params: { model_version_id: `${modelVersion.id}` },
+  getParams(modelVersionId: number): Observable<VisualizationParams> {
+    const method = 'umap';
+
+    return this.http.get(`${this.baseUrl}/params/${method}`, {
+      params: { model_version_id: `${modelVersionId}` },
     });
   }
 }

@@ -27,13 +27,15 @@ export const mockVisualizationResult: VisualizationResponse = {
     [11.062357902526855, 7.0266337394714355],
     [8.847922325134277, 4.067715644836426],
   ],
-  class_labels: {
+  output_info: {
     class: {
+      dtype: 0,
       classes: [0, 1],
       coloring_type: 'class',
       data: [1, 1, 1, 1, 0, 1, 0, 1, 0, 0],
     },
     confidence: {
+      dtype: 0,
       coloring_type: 'gradient',
       data: [
         0.47196451509596193,

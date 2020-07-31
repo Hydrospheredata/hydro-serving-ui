@@ -103,6 +103,10 @@ export class VisualizationState {
     return this.state$.pipe(pluck('message'));
   }
 
+  public getParams(): Observable<VisualizationParams> {
+    return this.state$.pipe(pluck('params'));
+  }
+
   public setError(error: string | null): void {
     const state = this.state.getValue();
     this.state.next({ ...state, error, status: ETaskState.failed });
@@ -121,6 +125,11 @@ export class VisualizationState {
   public selectIndex(index: number | null): void {
     const state = this.state.getValue();
     this.state.next({ ...state, selectedPointIndex: index });
+  }
+
+  public setParams(params: VisualizationParams) {
+    const state = this.state.getValue();
+    this.state.next({ ...state, params });
   }
 
   public setResult(params: {

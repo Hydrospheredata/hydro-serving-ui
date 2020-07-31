@@ -1,15 +1,15 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { ScatterPlotData } from '@charts/models/scatter-plot-data.model';
 import { Colorizer, ColorizerFabric } from '@core/models';
+import { SnackbarService } from '@core/services';
 import { ModelsFacade } from '@models/store';
 import { Check } from '@monitoring/models';
 import { MonitoringService } from '@monitoring/services';
 import { ModelVersion } from '@shared/models';
 import { neitherNullNorUndefined } from '@shared/utils';
-import { Observable, of, Subject, timer } from 'rxjs';
+import { Observable, of, Subject, timer, concat, never } from 'rxjs';
 import {
   catchError,
-  exhaustMap,
   map,
   shareReplay,
   startWith,
@@ -19,6 +19,7 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
+import { VisualizationParams } from './models';
 import { VisualizationResponse, ETaskState } from './models/visualization';
 import { VisualizationApi } from './services';
 import { VisualizationState } from './store/visualization.state';
@@ -39,7 +40,8 @@ export class VisualizationFacade implements OnDestroy {
     private monitoringApi: MonitoringService,
     private modelsFacade: ModelsFacade,
     private colorizerFabric: ColorizerFabric,
-    private state: VisualizationState
+    private state: VisualizationState,
+    private snackbar: SnackbarService
   ) {
     this.colors$ = this.getSelectedColorizer().pipe(
       neitherNullNorUndefined,
@@ -54,41 +56,6 @@ export class VisualizationFacade implements OnDestroy {
       map(bareCheck => new Check(bareCheck)),
       shareReplay(1)
     );
-
-    this.getTaskId()
-      .pipe(
-        neitherNullNorUndefined,
-        switchMap(taskId => {
-          return timer(0, 5000).pipe(
-            exhaustMap(() => {
-              return this.api.getJobResult(taskId);
-            }),
-            tap(task => {
-              this.state.setResult({
-                message: task.message,
-                status: task.state,
-                result: task.result,
-                colorizers: task.result
-                  ? this.buildColorizers(task.result)
-                  : [],
-                top100: task.result ? task.result.top_N : [],
-                counterfactuals: task.result ? task.result.counterfactuals : [],
-                visualizationMetrics: task.result
-                  ? task.result.visualization_metrics
-                  : undefined,
-                requestsIds: task.result ? task.result.requests_ids : [],
-              });
-            }),
-            takeWhile(({ state }) => state !== ETaskState.success),
-            catchError(err => {
-              this.state.setError(err);
-              return of();
-            })
-          );
-        }),
-        takeUntil(this.destroy.asObservable())
-      )
-      .subscribe();
   }
 
   ngOnDestroy(): void {
@@ -151,6 +118,10 @@ export class VisualizationFacade implements OnDestroy {
     return this.state.getError();
   }
 
+  getParams(): Observable<VisualizationParams> {
+    return this.state.getParams();
+  }
+
   getScatterPlotData(): Observable<ScatterPlotData> {
     return this.getResult().pipe(
       neitherNullNorUndefined,
@@ -202,8 +173,42 @@ export class VisualizationFacade implements OnDestroy {
       .pipe(
         switchMap(mv =>
           this.api.createTask('umap', mv).pipe(
-            tap(task => {
-              this.state.setTaskId(task.task_id);
+            switchMap(({ task_id }) => {
+              return concat(
+                timer(0, 5000).pipe(
+                  switchMap(() => this.api.getJobResult(task_id)),
+                  tap(task => {
+                    this.state.setResult({
+                      message: task.message,
+                      status: task.state,
+                      result: task.result,
+                      colorizers: task.result
+                        ? this.buildColorizers(task.result)
+                        : [],
+                      top100: task.result ? task.result.top_N : [],
+                      counterfactuals: task.result
+                        ? task.result.counterfactuals
+                        : [],
+                      visualizationMetrics: task.result
+                        ? task.result.visualization_metrics
+                        : undefined,
+                      requestsIds: task.result ? task.result.requests_ids : [],
+                    });
+                  }),
+                  takeWhile(({ state }) => state !== ETaskState.success),
+                  catchError(err => {
+                    this.state.setError(err);
+                    this.snackbar.show({ message: err });
+                    return of();
+                  })
+                ),
+                this.modelsFacade.selectedModelVersion$.pipe(
+                  switchMap(mv => this.api.getParams(mv.id)),
+                  tap(params => {
+                    this.state.setParams(params);
+                  })
+                )
+              );
             }),
             catchError(err => {
               this.state.setError(err);
@@ -224,12 +229,33 @@ export class VisualizationFacade implements OnDestroy {
     this.state.selectIndex(index);
   }
 
+  refit(visParams: VisualizationParams): void {
+    this.modelsFacade.selectedModelVersion$
+      .pipe(
+        switchMap(mv => {
+          return this.api.setParams(visParams, mv).pipe(
+            tap(() => {
+              debugger;
+              this.loadEmbedding();
+            }),
+            catchError(err => {
+              console.log(err);
+              this.snackbar.show({ message: err });
+              return never();
+            })
+          );
+        })
+      )
+
+      .subscribe();
+  }
+
   private buildColorizers({
-    class_labels,
+    output_info,
     metrics,
   }: VisualizationResponse): Colorizer[] {
     const res = [];
-    for (const [name, payload] of Object.entries(class_labels)) {
+    for (const [name, payload] of Object.entries(output_info)) {
       res.push(
         this.colorizerFabric.createColorizer('class_label', {
           name,

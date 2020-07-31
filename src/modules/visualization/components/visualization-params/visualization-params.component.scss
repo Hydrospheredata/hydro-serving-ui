@@ -1,0 +1,16 @@
+@import 'variables';
+
+.visualisation-params {
+  &__title {
+    color: $neutral-color-800;
+    font-family: $font-family-bold;
+    line-height: 24px;
+    font-size: 12px;
+  }
+  &__row {
+    margin-bottom: 12px;
+  }
+  &__button {
+    width: 100%;
+  }
+}

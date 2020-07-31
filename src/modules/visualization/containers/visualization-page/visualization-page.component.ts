@@ -5,7 +5,7 @@ import { Check } from '@monitoring/models';
 import { ModelVersion } from '@shared/_index';
 import { VisualizationFacade } from 'modules/visualization/visualization.facade';
 import { Observable } from 'rxjs';
-import { LinkRegime } from '../../models/visualization';
+import { VisualizationParams, LinkRegime } from '../../models';
 import { VisualizationState } from '../../store';
 
 @Component({
@@ -32,6 +32,7 @@ export class VisualizationPageComponent implements OnInit {
   message$: Observable<string>;
   linkRegime: LinkRegime = 'nearest';
   showTrainData: boolean;
+  params$: Observable<VisualizationParams>;
 
   constructor(private service: VisualizationFacade) {}
 
@@ -51,6 +52,7 @@ export class VisualizationPageComponent implements OnInit {
     this.visualizationMetrics$ = this.service.getVisualizationMetrics();
     this.selectedId$ = this.service.getSelectedId();
     this.message$ = this.service.getMessage();
+    this.params$ = this.service.getParams();
 
     this.service.loadEmbedding();
   }
@@ -69,5 +71,9 @@ export class VisualizationPageComponent implements OnInit {
 
   onChangeShowTrainData(value: boolean) {
     this.showTrainData = value;
+  }
+
+  onRefit(visParams: VisualizationParams) {
+    this.service.refit(visParams);
   }
 }
