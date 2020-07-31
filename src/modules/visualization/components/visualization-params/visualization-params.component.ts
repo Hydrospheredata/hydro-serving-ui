@@ -66,12 +66,29 @@ export class VisualizationParamsComponent implements OnInit {
   public form = this.fb.group({
     parameters: this.fb.group({
       metric: this.fb.control(this.metrics[0], [Validators.required]),
-      min_dist: this.fb.control('', [Validators.required]),
-      n_components: this.fb.control('', [Validators.required]),
-      n_neighbours: this.fb.control('', [Validators.required]),
+      min_dist: this.fb.control(0, [
+        Validators.required,
+        Validators.pattern(
+          this.customValidators.VALIDATION_PATTERNS.floatNumber
+        ),
+      ]),
+      n_components: this.fb.control(0, [
+        Validators.required,
+        Validators.pattern(this.customValidators.VALIDATION_PATTERNS.number),
+      ]),
+      n_neighbours: this.fb.control(0, [
+        Validators.required,
+        Validators.pattern(this.customValidators.VALIDATION_PATTERNS.number),
+      ]),
     }),
-    production_data_sample_size: this.fb.control('', [Validators.required]),
-    training_data_sample_size: this.fb.control('', [Validators.required]),
+    production_data_sample_size: this.fb.control(0, [
+      Validators.required,
+      Validators.pattern(this.customValidators.VALIDATION_PATTERNS.number),
+    ]),
+    training_data_sample_size: this.fb.control(0, [
+      Validators.required,
+      Validators.pattern(this.customValidators.VALIDATION_PATTERNS.number),
+    ]),
     visualization_metrics: this.fb.control([], [Validators.required]),
   });
 
