@@ -1,0 +1,14 @@
+<div
+  class="drift-status"
+  [ngStyle]="{
+    background: backgroundColor,
+    padding: justIcon ? '1px' : '2px 8px'
+  }"
+>
+  <hydro-icon
+    class="drift-status__icon"
+    [type]="iconType"
+    [ngStyle]="stylesMap"
+  ></hydro-icon>
+  <span class="drift-status__text" *ngIf="!justIcon">{{ statusText }}</span>
+</div>

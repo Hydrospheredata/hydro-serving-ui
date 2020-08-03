@@ -21,17 +21,15 @@
           Overall drift's status
         </div>
         <div class="report__overall-decision">
-          <hydro-icon
+          <hs-drift-status
             [drift]="(stat$ | async)?.overall_probability_drift"
-            class="report__overall-decision-icon"
-            hsColorByDrift
-            type="icon-error-outline"
-          ></hydro-icon>
-          <span
-            class="report__overall-decision-text"
-            *ngIf="(stat$ | async)?.warnings.final_decision as decision"
-            >{{ decision }}</span
-          >
+            [justIcon]="false"
+          ></hs-drift-status>
+          <!--          <span-->
+          <!--            class="report__overall-decision-text"-->
+          <!--            *ngIf="(stat$ | async)?.warnings.final_decision as decision"-->
+          <!--            >{{ decision }}</span-->
+          <!--          >-->
         </div>
       </div>
       <div class="report__warnings">

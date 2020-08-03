@@ -4,13 +4,6 @@
   &__icon {
     width: 14px;
     height: 14px;
-    &:before {
-      color: $neutral-color-700;
-      font-family: $font-family-light;
-      padding-right: 4px;
-      content: "drift's status";
-      display: inline;
-    }
   }
   &__header {
     align-items: flex-end;
