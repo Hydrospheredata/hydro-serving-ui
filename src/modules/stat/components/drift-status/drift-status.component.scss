@@ -1,0 +1,14 @@
+@import 'variables';
+
+.drift-status {
+  border-radius: 24px;
+  &__icon {
+    color: white;
+  }
+  &__text {
+    color: white;
+    padding: 0 4px 0 4px;
+    font-size: 12px;
+    font-family: $font-family-bold;
+  }
+}
