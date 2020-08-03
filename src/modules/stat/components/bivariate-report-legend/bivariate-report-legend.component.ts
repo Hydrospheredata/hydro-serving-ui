@@ -5,6 +5,7 @@ import {
 } from '@angular/core';
 import { ViewChild, ElementRef } from '@node_modules/@angular/core';
 import * as d3 from 'd3';
+import { scale as coldWarmScale } from '../heatmap/coldwarm-color';
 
 @Component({
   selector: 'hs-bivariate-report-legend',
@@ -16,7 +17,7 @@ export class BivariateReportLegendComponent implements AfterViewInit {
   @ViewChild('anchor', { read: ElementRef }) anchorElement: ElementRef;
 
   ngAfterViewInit() {
-    const colorScale = d3.scaleSequential(d3.interpolateInferno).domain([0, 1]);
+    const colorScale = coldWarmScale;
     const legendHeight = 260;
     const legendWidth = 260;
     const margin = { top: 10, right: 20, bottom: 10, left: 4 };
@@ -43,10 +44,7 @@ export class BivariateReportLegendComponent implements AfterViewInit {
 
     const ctx = canvas.getContext('2d');
 
-    const legendScale = d3
-      .scaleLinear()
-      .range([1, viewHeight])
-      .domain(colorScale.domain().reverse());
+    const legendScale = d3.scaleLinear().range([1, viewHeight]).domain([1, 0]);
 
     const image = ctx.createImageData(viewWidth, 1);
     d3.range(viewHeight).forEach(i => {

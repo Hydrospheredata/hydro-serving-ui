@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { HeatmapConfig, HeatmapData } from '../../models';
 import * as d3 from 'd3';
+import { getColdWarmColor } from './coldwarm-color';
 
 @Component({
   selector: 'hs-heatmap',
@@ -74,7 +75,6 @@ export class HeatmapComponent implements OnInit {
       self.hoveredItem.next(undefined);
     };
 
-    const myColor = d3.scaleSequential(d3.interpolateInferno).domain([0, 1]);
     const svg = d3.select(this.svgEl.nativeElement);
 
     svg.selectAll('g').remove();
@@ -84,8 +84,8 @@ export class HeatmapComponent implements OnInit {
     const xScale = d3
       .scaleBand()
       .domain(this._config.xLabels)
-      .range([0, this.width - this.margins.left - this.margins.right]);
-    // .padding(0.05);
+      .range([0, this.width - this.margins.left - this.margins.right])
+      .padding(0.05);
 
     const yScale = d3
       .scaleBand()
@@ -164,19 +164,13 @@ export class HeatmapComponent implements OnInit {
       .join(enter =>
         enter
           .append('rect')
-          .attr('x', function (d) {
-            return xScale(d.x);
-          })
-          .attr('y', function (d) {
-            return yScale(d.y);
-          })
-          // .attr('rx', 4)
-          // .attr('ry', 4)
+          .attr('x', d => xScale(d.x))
+          .attr('y', d => yScale(d.y))
+          .attr('rx', 4)
+          .attr('ry', 0)
           .attr('width', xScale.bandwidth())
           .attr('height', yScale.bandwidth())
-          .style('fill', function (d) {
-            return myColor(d.value);
-          })
+          .style('fill', ({ value }) => getColdWarmColor(value))
           .on('mouseover', onMouseOver)
           .on('mouseleave', onMouseLeave)
       );
