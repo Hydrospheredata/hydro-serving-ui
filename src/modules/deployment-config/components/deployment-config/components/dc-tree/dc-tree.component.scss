@@ -1,0 +1,58 @@
+@import 'variables';
+
+$lh: 24px;
+
+$groupMargin: 12px;
+$groupPadding: 4px;
+
+$borderColor: $neutral-color-400;
+
+.dc-tree {
+  &__name {
+    font-size: 24px;
+  }
+  &__group {
+    position: relative;
+    padding-left: $groupPadding;
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      height: calc(100% - 12px);
+      border-left: 1px $borderColor solid;
+    }
+  }
+
+  &__field {
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    &:before {
+      content: '';
+      display: block;
+      width: 12px;
+      height: 1px;
+      border-top: 1px $borderColor solid;
+    }
+  }
+
+  &__sub {
+    position: relative;
+    padding-left: 12px;
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 12px;
+      border-top: 1px $borderColor solid;
+      left: 0;
+      top: 12px;
+    }
+  }
+
+  &__title {
+    line-height: $lh;
+    color: $neutral-color-600;
+    padding-left: 4px;
+  }
+}

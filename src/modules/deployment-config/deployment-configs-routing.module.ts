@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DeploymentConfigComponent } from './components';
 import { DeploymentConfigPageComponent } from './containers';
 
 @NgModule({
@@ -8,6 +9,12 @@ import { DeploymentConfigPageComponent } from './containers';
       {
         path: 'deployment_configs',
         component: DeploymentConfigPageComponent,
+        children: [
+          {
+            path: ':name',
+            component: DeploymentConfigComponent,
+          },
+        ],
       },
     ]),
   ],

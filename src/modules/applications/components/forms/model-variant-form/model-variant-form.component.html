@@ -1,7 +1,5 @@
 <div [formGroup]="group" class="service">
-  <div class="service__index">
-    {{ index + 1 }}.
-  </div>
+  <div class="service__index">{{ index + 1 }}.</div>
   <div class="service__inputs">
     <div class="service__row">
       <div class="service__field service__field--model-name">
@@ -85,6 +83,24 @@
         <span>
           {{ (selectedModelVersion$ | async)?.hostSelector?.name || '-' }}
         </span>
+      </div>
+      <div class="service__field">
+        <label class="service__field-label">Deployment config</label>
+        <mdl-select
+          #configSelect
+          formControlName="deploymentConfigName"
+          [autocomplete]="true"
+        >
+          <mdl-option
+            *ngFor="
+              let config of deploymentConfigs$
+                | async
+                | matchSorter: 'name':configSelect.searchQuery
+            "
+            [value]="config.name"
+            >{{ config.name }}</mdl-option
+          >
+        </mdl-select>
       </div>
     </div>
   </div>

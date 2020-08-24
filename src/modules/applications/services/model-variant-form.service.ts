@@ -15,6 +15,7 @@ export interface IModelVariantFormData {
   weight: number;
   modelId?: number;
   modelVersionId: number;
+  deploymentConfigName: string;
 }
 
 @Injectable()
@@ -52,7 +53,9 @@ export class ModelVariantFormService implements OnDestroy {
       .pipe(
         take(1),
         map(modelVersions =>
-          modelVersions.filter(mv => mv.status === ModelVersionStatus.Released || mv.isExternal)
+          modelVersions.filter(
+            mv => mv.status === ModelVersionStatus.Released || mv.isExternal
+          )
         ),
         tap(modelVersions => {
           this.modelVersions.next(modelVersions);
@@ -62,7 +65,9 @@ export class ModelVariantFormService implements OnDestroy {
   }
 
   public getDefaultModelVersion(): ModelVersion {
-    const currentModelVersionsArray: ModelVersion[] = this.modelVersions.getValue().filter(mv => !mv.isExternal);
+    const currentModelVersionsArray: ModelVersion[] = this.modelVersions
+      .getValue()
+      .filter(mv => !mv.isExternal);
 
     if (currentModelVersionsArray.length) {
       return currentModelVersionsArray[0];
@@ -78,6 +83,7 @@ export class ModelVariantFormService implements OnDestroy {
       weight: 100,
       modelId,
       modelVersionId: modelVersion && modelVersion.id,
+      deploymentConfigName: '',
     };
   }
 
@@ -88,6 +94,7 @@ export class ModelVariantFormService implements OnDestroy {
       weight: modelVariant.weight,
       modelId: modelVariant.modelVersion.model.id,
       modelVersionId: modelVariant.modelVersion.id,
+      deploymentConfigName: modelVariant.deploymentConfigName,
     };
   }
 
@@ -107,6 +114,7 @@ export class ModelVariantFormService implements OnDestroy {
         modelVariantFormData.modelVersionId,
         this.customValidators.required()
       ),
+      deploymentConfigName: new FormControl(''),
     });
   }
 

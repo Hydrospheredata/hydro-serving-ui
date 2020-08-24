@@ -14,6 +14,8 @@ import { Model, ModelVersion } from '@shared/_index';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DeploymentConfigsFacade } from '../../../../deployment-config/facades';
+import { DeploymentConfig } from '../../../../deployment-config/models';
 
 @Component({
   selector: 'hs-model-variant-form',
@@ -30,7 +32,8 @@ export class ModelVariantFormComponent implements OnInit {
 
   data;
   models$: Observable<Model[]> = this.modelsFacade.allModels$;
-  modelVersions$: Observable<any>;
+  modelVersions$: Observable<ModelVersion[]>;
+  deploymentConfigs$: Observable<DeploymentConfig[]>;
   selectedModelVersion$: Observable<ModelVersion>;
 
   get modelControl(): FormControl {
@@ -45,14 +48,22 @@ export class ModelVariantFormComponent implements OnInit {
     return this.group.get('weight') as FormControl;
   }
 
+  get deploymentConfigNameControl(): FormControl {
+    return this.group.get('deploymentConfigName') as FormControl;
+  }
+
   constructor(
     private modelsFacade: ModelsFacade,
+    private deploymentConfFacade: DeploymentConfigsFacade,
     @Self() private modelVariantFormService: ModelVariantFormService
   ) {
     this.modelVersions$ = this.modelVariantFormService
       .getModelVersions()
       .pipe(map(mvs => mvs.filter(mv => !mv.isExternal)));
+
     this.selectedModelVersion$ = this.modelVariantFormService.getCurrentModelVersion();
+
+    this.deploymentConfigs$ = this.deploymentConfFacade.all();
   }
 
   ngOnInit() {
@@ -63,13 +74,16 @@ export class ModelVariantFormComponent implements OnInit {
     this.modelVariantFormService.setCurrentModelVersion(
       this.modelVersionControl.value
     );
+
     this.subscribeToModelIdChange();
-    this.subcribeToModelVersionIdChange();
+    this.subscribeToModelVersionIdChange();
   }
 
   public onModelIdChange(modelId): void {
     this.modelVariantFormService.updateModelVersionList(modelId);
+
     const modelVersion = this.modelVariantFormService.getDefaultModelVersion();
+
     this.modelVersionControl.setValue(modelVersion ? modelVersion.id : null);
   }
 
@@ -87,7 +101,7 @@ export class ModelVariantFormComponent implements OnInit {
     });
   }
 
-  private subcribeToModelVersionIdChange(): void {
+  private subscribeToModelVersionIdChange(): void {
     this.modelVersionControl.valueChanges.subscribe(modelVersionId => {
       this.onModelVersionChange(modelVersionId);
     });

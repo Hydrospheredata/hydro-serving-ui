@@ -1,14 +1,26 @@
 import { Injectable } from '@angular/core';
-import { of, Observable } from '@node_modules/rxjs';
+import { HttpService } from '@core/services/http';
+import { environment } from '@environments/environment';
+import { Observable } from '@node_modules/rxjs';
 import { DeploymentConfig } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DeploymentConfigsApiService {
-  constructor() {}
+  private readonly baseAPIUrl = `${environment.apiUrl}/deployment_configuration`;
 
-  get(): Observable<DeploymentConfig> {
-    return of();
+  constructor(private readonly http: HttpService) {}
+
+  getAll(): Observable<DeploymentConfig[]> {
+    return this.http.get<DeploymentConfig[]>(this.baseAPIUrl);
+  }
+
+  get(name: string): Observable<DeploymentConfig> {
+    return this.http.get<DeploymentConfig>(`${this.baseAPIUrl}/${name}`);
+  }
+
+  delete(name: string): Observable<any> {
+    return this.http.delete(`${this.baseAPIUrl}/${name}`);
   }
 }

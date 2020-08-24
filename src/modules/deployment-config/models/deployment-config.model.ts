@@ -1,113 +1,99 @@
-interface Hpa {
+export interface Hpa {
   maxReplicas: number;
   cpuUtilization: number;
   minReplicas: number;
 }
 
-interface Container {
-  requirements: {
+export interface Container {
+  resources: {
     requests: { memory: string; cpu: string };
     limits: { memory: string; cpu: string };
   };
 }
 
-interface Toleration {
+export interface Toleration {
   effect: string;
   tolerationSeconds: number;
-  value: string;
+  value?: string;
   key: string;
   operator: string;
 }
 
-interface Pod {
-  pod: {
-    tolerations: Array<Toleration>;
-    nodeSelector: { [key: string]: string };
-    affinity: {
-      nodeAffinity: {
-        requiredDuringSchedulingIgnoredDuringExecution: {
-          nodeSelectorTerms: {
-            matchExpressions: {
-              values: string[];
-              key: string;
-              operator: string;
-            }[];
-            matchFields: { values: string[]; key: string; operator: string }[];
-          }[];
+export interface MatchExpression {
+  values?: string[];
+  key: string;
+  operator: string;
+}
+
+export interface MatchField {
+  values?: string[];
+  key: string;
+  operator: string;
+}
+
+export interface Pod {
+  tolerations: Array<Toleration>;
+  nodeSelector: { [key: string]: string };
+  affinity: {
+    nodeAffinity: {
+      requiredDuringSchedulingIgnoredDuringExecution: {
+        nodeSelectorTerms: {
+          matchExpressions: MatchExpression[];
+          matchFields: MatchField[];
+        }[];
+      };
+      preferredDuringSchedulingIgnoredDuringExecution: {
+        preference: {
+          matchExpressions: MatchExpression[];
+          matchFields: MatchField[];
         };
-        preferredDuringSchedulingIgnoredDuringExecution: {
-          preference: {
-            matchExpressions: {
-              values: string[];
-              key: string;
-              operator: string;
-            }[];
-            matchFields: { values: string[]; key: string; operator: string }[];
-          };
-          weight: number;
-        }[];
-      };
-      podAffinity: {
-        requiredDuringSchedulingIgnoredDuringExecution: {
+        weight: number;
+      }[];
+    };
+    podAffinity: {
+      requiredDuringSchedulingIgnoredDuringExecution: {
+        labelSelector: {
+          matchExpressions: MatchExpression[];
+        };
+        topologyKey: string;
+        namespaces: string[];
+      }[];
+      preferredDuringSchedulingIgnoredDuringExecution: {
+        podAffinityTerm: {
           labelSelector: {
-            matchExpressions: Array<{
-              key: string;
-              operator: string;
-              values: string[];
-            }>;
+            matchLabels: { key: string };
+            matchExpressions: MatchExpression[];
           };
           topologyKey: string;
           namespaces: string[];
-        }[];
-        preferredDuringSchedulingIgnoredDuringExecution: {
-          podAffinityTerm: {
-            labelSelector: {
-              matchLabels: { key: string };
-              matchExpressions: Array<{
-                values: string[];
-                key: string;
-                operator: string;
-              }>;
-            };
-            topologyKey: string;
-            namespaces: string[];
-          };
-          weight: number;
-        }[];
-      };
-      podAntiAffinity: {
-        requiredDuringSchedulingIgnoredDuringExecution: {
+        };
+        weight: number;
+      }[];
+    };
+    podAntiAffinity: {
+      requiredDuringSchedulingIgnoredDuringExecution: {
+        labelSelector: {
+          matchExpressions: MatchExpression[];
+        };
+        topologyKey: string;
+        namespaces: string[];
+      }[];
+      preferredDuringSchedulingIgnoredDuringExecution: {
+        podAffinityTerm: {
           labelSelector: {
-            matchExpressions: Array<{
-              values: string[];
-              key: string;
-              operator: string;
-            }>;
+            matchLabels: { key: string };
+            matchExpressions: MatchExpression[];
           };
           topologyKey: string;
           namespaces: string[];
-        }[];
-        preferredDuringSchedulingIgnoredDuringExecution: {
-          podAffinityTerm: {
-            labelSelector: {
-              matchLabels: { key: string };
-              matchExpressions: Array<{
-                values: string[];
-                key: string;
-                operator: string;
-              }>;
-            };
-            topologyKey: string;
-            namespaces: string[];
-          };
-          weight: number;
-        }[];
-      };
+        };
+        weight: number;
+      }[];
     };
   };
 }
 
-interface DeploymentConfig {
+export interface DeploymentConfig {
   name: string;
   hpa: Hpa;
   deployment: { replicaCount: number };

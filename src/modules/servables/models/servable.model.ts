@@ -1,5 +1,6 @@
 import { ModelVersion } from '@shared/_index';
 import { Observable } from 'rxjs';
+import { DeploymentConfig } from '../../deployment-config/models';
 type ServableStatus = 'Serving' | 'NotServing';
 
 export class Servable {
@@ -12,4 +13,5 @@ export class Servable {
     status: ServableStatus;
   };
   logStream: Observable<any>;
+  deploymentConfiguration?: DeploymentConfig;
 }

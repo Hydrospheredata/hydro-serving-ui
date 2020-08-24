@@ -1,0 +1,296 @@
+<div class="dc-tree" *ngIf="config">
+  <div class="dc-tree__name">{{ config.name }}</div>
+  <div class="dc-tree__group">
+    <div class="dc-tree__sub" *ngIf="config.hpa as hpa">
+      <div class="dc-tree__title">hpa</div>
+      <div class="dc-tree__group">
+        <div class="dc-tree__field" *ngFor="let item of hpa | keyvalue">
+          <hs-dc-tree-field
+            [name]="item.key"
+            [value]="item.value"
+          ></hs-dc-tree-field>
+        </div>
+      </div>
+    </div>
+    <div class="dc-tree__sub" *ngIf="config.deployment as deployment">
+      <div class="dc-tree__title">deployment</div>
+      <div class="dc-tree__group" *ngIf="deployment.replicaCount">
+        <div class="dc-tree__field">
+          <hs-dc-tree-field
+            name="replicaCount"
+            [value]="deployment.replicaCount"
+          ></hs-dc-tree-field>
+        </div>
+      </div>
+    </div>
+    <div class="dc-tree__sub" *ngIf="config.container as container">
+      <div class="dc-tree__title">container</div>
+      <div class="dc-tree__group">
+        <div class="dc-tree__sub" *ngIf="container.resources as req">
+          <div class="dc-tree__title">resources</div>
+          <div class="dc-tree__group">
+            <div class="dc-tree__sub" *ngIf="req.requests as requests">
+              <div class="dc-tree__title">requests</div>
+              <div class="dc-tree__group">
+                <div
+                  class="dc-tree__field"
+                  *ngFor="let item of requests | keyvalue"
+                >
+                  <hs-dc-tree-field
+                    [name]="item.key"
+                    [value]="item.value"
+                  ></hs-dc-tree-field>
+                </div>
+              </div>
+            </div>
+            <div class="dc-tree__sub" *ngIf="req.limits as limits">
+              <div class="dc-tree__title">limits</div>
+              <div class="dc-tree__group">
+                <div
+                  class="dc-tree__field"
+                  *ngFor="let item of limits | keyvalue"
+                >
+                  <hs-dc-tree-field
+                    [name]="item.key"
+                    [value]="item.value"
+                  ></hs-dc-tree-field>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dc-tree__sub" *ngIf="config.pod as pod">
+      <div class="dc-tree__title">pod</div>
+      <div class="dc-tree__group">
+        <div class="dc-tree__sub" *ngIf="pod.tolerations as tolerations">
+          <div class="dc-tree__title">tolerations</div>
+          <div *ngFor="let toleration of tolerations">
+            <div class="dc-tree__group">
+              <div
+                class="dc-tree__field"
+                *ngFor="let item of toleration | keyvalue"
+              >
+                <hs-dc-tree-field
+                  [name]="item.key"
+                  [value]="item.value"
+                ></hs-dc-tree-field>
+              </div>
+            </div>
+          </div>
+          <div class="dc-tree__sub">
+            <div class="dc-tree__title">nodeSelector</div>
+          </div>
+          <div class="dc-tree__sub" *ngIf="pod.affinity as affinity">
+            <div class="dc-tree__title">affinity</div>
+            <div class="dc-tree__group">
+              <div class="dc-tree__sub" *ngIf="affinity.nodeAffinity as na">
+                <div class="dc-tree__title">nodeAffinity</div>
+                <ng-container
+                  [ngTemplateOutlet]="nodeAffinityTmpl"
+                  [ngTemplateOutletContext]="{ $implicit: na }"
+                ></ng-container>
+              </div>
+              <div class="dc-tree__sub">
+                <div class="dc-tree__title" *ngIf="affinity.podAffinity as pf">
+                  podAffinity
+                  <ng-container
+                    [ngTemplateOutlet]="affinityTmpl"
+                    [ngTemplateOutletContext]="{ $implicit: pf }"
+                  ></ng-container>
+                </div>
+              </div>
+              <div class="dc-tree__sub" *ngIf="affinity.podAntiAffinity as paf">
+                <div class="dc-tree__title">
+                  podAntiAffinity
+                </div>
+                <ng-container
+                  [ngTemplateOutlet]="affinityTmpl"
+                  [ngTemplateOutletContext]="{ $implicit: paf }"
+                ></ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--templates-->
+<ng-template #nodeAffinityTmpl let-aff>
+  <div class="dc-tree__group">
+    <div class="dc-tree__sub">
+      <div class="dc-tree__title">
+        requiredDuringSchedulingIgnoredDuringExecution
+      </div>
+      <div class="dc-tree__group">
+        <div class="dc-tree__sub" *ngIf="aff.nodeSelectorTerms">
+          <div class="dc-tree__title">
+            nodeSelectorTerms
+          </div>
+          <div
+            class="dc-tree__group"
+            *ngFor="let term of aff.nodeSelectorTerms as nst"
+          >
+            <div
+              class="dc-tree__sub"
+              *ngIf="nst.matchExpressions as matchExprs"
+            >
+              <div class="dc-tree__title">matchExpressions</div>
+              <div class="dc-tree__group" *ngFor="let matchExpr of matchExprs">
+                <ng-container
+                  [ngTemplateOutlet]="matchExprOrFieldTpl"
+                  [ngTemplateOutletContext]="{ $implicit: matchExpr }"
+                ></ng-container>
+              </div>
+            </div>
+            <div class="dc-tree__sub" *ngIf="nst.matchFields as matchFields">
+              <div class="dc-tree__title">matchFields</div>
+              <div
+                class="dc-tree__group"
+                *ngFor="let matchfield of matchFields"
+              >
+                <ng-container
+                  [ngTemplateOutlet]="matchExprOrFieldTpl"
+                  [ngTemplateOutletContext]="{ $implicit: matchfield }"
+                ></ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dc-tree__sub">
+      <div class="dc-tree__title">
+        preferredDuringSchedulingIgnoredDuringExecution
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #affinityTmpl let-aff>
+  <div class="dc-tree__group">
+    <div
+      class="dc-tree__sub"
+      *ngIf="aff.requiredDuringSchedulingIgnoredDuringExecution as pafReqs"
+    >
+      <div class="dc-tree__title">
+        requiredDuringSchedulingIgnoredDuringExecution
+      </div>
+      <div class="dc-tree__group" *ngFor="let pafReq of pafReqs">
+        <ng-container
+          [ngTemplateOutlet]="smth"
+          [ngTemplateOutletContext]="{ $implicit: pafReq }"
+        ></ng-container>
+      </div>
+    </div>
+    <div
+      class="dc-tree__sub"
+      *ngIf="aff.preferredDuringSchedulingIgnoredDuringExecution as pafPref"
+    >
+      <div class="dc-tree__title">
+        preferredDuringSchedulingIgnoredDuringExecution
+      </div>
+      <ng-container
+        [ngTemplateOutlet]="affinityPref"
+        [ngTemplateOutletContext]="{ $implicit: pafPref }"
+      ></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #affinityPref let-pref>
+  <div class="dc-tree__group">
+    <div class="dc-tree__field" *ngIf="pref.weight">
+      <hs-dc-tree-field name="weight" [value]="pref.weight"></hs-dc-tree-field>
+    </div>
+    <div class="dc-tree__sub" *ngIf="pref.podAffinityTerm as pAT">
+      <div class="dc-tree__title">
+        podAffinityTerm
+      </div>
+      <ng-container
+        [ngTemplateOutlet]="smth"
+        [ngTemplateOutletContext]="{ $implicit: pAT }"
+      ></ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<!-- TODO: rename -->
+<ng-template #smth let-item>
+  <div class="dc-tree__field">
+    <hs-dc-tree-field
+      name="topologyKey"
+      [value]="item.topologyKey"
+    ></hs-dc-tree-field>
+  </div>
+  <div class="dc-tree__sub" *ngIf="item.labelSelector as labelSelector">
+    <div class="dc-tree__title">
+      labelSelector
+    </div>
+    <div
+      class="dc-tree__group"
+      *ngIf="labelSelector.matchExpressions as matchExprs"
+    >
+      <div class="dc-tree__sub">
+        <div class="dc-tree__title">
+          matchExpressions
+          <div class="dc-tree__group" *ngFor="let matchExpr of matchExprs">
+            <ng-container
+              [ngTemplateOutlet]="matchExprOrFieldTpl"
+              [ngTemplateOutletContext]="{ $implicit: matchExpr }"
+            ></ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="dc-tree__group"
+      *ngIf="labelSelector.matchLabels as matchLabels"
+    >
+      <div class="dc-tree__sub">
+        <div class="dc-tree__title">
+          matchLabels
+          <div
+            class="dc-tree__group"
+            *ngFor="let item of matchLabels | keyvalue"
+          >
+            <hs-dc-tree-field
+              [name]="item.key"
+              [value]="item.value"
+            ></hs-dc-tree-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dc-tree__sub" *ngIf="item.namespaces">
+    <div class="dc-tree__title">namespaces</div>
+    <div class="dc-tree__group">
+      <div class="dc-tree__sub" *ngFor="let namespace of item.namespaces">
+        {{ namespace }}
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #matchExprOrFieldTpl let-expr>
+  <div class="dc-tree__field">
+    <hs-dc-tree-field name="key" [value]="expr.key"></hs-dc-tree-field>
+  </div>
+  <div class="dc-tree__field">
+    <hs-dc-tree-field
+      name="operator"
+      [value]="expr.operator"
+    ></hs-dc-tree-field>
+  </div>
+  <div class="dc-tree__sub" *ngIf="expr.values as values">
+    <div class="dc-tree__title">values</div>
+    <div class="dc-tree__group">
+      <div class="dc-tree__sub" *ngFor="let val of values">{{ val }}</div>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,17 @@
+@import 'variables';
+
+.dc-tree-field {
+  display: flex;
+  padding: 0 4px;
+  width: 180px;
+  justify-content: space-between;
+
+  &__name {
+    color: $neutral-color-1000;
+  }
+
+  &__value {
+    color: $neutral-color-1000;
+    font-family: $font-family-bold;
+  }
+}

@@ -27,7 +27,8 @@ export const LATEST_MODEL_VERSION = new InjectionToken<ModelVersion>(
 })
 export class DialogUpdateModelVersionComponent implements OnDestroy {
   private destroySubscriptions: Subject<any> = new Subject<any>();
-  private selectedApplication$: Observable<Application> = this.facade.selectedApplication$;
+  private selectedApplication$: Observable<Application> = this.facade
+    .selectedApplication$;
 
   constructor(
     public dialog: DialogService,
@@ -35,9 +36,7 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     private applicationBuilder: ApplicationBuilder,
     @Inject(SELECTED_MODEL_VARIANT) private selectedModelVariant: IModelVariant,
     @Inject(LATEST_MODEL_VERSION) private latestModelVersion: ModelVersion
-  ) {
-
-  }
+  ) {}
 
   onClose(): void {
     this.dialog.closeDialog();
@@ -113,6 +112,7 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     const newModelVariant: IModelVariantFormData = {
       modelVersionId: modelVariant.modelVersion.id,
       weight: Number(modelVariant.weight),
+      deploymentConfigName: modelVariant.deploymentConfigName,
     };
 
     if (modelVariant === this.selectedModelVariant) {

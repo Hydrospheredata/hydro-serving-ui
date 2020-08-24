@@ -1,0 +1,12 @@
+<div class="deployment-config" *ngIf="config$ | async as config">
+  <button
+    class="deployment-config__button"
+    hs-button
+    kind="flat"
+    color="warning"
+    (click)="onDelete(config.name)"
+  >
+    delete
+  </button>
+  <hs-dc-tree [config]="config"></hs-dc-tree>
+</div>

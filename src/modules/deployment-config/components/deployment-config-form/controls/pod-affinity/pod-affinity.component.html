@@ -1,0 +1,31 @@
+<div [formGroup]="group" class="dc__group">
+  <div class="dc__group">
+    <div class="dc__group-title">
+      requiredDuringSchedulingIgnoredDuringExecution
+    </div>
+    <div formArrayName="requiredDuringSchedulingIgnoredDuringExecution">
+      <div *ngFor="let requireControl of required.controls">
+        <hs-affinity-required [group]="requireControl"></hs-affinity-required>
+      </div>
+    </div>
+
+    <button (click)="addRequired()">
+      add required
+    </button>
+  </div>
+
+  <div class="dc__group">
+    <div class="dc__group-title">
+      <div formArrayName="preferredDuringSchedulingIgnoredDuringExecution">
+        <div *ngFor="let preferredCtrl of preferred.controls">
+          <hs-affinity-preferred
+            [group]="preferredCtrl"
+          ></hs-affinity-preferred>
+        </div>
+      </div>
+      <button (click)="addPreferred()">
+        add preferred
+      </button>
+    </div>
+  </div>
+</div>

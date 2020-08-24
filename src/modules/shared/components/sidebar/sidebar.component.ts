@@ -12,6 +12,7 @@ import { FormControl } from '@node_modules/@angular/forms';
 import { Subject } from '@node_modules/rxjs';
 import { takeUntil } from '@node_modules/rxjs/internal/operators';
 import { Application, Model } from '@shared/models';
+import { DeploymentConfig } from '../../../deployment-config/models';
 
 @Component({
   selector: 'hs-sidebar',
@@ -19,8 +20,8 @@ import { Application, Model } from '@shared/models';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements AfterViewInit, OnDestroy {
-  @Input() sidebarData: Application[] | Model[] = [];
-  @Input() selectedItem: Application | Model;
+  @Input() sidebarData: Application[] | Model[] | DeploymentConfig[] = [];
+  @Input() selectedItem: Application | Model | DeploymentConfig;
   @Output() clicked: EventEmitter<Model | Application> = new EventEmitter();
   @Output() filtered: EventEmitter<string> = new EventEmitter();
   @Output() bookmarked: EventEmitter<Model | Application> = new EventEmitter();

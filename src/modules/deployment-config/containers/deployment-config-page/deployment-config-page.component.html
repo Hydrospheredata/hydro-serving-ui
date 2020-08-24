@@ -1,3 +1,24 @@
-<p>
-  deployment-config-page works!
-</p>
+<div class="deployment-config-page">
+  <div class="deployment-config-page__sidebar" hsHideInZenMode>
+    <hs-sidebar
+      [sidebarData]="configs$ | async"
+      [selectedItem]="selectedConfig$ | async"
+      (filtered)="handleFilter($event)"
+      (clicked)="handleSidebarClick($event)"
+    >
+      <!--      <button-->
+      <!--        class="deployment-config-page__button"-->
+      <!--        hs-button-->
+      <!--        kind="flat"-->
+      <!--        color="primary"-->
+      <!--        (click)="addDeploymentConfig()"-->
+      <!--        #button-->
+      <!--      >-->
+      <!--        create config-->
+      <!--      </button>-->
+    </hs-sidebar>
+  </div>
+  <div class="deployment-config-page__body">
+    <router-outlet></router-outlet>
+  </div>
+</div>
