@@ -1,0 +1,25 @@
+<div [formGroup]="group" class="dc__group">
+  <div class="dc__group-title">Pod anti affinity</div>
+
+  <div class="dc__group">
+    <div formArrayName="requiredDuringSchedulingIgnoredDuringExecution">
+      <div class="dc__group-title">
+        requiredDuringSchedulingIgnoredDuringExecution
+      </div>
+    </div>
+
+    <button (click)="addRequired()">
+      add required
+    </button>
+  </div>
+
+  <div class="dc__group">
+    <div class="dc__group-title">
+      preferredDuringSchedulingIgnoredDuringExecution
+    </div>
+    <div formArrayName="preferredDuringSchedulingIgnoredDuringExecution"></div>
+    <button (click)="addPreferred()">
+      add required
+    </button>
+  </div>
+</div>

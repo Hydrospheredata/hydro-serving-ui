@@ -1,0 +1,64 @@
+<form [formGroup]="form" class="dc__form">
+  <div class="dc__control">
+    <label for="name">Name</label>
+    <input formControlName="name" type="text" id="name" />
+  </div>
+
+  <div formGroupName="hpa" class="dc__group">
+    <div class="dc__group-title">hpa</div>
+    <div class="dc__control">
+      <label for="name">maxReplicas</label>
+      <input formControlName="maxReplicas" type="text" id="maxReplicas" />
+    </div>
+
+    <div class="dc__control">
+      <label for="name">minReplicas</label>
+      <input formControlName="minReplicas" type="text" id="minReplicas" />
+    </div>
+
+    <div class="dc__control">
+      <label for="name">cpuUtilization</label>
+      <input formControlName="cpuUtilization" type="text" id="cpuUtilization" />
+    </div>
+  </div>
+  <div formGroupName="deployment" class="dc__group">
+    <div class="dc__group-title">Deployment</div>
+    <div class="dc__control">
+      <label for="replicaCount">replicaCount</label>
+      <input formControlName="replicaCount" type="text" id="replicaCount" />
+    </div>
+  </div>
+  <div formGroupName="container" class="dc__group">
+    <div class="dc__group-title">Container</div>
+    <div formGroupName="resources" class="dc__group">
+      <div class="dc__group-title">resources</div>
+      <div formGroupName="limits" class="dc__group">
+        <div class="dc__group-title">Limits</div>
+        <div class="dc__control">
+          <label for="limitsCpu">CPU</label>
+          <input formControlName="cpu" type="text" id="limitsCpu" />
+        </div>
+
+        <div class="dc__control">
+          <label for="limitsMemory">Memory</label>
+          <input formControlName="memory" type="text" id="limitsMemory" />
+        </div>
+      </div>
+      <div formGroupName="requests" class="dc__group">
+        <div class="dc__group-title">Requests</div>
+        <div class="dc__control">
+          <label for="requestsCpu">CPU</label>
+          <input formControlName="cpu" type="text" id="requestsCpu" />
+        </div>
+
+        <div class="dc__control">
+          <label for="requestsMemory">Memory</label>
+          <input formControlName="memory" type="text" id="requestsMemory" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <hs-pod [group]="form.get('pod')"></hs-pod>
+</form>
+
+{{ form.value | json }}

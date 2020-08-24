@@ -1,0 +1,16 @@
+.deployment-config-page {
+  height: 100%;
+  display: flex;
+  &__sidebar {
+    width: 250px;
+    min-width: 250px;
+  }
+  &__button {
+    width: 100%;
+  }
+  &__body {
+    width: 100%;
+    overflow: auto;
+    height: calc(100% - 72px);
+  }
+}

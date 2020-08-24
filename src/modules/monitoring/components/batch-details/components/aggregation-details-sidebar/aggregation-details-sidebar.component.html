@@ -3,19 +3,19 @@
     <div class="agg-details-sidebar__row">
       <span class="agg-details-sidebar__label">Requests</span>
       <span class="agg-details-sidebar__count">{{
-        checkCollection.getSummaryInformation().count
+        checkCollection.getSummaryInformation()?.count
       }}</span>
     </div>
     <div class="agg-details-sidebar__row">
       <span class="agg-details-sidebar__label">From</span>
       <span class="agg-details-sidebar__date">{{
-        checkCollection.getFirstElement().timestamp | hsFormatDate
+        checkCollection.getFirstElement()?.timestamp | hsFormatDate
       }}</span>
     </div>
     <div class="agg-details-sidebar__row">
       <span class="agg-details-sidebar__label">To</span>
       <span class="agg-details-sidebar__date">
-        {{ checkCollection.getLastElement().timestamp | hsFormatDate }}</span
+        {{ checkCollection.getLastElement()?.timestamp | hsFormatDate }}</span
       >
     </div>
   </div>

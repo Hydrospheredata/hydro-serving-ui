@@ -1,0 +1,47 @@
+<div [formGroup]="group" class="dc__group">
+  <div formControlName="requiredDuringSchedulingIgnoredDuringExecution">
+    <div class="dc__group">
+      <div class="dc__group-title">
+        requiredDuringSchedulingIgnoredDuringExecution
+      </div>
+      <div formArrayName="nodeSelectorTerms">
+        <hs-node-selector-term
+          [group]="nstCtrl"
+          *ngFor="let nstCtrl of nodeSelectorTerms.controls; let nstIdx = index"
+        ></hs-node-selector-term>
+      </div>
+    </div>
+
+    <button (click)="addNodeSelectorTerm()">
+      add node selector term
+    </button>
+  </div>
+
+  <div formArrayName="preferredDuringSchedulingIgnoredDuringExecution">
+    <div *ngFor="let preferredControl of preferred.controls">
+      <div class="dc__group">
+        <div class="dc__group-title">
+          preferredDuringSchedulingIgnoredDuringExecution
+        </div>
+        <div class="dc__control">
+          <label>weight</label>
+          <input formControlName="weight" />
+        </div>
+        <div formArrayName="preference">
+          <div
+            *ngFor="let nstCtrl of preferredControl.get('preference').controls"
+          >
+            <hs-node-selector-term [group]="nstCtrl"></hs-node-selector-term>
+          </div>
+        </div>
+      </div>
+
+      <button (click)="addPreference(preferredControl)">
+        add preference
+      </button>
+    </div>
+  </div>
+  <button (click)="addPreferred()">
+    add preferred
+  </button>
+</div>

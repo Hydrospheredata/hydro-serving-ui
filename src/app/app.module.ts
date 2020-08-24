@@ -1,8 +1,9 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HydroConfigService } from '@core/services/hydro-config.service';
+import { DeploymentConfigModule } from '../modules/deployment-config/deployment-config.module';
 
-// Global components
+// Global controls
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.router';
 
@@ -25,9 +26,10 @@ import { VisualizationModule } from 'modules/visualization/visualization.module'
     ModelsModule,
     SharedModule,
     MonitoringModule,
-    AppRoutingModule,
     MonitoringModule,
     VisualizationModule,
+    DeploymentConfigModule,
+    AppRoutingModule,
   ],
   providers: [
     HydroConfigService,

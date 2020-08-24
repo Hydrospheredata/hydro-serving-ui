@@ -1,8 +1,14 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormArray, FormGroup, AbstractControl } from '@angular/forms';
 
-import { ApplicationFormService, StageFormData } from '@applications/services/application-form.service';
-import { ModelVariantFormService, IModelVariantFormData } from '@applications/services/model-variant-form.service';
+import {
+  ApplicationFormService,
+  StageFormData,
+} from '@applications/services/application-form.service';
+import {
+  ModelVariantFormService,
+  IModelVariantFormData,
+} from '@applications/services/model-variant-form.service';
 import { Application } from '@shared/_index';
 
 @Component({
@@ -41,9 +47,11 @@ export class ApplicationFormComponent implements OnInit {
 
   public normalizeStageControlsValue() {
     const stages: StageFormData[] = this.applicationForm.value.stages;
+
     const toModelVariant = (modelVariant: IModelVariantFormData) => ({
       modelVersionId: modelVariant.modelVersionId,
       weight: Number(modelVariant.weight),
+      deploymentConfigName: modelVariant.deploymentConfigName,
     });
 
     return stages.map((stage: StageFormData) => ({

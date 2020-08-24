@@ -24,7 +24,7 @@ export class ModelsPageComponent implements OnDestroy {
   ) {
     this.routerSub = this.router.events
       .pipe(
-        filter(event => this.isRootModelsUrl(event)),
+        filter(event => ModelsPageComponent.isRootModelsUrl(event)),
         tap(_ => this.redirectToFirst())
       )
       .subscribe();
@@ -37,6 +37,7 @@ export class ModelsPageComponent implements OnDestroy {
   ngOnDestroy() {
     this.routerSub.unsubscribe();
   }
+
   handleFilter(str: string): void {
     this.modelsFacade.filterString$.next(str);
   }
@@ -60,7 +61,7 @@ export class ModelsPageComponent implements OnDestroy {
       });
   }
 
-  private isRootModelsUrl(event: Event): boolean {
+  private static isRootModelsUrl(event: Event): boolean {
     return event instanceof NavigationEnd && event.url.split('/').length <= 2;
   }
 }

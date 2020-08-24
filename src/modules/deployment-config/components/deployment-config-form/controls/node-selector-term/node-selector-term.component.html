@@ -1,0 +1,17 @@
+<div [formGroup]="group" class="dc__group">
+  <div class="dc__group-title">node selector term</div>
+  <div formArrayName="matchExpressions">
+    <div *ngFor="let matchExprControl of matchExpressions.controls">
+      <hs-match-expression [group]="matchExprControl"></hs-match-expression>
+    </div>
+    <button (click)="addMatchExpr()">add match expression</button>
+  </div>
+  <div>
+    <div formArrayName="matchFields">
+      <div *ngFor="let matchFieldCtrl of matchFields.controls">
+        <hs-match-field [group]="matchFieldCtrl"></hs-match-field>
+      </div>
+      <button (click)="addMatchField()">add match field</button>
+    </div>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { HydroServingState } from '@core/store';
 import * as fromModels from '@models/store';
 import { Store } from '@ngrx/store';
 import * as fromServables from 'modules/servables/actions';
+import { GetDeploymentConfigs } from '../modules/deployment-config/store';
 
 @Component({
   selector: 'hs-root',
@@ -36,6 +37,7 @@ export class AppComponent implements OnInit {
     this.store.dispatch(fromModels.GetModelVersions());
     this.store.dispatch(fromApplications.Get());
     this.store.dispatch(fromServables.getAll());
+    this.store.dispatch(GetDeploymentConfigs());
 
     this.buildInformationService.loadBuildInformation();
   }
