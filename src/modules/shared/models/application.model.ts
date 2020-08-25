@@ -1,5 +1,6 @@
 import { ModelVersion } from '@shared/models/model-version.model';
 import { ISignature } from '@shared/models/signature.model';
+import { DeploymentConfig } from '../../deployment-config/models';
 
 export interface IKafkaStreaming {
   sourceTopic: string;
@@ -32,6 +33,7 @@ export interface IModelVariant {
   weight: number;
   signature: ISignature;
   deploymentConfigName?: string;
+  deploymentConfiguration?: DeploymentConfig;
 }
 
 export interface IExecutionGraph {

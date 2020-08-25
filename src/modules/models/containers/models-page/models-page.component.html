@@ -1,12 +1,21 @@
 <div class="models-page">
   <div class="models-page__sidebar" hsHideInZenMode>
     <hs-sidebar
-      [sidebarData]="allModels$ | async"
+      [sidebarData]="visibleModels$ | async"
       [selectedItem]="selectedModel$ | async"
       (filtered)="handleFilter($event)"
       (bookmarked)="handleToggleFavoriteModel($event)"
       (clicked)="handleSidebarClick($event)"
-    ></hs-sidebar>
+    >
+      <div class="models-page__hider hide">
+        <mdl-checkbox
+          [ngModel]="hideMetricModel$ | async"
+          (change)="toggleHideMetricModels($event)"
+        >
+          Hide metric models
+        </mdl-checkbox>
+      </div>
+    </hs-sidebar>
   </div>
   <div class="models-page__main">
     <div class="models-page__header">

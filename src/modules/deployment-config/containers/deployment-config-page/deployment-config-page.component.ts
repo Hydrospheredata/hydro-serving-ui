@@ -63,9 +63,7 @@ export class DeploymentConfigPageComponent implements OnInit, OnDestroy {
   }
 
   private redirectToFirst() {
-    debugger;
     this.all$.subscribe(configs => {
-      debugger;
       this.router.navigate([`deployment_configs/${configs[0].name}`]);
     });
   }

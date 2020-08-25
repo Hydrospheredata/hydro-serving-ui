@@ -9,6 +9,9 @@
         icon="icon-search"
       ></hydro-input-text>
     </div>
+    <div class="sidebar__hide">
+      <ng-content select=".hide"></ng-content>
+    </div>
   </div>
   <ng-container *ngIf="!isEmpty; else message">
     <div class="sidebar__list">
