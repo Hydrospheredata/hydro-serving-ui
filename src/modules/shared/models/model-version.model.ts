@@ -10,6 +10,10 @@ export enum ModelVersionStatus {
   Undefined = 'undefined',
 }
 
+export type ModelVersionMetadata = { is_metric?: boolean } & {
+  [key: string]: string;
+};
+
 export class ModelVersion {
   public id: number;
   public image: Image;
@@ -21,7 +25,7 @@ export class ModelVersion {
   public model: ModelDTO;
   public status: ModelVersionStatus;
   public applications: string[];
-  public metadata: object;
+  public metadata: ModelVersionMetadata;
   public isExternal: boolean;
 
   constructor(props: ModelVersionDTO) {

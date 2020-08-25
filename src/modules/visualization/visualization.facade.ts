@@ -235,7 +235,6 @@ export class VisualizationFacade implements OnDestroy {
         switchMap(mv => {
           return this.api.setParams(visParams, mv).pipe(
             tap(() => {
-              debugger;
               this.loadEmbedding();
             }),
             catchError(err => {

@@ -12,6 +12,7 @@ import {
   selectModelVersionEntities,
   selectModelsLoaded,
   selectModelVersionsLoaded,
+  selectNonMetricModels,
 } from '@models/store/selectors';
 import { Store, select } from '@ngrx/store';
 import { ProfilerFacade } from '@profiler/store';
@@ -29,7 +30,7 @@ import { State } from './reducers';
 export class ModelsFacade {
   selectedModelVersion$ = this.store.pipe(
     select(selectSelectedModelVersion),
-    neitherNullNorUndefined,
+    neitherNullNorUndefined
   );
   siblingModelVersions$ = this.selectedModelVersion$.pipe(
     switchMap(({ model: { id: modelId }, id: modelVersionId }) =>
@@ -46,6 +47,7 @@ export class ModelsFacade {
   );
 
   allModels$ = this.store.pipe(select(selectAllModels));
+  nonMetricModels$ = this.store.pipe(select(selectNonMetricModels));
   // !TODO move
   filterString$ = new BehaviorSubject('');
   filteredModels$ = combineLatest(this.allModels$, this.filterString$).pipe(

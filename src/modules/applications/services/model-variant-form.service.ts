@@ -94,7 +94,7 @@ export class ModelVariantFormService implements OnDestroy {
       weight: modelVariant.weight,
       modelId: modelVariant.modelVersion.model.id,
       modelVersionId: modelVariant.modelVersion.id,
-      deploymentConfigName: modelVariant.deploymentConfigName,
+      deploymentConfigName: modelVariant.deploymentConfiguration.name,
     };
   }
 
@@ -114,7 +114,9 @@ export class ModelVariantFormService implements OnDestroy {
         modelVariantFormData.modelVersionId,
         this.customValidators.required()
       ),
-      deploymentConfigName: new FormControl(''),
+      deploymentConfigName: new FormControl(
+        modelVariantFormData.deploymentConfigName
+      ),
     });
   }
 

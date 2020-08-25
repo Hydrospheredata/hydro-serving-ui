@@ -27,6 +27,8 @@ export class SidebarComponent implements AfterViewInit, OnDestroy {
   @Output() bookmarked: EventEmitter<Model | Application> = new EventEmitter();
 
   @ContentChild('button') button: ElementRef;
+  @ContentChild('.hide') hide: ElementRef;
+
   filter: FormControl = new FormControl('');
 
   private destroy: Subject<any> = new Subject<any>();

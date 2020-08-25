@@ -3,8 +3,8 @@ import { Router, NavigationEnd, Event } from '@angular/router';
 import { ZenModeService } from '@core/services/zenmode.service';
 import { ModelsFacade } from '@models/store';
 import { Model } from '@shared/_index';
-import { Observable, Subscription } from 'rxjs';
-import { filter, take, tap } from 'rxjs/operators';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { filter, take, tap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-models-page',
@@ -13,8 +13,17 @@ import { filter, take, tap } from 'rxjs/operators';
 })
 export class ModelsPageComponent implements OnDestroy {
   allModels$: Observable<Model[]> = this.modelsFacade.sortedModels$;
+  nonMetricModels$: Observable<Model[]> = this.modelsFacade.nonMetricModels$;
+  visibleModels$: Observable<Model[]>;
+
   selectedModel$: Observable<Model> = this.modelsFacade.selectedModel$;
   filterString: string = '';
+  hideMetricModel$: Observable<boolean>;
+
+  private hideMetricModel: BehaviorSubject<boolean> = new BehaviorSubject<
+    boolean
+  >(true);
+
   private routerSub: Subscription;
 
   constructor(
@@ -22,12 +31,20 @@ export class ModelsPageComponent implements OnDestroy {
     private router: Router,
     private zenMode: ZenModeService
   ) {
+    this.hideMetricModel$ = this.hideMetricModel.asObservable();
+
     this.routerSub = this.router.events
       .pipe(
         filter(event => ModelsPageComponent.isRootModelsUrl(event)),
         tap(_ => this.redirectToFirst())
       )
       .subscribe();
+
+    this.visibleModels$ = this.hideMetricModel$.pipe(
+      switchMap(hideModel => {
+        return hideModel ? this.nonMetricModels$ : this.allModels$;
+      })
+    );
   }
 
   get isZenMode$(): Observable<boolean> {
@@ -63,5 +80,9 @@ export class ModelsPageComponent implements OnDestroy {
 
   private static isRootModelsUrl(event: Event): boolean {
     return event instanceof NavigationEnd && event.url.split('/').length <= 2;
+  }
+
+  toggleHideMetricModels(hide: boolean) {
+    this.hideMetricModel.next(hide);
   }
 }

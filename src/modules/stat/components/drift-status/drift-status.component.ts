@@ -29,7 +29,6 @@ export class DriftStatusComponent implements OnInit {
   ngOnInit() {}
 
   get iconType(): DriftStatusIconType {
-    debugger;
     if (this.drift === 0 || this.drift <= 0.25) {
       return 'check';
     } else if (this.drift > 0.25 && this.drift <= 0.75) {
