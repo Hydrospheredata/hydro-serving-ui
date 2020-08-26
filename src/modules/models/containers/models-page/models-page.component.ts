@@ -1,37 +1,32 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
 import { ZenModeService } from '@core/services/zenmode.service';
+import { ModelsSidebarService } from '@models/containers/models-page/models-sidebar.service';
 import { ModelsFacade } from '@models/store';
 import { Model } from '@shared/_index';
-import { Observable, Subscription, BehaviorSubject } from 'rxjs';
-import { filter, take, tap, switchMap } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import { filter, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'hs-models-page',
   templateUrl: './models-page.component.html',
   styleUrls: ['./models-page.component.scss'],
 })
-export class ModelsPageComponent implements OnDestroy {
-  allModels$: Observable<Model[]> = this.modelsFacade.sortedModels$;
-  nonMetricModels$: Observable<Model[]> = this.modelsFacade.nonMetricModels$;
+export class ModelsPageComponent implements OnDestroy, OnInit {
   visibleModels$: Observable<Model[]>;
-
   selectedModel$: Observable<Model> = this.modelsFacade.selectedModel$;
-  filterString: string = '';
-  hideMetricModel$: Observable<boolean>;
-
-  private hideMetricModel: BehaviorSubject<boolean> = new BehaviorSubject<
-    boolean
-  >(true);
+  metricModelsAreHidden$: Observable<boolean>;
 
   private routerSub: Subscription;
 
   constructor(
     private modelsFacade: ModelsFacade,
     private router: Router,
-    private zenMode: ZenModeService
+    private zenMode: ZenModeService,
+    private modelsSidebarService: ModelsSidebarService
   ) {
-    this.hideMetricModel$ = this.hideMetricModel.asObservable();
+    this.visibleModels$ = this.modelsSidebarService.visibleModels();
+    this.metricModelsAreHidden$ = this.modelsSidebarService.metricModelsAreHidden();
 
     this.routerSub = this.router.events
       .pipe(
@@ -39,13 +34,9 @@ export class ModelsPageComponent implements OnDestroy {
         tap(_ => this.redirectToFirst())
       )
       .subscribe();
-
-    this.visibleModels$ = this.hideMetricModel$.pipe(
-      switchMap(hideModel => {
-        return hideModel ? this.nonMetricModels$ : this.allModels$;
-      })
-    );
   }
+
+  ngOnInit(): void {}
 
   get isZenMode$(): Observable<boolean> {
     return this.zenMode.isZenMode$;
@@ -56,7 +47,7 @@ export class ModelsPageComponent implements OnDestroy {
   }
 
   handleFilter(str: string): void {
-    this.modelsFacade.filterString$.next(str);
+    this.modelsSidebarService.changeFilter(str);
   }
 
   handleToggleFavoriteModel(model: Model): void {
@@ -68,7 +59,7 @@ export class ModelsPageComponent implements OnDestroy {
   }
 
   private redirectToFirst() {
-    this.allModels$
+    this.visibleModels$
       .pipe(
         filter(models => models.length > 0),
         take(1)
@@ -83,6 +74,6 @@ export class ModelsPageComponent implements OnDestroy {
   }
 
   toggleHideMetricModels(hide: boolean) {
-    this.hideMetricModel.next(hide);
+    this.modelsSidebarService.changeMetricModelsHide(hide);
   }
 }

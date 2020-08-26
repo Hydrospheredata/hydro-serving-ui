@@ -9,7 +9,7 @@
     >
       <div class="models-page__hider hide">
         <mdl-checkbox
-          [ngModel]="hideMetricModel$ | async"
+          [ngModel]="metricModelsAreHidden$ | async"
           (change)="toggleHideMetricModels($event)"
         >
           Hide metric models
