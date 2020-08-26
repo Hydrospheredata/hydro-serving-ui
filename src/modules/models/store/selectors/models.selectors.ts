@@ -22,9 +22,10 @@ export const selectNonMetricModels = createSelector(
   selectAllModels,
   selectAllModelVersions,
   (models, modelVersions) => {
-    const dictByModelId: Map<number, ModelVersion[]> = R.groupBy(
-      R.compose(R.prop('id'), R.prop('model'))
-    )(modelVersions);
+    const modelId = R.compose(R.prop('id'), R.prop('model'));
+    const dictByModelId: Map<number, ModelVersion[]> = R.groupBy(modelId)(
+      modelVersions
+    );
 
     if (modelVersions.length === 0) {
       return models;

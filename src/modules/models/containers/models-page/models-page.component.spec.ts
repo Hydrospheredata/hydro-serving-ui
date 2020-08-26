@@ -7,7 +7,8 @@ import { ModelsHeaderComponent } from '@testing/components';
 import { ModelsPageComponent } from './models-page.component';
 
 const modelsFacade: Partial<ModelsFacade> = {
-  nonMetricModels$: of([]),
+  getNonMetricModels: () => of([]),
+  getAllModels: () => of([]),
 };
 
 describe('ModelsPageComponent', () => {

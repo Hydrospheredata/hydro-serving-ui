@@ -32,6 +32,7 @@ export class ModelsFacade {
     select(selectSelectedModelVersion),
     neitherNullNorUndefined
   );
+
   siblingModelVersions$ = this.selectedModelVersion$.pipe(
     switchMap(({ model: { id: modelId }, id: modelVersionId }) =>
       this.store.pipe(
@@ -47,36 +48,6 @@ export class ModelsFacade {
   );
 
   allModels$ = this.store.pipe(select(selectAllModels));
-  nonMetricModels$ = this.store.pipe(select(selectNonMetricModels));
-  // !TODO move
-  filterString$ = new BehaviorSubject('');
-  filteredModels$ = combineLatest(this.allModels$, this.filterString$).pipe(
-    map(([models, filterStr]) => {
-      let filtered: Model[] = models;
-      if (filterStr) {
-        filtered = models.filter(model => model.name.includes(filterStr));
-      }
-      return filtered;
-    })
-  );
-
-  nonFavoriteModels$: Observable<Model[]> = this.filteredModels$.pipe(
-    map(models => models.filter(model => !model.favorite))
-  );
-
-  favoriteModels$: Observable<Model[]> = this.filteredModels$.pipe(
-    map(models => models.filter(model => model.favorite))
-  );
-
-  sortedModels$ = combineLatest(
-    this.favoriteModels$,
-    this.nonFavoriteModels$
-  ).pipe(
-    map(([fav, nonFav]) => {
-      return [...fav, ...nonFav];
-    })
-  );
-
   allModelVersions$ = this.store.pipe(select(selectAllModelVersions));
   allModelVersionEntities$ = this.store.pipe(
     select(selectModelVersionEntities)
@@ -223,11 +194,9 @@ export class ModelsFacade {
   toggleFavorite(model: Model) {
     this.store.dispatch(ToggleFavorite({ model }));
 
-    if (model.favorite) {
-      this.favoriteStorage.remove(model.name);
-    } else {
-      this.favoriteStorage.add(model.name);
-    }
+    model.favorite
+      ? this.favoriteStorage.remove(model.name)
+      : this.favoriteStorage.add(model.name);
   }
 
   isModelsLoaded(): Observable<boolean> {
@@ -240,6 +209,10 @@ export class ModelsFacade {
 
   getAllModels(): Observable<Model[]> {
     return this.allModels$;
+  }
+
+  getNonMetricModels(): Observable<Model[]> {
+    return this.store.pipe(select(selectNonMetricModels));
   }
 
   getAllModelVersions(): Observable<ModelVersion[]> {
