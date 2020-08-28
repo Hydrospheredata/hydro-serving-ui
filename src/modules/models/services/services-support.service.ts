@@ -15,16 +15,18 @@ export interface ServiceSupported {
 }
 
 const enum ServicesEndpoints {
-  stat = '/stat/support',
-  visualization = '/visualization/supported',
+  stat = 'stat/support',
+  visualization = 'visualization/supported',
 }
 
 @Injectable()
 export class ServicesSupportService {
   servicesSupport$: Observable<{ [serviceName: string]: ServiceSupported }>;
+
   private servicesSupport: BehaviorSubject<{
     [serviceName: string]: any;
   }> = new BehaviorSubject<{ [serviceName: string]: ServiceSupported }>({});
+
   constructor(private http: HttpService) {
     this.servicesSupport$ = this.servicesSupport
       .asObservable()
