@@ -1,5 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
+import { HS_BASE_URL } from '@core/base-url.token';
 import { HydroConfigService } from '@core/services/hydro-config.service';
 
 import { AppComponent } from './app.component';
@@ -41,6 +42,7 @@ describe('AppComponent', () => {
       providers: [
         Store,
         { provide: APP_BASE_HREF, useValue: '/' },
+        { provide: HS_BASE_URL, useValue: '/' },
         {
           provide: HydroConfigService,
           useValue: {

@@ -16,7 +16,7 @@ export class CurlCommandCreator extends CommandCreator {
 
   getCommand(application: Application): string {
     try {
-      const { input, name, signature } = application;
+      const { input, name } = application;
       const url: string = `${this.apiUrl}/gateway/application/${name}`;
       return `curl -X POST ${
         this.headers

@@ -11,12 +11,12 @@ import {
 } from 'rxjs/operators';
 
 const enum HydroServicesEndpoints {
-  buildInfo = '/api/buildinfo',
-  gateway = '/gateway/buildinfo',
-  sonar = '/monitoring/buildinfo',
-  rootcause = '/rootcause/buildinfo',
-  stat = '/stat/buildinfo',
-  visualization = '/visualization/buildinfo',
+  buildInfo = 'api/buildinfo',
+  gateway = 'gateway/buildinfo',
+  sonar = 'monitoring/buildinfo',
+  rootcause = 'rootcause/buildinfo',
+  stat = 'stat/buildinfo',
+  visualization = 'visualization/buildinfo',
 }
 
 interface BuildInfo {

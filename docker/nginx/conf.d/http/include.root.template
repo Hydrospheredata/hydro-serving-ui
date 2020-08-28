@@ -1,0 +1,3 @@
+location / {
+  sub_filter '<base href="/" />' '<base href="$INGRESS_PATH" />';
+}

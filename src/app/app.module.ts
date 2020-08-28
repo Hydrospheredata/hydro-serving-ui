@@ -1,6 +1,9 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HS_BASE_URL, hsBaseUrlFactory } from '@core/base-url.token';
 import { HydroConfigService } from '@core/services/hydro-config.service';
+import { APP_BASE_HREF } from '@node_modules/@angular/common';
+import { baseHrefFactory } from '@shared/utils/base-href-factory.util';
 import { DeploymentConfigModule } from '../modules/deployment-config/deployment-config.module';
 
 // Global controls
@@ -38,6 +41,15 @@ import { VisualizationModule } from 'modules/visualization/visualization.module'
       useFactory: (hsCfg: HydroConfigService) => () => hsCfg.loadConfig(),
       deps: [HydroConfigService],
       multi: true,
+    },
+    {
+      provide: APP_BASE_HREF,
+      useFactory: () => baseHrefFactory(),
+    },
+    {
+      provide: HS_BASE_URL,
+      useFactory: href => hsBaseUrlFactory(href),
+      deps: [APP_BASE_HREF],
     },
   ],
   bootstrap: [AppComponent],
