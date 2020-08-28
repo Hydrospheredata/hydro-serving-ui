@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
+import { HS_BASE_URL } from '@core/base-url.token';
 import { HttpService } from '@core/services/http';
+import { Inject } from '@node_modules/@angular/core';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
-import {
-  scan,
-  finalize,
-  publish,
-  refCount,
-  catchError,
-} from 'rxjs/operators';
+import { scan, finalize, publish, refCount } from 'rxjs/operators';
 import { Deployable } from '../interfaces';
 import { Servable } from '../models';
 
@@ -16,11 +12,14 @@ import { Servable } from '../models';
   providedIn: 'root',
 })
 export class ServablesService {
-  private url: string;
+  private readonly url: string;
 
-  constructor(private http: HttpService) {
+  constructor(
+    private http: HttpService,
+    @Inject(HS_BASE_URL) private baseUrl: string
+  ) {
     const { apiUrl, servableUrl } = environment;
-    this.url = `${apiUrl}${servableUrl}`;
+    this.url = `${apiUrl}/${servableUrl}`;
   }
 
   getAll(): Observable<Servable[]> {
@@ -43,24 +42,12 @@ export class ServablesService {
     let eventSource: EventSource;
 
     const logStream$ = new Observable<string>(subscribe => {
-      const { host, apiUrl, production } = environment;
-      const { protocol, port, hostname } = window.location;
+      const { apiUrl } = environment;
 
-      if (production) {
-        eventSource = new EventSource(
-          `${protocol}//${hostname}:${port}${apiUrl}/servable/${name}/logs?follow=true`,
-          {
-            withCredentials: true,
-          }
-        );
-      } else {
-        eventSource = new EventSource(
-          `${host}${apiUrl}/servable/${name}/logs?follow=true`,
-          {
-            withCredentials: true,
-          }
-        );
-      }
+      const url = `${this.baseUrl}${apiUrl}/servable/${name}/logs?follow=true`;
+      eventSource = new EventSource(url, {
+        withCredentials: true,
+      });
 
       eventSource.addEventListener('EndOfStream', () => {
         eventSource.close();

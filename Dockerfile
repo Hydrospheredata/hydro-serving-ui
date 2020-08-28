@@ -43,6 +43,8 @@ ENV VISUALIZATION_HTTP_PORT=5000
 ENV STAT_PORT=5000
 ENV AUTO_OD_GRPC_PORT=5000
 
+ENV INGRESS_PATH=/
+
 EXPOSE 8080
 
 COPY --chown=app:app docker/nginx/conf.d /etc/nginx/conf.d/
@@ -62,5 +64,7 @@ CMD envsubst '${GATEWAY_HOST} ${GATEWAY_GRPC_PORT}' < /etc/nginx/conf.d/grpc/inc
   && envsubst '${ROOTCAUSE_HOST} ${ROOTCAUSE_HTTP_PORT}' < /etc/nginx/conf.d/http/include.rootcause.template > /etc/nginx/conf.d/http/include.rootcause \
   && envsubst '${VISUALIZATION_HOST} ${VISUALIZATION_HTTP_PORT}' < /etc/nginx/conf.d/http/include.visualization.template > /etc/nginx/conf.d/http/include.visualization \
   && envsubst '${STAT_HOST} ${STAT_PORT}' < /etc/nginx/conf.d/http/include.stat.template > /etc/nginx/conf.d/http/include.stat \
+#
+  && envsubst '${INGRESS_PATH}' < /etc/nginx/conf.d/http/include.root.template > /etc/nginx/conf.d/http/include.root \
 #
   && exec /usr/bin/openresty -g 'daemon off;'

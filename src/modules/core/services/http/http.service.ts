@@ -4,7 +4,8 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@environments/environment';
+import { HS_BASE_URL } from '@core/base-url.token';
+import { Inject } from '@node_modules/@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -23,23 +24,10 @@ interface IHydroHttpOptions {
   providedIn: 'root',
 })
 export class HttpService {
-  private baseUrl: string = '';
-
-  get url(): string {
-    return this.baseUrl;
-  }
-
-  constructor(public http: HttpClient) {
-    if (environment.production) {
-      const { protocol, hostname, port } = window.location;
-
-      this.baseUrl = `${protocol}//${hostname}:${port}`;
-    } else {
-      this.baseUrl = `${environment.host}${
-        environment.port ? ':' + environment.port : ''
-      }`;
-    }
-  }
+  constructor(
+    public http: HttpClient,
+    @Inject(HS_BASE_URL) private url: string
+  ) {}
 
   get<T>(url: string, options?: IHydroHttpOptions) {
     return this.http
@@ -66,7 +54,7 @@ export class HttpService {
   }
 
   private getFullUrl(url: string): string {
-    return `${this.baseUrl}${url}`;
+    return this.url + url;
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

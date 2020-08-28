@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { UpdateSuccess, DeleteSuccess } from '@applications/store';
+import { HS_BASE_URL } from '@core/base-url.token';
 import { ModelVersionBuilder } from '@core/builders';
 import { ApplicationBuilder } from '@core/builders/application.builder';
 import { HydroServingState } from '@core/store';
 import * as fromModels from '@models/store/actions';
 import { Store } from '@ngrx/store';
+import { Inject } from '@node_modules/@angular/core';
 import * as fromServables from '@servables/actions';
 import { Servable } from '@servables/models';
 import { Application, ModelVersion } from '@shared/_index';
@@ -30,25 +32,17 @@ export class SseService {
   constructor(
     private store: Store<HydroServingState>,
     private applicationBuilder: ApplicationBuilder,
-    private modelVersionBuilder: ModelVersionBuilder
+    private modelVersionBuilder: ModelVersionBuilder,
+    @Inject(HS_BASE_URL) private baseUrl: string
   ) {}
 
   createConnection() {
-    const { host, apiUrl, production } = environment;
-    const { protocol, port, hostname } = window.location;
+    const { apiUrl } = environment;
 
-    if (production) {
-      this.eventSource = new EventSource(
-        `${protocol}//${hostname}:${port}${apiUrl}/events`,
-        {
-          withCredentials: true,
-        }
-      );
-    } else {
-      this.eventSource = new EventSource(`${host}${apiUrl}/events`, {
-        withCredentials: true,
-      });
-    }
+    const url = `${this.baseUrl}${apiUrl}/events`;
+    this.eventSource = new EventSource(url, {
+      withCredentials: true,
+    });
 
     for (const item of this.dict) {
       this.addEventHandler(item);

@@ -16,19 +16,8 @@ export class HydroConfigService {
   constructor(private readonly http: HttpClient) {}
 
   loadConfig() {
-    let baseUrl: string;
-
-    if (environment.production) {
-      const { protocol, hostname, port } = window.location;
-      baseUrl = `${protocol}//${hostname}:${port}`;
-    } else {
-      baseUrl = `${environment.host}${
-        environment.port ? ':' + environment.port : ''
-      }`;
-    }
-
     return this.http
-      .get<HydroConfig>(`${baseUrl}/assets/config.json`)
+      .get<HydroConfig>(`/assets/config.json`)
       .toPromise()
       .then((data: any) => (this.config = data))
       .catch((_: any) => {
