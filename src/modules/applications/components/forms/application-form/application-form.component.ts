@@ -51,7 +51,9 @@ export class ApplicationFormComponent implements OnInit {
     const toModelVariant = (modelVariant: IModelVariantFormData) => ({
       modelVersionId: modelVariant.modelVersionId,
       weight: Number(modelVariant.weight),
-      deploymentConfigName: modelVariant.deploymentConfigName,
+      deploymentConfigName: modelVariant.deploymentConfigName
+        ? modelVariant.deploymentConfigName
+        : undefined,
     });
 
     return stages.map((stage: StageFormData) => ({
