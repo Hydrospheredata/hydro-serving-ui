@@ -22,7 +22,9 @@
           <input [formControlName]="namespaceIdx" />
         </div>
       </div>
-      <button (click)="addNamespace(group)">add name space</button>
+      <button (click)="addNamespace(group)" hs-button kind="stroked">
+        add name space
+      </button>
     </div>
 
     <div class="dc__group" formGroupName="labelSelector">
@@ -36,7 +38,7 @@
           [group]="matchExprsCtrl"
           *ngFor="let matchExprsCtrl of getMatchExprs(group).controls"
         ></hs-match-expression>
-        <button (click)="addMatchExpression(group)">
+        <button (click)="addMatchExpression(group)" hs-button kind="stroked">
           add match expression
         </button>
       </div>

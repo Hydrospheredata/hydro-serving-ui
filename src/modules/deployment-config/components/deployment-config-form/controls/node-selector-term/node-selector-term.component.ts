@@ -10,12 +10,10 @@ import {
   templateUrl: './node-selector-term.component.html',
   styleUrls: ['../../../../styles/deployment-config.scss'],
 })
-export class NodeSelectorTermComponent implements OnInit {
+export class NodeSelectorTermComponent {
   @Input() group: FormGroup;
 
   constructor(private readonly fb: FormBuilder) {}
-
-  ngOnInit() {}
 
   get matchExpressions(): FormArray {
     return this.group.get('matchExpressions') as FormArray;
@@ -23,14 +21,6 @@ export class NodeSelectorTermComponent implements OnInit {
 
   get matchFields(): FormArray {
     return this.group.get('matchFields') as FormArray;
-  }
-
-  addMatchExpr(): void {
-    this.matchExpressions.push(this.defaultMatchExpression);
-  }
-
-  addMatchField(): void {
-    this.matchFields.push(this.defaultMatchField);
   }
 
   get defaultMatchExpression(): FormGroup {
@@ -47,5 +37,13 @@ export class NodeSelectorTermComponent implements OnInit {
       key: this.fb.control(''),
       operator: this.fb.control(''),
     });
+  }
+
+  addMatchExpr(): void {
+    this.matchExpressions.push(this.defaultMatchExpression);
+  }
+
+  addMatchField(): void {
+    this.matchFields.push(this.defaultMatchField);
   }
 }
