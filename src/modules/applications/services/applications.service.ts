@@ -41,7 +41,7 @@ export class ApplicationsService {
   }
 
   public serveService(data, applicationName: string): Observable<any> {
-    const url = `/gateway/application/${applicationName}`;
+    const url = `gateway/application/${applicationName}`;
     return this.http.post(url, data).pipe(map((res: Response): any => res));
   }
 }

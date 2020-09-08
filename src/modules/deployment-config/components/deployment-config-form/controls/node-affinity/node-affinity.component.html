@@ -1,5 +1,8 @@
 <div [formGroup]="group" class="dc__group">
-  <div formControlName="requiredDuringSchedulingIgnoredDuringExecution">
+  <div
+    formGroupName="requiredDuringSchedulingIgnoredDuringExecution"
+    *ngIf="required; else addRequiredButton"
+  >
     <div class="dc__group">
       <div class="dc__group-title">
         requiredDuringSchedulingIgnoredDuringExecution
@@ -11,13 +14,12 @@
         ></hs-node-selector-term>
       </div>
     </div>
-
-    <button (click)="addNodeSelectorTerm()">
-      add node selector term
-    </button>
   </div>
 
-  <div formArrayName="preferredDuringSchedulingIgnoredDuringExecution">
+  <div
+    formArrayName="preferredDuringSchedulingIgnoredDuringExecution"
+    *ngIf="preferred; else addPreferredArrayButton"
+  >
     <div *ngFor="let preferredControl of preferred.controls">
       <div class="dc__group">
         <div class="dc__group-title">
@@ -36,12 +38,30 @@
         </div>
       </div>
 
-      <button (click)="addPreference(preferredControl)">
+      <button (click)="addPreference(preferredControl)" hs-button>
         add preference
       </button>
     </div>
+    <button (click)="addPreferred()" hs-button kind="stroked">
+      add preferred item
+    </button>
   </div>
-  <button (click)="addPreferred()">
-    add preferred
-  </button>
 </div>
+
+<ng-template #addRequiredButton>
+  <button (click)="addRequired()" hs-button kind="stroked">
+    add required
+  </button>
+</ng-template>
+
+<ng-template #addNodeSelectorTermButton>
+  <button (click)="addNodeSelectorTerm()" hs-button kind="stroked">
+    add required
+  </button>
+</ng-template>
+
+<ng-template #addPreferredArrayButton>
+  <button (click)="addPreferredArray()" hs-button kind="stroked">
+    add preferred array
+  </button>
+</ng-template>

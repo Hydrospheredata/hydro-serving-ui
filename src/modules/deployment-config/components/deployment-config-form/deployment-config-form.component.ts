@@ -15,22 +15,57 @@ import {
 })
 export class DeploymentConfigFormComponent implements OnInit {
   form: FormGroup;
+
   constructor(readonly fb: FormBuilder) {}
 
   ngOnInit() {
+    this.form = this.fb.group({
+      name: this.fb.control('', [Validators.required]),
+    });
+  }
+
+  get pod(): FormGroup {
+    return this.form.get('pod') as FormGroup;
+  }
+
+  get deployment(): FormGroup {
+    return this.form.get('deployment') as FormGroup;
+  }
+
+  get hpa(): FormGroup {
+    return this.form.get('hpa') as FormGroup;
+  }
+
+  get container(): FormGroup {
+    return this.form.get('container') as FormGroup;
+  }
+
+  addHpa(): void {
+    this.form.addControl(
+      'hpa',
+      this.fb.group({
+        maxReplicas: this.fb.control(''),
+        minReplicas: this.fb.control(''),
+        cpuUtilization: this.fb.control(''),
+      })
+    );
+  }
+
+  addDeployment(): void {
+    this.form.addControl(
+      'deployment',
+      this.fb.group({
+        replicaCount: this.fb.control(''),
+      })
+    );
+  }
+
+  addContainer(): void {
     const fb = this.fb;
 
-    this.form = fb.group({
-      name: fb.control('', [Validators.required]),
-      hpa: fb.group({
-        maxReplicas: fb.control(0),
-        minReplicas: fb.control(0),
-        cpuUtilization: fb.control(0),
-      }),
-      deployment: fb.group({
-        replicaCount: fb.control(0),
-      }),
-      container: fb.group({
+    this.form.addControl(
+      'container',
+      fb.group({
         resources: fb.group({
           limits: fb.group({
             cpu: fb.control(''),
@@ -41,25 +76,27 @@ export class DeploymentConfigFormComponent implements OnInit {
             memory: fb.control(''),
           }),
         }),
-      }),
-      pod: fb.group({
-        tolerations: fb.array([]),
-        nodeSelector: fb.control(''),
-        affinity: fb.group({
-          nodeAffinity: fb.group({
-            requiredDuringSchedulingIgnoredDuringExecution: fb.array([]),
-            preferredDuringSchedulingIgnoredDuringExecution: fb.array([]),
-          }),
-          podAffinity: fb.group({
-            requiredDuringSchedulingIgnoredDuringExecution: fb.array([]),
-            preferredDuringSchedulingIgnoredDuringExecution: fb.array([]),
-          }),
-          podAntiAffinity: fb.group({
-            requiredDuringSchedulingIgnoredDuringExecution: fb.array([]),
-            preferredDuringSchedulingIgnoredDuringExecution: fb.array([]),
-          }),
-        }),
-      }),
-    });
+      })
+    );
+  }
+
+  addPod(): void {
+    this.form.addControl('pod', this.fb.group({}));
+  }
+
+  removeHpa(): void {
+    this.form.removeControl('hpa');
+  }
+
+  removeDeployment(): void {
+    this.form.removeControl('deployment');
+  }
+
+  removeContainer(): void {
+    this.form.removeControl('container');
+  }
+
+  removePod(): void {
+    this.form.removeControl('pod');
   }
 }

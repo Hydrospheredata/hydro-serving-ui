@@ -79,37 +79,48 @@
               </div>
             </div>
           </div>
-          <div class="dc-tree__sub">
-            <div class="dc-tree__title">nodeSelector</div>
+        </div>
+        <div class="dc-tree__sub">
+          <div class="dc-tree__title">nodeSelector</div>
+          <div class="dc-tree__group">
+            <div
+              class="dc-tree__sub"
+              *ngFor="let item of pod.nodeSelector | keyvalue"
+            >
+              <hs-dc-tree-field
+                [name]="item.key"
+                [value]="item.value"
+              ></hs-dc-tree-field>
+            </div>
           </div>
-          <div class="dc-tree__sub" *ngIf="pod.affinity as affinity">
-            <div class="dc-tree__title">affinity</div>
-            <div class="dc-tree__group">
-              <div class="dc-tree__sub" *ngIf="affinity.nodeAffinity as na">
-                <div class="dc-tree__title">nodeAffinity</div>
-                <ng-container
-                  [ngTemplateOutlet]="nodeAffinityTmpl"
-                  [ngTemplateOutletContext]="{ $implicit: na }"
-                ></ng-container>
-              </div>
-              <div class="dc-tree__sub">
-                <div class="dc-tree__title" *ngIf="affinity.podAffinity as pf">
-                  podAffinity
-                  <ng-container
-                    [ngTemplateOutlet]="affinityTmpl"
-                    [ngTemplateOutletContext]="{ $implicit: pf }"
-                  ></ng-container>
-                </div>
-              </div>
-              <div class="dc-tree__sub" *ngIf="affinity.podAntiAffinity as paf">
-                <div class="dc-tree__title">
-                  podAntiAffinity
-                </div>
+        </div>
+        <div class="dc-tree__sub" *ngIf="pod.affinity as affinity">
+          <div class="dc-tree__title">affinity</div>
+          <div class="dc-tree__group">
+            <div class="dc-tree__sub" *ngIf="affinity.nodeAffinity as na">
+              <div class="dc-tree__title">nodeAffinity</div>
+              <ng-container
+                [ngTemplateOutlet]="nodeAffinityTmpl"
+                [ngTemplateOutletContext]="{ $implicit: na }"
+              ></ng-container>
+            </div>
+            <div class="dc-tree__sub">
+              <div class="dc-tree__title" *ngIf="affinity.podAffinity as pf">
+                podAffinity
                 <ng-container
                   [ngTemplateOutlet]="affinityTmpl"
-                  [ngTemplateOutletContext]="{ $implicit: paf }"
+                  [ngTemplateOutletContext]="{ $implicit: pf }"
                 ></ng-container>
               </div>
+            </div>
+            <div class="dc-tree__sub" *ngIf="affinity.podAntiAffinity as paf">
+              <div class="dc-tree__title">
+                podAntiAffinity
+              </div>
+              <ng-container
+                [ngTemplateOutlet]="affinityTmpl"
+                [ngTemplateOutletContext]="{ $implicit: paf }"
+              ></ng-container>
             </div>
           </div>
         </div>
@@ -121,7 +132,10 @@
 <!--templates-->
 <ng-template #nodeAffinityTmpl let-aff>
   <div class="dc-tree__group">
-    <div class="dc-tree__sub">
+    <div
+      class="dc-tree__sub"
+      *ngIf="aff.requiredDuringSchedulingIgnoredDuringExecution"
+    >
       <div class="dc-tree__title">
         requiredDuringSchedulingIgnoredDuringExecution
       </div>
@@ -162,9 +176,31 @@
         </div>
       </div>
     </div>
-    <div class="dc-tree__sub">
+    <div
+      class="dc-tree__sub"
+      *ngIf="aff.preferredDuringSchedulingIgnoredDuringExecution as prefs"
+    >
       <div class="dc-tree__title">
         preferredDuringSchedulingIgnoredDuringExecution
+      </div>
+      <div class="dc-tree__group" *ngFor="let pref of prefs">
+        <div class="dc-tree__sub" *ngIf="pref.preference as preference">
+          <div class="dc-tree__title">Preference</div>
+          <div
+            class="dc-tree__group"
+            *ngIf="preference.matchExpressions as matchExprs"
+          >
+            <div class="dc-tree__sub">
+              <div class="dc-tree__title">Match Expressions</div>
+              <div class="dc-tree__group" *ngFor="let matchfield of matchExprs">
+                <ng-container
+                  [ngTemplateOutlet]="matchExprOrFieldTpl"
+                  [ngTemplateOutletContext]="{ $implicit: matchfield }"
+                ></ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -290,7 +326,9 @@
   <div class="dc-tree__sub" *ngIf="expr.values as values">
     <div class="dc-tree__title">values</div>
     <div class="dc-tree__group">
-      <div class="dc-tree__sub" *ngFor="let val of values">{{ val }}</div>
+      <div class="dc-tree__sub" *ngFor="let val of values">
+        <span class="dc-tree__text">{{ val }}</span>
+      </div>
     </div>
   </div>
 </ng-template>

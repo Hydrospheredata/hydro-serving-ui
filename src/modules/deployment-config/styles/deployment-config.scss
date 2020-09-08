@@ -4,9 +4,36 @@
   &__form {
     max-width: 960px;
   }
+  &__list {
+    &-index {
+      font-family: $font-family-bold;
+    }
+    &-item {
+      display: flex;
+      align-items: center;
+      & > hydro-icon {
+        margin: 0 12px;
+        width: 18px;
+        height: 18px;
+        color: $supportive-color-red-500;
+        cursor: pointer;
+      }
+    }
+    &-item + &-item {
+      margin-top: 8px;
+    }
+  }
   &__group-title {
-    font-size: 20px;
+    font-size: 14px;
     line-height: 32px;
+    font-family: $font-family-bold;
+    text-transform: lowercase;
+    & > hydro-icon {
+      width: 18px;
+      height: 18px;
+      color: $supportive-color-red-500;
+      cursor: pointer;
+    }
   }
   &__control {
     width: 280px;
@@ -30,8 +57,19 @@
   &__input {
   }
   &__group {
-    border-left: 2px $neutral-color-400 solid;
-    padding-left: 16px;
+    position: relative;
+    padding-left: 14px;
     margin-bottom: 14px;
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 2px;
+      border-bottom: 1px $neutral-color-200 solid;
+      border-left: 1px $neutral-color-200 solid;
+      width: 12px;
+      height: 16px;
+    }
   }
 }
