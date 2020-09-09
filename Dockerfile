@@ -40,6 +40,7 @@ ENV MONITORING_GRPC_PORT=9090
 ENV ROOTCAUSE_HTTP_PORT=5005
 ENV PROMETHEUS_AM_PORT=9093
 ENV VISUALIZATION_HTTP_PORT=5000
+ENV VISUALIZATION_GRPC_PORT=5003
 ENV STAT_PORT=5000
 ENV AUTO_OD_GRPC_PORT=5000
 
@@ -56,6 +57,7 @@ CMD envsubst '${GATEWAY_HOST} ${GATEWAY_GRPC_PORT}' < /etc/nginx/conf.d/grpc/inc
   && envsubst '${MANAGER_HOST} ${MANAGER_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.manager.template > /etc/nginx/conf.d/grpc/include.manager \
   && envsubst '${MONITORING_HOST} ${MONITORING_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.monitoring.template > /etc/nginx/conf.d/grpc/include.monitoring \
   && envsubst '${AUTO_OD_HOST} ${AUTO_OD_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.auto_od.template > /etc/nginx/conf.d/grpc/include.auto_od \
+  && envsubst '${VISUALIZATION_HOST} ${VISUALIZATION_GRPC_PORT}' < /etc/nginx/conf.d/grpc/include.visualization.template > /etc/nginx/conf.d/grpc/include.visualization \
 #
   && envsubst '${PROMETHEUS_AM_HOST} ${PROMETHEUS_AM_PORT}' < /etc/nginx/conf.d/http/include.alerts.template > /etc/nginx/conf.d/http/include.alerts \
   && envsubst '${GATEWAY_HOST} ${GATEWAY_HTTP_PORT}' < /etc/nginx/conf.d/http/include.gateway.template > /etc/nginx/conf.d/http/include.gateway \
