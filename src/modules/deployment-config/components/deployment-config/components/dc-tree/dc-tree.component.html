@@ -60,32 +60,31 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="dc-tree__sub" *ngIf="config.pod as pod">
-      <div class="dc-tree__title">pod</div>
       <div class="dc-tree__group">
-        <div class="dc-tree__sub" *ngIf="pod.tolerations as tolerations">
-          <div class="dc-tree__title">tolerations</div>
-          <div *ngFor="let toleration of tolerations">
-            <div class="dc-tree__group">
-              <div
-                class="dc-tree__field"
-                *ngFor="let item of toleration | keyvalue"
-              >
-                <hs-dc-tree-field
-                  [name]="item.key"
-                  [value]="item.value"
-                ></hs-dc-tree-field>
-              </div>
-            </div>
+        <div class="dc-tree__sub" *ngIf="container.env as envs">
+          <div class="dc-tree__title">env</div>
+          <div class="dc-tree__group">
+            <hs-dc-tree-field
+              class="dc-tree__field"
+              *ngFor="let env of envs | keyvalue"
+              [name]="env.key"
+              [value]="env.value"
+            ></hs-dc-tree-field>
           </div>
         </div>
-        <div class="dc-tree__sub">
-          <div class="dc-tree__title">nodeSelector</div>
+      </div>
+    </div>
+  </div>
+  <div class="dc-tree__sub" *ngIf="config.pod as pod">
+    <div class="dc-tree__title">pod</div>
+    <div class="dc-tree__group">
+      <div class="dc-tree__sub" *ngIf="pod.tolerations as tolerations">
+        <div class="dc-tree__title">tolerations</div>
+        <div *ngFor="let toleration of tolerations">
           <div class="dc-tree__group">
             <div
-              class="dc-tree__sub"
-              *ngFor="let item of pod.nodeSelector | keyvalue"
+              class="dc-tree__field"
+              *ngFor="let item of toleration | keyvalue"
             >
               <hs-dc-tree-field
                 [name]="item.key"
@@ -94,34 +93,48 @@
             </div>
           </div>
         </div>
-        <div class="dc-tree__sub" *ngIf="pod.affinity as affinity">
-          <div class="dc-tree__title">affinity</div>
-          <div class="dc-tree__group">
-            <div class="dc-tree__sub" *ngIf="affinity.nodeAffinity as na">
-              <div class="dc-tree__title">nodeAffinity</div>
-              <ng-container
-                [ngTemplateOutlet]="nodeAffinityTmpl"
-                [ngTemplateOutletContext]="{ $implicit: na }"
-              ></ng-container>
-            </div>
-            <div class="dc-tree__sub">
-              <div class="dc-tree__title" *ngIf="affinity.podAffinity as pf">
-                podAffinity
-                <ng-container
-                  [ngTemplateOutlet]="affinityTmpl"
-                  [ngTemplateOutletContext]="{ $implicit: pf }"
-                ></ng-container>
-              </div>
-            </div>
-            <div class="dc-tree__sub" *ngIf="affinity.podAntiAffinity as paf">
-              <div class="dc-tree__title">
-                podAntiAffinity
-              </div>
+      </div>
+      <div class="dc-tree__sub">
+        <div class="dc-tree__title">nodeSelector</div>
+        <div class="dc-tree__group">
+          <div
+            class="dc-tree__sub"
+            *ngFor="let item of pod.nodeSelector | keyvalue"
+          >
+            <hs-dc-tree-field
+              [name]="item.key"
+              [value]="item.value"
+            ></hs-dc-tree-field>
+          </div>
+        </div>
+      </div>
+      <div class="dc-tree__sub" *ngIf="pod.affinity as affinity">
+        <div class="dc-tree__title">affinity</div>
+        <div class="dc-tree__group">
+          <div class="dc-tree__sub" *ngIf="affinity.nodeAffinity as na">
+            <div class="dc-tree__title">nodeAffinity</div>
+            <ng-container
+              [ngTemplateOutlet]="nodeAffinityTmpl"
+              [ngTemplateOutletContext]="{ $implicit: na }"
+            ></ng-container>
+          </div>
+          <div class="dc-tree__sub">
+            <div class="dc-tree__title" *ngIf="affinity.podAffinity as pf">
+              podAffinity
               <ng-container
                 [ngTemplateOutlet]="affinityTmpl"
-                [ngTemplateOutletContext]="{ $implicit: paf }"
+                [ngTemplateOutletContext]="{ $implicit: pf }"
               ></ng-container>
             </div>
+          </div>
+          <div class="dc-tree__sub" *ngIf="affinity.podAntiAffinity as paf">
+            <div class="dc-tree__title">
+              podAntiAffinity
+            </div>
+            <ng-container
+              [ngTemplateOutlet]="affinityTmpl"
+              [ngTemplateOutletContext]="{ $implicit: paf }"
+            ></ng-container>
           </div>
         </div>
       </div>
@@ -331,4 +344,12 @@
       </div>
     </div>
   </div>
+</ng-template>
+
+<ng-template #envMap let-envs>
+  <hs-dc-tree-field
+    *ngFor="let env of envs | keyvalue"
+    [name]="env.key"
+    [value]="env.value"
+  ></hs-dc-tree-field>
 </ng-template>
