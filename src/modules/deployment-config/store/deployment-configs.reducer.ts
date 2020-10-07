@@ -3,6 +3,7 @@ import {
   GetDeploymentConfigs,
   GetDeploymentConfigsSuccess,
   DeleteDeploymentConfigSuccess,
+  UpdateDeploymentConfig,
 } from './deployment-configs.actions';
 import { State, initialState } from './deployment-configs.state';
 
@@ -21,6 +22,12 @@ export const deploymentConfigReducer = createReducer(
         return config.name !== payload.name;
       }),
     };
+  }),
+  on(UpdateDeploymentConfig, (state, { config }) => {
+    const configs = state.configs;
+    const configExists = configs.some(cfg => cfg.name === config.name);
+
+    return configExists ? state : { ...state, configs: [...configs, config] };
   })
 );
 

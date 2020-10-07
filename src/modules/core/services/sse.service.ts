@@ -11,6 +11,9 @@ import * as fromServables from '@servables/actions';
 import { Servable } from '@servables/models';
 import { Application, ModelVersion } from '@shared/_index';
 import { environment } from 'environments/environment';
+import { DeploymentConfig } from '../../deployment-config/models';
+import * as fromDepConfigs from '../../deployment-config/store/deployment-configs.actions';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -25,6 +28,8 @@ export class SseService {
     ],
     ['ServableUpdate', servable => this.updateServable(servable)],
     ['ServableRemove', servableName => this.deleteServable(servableName)],
+    ['DeploymentConfigurationUpdate', config => this.updateDepConfig(config)],
+    ['DeploymentConfigurationRemove', name => this.deleteDepConfig(name)],
   ]);
 
   private eventSource: EventSource;
@@ -73,6 +78,14 @@ export class SseService {
 
   private deleteServable(name: string) {
     return fromServables.deleteServableSuccess({ name });
+  }
+
+  private deleteDepConfig(name: string) {
+    return fromDepConfigs.DeleteDeploymentConfigSuccess({ name });
+  }
+
+  private updateDepConfig(config: DeploymentConfig) {
+    return fromDepConfigs.UpdateDeploymentConfig({ config });
   }
 
   private addEventHandler(item: [string, any]) {
