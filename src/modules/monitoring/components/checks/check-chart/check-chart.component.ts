@@ -178,20 +178,22 @@ export class CheckChartComponent implements OnInit, OnDestroy {
     } else {
       const [xCoordinate] = mouse(this.rectRef.nativeElement);
       const xValue = Math.round(this.scaleX.invert(xCoordinate));
-      const { left, top } = this.margins;
 
-      const newXPosition = this.scaleX(xValue) + left;
+      const { left, top } = this.margins;
+      const newXPosition = this.scaleX(xValue);
 
       if (this.activePoint == null || newXPosition !== this.activePoint.x) {
-        this.activePoint = { x: newXPosition, y: 0 };
-        const index = Math.floor(this.scaleX.invert(newXPosition));
+        this.activePoint = { x: newXPosition + left, y: 0 };
 
+        const index = Math.floor(this.scaleX.invert(newXPosition));
         // generate circles
         this.activeCircles = this.series.reduce((acc, series) => {
-          if (series.data[index - 1]) {
+          const inverted = Math.floor(this.scaleX.invert(newXPosition) - 1);
+
+          if (series.data[inverted]) {
             acc.push({
-              x: newXPosition,
-              y: this.scaleY(series.data[index - 1]) + top,
+              x: newXPosition + left,
+              y: this.scaleY(series.data[inverted]) + top,
               color: series.color,
             });
           }
@@ -200,22 +202,28 @@ export class CheckChartComponent implements OnInit, OnDestroy {
         }, []);
 
         // generate tooltip
-        const l = this.series[0].data.length;
-        const tXPos = index === l ? newXPosition - 100 : newXPosition;
+        // make shift position
+        const tXPos =
+          index === this.series[0].data.length
+            ? newXPosition - 100
+            : newXPosition;
+
+        const inverted = Math.floor(this.scaleX.invert(newXPosition) - 1);
         const tYPos = this.scaleY(
           this.series
-            .map(({ data }) => data[index - 1])
+            .map(({ data }) => data[inverted])
             .reduce((acc, cur) => acc + cur, 0) / this.series.length
         );
+
         this.tooltip = {
-          x: tXPos + 4,
+          x: tXPos + left + 4,
           y: tYPos + 4,
           values: this.series.reduce((acc, series) => {
-            if (series.data[index - 1] !== undefined) {
+            if (series.data[inverted] !== undefined) {
               acc.push({
                 name: series.name,
                 color: series.color,
-                value: series.data[index - 1],
+                value: series.data[inverted],
               });
             }
 
