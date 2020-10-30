@@ -9,8 +9,9 @@
     padding: 24px 12px 12px;
     position: relative;
     line-height: 16px;
+    overflow-x: scroll;
     &--wrap-space {
-        white-space: pre-line;
+        white-space: pre;
     }
     &__comment {
         font-style: italic;
