@@ -11,7 +11,7 @@ export class UnknownCommandCreator extends CommandCreator {
   }
 }
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class CommandCreatorFactory {
   constructor(@Inject(HS_BASE_URL) private httpUrl: string) {}
 
