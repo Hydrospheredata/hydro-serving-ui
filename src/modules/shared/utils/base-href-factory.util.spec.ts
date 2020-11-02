@@ -1,8 +1,8 @@
 import { baseHrefFactory } from './base-href-factory.util';
 
 const simpleBaseHref = '/';
-const rootBaseHref = '//hydro-serving.dev.hydrosphere.io/';
-const domainBaseHref = '//hydro-serving.dev.hydrosphere.io/hs/';
+const rootBaseHref = '//example.domain.io/';
+const domainBaseHref = '//example.domain.io/hydrosphere/';
 
 describe('baseHrefFactory', () => {
   it('should work with simpleBaseHref', () => {
@@ -14,6 +14,6 @@ describe('baseHrefFactory', () => {
   });
 
   it('should work with domainBaseHref', () => {
-    expect(baseHrefFactory(domainBaseHref)).toEqual('/hs/');
+    expect(baseHrefFactory(domainBaseHref)).toEqual('/hydrosphere/');
   });
 });
