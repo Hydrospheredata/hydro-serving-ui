@@ -94,7 +94,9 @@ export class ModelVariantFormService implements OnDestroy {
       weight: modelVariant.weight,
       modelId: modelVariant.modelVersion.model.id,
       modelVersionId: modelVariant.modelVersion.id,
-      deploymentConfigName: modelVariant.deploymentConfiguration.name,
+      deploymentConfigName:
+        modelVariant.deploymentConfiguration &&
+        modelVariant.deploymentConfiguration.name,
     };
   }
 
