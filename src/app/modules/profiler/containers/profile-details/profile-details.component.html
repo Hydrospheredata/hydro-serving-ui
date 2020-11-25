@@ -1,0 +1,54 @@
+<div class="profiles" *ngIf="profiles$ | async as profiles">
+  <div class="profiles__error" *ngIf="error$ | async as error">
+    <hs-error-message>
+      {{ error }}
+    </hs-error-message>
+  </div>
+
+  {{ selectedField$ | async | json }}
+  {{ fields$ | async | json }}
+
+  <!--  <div class="profiles__header" *ngIf="(fields$ | async).length > 0; else name">-->
+  <!--    <div class="profiles__header-row">-->
+  <!--      <span class="profiles__header-label">-->
+  <!--        Selected field:-->
+  <!--      </span>-->
+  <!--      <span class="profiles__header-input">-->
+  <!--        <mdl-select label="Choose field" (change)="onFieldSelect($event)">-->
+  <!--          <mdl-option-->
+  <!--            *ngFor="let featureName of fields$ | async"-->
+  <!--            [value]="featureName"-->
+  <!--            >{{ featureName }}</mdl-option-->
+  <!--          >-->
+  <!--        </mdl-select>-->
+  <!--      </span>-->
+  <!--    </div>-->
+  <!--  </div>-->
+</div>
+
+<div *ngIf="profiles$ | async as profiles">
+  <div *ngIf="profiles" class="profiles__body">
+    <div class="profile__container training">
+      <div class="profile__header">Training Data</div>
+      <hs-profile-stats [profile]="profiles.trainingProfile"></hs-profile-stats>
+    </div>
+    <div class="profile__container production">
+      <div class="profile__header">Production Data</div>
+      <hs-profile-stats
+        [profile]="profiles.productionProfile"
+      ></hs-profile-stats>
+    </div>
+
+    <div *ngIf="showHistogram(profiles)" class="comparison_histogram">
+      <hs-profiles-comparison-histogram
+        [trainingProfile]="profiles.trainingProfile"
+        [productionProfile]="profiles.productionProfile"
+      >
+      </hs-profiles-comparison-histogram>
+    </div>
+  </div>
+</div>
+
+<ng-template #name>
+  <div class="profiles__name">{{ selectedField$ | async }}</div></ng-template
+>

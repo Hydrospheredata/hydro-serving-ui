@@ -4,7 +4,8 @@ import {
   SELECTED_APPLICATION,
   SELECTED_MODEL_VARIANT,
   LATEST_MODEL_VERSION,
-} from '@applications/components';
+} from '@app/modules/dialogs/components';
+
 import { Store } from '@ngrx/store';
 import { MockModelVersion2Model1 } from '@testing/factories/modelVersion';
 import { of } from 'rxjs';

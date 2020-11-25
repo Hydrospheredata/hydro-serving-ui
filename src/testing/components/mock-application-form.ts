@@ -1,5 +1,5 @@
 import { Output, Input, Component, EventEmitter } from '@angular/core';
-import { IApplication } from '@shared/_index';
+import { IApplication } from '@app/core/data/types';
 
 @Component({
   selector: 'hs-application-form',

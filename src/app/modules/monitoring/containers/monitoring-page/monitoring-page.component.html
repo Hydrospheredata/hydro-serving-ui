@@ -1,0 +1,57 @@
+<div class="monitoring" *ngIf="modelVersion$ | async">
+  <!--  <hs-monitoring-availability>-->
+  <div class="monitoring__body">
+    <ng-container *ngIf="true; else errorSection">
+      <div class="monitoring__label">Aggregation</div>
+      <section class="monitoring__aggregation">
+        <hs-aggregation></hs-aggregation>
+      </section>
+      <hs-loading [loading]="isChecksLoading$ | async">
+        <div
+          class="monitoring__aggregation-details"
+          *ngIf="checks$ | async as checkCollection"
+        >
+          <div class="monitoring__label">Batch details</div>
+          <div class="monitoring__batch-details">
+            <hs-batch-details
+              (showCheckDetails)="showCheckDetails($event)"
+            ></hs-batch-details>
+          </div>
+          <div class="monitoring__label">Batch latency</div>
+          <div class="monitoring__batch-latency">
+            <hs-batch-latency [requests]="checkCollection"></hs-batch-latency>
+          </div>
+        </div>
+      </hs-loading>
+      <hs-custom-metrics></hs-custom-metrics>
+    </ng-container>
+  </div>
+  <!--  </hs-monitoring-availability>-->
+  <div *ngIf="checkToShowInDetails$ | async as check" class="check-details">
+    <div
+      @openClosed
+      class="check-details__layout"
+      (click)="closeCheckDetails()"
+    ></div>
+    <div @openClosedContainer class="check-details__container">
+      <div class="check-details__header">
+        <hydro-icon
+          class="check-details__icon"
+          type="close"
+          (click)="closeCheckDetails()"
+        ></hydro-icon>
+        <div class="check-details__title">Request details</div>
+      </div>
+      <div class="check-details__body">
+        <hs-log-detail [check]="check" [modelVersion]="modelVersion$ | async">
+        </hs-log-detail>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #errorSection>
+  <hs-error-message class="monitoring-page__error">
+    <!--    {{ error$ | async }}-->
+  </hs-error-message>
+</ng-template>

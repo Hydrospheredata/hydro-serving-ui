@@ -1,4 +1,4 @@
-import { MetricSpecification } from '@shared/models/metric-specification.model';
+import { MetricSpecification } from '@app/core/data/types';
 
 export const MockMetricSpecification: MetricSpecification = {
   id: 'id',

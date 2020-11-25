@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Colorizer } from '@core/models';
+import { Colorizer } from '@app/modules/visualization/models';
 
 @Component({
   selector: 'hs-scatter-plot-legend',

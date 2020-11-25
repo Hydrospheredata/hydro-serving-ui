@@ -1,0 +1,14 @@
+<div class="dialog__content">
+  <span class="dialog__content--question">Remove servable?</span>
+  <div class="dialog__text">
+    {{ servableName }}
+  </div>
+  <div class="dialog__buttons dialog__buttons--column">
+    <button hs-button (click)="onClose()">
+      cancel
+    </button>
+    <button hs-button kind="flat" color="warning" (click)="onDelete()">
+      Remove
+    </button>
+  </div>
+</div>

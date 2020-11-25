@@ -1,0 +1,91 @@
+<div class="test-application">
+  <div class="test-application">
+    <hydro-icon
+      type="icon-close"
+      class="icon test-application__close-icon"
+      (click)="onClose()"
+      б
+    ></hydro-icon>
+    <p class="application-name">{{ application.name }}</p>
+    <div class="warning-container" *ngIf="generatingInputError">
+      Couldn't generate input. <br />
+      {{ generatingInputError }}
+    </div>
+  </div>
+  <hs-loading [loading]="generatingInput">
+    <div class="test-application__content">
+      <mdl-tabs mdl-ripple mdl-tab-active-index="0">
+        <mdl-tab-panel mdl-tab-panel-title="web">
+          <form (ngSubmit)="onSubmit()">
+            <div>
+              <div class="test-fields">
+                <div class="test-fields__item __input">
+                  <label>Input</label>
+                  <codemirror
+                    #inputCodeMirror
+                    name="input"
+                    [(ngModel)]="input"
+                    [config]="inputOptions"
+                    (change)="onChange($event)"
+                  ></codemirror>
+                </div>
+                <div class="test-fields__item __output">
+                  <div class="test-fields__item-header">
+                    <label>Output</label>
+                    <!--                    <span *ngIf="testStatus | async; let status" class="status">-->
+                    <!--                      status-->
+                    <!--                      <span class="status__text status__text&#45;&#45;{{ status }}">-->
+                    <!--                        {{ status }}-->
+                    <!--                      </span>-->
+                    <!--                    </span>-->
+                  </div>
+                  <ng-container *ngIf="output | async; let output">
+                    <codemirror
+                      #outputCodeMirror
+                      [ngModel]="output"
+                      [config]="outputOptions"
+                      name="output"
+                    >
+                    </codemirror>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="error-container" *ngIf="!isValidInput">
+                Wrong input's format. JSON validation error
+              </div>
+              <div class="buttons">
+                <button
+                  hs-button
+                  kind="flat"
+                  color="primary"
+                  hsAutofocused
+                  [disabled]="!isValidInput"
+                >
+                  test app
+                </button>
+              </div>
+            </div>
+          </form>
+        </mdl-tab-panel>
+        <mdl-tab-panel mdl-tab-panel-title="cURL">
+          <hydro-command-template
+            type="curl"
+            [input]="input"
+            [application]="application"
+            [isValidInput]="isValidInput"
+          >
+          </hydro-command-template>
+        </mdl-tab-panel>
+        <mdl-tab-panel mdl-tab-panel-title="Python">
+          <hydro-command-template
+            type="grpc"
+            [input]="input"
+            [application]="application"
+            [isValidInput]="isValidInput"
+          >
+          </hydro-command-template>
+        </mdl-tab-panel>
+      </mdl-tabs>
+    </div>
+  </hs-loading>
+</div>

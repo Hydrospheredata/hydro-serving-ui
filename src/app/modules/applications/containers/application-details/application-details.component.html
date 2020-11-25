@@ -1,0 +1,174 @@
+<div class="application" *ngIf="application$ | async as application">
+  <div class="application__header">
+    <div class="application__header-buttons application__header-buttons--right">
+      <button
+        hs-button
+        kind="flat"
+        color="cyan"
+        [disabled]="!isReady(application.status)"
+        (click)="testApplication(application)"
+      >
+        <hydro-icon class="hs-button__icon" type="icon-start"></hydro-icon>
+        Test
+      </button>
+      <button
+        hs-button
+        kind="flat"
+        color="primary"
+        (click)="editApplication(application)"
+      >
+        <hydro-icon class="hs-button__icon" type="icon-edit"></hydro-icon>
+        Edit
+      </button>
+      <button
+        hs-button
+        kind="flat"
+        color="warning"
+        (click)="removeApplication(application)"
+      >
+        <hydro-icon class="hs-button__icon" type="icon-remove"></hydro-icon>
+        remove
+      </button>
+    </div>
+  </div>
+
+  <div class="application__body">
+    <div class="application__signature">
+      <hs-application-signature
+        [signature]="application.signature"
+      ></hs-application-signature>
+    </div>
+    <div class="content-info">
+      <ul class="content-info__list" *ngIf="application.kafkaStreaming?.length">
+        <li class="content-info__list-title">
+          Kafka Info
+        </li>
+        <li
+          class="content-info__list-item"
+          *ngFor="let kafka of application.kafkaStreaming"
+        >
+          <ol class="content-info__sublist">
+            <li
+              class="content-info__sublist-item"
+              *ngFor="let item of kafka | iterateAsArray"
+            >
+              <span class="content-info__sublist-item-title">{{ item }}</span>
+              <span class="content-info__sublist-item-value">{{
+                kafka[item]
+              }}</span>
+            </li>
+          </ol>
+        </li>
+      </ul>
+    </div>
+    <div class="application__error" *ngIf="isFailed(application.status)">
+      <hs-error-message>
+        {{ application.message }}
+      </hs-error-message>
+    </div>
+    <div class="application__stages">
+      <div
+        class="application__stage"
+        *ngFor="let stage of application.executionGraph?.stages; let i = index"
+      >
+        <div class="application__stage-header">Stage {{ i + 1 }}</div>
+        <div class="application__model-variants">
+          <div
+            class="application__model-variant"
+            *ngFor="let modelVariant of stage.modelVariants; let j = index"
+            (click)="onClickModelVariant($event, modelVariant)"
+          >
+            <div
+              class="application__model-variant-update tooltip"
+              hsUpdateModelVersion
+              [modelVersion]="modelVariant.modelVersion"
+              (handleClick)="updateModelVersionDialog($event, modelVariant)"
+            >
+              <span hs-tooltip="Model has new version">
+                <hydro-icon
+                  type="icon-upgrade"
+                  class="icon model-variant__version-new-icon"
+                >
+                </hydro-icon>
+              </span>
+            </div>
+            <div class="application__model-variant-model-version model-version">
+              <span class="model-version__name">
+                {{ modelVariant.modelVersion.model.name }}
+              </span>
+              <span class="model-version__version">
+                v:{{ modelVariant.modelVersion.modelVersion }}
+              </span>
+            </div>
+            <div class="application__model-variant-weight">
+              {{ modelVariant.weight }}%
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="menu$ | async as menu">
+  <div
+    class="menu"
+    [ngClass]="{ 'menu--showed': menu.showed }"
+    [ngStyle]="{ left: menu.left + 'px', top: menu.top + 'px' }"
+    (mouseleave)="onMouseLeave()"
+  >
+    <ng-container *ngIf="menu.context">
+      <div
+        class="menu__item menu__item--accent"
+        hsUpdateModelVersion
+        [modelVersion]="menu.context.modelVersion"
+        (handleClick)="updateModelVersionDialog($event, menu.context)"
+      >
+        update to latest
+      </div>
+      <div
+        class="menu__item"
+        [routerLink]="[
+          '/models',
+          menu.context.modelVersion.model.id,
+          menu.context?.modelVersion.id
+        ]"
+      >
+        details
+      </div>
+      <div
+        class="menu__item"
+        [routerLink]="[
+          '/models',
+          menu.context.modelVersion.model.id,
+          menu.context.modelVersion.id,
+          'monitoring'
+        ]"
+      >
+        monitoring
+      </div>
+      <div
+        class="menu__item"
+        [routerLink]="[
+          '/models',
+          menu.context.modelVersion.model.id,
+          menu.context.modelVersion.id,
+          'data_projection'
+        ]"
+      >
+        data projection
+      </div>
+      <div
+        class="menu__item"
+        [routerLink]="[
+          '/models',
+          menu.context.modelVersion.model.id,
+          menu.context.modelVersion.id,
+          'drift_report'
+        ]"
+      >
+        drift report
+      </div>
+    </ng-container>
+  </div>
+</ng-container>

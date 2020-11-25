@@ -1,0 +1,42 @@
+.code {
+  background: #f7f7f9;
+  border: 1px grey solid;
+  border-radius: 2px;
+  color: black;
+  display: flex;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 38px 12px 12px;
+  position: relative;
+  line-height: 16px;
+  &--wrap-space {
+    white-space: pre;
+  }
+  &__comment {
+    font-style: italic;
+    color: grey;
+    user-select: none;
+  }
+  & > code {
+    overflow-x: scroll;
+    padding-bottom: 12px;
+  }
+}
+
+.copy {
+  border-radius: 2px;
+  background: #4d9bf1;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  line-height: 28px;
+  padding: 0px;
+  position: absolute;
+  right: 4px;
+  text-align: center;
+  top: 4px;
+  width: 64px;
+  &:hover {
+    background: #468dda;
+  }
+}

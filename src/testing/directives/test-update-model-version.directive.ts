@@ -1,10 +1,5 @@
-import {
-  Directive,
-  Input,
-  Output,
-  EventEmitter,
-} from '@angular/core';
-import { ModelVersion } from '@shared/_index';
+import { Directive, Input, Output, EventEmitter } from '@angular/core';
+import { ModelVersion } from '@app/core/data/types';
 
 @Directive({
   selector: '[hsUpdateModelVersion]',
