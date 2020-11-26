@@ -9,6 +9,7 @@ import { ServablesFacade } from './core/facades/servables.facade';
 import { SvgSpriteService } from './core/svg-sprite.service';
 import { SseService } from './core/sse.service';
 import { ModelVersionsFacade } from './core/facades/model-versions.facade';
+import { HydroConfigService } from './core/hydro-config.service';
 
 @Component({
   selector: 'hs-root',
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit {
     private viewContainerRef: ViewContainerRef,
     private sse: SseService,
     private buildInformationService: BuildInformationService,
-    // private hsConfig: HydroConfigService,
+    private hsConfig: HydroConfigService,
     private readonly appFacade: ApplicationsFacade,
     private readonly modelsFacade: ModelsFacade,
     private readonly modelVersionsFacade: ModelVersionsFacade,
@@ -45,7 +46,6 @@ export class AppComponent implements OnInit {
   }
 
   get showHeader(): boolean {
-    return true;
-    // return this.hsConfig.config.showHeader;
+    return this.hsConfig.config.showHeader;
   }
 }

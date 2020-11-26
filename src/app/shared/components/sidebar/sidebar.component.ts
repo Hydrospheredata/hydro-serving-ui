@@ -8,6 +8,7 @@ import {
   ContentChild,
   ElementRef,
 } from '@angular/core';
+import { HydroConfigService } from '@app/core/hydro-config.service';
 import { FormControl } from '@node_modules/@angular/forms';
 import { Subject } from '@node_modules/rxjs';
 import { takeUntil } from '@node_modules/rxjs/internal/operators';
@@ -29,8 +30,9 @@ export class SidebarComponent implements AfterViewInit, OnDestroy {
   @ContentChild('.hide') hide: ElementRef;
 
   filter: FormControl = new FormControl('');
-
   private destroy: Subject<any> = new Subject<any>();
+
+  constructor(private readonly config: HydroConfigService) {}
 
   ngAfterViewInit(): void {
     this.filter.valueChanges.pipe(takeUntil(this.destroy)).subscribe(val => {
@@ -54,5 +56,9 @@ export class SidebarComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy.next();
     this.destroy.complete();
+  }
+
+  withHeader(): boolean {
+    return this.config.config.showHeader;
   }
 }

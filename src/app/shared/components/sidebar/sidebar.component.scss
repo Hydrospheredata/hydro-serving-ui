@@ -8,9 +8,12 @@
 .sidebar {
   position: relative;
   background: white;
-  height: calc(100% - 72px);
+  height: 100%;
   overflow: auto;
   box-shadow: -6px 0px 8px 3px $neutral-color-600;
+  &--with-header {
+    height: calc(100% - #{$headerHeight});
+  }
   &__button {
     width: 100%;
     margin-bottom: 12px;

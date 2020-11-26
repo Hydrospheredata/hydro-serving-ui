@@ -1,4 +1,4 @@
-<aside class="sidebar">
+<aside class="sidebar" [ngClass]="{ 'sidebar--with-header': withHeader() }">
   <div class="sidebar__header">
     <div class="sidebar__button" *ngIf="button">
       <ng-content select="button"></ng-content>
