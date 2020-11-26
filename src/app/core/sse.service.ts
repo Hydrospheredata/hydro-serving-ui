@@ -4,13 +4,19 @@ import { Inject } from '@angular/core';
 
 import { environment } from 'environments/environment';
 import { HS_BASE_URL } from '@app/core/base-url.token';
-import { Application, ModelVersion, Servable } from './data/types';
+import {
+  Application,
+  ModelVersion,
+  Servable,
+  DeploymentConfig,
+} from './data/types';
 import { ModelVersionBuilder, ApplicationBuilder } from './data/builders';
 
 import { HydroServingState } from './store/states/root.state';
 import * as fromApplications from './store/actions/applications.actions';
 import * as fromModelVersions from './store/actions/model-versions.actions';
 import * as fromServables from './store/actions/servables.actions';
+import * as fromDepConfigs from './store/actions/deployment-configs.actions';
 
 const enum SSEEvents {
   ModelRemove = 'ModelRemove',
@@ -19,6 +25,8 @@ const enum SSEEvents {
   ApplicationRemove = 'ApplicationRemove',
   ServableUpdate = 'ServableUpdate',
   ServableRemove = 'ServableRemove',
+  DeploymentConfigurationUpdate = 'DeploymentConfigurationUpdate',
+  DeploymentConfigurationRemove = 'DeploymentConfigurationRemove',
 }
 
 @Injectable({
@@ -46,6 +54,14 @@ export class SseService {
     [
       SSEEvents.ServableRemove,
       servableName => this.deleteServable(servableName),
+    ],
+    [
+      SSEEvents.DeploymentConfigurationUpdate,
+      config => this.updateDepConfig(config),
+    ],
+    [
+      SSEEvents.DeploymentConfigurationRemove,
+      configName => this.deleteDepConfig(configName),
     ],
   ]);
 
@@ -95,6 +111,14 @@ export class SseService {
 
   private deleteServable(name: string) {
     return fromServables.deleteServableSuccess({ name });
+  }
+
+  private deleteDepConfig(name: string) {
+    return fromDepConfigs.DeleteDeploymentConfigSuccess({ name });
+  }
+
+  private updateDepConfig(config: DeploymentConfig) {
+    return fromDepConfigs.UpdateDeploymentConfig({ config });
   }
 
   private addEventHandler(item: [string, any]) {

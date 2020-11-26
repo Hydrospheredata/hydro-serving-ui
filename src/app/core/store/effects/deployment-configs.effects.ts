@@ -39,9 +39,9 @@ export class DeploymentConfigsEffects {
             });
             return DeleteDeploymentConfigSuccess({ name });
           }),
-          catchError(() => {
+          catchError(err => {
             this.snackbar.show({
-              message: `Couldn't create deployment config`,
+              message: err.message,
             });
             return of(DeleteDeploymentConfigFail());
           })

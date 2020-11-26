@@ -9,6 +9,7 @@ export interface Container {
     requests: { memory: string; cpu: string };
     limits: { memory: string; cpu: string };
   };
+  env?: { [key: string]: string };
 }
 
 export interface Toleration {

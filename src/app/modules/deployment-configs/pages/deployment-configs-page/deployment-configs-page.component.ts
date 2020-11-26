@@ -61,7 +61,7 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
   }
 
   private redirectToFirst() {
-    this.all$.subscribe(configs => {
+    this.all$.pipe(filter(configs => configs.length > 0)).subscribe(configs => {
       this.router.navigate([`deployment_configs/${configs[0].name}`]);
     });
   }

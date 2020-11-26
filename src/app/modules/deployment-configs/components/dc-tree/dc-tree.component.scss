@@ -8,6 +8,9 @@ $groupPadding: 4px;
 $borderColor: $neutral-color-400;
 
 .dc-tree {
+  &__text {
+    line-height: $lh;
+  }
   &__name {
     font-size: 24px;
   }

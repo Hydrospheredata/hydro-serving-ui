@@ -28,3 +28,8 @@ export const DeleteDeploymentConfigSuccess = createAction(
 export const DeleteDeploymentConfigFail = createAction(
   '[Deployment config] failed deletion'
 );
+
+export const UpdateDeploymentConfig = createAction(
+  '[Deployment config] update',
+  props<{ config: DeploymentConfig }>()
+);
