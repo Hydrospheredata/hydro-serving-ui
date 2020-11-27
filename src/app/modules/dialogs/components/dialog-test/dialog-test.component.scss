@@ -1,0 +1,103 @@
+@import 'variables.scss';
+
+.test-application {
+  position: relative;
+  max-width: 700px;
+  min-width: 700px;
+
+  &__close-icon {
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    height: 24px;
+    position: absolute;
+    width: 24px;
+  }
+}
+
+.CodeMirror {
+  background-color: #f2f4f7 !important;
+
+  &:last-of-type {
+    background-color: #f2f4f7;
+  }
+}
+
+.cm-s-output {
+  background-color: #f2f4f7 !important;
+}
+
+.buttons {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.form-button {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.input {
+  &-text {
+    &__input {
+      font-family: monospace;
+    }
+  }
+}
+
+.test-fields {
+  display: flex;
+  margin-bottom: 8px;
+
+  &__item {
+    flex: 1;
+    margin: 0 4px;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+.status {
+  font-size: 12px;
+  width: 90px;
+
+  &__text {
+    background: $neutral-color-200;
+    border-radius: 2px;
+    padding: 0 4px;
+
+    &--failed {
+      color: $supportive-color-red-500;
+    }
+
+    &--pending {
+      color: $neutral-color-500;
+    }
+
+    &--success {
+      color: $supportive-color-green-600;
+    }
+  }
+}
+
+.application-name {
+  font-size: 18px;
+}
+
+.error-container {
+  color: white;
+  background: $supportive-color-red-100;
+  color: $supportive-color-red-700;
+  padding: 12px;
+}
+
+.warning-container {
+  color: white;
+  background: $accent-color-100;
+  color: $accent-color-700;
+  padding: 12px;
+}

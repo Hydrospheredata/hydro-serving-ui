@@ -3,7 +3,6 @@
   "compilerOptions": {
     "outDir": "../hydro-serving-ui",
     "baseUrl": "./",
-    "module": "es2015",
     "types": []
   },
   "exclude": [

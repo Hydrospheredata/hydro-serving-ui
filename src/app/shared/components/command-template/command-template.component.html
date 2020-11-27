@@ -1,0 +1,12 @@
+<div class="code code--wrap-space" *ngIf="isValidInput; else error">
+  <ng-container>
+    <code>
+      <span>{{ codeExample }}</span>
+    </code>
+    <div class="copy" [hsCopyToBuffer]="codeExample"></div>
+  </ng-container>
+</div>
+
+<ng-template #error>
+  <div class="error-container">Wrong input's format</div>
+</ng-template>

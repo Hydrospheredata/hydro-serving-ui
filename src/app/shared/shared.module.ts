@@ -1,0 +1,67 @@
+import { MdlModule } from '@angular-mdl/core';
+import { MdlSelectModule } from '@angular-mdl/select';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { Ng5SliderModule } from '@node_modules/ng5-slider';
+import { SelectModule } from 'ng2-select';
+import * as P from './pipes';
+import * as C from './components';
+import * as D from './directives';
+
+const reExportedModules = [
+  Ng5SliderModule,
+  MdlSelectModule,
+  MdlModule,
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  RouterModule,
+  SelectModule,
+];
+
+const pipes = [
+  P.FormatDatePipe,
+  P.IterateAsArrayPipe,
+  P.MatchSorterPipe,
+  P.PluckPipe,
+  P.SortByPipe,
+  P.TimeAgoPipe,
+  P.FieldShapePipe,
+];
+
+const directives = [
+  D.BuildInformationDirective,
+  D.CopyToBufferDirective,
+  D.AutofocusedDirective,
+  D.HideInZenModeDirective,
+  D.ShowInZenModeDirective,
+  D.ScaleImageDirective,
+  D.PixelToCanvasDirective,
+];
+
+const components = [
+  C.SidebarComponent,
+  C.InputTextComponent,
+  C.IconComponent,
+  C.ApplicationStatusComponent,
+  C.ErrorMessageComponent,
+  C.ModelVersionStatusComponent,
+  C.CommandTemplateComponent,
+  C.LogsComponent,
+  C.ButtonComponent,
+  C.TooltipComponent,
+  C.LoaderComponent,
+  C.LoadingComponent,
+  C.TensorImageListComponent,
+  C.ServiceAvailabilityComponent,
+  C.AlertMessageComponent,
+];
+
+@NgModule({
+  declarations: [...pipes, ...components, ...directives],
+  imports: [...reExportedModules],
+  exports: [...reExportedModules, ...components, ...pipes, ...directives],
+})
+export class SharedModule {}

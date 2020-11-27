@@ -1,4 +1,4 @@
-import { Runtime } from '@shared/models/runtime.model';
+import { Runtime } from '@app/core/data/types';
 
 export const MockRuntime: Runtime = {
   name: 'mockRuntime',

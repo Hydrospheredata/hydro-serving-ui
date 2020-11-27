@@ -1,4 +1,4 @@
-import { Model } from '@shared/_index';
+import { Model } from '@app/core/data/types';
 
 export const MockModel1: Model = {
   id: 1,

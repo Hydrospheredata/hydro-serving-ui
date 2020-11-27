@@ -1,7 +1,13 @@
-import { Component, ChangeDetectionStrategy, ViewChild, ViewContainerRef, Input } from '@angular/core';
-import { ModelVersionLogService } from '@models/services/model-version-log.service';
-import { Servable } from '@servables/models';
-import { ModelVersion, ISignature } from '@shared/_index';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewChild,
+  ViewContainerRef,
+  Input,
+} from '@angular/core';
+import { Servable } from '@app/core/data/types';
+import { ModelVersion, ISignature } from '@app/core/data/types';
+import { ModelVersionLogService } from '@app/modules/model-version/components/model-version-log/model-version-log.service';
 
 @Component({
   selector: 'hs-model-version-details',

@@ -1,38 +1,26 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HS_BASE_URL, hsBaseUrlFactory } from '@core/base-url.token';
-import { HydroConfigService } from '@core/services/hydro-config.service';
-import { APP_BASE_HREF } from '@node_modules/@angular/common';
-import { baseHrefFactory } from '@shared/utils/base-href-factory.util';
-import { DeploymentConfigModule } from '../modules/deployment-config/deployment-config.module';
+import { APP_BASE_HREF } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HydroConfigService } from '@app/core/hydro-config.service';
+import { LayoutModule } from '@app/layout/layout.module';
+import { HS_BASE_URL, hsBaseUrlFactory } from './core/base-url.token';
+import { baseHrefFactory } from './utils';
 
-// Global controls
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.router';
-
-// Modules
-import { ApplicationsModule } from '@applications/applications.module';
-import { CoreModule } from '@core/core.module';
-import { DialogModule } from '@dialog/dialog.module';
-import { ModelsModule } from '@models/models.module';
-import { MonitoringModule } from '@monitoring/monitoring.module';
-import { SharedModule } from '@shared/shared.module';
-import { VisualizationModule } from 'modules/visualization/visualization.module';
+import { CoreModule } from './core/core.module';
+import { DialogsModule } from './modules/dialogs/dialogs.module';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    ApplicationsModule,
     CoreModule,
-    DialogModule,
-    ModelsModule,
-    SharedModule,
-    MonitoringModule,
-    MonitoringModule,
-    VisualizationModule,
-    DeploymentConfigModule,
+    LayoutModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    DialogsModule,
   ],
   providers: [
     HydroConfigService,

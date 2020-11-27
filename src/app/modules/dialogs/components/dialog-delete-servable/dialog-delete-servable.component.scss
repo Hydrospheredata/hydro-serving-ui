@@ -1,0 +1,31 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  &__text {
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+  &__servable-name {
+    font-size: 12px;
+    color: #4a4b5285;
+  }
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  &__button {
+    justify-content: center;
+    padding: 12px;
+  }
+
+  &__button + &__button {
+    margin-top: 4px;
+  }
+}

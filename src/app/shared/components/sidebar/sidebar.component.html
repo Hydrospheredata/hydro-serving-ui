@@ -1,0 +1,41 @@
+<aside class="sidebar" [ngClass]="{ 'sidebar--with-header': withHeader() }">
+  <div class="sidebar__header">
+    <div class="sidebar__button" *ngIf="button">
+      <ng-content select="button"></ng-content>
+    </div>
+    <div class="sidebar__input">
+      <hydro-input-text
+        [formControl]="filter"
+        icon="icon-search"
+      ></hydro-input-text>
+    </div>
+    <div class="sidebar__hide">
+      <ng-content select=".hide"></ng-content>
+    </div>
+  </div>
+  <ng-container *ngIf="!isEmpty; else message">
+    <div class="sidebar__list">
+      <div
+        class="sidebar__item"
+        *ngFor="let item of sidebarData"
+        (click)="handleClick(item)"
+        [ngClass]="{ 'sidebar__item--selected': selectedItem === item }"
+      >
+        <hydro-icon
+          type="bookmark"
+          class="sidebar__bookmark"
+          (click)="toggleBookmark(item)"
+          [ngClass]="{ 'sidebar__bookmark--selected': item.favorite }"
+        ></hydro-icon>
+        <span class="sidebar__name">{{ item.name }}</span>
+        <span *ngIf="item.status" class="sidebar__status">
+          <hs-application-status [status]="item.status"></hs-application-status>
+        </span>
+      </div>
+    </div>
+  </ng-container>
+</aside>
+
+<ng-template #message>
+  <div class="sidebar__message">list is empty</div>
+</ng-template>

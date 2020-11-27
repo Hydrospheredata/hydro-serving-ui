@@ -1,8 +1,17 @@
-import { ModelVersion, ModelVersionStatus } from '@shared/_index';
-import { ModelContract, Input, Output } from '@shared/interfaces';
+import {
+  ModelVersion,
+  ModelVersionStatus,
+  ModelContract,
+  Input,
+  Output,
+} from '@app/core/data/types';
 import { MockImage } from '@testing/factories/image';
 import { MockModel1, MockModel2 } from '@testing/factories/model';
-import { MockRuntime, MockRuntime3, MockRuntime2 } from '@testing/factories/runtime';
+import {
+  MockRuntime,
+  MockRuntime3,
+  MockRuntime2,
+} from '@testing/factories/runtime';
 
 export const MockModelContract: ModelContract = {
   get inputs(): Input[] {

@@ -1,0 +1,12 @@
+@import 'variables';
+
+.error {
+  background: $supportive-color-red-100;
+  color: $supportive-color-red-700;
+  border-radius: 5px;
+  padding: 12px;
+
+  & a {
+    color: #3a3a79 !important;
+  }
+}

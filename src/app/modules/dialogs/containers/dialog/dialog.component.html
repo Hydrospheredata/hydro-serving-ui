@@ -1,0 +1,12 @@
+<div
+  class="dialog__layout"
+  [@.disabled]="isAnimationDisabled"
+  [@openClose]="(this.dialog.show$ | async) ? 'open' : 'close'"
+  (@openClose.done)="onAnimationEvent($event)"
+  (click)="onLayoutClick($event)"
+  #layout
+>
+  <div class="dialog__container" #container>
+    <ng-container #anchor></ng-container>
+  </div>
+</div>

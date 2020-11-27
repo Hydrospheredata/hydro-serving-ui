@@ -1,0 +1,104 @@
+<div class="visualization">
+  <hs-alert-message *ngIf="message$ | async as message">{{
+    message
+  }}</hs-alert-message>
+  <div
+    *ngIf="(status$ | async) === 'PENDING' || (status$ | async) === 'STARTED'"
+    class="visualization__loader"
+  >
+    <hs-loader class="visualization__loader-icon"></hs-loader>
+  </div>
+  <div *ngIf="(status$ | async) === 'FAILED'" class="visualization__error">
+    <div class="visualization__error-message">
+      <hs-error-message>
+        {{ error$ | async | json }}
+      </hs-error-message>
+    </div>
+    <button (click)="retryRequest()" color="cyan" hs-button kind="flat">
+      Create new task
+    </button>
+  </div>
+  <div
+    *ngIf="(status$ | async) === 'SUCCESS' && !(message$ | async)"
+    class="visualization__body"
+  >
+    <div class="visualization__chart">
+      <div class="visualization__settings">
+        <div class="visualization__settings-item">
+          <span class="visualization__settings-label">Colorize: </span>
+          <mdl-select
+            (change)="onChangeColorizer($event)"
+            label="Choose colorizer"
+          >
+            <mdl-option
+              *ngFor="let colorizer of colorizers$ | async"
+              [value]="colorizer"
+            >
+              <span class="colorizer">
+                <span class="colorizer__type">{{ colorizer.type }}: </span
+                >{{ colorizer.name }}
+              </span></mdl-option
+            >
+          </mdl-select>
+        </div>
+        <div class="visualization__settings-regimes">
+          <span class="visualization__settings-label">Accent points: </span>
+          <mdl-radio
+            *ngFor="let regime of ['all', 'nearest', 'counterfactuals']"
+            [(ngModel)]="linkRegime"
+            [value]="regime"
+            name="regime"
+          >
+            {{ regime }}
+          </mdl-radio>
+        </div>
+        <div>
+          <mdl-checkbox (change)="onChangeShowTrainData($event)"
+            >show training data</mdl-checkbox
+          >
+        </div>
+
+        <div class="visualization__params">
+          <hs-visualization-params
+            *ngIf="params$ | async as params"
+            [params]="params"
+            (refit)="onRefit($event)"
+          >
+          </hs-visualization-params>
+        </div>
+
+        <div class="visualization__scores">
+          <hs-visualization-metrics
+            [visualizationMetrics]="visualizationMetrics$ | async"
+          ></hs-visualization-metrics>
+        </div>
+      </div>
+      <div class="visualization__scatterplot">
+        <hs-scatter-plot
+          (selectPoint)="handleSelectPoint($event)"
+          [colorizer]="colorizer$ | async"
+          [colors]="colors$ | async"
+          [counterfactuals]="counterfactuals$ | async"
+          [data]="scatterPlotData$ | async"
+          [linkRegime]="linkRegime"
+          [top100]="top100$ | async"
+          [showTrainingData]="showTrainData"
+        ></hs-scatter-plot>
+      </div>
+    </div>
+
+    <div *ngIf="selectedId$ | async as id" class="visualization__detail">
+      <ng-container *ngIf="selectedCheck$ | async as check; else err">
+        <hs-log-detail
+          [check]="check"
+          [modelVersion]="modelVersion$ | async"
+        ></hs-log-detail>
+      </ng-container>
+      <ng-template #err>
+        <div class="visualization__detail-alert">
+          Couldn't find request with id: {{ id }}
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

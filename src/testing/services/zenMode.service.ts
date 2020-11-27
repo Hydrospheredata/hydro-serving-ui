@@ -1,4 +1,4 @@
-import { ZenModeService } from '@core/services/zenmode.service';
+import { ZenModeService } from '@app/core/zenmode.service';
 import { of } from 'rxjs';
 
 export const MockZenModeServiceProvider = {

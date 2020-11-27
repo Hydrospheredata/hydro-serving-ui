@@ -1,0 +1,31 @@
+@import 'variables';
+
+.deployment-config-page {
+  display: flex;
+  height: 100%;
+
+  &__sidebar {
+    min-width: 250px;
+    width: 250px;
+  }
+
+  &__button {
+    width: 100%;
+  }
+
+  &__body {
+    height: calc(100% - 72px);
+    overflow: auto;
+    width: 100%;
+  }
+
+  &__message {
+    font-size: 24px;
+    padding: 24px;
+    text-align: center;
+
+    &-link {
+      color: $primary-color-700;
+    }
+  }
+}

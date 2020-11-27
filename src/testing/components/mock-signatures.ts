@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ISignature } from '@shared/models';
+import { ISignature } from '@app/core/data/types';
 
 @Component({
   selector: 'hydro-signatures',

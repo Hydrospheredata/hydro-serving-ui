@@ -1,4 +1,4 @@
-import { Image } from '@shared/models';
+import { Image } from '@app/core/data/types';
 
 export const MockImage: Image = {
   name: 'mockImage',
