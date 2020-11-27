@@ -14,7 +14,7 @@
     "ng": "ng",
     "start": "npm run sprites && ng serve",
     "build": "npm run sprites && ng build",
-    "build-prod": "npm run sprites && ng build --prod",
+    "build-prod": "npm run sprites && ng build",
     "sprites": "svg-sprite --config sprite-config.json src/assets/images/_icons/*.svg",
     "build-tm": "npm run sprites && ng build --prod --configuration=tm",
     "test": "ng test",
