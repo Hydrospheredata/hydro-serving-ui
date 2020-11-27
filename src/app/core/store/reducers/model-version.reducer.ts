@@ -6,9 +6,7 @@ import {
   Dictionary,
 } from '@ngrx/entity';
 import { createReducer, on, Action } from '@ngrx/store';
-
-// import { filter } from 'fp-ts/lib/Array';
-
+import * as _ from 'lodash';
 import {
   ModelVersion,
   Application,
@@ -63,62 +61,61 @@ const modelVersionReducer = createReducer(
     adapter.removeOne(modelVersionId, state)
   ),
   on(AddApplicationSuccess, UpdateApplicationSuccess, (state, { payload }) => {
-    // const application = payload;
-    // let updates: Update<ModelVersion>[] = [];
+    const application = payload;
+    let updates: Update<ModelVersion>[] = [];
     //
-    // const toUpdate = (application: Application) => (
-    //   modelVersion: ModelVersion
-    // ): Update<ModelVersion> => {
-    //   const applicationNames: string[] = modelVersion.applications;
-    //   if (!applicationNames.includes(application.name)) {
-    //     return {
-    //       id: modelVersion.id,
-    //       changes: { applications: [...applicationNames, application.name] },
-    //     };
-    //   }
-    // };
-    //
-    // updates = pipe(
-    //   application,
-    //   getApplicationsModelVariants,
-    //   map(getModelVersion),
-    //   map(getId),
-    //   map(toModelVersion(state.entities)),
-    //   map(toUpdate(application))
-    // );
-    //
-    // return adapter.updateMany(updates, state);
+    const toUpdate = (app: Application) => (
+      modelVersion: ModelVersion
+    ): Update<ModelVersion> => {
+      const applicationNames: string[] = modelVersion.applications;
+      if (!applicationNames.includes(app.name)) {
+        return {
+          id: modelVersion.id,
+          changes: { applications: [...applicationNames, app.name] },
+        };
+      }
+    };
 
-    return state;
+    try {
+      const a = getApplicationsModelVariants(application);
+      const b = a.map(getModelVersion);
+      const c = b.map(getId);
+      const d = c.map(toModelVersion(state.entities));
+      const e = d.map(toUpdate(application)).filter(_ => !!_);
+
+      return adapter.updateMany(e, state);
+    } catch (e) {
+      console.error(e);
+      return state;
+    }
   }),
   on(DeleteApplicationSuccess, (state, { applicationName }) => {
-    // const modelVersions: ModelVersion[] = Object.values(state.entities);
-    // const hasApplication = (applicationName: string) => (
-    //   modelVersion: ModelVersion
-    // ): boolean => modelVersion.applications.includes(applicationName);
-    //
-    // const toUpdate = (applicationName: string) => (
-    //   modelVersion: ModelVersion
-    // ): Update<ModelVersion> => {
-    //   return {
-    //     id: modelVersion.id,
-    //     changes: {
-    //       applications: modelVersion.applications.filter(
-    //         _ => _ === applicationName
-    //       ),
-    //     },
-    //   };
-    // };
-    //
-    // const updates: Update<ModelVersion>[] = pipe(
-    //   modelVersions,
-    //   filter(hasApplication(applicationName)),
-    //   map(toUpdate(applicationName))
-    // );
-    //
-    // return adapter.updateMany(updates, state);
+    const modelVersions: ModelVersion[] = Object.values(state.entities);
+    const hasApplication = (applicationName: string) => (
+      modelVersion: ModelVersion
+    ): boolean => modelVersion.applications.includes(applicationName);
 
-    return state;
+    const toUpdate = (applicationName: string) => (
+      modelVersion: ModelVersion
+    ): Update<ModelVersion> => {
+      return {
+        id: modelVersion.id,
+        changes: {
+          applications: modelVersion.applications.filter(
+            _ => _ !== applicationName
+          ),
+        },
+      };
+    };
+
+    try {
+      const mvs = modelVersions.filter(hasApplication(applicationName));
+      const updates = mvs.map(toUpdate(applicationName));
+
+      return adapter.updateMany(updates, state);
+    } catch (e) {
+      return state;
+    }
   })
 );
 
@@ -133,24 +130,20 @@ export const {
 } = adapter.getSelectors();
 
 // TODO: move utils
-// function getApplicationsModelVariants(
-//   application: Application
-// ): IModelVariant[] {
-//   const getStages = (application: Application) =>
-//     application.executionGraph.stages;
-//   const getModelVariants = (stage: Stage) => stage.modelVariants;
-//   const getMVs = flow(getStages, map(getModelVariants), flatten);
-//
-//   return getMVs(application);
-// }
-//
-// function getModelVersion(el: { modelVersion: ModelVersion }): ModelVersion {
-//   return el.modelVersion;
-// }
-// function getId(el: { id: number }): number {
-//   return el.id;
-// }
-//
-// function toModelVersion(dict: Dictionary<ModelVersion>) {
-//   return (id: number): ModelVersion => dict[id];
-// }
+function getApplicationsModelVariants(
+  application: Application
+): IModelVariant[] {
+  const stages = application.executionGraph.stages;
+  const getModelVariants = (stage: Stage) => stage.modelVariants;
+  return _.flatMap(stages, getModelVariants);
+}
+
+function getModelVersion(el: { modelVersion: ModelVersion }): ModelVersion {
+  return el.modelVersion;
+}
+function getId(el: { id: number }): number {
+  return el.id;
+}
+function toModelVersion(dict: Dictionary<ModelVersion>) {
+  return (id: number): ModelVersion => dict[id];
+}
