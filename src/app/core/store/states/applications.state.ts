@@ -14,7 +14,8 @@ export const adapter = createEntityAdapter<Application>({
 });
 
 export const initialState: State = {
-  ...adapter.getInitialState(),
+  ids: [],
+  entities: {},
   loaded: false,
   loading: false,
 };

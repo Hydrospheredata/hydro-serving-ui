@@ -11,7 +11,8 @@ export const adapter: EntityAdapter<ModelVersion> = createEntityAdapter<
   ModelVersion
 >();
 export const initialState: State = {
-  ...adapter.getInitialState(),
+  ids: [],
+  entities: {},
   loading: false,
   loaded: false,
 };

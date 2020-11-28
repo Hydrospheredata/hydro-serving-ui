@@ -9,7 +9,8 @@ export interface State extends EntityState<Model> {
 
 export const adapter: EntityAdapter<Model> = createEntityAdapter<Model>();
 export const initialState = {
-  ...adapter.getInitialState(),
+  ids: [],
+  entities: {},
   loading: false,
   loaded: false,
 };

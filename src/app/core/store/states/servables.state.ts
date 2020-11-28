@@ -12,7 +12,8 @@ export const adapter = createEntityAdapter<Servable>({
 });
 
 export const initialState = {
-  ...adapter.getInitialState(),
+  ids: [],
+  entities: {},
   loading: false,
   error: null,
 };
