@@ -47,13 +47,13 @@ import {
   ],
 })
 export class DialogComponent implements OnInit {
-  @ViewChild('anchor', { read: ViewContainerRef })
+  @ViewChild('anchor', { read: ViewContainerRef, static: true })
   containerRef: ViewContainerRef;
 
-  @ViewChild('container', { read: ElementRef })
+  @ViewChild('container', { read: ElementRef, static: true })
   containerElRef: ElementRef;
 
-  @ViewChild('layout')
+  @ViewChild('layout', { static: true })
   layoutRef: ElementRef;
 
   public isAnimationDisabled: boolean = false;

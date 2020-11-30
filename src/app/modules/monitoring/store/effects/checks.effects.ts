@@ -1,9 +1,9 @@
 import { Check, CheckCollection } from '../../models';
 import { MonitoringService } from '../../services';
 import { LoadChecks, LoadChecksSuccess } from '../../store';
-import { Injectable } from '@node_modules/@angular/core';
-import { createEffect, Actions, ofType } from '@node_modules/@ngrx/effects';
-import { switchMap, map } from '@node_modules/rxjs/internal/operators';
+import { Injectable } from '@angular/core';
+import { createEffect, Actions, ofType } from '@ngrx/effects';
+import { switchMap, map } from 'rxjs/internal/operators';
 
 @Injectable()
 export class ChecksEffects {

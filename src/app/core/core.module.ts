@@ -4,9 +4,9 @@ import {
   RouterStateSerializer,
   StoreRouterConnectingModule,
 } from '@ngrx/router-store';
-import { HttpClientModule } from '@node_modules/@angular/common/http';
-import { StoreModule } from '@node_modules/@ngrx/store';
-import { StoreDevtoolsModule } from '@node_modules/@ngrx/store-devtools';
+import { HttpClientModule } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { CustomRouterStateSerializer } from './store/states/router.state';
 import { initialState } from './store/states/root.state';

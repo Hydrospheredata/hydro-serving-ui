@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   AfterViewInit,
 } from '@angular/core';
-import { ViewChild, ElementRef } from '@node_modules/@angular/core';
+import { ViewChild, ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 import { scale as coldWarmScale } from '../heatmap/coldwarm-color';
 
@@ -14,7 +14,8 @@ import { scale as coldWarmScale } from '../heatmap/coldwarm-color';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BivariateReportLegendComponent implements AfterViewInit {
-  @ViewChild('anchor', { read: ElementRef }) anchorElement: ElementRef;
+  @ViewChild('anchor', { read: ElementRef, static: true })
+  anchorElement: ElementRef;
 
   ngAfterViewInit() {
     const colorScale = coldWarmScale;

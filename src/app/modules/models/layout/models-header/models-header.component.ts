@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { ModelsHeaderService } from './models-header.service';
-import { ViewChild, ElementRef } from '@node_modules/@angular/core';
-import { Observable } from '@node_modules/rxjs';
+import { Observable } from 'rxjs';
 import { ModelVersion, Model } from '@app/core/data/types';
 
 @Component({
@@ -12,7 +11,8 @@ import { ModelVersion, Model } from '@app/core/data/types';
   providers: [ModelsHeaderService],
 })
 export class ModelsHeaderComponent implements OnInit {
-  @ViewChild('siblings', { read: ElementRef }) siblingsEl: ElementRef;
+  @ViewChild('siblings')
+  siblingsEl: ElementRef;
 
   showButton$: Observable<boolean>;
   model$: Observable<Model>;

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@app/core/facades/models.facade';
-import { Observable, BehaviorSubject, combineLatest } from '@node_modules/rxjs';
-import { switchMap } from '@node_modules/rxjs/internal/operators';
-import { map } from '@node_modules/rxjs/operators';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { switchMap } from 'rxjs/internal/operators';
+import { map } from 'rxjs/operators';
 import { Model } from '@app/core/data/types';
 
 @Injectable({

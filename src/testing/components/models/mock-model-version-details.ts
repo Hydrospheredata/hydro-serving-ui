@@ -15,7 +15,7 @@ import { ModelVersionLogService } from '@app/modules/model-version/components/mo
   providers: [ModelVersionLogService],
 })
 export class ModelVersionDetailsComponent {
-  @ViewChild('logContainer', { read: ViewContainerRef })
+  @ViewChild('logContainer', { read: ViewContainerRef, static: true })
   logContainer: ViewContainerRef;
 
   @Input() modelVersion: ModelVersion;

@@ -28,7 +28,7 @@ export class LogsComponent
 
   @Output() closed: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild('logBody', { read: ElementRef }) logBody: ElementRef;
+  @ViewChild('logBody', { read: ElementRef, static: true }) logBody: ElementRef;
   autoScroll: boolean = true;
 
   logs: string[] = [];

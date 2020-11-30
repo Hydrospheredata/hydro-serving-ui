@@ -41,7 +41,7 @@ export class AggregationsList {
 
   get metricNames(): string[] {
     if (this.aggregations.length > 0) {
-      const set = new Set();
+      const set = new Set<string>();
       this.aggregations.forEach(agg => {
         Object.keys(agg.metricsChecks).forEach(metricName =>
           set.add(metricName)

@@ -7,7 +7,7 @@ import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { SharedModule } from '@app/shared/shared.module';
-import { HttpClientTestingModule } from '@node_modules/@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockApplication } from '@testing/factories/application';
 import { getNativeElement } from '@testing/helpers';
 import { of, BehaviorSubject, Observable } from 'rxjs';

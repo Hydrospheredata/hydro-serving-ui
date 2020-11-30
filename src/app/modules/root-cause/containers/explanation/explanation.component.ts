@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
-import { shareReplay, switchMap } from '@node_modules/rxjs/internal/operators';
+import { shareReplay, switchMap } from 'rxjs/internal/operators';
 import { EXPLANATION, ExplanationDialogComponent } from '../../containers';
 import { ExplanationFacade } from '../../containers/explanation/explanation.facade';
 import { Explanation, ExplanationStatus } from '../../models';

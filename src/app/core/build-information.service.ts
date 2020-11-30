@@ -39,7 +39,7 @@ export class BuildInformationService {
   loadBuildInformation() {
     const toRequest = endpoint =>
       this.http.get(endpoint).pipe(
-        map(res => {
+        map((res: any) => {
           return { ...res, status: ServiceStatus.AVAILABLE };
         }),
         catchError(err => this.handleError(err))

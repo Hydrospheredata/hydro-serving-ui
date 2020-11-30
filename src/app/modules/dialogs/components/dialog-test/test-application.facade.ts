@@ -1,19 +1,8 @@
-import { Input, TestStatus } from '@app/core/data/types';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
-import { Injectable, OnDestroy } from '@node_modules/@angular/core';
-import {
-  Observable,
-  of,
-  BehaviorSubject,
-  Subject,
-  Subscription,
-} from '@node_modules/rxjs';
+import { Injectable } from '@angular/core';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { ApplicationService } from '@app/core/data/services/application.service';
-import {
-  switchMap,
-  catchError,
-  tap,
-} from '@node_modules/rxjs/internal/operators';
+import { switchMap } from 'rxjs/internal/operators';
 
 @Injectable()
 export class TestApplicationFacade {

@@ -1,6 +1,6 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { Observable, combineLatest } from '@node_modules/rxjs';
-import { map } from '@node_modules/rxjs/operators';
+import { Observable, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Application, TestStatus } from '../../data/types';
 
 import { selectRouterState } from '../selectors/router.selectors';

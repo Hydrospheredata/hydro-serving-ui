@@ -9,12 +9,10 @@ import * as d3 from 'd3';
 
 @Component({
   selector: '[hs-d3area]',
-  template: `
-    <svg:path #path></svg:path>
-  `,
+  template: ` <svg:path #path></svg:path> `,
 })
 export class D3AreaComponent implements AfterViewInit {
-  @ViewChild('path', { read: ElementRef })
+  @ViewChild('path', { read: ElementRef, static: true })
   path: ElementRef;
 
   @Input() 'hs-d3area';
@@ -23,11 +21,11 @@ export class D3AreaComponent implements AfterViewInit {
   @Input() y0 = 0;
   @Input() set data(d: Array<[number, number]>) {
     d3.select(this.path.nativeElement)
-    .data([d])
-    .transition()
-    .duration(500)
-    .ease(d3.easeLinear)
-    .attr('d', this.area);
+      .data([d])
+      .transition()
+      .duration(500)
+      .ease(d3.easeLinear)
+      .attr('d', this.area);
   }
   @Input() stroke;
 

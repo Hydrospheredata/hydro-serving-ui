@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SharedModule } from '@app/shared/shared.module';
-import { HttpClientTestingModule } from '@node_modules/@angular/common/http/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { getNativeElement } from '@testing/helpers';
 import { SidebarComponent } from './sidebar.component';
 

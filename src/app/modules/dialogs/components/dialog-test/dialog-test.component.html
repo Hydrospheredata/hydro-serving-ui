@@ -21,13 +21,16 @@
               <div class="test-fields">
                 <div class="test-fields__item __input">
                   <label>Input</label>
-                  <codemirror
-                    #inputCodeMirror
-                    name="input"
+                  <ngx-codemirror
                     [(ngModel)]="input"
-                    [config]="inputOptions"
-                    (change)="onChange($event)"
-                  ></codemirror>
+                    name="input"
+                    (ngModelChange)="onChange($event)"
+                    [options]="{
+                      lineNumbers: true,
+                      theme: 'material',
+                      mode: 'markdown'
+                    }"
+                  ></ngx-codemirror>
                 </div>
                 <div class="test-fields__item __output">
                   <div class="test-fields__item-header">
@@ -40,13 +43,15 @@
                     <!--                    </span>-->
                   </div>
                   <ng-container *ngIf="output | async; let output">
-                    <codemirror
-                      #outputCodeMirror
+                    <ngx-codemirror
                       [ngModel]="output"
-                      [config]="outputOptions"
                       name="output"
-                    >
-                    </codemirror>
+                      [options]="{
+                        lineNumbers: true,
+                        theme: 'material',
+                        mode: 'markdown'
+                      }"
+                    ></ngx-codemirror>
                   </ng-container>
                 </div>
               </div>

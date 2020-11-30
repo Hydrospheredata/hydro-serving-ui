@@ -1,4 +1,4 @@
-import { EntityState, createEntityAdapter } from '@node_modules/@ngrx/entity';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { Application } from '../../data/types';
 
 export interface State extends EntityState<Application> {

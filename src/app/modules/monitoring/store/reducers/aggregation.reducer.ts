@@ -1,4 +1,4 @@
-import { createReducer, on, Action } from '@node_modules/@ngrx/store';
+import { createReducer, on, Action } from '@ngrx/store';
 
 import { AggregationsList, Aggregation } from '../../models';
 import {

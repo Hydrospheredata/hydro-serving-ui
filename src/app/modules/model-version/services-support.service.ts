@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '@app/core/data/services/http.service';
-import { Observable, of, forkJoin, BehaviorSubject } from '@node_modules/rxjs';
-import {
-  catchError,
-  shareReplay,
-  distinctUntilChanged,
-} from '@node_modules/rxjs/operators';
+import { Observable, of, forkJoin, BehaviorSubject } from 'rxjs';
+import { catchError, shareReplay, distinctUntilChanged } from 'rxjs/operators';
 import { ModelVersion } from '@app/core/data/types';
 
 export interface ServiceSupported {

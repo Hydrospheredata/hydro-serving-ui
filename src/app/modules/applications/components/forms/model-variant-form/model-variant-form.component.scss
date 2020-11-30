@@ -145,14 +145,14 @@
 .docker-image__name {
 }
 
-/deep/ .mdl-list__item:hover {
+::ng-deep .mdl-list__item:hover {
   .docker-image__version,
   .docker-image__repository {
     color: $neutral-color-800;
   }
 }
 
-/deep/
+::ng-deep
   .parameters__field.parameters__row-field-runtime
   .mdl-select
   .mdl-popover {

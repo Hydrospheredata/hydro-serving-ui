@@ -40,10 +40,13 @@ interface Tooltip {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckChartComponent implements OnInit {
-  @ViewChild('trackableRect', { read: ElementRef }) rectRef: ElementRef;
-  @ViewChild('containerEl', { read: ElementRef }) containerEl: ElementRef;
-  @ViewChild('axisGroup', { read: ElementRef }) axisGroup: ElementRef;
-  @ViewChild('supportiveLines', { read: ElementRef })
+  @ViewChild('trackableRect', { read: ElementRef, static: true })
+  rectRef: ElementRef;
+  @ViewChild('containerEl', { read: ElementRef, static: true })
+  containerEl: ElementRef;
+  @ViewChild('axisGroup', { read: ElementRef, static: true })
+  axisGroup: ElementRef;
+  @ViewChild('supportiveLines', { read: ElementRef, static: true })
   supportiveLinesGroup: ElementRef;
 
   // config vars

@@ -21,7 +21,7 @@ import { FeatureReportHistogram } from '../../models';
 })
 export class HistogramComponent implements OnChanges, AfterViewInit {
   @Input() config: FeatureReportHistogram;
-  @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef;
+  @ViewChild('anchor', { read: ElementRef, static: true }) anchor: ElementRef;
   private chart: Chart;
 
   constructor(private readonly colorPalette: ColorPaletteService) {}

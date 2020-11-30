@@ -28,8 +28,9 @@ export class HeatmapComponent implements OnInit {
     HeatmapData
   >();
 
-  @ViewChild('sgvEl', { read: ElementRef }) svgEl: ElementRef;
-  @ViewChild('rootElement', { read: ElementRef }) rootEl: ElementRef;
+  @ViewChild('sgvEl', { read: ElementRef, static: true }) svgEl: ElementRef;
+  @ViewChild('rootElement', { read: ElementRef, static: true })
+  rootEl: ElementRef;
 
   private readonly axisLabelsColor: string = '#334e68';
 

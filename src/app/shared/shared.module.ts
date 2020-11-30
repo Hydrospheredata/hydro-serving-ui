@@ -4,8 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { Ng5SliderModule } from '@node_modules/ng5-slider';
-import { SelectModule } from 'ng2-select';
+import { Ng5SliderModule } from 'ng5-slider';
 import * as P from './pipes';
 import * as C from './components';
 import * as D from './directives';
@@ -18,7 +17,6 @@ const reExportedModules = [
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  SelectModule,
 ];
 
 const pipes = [

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from '@node_modules/rxjs';
+import { Observable } from 'rxjs';
 import { ModelVersion } from '@app/core/data/types';
 import { Stat } from '../../models';
 import { StatFacade } from '../../stat.facade';

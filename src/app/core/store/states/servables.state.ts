@@ -1,5 +1,5 @@
 import { EntityState } from '@ngrx/entity';
-import { createEntityAdapter } from '@node_modules/@ngrx/entity';
+import { createEntityAdapter } from '@ngrx/entity';
 import { Servable } from '../../data/types';
 
 export interface State extends EntityState<Servable> {

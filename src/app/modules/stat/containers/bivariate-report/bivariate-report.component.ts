@@ -27,7 +27,8 @@ export class BivariateReportComponent implements OnInit {
     }
   }
 
-  @ViewChild('tooltipEl', { read: ElementRef }) tooltipEl: ElementRef;
+  @ViewChild('tooltipEl', { read: ElementRef, static: true })
+  tooltipEl: ElementRef;
 
   reports: BivariateReport[] = [];
   bivariateReport: BivariateReport;
@@ -88,7 +89,7 @@ export class BivariateReportComponent implements OnInit {
     this.hoveredItem = d;
 
     if (d) {
-      const event = window.event as MouseEvent;
+      const { offsetX, offsetY } = window.event as MouseEvent;
       const yIndex = this.productionHeatmapConfig.yLabels.indexOf(d.y);
       const xIndex = this.productionHeatmapConfig.xLabels.indexOf(d.x);
 
@@ -103,8 +104,8 @@ export class BivariateReportComponent implements OnInit {
         trainingValue: this.bivariateReport.training_heatmap.density[yIndex][
           xIndex
         ],
-        top: event.layerY + 12,
-        left: event.layerX + 12,
+        top: offsetY + 12,
+        left: offsetX + 12,
       };
     } else {
       this.tooltip = undefined;

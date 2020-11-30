@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  ViewChild,
+} from '@angular/core';
 import { easeLinear, line, select, curveMonotoneX } from 'd3';
 
 @Component({
@@ -7,7 +14,7 @@ import { easeLinear, line, select, curveMonotoneX } from 'd3';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class D3LineComponent implements OnChanges {
-  @ViewChild('path', { read: ElementRef })
+  @ViewChild('path', { read: ElementRef, static: true })
   path: ElementRef;
   @Input() 'hs-d3line';
   @Input() xScale;

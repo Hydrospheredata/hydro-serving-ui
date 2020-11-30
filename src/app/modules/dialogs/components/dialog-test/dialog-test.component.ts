@@ -20,8 +20,8 @@ import 'codemirror/addon/edit/closebrackets.js';
 import 'codemirror/addon/edit/matchbrackets.js';
 import 'codemirror/mode/javascript/javascript.js';
 
-import { CodemirrorComponent } from 'ng2-codemirror';
-import { map, startWith, share, tap, concatMap } from 'rxjs/operators';
+import { CodemirrorComponent } from '@ctrl/ngx-codemirror';
+import { tap } from 'rxjs/operators';
 
 export const SELECTED_APPLICATION = new InjectionToken<Application>(
   'selectedApplication'
@@ -43,10 +43,10 @@ export class DialogTestComponent implements OnInit {
   generatingInput: boolean = false;
   generatingInputError: string = '';
 
-  @ViewChild('inputCodeMirror')
+  @ViewChild('inputCodeMirror', { static: true })
   inputCodeMirror: CodemirrorComponent;
 
-  @ViewChild('outputCodeMirror')
+  @ViewChild('outputCodeMirror', { static: true })
   outputCodeMirror: CodemirrorComponent;
 
   constructor(
@@ -102,22 +102,12 @@ export class DialogTestComponent implements OnInit {
   }
 
   public onChange(input) {
+    console.log('change');
     try {
       JSON.parse(this.input);
       this.isValidInput = true;
     } catch (err) {
       this.isValidInput = false;
-    } finally {
-      if (!(input instanceof Event)) {
-        setTimeout(() => {
-          if (this.inputCodeMirror) {
-            this.inputCodeMirror.instance.refresh();
-          }
-          if (this.outputCodeMirror) {
-            this.outputCodeMirror.instance.refresh();
-          }
-        }, 0);
-      }
     }
   }
 

@@ -9,7 +9,8 @@ import * as d3 from 'd3';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AggregationLegendComponent {
-  @ViewChild('anchor', { read: ElementRef }) anchorElement: ElementRef;
+  @ViewChild('anchor', { read: ElementRef, static: true })
+  anchorElement: ElementRef;
 
   get cells(): { color: string; label: string }[] {
     const res = [

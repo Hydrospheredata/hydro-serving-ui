@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { ApplicationsModule } from '@app/modules/applications/applications.module';
-import { CodemirrorModule } from '@node_modules/ng2-codemirror';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { SharedModule } from '@app/shared/shared.module';
 
 import { DialogComponent } from './containers';

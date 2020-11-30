@@ -7,16 +7,15 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "target": "es2015",
     "downlevelIteration": true,
-    "module": "esnext", // add this line
+    "module": "esnext",
     "moduleResolution": "node",
     "plugins": [{ "name": "@angular/language-service" }],
     "paths": {
       "@environments/*": ["environments/*"],
       "@app/*": ["app/*"],
       "@components/*": ["app/components/*"],
-      "@node_modules/*": ["../node_modules/*"],
       "@applications/*": ["modules/applications/*"],
       "@models/*": ["modules/models/*"],
       "@core/*": ["modules/core/*"],
