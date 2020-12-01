@@ -1,12 +1,10 @@
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
+import { neitherNullNorUndefined } from '@app/utils';
 import { Check, CheckCollection } from '../../models';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { map, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-
 import { ModelVersion } from '@app/core/data/types';
-
 import { MonitoringFacade } from '../../store/monitoring.facade';
 
 export const enum ChecksHealthFilterOptions {
@@ -40,7 +38,6 @@ const initialFilter: ChecksFilter = {
 })
 export class BatchDetailsService {
   private checks$: Observable<Check[]>;
-
   private filter: BehaviorSubject<ChecksFilter> = new BehaviorSubject<
     ChecksFilter
   >(initialFilter);
@@ -50,9 +47,10 @@ export class BatchDetailsService {
     private facade: MonitoringFacade,
     private modelVersionsFacade: ModelVersionsFacade
   ) {
-    this.checks$ = this.facade
-      .getChecks()
-      .pipe(map(checksCollection => checksCollection.getChecks()));
+    this.checks$ = this.facade.getChecks().pipe(
+      neitherNullNorUndefined,
+      map(checksCollection => checksCollection.getChecks())
+    );
     this.filter$ = this.filter.asObservable();
   }
 
