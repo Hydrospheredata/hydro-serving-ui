@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@node_modules/@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { HeaderInfoComponent } from '@app/layout/header-info/header-info.component';
 import { HeaderNavComponent } from '@app/layout/header-nav/header-nav.component';

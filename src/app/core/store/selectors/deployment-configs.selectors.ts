@@ -1,10 +1,7 @@
 import { State } from '../states/deployment-configs.state';
 import { selectRouterParams } from './router.selectors';
 
-import {
-  createFeatureSelector,
-  createSelector,
-} from '@node_modules/@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 const getFeatureState = createFeatureSelector<State>('deploymentConfigs');
 

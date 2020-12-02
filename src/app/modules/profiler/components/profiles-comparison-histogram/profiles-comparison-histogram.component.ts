@@ -26,7 +26,7 @@ export class ProfilesComparisonHistogramComponent
   implements AfterViewInit, OnChanges {
   @Input() trainingProfile: DoubleProfile | null;
   @Input() productionProfile: DoubleProfile | null;
-  @ViewChild('chartContainer') chartContainerRef: ElementRef;
+  @ViewChild('chartContainer', { static: true }) chartContainerRef: ElementRef;
 
   private trainingDataColor = HIGHCHART_COLORS.profiles.training;
   private productionDataColor = HIGHCHART_COLORS.profiles.production;

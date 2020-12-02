@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { FieldsService } from '@app/modules/profiler/fields.service';
-import { Observable, Subject, combineLatest } from '@node_modules/rxjs';
-import { take, switchMap, map } from '@node_modules/rxjs/internal/operators';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { take, switchMap, map } from 'rxjs/internal/operators';
 
 import { ProfilerFacade } from '@app/core/facades/profiler.facade';
 import { Profiles } from '@app/core/data/types';

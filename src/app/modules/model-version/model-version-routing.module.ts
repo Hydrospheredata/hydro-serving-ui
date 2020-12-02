@@ -18,20 +18,27 @@ import { ModelVersionPageComponent } from './page/model-version-page/model-versi
           },
           {
             path: 'profile/:featureName',
-            loadChildren: '../profiler/profiler.module#ProfilerModule',
+            loadChildren: () =>
+              import('../profiler/profiler.module').then(m => m.ProfilerModule),
           },
           {
             path: 'monitoring',
-            loadChildren: '../monitoring/monitoring.module#MonitoringModule',
+            loadChildren: () =>
+              import('../monitoring/monitoring.module').then(
+                m => m.MonitoringModule
+              ),
           },
           {
             path: 'data_projection',
-            loadChildren:
-              '../visualization/visualization.module#VisualizationModule',
+            loadChildren: () =>
+              import('../visualization/visualization.module').then(
+                m => m.VisualizationModule
+              ),
           },
           {
             path: 'drift_report',
-            loadChildren: '../stat/stat.module#StatModule',
+            loadChildren: () =>
+              import('../stat/stat.module').then(m => m.StatModule),
           },
           // {
           //   path: ':modelVersionId',

@@ -28,7 +28,7 @@ export class DialogMetricsComponent implements OnInit {
     ModelVersion
   > = this.modelVersionsFacade.selectedModelVersion();
 
-  @ViewChild('container', { read: ViewContainerRef })
+  @ViewChild('container', { read: ViewContainerRef, static: true })
   private vcr: ViewContainerRef;
 
   constructor(

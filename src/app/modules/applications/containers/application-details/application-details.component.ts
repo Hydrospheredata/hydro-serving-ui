@@ -18,7 +18,7 @@ import {
 } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 
-import { Observable, BehaviorSubject } from '@node_modules/rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 interface MenuState {
   showed: boolean;

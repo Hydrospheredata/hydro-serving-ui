@@ -5,17 +5,17 @@ import { PageNotFoundComponent } from './layout/page-not-found/page-not-found.co
 const routes: Routes = [
   {
     path: 'models',
-    loadChildren: './modules/models/models.module#ModelsModule',
+    loadChildren: () => import('./modules/models/models.module').then(m => m.ModelsModule),
   },
   {
     path: 'applications',
     loadChildren:
-      './modules/applications/applications.module#ApplicationsModule',
+      () => import('./modules/applications/applications.module').then(m => m.ApplicationsModule),
   },
   {
     path: 'deployment_configs',
     loadChildren:
-      './modules/deployment-configs/deployment-configs.module#DeploymentConfigsModule',
+      () => import('./modules/deployment-configs/deployment-configs.module').then(m => m.DeploymentConfigsModule),
   },
   {
     path: '',

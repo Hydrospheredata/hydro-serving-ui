@@ -7,11 +7,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { CustomValidatorsService } from '@app/core/custom-validators.service';
-import {
-  FormBuilder,
-  FormArray,
-  Validators,
-} from '@node_modules/@angular/forms';
+import { FormBuilder, FormArray, Validators } from '@angular/forms';
 import {
   VisualizationParams,
   VisualizationPropertyMetric,

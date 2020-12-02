@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from '@node_modules/rxjs';
+import { Observable } from 'rxjs';
 
 import { Servable } from '@app/core/data/types';
 import { selectAllServables } from '@app/core/store/selectors/servables.selectors';

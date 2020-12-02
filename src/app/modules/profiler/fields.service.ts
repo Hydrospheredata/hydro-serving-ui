@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { ProfilerFacade } from '@app/core/facades/profiler.facade';
-import { Observable } from '@node_modules/rxjs';
-import { switchMap, map } from '@node_modules/rxjs/internal/operators';
+import { Observable } from 'rxjs';
+import { switchMap, map } from 'rxjs/internal/operators';
 
 @Injectable({
   providedIn: 'root',

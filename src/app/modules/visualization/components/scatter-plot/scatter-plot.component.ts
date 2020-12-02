@@ -57,14 +57,18 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
 
   @Output() selectPoint: EventEmitter<number> = new EventEmitter();
 
-  @ViewChild('container', { read: ElementRef }) container: ElementRef;
-  @ViewChild('layout', { read: ElementRef }) layout: ElementRef;
-  @ViewChild('svg', { read: ElementRef }) svg: ElementRef;
-  @ViewChild('axisGroup', { read: ElementRef }) axisGroup: ElementRef;
-  @ViewChild('circles', { read: ElementRef }) circlesGroup: ElementRef;
-  @ViewChild('links', { read: ElementRef }) linksGroup: ElementRef;
-  @ViewChild('kde', { read: ElementRef }) kdeGroup: ElementRef;
-  @ViewChild('supportiveLines', { read: ElementRef })
+  @ViewChild('container', { read: ElementRef, static: true })
+  container: ElementRef;
+  @ViewChild('layout', { read: ElementRef, static: true }) layout: ElementRef;
+  @ViewChild('svg', { read: ElementRef, static: true }) svg: ElementRef;
+  @ViewChild('axisGroup', { read: ElementRef, static: true })
+  axisGroup: ElementRef;
+  @ViewChild('circles', { read: ElementRef, static: true })
+  circlesGroup: ElementRef;
+  @ViewChild('links', { read: ElementRef, static: true })
+  linksGroup: ElementRef;
+  @ViewChild('kde', { read: ElementRef, static: true }) kdeGroup: ElementRef;
+  @ViewChild('supportiveLines', { read: ElementRef, static: true })
   supportiveLinesGroup: ElementRef;
 
   points: ScatterPlotPoint[] = [];

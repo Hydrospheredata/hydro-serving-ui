@@ -1,5 +1,5 @@
 import { RouterStateUrl } from '../states/router.state';
-import * as fromRouter from '@node_modules/@ngrx/router-store';
+import * as fromRouter from '@ngrx/router-store';
 
 import * as fromApplications from './applications.state';
 import * as fromModels from './models.state';

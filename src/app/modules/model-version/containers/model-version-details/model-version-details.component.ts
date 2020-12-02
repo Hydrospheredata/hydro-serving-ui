@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy, ComponentRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ComponentRef,
+  ViewChild,
+  ViewContainerRef,
+  ComponentFactoryResolver,
+} from '@angular/core';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ServablesFacade } from '@app/core/facades/servables.facade';
 import { FieldsService } from '@app/modules/profiler/fields.service';
 import { ServableLogsComponent } from '@app/modules/servables/containers/servable-logs/servable-logs.component';
 import { ModelVersionLogComponent } from '../../components';
-
-import {
-  ViewChild,
-  ViewContainerRef,
-  ComponentFactoryResolver,
-} from '@node_modules/@angular/core';
 
 import { Observable, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -20,12 +21,11 @@ import { ModelVersion, Servable, Application } from '@app/core/data/types';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 
 @Component({
-  selector: 'app-model-version-details',
   templateUrl: './model-version-details.component.html',
   styleUrls: ['./model-version-details.component.scss'],
 })
 export class ModelVersionDetailsComponent implements OnInit {
-  @ViewChild('logContainer', { read: ViewContainerRef })
+  @ViewChild('logContainer', { read: ViewContainerRef, static: true })
   logContainer: ViewContainerRef;
 
   modelVersion$: Observable<ModelVersion>;

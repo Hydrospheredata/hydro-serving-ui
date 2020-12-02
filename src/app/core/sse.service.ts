@@ -126,10 +126,10 @@ export class SseService {
     this.eventSource.addEventListener(evtName, (message: MessageEvent) => {
       try {
         const myData = JSON.parse(message.data);
-        this.store.dispatch(new action(myData));
+        this.store.dispatch(action(myData));
       } catch (err) {
         if (message.data) {
-          this.store.dispatch(new action(message.data));
+          this.store.dispatch(action(message.data));
         }
       }
     });

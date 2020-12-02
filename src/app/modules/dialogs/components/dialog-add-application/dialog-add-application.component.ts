@@ -8,7 +8,7 @@ import { ApplicationFormComponent } from '@app/modules/applications/components/f
   templateUrl: './dialog-add-application.component.html',
 })
 export class DialogAddApplicationComponent {
-  @ViewChild('applicationForm')
+  @ViewChild('applicationForm', { static: true })
   ApplicationFormComponent: ApplicationFormComponent;
 
   constructor(

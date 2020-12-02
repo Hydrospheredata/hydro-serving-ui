@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { FavoriteService } from '@app/core/favorite.service';
-import { tap } from '@node_modules/rxjs/operators';
+import { tap } from 'rxjs/operators';
 
 import { ModelService } from '../../data/services/model.service';
 

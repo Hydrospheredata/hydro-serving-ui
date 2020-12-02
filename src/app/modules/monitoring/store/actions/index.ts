@@ -1,4 +1,4 @@
-import { createAction } from '@node_modules/@ngrx/store';
+import { createAction } from '@ngrx/store';
 
 export * from './metrics.actions';
 export * from './monitoring-service-status.actions';

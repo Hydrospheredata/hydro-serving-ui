@@ -1,8 +1,5 @@
-import { Observable } from '@node_modules/rxjs';
-import {
-  map,
-  distinctUntilChanged,
-} from '@node_modules/rxjs/internal/operators';
+import { Observable } from 'rxjs';
+import { map, distinctUntilChanged } from 'rxjs/internal/operators';
 
 export function pluck<T, K extends keyof T>(key: K) {
   return (source: Observable<T>) =>

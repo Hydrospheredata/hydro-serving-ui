@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BuildInformationService } from '@app/core/build-information.service';
-import { Observable } from '@node_modules/rxjs';
+import { Observable } from 'rxjs';
 import { ServiceStatus } from '@app/core/data/types';
 
 @Component({

@@ -16,8 +16,8 @@ import {
 export class TooltipComponent implements OnInit {
   hidden: boolean = true;
   @Input() 'hs-tooltip': string = '';
-  @ViewChild('tpl', { read: TemplateRef }) tpl: TemplateRef<any>;
-  @ViewChild('container', { read: ViewContainerRef })
+  @ViewChild('tpl', { read: TemplateRef, static: true }) tpl: TemplateRef<any>;
+  @ViewChild('container', { read: ViewContainerRef, static: true })
   container: ViewContainerRef;
 
   get text(): string {

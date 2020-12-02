@@ -1,4 +1,10 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import * as d3 from 'd3';
 
 @Component({
@@ -8,7 +14,8 @@ import * as d3 from 'd3';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GradientLegendComponent implements AfterViewInit {
-  @ViewChild('anchor', { read: ElementRef }) anchorElement: ElementRef;
+  @ViewChild('anchor', { read: ElementRef, static: true })
+  anchorElement: ElementRef;
 
   ngAfterViewInit() {
     const colorScale = d3.scaleSequential(d3.interpolateRdBu).domain([0, 1]);

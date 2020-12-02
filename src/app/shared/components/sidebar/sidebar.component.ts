@@ -9,9 +9,9 @@ import {
   ElementRef,
 } from '@angular/core';
 import { HydroConfigService } from '@app/core/hydro-config.service';
-import { FormControl } from '@node_modules/@angular/forms';
-import { Subject } from '@node_modules/rxjs';
-import { takeUntil } from '@node_modules/rxjs/internal/operators';
+import { FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/internal/operators';
 import { Application, Model, DeploymentConfig } from '@app/core/data/types';
 
 @Component({
@@ -26,8 +26,8 @@ export class SidebarComponent implements AfterViewInit, OnDestroy {
   @Output() filtered: EventEmitter<string> = new EventEmitter();
   @Output() bookmarked: EventEmitter<Model | Application> = new EventEmitter();
 
-  @ContentChild('button') button: ElementRef;
-  @ContentChild('.hide') hide: ElementRef;
+  @ContentChild('button', { static: true }) button: ElementRef;
+  @ContentChild('.hide', { static: true }) hide: ElementRef;
 
   filter: FormControl = new FormControl('');
   private destroy: Subject<any> = new Subject<any>();

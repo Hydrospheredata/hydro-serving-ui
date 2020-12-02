@@ -14,7 +14,7 @@ import {
   style,
   stagger,
   animate,
-} from '@node_modules/@angular/animations';
+} from '@angular/animations';
 
 @Component({
   selector: 'hs-requests',

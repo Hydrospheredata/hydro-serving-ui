@@ -21,7 +21,7 @@ import {
   animate,
   trigger,
   keyframes,
-} from '@node_modules/@angular/animations';
+} from '@angular/animations';
 import { ModelVersion } from '@app/core/data/types';
 import { Observable } from 'rxjs';
 

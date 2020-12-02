@@ -1,4 +1,4 @@
-import { createAction, props } from '@node_modules/@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 
 import { ModelVersion } from '@app/core/data/types';
 import { AggregationsList, Aggregation } from '../../models';

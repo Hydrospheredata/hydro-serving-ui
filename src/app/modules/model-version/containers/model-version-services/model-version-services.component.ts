@@ -3,7 +3,7 @@ import {
   ServicesSupportService,
   ServiceSupported,
 } from '../../services-support.service';
-import { Observable } from '@node_modules/rxjs';
+import { Observable } from 'rxjs';
 import { ModelVersion } from '@app/core/data/types';
 
 @Component({

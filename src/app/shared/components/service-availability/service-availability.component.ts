@@ -5,7 +5,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { ViewChild, TemplateRef } from '@node_modules/@angular/core';
+import { ViewChild, TemplateRef } from '@angular/core';
 import { ServiceStatus } from '@app/core/data/types';
 
 @Component({
@@ -20,10 +20,14 @@ export class ServiceAvailabilityComponent implements OnChanges {
 
   activeTemplate: TemplateRef<any>;
 
-  @ViewChild('loadingTemplate', { read: TemplateRef }) loadingTemplate;
-  @ViewChild('errorTemplate', { read: TemplateRef }) errorTemplate;
-  @ViewChild('alertTemplate', { read: TemplateRef }) alertTemplate;
-  @ViewChild('contentTemplate', { read: TemplateRef }) contentTemplate;
+  @ViewChild('loadingTemplate', { read: TemplateRef, static: true })
+  loadingTemplate;
+  @ViewChild('errorTemplate', { read: TemplateRef, static: true })
+  errorTemplate;
+  @ViewChild('alertTemplate', { read: TemplateRef, static: true })
+  alertTemplate;
+  @ViewChild('contentTemplate', { read: TemplateRef, static: true })
+  contentTemplate;
 
   ngOnChanges(changes: SimpleChanges) {
     const status =

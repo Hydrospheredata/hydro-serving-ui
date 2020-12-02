@@ -1,16 +1,12 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Observable, of } from '@node_modules/rxjs';
+import { Observable, of } from 'rxjs';
 
 import { StatApiService } from './services/stat-api.service';
 import { Stat } from './models';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { ModelVersion } from '@app/core/data/types';
 
-import {
-  switchMap,
-  catchError,
-  tap,
-} from '@node_modules/rxjs/internal/operators';
+import { switchMap, catchError, tap } from 'rxjs/internal/operators';
 import { StatState } from './store/stat.state';
 import { neitherNullNorUndefined } from '@app/utils';
 

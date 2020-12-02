@@ -1,4 +1,4 @@
-import { Action, createReducer, on } from '@node_modules/@ngrx/store';
+import { Action, createReducer, on } from '@ngrx/store';
 import { ShowCheckDetails, CloseCheckDetails } from '../actions';
 
 export interface State {
