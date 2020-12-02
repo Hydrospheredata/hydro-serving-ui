@@ -103,6 +103,6 @@
     "tslint": "^5.9.1",
     "typescript": "3.8.3",
     "typescript-eslint-parser": "^9.0.0",
-    "webpack-bundle-analyzer": "^2.9.0"
+    "webpack-bundle-analyzer": "^3.3.2"
   }
 }
