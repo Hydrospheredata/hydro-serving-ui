@@ -4,7 +4,12 @@ import { APP_BASE_HREF } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HydroConfigService } from '@app/core/hydro-config.service';
 import { LayoutModule } from '@app/layout/layout.module';
-import { HS_BASE_URL, hsBaseUrlFactory } from './core/base-url.token';
+import {
+  HS_BASE_URL,
+  hsBaseUrlFactory,
+  HS_ABSOLUTE_URL,
+  hsAbsoluteUrlFactory,
+} from './core/base-url.token';
 import { baseHrefFactory } from './utils';
 
 import { AppComponent } from './app.component';
@@ -37,6 +42,11 @@ import { DialogsModule } from './modules/dialogs/dialogs.module';
     {
       provide: HS_BASE_URL,
       useFactory: href => hsBaseUrlFactory(href),
+      deps: [APP_BASE_HREF],
+    },
+    {
+      provide: HS_ABSOLUTE_URL,
+      useFactory: href => hsAbsoluteUrlFactory(href),
       deps: [APP_BASE_HREF],
     },
   ],
