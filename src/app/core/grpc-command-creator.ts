@@ -8,6 +8,7 @@ export class GrpcCommandCreator extends CommandCreator {
 
   getCommand(application: Application, input: string): string {
     const { name: appName } = application;
+    console.log(this.url);
     const { origin, host } = new URL(this.url);
 
     return `import grpc \n

@@ -3,6 +3,10 @@ import { Application } from '@app/core/data/types';
 import { CommandCreator } from './command-creator';
 
 export class CurlCommandCreator extends CommandCreator {
+
+  private static removeNewLineSymbolsFromString(str: string = ''): string {
+    return str === null ? '' : str.replace(/[\r\n]+/g, ' ');
+  }
   readonly headers: string = `--header 'Content-Type: application/json' --header 'Accept: application/json'`;
 
   constructor(private url: string) {
@@ -21,9 +25,5 @@ export class CurlCommandCreator extends CommandCreator {
     } catch (err) {
       return 'invalid contract';
     }
-  }
-
-  private static removeNewLineSymbolsFromString(str: string = ''): string {
-    return str === null ? '' : str.replace(/[\r\n]+/g, ' ');
   }
 }
