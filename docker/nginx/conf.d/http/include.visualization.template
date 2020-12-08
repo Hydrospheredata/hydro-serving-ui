@@ -1,6 +1,4 @@
 location /visualization {
-  include /etc/nginx/conf.d/include.closed_check;
-
   proxy_pass http://$VISUALIZATION_HOST:$VISUALIZATION_HTTP_PORT;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Scheme $scheme;
