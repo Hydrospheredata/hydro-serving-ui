@@ -1,6 +1,4 @@
 location /alerts {
-  include /etc/nginx/conf.d/include.closed_check;
-
   rewrite /alerts/(.*) /$1  break;
   proxy_pass http://$PROMETHEUS_AM_HOST:$PROMETHEUS_AM_PORT;
   proxy_set_header X-Real-IP $remote_addr;

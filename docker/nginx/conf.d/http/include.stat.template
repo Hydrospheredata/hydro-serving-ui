@@ -1,6 +1,4 @@
 location /stat {
-  include /etc/nginx/conf.d/include.closed_check;
-
   proxy_pass http://$STAT_HOST:$STAT_PORT;
   proxy_set_header X-Real-IP $remote_addr;
   proxy_set_header X-Scheme $scheme;
