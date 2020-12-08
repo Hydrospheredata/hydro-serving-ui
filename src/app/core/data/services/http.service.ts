@@ -3,7 +3,7 @@ import {
   HttpErrorResponse,
   HttpParams,
 } from '@angular/common/http';
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HS_BASE_URL } from '@app/core/base-url.token';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -23,10 +23,7 @@ interface IHydroHttpOptions {
   providedIn: 'root',
 })
 export class HttpService {
-  url: string = '';
-  constructor(public http: HttpClient, injector: Injector) {
-    this.url = injector.get(HS_BASE_URL);
-  }
+  constructor(public http: HttpClient, @Inject(HS_BASE_URL) public url: string) {}
 
   get<T>(url: string, options?: IHydroHttpOptions) {
     return this.http
