@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { CurlCommandCreator } from './curl-command-creator';
 import { GrpcCommandCreator } from './grpc-command-creator';
 import { CommandCreator } from './command-creator';
-import { HS_BASE_URL } from '@app/core/base-url.token';
+import { HS_ABSOLUTE_URL } from '@app/core/base-url.token';
 
 export class UnknownCommandCreator extends CommandCreator {
   getCommand = () => '';
@@ -10,14 +10,14 @@ export class UnknownCommandCreator extends CommandCreator {
 
 @Injectable()
 export class CommandCreatorFactory {
-  constructor(@Inject(HS_BASE_URL) private httpUrl: string) {}
+  constructor(@Inject(HS_ABSOLUTE_URL) private url: string) {}
 
   create(type): CommandCreator {
     switch (type) {
       case 'grpc':
-        return new GrpcCommandCreator(this.httpUrl);
+        return new GrpcCommandCreator(this.url);
       case 'curl':
-        return new CurlCommandCreator(this.httpUrl);
+        return new CurlCommandCreator(this.url);
       default:
         return new UnknownCommandCreator();
     }

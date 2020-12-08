@@ -25,7 +25,7 @@ import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
   styleUrls: ['./model-version-details.component.scss'],
 })
 export class ModelVersionDetailsComponent implements OnInit {
-  @ViewChild('logContainer', { read: ViewContainerRef, static: true })
+  @ViewChild('logContainer', { read: ViewContainerRef })
   logContainer: ViewContainerRef;
 
   modelVersion$: Observable<ModelVersion>;

@@ -49,8 +49,8 @@ export class HttpService {
       .pipe(catchError(err => this.handleError(err)));
   }
 
-  private getFullUrl(url: string): string {
-    return this.url + url;
+  public getFullUrl(endpoint: string): string {
+    return this.url + endpoint;
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

@@ -1,4 +1,3 @@
-import { environment } from '@environments/environment';
 import { Application } from '@app/core/data/types';
 import { CommandCreator } from './command-creator';
 
