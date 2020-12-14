@@ -7,9 +7,9 @@ properties([
 ])
 
 SERVICENAME = 'hydro-serving-ui'
-TESTCMD = 'sbt --batch test'
 REGISTRYURL = 'harbor.hydrosphere.io/hydro-serving'
 SERVICEIMAGENAME = 'hydro-serving-ui'
+GITHUBREPO  = "github.com/Hydrospheredata/hydro-serving-ui.git"
 
 def checkoutRepo(String repo){
   git changelog: false, credentialsId: 'HydroRobot_AccessToken', poll: false, url: repo
@@ -52,13 +52,15 @@ def runTest(){
 def releaseService(String xVersion, String yVersion){
   withCredentials([usernamePassword(credentialsId: 'HydroRobot_AccessToken', passwordVariable: 'password', usernameVariable: 'username')]) {
         //Set global git
-      sh script: "git config --global user.name \"$username\"",label: "Set global username git"
-      sh script: "git config --global user.email \"$username@provectus.com\"",label: "Set global email git"
+      sh script: "git config --global user.name \"HydroRobot\"",label: "Set global username git"
+      sh script: "git config --global user.email \"robot@hydrosphere.io\"",label: "Set global email git"
+      checkoutRepo("https://${GITHUBREPO}")
+      sh script: "git remote set-url origin https://$username:$password@${GITHUBREPO}", label: "set origin"
       sh script: "git diff", label: "show diff"
       sh script: "git add .", label: "add all file to commit"
-      sh script: "git commit -m 'Bump to $yVersion'", label: "commit to git"
+      sh script: "git commit --allow-empty -a -m 'Bump to $yVersion'", label: "commit to git"
       sh script: "git push --set-upstream origin master", label: "push all file to git"
-      sh script: "git tag -a $yVersion -m 'Bump $xVersion to $yVersion version'",label: "set git tag"
+      sh script: "git tag -a v$yVersion -m 'Bump $xVersion to $yVersion version'",label: "set git tag"
       sh script: "git push --set-upstream origin master --tags",label: "push tag and create release"
   }
 }
@@ -81,7 +83,7 @@ def pushDocker(String registryUrl, String dockerImage){
 def updateDockerCompose(String newVersion){
   dir('docker-compose'){
     //Change template TODO: Change composename and imagename to $SERVICENAME
-    sh script: "sed \"s/.*image:.*/    image: $REGISTRYURL\\/hydro-serving-ui:$newVersion/g\" hydro-serving-ui.service.template > hydro-serving-ui.compose", label: "sed hydro-serving-ui version"
+    sh script: "sed \"s/.*image:.*/    image: harbor.hydrosphere.io\\/hydro-serving\\/hydro-serving-ui:$newVersion/g\" hydro-serving-ui.service.template > hydro-serving-ui.compose", label: "sed hydro-serving-ui version"
     //Merge compose into 1 file
     composeMerge = "docker-compose"
     composeService = sh label: "Get all template", returnStdout: true, script: "ls *.compose"
@@ -102,7 +104,7 @@ def updateHelmChart(String newVersion){
     bumpVersion(hydroServingVersion, "", 'patch', '../version')
     newhydroServingVersion = sh(returnStdout: true, script: "cat ../version").trim()
     //Change template
-    sh script: "sed -i \"s/.*full:.*/  full: $REGISTRYURL\\/hydro-serving-ui:$newVersion/g\" ui/values.yaml", label: "sed hydro-manager version"
+    sh script: "sed -i \"s/.*full:.*/  full: harbor.hydrosphere.io\\/hydro-serving\\/hydro-serving-ui:$newVersion/g\" ui/values.yaml", label: "sed hydro-manager version"
 
     //Refresh readme for chart
     sh script: "frigate gen ui --no-credits > ui/README.md"
