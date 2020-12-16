@@ -79,6 +79,7 @@ def updateHelmChart(String newVersion){
   dir('helm'){
     //Change template
     sh script: "sed -i \"s/.*full:.*/  full: harbor.hydrosphere.io\\/hydro-serving\\/hydro-serving-ui:$newVersion/g\" ui/values.yaml", label: "sed hydro-serving-ui version"
+    sh script: "sed -i \"s/.*harbor.hydrosphere.io\\/hydro-test\\/serving-ui:.*/  full: harbor.hydrosphere.io\\/hydro-test\\/serving-ui:$newVersion/g\" dev.yaml", label: "sed hydro-serving-ui dev stage version"
 
     //Refresh readme for chart
     sh script: "frigate gen ui --no-credits > ui/README.md"
@@ -107,10 +108,6 @@ def updateHelmChart(String newVersion){
 node('hydrocentral') {
     stage('SCM'){
       checkoutRepo("https://github.com/Hydrospheredata/$SERVICENAME" + '.git')
-      withCredentials([usernamePassword(credentialsId: 'HydroRobot_AccessToken', passwordVariable: 'Githubpassword', usernameVariable: 'Githubusername')]) {
-        //Get Hydro-serving version
-        hydroServingVersion = sh(script: "git ls-remote --tags --sort='v:refname' --refs 'https://$Githubusername:$Githubpassword@github.com/Hydrospheredata/hydro-serving.git' | sed \"s/.*\\///\" | grep -v \"[a-z]\" | tail -n1", returnStdout: true, label: "get global hydrosphere version").trim()
-      }
     }
        
     stage('Test'){
@@ -121,8 +118,6 @@ node('hydrocentral') {
 
     stage('Release'){
       if (BRANCH_NAME == 'master' || BRANCH_NAME == 'main'){
-          // oldVersion = getVersion()
-          // bumpVersion(getVersion(),params.newVersion,params.patchVersion,'version')
           newVersion = getVersion()
           buildDocker()
           pushDocker(REGISTRYURL, SERVICEIMAGENAME+":$newVersion")
