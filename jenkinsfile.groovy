@@ -7,7 +7,7 @@ properties([
 ])
 
 SERVICENAME = 'hydro-serving-ui'
-REGISTRYURL = 'harbor.hydrosphere.io/hydro-serving'
+REGISTRYURL = 'hydrosphere'
 SERVICEIMAGENAME = 'hydro-serving-ui'
 GITHUBREPO  = "github.com/Hydrospheredata/hydro-serving-ui.git"
 
@@ -17,8 +17,13 @@ def checkoutRepo(String repo){
 
 def getVersion(){
     try{
+      if (params.release == 'global'){
         //remove only quotes
+        version = sh(script: "cat \"version\" | sed 's/\\\"/\\\\\"/g'", returnStdout: true ,label: "get version").trim()
+      } else {
+        //Set version as commit SHA
         version = sh(script: "git rev-parse HEAD", returnStdout: true ,label: "get version").trim()
+      }
         return version
     }catch(err){
         return "$err" 
@@ -60,7 +65,7 @@ def pushDocker(String registryUrl, String dockerImage){
 
 def updateDockerCompose(String newVersion){
   dir('docker-compose'){
-    //Change template TODO: Change composename and imagename to $SERVICENAME
+    //Change template
     sh script: "sed \"s/.*image:.*/    image: hydrosphere\\/hydro-serving-ui:$newVersion/g\" hydro-serving-ui.service.template > hydro-serving-ui.compose", label: "sed hydro-serving-ui version"
     //Merge compose into 1 file
     composeMerge = "docker-compose"
@@ -105,6 +110,21 @@ def updateHelmChart(String newVersion){
   }
 }
 
+//Create github release
+def releaseService(String xVersion, String yVersion){
+  withCredentials([usernamePassword(credentialsId: 'HydroRobot_AccessToken', passwordVariable: 'password', usernameVariable: 'username')]) {
+      //Set global git
+      sh script: "git diff", label: "show diff"
+      sh script: "git commit -a -m 'Bump to $yVersion'", label: "commit to git"
+      sh script: "git push --set-upstream origin master", label: "push all file to git"
+      sh script: "git tag -a $yVersion -m 'Bump $xVersion to $yVersion version'",label: "set git tag"
+      sh script: "git push --set-upstream origin master --tags",label: "push tag and create release"
+      //Create release from tag
+      sh script: "curl -X POST -H \"Accept: application/vnd.github.v3+json\" -H \"Authorization: token ${password}\" https://api.github.com/repos/Hydrospheredata/${SERVICENAME}/releases -d '{\"tag_name\":\"${yVersion}\",\"name\": \"${yVersion}\",\"body\": \"Bump to ${yVersion}\",\"draft\": false,\"prerelease\": false}'"
+  }
+}
+
+//Send message in slack
 def slackMessage(){
     withCredentials([string(credentialsId: 'slack_message_url', variable: 'slack_url')]) {
     //beautiful block
@@ -177,11 +197,18 @@ node('hydrocentral') {
 
       stage('Release'){
         if (BRANCH_NAME == 'master' || BRANCH_NAME == 'main'){
+          if (params.release == 'global'){
+              oldVersion = getVersion()
+              bumpVersion(getVersion(),params.newVersion,params.patchVersion,'version')
+              newVersion = getVersion()
+          } else {
             newVersion = getVersion()
+          }
             buildDocker()
             pushDocker(REGISTRYURL, SERVICEIMAGENAME+":$newVersion")
-            //Update helm and docker-compose if release 
-          if (params.release == 'local'){
+          if (params.release == 'global'){
+            releaseService(oldVersion, newVersion)
+          } else {
             dir('release'){
               //bump only image tag
               withCredentials([usernamePassword(credentialsId: 'HydroRobot_AccessToken', passwordVariable: 'Githubpassword', usernameVariable: 'Githubusername')]) {
