@@ -316,3 +316,12 @@
     border-radius: 4px;
   }
 }
+
+.lift-metadata {
+  order: -1;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
