@@ -19,6 +19,7 @@ import { neitherNullNorUndefined } from '@app/utils';
 
 import { ModelVersion, Servable, Application } from '@app/core/data/types';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
+import { HydroConfigService } from '@app/core/hydro-config.service';
 
 @Component({
   templateUrl: './model-version-details.component.html',
@@ -43,6 +44,7 @@ export class ModelVersionDetailsComponent implements OnInit {
   constructor(
     private resolver: ComponentFactoryResolver,
     private readonly facade: ModelVersionsFacade,
+    private hsConfig: HydroConfigService,
     private readonly applicationsFacade: ApplicationsFacade,
     private readonly servablesFacade: ServablesFacade,
     private readonly fields: FieldsService
@@ -115,5 +117,9 @@ export class ModelVersionDetailsComponent implements OnInit {
     this.current.destroy();
     this.logContainer.clear();
     this.globalLog = false;
+  }
+
+  get liftMetadata(): boolean {
+    return this.hsConfig.config.metadataPosition === "up" ? true : false;
   }
 }

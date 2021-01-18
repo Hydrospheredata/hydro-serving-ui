@@ -1,3 +1,4 @@
 {
-  "showHeader": true
+  "showHeader": true,
+  "metadataPosition": "down"
 }

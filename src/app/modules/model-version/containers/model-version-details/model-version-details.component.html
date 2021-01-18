@@ -1,5 +1,13 @@
 <div class="model-version">
   <div *ngIf="modelVersion$ | async as modelVersion">
+    <div class="model-version__row" *ngIf="liftMetadata">
+      <div class="model-version__col-12">
+        <div class="model-version__item-header">Metadata</div>
+        <section class="model-version__metadata">
+          <hs-metadata [metadata]="modelVersion.metadata"></hs-metadata>
+        </section>
+      </div>
+    </div>
     <div class="model-version__row">
       <div class="model-version__col-6">
         <div class="model-version__item-header">Details</div>
@@ -145,7 +153,7 @@
         </section>
       </div>
     </div>
-    <div class="model-version__row">
+    <div class="model-version__row" *ngIf="!liftMetadata">
       <div class="model-version__col-12">
         <div class="model-version__item-header">Metadata</div>
         <section class="model-version__metadata">

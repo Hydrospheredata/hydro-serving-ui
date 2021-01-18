@@ -3,10 +3,12 @@ import { HttpClient } from '@angular/common/http';
 
 export interface HydroConfig {
   showHeader: boolean;
+  metadataPosition: "up" | "down";
 }
 
 const defaultConfig: HydroConfig = {
   showHeader: true,
+  metadataPosition: "down"
 };
 
 @Injectable({
