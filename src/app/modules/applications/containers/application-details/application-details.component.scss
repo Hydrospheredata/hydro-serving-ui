@@ -31,6 +31,8 @@
     display: flex;
     height: 100%;
     width: 100%;
+    justify-content: space-evenly;
+    margin-top: 8px;
   }
 
   &__header {
@@ -53,7 +55,7 @@
   }
 
   &__stages {
-    margin: 0 auto;
+    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;

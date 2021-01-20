@@ -38,8 +38,8 @@
         [signature]="application.signature"
       ></hs-application-signature>
     </div>
-    <div class="content-info">
-      <ul class="content-info__list" *ngIf="application.kafkaStreaming?.length">
+    <div class="content-info"  *ngIf="application.kafkaStreaming?.length">
+      <ul class="content-info__list">
         <li class="content-info__list-title">
           Kafka Info
         </li>
