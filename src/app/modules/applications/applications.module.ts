@@ -10,6 +10,7 @@ import { ApplicationsPageComponent } from './pages/applications-page/application
 import { ApplicationsRoutingModule } from './applications-routing.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { ApplicationDetailsComponent } from './containers/application-details/application-details.component';
+import { ServableNamesComponent } from './components/servable-names/servable-names.component';
 
 @NgModule({
   imports: [SharedModule, ApplicationsRoutingModule],
@@ -21,6 +22,7 @@ import { ApplicationDetailsComponent } from './containers/application-details/ap
     ApplicationFormComponent,
     ModelVariantFormComponent,
     KafkaFormComponent,
+    ServableNamesComponent,
   ],
   entryComponents: [],
   providers: [],

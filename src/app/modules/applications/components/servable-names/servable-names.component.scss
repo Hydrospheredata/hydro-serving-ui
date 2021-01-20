@@ -1,0 +1,19 @@
+@import 'variables';
+
+.servable-names {
+  min-width: 240px;
+  max-width: 240px;
+  overflow: auto;
+  padding: 5px;
+  background-color: white;
+  border: 1px $neutral-color-300 solid;
+  border-radius: 4px;
+  max-height: 100%;
+}
+
+.servable-names-title {
+  font-family: "Roboto Bold", sans-serif;
+  font-size: medium;
+  margin-bottom: 4px;
+  color: #243b53;
+}
