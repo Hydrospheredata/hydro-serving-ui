@@ -57,7 +57,7 @@
     "fp-ts": "^1.19.5",
     "highcharts": "^8.0.4",
     "hocon-parser": "^1.0.1",
-    "immer": "^7.0.5",
+    "immer": "^8.0.1",
     "jasmine-marbles": "^0.5.0",
     "karma-junit-reporter": "^1.2.0",
     "lodash": "^4.17.15",
