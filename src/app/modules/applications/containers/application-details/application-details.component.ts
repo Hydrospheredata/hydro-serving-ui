@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {
   Application,
+  Servable,
   IModelVariant,
   ApplicationStatus,
 } from '@app/core/data/types';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
+import { ServablesFacade } from '@app/core/facades/servables.facade';
 import {
   DialogUpdateModelVersionComponent,
   SELECTED_MODEL_VARIANT,
@@ -19,6 +21,7 @@ import {
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 
 import { Observable, BehaviorSubject } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 interface MenuState {
   showed: boolean;
@@ -40,6 +43,8 @@ const initialMenuState: MenuState = {
 })
 export class ApplicationDetailsComponent implements OnInit {
   application$: Observable<Application>;
+  servables$: Observable<Servable[]>;
+  servableNames$: Observable<string[]>;
 
   menu$: Observable<MenuState>;
   private menu: BehaviorSubject<MenuState> = new BehaviorSubject(
@@ -48,13 +53,25 @@ export class ApplicationDetailsComponent implements OnInit {
 
   constructor(
     private readonly dialog: DialogsService,
-    private readonly facade: ApplicationsFacade
+    private readonly facade: ApplicationsFacade,
+    private readonly servableFacade: ServablesFacade
   ) {
     this.menu$ = this.menu.asObservable();
   }
 
   ngOnInit() {
     this.application$ = this.facade.selectedApplication();
+    this.servables$ = this.servableFacade.allServables();
+    this.servableNames$ = this.application$.pipe(
+      switchMap(app => {
+        let modelVersion = app.executionGraph.stages[0].modelVariants[0].modelVersion;
+        return this.servables$.pipe(
+          map(servs => {
+            return servs.filter(servable => servable.modelVersion.id === modelVersion.id).map(servable => servable.fullName);
+          })
+        );
+      })
+    )
   }
 
   public updateModelVersionDialog(lastModelVersion, modelVariant) {
