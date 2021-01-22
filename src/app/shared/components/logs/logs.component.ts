@@ -15,6 +15,11 @@ import {
 import { Observable, Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+type LogItem =  {
+  logText: string,
+  count: number
+}
+
 @Component({
   selector: 'hs-logs',
   templateUrl: './logs.component.html',
@@ -31,8 +36,9 @@ export class LogsComponent
   @ViewChild('logBody', { read: ElementRef, static: true }) logBody: ElementRef;
   autoScroll: boolean = true;
 
-  logs: string[] = [];
+  logs: LogItem[] = [];
   error: string = '';
+  lastLog: string = null;
 
   private destroy = new Subject();
   private logSubscription: Subscription;
@@ -41,8 +47,16 @@ export class LogsComponent
 
   ngOnInit(): void {
     this.logSubscription = this.logs$.pipe(takeUntil(this.destroy)).subscribe(
-      val => {
-        this.logs = val;
+      (val: string[]) => {
+        let newLogs = val[val.length - 1].trim().split('\n');
+        newLogs.forEach(log => {
+          if(log === this.lastLog) {
+            this.logs[this.logs.length - 1].count++;
+          } else {
+            this.logs.push({logText: log, count: 1});
+            this.lastLog = log;
+          }
+        });
         this.cdr.detectChanges();
       },
       () => {

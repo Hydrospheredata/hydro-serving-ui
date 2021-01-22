@@ -40,6 +40,16 @@
     &-text {
       color: $neutral-color-100;
     }
+
+    &-counter {
+      color: white;
+      height: 20px;
+      width: 20px;
+      background-color: crimson;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+    }
   }
 
   &__scroller {

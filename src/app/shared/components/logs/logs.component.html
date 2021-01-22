@@ -12,7 +12,10 @@
         *ngFor="let item of logs; index as i; trackBy: trackByFn"
       >
         <td class="log__item-index">{{ i }}</td>
-        <td class="log__item-text">{{ item }}</td>
+        <td class="log__item-text">{{ item.logText }}</td>
+        <td *ngIf="item.count > 1">
+          <div class="log__item-counter">{{ item.count }}</div>
+        </td>
       </tr>
     </table>
   </div>
