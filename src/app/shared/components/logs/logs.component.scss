@@ -93,4 +93,15 @@
       color: $neutral-color-1000;
     }
   }
+
+  &__retry {
+    background-color: crimson;
+    color: white;
+    height: 30px;
+    width: 60px;
+    border: 1px solid white;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

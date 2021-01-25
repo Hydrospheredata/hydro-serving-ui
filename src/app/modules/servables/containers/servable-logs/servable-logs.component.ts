@@ -10,8 +10,7 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
-import { ServableService } from '@app/core/data/services/servable.service';
-
+import { LogService } from '@app/core/data/services/log.service';
 @Component({
   selector: 'hs-servable-logs',
   templateUrl: './servable-logs.component.html',
@@ -21,17 +20,17 @@ import { ServableService } from '@app/core/data/services/servable.service';
 export class ServableLogsComponent implements OnInit {
   @Output() closed: EventEmitter<any> = new EventEmitter();
 
-  logs$: Observable<string[]>;
+  logs$: Observable<string>;
   servableName: string;
 
   constructor(
-    private servablesService: ServableService,
+    private logService: LogService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
-    this.logs$ = this.servablesService
-      .getLog(this.servableName)
+    this.logs$ = this.logService
+      .getLog('servable', this.servableName)
       .pipe(tap(() => this.cdr.detectChanges()));
   }
 

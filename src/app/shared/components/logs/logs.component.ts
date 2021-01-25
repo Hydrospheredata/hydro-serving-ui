@@ -12,8 +12,8 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Observable, Subscription, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subscription, Subject, fromEvent } from 'rxjs';
+import { tap, mergeMap, retryWhen, takeUntil } from 'rxjs/operators';
 
 type LogItem =  {
   logText: string,
@@ -28,12 +28,13 @@ type LogItem =  {
 })
 export class LogsComponent
   implements OnInit, AfterViewChecked, AfterViewInit, OnDestroy {
-  @Input() logs$: Observable<string[]>;
+  @Input() logs$: Observable<string>;
   @Input() header: string = 'Logs';
 
   @Output() closed: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild('logBody', { read: ElementRef, static: true }) logBody: ElementRef;
+  @ViewChild('retryButton') retryButton: ElementRef;
   autoScroll: boolean = true;
 
   logs: LogItem[] = [];
@@ -46,9 +47,23 @@ export class LogsComponent
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.logSubscription = this.logs$.pipe(takeUntil(this.destroy)).subscribe(
-      (val: string[]) => {
-        let newLogs = val[val.length - 1].trim().split('\n');
+    this.logSubscription = this.logs$.pipe(
+      takeUntil(this.destroy),
+      retryWhen(errors => errors.pipe(
+        tap(() => {
+          this.error = `Internal error, stream was stopped`;
+          this.cdr.detectChanges();
+        }),
+        mergeMap(() => fromEvent<any>(this.retryButton.nativeElement, 'click').pipe(
+          tap(() => {
+            this.error = '';
+            this.cdr.detectChanges();
+          })
+        ))
+      ))
+    ).subscribe(
+      (val: string) => {
+        let newLogs = val.trim().split('\n');
         newLogs.forEach(log => {
           if(log === this.lastLog) {
             this.logs[this.logs.length - 1].count++;
@@ -57,10 +72,6 @@ export class LogsComponent
             this.lastLog = log;
           }
         });
-        this.cdr.detectChanges();
-      },
-      () => {
-        this.error = `Internal error, stream was stopped`;
         this.cdr.detectChanges();
       }
     );

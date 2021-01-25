@@ -4,6 +4,7 @@
   </div>
   <hs-error-message *ngIf="error">
     {{ error }}
+    <button [hidden]="!error" class="log__retry" #retryButton>Retry</button>
   </hs-error-message>
   <div class="log__body" #logBody>
     <table>
