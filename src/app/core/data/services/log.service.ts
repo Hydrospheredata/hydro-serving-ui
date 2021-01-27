@@ -27,7 +27,7 @@ export class LogService {
         case 'servable':
           url = `${this.baseUrl}${apiUrl}/servable/${param}/logs?follow=true`;
         case 'model-version':
-          url = `${this.baseUrl}${apiUrl}/model/version/${param}/logs`;
+          url = `${this.baseUrl}${apiUrl}/model/version/${param}/logs?follow=true`;
       }
       eventSource = new EventSource(url, {
         withCredentials: true,
