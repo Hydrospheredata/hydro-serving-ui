@@ -5,3 +5,11 @@ location /hydrosphere.manager. {
 location /hydrosphere.discovery. {
   grpc_pass grpc://${MANAGER_HOST}:${MANAGER_GRPC_PORT};
 }
+
+location /grpc/hydrosphere.manager. {
+  grpc_pass grpc://${MANAGER_HOST}:${MANAGER_GRPC_PORT};
+}
+
+location /grpc/hydrosphere.discovery. {
+  grpc_pass grpc://${MANAGER_HOST}:${MANAGER_GRPC_PORT};
+}
