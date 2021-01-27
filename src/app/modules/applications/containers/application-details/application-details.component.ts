@@ -64,7 +64,7 @@ export class ApplicationDetailsComponent implements OnInit {
     this.servables$ = this.servableFacade.allServables();
     this.servableNames$ = this.application$.pipe(
       switchMap(app => {
-        let modelVersion = app.executionGraph.stages[0].modelVariants[0].modelVersion;
+        let modelVersion = app.executionGraph.stages[0]?.modelVariants[0]?.modelVersion;
         return this.servables$.pipe(
           map(servs => {
             return servs.filter(servable => servable.modelVersion.id === modelVersion.id).map(servable => servable.fullName);
