@@ -1,5 +1,5 @@
 <div class="model-version">
-  <div *ngIf="modelVersion$ | async as modelVersion">
+  <div *ngIf="modelVersion$ | async as modelVersion" class="flex-col">
     <div class="model-version__row">
       <div class="model-version__col-6">
         <div class="model-version__item-header">Details</div>
@@ -145,7 +145,11 @@
         </section>
       </div>
     </div>
-    <div class="model-version__row">
+    <div
+      [ngClass]="{
+        'lift-metadata': this.hsConfig.config.liftMetadata,
+        'model-version__row': true
+      }">
       <div class="model-version__col-12">
         <div class="model-version__item-header">Metadata</div>
         <section class="model-version__metadata">
