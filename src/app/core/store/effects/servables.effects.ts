@@ -36,11 +36,13 @@ export class ServablesEffects {
     exhaustMap(({ name }) =>
       this.servablesService.delete(name).pipe(
         map(() => deleteServableSuccess({ name })),
-        catchError(error => of(deleteServableFailed({ error })).pipe(
-          tap(({ error }) =>
-            this.snackbarService.show({message: error})
-          )
-        ))
+        catchError(error => {
+          let message = error.split(',').join(', ');
+          this.snackbarService.show({
+            message
+          });
+          return of(deleteServableFailed( {error} ));
+        })
       )
     )
   );
