@@ -3,10 +3,12 @@ import { HttpClient } from '@angular/common/http';
 
 export interface HydroConfig {
   showHeader: boolean;
+  liftMetadata: boolean;
 }
 
 const defaultConfig: HydroConfig = {
   showHeader: true,
+  liftMetadata: false
 };
 
 @Injectable({
