@@ -37,9 +37,8 @@ export class ServablesEffects {
       this.servablesService.delete(name).pipe(
         map(() => deleteServableSuccess({ name })),
         catchError(error => {
-          let message = error.split(',').join(', ');
           this.snackbarService.show({
-            message
+            message: error.replaceAll(",", ", ")
           });
           return of(deleteServableFailed( {error} ));
         })
