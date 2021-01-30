@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { exhaustMap, map, catchError } from 'rxjs/operators';
+import { exhaustMap, map, catchError, tap } from 'rxjs/operators';
 
 import {
   getAll,
@@ -15,6 +15,7 @@ import {
   getServableFailed,
 } from '../actions/servables.actions';
 import { ServableService } from '../../data/services/servable.service';
+import { SnackbarService } from '@app/core/snackbar.service';
 
 @Injectable()
 export class ServablesEffects {
@@ -35,7 +36,12 @@ export class ServablesEffects {
     exhaustMap(({ name }) =>
       this.servablesService.delete(name).pipe(
         map(() => deleteServableSuccess({ name })),
-        catchError(error => of(deleteServableFailed({ error })))
+        catchError(error => {
+          this.snackbarService.show({
+            message: error.replaceAll(",", ", ")
+          });
+          return of(deleteServableFailed( {error} ));
+        })
       )
     )
   );
@@ -53,6 +59,7 @@ export class ServablesEffects {
 
   constructor(
     private actions$: Actions,
-    private servablesService: ServableService
+    private servablesService: ServableService,
+    private snackbarService: SnackbarService
   ) {}
 }

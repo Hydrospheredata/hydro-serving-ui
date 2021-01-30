@@ -3,8 +3,8 @@ import { createReducer, Action, on } from '@ngrx/store';
 import {
   getAll,
   getAllSuccess,
-  deleteServable,
   updateServable,
+  deleteServableSuccess
 } from '../actions/servables.actions';
 import { initialState, adapter, State } from '../states/servables.state';
 
@@ -14,7 +14,7 @@ const servableReducer = createReducer(
   on(getAllSuccess, (state, props) =>
     adapter.addMany(props.servables, { ...state, loading: false })
   ),
-  on(deleteServable, (state, { name }) => adapter.removeOne(name, state)),
+  on(deleteServableSuccess, (state, { name }) => adapter.removeOne(name, state)),
   on(updateServable, (state, { servable }) =>
     adapter.upsertOne(servable, state)
   )
