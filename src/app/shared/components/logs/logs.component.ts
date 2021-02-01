@@ -12,7 +12,7 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Observable, Subscription, Subject, fromEvent } from 'rxjs';
+import { Observable, Subscription, Subject, fromEvent, iif, of } from 'rxjs';
 import { tap, mergeMap, retryWhen, takeUntil } from 'rxjs/operators';
 
 type LogItem =  {
@@ -39,8 +39,9 @@ export class LogsComponent
 
   logs: LogItem[] = [];
   error: string = '';
+  retryCount: number = 0;
+  activateRetryButton: boolean = false;
   lastLog: string = null;
-
   private destroy = new Subject();
   private logSubscription: Subscription;
 
@@ -51,18 +52,29 @@ export class LogsComponent
       takeUntil(this.destroy),
       retryWhen(errors => errors.pipe(
         tap(() => {
-          this.error = `Internal error, stream was stopped`;
+          if(this.retryCount === 3) {
+            this.activateRetryButton = true;
+            this.error = 'Internal error, stream was stopped.';
+          } else {
+            this.retryCount++;
+            this.error = `Internal error, retrying the request (${this.retryCount}/3)...`;
+          }
           this.cdr.detectChanges();
         }),
-        mergeMap(() => fromEvent<any>(this.retryButton.nativeElement, 'click').pipe(
-          tap(() => {
-            this.error = '';
-            this.cdr.detectChanges();
-          })
-        ))
+        mergeMap(() => iif(
+          () => this.activateRetryButton,
+          fromEvent<any>(this.retryButton.nativeElement, 'click').pipe(
+            tap(() => {
+              this.error = '';
+              this.cdr.detectChanges();
+            })
+          ),
+          of(null)
+        )),
       ))
     ).subscribe(
       (val: string) => {
+        this.error = '';
         let newLogs = val.trim().split('\n');
         newLogs.forEach(log => {
           if(log === this.lastLog) {

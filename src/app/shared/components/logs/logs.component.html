@@ -2,9 +2,9 @@
   <div class="log__header">
     {{ header }}
   </div>
-  <hs-error-message *ngIf="error">
+  <hs-error-message [hidden]="!error">
     {{ error }}
-    <button [hidden]="!error" class="log__retry" #retryButton>Retry</button>
+    <button [hidden]="!activateRetryButton" class="log__retry" #retryButton>Retry</button>
   </hs-error-message>
   <div class="log__body" #logBody>
     <table>
