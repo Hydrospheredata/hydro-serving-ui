@@ -3,10 +3,12 @@ import {
   Component,
   ElementRef,
   Input,
+  Output,
   OnInit,
   ViewChild,
   ViewEncapsulation,
   ChangeDetectionStrategy,
+  EventEmitter
 } from '@angular/core';
 import { ChartConfig } from '../../../models';
 import {
@@ -110,11 +112,16 @@ export class CheckChartComponent implements OnInit {
     this.render();
   }
 
+  @Output() showCheckDetails: EventEmitter<number> = new EventEmitter<
+    number
+  >();
+
   ngOnInit() {
     select(this.rectRef.nativeElement).on('mouseout', () => this.onMouseOut());
     select(this.rectRef.nativeElement).on('mousemove', () =>
       this.onMouseMove()
     );
+    select(this.rectRef.nativeElement).on('click', () => this.onClick());
   }
 
   toggleExclude(seriesName: string): void {
@@ -169,6 +176,13 @@ export class CheckChartComponent implements OnInit {
     this.excludedSeries = this.excludedSeries.filter(
       name => name !== seriesName
     );
+  }
+
+  onClick() {
+    const [xCoordinate] = mouse(this.rectRef.nativeElement);
+    const newXPosition = this.scaleX(Math.round(this.scaleX.invert(xCoordinate)));
+    const index = Math.floor(this.scaleX.invert(newXPosition));
+    this.showCheckDetails.next(index);
   }
 
   private onMouseMove(): void {

@@ -9,7 +9,7 @@
       <hs-loading [loading]="isChecksLoading$ | async">
         <div
           class="monitoring__aggregation-details"
-          *ngIf="checks$ | async as checkCollection"
+          *ngIf="checks as checkCollection"
         >
           <div class="monitoring__label">Batch details</div>
           <div class="monitoring__batch-details">
@@ -19,7 +19,7 @@
           </div>
           <div class="monitoring__label">Batch latency</div>
           <div class="monitoring__batch-latency">
-            <hs-batch-latency [requests]="checkCollection"></hs-batch-latency>
+            <hs-batch-latency (showCheckDetails)="onBatchLatecyClick($event)" [requests]="checkCollection"></hs-batch-latency>
           </div>
         </div>
       </hs-loading>

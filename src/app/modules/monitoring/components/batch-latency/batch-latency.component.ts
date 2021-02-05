@@ -3,6 +3,8 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { ColorPaletteService } from '@app/core/color-palette.service';
 import { CheckCollection, ChartConfig } from '../../models';
@@ -24,6 +26,9 @@ export class BatchLatencyComponent implements OnInit {
       ],
     };
   }
+  @Output() showCheckDetails: EventEmitter<number> = new EventEmitter<
+  number
+>();
 
   chartConfig: ChartConfig = {
     series: [
@@ -42,6 +47,10 @@ export class BatchLatencyComponent implements OnInit {
     area: true,
     name: '',
   };
+
+  onShowCheckDetails(e) {
+    this.showCheckDetails.next(e);
+  }
 
   constructor(private colorPalette: ColorPaletteService) {}
 

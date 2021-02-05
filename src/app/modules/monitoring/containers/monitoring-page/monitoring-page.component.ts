@@ -23,7 +23,7 @@ import {
   keyframes,
 } from '@angular/animations';
 import { ModelVersion } from '@app/core/data/types';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'hs-monitoring-page',
@@ -68,10 +68,11 @@ import { Observable } from 'rxjs';
 export class MonitoringPageComponent implements OnInit {
   aggregationList$: Observable<AggregationsList>;
   modelVersion$: Observable<ModelVersion>;
-  checks$: Observable<CheckCollection>;
   selectedAggregation$: Observable<Aggregation>;
   isChecksLoading$: Observable<boolean>;
   checkToShowInDetails$: Observable<Check>;
+  checksSubscription: Subscription;
+  checks: CheckCollection;
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
@@ -86,13 +87,23 @@ export class MonitoringPageComponent implements OnInit {
     this.modelVersion$ = this.monitoringPageService.getModelVersion();
     this.selectedAggregation$ = this.monitoringPageService.getSelectedAggregation();
     this.aggregationList$ = this.monitoringPageService.getAggregationList();
-    this.checks$ = this.monitoringPageService.getChecks();
+    this.checksSubscription = this.monitoringPageService.getChecks().subscribe(checks => {
+      this.checks = checks;
+    })
     this.isChecksLoading$ = this.monitoringPageService.isChecksLoading();
     this.checkToShowInDetails$ = this.monitoringPageService.getCheckToShowInDetails();
 
     this.monitoringPageService.loadMetrics();
     this.monitoringPageService.loadAggregations();
     this.monitoringPageService.loadChecks();
+  }
+
+  ngOnDestroy() {
+    this.checksSubscription.unsubscribe();
+  }
+
+  onBatchLatecyClick(idx: number) {
+    this.showCheckDetails(this.checks.getChecks()[idx - 1].id);
   }
 
   showCheckDetails(checkId: CheckId): void {
