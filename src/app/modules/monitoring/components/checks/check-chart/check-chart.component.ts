@@ -11,6 +11,7 @@ import {
   EventEmitter
 } from '@angular/core';
 import { ChartConfig } from '../../../models';
+import { MonitoringPageService } from '../../../containers/monitoring-page/monitoring-page.service';
 import {
   format,
   ticks,
@@ -83,7 +84,7 @@ export class CheckChartComponent implements OnInit {
   private mouseIn: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private excludedSeries: string[] = [];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(private cdr: ChangeDetectorRef, private monitoringPageService: MonitoringPageService) {}
 
   @Input() set config(cfg: ChartConfig) {
     this.cfg = cfg;
@@ -111,10 +112,6 @@ export class CheckChartComponent implements OnInit {
 
     this.render();
   }
-
-  @Output() showCheckDetails: EventEmitter<number> = new EventEmitter<
-    number
-  >();
 
   ngOnInit() {
     select(this.rectRef.nativeElement).on('mouseout', () => this.onMouseOut());
@@ -182,7 +179,7 @@ export class CheckChartComponent implements OnInit {
     const [xCoordinate] = mouse(this.rectRef.nativeElement);
     const newXPosition = this.scaleX(Math.round(this.scaleX.invert(xCoordinate)));
     const index = Math.floor(this.scaleX.invert(newXPosition));
-    this.showCheckDetails.next(index);
+    this.monitoringPageService.showCheckDetails(null, index);
   }
 
   private onMouseMove(): void {

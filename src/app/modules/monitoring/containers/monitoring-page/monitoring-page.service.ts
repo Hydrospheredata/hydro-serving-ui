@@ -1,4 +1,4 @@
-import { Observable, Subject, combineLatest, timer } from 'rxjs';
+import { Observable, Subject, combineLatest, timer, Subscription } from 'rxjs';
 import { tap, takeUntil, switchMap } from 'rxjs/operators';
 import { Injectable, OnDestroy } from '@angular/core';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
@@ -20,6 +20,7 @@ import { neitherNullNorUndefined } from '@app/utils';
 @Injectable()
 export class MonitoringPageService implements OnDestroy {
   private destroy$: Subject<any> = new Subject<any>();
+  private checksSubscription: Subscription;
 
   constructor(
     private monitoringStore: MonitoringFacade,
@@ -59,8 +60,13 @@ export class MonitoringPageService implements OnDestroy {
     return this.monitoringStore.getCheckToShowInDetails();
   }
 
-  showCheckDetails(checkId: CheckId): void {
-    this.monitoringStore.showChecksDetails(checkId);
+  showCheckDetails(checkId?: CheckId, checkIdx?: number): void {
+    if(checkIdx && !checkId) {
+      this.checksSubscription = this.monitoringStore.getChecks().subscribe(checks => {
+        checkId = checks.getChecks()[checkIdx - 1].id;
+        this.monitoringStore.showChecksDetails(checkId);
+      });
+    } else this.monitoringStore.showChecksDetails(checkId);
   }
 
   closeCheckDetails(): void {
@@ -71,6 +77,7 @@ export class MonitoringPageService implements OnDestroy {
     this.monitoringStore.clearMonitoringPage();
     this.destroy$.next();
     this.destroy$.complete();
+    if(this.checksSubscription) this.checksSubscription.unsubscribe();
   }
 
   loadChecks(): void {
