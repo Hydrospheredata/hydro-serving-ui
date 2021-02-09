@@ -1,0 +1,45 @@
+.dc-edit {
+  display: flex;
+  flex-direction: column;
+
+  &__title {
+    font-size: 25px;
+    margin-top: 10px;
+  }
+
+  &__subtitle {
+    color: rgb(68, 85, 124);
+    background-color: rgb(240, 234, 234);
+    font-size: 18px;
+    margin-top: 20px;
+    margin-bottom: 2px;
+    padding: 2px;
+  }
+
+  &__row {
+    display: flex;
+    label {
+      display: flex;
+      flex-direction: column;
+      margin-right: 5px;
+      color: black;
+      font-weight: bold;
+      input {
+        border: rgb(207, 206, 206) solid 1px;
+        border-radius: 3px;
+        box-shadow: 2px 2px 5px rgb(172, 172, 172);
+      }
+    }
+  }
+
+  hr {
+    margin: 1em 0;
+  }
+
+  button {
+    width: 70px;
+    margin: auto;
+    font-size: 15px;
+    margin-top: 10px;
+  }
+}

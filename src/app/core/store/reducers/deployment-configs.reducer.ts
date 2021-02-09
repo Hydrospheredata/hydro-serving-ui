@@ -4,7 +4,8 @@ import {
   GetDeploymentConfigs,
   GetDeploymentConfigsSuccess,
   DeleteDeploymentConfigSuccess,
-  UpdateDeploymentConfig
+  UpdateDeploymentConfig,
+  UpdateSelectedConfig
 } from '../actions/deployment-configs.actions';
 
 import { State, initialState } from '../states/deployment-configs.state';
@@ -28,6 +29,12 @@ export const deploymentConfigReducer = createReducer(
     const configExists = configs.some(cfg => cfg.name === config.name);
 
     return configExists ? state : { ...state, configs: [...configs, config] };
+  }),
+  on(UpdateSelectedConfig, (state, { name, config }) => {
+    const configs = state.configs;
+    const filteredConfigs = configs.filter(cfg => cfg.name !== name);
+
+    return { ...state, configs: [...filteredConfigs, config] };
   })
 );
 

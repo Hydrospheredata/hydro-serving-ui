@@ -1,0 +1,84 @@
+<div>
+  <form #form="ngForm" class="dc-edit" (submit)="onSave()">
+
+    <div>
+      <h1 class="dc-edit__title">Name</h1>
+      <div class="dc-edit__row">
+        <label>
+          Name:
+          <input placeholder="Config file name" type="text" name="name" [(ngModel)]="config.name">
+        </label>
+      </div>
+      <hr/>
+    </div>
+
+    <div *ngIf="config.hpa">
+      <h1 class="dc-edit__title">HPA</h1>
+      <div class="dc-edit__row">
+        <label *ngFor="let inp of hpaKeys">
+          {{inp}}:
+          <input [placeholder]="inp" type="number" [name]="inp" [(ngModel)]="config.hpa[inp]">
+        </label>
+      </div>
+      <hr/>
+    </div>
+
+    <div *ngIf="config.deployment">
+      <h1 class="dc-edit__title">Deployment</h1>
+      <div class="dc-edit__row">
+        <label >
+          replicaCount:
+          <input placeholder="replicaCount" type="number" name="replicaCount" [(ngModel)]="config.deployment.replicaCount">
+        </label>
+      </div>
+      <hr/>
+    </div>
+
+    <div *ngIf="config.container">
+      <h1 class="dc-edit__title">Container</h1>
+      <h1 class="dc-edit__subtitle">Resources</h1>
+      <div class="dc-edit__row">
+        <label >
+          Limits CPU:
+          <input placeholder="limitsCPU" type="text" name="limitsCPU" [(ngModel)]="config.container.resources.limits.cpu">
+        </label>
+        <label >
+          Limits Memory:
+          <input placeholder="limitsMemory" type="text" name="limitsMemory" [(ngModel)]="config.container.resources.limits.memory">
+        </label>
+
+        <label >
+          Requests CPU:
+          <input placeholder="requestsCPU" type="text" name="requestsCPU" [(ngModel)]="config.container.resources.requests.cpu">
+        </label>
+        <label >
+          Requests Memory:
+          <input placeholder="requestsMemory" type="text" name="requestsMemory" [(ngModel)]="config.container.resources.requests.memory">
+        </label>
+      </div>
+      <h1 class="dc-edit__subtitle" *ngIf="envKeys">Environment</h1>
+      <div class="dc-edit__row" *ngIf="envKeys">
+        <label *ngFor="let env of envKeys" >
+          {{env}}:
+          <input [placeholder]="env" type="text" [name]="env" [(ngModel)]="config.container.env[env]">
+        </label>
+      </div>
+      <hr/>
+    </div>
+
+    <div *ngIf="config.pod">
+      <h1 class="dc-edit__title">POD</h1>
+      <h1 class="dc-edit__subtitle">Tolerations</h1>
+      <hr/>
+    </div>
+
+    <button
+      hs-button
+      kind="flat"
+      color="cyan"
+      type="submit"
+    >
+      Save
+    </button>
+  </form>
+</div>
