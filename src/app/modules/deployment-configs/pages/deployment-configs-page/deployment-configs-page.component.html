@@ -6,16 +6,16 @@
       (filtered)="handleFilter($event)"
       (clicked)="handleSidebarClick($event)"
     >
-      <!--      <button-->
-      <!--        class="deployment-config-page__button"-->
-      <!--        hs-button-->
-      <!--        kind="flat"-->
-      <!--        color="primary"-->
-      <!--        (click)="addDeploymentConfig()"-->
-      <!--        #button-->
-      <!--      >-->
-      <!--        create config-->
-      <!--      </button>-->
+     <button
+      class="deployment-config-page__button"
+      hs-button
+      kind="flat"
+      color="primary"
+      (click)="addDeploymentConfig()"
+      #button
+     >
+      create config
+    </button>
     </hs-sidebar>
   </div>
   <div class="deployment-config-page__body" *ngIf="configs$ | async as configs">

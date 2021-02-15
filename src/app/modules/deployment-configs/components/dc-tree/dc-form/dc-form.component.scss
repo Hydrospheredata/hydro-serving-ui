@@ -1,3 +1,5 @@
+@import 'variables';
+
 .dc-edit {
   display: flex;
   flex-direction: column;
@@ -21,13 +23,18 @@
     label {
       display: flex;
       flex-direction: column;
-      margin-right: 5px;
+      margin-right: 10px;
       color: black;
       font-weight: bold;
       input {
         border: rgb(207, 206, 206) solid 1px;
         border-radius: 3px;
         box-shadow: 2px 2px 5px rgb(172, 172, 172);
+      }
+      .env-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
     }
   }
@@ -42,4 +49,33 @@
     font-size: 15px;
     margin-top: 10px;
   }
+
+  &__icon-add {
+    height: 20px;
+    width: 20px;
+    align-self: center;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__icon-delete {
+    color: red;
+    height: 18px;
+    width: 18px;
+    align-self: center;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.dc-form {
+  color: $neutral-color-900;
+  margin: 24px;
+  padding: 24px;
+  border: 1px $neutral-color-200 solid;
+  border-radius: 4px;
+  position: relative;
+  background: white;
 }

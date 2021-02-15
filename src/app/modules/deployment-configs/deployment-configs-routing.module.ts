@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { DeploymentConfigDetailsComponent } from './containers';
 import { DeploymentConfigsPageComponent } from './pages';
-
+import {DcFormComponent} from './components/dc-tree/dc-form/dc-form.component'
 @NgModule({
   imports: [
     RouterModule.forChild([
@@ -12,10 +12,15 @@ import { DeploymentConfigsPageComponent } from './pages';
         component: DeploymentConfigsPageComponent,
         children: [
           {
+            path: 'create',
+            component: DcFormComponent
+          },
+          {
             path: ':name',
             component: DeploymentConfigDetailsComponent,
           },
         ],
+
       },
     ]),
   ],

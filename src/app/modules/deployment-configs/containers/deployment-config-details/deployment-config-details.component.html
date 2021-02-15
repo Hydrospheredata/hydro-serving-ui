@@ -1,33 +1,13 @@
 <div class="deployment-config" *ngIf="config$ | async as config">
-  <div class="deployment-config__buttons">
-    <button
-      hs-button
-      kind="flat"
-      color="primary"
-      (click)="onCancel()"
-      *ngIf="editMode"
-    >
-      restore
-    </button>
-    <button
-      hs-button
-      kind="flat"
-      color="primary"
-      (click)="onEdit(config.name)"
-      *ngIf="!editMode"
-    >
-      Edit
-    </button>
-    <button
-      hs-button
-      kind="flat"
-      color="warning"
-      (click)="onDelete(config.name)"
-    >
-      delete
+  <button
+    hs-button
+    kind="flat"
+    color="warning"
+    class="deployment-config__buttons"
+    (click)="onDelete(config.name)"
+  >
+    delete
   </button>
-  </div>
 
-  <hs-dc-edit *ngIf="editMode"></hs-dc-edit>
-  <hs-dc-tree *ngIf="!editMode" [config]="config"></hs-dc-tree>
+  <hs-dc-tree [config]="config"></hs-dc-tree>
 </div>

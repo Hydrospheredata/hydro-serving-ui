@@ -6,7 +6,7 @@ import { DeploymentConfig } from '../data/types';
 import {
   DeleteDeploymentConfig,
   GetDeploymentConfigs,
-  UpdateSelectedConfig
+  UpdateDeploymentConfig
 } from '../store/actions/deployment-configs.actions';
 import { State } from '../store/states/deployment-configs.state';
 import {
@@ -53,8 +53,8 @@ export class DeploymentConfigsFacade {
     this.store.dispatch(DeleteDeploymentConfig({ name }));
   }
 
-  update(name: string, config: DeploymentConfig) {
-    this.store.dispatch(UpdateSelectedConfig({name, config}));
+  update(config: DeploymentConfig) {
+    this.store.dispatch(UpdateDeploymentConfig({config}));
   }
 
   onFilter(filter: string): void {

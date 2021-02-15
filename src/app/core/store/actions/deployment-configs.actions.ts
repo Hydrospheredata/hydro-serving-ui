@@ -33,8 +33,3 @@ export const UpdateDeploymentConfig = createAction(
   '[Deployment config] update',
   props<{ config: DeploymentConfig }>()
 );
-
-export const UpdateSelectedConfig = createAction(
-  '[Deployment config] update selected',
-  props<{ name: string, config: DeploymentConfig }>()
-);

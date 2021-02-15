@@ -3,9 +3,9 @@ import { DeploymentConfigDetailsComponent } from './containers';
 import { DeploymentConfigsPageComponent } from './pages';
 import { SharedModule } from '@app/shared/shared.module';
 import { DeploymentConfigsRoutingModule } from './deployment-configs-routing.module';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { DcTreeComponent, DcTreeFieldComponent } from './components';
-import { DcEditComponent } from './components/dc-tree/dc-edit/dc-edit.component';
+import { DcFormComponent } from './components/dc-tree/dc-form/dc-form.component';
 
 @NgModule({
   entryComponents: [],
@@ -14,9 +14,9 @@ import { DcEditComponent } from './components/dc-tree/dc-edit/dc-edit.component'
     DeploymentConfigDetailsComponent,
     DcTreeComponent,
     DcTreeFieldComponent,
-    DcEditComponent,
+    DcFormComponent,
   ],
   exports: [],
-  imports: [SharedModule, DeploymentConfigsRoutingModule, FormsModule],
+  imports: [SharedModule, DeploymentConfigsRoutingModule, ReactiveFormsModule],
 })
 export class DeploymentConfigsModule {}

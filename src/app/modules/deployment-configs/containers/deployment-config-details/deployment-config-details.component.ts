@@ -15,20 +15,10 @@ export class DeploymentConfigDetailsComponent implements OnInit {
   constructor(private readonly facade: DeploymentConfigsFacade) {}
 
   ngOnInit() {
-    this.config$ = this.facade.selectedConfig().pipe(tap(() => {
-      this.editMode = false;
-    }));
+    this.config$ = this.facade.selectedConfig();
   }
 
   onDelete(name: string) {
     this.facade.delete(name);
-  }
-
-  onEdit(name: string) {
-    this.editMode = true;
-  }
-
-  onCancel() {
-    this.editMode = false;
   }
 }

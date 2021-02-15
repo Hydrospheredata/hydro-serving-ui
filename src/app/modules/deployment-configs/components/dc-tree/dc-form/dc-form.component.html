@@ -1,0 +1,91 @@
+<div class="dc-form">
+  <form [formGroup]="form" class="dc-edit" (submit)="onSave()">
+    <div>
+      <h1 class="dc-edit__title">Name</h1>
+      <div class="dc-edit__row">
+        <label>
+          Name:
+          <input placeholder="Config file name" type="text" name="name" formControlName="name">
+        </label>
+      </div>
+      <hr/>
+    </div>
+
+    <div formGroupName="hpa">
+      <h1 class="dc-edit__title">HPA</h1>
+      <div class="dc-edit__row">
+        <label >
+          minReplicas:
+          <input placeholder="minReplicas" type="number" name="minReplicas" formControlName="minReplicas">
+        </label>
+        <label >
+          maxReplicas:
+          <input placeholder="maxReplicas" type="number" name="maxReplicas" formControlName="maxReplicas">
+        </label>
+        <label >
+          cpuUtilization:
+          <input placeholder="cpuUtilization" type="number" name="cpuUtilization" formControlName="cpuUtilization">
+        </label>
+      </div>
+      <hr/>
+    </div>
+
+    <div formGroupName="deployment">
+      <h1 class="dc-edit__title">Deployment</h1>
+      <div class="dc-edit__row">
+        <label >
+          replicaCount:
+          <input placeholder="replicaCount" type="number" name="replicaCount" formControlName="replicaCount">
+        </label>
+      </div>
+      <hr/>
+    </div>
+
+    <div formGroupName="container">
+      <h1 class="dc-edit__title">Container</h1>
+      <h1 class="dc-edit__subtitle">Resources</h1>
+      <div class="dc-edit__row" formGroupName="resources">
+        <label formGroupName="limits">
+          Limits CPU:
+          <input placeholder="limitsCPU" type="text" name="limitsCPU" formControlName="cpu">
+        </label >
+        <label formGroupName="limits">
+          Limits Memory:
+          <input placeholder="limitsMemory" type="text" name="limitsMemory" formControlName="memory">
+        </label>
+        <label formGroupName="requests">
+          Requests CPU:
+          <input placeholder="requestsCPU" type="text" name="requestsCPU" formControlName="cpu">
+        </label>
+        <label formGroupName="requests">
+          Requests Memory:
+          <input placeholder="requestsMemory" type="text" name="requestsMemory" formControlName="memory">
+        </label>
+      </div>
+      <h1 class="dc-edit__subtitle" >Environment</h1>
+      <div class="dc-edit__row" formArrayName="env" >
+        <label *ngFor="let env of envsForm.controls; let i = index" [formGroupName]="i">
+          <div class="env-header">
+            Env #{{i + 1}}
+            <hydro-icon class="dc-edit__icon-delete" (click)="deleteEnv(i)" type="circle-x"></hydro-icon>
+
+          </div>
+          <input placeholder="key" type="text" formControlName="key">
+          <input placeholder="value" type="text" formControlName="value">
+        </label>
+        <hydro-icon class="dc-edit__icon-add" type="icon-plus" (click)="addEnv()"></hydro-icon>
+      </div>
+      <hr/>
+    </div>
+
+    <button
+      hs-button
+      kind="flat"
+      color="cyan"
+      type="submit"
+    >
+      Save
+    </button>
+  </form>
+</div>
+
