@@ -3,6 +3,8 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { ColorPaletteService } from '@app/core/color-palette.service';
 import { CheckCollection, ChartConfig } from '../../models';

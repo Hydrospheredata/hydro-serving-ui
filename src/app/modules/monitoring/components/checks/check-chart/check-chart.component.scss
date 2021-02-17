@@ -39,6 +39,9 @@
     font-family: $font-family-bold;
     font-size: 14px;
   }
+  &__rect:hover {
+    cursor: pointer;
+  }
 }
 
 .legend {

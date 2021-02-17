@@ -68,10 +68,10 @@ import { Observable } from 'rxjs';
 export class MonitoringPageComponent implements OnInit {
   aggregationList$: Observable<AggregationsList>;
   modelVersion$: Observable<ModelVersion>;
-  checks$: Observable<CheckCollection>;
   selectedAggregation$: Observable<Aggregation>;
   isChecksLoading$: Observable<boolean>;
   checkToShowInDetails$: Observable<Check>;
+  checks$: Observable<CheckCollection>;
 
   @HostListener('window:keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
