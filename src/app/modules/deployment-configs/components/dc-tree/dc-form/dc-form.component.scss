@@ -1,5 +1,4 @@
 @import 'variables';
-
 .dc-edit {
   display: flex;
   flex-direction: column;
@@ -20,22 +19,26 @@
 
   &__row {
     display: flex;
-    label {
+    flex-wrap: wrap;
+  }
+
+  label {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    color: black;
+    font-weight: bold;
+    font-size: 15px;
+    input {
+      border: rgb(207, 206, 206) solid 1px;
+      border-radius: 3px;
+      box-shadow: 2px 2px 5px rgb(172, 172, 172);
+      // height: 30px;
+      font-size: inherit;
+    }
+    .header {
       display: flex;
-      flex-direction: column;
-      margin-right: 10px;
-      color: black;
-      font-weight: bold;
-      input {
-        border: rgb(207, 206, 206) solid 1px;
-        border-radius: 3px;
-        box-shadow: 2px 2px 5px rgb(172, 172, 172);
-      }
-      .env-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-      }
+      justify-content: space-between;
     }
   }
 
@@ -63,7 +66,6 @@
     color: red;
     height: 18px;
     width: 18px;
-    align-self: center;
     &:hover {
       cursor: pointer;
     }

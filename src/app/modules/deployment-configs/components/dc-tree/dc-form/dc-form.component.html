@@ -1,7 +1,7 @@
 <div class="dc-form">
   <form [formGroup]="form" class="dc-edit" (submit)="onSave()">
     <div>
-      <h1 class="dc-edit__title">Name</h1>
+      <h1 class="dc-edit__title">General</h1>
       <div class="dc-edit__row">
         <label>
           Name:
@@ -15,15 +15,15 @@
       <h1 class="dc-edit__title">HPA</h1>
       <div class="dc-edit__row">
         <label >
-          minReplicas:
+          Minimum Replicas:
           <input placeholder="minReplicas" type="number" name="minReplicas" formControlName="minReplicas">
         </label>
         <label >
-          maxReplicas:
+          Maximum Replicas:
           <input placeholder="maxReplicas" type="number" name="maxReplicas" formControlName="maxReplicas">
         </label>
         <label >
-          cpuUtilization:
+          CPU Utilization:
           <input placeholder="cpuUtilization" type="number" name="cpuUtilization" formControlName="cpuUtilization">
         </label>
       </div>
@@ -34,7 +34,7 @@
       <h1 class="dc-edit__title">Deployment</h1>
       <div class="dc-edit__row">
         <label >
-          replicaCount:
+          Replica Count:
           <input placeholder="replicaCount" type="number" name="replicaCount" formControlName="replicaCount">
         </label>
       </div>
@@ -65,8 +65,8 @@
       <h1 class="dc-edit__subtitle" >Environment</h1>
       <div class="dc-edit__row" formArrayName="env" >
         <label *ngFor="let env of envsForm.controls; let i = index" [formGroupName]="i">
-          <div class="env-header">
-            Env #{{i + 1}}
+          <div class="header">
+            Env #{{i + 1}}:
             <hydro-icon class="dc-edit__icon-delete" (click)="deleteEnv(i)" type="circle-x"></hydro-icon>
 
           </div>
@@ -74,6 +74,38 @@
           <input placeholder="value" type="text" formControlName="value">
         </label>
         <hydro-icon class="dc-edit__icon-add" type="icon-plus" (click)="addEnv()"></hydro-icon>
+      </div>
+      <hr/>
+    </div>
+    <div formGroupName="pod">
+      <h1 class="dc-edit__title">POD</h1>
+
+      <h1 class="dc-edit__subtitle" >Tolerations</h1>
+      <div class="dc-edit__row" formArrayName="tolerations" >
+        <label *ngFor="let env of tolerationsForm.controls; let i = index" [formGroupName]="i">
+          <div class="header">
+            Toleration #{{i + 1}}:
+            <hydro-icon class="dc-edit__icon-delete" (click)="deleteToleration(i)" type="circle-x"></hydro-icon>
+          </div>
+          <input placeholder="effect" type="text" formControlName="effect">
+          <input placeholder="tolerationSeconds" type="text" formControlName="tolerationSeconds">
+          <input placeholder="value" type="text" formControlName="value">
+          <input placeholder="key" type="text" formControlName="key">
+          <input placeholder="operator" type="text" formControlName="operator">
+        </label>
+        <hydro-icon class="dc-edit__icon-add" type="icon-plus" (click)="addToleration()"></hydro-icon>
+      </div>
+
+      <h1 class="dc-edit__subtitle" >Node Selector</h1>
+      <div class="dc-edit__row" >
+        <label formGroupName="nodeSelector">
+          Key:
+          <input placeholder="key" type="text" formControlName="key">
+        </label>
+        <label formGroupName="nodeSelector">
+          Value:
+          <input placeholder="value" type="text" formControlName="value">
+        </label>
       </div>
       <hr/>
     </div>
