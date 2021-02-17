@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
+import {PreserveFormService} from './preserve-form.service';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms'
 import { tap } from 'rxjs/operators';
@@ -40,17 +41,12 @@ export class DcFormComponent implements OnInit {
   constructor(
     private readonly facade: DeploymentConfigsFacade,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private formPreserver: PreserveFormService
   ) { }
 
   ngOnInit(): void {
-    let config;
-
-    if(localStorage.getItem("formValue") !== null) {
-      config = JSON.parse(localStorage.getItem("formValue"));
-    } else {
-      config = this.configTemplate;
-    }
+    let config = this.formPreserver.retrieveForm() ? this.formPreserver.retrieveForm() : this.configTemplate;
 
     let hpa = this.fb.group(config.hpa);
     let deployment = this.fb.group(config.deployment);
@@ -68,7 +64,7 @@ export class DcFormComponent implements OnInit {
     this.form = this.fb.group({...config, hpa, deployment, container, pod});
 
     this.formEmitter = this.form.valueChanges.pipe(tap((formValue) => {
-      localStorage.setItem("formValue", JSON.stringify(formValue));
+      this.formPreserver.saveForm(formValue);
     }
     )).subscribe();
   }
@@ -94,7 +90,7 @@ export class DcFormComponent implements OnInit {
         nodeSelector: {[fv.pod.nodeSelector.key]: fv.pod.nodeSelector.value}
       }
     });
-    localStorage.clear();
+    this.formPreserver.clearForm();
     this.router.navigate([`deployment_configs/${fv.name}`]);
   }
 
