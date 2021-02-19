@@ -1,83 +1,30 @@
 @import 'variables';
-.dc-edit {
-  display: flex;
-  flex-direction: column;
-
-  &__title {
-    font-size: 25px;
-    margin-top: 10px;
+:host() ::ng-deep .CodeMirror{
+  height: auto;
   }
-
-  &__subtitle {
-    color: rgb(68, 85, 124);
-    background-color: rgb(240, 234, 234);
-    font-size: 18px;
-    margin-top: 20px;
-    margin-bottom: 2px;
-    padding: 2px;
-  }
-
-  &__row {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  label {
-    display: flex;
-    flex-direction: column;
-    margin-right: 10px;
-    color: black;
-    font-weight: bold;
-    font-size: 15px;
-    input {
-      border: rgb(207, 206, 206) solid 1px;
-      border-radius: 3px;
-      box-shadow: 2px 2px 5px rgb(172, 172, 172);
-      // height: 30px;
-      font-size: inherit;
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-
-  hr {
-    margin: 1em 0;
-  }
-
-  button {
-    width: 70px;
-    margin: auto;
-    font-size: 15px;
-    margin-top: 10px;
-  }
-
-  &__icon-add {
-    height: 20px;
-    width: 20px;
-    align-self: center;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  &__icon-delete {
-    color: red;
-    height: 18px;
-    width: 18px;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-}
 
 .dc-form {
   color: $neutral-color-900;
   margin: 24px;
-  padding: 24px;
+  padding: 10px;
   border: 1px $neutral-color-200 solid;
   border-radius: 4px;
   position: relative;
   background: white;
+
+  .warning-container {
+    color: crimson;
+    background-color: #f5d6d3;
+    padding: 4px;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: center;
+
+    button {
+      font-size: 16px;
+      margin-right: 10px;
+    }
+  }
 }

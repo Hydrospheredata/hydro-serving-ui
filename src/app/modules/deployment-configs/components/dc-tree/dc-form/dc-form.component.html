@@ -1,123 +1,38 @@
 <div class="dc-form">
-  <form [formGroup]="form" class="dc-edit" (submit)="onSave()">
-    <div>
-      <h1 class="dc-edit__title">General</h1>
-      <div class="dc-edit__row">
-        <label>
-          Name:
-          <input placeholder="Config file name" type="text" name="name" formControlName="name">
-        </label>
-      </div>
-      <hr/>
-    </div>
-
-    <div formGroupName="hpa">
-      <h1 class="dc-edit__title">HPA</h1>
-      <div class="dc-edit__row">
-        <label >
-          Minimum Replicas:
-          <input placeholder="minReplicas" type="number" name="minReplicas" formControlName="minReplicas">
-        </label>
-        <label >
-          Maximum Replicas:
-          <input placeholder="maxReplicas" type="number" name="maxReplicas" formControlName="maxReplicas">
-        </label>
-        <label >
-          CPU Utilization:
-          <input placeholder="cpuUtilization" type="number" name="cpuUtilization" formControlName="cpuUtilization">
-        </label>
-      </div>
-      <hr/>
-    </div>
-
-    <div formGroupName="deployment">
-      <h1 class="dc-edit__title">Deployment</h1>
-      <div class="dc-edit__row">
-        <label >
-          Replica Count:
-          <input placeholder="replicaCount" type="number" name="replicaCount" formControlName="replicaCount">
-        </label>
-      </div>
-      <hr/>
-    </div>
-
-    <div formGroupName="container">
-      <h1 class="dc-edit__title">Container</h1>
-      <h1 class="dc-edit__subtitle">Resources</h1>
-      <div class="dc-edit__row" formGroupName="resources">
-        <label formGroupName="limits">
-          Limits CPU:
-          <input placeholder="limitsCPU" type="text" name="limitsCPU" formControlName="cpu">
-        </label >
-        <label formGroupName="limits">
-          Limits Memory:
-          <input placeholder="limitsMemory" type="text" name="limitsMemory" formControlName="memory">
-        </label>
-        <label formGroupName="requests">
-          Requests CPU:
-          <input placeholder="requestsCPU" type="text" name="requestsCPU" formControlName="cpu">
-        </label>
-        <label formGroupName="requests">
-          Requests Memory:
-          <input placeholder="requestsMemory" type="text" name="requestsMemory" formControlName="memory">
-        </label>
-      </div>
-      <h1 class="dc-edit__subtitle" >Environment</h1>
-      <div class="dc-edit__row" formArrayName="env" >
-        <label *ngFor="let env of envsForm.controls; let i = index" [formGroupName]="i">
-          <div class="header">
-            Env #{{i + 1}}:
-            <hydro-icon class="dc-edit__icon-delete" (click)="deleteEnv(i)" type="circle-x"></hydro-icon>
-
-          </div>
-          <input placeholder="key" type="text" formControlName="key">
-          <input placeholder="value" type="text" formControlName="value">
-        </label>
-        <hydro-icon class="dc-edit__icon-add" type="icon-plus" (click)="addEnv()"></hydro-icon>
-      </div>
-      <hr/>
-    </div>
-    <div formGroupName="pod">
-      <h1 class="dc-edit__title">POD</h1>
-
-      <h1 class="dc-edit__subtitle" >Tolerations</h1>
-      <div class="dc-edit__row" formArrayName="tolerations" >
-        <label *ngFor="let env of tolerationsForm.controls; let i = index" [formGroupName]="i">
-          <div class="header">
-            Toleration #{{i + 1}}:
-            <hydro-icon class="dc-edit__icon-delete" (click)="deleteToleration(i)" type="circle-x"></hydro-icon>
-          </div>
-          <input placeholder="effect" type="text" formControlName="effect">
-          <input placeholder="tolerationSeconds" type="text" formControlName="tolerationSeconds">
-          <input placeholder="value" type="text" formControlName="value">
-          <input placeholder="key" type="text" formControlName="key">
-          <input placeholder="operator" type="text" formControlName="operator">
-        </label>
-        <hydro-icon class="dc-edit__icon-add" type="icon-plus" (click)="addToleration()"></hydro-icon>
-      </div>
-
-      <h1 class="dc-edit__subtitle" >Node Selector</h1>
-      <div class="dc-edit__row" >
-        <label formGroupName="nodeSelector">
-          Key:
-          <input placeholder="key" type="text" formControlName="key">
-        </label>
-        <label formGroupName="nodeSelector">
-          Value:
-          <input placeholder="value" type="text" formControlName="value">
-        </label>
-      </div>
-      <hr/>
-    </div>
-
-    <button
-      hs-button
-      kind="flat"
-      color="cyan"
-      type="submit"
+  <div class="warning-container" *ngIf="warning">
+    {{warning}}
+  </div>
+  <form (submit)="onSave()">
+    <label>New Config File</label>
+    <ngx-codemirror
+      [(ngModel)]="form"
+      (ngModelChange)="onChange($event)"
+      name="input"
+      [options]="{
+        lineNumbers: true,
+        mode: 'yaml'
+      }"
     >
-      Save
-    </button>
+    </ngx-codemirror>
+    <div class="dc-form__footer">
+      <button
+        hs-button
+        kind="flat"
+        color="cyan"
+        [disabled]="!formIsValid"
+        type="submit"
+      >
+        Save
+      </button>
+      <button
+        hs-button
+        kind="flat"
+        color="primary"
+        type="button"
+        (click)="resetForm()"
+      >
+        Reset
+      </button>
+    </div>
   </form>
 </div>
-

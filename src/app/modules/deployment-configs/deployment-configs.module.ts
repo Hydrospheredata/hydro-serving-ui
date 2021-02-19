@@ -6,6 +6,7 @@ import { DeploymentConfigsRoutingModule } from './deployment-configs-routing.mod
 import { ReactiveFormsModule } from '@angular/forms';
 import { DcTreeComponent, DcTreeFieldComponent } from './components';
 import { DcFormComponent } from './components/dc-tree/dc-form/dc-form.component';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 
 @NgModule({
   entryComponents: [],
@@ -17,6 +18,6 @@ import { DcFormComponent } from './components/dc-tree/dc-form/dc-form.component'
     DcFormComponent,
   ],
   exports: [],
-  imports: [SharedModule, DeploymentConfigsRoutingModule, ReactiveFormsModule],
+  imports: [SharedModule, DeploymentConfigsRoutingModule, ReactiveFormsModule, CodemirrorModule],
 })
 export class DeploymentConfigsModule {}

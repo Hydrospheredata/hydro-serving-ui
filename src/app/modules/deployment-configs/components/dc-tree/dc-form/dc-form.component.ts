@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 import {PreserveFormService} from './preserve-form.service';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms'
-import { tap } from 'rxjs/operators';
+import { DeploymentConfig } from '@app/core/data/types';
 
 @Component({
   selector: 'hs-dc-form',
@@ -12,119 +10,43 @@ import { tap } from 'rxjs/operators';
   styleUrls: ['./dc-form.component.scss']
 })
 export class DcFormComponent implements OnInit {
-  formEmitter: Subscription;
-
-  configTemplate = {
-    name: ['', [
-      Validators.required
-    ]],
-    hpa: {
-      maxReplicas: null,
-      cpuUtilization: null,
-      minReplicas: null,
-    },
-    deployment: {replicaCount: null},
-    container: {
-      resources: {
-        requests: { memory: '', cpu: '' },
-        limits: { memory: '', cpu: '' },
-      },
-      env: []
-    },
-    pod: {
-      tolerations: [],
-      nodeSelector: {key: '', value: ''}
-    }
-  }
-  form: FormGroup;
+  form: string;
+  formIsValid: boolean;
+  warning: string = '';
 
   constructor(
     private readonly facade: DeploymentConfigsFacade,
     private router: Router,
-    private fb: FormBuilder,
     private formPreserver: PreserveFormService
   ) { }
 
   ngOnInit(): void {
-    let config = this.formPreserver.retrieveForm() ? this.formPreserver.retrieveForm() : this.configTemplate;
-
-    let hpa = this.fb.group(config.hpa);
-    let deployment = this.fb.group(config.deployment);
-    let resources = this.fb.group({
-      requests: this.fb.group(config.container.resources.requests),
-      limits: this.fb.group(config.container.resources.limits)
-    });
-    let env = this.fb.array(config.container.env.map(el => this.fb.group(el)));
-    let container = this.fb.group({resources, env});
-    let pod = this.fb.group({
-      tolerations: this.fb.array(config.pod.tolerations.map(el => this.fb.group(el))),
-      nodeSelector: this.fb.group(config.pod.nodeSelector)
-    })
-
-    this.form = this.fb.group({...config, hpa, deployment, container, pod});
-
-    this.formEmitter = this.form.valueChanges.pipe(tap((formValue) => {
-      this.formPreserver.saveForm(formValue);
-    }
-    )).subscribe();
+    this.form = this.formPreserver.retrieveForm() ? this.formPreserver.retrieveForm() : this.formPreserver.defaultForm();
+    this.onChange(this.form);
   }
 
-  ngOnDestroy() {
-    this.formEmitter.unsubscribe();
+  onChange(e: string) {
+    try {
+      this.formPreserver.validateForm(this.form);
+      this.formIsValid = true;
+      this.formPreserver.saveForm(this.form);
+      this.warning = '';
+    } catch(err) {
+      this.formIsValid = false;
+      this.warning = err;
+    }
   }
 
   onSave() {
-    let fv = this.form.value;
-    this.facade.update({
-      ...fv,
-      name: fv.name,
-      container: {
-        ...fv.container,
-        env: fv.container.env.reduce((acc, cur) => {
-          acc[cur.key] = cur.value;
-          return acc;
-        }, {})
-      },
-      pod: {
-        ...fv.pod,
-        nodeSelector: {[fv.pod.nodeSelector.key]: fv.pod.nodeSelector.value}
-      }
-    });
+    let value = this.formPreserver.parseDC(this.form);
+    this.facade.update(value);
     this.formPreserver.clearForm();
-    this.router.navigate([`deployment_configs/${fv.name}`]);
+    this.router.navigate([`deployment_configs/${value.name}`]);
   }
 
-  // container -> env controllers
-  get envsForm() {
-    return this.form.get('container').get('env') as FormArray;
+  resetForm() {
+    this.form = this.formPreserver.defaultForm();
+    this.formPreserver.clearForm();
+    this.formIsValid = false;
   }
-  addEnv() {
-    let env = this.fb.group({
-      key: '',
-      value: ''
-    });
-    this.envsForm.push(env);
-  }
-  deleteEnv(i: number) {
-    this.envsForm.removeAt(i);
-  }
-
-  // pod -> tolerations controllers
-  get tolerationsForm() {
-    return this.form.get('pod').get('tolerations') as FormArray;
-  }
-  addToleration() {
-    let toleration = this.fb.group({
-        effect: '',
-        tolerationSeconds: '',
-        value: '',
-        key: '',
-        operator: '',
-      });
-    this.tolerationsForm.push(toleration);
-  }
-  deleteToleration(i: number) {
-    this.tolerationsForm.removeAt(i);
-  }
-
 }
