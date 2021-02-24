@@ -1,9 +1,9 @@
 <div class="deployment-config" *ngIf="config$ | async as config">
   <button
-    class="deployment-config__button"
     hs-button
     kind="flat"
     color="warning"
+    class="deployment-config__buttons"
     (click)="onDelete(config.name)"
   >
     delete

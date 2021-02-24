@@ -1,0 +1,38 @@
+<div class="dc-form">
+  <div class="warning-container" *ngIf="warning">
+    {{warning}}
+  </div>
+  <form (submit)="onSave()">
+    <label>New Config File</label>
+    <ngx-codemirror
+      [(ngModel)]="form"
+      (ngModelChange)="onChange($event)"
+      name="input"
+      [options]="{
+        lineNumbers: true,
+        mode: 'yaml'
+      }"
+    >
+    </ngx-codemirror>
+    <div class="dc-form__footer">
+      <button
+        hs-button
+        kind="flat"
+        color="cyan"
+        [disabled]="!formIsValid"
+        type="submit"
+      >
+        Save
+      </button>
+      <button
+        hs-button
+        kind="flat"
+        color="primary"
+        type="button"
+        (click)="resetForm()"
+      >
+        Reset
+      </button>
+    </div>
+  </form>
+</div>
