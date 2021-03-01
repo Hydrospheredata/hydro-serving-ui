@@ -5,7 +5,6 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import { DeploymentConfig } from '@app/core/data/types';
-
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 
 @Component({
@@ -42,10 +41,7 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
   }
 
   addDeploymentConfig(): void {
-    // this.dialog.createDialog({
-    //   component: AddConfigComponent,
-    //   styles: { height: '100%' },
-    // });
+    this.router.navigate([`deployment_configs/create`]);
   }
 
   ngOnDestroy() {

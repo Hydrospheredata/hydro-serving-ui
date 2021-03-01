@@ -1,0 +1,30 @@
+@import 'variables';
+:host() ::ng-deep .CodeMirror{
+  height: auto;
+  }
+
+.dc-form {
+  color: $neutral-color-900;
+  margin: 24px;
+  padding: 10px;
+  border: 1px $neutral-color-200 solid;
+  border-radius: 4px;
+  position: relative;
+  background: white;
+
+  .warning-container {
+    color: crimson;
+    background-color: #f5d6d3;
+    padding: 4px;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: center;
+
+    button {
+      font-size: 16px;
+      margin-right: 10px;
+    }
+  }
+}
