@@ -139,7 +139,7 @@
         <div class="model-version__item-header">Signatures</div>
         <section class="model-version__signatures">
           <hs-signatures
-            [signature]="modelVersion.modelContract.predict"
+            [signature]="modelVersion.modelSignature"
             [fields]="fields$ | async"
           ></hs-signatures>
         </section>

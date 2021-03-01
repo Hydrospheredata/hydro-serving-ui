@@ -15,7 +15,7 @@ export class LogDetailComponent implements OnInit {
   outputKeys: string[];
 
   ngOnInit(): void {
-    const { inputs, outputs } = this.modelVersion.modelContract.predict;
+    const { inputs, outputs } = this.modelVersion.modelSignature;
     this.inputKeys = inputs.map(el => el.name);
     this.outputKeys = outputs.map(el => el.name);
   }
