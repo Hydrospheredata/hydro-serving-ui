@@ -1,7 +1,7 @@
 import {
   ModelVersion,
   ModelVersionStatus,
-  ModelContract,
+  ModelSignature,
   Input,
   Output,
 } from '@app/core/data/types';
@@ -13,15 +13,10 @@ import {
   MockRuntime2,
 } from '@testing/factories/runtime';
 
-export const MockModelContract: ModelContract = {
-  get inputs(): Input[] {
-    return [];
-  },
-  get outputs(): Output[] {
-    return [];
-  },
-  predict: { inputs: [], outputs: [], signatureName: '' },
-  modelName: 'ModelName',
+export const MockModelSignature: ModelSignature = {
+  signatureName: 'test',
+  outputs: [],
+  inputs: [],
 };
 
 export const MockModelVersion1Model1: ModelVersion = {
@@ -36,7 +31,7 @@ export const MockModelVersion1Model1: ModelVersion = {
   created: new Date().toString(),
   finished: new Date().toString(),
   modelVersion: 1,
-  modelContract: MockModelContract,
+  modelSignature: MockModelSignature,
   runtime: MockRuntime,
   model: MockModel1,
   status: ModelVersionStatus.Released,
@@ -57,7 +52,7 @@ export const MockModelVersion2Model1: ModelVersion = {
   created: new Date().toString(),
   finished: new Date().toString(),
   modelVersion: 2,
-  modelContract: MockModelContract,
+  modelSignature: MockModelSignature,
   runtime: MockRuntime3,
   model: MockModel1,
   status: ModelVersionStatus.Released,
@@ -78,7 +73,7 @@ export const MockModelVersion3Model2: ModelVersion = {
   created: new Date().toString(),
   finished: new Date().toString(),
   modelVersion: 1,
-  modelContract: MockModelContract,
+  modelSignature: MockModelSignature,
   runtime: MockRuntime2,
   model: MockModel2,
   status: ModelVersionStatus.Released,
@@ -99,7 +94,7 @@ export const FailedModelVersion: ModelVersion = {
   created: new Date().toString(),
   finished: new Date().toString(),
   modelVersion: 1,
-  modelContract: MockModelContract,
+  modelSignature: MockModelSignature,
   runtime: MockRuntime2,
   model: MockModel2,
   status: ModelVersionStatus.Failed,
@@ -120,7 +115,7 @@ export const AssemblingModelVersion: ModelVersion = {
   created: new Date().toString(),
   finished: new Date().toString(),
   modelVersion: 1,
-  modelContract: MockModelContract,
+  modelSignature: MockModelSignature,
   runtime: MockRuntime2,
   model: MockModel2,
   status: ModelVersionStatus.Assembling,

@@ -1,4 +1,4 @@
-import { ModelContract, Input, Output } from './model-contract';
+import { ModelSignature, Input, Output } from './model-contract';
 import { Image } from './image';
 import { Runtime } from './runtime';
 import { ModelDTO } from './model';
@@ -8,7 +8,7 @@ export interface ModelVersionDTO {
   created: string;
   finished: string;
   modelVersion: number;
-  modelContract: ModelContract;
+  modelSignature: ModelSignature;
   model: ModelDTO;
   status: ModelVersionStatus;
   metadata: ModelVersionMetadata;
@@ -44,7 +44,7 @@ export class ModelVersion {
   public created: string;
   public finished: string;
   public modelVersion: number;
-  public modelContract: ModelContract;
+  public modelSignature: ModelSignature;
   public runtime: Runtime;
   public model: ModelDTO;
   public status: ModelVersionStatus;
@@ -58,7 +58,7 @@ export class ModelVersion {
     this.created = props.created;
     this.finished = props.finished;
     this.modelVersion = props.modelVersion;
-    this.modelContract = new ModelContract(props.modelContract);
+    this.modelSignature = new ModelSignature(props.modelSignature);
     this.runtime = props.runtime;
     this.model = props.model;
     this.status = props.status;
@@ -68,10 +68,10 @@ export class ModelVersion {
   }
 
   get contractInputs(): Input[] {
-    return this.modelContract.inputs;
+    return this.modelSignature.inputs;
   }
 
   get contractOutputs(): Output[] {
-    return this.modelContract.outputs;
+    return this.modelSignature.outputs;
   }
 }

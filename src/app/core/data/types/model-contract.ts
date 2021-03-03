@@ -18,33 +18,20 @@ export interface Output {
   };
 }
 
-export interface ModelContractDTO {
-  modelName: string;
-  predict: {
-    outputs: Output[];
-    signatureName: string;
-    inputs: Input[];
-  };
+export interface ModelSignatureDTO {
+  outputs: Output[];
+  signatureName: string;
+  inputs: Input[];
 }
 
-export class ModelContract {
-  readonly modelName: string;
-  readonly predict: {
-    outputs: Output[];
-    signatureName: string;
-    inputs: Input[];
-  };
+export class ModelSignature {
+  signatureName: string;
+  outputs: Output[];
+  inputs: Input[];
 
-  constructor(params: ModelContractDTO) {
-    this.modelName = params.modelName;
-    this.predict = params.predict;
-  }
-
-  get inputs(): Input[] {
-    return this.predict.inputs;
-  }
-
-  get outputs(): Output[] {
-    return this.predict.outputs;
+  constructor(params: ModelSignatureDTO) {
+    this.signatureName = params.signatureName;
+    this.outputs = params.outputs;
+    this.inputs = params.inputs;
   }
 }

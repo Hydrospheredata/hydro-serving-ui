@@ -70,7 +70,7 @@ export class DialogMetricComponent implements OnInit {
 
   geOutputNames(modelVersion: ModelVersion): string[] {
     return modelVersion
-      ? modelVersion.modelContract.predict.outputs.map(_ => _.name)
+      ? modelVersion.contractOutputs.map(_ => _.name)
       : [];
   }
 

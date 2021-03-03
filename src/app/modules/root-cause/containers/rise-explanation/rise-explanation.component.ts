@@ -73,7 +73,7 @@ export class RiseExplanationComponent implements OnInit {
 
   setWidthHeightForImages(): void {
     try {
-      const imageField = this.modelVersion.modelContract.predict.inputs.find(
+      const imageField = this.modelVersion.contractInputs.find(
         p => p.profile === 'IMAGE'
       );
       const tensorProto = this.reqstoreEntry.request.inputs[imageField.name];
@@ -104,7 +104,7 @@ export class RiseExplanationComponent implements OnInit {
   }
 
   isImage(inputName: string): boolean {
-    const isImage = this.modelVersion.modelContract.predict.inputs.some(
+    const isImage = this.modelVersion.contractInputs.some(
       p => p.name === inputName && p.profile === 'IMAGE'
     );
     return isImage;

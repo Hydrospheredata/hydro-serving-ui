@@ -42,7 +42,7 @@ export class ModelVersionsEffects {
             return GetModelVersionsSuccess({ payload: modelVersions });
           }),
           catchError(error => {
-            this.snackbar.show({ message: 'Failed to load model versions' });
+            this.snackbar.show({ message: `Failed to load model versions` });
             return of(GetModelVersionsFail({ error }));
           })
         )
