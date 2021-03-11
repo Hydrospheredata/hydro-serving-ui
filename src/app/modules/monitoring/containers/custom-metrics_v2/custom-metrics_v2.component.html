@@ -1,0 +1,32 @@
+<div class="custom-metrics">
+  <div class="custom-metrics__header">
+    <span class="custom-metrics__header-title">Custom metrics</span>
+    <button
+      class="custom-checks__button"
+      color="primary"
+      kind="flat"
+      hs-button
+      (click)="openSettings()"
+    >
+      Configure metrics
+    </button>
+  </div>
+  <div class="custom-metrics__config" *ngIf="chartConfigs$ | async as configs">
+    <hs-model-versions-tags
+      *ngIf="configs.length"
+      (listChanged)="comparableModelVersionsChanged($event)"
+    ></hs-model-versions-tags>
+    <div
+      *ngIf="(comparableModelVersions$ | async).length"
+      class="custom-metrics__header-regime-selector"
+    ></div>
+  </div>
+  <div class="charts">
+    <div
+      class="charts__item"
+      *ngFor="let chartConfig of chartConfigs$ | async; trackBy: trackByFn"
+    >
+      <hs-check-chart_v2 [config]="chartConfig"></hs-check-chart_v2>
+    </div>
+  </div>
+</div>
