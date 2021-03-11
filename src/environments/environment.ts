@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   tm: false,
-  host: 'http://localhost',
+  host: 'https://hydro-serving.demo.hydrosphere.io',
   port: '',
   apiUrl: 'api/v2',
   uiUrl: '/ui/v2',

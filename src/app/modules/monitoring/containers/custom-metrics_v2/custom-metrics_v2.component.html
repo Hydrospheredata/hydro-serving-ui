@@ -22,12 +22,11 @@
     ></div>
   </div>
   <div class="charts">
-    {{chartConfigs$ | async | json}}
     <div
       class="charts__item"
       *ngFor="let chartConfig of chartConfigs$ | async; trackBy: trackByFn"
     >
-      <hs-check-chart [config]="chartConfig"></hs-check-chart>
+      <hs-check-chart_v2 [config]="chartConfig"></hs-check-chart_v2>
     </div>
   </div>
 </div>
