@@ -14,7 +14,7 @@ export interface PlotBand {
   templateUrl: './check-chart_v2.component.html',
   styleUrls: ['./check-chart_v2.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckChartComponentV2 implements OnChanges {
   name: string = '';
@@ -24,6 +24,7 @@ export class CheckChartComponentV2 implements OnChanges {
   series: ChartConfig['series'];
 
   @Input() set config(cfg: ChartConfig) {
+
     this.cfg = cfg;
 
     this.name = cfg.name;
@@ -37,10 +38,10 @@ export class CheckChartComponentV2 implements OnChanges {
 
   chartOptions: Options = {
     xAxis: {
-      tickInterval: 0.1
+      tickInterval: 10
     },
     yAxis: {
-      tickInterval: 10
+      tickInterval: -0.1
     },
     series: [
       {
@@ -52,17 +53,38 @@ export class CheckChartComponentV2 implements OnChanges {
   };
 
   ngOnChanges(changes: SimpleChanges): void {
+    // console.log(changes);
+    // if (!changes.config.firstChange) {
+    //   if (changes.config.currentValue && changes.config.currentValue.series.length !== 0) {
+    //     this.updateData(changes.config.currentValue);
+    //     this.addPlotLine(changes.config.currentValue);
+    //     console.log('first', changes.config.currentValue.series); }
+        // this.addPlotBand(changes.config.currentValue);
+      // } else {
+      //   this.updateData(changes.config.previousValue);
+      //   this.addPlotLine(changes.config.previousValue);
+      //   console.log('second', changes.config.previousValue);
+      //   // this.addPlotBand(changes.config.previousValue);
+      // }
+      // let series = null;
+      // changes.config.currentValue.series.length !== 0
+      // ? (series = changes.config.currentValue.series[0])
+
     if (changes.config) {
-      this.updateData(this.cfg);
-      this.addPlotLine(this.cfg);
-      this.addPlotBand();
+      if (changes.config.currentValue && changes.config.currentValue.series.length !== 0) {
+        this.updateData(changes.config.currentValue);
+        this.addPlotLine(changes.config.currentValue);
+        this.addPlotBand(changes.config.currentValue);
+        console.log('first', changes.config.currentValue.series); }
     }
+
   }
 
   updateData(cfg: ChartConfig) {
+    console.log('update', cfg);
     Highcharts.setOptions({
       title: {
-        text: `${this.cfg.name}`
+        text: `${cfg.name}`
       }
     })
     this.chartOptions.series = [
@@ -88,8 +110,8 @@ export class CheckChartComponentV2 implements OnChanges {
     });
   }
 
-  addPlotBand() {
-    const result = this.createPlotBand.create(this.cfg);
+  addPlotBand(cfg: ChartConfig) {
+    const result = this.createPlotBand.create(cfg);
     let plotBands = [];
     let fromArr = result.map(item => item.from);
     let toArr = result.map(item => item.to);

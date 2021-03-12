@@ -6,22 +6,24 @@ import { ChartConfig } from '@app/modules/monitoring/models';
   providedIn: "root"
 })
 export class CreatePlotBand {
-  create(cfg: ChartConfig) {
-    let currentPlotBand: PlotBand = null;
-    let i = 0;
-    let result = [];
-    for (i; i <= cfg.series[0].data.length; i++) {
-      if (cfg.series[0].data[i] > cfg.threshold) {
-        currentPlotBand
-          ? (currentPlotBand.to = i)
-          : (currentPlotBand = { from: i, to: i });
-      } else {
-        if (currentPlotBand) {
-          result.push(currentPlotBand);
-          currentPlotBand = null;
+  create({series, threshold}: ChartConfig) {
+    if (series[0]) {
+      let currentPlotBand: PlotBand = null;
+      let i = 0;
+      let result = [];
+      for (i; i <= series[0].data.length; i++) {
+        if (series[0].data[i] > threshold) {
+          currentPlotBand
+            ? (currentPlotBand.to = i)
+            : (currentPlotBand = { from: i, to: i });
+        } else {
+          if (currentPlotBand) {
+            result.push(currentPlotBand);
+            currentPlotBand = null;
+          }
         }
       }
+      return result;
     }
-    return result;
   }
 }
