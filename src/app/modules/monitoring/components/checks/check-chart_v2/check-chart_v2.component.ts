@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import * as Highcharts from "highcharts";
-import { Options } from "highcharts/highstock";
-import { CreatePlotBand } from "./createPlotBand.service";
+import { CreatePlotBand, PlotBandData } from './createPlotBand.service';
 import { ChartConfig } from '@app/modules/monitoring/models';
 
 export interface PlotBand {
@@ -34,15 +33,11 @@ export class CheckChartComponentV2 implements OnChanges {
 
   Highcharts: typeof Highcharts = Highcharts;
 
+  updateFormInput: boolean = false;
+
   constructor(public createPlotBand: CreatePlotBand) {}
 
-  chartOptions: Options = {
-    xAxis: {
-      tickInterval: 10
-    },
-    yAxis: {
-      tickInterval: -0.1
-    },
+  chartOptions: Highcharts.Options = {
     series: [
       {
         name: "test",
@@ -53,81 +48,74 @@ export class CheckChartComponentV2 implements OnChanges {
   };
 
   ngOnChanges(changes: SimpleChanges): void {
-    // console.log(changes);
-    // if (!changes.config.firstChange) {
-    //   if (changes.config.currentValue && changes.config.currentValue.series.length !== 0) {
-    //     this.updateData(changes.config.currentValue);
-    //     this.addPlotLine(changes.config.currentValue);
-    //     console.log('first', changes.config.currentValue.series); }
-        // this.addPlotBand(changes.config.currentValue);
-      // } else {
-      //   this.updateData(changes.config.previousValue);
-      //   this.addPlotLine(changes.config.previousValue);
-      //   console.log('second', changes.config.previousValue);
-      //   // this.addPlotBand(changes.config.previousValue);
-      // }
-      // let series = null;
-      // changes.config.currentValue.series.length !== 0
-      // ? (series = changes.config.currentValue.series[0])
-
     if (changes.config) {
       if (changes.config.currentValue && changes.config.currentValue.series.length !== 0) {
         this.updateData(changes.config.currentValue);
         this.addPlotLine(changes.config.currentValue);
         this.addPlotBand(changes.config.currentValue);
-        console.log('first', changes.config.currentValue.series); }
+      }
     }
-
   }
 
   updateData(cfg: ChartConfig) {
-    console.log('update', cfg);
-    Highcharts.setOptions({
+    this.chartOptions = {
+      tooltip: {
+        headerFormat: undefined,
+        pointFormat:
+          `<span style="color: rgb(65, 142, 204); font-weight: bold">
+           ${cfg.series[0].name}</span>: <b>{point.y}</b>`,
+      },
       title: {
         text: `${cfg.name}`
-      }
-    })
-    this.chartOptions.series = [
-      {
-        name: `${cfg.series[0].name}`,
-        data: cfg.series[0].data,
-        type: "line"
-      }
-    ];
+      },
+      series: [
+        {
+          name: `${cfg.series[0].name}`,
+          data: cfg.series[0].data,
+          type: "line"
+        }
+      ]
+    }
+    this.updateFormInput = true;
   }
 
   addPlotLine(cfg: ChartConfig) {
-    Highcharts.setOptions({
-      yAxis: {
-        plotLines: [
-          {
-            color: "red",
-            value: cfg.threshold,
-            dashStyle: "Dash"
-          }
-        ]
-      }
-    });
+    this.chartOptions.yAxis = {
+      plotLines: [
+        {
+          color: "#E12D39",
+          value: cfg.threshold,
+          width: 2,
+          dashStyle: "Dash"
+        }
+      ]
+    }
+    this.updateFormInput = true;
   }
 
   addPlotBand(cfg: ChartConfig) {
-    const result = this.createPlotBand.create(cfg);
+    const pbd: PlotBandData = {
+      data: cfg.series[0].data,
+      threshold: cfg.threshold
+    }
+
+    const result = this.createPlotBand.create(pbd);
     let plotBands = [];
     let fromArr = result.map(item => item.from);
     let toArr = result.map(item => item.to);
     let i = 0;
     while (i < toArr.length) {
       plotBands.push({
-        color: "#EFF8FB",
+        color: "#B0C4DE",
+        width: 2,
         from: fromArr[i],
         to: toArr[i]
       });
       i++;
     }
-    Highcharts.setOptions({
-      xAxis: {
-        plotBands: plotBands
-      }
-    });
+    this.chartOptions.xAxis = {
+      plotBands: plotBands
+    }
+    this.updateFormInput = true;
   }
 }

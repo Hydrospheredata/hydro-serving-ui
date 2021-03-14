@@ -1,18 +1,21 @@
 import { Injectable } from "@angular/core";
 import { PlotBand } from "./check-chart_v2.component";
-import { ChartConfig } from '@app/modules/monitoring/models';
+
+export interface PlotBandData {
+  threshold: number,
+  data: number[]
+}
 
 @Injectable({
   providedIn: "root"
 })
 export class CreatePlotBand {
-  create({series, threshold}: ChartConfig) {
-    if (series[0]) {
+  create({data, threshold}: PlotBandData): Array<PlotBand> {
       let currentPlotBand: PlotBand = null;
       let i = 0;
-      let result = [];
-      for (i; i <= series[0].data.length; i++) {
-        if (series[0].data[i] > threshold) {
+      let result: Array<PlotBand> = [];
+      for (i; i <= data.length; i++) {
+        if (data[i] > threshold) {
           currentPlotBand
             ? (currentPlotBand.to = i)
             : (currentPlotBand = { from: i, to: i });
@@ -25,5 +28,4 @@ export class CreatePlotBand {
       }
       return result;
     }
-  }
 }
