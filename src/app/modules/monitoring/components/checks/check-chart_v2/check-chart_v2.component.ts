@@ -2,11 +2,15 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, Vi
 import * as Highcharts from "highcharts";
 import { CreatePlotBand, PlotBandData } from './createPlotBand.service';
 import { ChartConfig } from '@app/modules/monitoring/models';
+import { MonitoringPageService } from '@app/modules/monitoring/containers/monitoring-page/monitoring-page.service';
 
 export interface PlotBand {
   from: number;
   to: number;
 }
+
+const noData = require('highcharts/modules/no-data-to-display')
+noData(Highcharts)
 
 @Component({
   selector: 'hs-check-chart_v2',
@@ -35,16 +39,48 @@ export class CheckChartComponentV2 implements OnChanges {
 
   updateFormInput: boolean = false;
 
-  constructor(public createPlotBand: CreatePlotBand) {}
+  constructor(public createPlotBand: CreatePlotBand, public monitoringPageService: MonitoringPageService) {}
 
-  chartOptions: Highcharts.Options = {
+  chartOptions = {
+    title: {},
+    tooltip: {},
     series: [
       {
         name: "test",
         data: [],
-        type: "line"
+        type: "spline"
       }
-    ]
+    ],
+    lang: {},
+    noData: {},
+    xAxis: {
+      plotBands: []
+    },
+    yAxis: {
+      title: {
+        text: undefined
+      },
+      plotLines: []
+    },
+    plotOptions: {
+      spline: {
+        lineWidth: 2,
+        states: {
+          hover: {
+            lineWidth: 2
+          }
+        },
+        marker: {
+          enabled: false
+        },
+      },
+      series: {
+        cursor: 'pointer',
+        point: {
+          events: {}
+        }
+      }
+    },
   };
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -62,8 +98,11 @@ export class CheckChartComponentV2 implements OnChanges {
       tooltip: {
         headerFormat: undefined,
         pointFormat:
-          `<span style="color: rgb(65, 142, 204); font-weight: bold">
+          `<span style="color: #4098d7; font-weight: bold">
            ${cfg.series[0].name}</span>: <b>{point.y}</b>`,
+        crosshairs: {
+          color: 'lightgrey'
+        }
       },
       title: {
         text: `${cfg.name}`
@@ -72,24 +111,64 @@ export class CheckChartComponentV2 implements OnChanges {
         {
           name: `${cfg.series[0].name}`,
           data: cfg.series[0].data,
-          type: "line"
+          type: "spline"
         }
-      ]
+      ],
+      lang: {
+        noData: "no data available"
+      },
+      noData: {
+        style: {
+          fontWeight: 'bold',
+          fontSize: '14px',
+          color: '#bcccdc'
+        }
+      },
+      xAxis: {
+        plotBands: []
+      },
+      yAxis: {
+        title: {
+          text: undefined
+        },
+        plotLines: []
+      },
+      plotOptions: {
+        spline: {
+          lineWidth: 2,
+          states: {
+            hover: {
+              lineWidth: 2
+            }
+          },
+          marker: {
+            enabled: false
+          }
+        },
+        series: {
+          cursor: 'pointer',
+          point: {
+            events: {
+              click: () => {
+                this.monitoringPageService.showCheckDetails(null, 20);
+              }
+            }
+          }
+        }
+      }
     }
     this.updateFormInput = true;
   }
 
   addPlotLine(cfg: ChartConfig) {
-    this.chartOptions.yAxis = {
-      plotLines: [
+    this.chartOptions.yAxis.plotLines = [
         {
-          color: "#E12D39",
+          color: "#cf1124",
           value: cfg.threshold,
           width: 2,
           dashStyle: "Dash"
         }
-      ]
-    }
+    ]
     this.updateFormInput = true;
   }
 
@@ -106,16 +185,14 @@ export class CheckChartComponentV2 implements OnChanges {
     let i = 0;
     while (i < toArr.length) {
       plotBands.push({
-        color: "#B0C4DE",
+        color: "#e12d39",
         width: 2,
         from: fromArr[i],
         to: toArr[i]
       });
       i++;
     }
-    this.chartOptions.xAxis = {
-      plotBands: plotBands
-    }
+    this.chartOptions.xAxis.plotBands = plotBands;
     this.updateFormInput = true;
   }
 }

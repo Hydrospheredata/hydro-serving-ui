@@ -11,21 +11,21 @@ export interface PlotBandData {
 })
 export class CreatePlotBand {
   create({data, threshold}: PlotBandData): Array<PlotBand> {
-      let currentPlotBand: PlotBand = null;
-      let i = 0;
-      let result: Array<PlotBand> = [];
-      for (i; i <= data.length; i++) {
-        if (data[i] > threshold) {
-          currentPlotBand
-            ? (currentPlotBand.to = i)
-            : (currentPlotBand = { from: i, to: i });
-        } else {
-          if (currentPlotBand) {
-            result.push(currentPlotBand);
-            currentPlotBand = null;
-          }
+    let currentPlotBand: PlotBand = null;
+    let i = 0;
+    let result: Array<PlotBand> = [];
+    for (i; i <= data.length; i++) {
+      if (data[i] > threshold) {
+        currentPlotBand
+          ? (currentPlotBand.to = i)
+          : (currentPlotBand = { from: i, to: i });
+      } else {
+        if (currentPlotBand) {
+          result.push(currentPlotBand);
+          currentPlotBand = null;
         }
       }
-      return result;
     }
+    return result;
+  }
 }
