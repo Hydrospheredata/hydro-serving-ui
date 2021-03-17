@@ -37,7 +37,7 @@ export class CheckChartComponentV2 implements OnChanges {
 
   Highcharts: typeof Highcharts = Highcharts;
 
-  updateFormInput: boolean = false;
+  updateFormInput: boolean = true;
 
   constructor(public createPlotBand: CreatePlotBand, public monitoringPageService: MonitoringPageService) {}
 
@@ -94,6 +94,7 @@ export class CheckChartComponentV2 implements OnChanges {
   }
 
   updateData(cfg: ChartConfig) {
+    let self = this;
     this.chartOptions = {
       tooltip: {
         headerFormat: undefined,
@@ -149,15 +150,14 @@ export class CheckChartComponentV2 implements OnChanges {
           cursor: 'pointer',
           point: {
             events: {
-              click: () => {
-                this.monitoringPageService.showCheckDetails(null, 20);
+              click: function () {
+                self.monitoringPageService.showCheckDetails(null, this.x);
               }
             }
           }
         }
       }
     }
-    this.updateFormInput = true;
   }
 
   addPlotLine(cfg: ChartConfig) {
@@ -169,7 +169,6 @@ export class CheckChartComponentV2 implements OnChanges {
           dashStyle: "Dash"
         }
     ]
-    this.updateFormInput = true;
   }
 
   addPlotBand(cfg: ChartConfig) {
@@ -193,6 +192,5 @@ export class CheckChartComponentV2 implements OnChanges {
       i++;
     }
     this.chartOptions.xAxis.plotBands = plotBands;
-    this.updateFormInput = true;
   }
 }
