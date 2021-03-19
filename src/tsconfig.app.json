@@ -3,7 +3,7 @@
   "compilerOptions": {
     "outDir": "../hydro-serving-ui",
     "baseUrl": "./",
-    "types": []
+    "types": ["node"]
   },
   "files": [
     "main.ts",

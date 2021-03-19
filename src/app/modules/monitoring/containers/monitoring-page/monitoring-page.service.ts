@@ -1,5 +1,5 @@
 import { Observable, Subject, combineLatest, timer, Subscription } from 'rxjs';
-import { tap, takeUntil, switchMap } from 'rxjs/operators';
+import { tap, takeUntil, switchMap, take } from 'rxjs/operators';
 import { Injectable, OnDestroy } from '@angular/core';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 
@@ -62,7 +62,9 @@ export class MonitoringPageService implements OnDestroy {
 
   showCheckDetails(checkId?: CheckId, checkIdx?: number): void {
     if(checkIdx && !checkId) {
-      this.checksSubscription = this.monitoringStore.getChecks().subscribe(checks => {
+      this.checksSubscription = this.monitoringStore.getChecks().pipe(
+        take(1)
+      ).subscribe(checks => {
         checkId = checks.getChecks()[checkIdx - 1].id;
         this.monitoringStore.showChecksDetails(checkId);
       });

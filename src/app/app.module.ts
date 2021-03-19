@@ -25,7 +25,7 @@ import { DialogsModule } from './modules/dialogs/dialogs.module';
     LayoutModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    DialogsModule,
+    DialogsModule
   ],
   providers: [
     HydroConfigService,
