@@ -18,7 +18,7 @@ export class CanActivateModelVersionGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     const modelVersionId = Number(route.params.modelVersionId);
-    const modelId = Number(route.params.modelId);
+    const modelName = route.params.modelName;
 
     return this.loaded().pipe(
       switchMap(() => this.modelVersionsFacade.allModelVersions()),
@@ -26,14 +26,14 @@ export class CanActivateModelVersionGuard implements CanActivate {
         const modelVersionExists = modelVersions.some(
           modelVersion =>
             modelVersion.id === modelVersionId &&
-            modelVersion.model.id === modelId
+            modelVersion.model.name === modelName
         );
 
         if (modelVersionExists) {
           return of(true);
         } else {
-          this.showMessage(modelId, modelVersionId);
-          this.router.navigate(['models', modelId]);
+          this.showMessage(modelName, modelVersionId);
+          this.router.navigate(['models', modelName]);
           return of(false);
         }
       })
@@ -52,9 +52,9 @@ export class CanActivateModelVersionGuard implements CanActivate {
     );
   }
 
-  private showMessage(modelId, modelVerId) {
+  private showMessage(modelName: string, modelVerId: number): void {
     this.mdlSnackbarService.showSnackbar({
-      message: `Models version: ${modelVerId} doesn't exist for model with id:${modelId}`,
+      message: `Models version: ${modelVerId} doesn't exist for model with name:${modelName}`,
       timeout: 5000,
     });
   }

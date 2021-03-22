@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
 
 import { Observable, Subscription } from 'rxjs';
-import { filter, take, tap } from 'rxjs/operators';
+import { filter, take, tap, map } from 'rxjs/operators';
 
 import { ZenModeService } from '@app/core/zenmode.service';
 import { ModelsSidebarService } from './models-sidebar.service';
@@ -19,8 +19,10 @@ export class ModelsPageComponent implements OnDestroy, OnInit {
   visibleModels$: Observable<Model[]>;
   selectedModel$: Observable<Model> = this.modelsFacade.selectedModel();
   metricModelsAreHidden$: Observable<boolean>;
+  isRootUrl$: Observable<boolean>;
 
-  private routerSub: Subscription;
+  private routerEvents$: Observable<Event>;
+  private redirectToFirstEntity: Subscription;
 
   constructor(
     private modelsFacade: ModelsFacade,
@@ -31,9 +33,18 @@ export class ModelsPageComponent implements OnDestroy, OnInit {
     this.visibleModels$ = this.modelsSidebarService.visibleModels();
     this.metricModelsAreHidden$ = this.modelsSidebarService.metricModelsAreHidden();
 
-    this.routerSub = this.router.events
+    this.routerEvents$ = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    );
+    this.isRootUrl$ = this.routerEvents$.pipe(
+      map(event => ModelsPageComponent.isRootModelsUrl(event)),
+      tap(console.log)
+    );
+
+    this.redirectToFirstEntity = this.isRootUrl$
       .pipe(
-        filter(event => ModelsPageComponent.isRootModelsUrl(event)),
+        filter(isRoot => isRoot),
+        take(1),
         tap(_ => this.redirectToFirst())
       )
       .subscribe();
@@ -46,7 +57,7 @@ export class ModelsPageComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this.routerSub.unsubscribe();
+    this.redirectToFirstEntity.unsubscribe();
   }
 
   handleFilter(str: string): void {
@@ -58,7 +69,7 @@ export class ModelsPageComponent implements OnDestroy, OnInit {
   }
 
   handleSidebarClick(model: Model): void {
-    this.router.navigate([`models/${model.id}`]);
+    this.router.navigate([`models/${model.name}`]);
   }
 
   private redirectToFirst() {
@@ -68,12 +79,15 @@ export class ModelsPageComponent implements OnDestroy, OnInit {
         take(1)
       )
       .subscribe(models => {
-        this.router.navigate([`models/${models[0].id}`]);
+        this.router.navigate([`models/${models[0].name}`]);
       });
   }
 
   private static isRootModelsUrl(event: Event): boolean {
-    return event instanceof NavigationEnd && event.url.split('/').length <= 2;
+    const isRoot =
+      event instanceof NavigationEnd && event.url.split('/').length <= 3;
+
+    return isRoot;
   }
 
   toggleHideMetricModels(hide: boolean) {

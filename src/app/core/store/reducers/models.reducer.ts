@@ -21,7 +21,7 @@ const modelsReducer = createReducer(
   on(DeleteModelSuccess, (state, { modelId }) =>
     adapter.removeOne(modelId, state)
   ),
-  on(ToggleFavorite, (state, { model: { id, favorite } }) =>
+  on(ToggleFavorite, (state, { model: { name: id, favorite } }) =>
     adapter.updateOne({ id, changes: { favorite: !favorite } }, state)
   )
 );

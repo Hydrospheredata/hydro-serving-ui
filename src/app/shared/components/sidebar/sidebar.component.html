@@ -19,7 +19,9 @@
         class="sidebar__item"
         *ngFor="let item of sidebarData"
         (click)="handleClick(item)"
-        [ngClass]="{ 'sidebar__item--selected': selectedItem === item }"
+        [ngClass]="{
+          'sidebar__item--selected': selectedItem.name === item.name
+        }"
       >
         <hydro-icon
           type="bookmark"

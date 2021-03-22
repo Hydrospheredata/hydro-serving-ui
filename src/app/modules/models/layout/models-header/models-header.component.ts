@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 
 import { ModelsHeaderService } from './models-header.service';
 import { Observable } from 'rxjs';
@@ -11,6 +11,8 @@ import { ModelVersion, Model } from '@app/core/data/types';
   providers: [ModelsHeaderService],
 })
 export class ModelsHeaderComponent implements OnInit {
+  @Input() isRoot: boolean;
+
   @ViewChild('siblings')
   siblingsEl: ElementRef;
 

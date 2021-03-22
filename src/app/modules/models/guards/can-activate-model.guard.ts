@@ -16,17 +16,19 @@ export class CanActivateModelGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-    const modelId = Number(route.params.modelId);
+    const modelName = route.params.modelName;
 
     return this.loaded().pipe(
       switchMap(() => this.facade.allModels()),
       switchMap(models => {
-        const model: Model = models.find(curModel => curModel.id === modelId);
+        const model: Model = models.find(
+          curModel => curModel.name === modelName
+        );
 
         if (model) {
           return of(true);
         } else {
-          this.showMessage(modelId);
+          this.showMessage(modelName);
           this.redirectToDefault();
           return of(false);
         }
@@ -34,9 +36,9 @@ export class CanActivateModelGuard implements CanActivate {
     );
   }
 
-  private showMessage(modelId: number): void {
+  private showMessage(modelName: string): void {
     this.mdlSnackbarService.showSnackbar({
-      message: `Models with id = ${modelId} doesn't exist`,
+      message: `Models with name = ${modelName} doesn't exist`,
       timeout: 5000,
     });
   }
