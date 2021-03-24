@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import {
   Application,
   IModelVariant,
-  ApplicationStatus, ModelVersion, ModelVersionServiceStatusesEntity,
+  ApplicationStatus,
+  ModelVersionServiceStatusesEntity,
 } from '@app/core/data/types';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
+import { ServiceStatusesFacade } from '@app/core/facades/service-statuses.facade';
 import {
   DialogUpdateModelVersionComponent,
   SELECTED_MODEL_VARIANT,
@@ -21,11 +23,7 @@ import * as _ from 'lodash'
 
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/internal/operators';
-import { filter, take } from 'rxjs/operators';
-import { select, Store } from '@ngrx/store';
-import { HydroServingState } from '@app/core/store/states/root.state';
-import { selectServiceStatusesById } from '@app/core/store/selectors/service-statuses.selectors';
-import { Get } from '@app/core/store/actions/service-statuses.actions';
+import { filter } from 'rxjs/operators';
 
 interface MenuState {
   showed: boolean;
@@ -58,14 +56,13 @@ export class ApplicationDetailsComponent implements OnInit {
   constructor(
     private readonly dialog: DialogsService,
     private readonly facade: ApplicationsFacade,
-    private readonly store: Store<HydroServingState>
+    private readonly serviceFacade: ServiceStatusesFacade
   ) {
     this.menu$ = this.menu.asObservable();
   }
 
   ngOnInit() {
     this.application$ = this.facade.selectedApplication();
-    if (this.application$) {}
     this.application$.pipe(
       filter(value => value != undefined),
       map(value => value.executionGraph.stages.map(stage =>
@@ -76,7 +73,7 @@ export class ApplicationDetailsComponent implements OnInit {
       map(res => {
         const flatted = _.flatten(res);
         flatted.forEach(modelVersion => {
-          this.store.dispatch(Get({ payload: modelVersion }));
+          this.serviceFacade.loadAll(modelVersion)
         })
       })
     ).subscribe();
@@ -128,17 +125,15 @@ export class ApplicationDetailsComponent implements OnInit {
     evt: MouseEvent,
     modelVariant: IModelVariant
   ): void {
-    this.store.pipe(
-      take(1),
-      select(selectServiceStatusesById(modelVariant.modelVersion.id))
-    ).subscribe(statuses => {
-      this.menu.next({
-        showed: true,
-        context: modelVariant,
-        left: evt.clientX - 12,
-        top: evt.clientY - 12,
-        statuses: statuses
-      });
+    this.serviceFacade.selectServiceStatusesById(modelVariant.modelVersion.id)
+      .subscribe(statuses => {
+        this.menu.next({
+          showed: true,
+          context: modelVariant,
+          left: evt.clientX - 12,
+          top: evt.clientY - 12,
+          statuses: statuses
+        });
     })
   }
 

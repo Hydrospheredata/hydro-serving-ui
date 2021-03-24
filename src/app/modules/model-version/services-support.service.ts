@@ -2,17 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@app/core/data/services/http.service';
 import { Observable, of, forkJoin, BehaviorSubject } from 'rxjs';
 import { catchError, shareReplay, distinctUntilChanged } from 'rxjs/operators';
-import { ModelVersion } from '@app/core/data/types';
-
-export interface ServiceSupported {
-  supported: boolean;
-  message: string;
-  description?: string;
-}
-
-export interface ModelVersionServicesStatus {
-  [serviceName: string]: ServiceSupported
-}
+import { ModelVersion, ModelVersionServicesStatus, ServiceSupported } from '@app/core/data/types';
 
 const enum ServicesEndpoints {
   stat = 'stat/support',
@@ -36,7 +26,6 @@ export class ServicesSupportService {
   }
 
   loadSupported(modelVersion: ModelVersion): void {
-    console.log(modelVersion.id);
     const toRequest = endpoint =>
       this.http
         .get(endpoint, { params: { model_version_id: `${modelVersion.id}` } })

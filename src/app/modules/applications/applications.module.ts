@@ -24,6 +24,6 @@ import { ApplicationDetailsComponent } from './containers/application-details/ap
   ],
   entryComponents: [],
   providers: [],
-  exports: [ApplicationFormComponent, ApplicationDetailsComponent],
+  exports: [ApplicationFormComponent],
 })
 export class ApplicationsModule {}
