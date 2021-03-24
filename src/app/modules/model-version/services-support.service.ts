@@ -9,18 +9,25 @@ export interface ServiceSupported {
   message: string;
   description?: string;
 }
+
+export interface ModelVersionServicesStatus {
+  [serviceName: string]: ServiceSupported
+}
+
 const enum ServicesEndpoints {
   stat = 'stat/support',
   visualization = 'visualization/supported',
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ServicesSupportService {
-  servicesSupport$: Observable<{ [serviceName: string]: ServiceSupported }>;
+  servicesSupport$: Observable<ModelVersionServicesStatus>;
 
   private servicesSupport: BehaviorSubject<{
     [serviceName: string]: any;
-  }> = new BehaviorSubject<{ [serviceName: string]: ServiceSupported }>({});
+  }> = new BehaviorSubject<ModelVersionServicesStatus>({});
 
   constructor(private http: HttpService) {
     this.servicesSupport$ = this.servicesSupport
@@ -29,6 +36,7 @@ export class ServicesSupportService {
   }
 
   loadSupported(modelVersion: ModelVersion): void {
+    console.log(modelVersion.id);
     const toRequest = endpoint =>
       this.http
         .get(endpoint, { params: { model_version_id: `${modelVersion.id}` } })
@@ -37,12 +45,10 @@ export class ServicesSupportService {
     forkJoin({
       stat: toRequest(ServicesEndpoints.stat),
       visualization: toRequest(ServicesEndpoints.visualization),
-    }).subscribe(res => this.servicesSupport.next(res));
+    }).subscribe(res => {this.servicesSupport.next(res)});
   }
 
-  getServiceSupported(): Observable<{
-    [serviceName: string]: ServiceSupported;
-  }> {
+  getServiceSupported(): Observable<ModelVersionServicesStatus> {
     return this.servicesSupport$;
   }
 

@@ -6,6 +6,7 @@ import * as fromModels from './models.state';
 import * as fromModelVersions from './model-versions.state';
 import * as fromServables from './servables.state';
 import * as fromDeploymentConfigs from './deployment-configs.state';
+import * as fromServiceStatuses from './service-statuses.state'
 
 export interface HydroServingState {
   router: fromRouter.RouterReducerState<RouterStateUrl>;
@@ -14,6 +15,7 @@ export interface HydroServingState {
   modelVersions: fromModelVersions.State;
   servables: fromServables.State;
   deploymentConfigs: fromDeploymentConfigs.State;
+  serviceStatuses: fromServiceStatuses.State
 }
 
 export const initialState: HydroServingState = {
@@ -30,4 +32,5 @@ export const initialState: HydroServingState = {
   modelVersions: fromModelVersions.initialState,
   servables: fromServables.initialState,
   deploymentConfigs: fromDeploymentConfigs.initialState,
+  serviceStatuses: fromServiceStatuses.initialState
 };

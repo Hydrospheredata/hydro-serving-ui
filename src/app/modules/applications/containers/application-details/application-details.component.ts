@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   Application,
   IModelVariant,
-  ApplicationStatus,
+  ApplicationStatus, ModelVersion, ModelVersionServiceStatusesEntity,
 } from '@app/core/data/types';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import {
@@ -17,20 +17,29 @@ import {
   SELECTED_DEL_APPLICATION,
 } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
+import * as _ from 'lodash'
 
 import { Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/internal/operators';
+import { filter, take } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { HydroServingState } from '@app/core/store/states/root.state';
+import { selectServiceStatusesById } from '@app/core/store/selectors/service-statuses.selectors';
+import { Get } from '@app/core/store/actions/service-statuses.actions';
 
 interface MenuState {
   showed: boolean;
   context?: IModelVariant | null;
   top: number;
   left: number;
+  statuses: ModelVersionServiceStatusesEntity
 }
 const initialMenuState: MenuState = {
   showed: false,
   context: null,
   top: 0,
   left: 0,
+  statuses: null
 };
 
 @Component({
@@ -48,13 +57,29 @@ export class ApplicationDetailsComponent implements OnInit {
 
   constructor(
     private readonly dialog: DialogsService,
-    private readonly facade: ApplicationsFacade
+    private readonly facade: ApplicationsFacade,
+    private readonly store: Store<HydroServingState>
   ) {
     this.menu$ = this.menu.asObservable();
   }
 
   ngOnInit() {
     this.application$ = this.facade.selectedApplication();
+    if (this.application$) {}
+    this.application$.pipe(
+      filter(value => value != undefined),
+      map(value => value.executionGraph.stages.map(stage =>
+        stage.modelVariants.map(modelVariant =>
+        modelVariant.modelVersion)
+        )
+      ),
+      map(res => {
+        const flatted = _.flatten(res);
+        flatted.forEach(modelVersion => {
+          this.store.dispatch(Get({ payload: modelVersion }));
+        })
+      })
+    ).subscribe();
   }
 
   public updateModelVersionDialog(lastModelVersion, modelVariant) {
@@ -103,20 +128,28 @@ export class ApplicationDetailsComponent implements OnInit {
     evt: MouseEvent,
     modelVariant: IModelVariant
   ): void {
-    this.menu.next({
-      showed: true,
-      context: modelVariant,
-      left: evt.clientX - 12,
-      top: evt.clientY - 12,
-    });
+    this.store.pipe(
+      take(1),
+      select(selectServiceStatusesById(modelVariant.modelVersion.id))
+    ).subscribe(statuses => {
+      this.menu.next({
+        showed: true,
+        context: modelVariant,
+        left: evt.clientX - 12,
+        top: evt.clientY - 12,
+        statuses: statuses
+      });
+    })
   }
 
   public onMouseLeave(): void {
+    const menuState = this.menu.getValue();
     this.menu.next({
       showed: false,
-      context: this.menu.getValue().context,
-      top: this.menu.getValue().top,
-      left: this.menu.getValue().left,
+      context: menuState.context,
+      top: menuState.top,
+      left: menuState.left,
+      statuses: menuState.statuses
     });
   }
 }

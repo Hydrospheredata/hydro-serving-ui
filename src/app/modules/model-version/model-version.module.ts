@@ -15,6 +15,7 @@ import {
   ModelVersionServicesComponent,
   ModelVersionDetailsComponent,
 } from './containers';
+import { ApplicationsModule } from '@app/modules/applications/applications.module';
 
 @NgModule({
   entryComponents: [ModelVersionLogComponent],
@@ -26,6 +27,6 @@ import {
     SignaturesComponent,
     ModelVersionLogComponent,
   ],
-  imports: [SharedModule, ModelVersionRoutingModule, ServablesModule],
+  imports: [SharedModule, ModelVersionRoutingModule, ServablesModule, ApplicationsModule],
 })
 export class ModelVersionModule {}

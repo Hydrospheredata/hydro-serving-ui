@@ -148,6 +148,7 @@
         monitoring
       </div>
       <div
+        [ngClass]="{'menu__item--disabled': !menu.statuses.statuses.visualization.supported}"
         class="menu__item"
         [routerLink]="[
           '/models',
@@ -159,6 +160,7 @@
         data projection
       </div>
       <div
+        [ngClass]="{'menu__item--disabled': !menu.statuses.statuses.stat.supported}"
         class="menu__item"
         [routerLink]="[
           '/models',
@@ -172,3 +174,4 @@
     </ng-container>
   </div>
 </ng-container>
+
