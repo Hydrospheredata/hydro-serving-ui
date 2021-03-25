@@ -19,7 +19,7 @@
   </div>
   <div class="models-page__main">
     <div class="models-page__header">
-      <hs-models-header></hs-models-header>
+      <hs-models-header [isRoot]="isRootUrl$ | async"></hs-models-header>
     </div>
     <div
       class="models-page__body"

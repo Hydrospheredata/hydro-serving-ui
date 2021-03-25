@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ModelVersion, ModelVersionStatus, ModelVersionDTO } from '../types/model-version';
+import {
+  ModelVersion,
+  ModelVersionStatus,
+  ModelVersionDTO,
+} from '../types/model-version';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ModelVersionBuilder {
-  public build(props): ModelVersion {
+  public build(props: any): ModelVersion {
     return this.toModelVersion(props);
   }
 

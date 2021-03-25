@@ -18,8 +18,8 @@ export const selectNonMetricModels = createSelector(
   selectAllModels,
   selectAllModelVersions,
   (models, modelVersions) => {
-    const modelId = R.compose(R.prop('id'), R.prop('model'));
-    const dictByModelId: Map<number, ModelVersion[]> = R.groupBy(modelId)(
+    const modelName = R.compose(R.prop('name'), R.prop('model'));
+    const dictByModelName: Map<number, ModelVersion[]> = R.groupBy(modelName)(
       modelVersions
     );
 
@@ -28,8 +28,10 @@ export const selectNonMetricModels = createSelector(
     }
 
     return models.filter(
-      ({ id }) =>
-        !dictByModelId[id].some(mv => (mv as ModelVersion).metadata.is_metric)
+      ({ name }) =>
+        !dictByModelName[name].some(
+          mv => (mv as ModelVersion).metadata.is_metric
+        )
     );
   }
 );
@@ -48,6 +50,6 @@ export const selectSelectedModel = createSelector(
   selectModelsEntities,
   selectRouterParams,
   (entities, router) => {
-    return router.params && entities[router.params.modelId];
+    return router.params && entities[router.params.modelName];
   }
 );

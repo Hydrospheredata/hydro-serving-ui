@@ -23,8 +23,7 @@ import {
   GetModelVersionsSuccess,
   GetModelVersionsFail,
   AddModelVersionSuccess,
-  AddModelVersion
-
+  AddModelVersion,
 } from '../actions/model-versions.actions';
 
 @Injectable()
@@ -42,7 +41,10 @@ export class ModelVersionsEffects {
             return GetModelVersionsSuccess({ payload: modelVersions });
           }),
           catchError(error => {
-            this.snackbar.show({ message: `Failed to load model versions` });
+            console.error(error);
+            this.snackbar.show({
+              message: `Failed to load model versions`,
+            });
             return of(GetModelVersionsFail({ error }));
           })
         )
@@ -56,7 +58,7 @@ export class ModelVersionsEffects {
       withLatestFrom(this.store.pipe(select(selectAllModels))),
       exhaustMap(([{ modelVersion }, models]) => {
         const modelExist = models.some(
-          model => model.id === modelVersion.model.id
+          model => model.name === modelVersion.model.name
         );
 
         if (modelExist) {

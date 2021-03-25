@@ -11,15 +11,17 @@ import { CanActivateModelGuard } from './guards/can-activate-model.guard';
         component: ModelsPageComponent,
         children: [
           {
-            path: ':modelId',
+            path: ':modelName',
             component: ModelDetailsComponent,
             data: { anim: 'modelDetail' },
             canActivate: [CanActivateModelGuard],
           },
           {
-            path: ':modelId/:modelVersionId',
-            loadChildren:
-              () => import('../model-version/model-version.module').then(m => m.ModelVersionModule),
+            path: ':modelName/:modelVersionId',
+            loadChildren: () =>
+              import('../model-version/model-version.module').then(
+                m => m.ModelVersionModule
+              ),
           },
           // {
           //   path: ':modelId/:modelVersionId',

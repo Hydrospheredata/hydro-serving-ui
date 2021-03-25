@@ -3,16 +3,18 @@
     <div class="models-header__tile" (click)="onClickModel()">
       <div class="models-header__model-name">{{ (model$ | async)?.name }}</div>
     </div>
-    <ng-container *ngIf="modelVersion$ | async as modelVersion">
-      <ng-container
-        [ngTemplateOutlet]="modelVersionsTile"
-        [ngTemplateOutletContext]="{ $implicit: modelVersion }"
-      ></ng-container>
-      <ng-container
-        *ngIf="service$ | async as serviceName"
-        [ngTemplateOutlet]="servicesTile"
-        [ngTemplateOutletContext]="{ $implicit: serviceName }"
-      ></ng-container>
+    <ng-container *ngIf="!isRoot">
+      <ng-container *ngIf="modelVersion$ | async as modelVersion">
+        <ng-container
+          [ngTemplateOutlet]="modelVersionsTile"
+          [ngTemplateOutletContext]="{ $implicit: modelVersion }"
+        ></ng-container>
+        <ng-container
+          *ngIf="service$ | async as serviceName"
+          [ngTemplateOutlet]="servicesTile"
+          [ngTemplateOutletContext]="{ $implicit: serviceName }"
+        ></ng-container>
+      </ng-container>
     </ng-container>
   </div>
 
