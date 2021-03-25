@@ -2,8 +2,9 @@
   <div class="log__header">
     {{ header }}
   </div>
-  <hs-error-message *ngIf="error">
+  <hs-error-message [hidden]="!error">
     {{ error }}
+    <button [hidden]="!activateRetryButton" class="log__retry" #retryButton>Retry</button>
   </hs-error-message>
   <div class="log__body" #logBody>
     <table>
@@ -12,7 +13,10 @@
         *ngFor="let item of logs; index as i; trackBy: trackByFn"
       >
         <td class="log__item-index">{{ i }}</td>
-        <td class="log__item-text">{{ item }}</td>
+        <td class="log__item-text">{{ item.logText }}</td>
+        <td *ngIf="item.count > 1">
+          <div class="log__item-counter">{{ item.count }}</div>
+        </td>
       </tr>
     </table>
   </div>
