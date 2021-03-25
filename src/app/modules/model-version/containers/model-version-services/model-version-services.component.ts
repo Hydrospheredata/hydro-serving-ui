@@ -1,26 +1,28 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {
-  ServicesSupportService,
-  ServiceSupported,
-} from '../../services-support.service';
+
 import { Observable } from 'rxjs';
-import { ModelVersion } from '@app/core/data/types';
+
+import { ModelVersion, ModelVersionServiceStatusesEntity } from '@app/core/data/types';
+import { ServiceStatusesFacade } from '@app/core/facades/service-statuses.facade';
 
 @Component({
   selector: 'hs-model-version-services',
   templateUrl: './model-version-services.component.html',
-  styleUrls: ['./model-version-services.component.scss'],
-  providers: [ServicesSupportService],
+  styleUrls: ['./model-version-services.component.scss']
 })
 export class ModelVersionServicesComponent implements OnInit {
   @Input() modelVersion: ModelVersion;
 
-  serviceSupported$: Observable<{ [serviceName: string]: ServiceSupported }>;
+  serviceStatuses$: Observable<ModelVersionServiceStatusesEntity>;
 
-  constructor(private readonly servicesSupport: ServicesSupportService) {}
+  constructor(private readonly serviceFacade: ServiceStatusesFacade) {}
+
+  serviceStatusesById$(id: number): Observable<ModelVersionServiceStatusesEntity> {
+    return this.serviceFacade.selectServiceStatusesById(id);
+  }
 
   ngOnInit() {
-    this.serviceSupported$ = this.servicesSupport.getServiceSupported();
-    this.servicesSupport.loadSupported(this.modelVersion);
+    this.serviceFacade.loadAll(this.modelVersion);
+    this.serviceStatuses$ = this.serviceStatusesById$(this.modelVersion.id);
   }
 }

@@ -19,6 +19,7 @@ import {
   ModelVersionsEffects,
   ServablesEffects,
   DeploymentConfigsEffects,
+  ServiceStatusesEffects
 } from './store/effects';
 
 @NgModule({
@@ -32,6 +33,7 @@ import {
       ModelVersionsEffects,
       ServablesEffects,
       DeploymentConfigsEffects,
+      ServiceStatusesEffects
     ]),
     StoreRouterConnectingModule.forRoot({
       stateKey: 'router',

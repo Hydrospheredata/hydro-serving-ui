@@ -236,6 +236,9 @@
     }
   }
 }
+
+@import 'variables';
+
 .menu {
   position: absolute;
   border: 1px $neutral-color-700 solid;
@@ -257,6 +260,10 @@
     &--accent {
       background: $supportive-color-green-100;
       color: $supportive-color-green-700;
+    }
+    &--disabled {
+      pointer-events: none;
+      opacity: 0.5;
     }
   }
   &--showed {

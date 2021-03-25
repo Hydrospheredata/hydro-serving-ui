@@ -17,26 +17,26 @@
 
     <ng-container
       *ngTemplateOutlet="
-        (serviceSupported$ | async)?.visualization?.supported
+        (serviceStatuses$ | async)?.statuses?.visualization?.supported
           ? visualizationTile
           : notSupported;
         context: {
           name: 'Data projection',
           iconName: 'data_projection',
-          message: (serviceSupported$ | async)?.visualization?.message
+          message: (serviceStatuses$ | async)?.statuses?.visualization?.message
         }
       "
     >
     </ng-container>
     <ng-container
       *ngTemplateOutlet="
-        (serviceSupported$ | async)?.stat?.supported
+        (serviceStatuses$ | async)?.statuses?.stat?.supported
           ? monitoringTile
           : notSupported;
         context: {
           name: 'Drift Report',
           iconName: 'drift_report',
-          message: (serviceSupported$ | async)?.stat?.description
+          message: (serviceStatuses$ | async)?.statuses?.stat?.description
         }
       "
     >

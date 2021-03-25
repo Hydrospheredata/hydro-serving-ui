@@ -20,7 +20,7 @@ import { ApplicationDetailsComponent } from './containers/application-details/ap
     UpdateModelVersionDirective,
     ApplicationFormComponent,
     ModelVariantFormComponent,
-    KafkaFormComponent,
+    KafkaFormComponent
   ],
   entryComponents: [],
   providers: [],
