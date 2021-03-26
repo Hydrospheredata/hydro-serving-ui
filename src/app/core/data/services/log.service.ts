@@ -10,11 +10,10 @@ import { HS_BASE_URL } from '@app/core/base-url.token';
 type logType = 'servable' | 'model-version';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LogService {
-
-  constructor(@Inject(HS_BASE_URL) private baseUrl: string) { }
+  constructor(@Inject(HS_BASE_URL) private baseUrl: string) {}
 
   getLog(type: logType, param: string): Observable<string> {
     let eventSource: EventSource;
@@ -23,7 +22,7 @@ export class LogService {
       const { apiUrl } = environment;
       let url: string;
 
-      switch(type) {
+      switch (type) {
         case 'servable':
           url = `${this.baseUrl}${apiUrl}/servable/${param}/logs?follow=true`;
         case 'model-version':
@@ -38,11 +37,11 @@ export class LogService {
         subscribe.complete();
       });
 
-      eventSource.onmessage = ({ data }) => {
+      eventSource.addEventListener('Log', ({ data }: MessageEvent) => {
         if (data) {
           subscribe.next(data);
         }
-      };
+      });
 
       eventSource.onerror = err => {
         subscribe.error(err);
