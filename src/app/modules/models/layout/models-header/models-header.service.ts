@@ -64,20 +64,20 @@ export class ModelsHeaderService {
   }
 
   onClickModel(): void {
-    const [, root, modelId] = this.router.url.split('/');
-    this.router.navigate([root, modelId]);
+    const [, root, modelName] = this.router.url.split('/');
+    this.router.navigate([root, modelName]);
   }
 
   onClickModelVersion(): void {
-    const [, root, modelId, modelVerId] = this.router.url.split('/');
-    this.router.navigate([root, modelId, modelVerId], {
+    const [, root, modelName, modelVersionNumber] = this.router.url.split('/');
+    this.router.navigate([root, modelName, modelVersionNumber], {
       queryParamsHandling: 'merge',
     });
   }
 
   onClickSibling(modelVersion: ModelVersion): void {
-    const [, root, modelId, , ...tail] = this.router.url.split('/');
-    this.router.navigate([root, modelId, modelVersion.id, ...tail]);
+    const [, root, modelName, , ...tail] = this.router.url.split('/');
+    this.router.navigate([root, modelName, modelVersion.modelVersion, ...tail]);
   }
 
   onDelete() {

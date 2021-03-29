@@ -17,7 +17,7 @@ import { CanActivateModelGuard } from './guards/can-activate-model.guard';
             canActivate: [CanActivateModelGuard],
           },
           {
-            path: ':modelName/:modelVersionId',
+            path: ':modelName/:modelVersionNumber',
             loadChildren: () =>
               import('../model-version/model-version.module').then(
                 m => m.ModelVersionModule

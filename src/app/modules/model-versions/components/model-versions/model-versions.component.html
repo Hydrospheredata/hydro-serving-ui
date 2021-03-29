@@ -32,7 +32,7 @@
           class="hydro-table-body__row hydro-table-body__row--hoverable"
           *ngFor="let modelVersion of modelVersions"
           [modelVersion]="modelVersion"
-          [routerLink]="[modelVersion.id]"
+          [routerLink]="[modelVersion.modelVersion]"
           queryParamsHandling="merge"
         ></hs-model-versions-row>
       </tbody>

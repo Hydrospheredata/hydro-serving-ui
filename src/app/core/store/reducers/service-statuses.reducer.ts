@@ -1,5 +1,5 @@
 import { createReducer, Action, on } from '@ngrx/store';
-import { Get, GetFail, GetSuccess } from '@app/core/store/actions/service-statuses.actions';
+import { GetSuccess } from '@app/core/store/actions/service-statuses.actions';
 import { adapter, initialState, State } from '../states/service-statuses.state';
 
 const serviceStatusesReducer = createReducer(
