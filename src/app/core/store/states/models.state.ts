@@ -7,7 +7,12 @@ export interface State extends EntityState<Model> {
   loaded: boolean;
 }
 
-export const adapter: EntityAdapter<Model> = createEntityAdapter<Model>();
+export const adapter: EntityAdapter<Model> = createEntityAdapter<Model>({
+  selectId: model => model.name,
+  sortComparer: (a, b) => {
+    return b.id - a.id;
+  },
+});
 export const initialState = {
   ids: [],
   entities: {},

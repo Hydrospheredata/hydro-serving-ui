@@ -54,16 +54,14 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
   }
 
   get inputsEqual(): boolean {
-    const oldInputs = this.selectedModelVariant.modelVersion.modelContract
-      .predict.inputs;
-    const newInputs = this.latestModelVersion.modelContract.predict.inputs;
+    const oldInputs = this.selectedModelVariant.modelVersion.contractInputs;
+    const newInputs = this.latestModelVersion.modelSignature.inputs;
     return isEqual(oldInputs, newInputs);
   }
 
   get outputsEqual(): boolean {
-    const oldOutputs = this.selectedModelVariant.modelVersion.modelContract
-      .predict.outputs;
-    const newOutputs = this.latestModelVersion.modelContract.predict.outputs;
+    const oldOutputs = this.selectedModelVariant.modelVersion.contractOutputs;
+    const newOutputs = this.latestModelVersion.modelSignature.outputs;
     return isEqual(oldOutputs, newOutputs);
   }
 

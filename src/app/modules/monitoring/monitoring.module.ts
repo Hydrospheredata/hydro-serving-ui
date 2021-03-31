@@ -46,7 +46,10 @@ import {
   MonitoringAvailabilityComponent,
   MonitoringPageComponent,
   CustomMetricsComponent,
+  CustomMetricsComponentV2,
 } from './containers';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { CheckChartComponentV2 } from '@app/modules/monitoring/components/checks/check-chart_v2/check-chart_v2.component';
 
 @NgModule({
   declarations: [
@@ -60,9 +63,11 @@ import {
     CheckIdToTimePipe,
     RequestsInformationComponent,
     CheckChartComponent,
+    CheckChartComponentV2,
     BatchMetricsComponent,
     RegimeSelectorComponent,
     CustomMetricsComponent,
+    CustomMetricsComponentV2,
     AggregationHeaderComponent,
     AggregationDataSectionComponent,
     BatchDetailsComponent,
@@ -90,6 +95,7 @@ import {
     MonitoringRoutingModule,
     RequestDetailsModule,
     HsD3Module,
+    HighchartsChartModule
   ],
   exports: [MonitoringPageComponent],
 })

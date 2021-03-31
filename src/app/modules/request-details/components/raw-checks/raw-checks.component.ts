@@ -15,7 +15,7 @@ export class RawChecksComponent {
   @Input() outputKeys: string[] = [];
 
   isImage(inputName: string): boolean {
-    return this.modelVersion.modelContract.predict.inputs.some(
+    return this.modelVersion.contractInputs.some(
       p => p.name === inputName && p.profile === 'IMAGE'
     );
   }
@@ -29,7 +29,7 @@ export class RawChecksComponent {
   }
 
   getTensorShape(inputName: string) {
-    const inputs = this.modelVersion.modelContract.predict.inputs;
+    const inputs = this.modelVersion.contractInputs;
     const input = inputs.find(el => el.name === inputName);
 
     return input.shape;

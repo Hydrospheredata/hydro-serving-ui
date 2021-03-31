@@ -74,6 +74,7 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.application$ = this.facade.selectedApplication();
+
     this.mv$ = this.serviceFacade.allStatusesEntities();
 
     this.mvSubscription = combineLatest([this.application$, this.mv$]).pipe(
