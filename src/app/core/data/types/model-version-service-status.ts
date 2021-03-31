@@ -1,5 +1,3 @@
-import { of } from 'rxjs';
-
 export interface ServiceSupported {
   supported: boolean;
   message: string;
