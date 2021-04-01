@@ -17,10 +17,17 @@ export const selectModelVersionEntities = createSelector(
 );
 
 export const selectSelectedModelVersion = createSelector(
-  selectModelVersionEntities,
+  selectAllModelVersions,
   fromRouter.selectRouterParams,
-  (entities, router) => {
-    return entities && router.params && entities[router.params.modelVersionId];
+  (versions, router) => {
+    const modelName = router.params.modelName;
+    const version = Number(router.params.modelVersionNumber);
+    let mv = null;
+
+    if (modelName && version) {
+      mv = versions.find(mv => mv.model.name === modelName && mv.modelVersion === version);
+      return mv;
+    }
   }
 );
 
