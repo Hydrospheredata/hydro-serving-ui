@@ -1,7 +1,3 @@
 location /hydrosphere.visualization. {
   grpc_pass grpc://${VISUALIZATION_HOST}:${VISUALIZATION_GRPC_PORT};
 }
-
-location /grpc/hydrosphere.visualization. {
-  grpc_pass grpc://${VISUALIZATION_HOST}:${VISUALIZATION_GRPC_PORT};
-}
