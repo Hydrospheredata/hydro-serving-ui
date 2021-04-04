@@ -1,7 +1,3 @@
 location /hydrosphere.auto_od. {
   grpc_pass grpc://${AUTO_OD_HOST}:${AUTO_OD_GRPC_PORT};
 }
-
-location /grpc/hydrosphere.auto_od. {
-  grpc_pass grpc://${AUTO_OD_HOST}:${AUTO_OD_GRPC_PORT};
-}
