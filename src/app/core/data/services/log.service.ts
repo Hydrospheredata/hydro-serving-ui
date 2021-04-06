@@ -25,8 +25,10 @@ export class LogService {
       switch (type) {
         case 'servable':
           url = `${this.baseUrl}${apiUrl}/servable/${param}/logs?follow=true`;
+          break;
         case 'model-version':
           url = `${this.baseUrl}${apiUrl}/model/version/${param}/logs?follow=true`;
+          break;
       }
       eventSource = new EventSource(url, {
         withCredentials: true,
@@ -38,6 +40,12 @@ export class LogService {
       });
 
       eventSource.addEventListener('Log', ({ data }: MessageEvent) => {
+        if (data) {
+          subscribe.next(data);
+        }
+      });
+
+      eventSource.addEventListener('message', ({ data }: MessageEvent) => {
         if (data) {
           subscribe.next(data);
         }

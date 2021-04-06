@@ -5,12 +5,14 @@ import { Observable, of } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 
 import { ModelsFacade } from '@app/core/facades/models.facade';
+import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { Model } from '@app/core/data/types';
 
 @Injectable({ providedIn: 'root' })
 export class CanActivateModelGuard implements CanActivate {
   constructor(
     private facade: ModelsFacade,
+    private modelVersionFacade: ModelVersionsFacade,
     private mdlSnackbarService: MdlSnackbarService,
     private router: Router
   ) {}
@@ -48,6 +50,8 @@ export class CanActivateModelGuard implements CanActivate {
   }
 
   private loaded(): Observable<boolean> {
-    return this.facade.areModelsLoaded().pipe(first(value => value === true));
+    return this.modelVersionFacade
+      .areModelVersionsLoaded()
+      .pipe(first(value => value === true));
   }
 }

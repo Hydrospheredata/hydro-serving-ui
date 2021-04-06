@@ -37,8 +37,7 @@ export class ModelsPageComponent implements OnDestroy, OnInit {
       filter(event => event instanceof NavigationEnd)
     );
     this.isRootUrl$ = this.routerEvents$.pipe(
-      map(event => ModelsPageComponent.isRootModelsUrl(event)),
-      tap(console.log)
+      map(event => ModelsPageComponent.isRootModelsUrl(event))
     );
 
     this.redirectToFirstEntity = this.isRootUrl$
