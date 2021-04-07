@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   Application,
   IModelVariant,
   ApplicationStatus,
-  ModelVersionServiceStatusesEntity,
+  ModelVersionServiceStatusesEntity, ModelVersion,
 } from '@app/core/data/types';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ServiceStatusesFacade } from '@app/core/facades/service-statuses.facade';
@@ -21,9 +21,10 @@ import {
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 import * as _ from 'lodash'
 
-import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/internal/operators';
+import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/internal/operators';
 import { filter } from 'rxjs/operators';
+import { Dictionary } from '@ngrx/entity';
 
 interface MenuState {
   showed: boolean;
@@ -40,18 +41,28 @@ const initialMenuState: MenuState = {
   statuses: null
 };
 
+function getModelVersions(value: Application): ModelVersion[] {
+  return _.flatten(value.executionGraph.stages.map(stage =>
+    stage.modelVariants.map(modelVariant =>
+      modelVariant.modelVersion)
+  ));
+}
+
 @Component({
   selector: 'hs-application-details',
   templateUrl: './application-details.component.html',
   styleUrls: ['./application-details.component.scss'],
 })
-export class ApplicationDetailsComponent implements OnInit {
+export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   application$: Observable<Application>;
 
   menu$: Observable<MenuState>;
   private menu: BehaviorSubject<MenuState> = new BehaviorSubject(
     initialMenuState
   );
+
+  mv$: Observable<Dictionary<ModelVersionServiceStatusesEntity>>;
+  private mvSubscription: Subscription;
 
   constructor(
     private readonly dialog: DialogsService,
@@ -63,20 +74,30 @@ export class ApplicationDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.application$ = this.facade.selectedApplication();
-    this.application$.pipe(
-      filter(value => value != undefined),
-      map(value => value.executionGraph.stages.map(stage =>
-        stage.modelVariants.map(modelVariant =>
-        modelVariant.modelVersion)
-        )
-      ),
-      map(res => {
-        const flatted = _.flatten(res);
-        flatted.forEach(modelVersion => {
-          this.serviceFacade.loadAll(modelVersion)
-        })
+
+    this.mv$ = this.serviceFacade.allStatusesEntities();
+
+    this.mvSubscription = combineLatest([this.application$, this.mv$]).pipe(
+      filter(tuple => {
+        const [app, statuses] = tuple;
+        return app !== undefined;
+      }),
+      map(tuple => {
+        const [app, statuses] = tuple;
+        const mvs = getModelVersions(app);
+        return mvs.filter(mv => statuses[mv.id] == undefined);
+      }),
+      filter(mvs => {
+        return mvs.length > 0;
+      }),
+      tap(mvs => {
+        return mvs.forEach(mv => this.serviceFacade.loadAll(mv));
       })
     ).subscribe();
+  }
+
+  ngOnDestroy() {
+    this.mvSubscription.unsubscribe();
   }
 
   public updateModelVersionDialog(lastModelVersion, modelVariant) {
