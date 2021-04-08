@@ -5,7 +5,7 @@ const SimpleInput: IField = {
   name: 'simple_input_1',
   dtype: 'DTYPE',
   shape: {
-    dim: [{ size: 1, name: 'DIM' }],
+    dims: [{ size: 1, name: 'DIM' }],
   },
 };
 
@@ -14,7 +14,7 @@ const SimpleOutput: IField = {
   name: 'simple_output_1',
   dtype: 'DTYPE',
   shape: {
-    dim: [{ size: 1, name: 'DIM' }],
+    dims: [{ size: 1, name: 'DIM' }],
   },
 };
 
@@ -23,7 +23,7 @@ const SimpleInput2: IField = {
   name: 'simple_input_2',
   dtype: 'DTYPE',
   shape: {
-    dim: [
+    dims: [
       { size: 1, name: 'DIM' },
       { size: 2, name: 'DIM' },
     ],
