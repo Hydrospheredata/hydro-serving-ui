@@ -33,7 +33,6 @@ export class AppComponent implements OnInit {
     this.dialogOutletService.setDefaultViewContainerRef(this.viewContainerRef);
 
     appFacade.loadAll();
-    modelsFacade.loadAll();
     modelVersionsFacade.loadAll();
     servablesFacade.loadAll();
     deploymentConfigFacade.loadAll();

@@ -7,5 +7,4 @@ const { selectEntities } = adapter.getSelectors();
 export const allStatusesEntities = createSelector(state, selectEntities);
 
 export const selectServiceStatusesById = (id: number) =>
-  createSelector(allStatusesEntities, entities => entities[id]
-
+  createSelector(allStatusesEntities, entities => entities[id]);
