@@ -4,7 +4,7 @@ interface IDim {
 }
 
 export interface IShape {
-    dim: IDim[];
+    dims: IDim[];
     unknownRank?: boolean;
 }
 export interface IField {
