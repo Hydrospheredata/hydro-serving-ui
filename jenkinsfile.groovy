@@ -56,6 +56,7 @@ def buildDocker(){
     //run build command and store build tag 
     tagVersion = getVersion() 
     sh script: "docker build -t hydrosphere/$SERVICEIMAGENAME:$tagVersion .", label: "Run build docker task";
+    sh script: "docker tag hydrosphere/$SERVICEIMAGENAME:$tagVersion hydrosphere/$SERVICEIMAGENAME:latest", label: "Retag docker to latest";
 }
 
 def pushDocker(String registryUrl, String dockerImage){
@@ -210,6 +211,7 @@ node('hydrocentral') {
           }
             buildDocker()
             pushDocker(REGISTRYURL, SERVICEIMAGENAME+":$newVersion")
+            pushDocker(REGISTRYURL, SERVICEIMAGENAME+":latest")
           if (params.releaseType == 'global'){
             releaseService(oldVersion, newVersion)
           } else {
