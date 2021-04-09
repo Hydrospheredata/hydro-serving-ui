@@ -19,14 +19,11 @@
       </td>
       <td class="hydro-table-body__cell">
         <ng-container
-          *ngTemplateOutlet="
-            status;
-            context: { $implicit: servable.status.status }
-          "
+          *ngTemplateOutlet="status; context: { $implicit: servable.status }"
         ></ng-container>
       </td>
       <td class="hydro-table-body__cell">
-        {{ servable.status.msg }}
+        {{ servable.statusMessage }}
       </td>
       <td class="hydro-table-body__cell">
         <div class="servables-table__row-buttons">
@@ -62,9 +59,14 @@
       type="circle-check"
     ></hydro-icon>
     <hydro-icon
-      *ngSwitchDefault
+      *ngSwitchCase="'Starting'"
       class="servable__status-icon"
       type="clock"
+    ></hydro-icon>
+    <hydro-icon
+      *ngSwitchDefault
+      class="servable__status-icon"
+      type="circle-x"
     ></hydro-icon>
   </div>
 </ng-template>

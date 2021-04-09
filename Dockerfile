@@ -12,7 +12,7 @@ RUN npm run build-prod
 
 RUN printf '{"version":"%s", "gitHeadCommit":"%s","gitCurrentBranch":"%s", "nodeVersion":"%s"}\n' "$(cat version)" "$(git rev-parse HEAD)" "$(git rev-parse --abbrev-ref HEAD)" "$(node --version)" >> buildinfo.json
 
-FROM openresty/openresty:latest
+FROM openresty/openresty:1.17.8.2-4-buster
 
 RUN  apt update && apt install -y gettext
 

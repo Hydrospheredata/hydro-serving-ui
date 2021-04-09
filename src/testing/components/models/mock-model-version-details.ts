@@ -7,12 +7,10 @@ import {
 } from '@angular/core';
 import { Servable } from '@app/core/data/types';
 import { ModelVersion, ISignature } from '@app/core/data/types';
-import { ModelVersionLogService } from '@app/modules/model-version/components/model-version-log/model-version-log.service';
 
 @Component({
   selector: 'hs-model-version-details',
   template: '',
-  providers: [ModelVersionLogService],
 })
 export class ModelVersionDetailsComponent {
   @ViewChild('logContainer', { read: ViewContainerRef, static: true })

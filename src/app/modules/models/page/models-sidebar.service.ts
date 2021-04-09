@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { switchMap } from 'rxjs/internal/operators';
+import { switchMap, tap } from 'rxjs/internal/operators';
 import { map } from 'rxjs/operators';
 import { Model } from '@app/core/data/types';
 
@@ -24,7 +24,7 @@ export class ModelsSidebarService {
     return this._metricModelsAreHidden.asObservable();
   }
 
-  models(): Observable<Model[]> {
+  private models(): Observable<Model[]> {
     return this.metricModelsAreHidden().pipe(
       switchMap(hidden => {
         return hidden ? this.nonMetricModels$ : this.allModels$;

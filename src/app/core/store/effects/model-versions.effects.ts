@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
+import { ModelDTO, Model } from '@app/core/data/types';
+import { FavoriteService } from '@app/core/favorite.service';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { of, concat } from 'rxjs';
 import {
-  map,
   catchError,
   switchMap,
   exhaustMap,
   withLatestFrom,
 } from 'rxjs/operators';
+import * as _ from 'lodash';
 
 import { SnackbarService } from '../../snackbar.service';
 
@@ -17,7 +19,7 @@ import { ModelVersionService } from '../../data/services/model-version.service';
 
 import { HydroServingState } from '../states/root.state';
 import { selectAllModels } from '../selectors/models.selectors';
-import { AddModel } from '../actions/models.actions';
+import { AddModel, GetModelsSuccess } from '../actions/models.actions';
 import {
   GetModelVersions,
   GetModelVersionsSuccess,
@@ -33,12 +35,30 @@ export class ModelVersionsEffects {
       ofType(GetModelVersions),
       switchMap(() =>
         this.modelVersionsService.getAllVersions().pipe(
-          map(data => {
+          switchMap(data => {
             const modelVersions = data.map(
               this.modelVersionBuilder.build,
               this.modelVersionBuilder
             );
-            return GetModelVersionsSuccess({ payload: modelVersions });
+
+            const models: Model[] = _.uniqBy(
+              modelVersions.map(mv => mv.model),
+              function (model: ModelDTO) {
+                return model.id;
+              }
+            )
+              .map(this.modelBuilder.build, this.modelBuilder)
+              .map(model => {
+                return {
+                  ...model,
+                  favorite: this.favoriteService.isFavorite(model.name),
+                };
+              });
+
+            return of(
+              GetModelVersionsSuccess({ payload: modelVersions }),
+              GetModelsSuccess({ payload: models })
+            );
           }),
           catchError(error => {
             console.error(error);
@@ -81,6 +101,7 @@ export class ModelVersionsEffects {
     private modelVersionsService: ModelVersionService,
     private actions$: Actions,
     private snackbar: SnackbarService,
-    private store: Store<HydroServingState>
+    private store: Store<HydroServingState>,
+    private favoriteService: FavoriteService
   ) {}
 }
