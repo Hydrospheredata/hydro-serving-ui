@@ -131,7 +131,7 @@
         [routerLink]="[
           '/models',
           menu.context.modelVersion.model.name,
-          menu.context?.modelVersion.id
+          menu.context?.modelVersion.modelVersion
         ]"
       >
         details
@@ -141,7 +141,7 @@
         [routerLink]="[
           '/models',
           menu.context.modelVersion.model.name,
-          menu.context.modelVersion.id,
+          menu.context.modelVersion.modelVersion,
           'monitoring'
         ]"
       >
@@ -153,7 +153,7 @@
         [routerLink]="[
           '/models',
           menu.context.modelVersion.model.name,
-          menu.context.modelVersion.id,
+          menu.context.modelVersion.modelVersion,
           'data_projection'
         ]"
       >
@@ -165,7 +165,7 @@
         [routerLink]="[
           '/models',
           menu.context.modelVersion.model.name,
-          menu.context.modelVersion.id,
+          menu.context.modelVersion.modelVersion,
           'drift_report'
         ]"
       >
