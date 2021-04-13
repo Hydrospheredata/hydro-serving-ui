@@ -1,13 +1,17 @@
 <div class="dialog__content">
-  <span class="dialog__content--question">Remove servable?</span>
-  <div class="dialog__text">
-    {{ servableName }}
-  </div>
+  <span class="dialog__content--question">Remove deployment config?</span>
+  <p class="dialog__text dialog__text--is-alert">{{ name }}</p>
   <div class="dialog__buttons dialog__buttons--column">
-    <button hs-button (click)="onClose()">
+    <button hs-button (click)="dialog.closeDialog()">
       cancel
     </button>
-    <button hs-button kind="flat" color="warning" (click)="onDelete()">
+    <button
+      hs-button
+      kind="flat"
+      color="warning"
+      (click)="onDelete()"
+      hsAutofocused
+    >
       Remove
     </button>
   </div>

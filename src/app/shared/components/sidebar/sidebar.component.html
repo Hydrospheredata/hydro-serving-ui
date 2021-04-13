@@ -20,7 +20,7 @@
         *ngFor="let item of sidebarData"
         (click)="handleClick(item)"
         [ngClass]="{
-          'sidebar__item--selected': selectedItem.name === item.name
+          'sidebar__item--selected': selectedItem ? selectedItem.name === item.name : null
         }"
       >
         <hydro-icon

@@ -1,15 +1,16 @@
-import { State } from '../states/deployment-configs.state';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { State, adapter } from '../states/deployment-configs.state';
 import { selectRouterParams } from './router.selectors';
 
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+const state = createFeatureSelector<State>('deploymentConfigs');
 
-const getFeatureState = createFeatureSelector<State>('deploymentConfigs');
+const { selectAll } = adapter.getSelectors();
 
-const configsState = createSelector(getFeatureState, state => state);
+export const selectAllConfigs = createSelector(state, selectAll);
 
-export const selectAllConfigs = createSelector(
-  configsState,
-  state => state.configs
+export const selectDepConfigLoaded = createSelector(
+  state,
+  state => state.loaded
 );
 
 export const selectSelectedDeploymentConfig = createSelector(

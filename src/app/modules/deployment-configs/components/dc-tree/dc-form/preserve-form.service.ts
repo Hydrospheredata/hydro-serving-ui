@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {load as loadYaml}  from 'js-yaml' ;
+import { load as loadYaml }  from 'js-yaml' ;
 import { DeploymentConfig } from '@app/core/data/types';
 
 @Injectable({
