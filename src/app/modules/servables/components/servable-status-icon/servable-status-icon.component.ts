@@ -17,7 +17,13 @@ export class ServableStatusIconComponent implements OnInit {
   }
 
   get message(): string {
-    return `Servable: ${this.servable.name}. Message: ${this.servable.message}`;
+    let res = `Servable: ${this.servable.name}\n`;
+
+    if (this.servable.message) {
+      res += `\n Message: ${this.servable.message}`;
+    }
+
+    return res;
   }
 
   ngOnInit(): void {}
