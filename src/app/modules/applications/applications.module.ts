@@ -6,13 +6,14 @@ import {
   KafkaFormComponent,
 } from '@app/modules/applications/components';
 import { UpdateModelVersionDirective } from '@app/modules/applications/directives';
+import { ServablesModule } from '@app/modules/servables/servables.module';
 import { ApplicationsPageComponent } from './pages/applications-page/applications-page.component';
 import { ApplicationsRoutingModule } from './applications-routing.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { ApplicationDetailsComponent } from './containers/application-details/application-details.component';
 
 @NgModule({
-  imports: [SharedModule, ApplicationsRoutingModule],
+  imports: [SharedModule, ApplicationsRoutingModule, ServablesModule],
   declarations: [
     ApplicationsPageComponent,
     ApplicationDetailsComponent,
@@ -20,7 +21,7 @@ import { ApplicationDetailsComponent } from './containers/application-details/ap
     UpdateModelVersionDirective,
     ApplicationFormComponent,
     ModelVariantFormComponent,
-    KafkaFormComponent
+    KafkaFormComponent,
   ],
   entryComponents: [],
   providers: [],

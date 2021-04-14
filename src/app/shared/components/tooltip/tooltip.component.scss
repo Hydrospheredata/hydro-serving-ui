@@ -20,6 +20,7 @@
   visibility: visible;
   max-width: 480px;
   max-height: 480px;
+  min-width: 120px;
   overflow: auto;
   &::before {
     content: '';
