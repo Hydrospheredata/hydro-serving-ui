@@ -56,6 +56,7 @@ def buildDocker(){
     //run build command and store build tag 
     tagVersion = getVersion() 
     sh script: "docker build -t hydrosphere/$SERVICEIMAGENAME:$tagVersion .", label: "Run build docker task";
+    sh script: "docker tag hydrosphere/$SERVICEIMAGENAME:$tagVersion hydrosphere/$SERVICEIMAGENAME:latest", label: "Retag docker to latest";
 }
 
 def pushDocker(String registryUrl, String dockerImage){
@@ -70,17 +71,17 @@ def pushDocker(String registryUrl, String dockerImage){
 def updateDockerCompose(String newVersion){
   dir('docker-compose'){
     //Change template
-    sh script: "sed \"s/.*image:.*/    image: hydrosphere\\/hydro-serving-ui:$newVersion/g\" hydro-serving-ui.service.template > hydro-serving-ui.compose", label: "sed hydro-serving-ui version"
+    sh script: "sed -i \"s/.*image:.*/    image: hydrosphere\\/hydro-serving-ui:$newVersion/g\" hydro-serving-ui.service.template", label: "sed hydro-serving-ui version"
     //Merge compose into 1 file
     composeMerge = "docker-compose"
-    composeService = sh label: "Get all template", returnStdout: true, script: "ls *.compose"
+    composeService = sh label: "Get all template", returnStdout: true, script: "ls *.template"
     list = composeService.split( "\\r?\\n" )
     for(l in list){
         composeMerge = composeMerge + " -f $l"
     }
-    composeMerge = composeMerge + " config > docker-compose.yaml"
+    composeMerge = composeMerge + " config > ../docker-compose.yaml"
     sh script: "$composeMerge", label:"Merge compose file"
-    sh script: "cp docker-compose.yaml ../docker-compose.yaml"
+    //sh script: "cp docker-compose.yaml ../docker-compose.yaml"
   }
 }
 
@@ -210,6 +211,7 @@ node('hydrocentral') {
           }
             buildDocker()
             pushDocker(REGISTRYURL, SERVICEIMAGENAME+":$newVersion")
+            pushDocker(REGISTRYURL, SERVICEIMAGENAME+":latest")
           if (params.releaseType == 'global'){
             releaseService(oldVersion, newVersion)
           } else {
