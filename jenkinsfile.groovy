@@ -12,9 +12,13 @@ SERVICEIMAGENAME = 'hydro-serving-ui'
 GITHUBREPO  = "github.com/Hydrospheredata/hydro-serving-ui.git"
 
 def checkoutRepo(String repo){
-  if (env.CHANGE_ID != null ){
+  if (env.CHANGE_FORK != null){
+    git changelog: false, credentialsId: 'HydroRobot_AccessToken', poll: false, url: repo, branch: 'master'
+    sh script: "git fetch origin pull/$CHANGE_ID/head:$BRANCH_NAME"
+    sh script: "git checkout $BRANCH_NAME"
+  }else if (env.CHANGE_ID != null ){
     git changelog: false, credentialsId: 'HydroRobot_AccessToken', poll: false, url: repo, branch: env.CHANGE_BRANCH
-  } else {
+  } else{
     git changelog: false, credentialsId: 'HydroRobot_AccessToken', poll: false, url: repo, branch: env.BRANCH_NAME
   }
 }
@@ -26,7 +30,7 @@ def getVersion(){
         version = sh(script: "cat \"version\" | sed 's/\\\"/\\\\\"/g'", returnStdout: true ,label: "get version").trim()
       } else {
         //Set version as commit SHA
-        version = sh(script: "git rev-parse HEAD", returnStdout: true ,label: "get version").trim()
+        version = sh(script: "git rev-parse $BRANCH_NAME", returnStdout: true ,label: "get version").trim()
       }
         return version
     }catch(err){
@@ -54,7 +58,7 @@ EOF""", label: "Set bumpversion configfile"
 
 def buildDocker(){
     //run build command and store build tag 
-    tagVersion = getVersion() 
+    tagVersion = getVersion()
     sh script: "docker build -t hydrosphere/$SERVICEIMAGENAME:$tagVersion .", label: "Run build docker task";
     sh script: "docker tag hydrosphere/$SERVICEIMAGENAME:$tagVersion hydrosphere/$SERVICEIMAGENAME:latest", label: "Retag docker to latest";
 }
@@ -191,7 +195,11 @@ node('hydrocentral') {
         sh script: "git config --global user.name \"HydroRobot\"", label: "Set username"
         sh script: "git config --global user.email \"robot@hydrosphere.io\"", label: "Set user email"
         checkoutRepo("https://github.com/Hydrospheredata/$SERVICENAME" + '.git')
-        AUTHOR = sh(script:"git log -1 --pretty=format:'%an'", returnStdout: true, label: "get last commit author").trim()
+        if (env.CHANGE_FORK != null){
+          AUTHOR = env.CHANGE_FORK
+        } else {
+          AUTHOR = sh(script:"git log -1 --pretty=format:'%an'", returnStdout: true, label: "get last commit author").trim()
+        }
       }
         
       stage('Test'){
