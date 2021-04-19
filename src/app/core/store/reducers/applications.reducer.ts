@@ -22,7 +22,7 @@ const applicationReducer = createReducer(
   initialState,
   on(Get, state => ({ ...state, loading: true })),
   on(GetSuccess, (state, { payload }) =>
-    adapter.addAll(payload, { ...state, loaded: true, loading: false })
+    adapter.setAll(payload, { ...state, loaded: true, loading: false })
   ),
   on(GetFail, state => ({ ...state, loading: false })),
   on(AddSuccess, (state, { payload }) => adapter.addOne(payload, state)),

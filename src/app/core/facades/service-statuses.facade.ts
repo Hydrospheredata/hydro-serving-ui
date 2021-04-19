@@ -16,7 +16,6 @@ export class ServiceStatusesFacade {
     this.store.dispatch(Get({ payload: modelVersion }));
   }
 
-
   allStatusesEntities() {
     return this.store.pipe(select(allStatusesEntities));
   }
