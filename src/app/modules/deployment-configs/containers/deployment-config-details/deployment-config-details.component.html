@@ -1,5 +1,6 @@
 <div class="deployment-config" *ngIf="config$ | async as config">
   <button
+    *ngIf="config.name !== 'hydrosphere_manager_default'"
     hs-button
     kind="flat"
     color="warning"

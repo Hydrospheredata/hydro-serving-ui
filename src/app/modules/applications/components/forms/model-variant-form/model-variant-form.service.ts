@@ -12,8 +12,9 @@ import {
   ModelVersion,
   Model,
   IModelVariant,
-  ModelVersionStatus,
+  ModelVersionStatus, DeploymentConfig,
 } from '@app/core/data/types';
+import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 
 export interface IModelVariantFormData {
   weight: number;
@@ -29,12 +30,15 @@ export class ModelVariantFormService implements OnDestroy {
   private modelVersions = new BehaviorSubject<ModelVersion[]>([]);
   private models: Model[];
   private modelsSub: Subscription;
+  private depConfigs: DeploymentConfig[];
+  private depConfigsSub: Subscription;
 
   private currentModelVersion = new BehaviorSubject<ModelVersion>(undefined);
 
   constructor(
     private readonly modelVersionsFacade: ModelVersionsFacade,
     private readonly modelsFacade: ModelsFacade,
+    private readonly depConfigsFacade: DeploymentConfigsFacade,
     private readonly customValidators: CustomValidatorsService
   ) {
     this.allModelVersionsSub = this.modelVersionsFacade
@@ -47,6 +51,10 @@ export class ModelVariantFormService implements OnDestroy {
     this.modelsSub = this.modelsFacade
       .allModels()
       .subscribe(models => (this.models = models));
+
+    this.depConfigsSub = this.depConfigsFacade
+      .getAll()
+      .subscribe(depConfigs => this.depConfigs = depConfigs)
   }
 
   public getModelVersions(): Observable<any> {
@@ -80,16 +88,23 @@ export class ModelVariantFormService implements OnDestroy {
     }
   }
 
+  public getDefaultDepConfig(): DeploymentConfig {
+    return this.depConfigs.find(depConfig =>
+      depConfig.name === 'hydrosphere_manager_default'
+    );
+  }
+
   public defaultModelVariantFormData(): IModelVariantFormData {
     const modelId = this.defaultModelId();
     this.updateModelVersionList(modelId);
     const modelVersion = this.getDefaultModelVersion();
+    const depConfig = this.getDefaultDepConfig();
 
     return {
       weight: 100,
       modelId,
       modelVersionId: modelVersion && modelVersion.id,
-      deploymentConfigName: '',
+      deploymentConfigName: depConfig.name
     };
   }
 
@@ -124,7 +139,8 @@ export class ModelVariantFormService implements OnDestroy {
         this.customValidators.required()
       ),
       deploymentConfigName: new FormControl(
-        modelVariantFormData.deploymentConfigName
+        modelVariantFormData.deploymentConfigName,
+        this.customValidators.required()
       ),
     });
   }
