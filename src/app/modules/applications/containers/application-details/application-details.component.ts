@@ -19,7 +19,7 @@ import {
   SELECTED_DEL_APPLICATION,
 } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/internal/operators';
