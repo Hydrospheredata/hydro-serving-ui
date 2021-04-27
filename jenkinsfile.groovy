@@ -16,9 +16,7 @@ def checkoutRepo(String repo){
     git changelog: false, credentialsId: 'HydroRobot_AccessToken', poll: false, url: repo, branch: 'master'
     sh script: "git fetch origin pull/$CHANGE_ID/head:$BRANCH_NAME"
     sh script: "git checkout $BRANCH_NAME"
-  }else if (env.CHANGE_ID != null ){
-    git changelog: false, credentialsId: 'HydroRobot_AccessToken', poll: false, url: repo, branch: env.CHANGE_BRANCH
-  } else{
+  } else {
     git changelog: false, credentialsId: 'HydroRobot_AccessToken', poll: false, url: repo, branch: env.BRANCH_NAME
   }
 }
