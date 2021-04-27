@@ -110,6 +110,12 @@
       border-color: #435673;
     }
 
+    &-servable {
+      position: absolute;
+      left: calc(100% - 5px);
+      top: -14px;
+    }
+
     &-weight {
       display: inline-block;
       position: absolute;

@@ -1,3 +1,4 @@
+import { Servable } from '@app/core/data/types/servable';
 import { ModelVersion } from './model-version';
 import { ISignature } from './signature';
 import { DeploymentConfig } from './deployment-config';
@@ -42,10 +43,9 @@ export interface Stage {
 }
 
 export interface IModelVariant {
+  servable?: Servable;
   modelVersion: ModelVersion;
   weight: number;
-  signature: ISignature;
-  deploymentConfigName?: string;
   deploymentConfiguration?: DeploymentConfig;
 }
 
