@@ -78,7 +78,7 @@
             *ngFor="let modelVariant of stage.modelVariants; let j = index"
             (click)="onClickModelVariant($event, modelVariant)"
           >
-            <div class="application__model-variant-servable">
+            <div class="application__model-variant-servable" *ngIf="modelVariant.servable">
               <hs-servable-status-icon
                 [servable]="modelVariant.servable"
               ></hs-servable-status-icon>

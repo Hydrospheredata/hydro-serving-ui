@@ -30,7 +30,11 @@ def getVersion(){
         version = sh(script: "cat \"version\" | sed 's/\\\"/\\\\\"/g'", returnStdout: true ,label: "get version").trim()
       } else {
         //Set version as commit SHA
-        version = sh(script: "git rev-parse $BRANCH_NAME", returnStdout: true ,label: "get version").trim()
+        if (env.CHANGE_ID != null ){
+          version = sh(script: "git rev-parse $CHANGE_BRANCH", returnStdout: true ,label: "get version").trim() 
+        } else { 
+          version = sh(script: "git rev-parse $BRANCH_NAME", returnStdout: true ,label: "get version").trim()
+        }
       }
         return version
     }catch(err){

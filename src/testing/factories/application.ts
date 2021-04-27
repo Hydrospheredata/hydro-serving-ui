@@ -17,13 +17,11 @@ export const application: Application = applicationBuilder.build({});
 const MockService: IModelVariant = {
   weight: 100,
   modelVersion: MockModelVersion1Model1,
-  signature: MockSignature1,
 };
 
 const MockService2: IModelVariant = {
   weight: 100,
   modelVersion: MockModelVersion3Model2,
-  signature: MockSignature1,
 };
 
 export const MockApplication: Application = {
