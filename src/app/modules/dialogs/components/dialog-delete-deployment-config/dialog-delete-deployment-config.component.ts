@@ -1,5 +1,8 @@
 import { Component, InjectionToken, Inject } from '@angular/core';
+
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
+import { DeploymentConfig } from '@app/core/data/types';
+
 import { DialogsService } from '../../dialogs.service';
 
 export const DEPLOYMENT_CONFIG_TOKEN = new InjectionToken(
@@ -11,24 +14,19 @@ export const DEPLOYMENT_CONFIG_TOKEN = new InjectionToken(
   styleUrls: ['./dialog-delete-deployment-config.component.scss'],
 })
 export class DialogDeleteDeploymentConfigComponent {
-  _name: string;
-  constructor(
-    private readonly dialogService: DialogsService,
-    private facade: DeploymentConfigsFacade,
-    @Inject(DEPLOYMENT_CONFIG_TOKEN) name: string
-  ) {
-    this._name = name;
+  get name(): string {
+    return this.config.name;
   }
 
-  get servableName() {
-    return this._name;
-  }
+  constructor(
+    public dialog: DialogsService,
+    private facade: DeploymentConfigsFacade,
+    @Inject(DEPLOYMENT_CONFIG_TOKEN)
+    private config: DeploymentConfig
+  ) {}
 
   onDelete() {
-    this.facade.delete(this._name);
-    this.onClose();
-  }
-  onClose() {
-    this.dialogService.closeDialog();
+    this.facade.delete(this.config.name);
+    this.dialog.closeDialog();
   }
 }

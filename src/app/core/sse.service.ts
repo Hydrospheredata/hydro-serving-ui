@@ -57,7 +57,7 @@ export class SseService {
     ],
     [
       SSEEvents.DeploymentConfigurationUpdate,
-      config => this.updateDepConfig(config),
+      config => this.addDepConfig(config),
     ],
     [
       SSEEvents.DeploymentConfigurationRemove,
@@ -117,8 +117,8 @@ export class SseService {
     return fromDepConfigs.DeleteDeploymentConfigSuccess({ name });
   }
 
-  private updateDepConfig(config: DeploymentConfig) {
-    return fromDepConfigs.UpdateDeploymentConfig({ config });
+  private addDepConfig(config: DeploymentConfig) {
+    return fromDepConfigs.AddDeploymentConfigSuccess({ payload: config });
   }
 
   private addEventHandler(item: [string, any]) {

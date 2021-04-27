@@ -4,30 +4,24 @@ import {
   GetDeploymentConfigs,
   GetDeploymentConfigsSuccess,
   DeleteDeploymentConfigSuccess,
-  UpdateDeploymentConfig
+  GetDeploymentConfigsFail,
+  AddDeploymentConfigSuccess,
 } from '../actions/deployment-configs.actions';
 
-import { State, initialState } from '../states/deployment-configs.state';
+import { State, initialState, adapter } from '../states/deployment-configs.state';
 
 export const deploymentConfigReducer = createReducer(
   initialState,
-  on(GetDeploymentConfigs, state => {
-    return state;
+  on(GetDeploymentConfigs, state => ({ ...state, loading: true })),
+  on(GetDeploymentConfigsSuccess, (state, { payload}) => {
+    return adapter.setAll(payload, {...state, loaded: true, loading: false});
   }),
-  on(GetDeploymentConfigsSuccess, (state, payload) => {
-    return { ...state, configs: payload.configs };
+  on(GetDeploymentConfigsFail, state => ({ ...state, loading: false })),
+  on(DeleteDeploymentConfigSuccess, (state, { name}) => {
+    return adapter.removeOne(name, state);
   }),
-  on(DeleteDeploymentConfigSuccess, (state, payload) => {
-    return {
-      ...state,
-      configs: state.configs.filter(config => config.name !== payload.name),
-    };
-  }),
-  on(UpdateDeploymentConfig, (state, { config }) => {
-    const configs = state.configs;
-    const configExists = configs.some(cfg => cfg.name === config.name);
-
-    return configExists ? state : { ...state, configs: [...configs, config] };
+  on(AddDeploymentConfigSuccess, (state, { payload }) => {
+    return adapter.addOne(payload, state);
   })
 );
 

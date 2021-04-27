@@ -4,13 +4,13 @@ import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, debounceTime } from 'rxjs/internal/operators';
 import { DeploymentConfig } from '../data/types';
 import {
+  AddDeploymentConfig,
   DeleteDeploymentConfig,
   GetDeploymentConfigs,
-  UpdateDeploymentConfig
 } from '../store/actions/deployment-configs.actions';
 import { State } from '../store/states/deployment-configs.state';
 import {
-  selectAllConfigs,
+  selectAllConfigs, selectDepConfigLoaded,
   selectSelectedDeploymentConfig,
 } from '../store/selectors/deployment-configs.selectors';
 
@@ -53,11 +53,15 @@ export class DeploymentConfigsFacade {
     this.store.dispatch(DeleteDeploymentConfig({ name }));
   }
 
-  update(config: DeploymentConfig) {
-    this.store.dispatch(UpdateDeploymentConfig({config}));
+  add(config: DeploymentConfig) {
+    this.store.dispatch(AddDeploymentConfig({ depConfig: config }));
   }
 
   onFilter(filter: string): void {
     this.filterString.next(filter);
+  }
+
+  areDepConfigsLoaded() {
+    return this.store.pipe(select(selectDepConfigLoaded));
   }
 }

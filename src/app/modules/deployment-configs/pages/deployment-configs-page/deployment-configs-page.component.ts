@@ -3,6 +3,7 @@ import { Router, Event, NavigationEnd } from '@angular/router';
 
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
+import { first } from 'rxjs/internal/operators';
 
 import { DeploymentConfig } from '@app/core/data/types';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
@@ -20,10 +21,11 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
   private all$: Observable<DeploymentConfig[]>;
   private error: Subject<string> = new Subject<string>();
   private routerSub: Subscription;
+  private toggle: boolean;
 
   constructor(
     private readonly facade: DeploymentConfigsFacade,
-    private readonly router: Router
+    private readonly router: Router,
   ) {
     this.error$ = this.error.asObservable();
 
@@ -35,17 +37,21 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
     this.routerSub = this.router.events
       .pipe(
         filter(event => this.isRootUrl(event)),
-        tap(() => this.redirectToFirst())
+        tap(_ => this.redirectToFirst())
       )
       .subscribe();
+
+    this.toggle = false;
   }
 
   addDeploymentConfig(): void {
+    this.toggle = true;
     this.router.navigate([`deployment_configs/create`]);
   }
 
   ngOnDestroy() {
     this.routerSub.unsubscribe();
+    this.toggle = false;
   }
 
   handleSidebarClick(config: DeploymentConfig): void {
@@ -57,7 +63,7 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
   }
 
   private redirectToFirst() {
-    this.all$.pipe(filter(configs => configs.length > 0)).subscribe(configs => {
+    this.all$.pipe(first(configs => configs.length > 0)).subscribe(configs => {
       this.router.navigate([`deployment_configs/${configs[0].name}`]);
     });
   }

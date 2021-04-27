@@ -1,0 +1,16 @@
+@import 'variables';
+
+.servable-status {
+  &--serving {
+    color: $supportive-color-green-600;
+  }
+  &--not-serving {
+    color: $supportive-color-red-600;
+  }
+  &--starting {
+  }
+  &__icon {
+    width: 16px;
+    height: 16px;
+  }
+}

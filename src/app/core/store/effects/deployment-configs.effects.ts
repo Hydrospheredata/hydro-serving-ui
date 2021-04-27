@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { exhaustMap, map, catchError } from 'rxjs/internal/operators';
 
 import { SnackbarService } from '../../snackbar.service';
@@ -13,37 +15,66 @@ import {
   DeleteDeploymentConfig,
   DeleteDeploymentConfigSuccess,
   DeleteDeploymentConfigFail,
+  AddDeploymentConfig,
+  AddDeploymentConfigSuccess,
+  AddDeploymentConfigFail,
 } from '../actions/deployment-configs.actions';
 
 @Injectable()
 export class DeploymentConfigsEffects {
-  getAllDeploymentConfigs = createEffect(() =>
+  getAllDeploymentConfigs$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GetDeploymentConfigs),
       exhaustMap(() =>
-        this.api
+        this.depConfigsService
           .getAll()
-          .pipe(map(configs => GetDeploymentConfigsSuccess({ configs })))
+          .pipe(map(configs => GetDeploymentConfigsSuccess({ payload: configs })))
       )
     )
   );
 
-  deleteConfig = createEffect(() =>
+  addConfig$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AddDeploymentConfig),
+      switchMap(({ depConfig }) => {
+          return this.depConfigsService.addConfig(depConfig).pipe(
+            map(response => {
+              this.snackbar.show({
+                message: 'Deployment config was successfully added',
+              });
+
+              this.router.navigate(['/deployment_configs', response.name]);
+              return AddDeploymentConfigSuccess({ payload: depConfig });
+            }),
+            catchError(error => {
+              this.snackbar.show({
+                message: `Error: ${error}`,
+              });
+              return of(AddDeploymentConfigFail({ error }));
+            })
+          )
+        }
+      )
+    )
+  );
+
+  deleteConfig$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DeleteDeploymentConfig),
       exhaustMap(({ name }) =>
-        this.api.delete(name).pipe(
+        this.depConfigsService.delete(name).pipe(
           map(() => {
+            this.router.navigate(['deployment_configs']);
             this.snackbar.show({
               message: 'Deployment config was successfully deleted',
             });
             return DeleteDeploymentConfigSuccess({ name });
           }),
-          catchError(err => {
+          catchError(error => {
             this.snackbar.show({
-              message: err.message,
+              message: `Error: ${error}`,
             });
-            return of(DeleteDeploymentConfigFail());
+            return of(DeleteDeploymentConfigFail({ error }));
           })
         )
       )
@@ -52,7 +83,8 @@ export class DeploymentConfigsEffects {
 
   constructor(
     private readonly actions$: Actions,
-    private readonly api: DeploymentConfigsService,
+    private router: Router,
+    private readonly depConfigsService: DeploymentConfigsService,
     private readonly snackbar: SnackbarService
   ) {}
 }

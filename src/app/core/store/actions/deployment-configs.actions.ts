@@ -4,12 +4,10 @@ import { DeploymentConfig } from '../../data/types';
 export const GetDeploymentConfigs = createAction(
   '[Deployment config] get all deployment configs'
 );
-
 export const GetDeploymentConfigsSuccess = createAction(
   '[Deployment config] get all succeed',
-  props<{ configs: DeploymentConfig[] }>()
+  props<{ payload: DeploymentConfig[] }>()
 );
-
 export const GetDeploymentConfigsFail = createAction(
   '[Deployment config] get all failed',
   props<{ error: string }>()
@@ -19,17 +17,25 @@ export const DeleteDeploymentConfig = createAction(
   '[Deployment config] delete',
   props<{ name: string }>()
 );
-
 export const DeleteDeploymentConfigSuccess = createAction(
   '[Deployment config] successful deletion',
   props<{ name: string }>()
 );
-
 export const DeleteDeploymentConfigFail = createAction(
-  '[Deployment config] failed deletion'
+  '[Deployment config] failed deletion',
+  props<{ error: string }>()
 );
 
-export const UpdateDeploymentConfig = createAction(
-  '[Deployment config] update',
-  props<{ config: DeploymentConfig }>()
+export const AddDeploymentConfig = createAction(
+  '[Deployment config] add deployment configuration',
+  props<{ depConfig: DeploymentConfig }>()
 );
+export const AddDeploymentConfigSuccess = createAction(
+  '[Deployment config] add deployment configuration with success',
+  props<{ payload: DeploymentConfig }>()
+);
+export const AddDeploymentConfigFail = createAction(
+  '[Deployment config] add deployment configuration with fail',
+  props<{ error: string }>()
+);
+

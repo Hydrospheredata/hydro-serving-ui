@@ -78,6 +78,11 @@
             *ngFor="let modelVariant of stage.modelVariants; let j = index"
             (click)="onClickModelVariant($event, modelVariant)"
           >
+            <div class="application__model-variant-servable">
+              <hs-servable-status-icon
+                [servable]="modelVariant.servable"
+              ></hs-servable-status-icon>
+            </div>
             <div
               class="application__model-variant-update tooltip"
               hsUpdateModelVersion
@@ -131,7 +136,7 @@
         [routerLink]="[
           '/models',
           menu.context.modelVersion.model.name,
-          menu.context?.modelVersion.id
+          menu.context?.modelVersion.modelVersion
         ]"
       >
         details
@@ -141,31 +146,36 @@
         [routerLink]="[
           '/models',
           menu.context.modelVersion.model.name,
-          menu.context.modelVersion.id,
+          menu.context.modelVersion.modelVersion,
           'monitoring'
         ]"
       >
         monitoring
       </div>
       <div
-        [ngClass]="{'menu__item--disabled': !menu.statuses?.statuses?.visualization?.supported}"
+        [ngClass]="{
+          'menu__item--disabled': !menu.statuses?.statuses?.visualization
+            ?.supported
+        }"
         class="menu__item"
         [routerLink]="[
           '/models',
           menu.context.modelVersion.model.name,
-          menu.context.modelVersion.id,
+          menu.context.modelVersion.modelVersion,
           'data_projection'
         ]"
       >
         data projection
       </div>
       <div
-        [ngClass]="{'menu__item--disabled': !menu.statuses?.statuses?.stat?.supported}"
+        [ngClass]="{
+          'menu__item--disabled': !menu.statuses?.statuses?.stat?.supported
+        }"
         class="menu__item"
         [routerLink]="[
           '/models',
           menu.context.modelVersion.model.name,
-          menu.context.modelVersion.id,
+          menu.context.modelVersion.modelVersion,
           'drift_report'
         ]"
       >
@@ -174,4 +184,3 @@
     </ng-container>
   </div>
 </ng-container>
-

@@ -1,0 +1,26 @@
+<div
+  [hs-tooltip]="message"
+  class="servable-status"
+  [ngSwitch]="status"
+  [ngClass]="{
+    'servable-status--serving': status === 'Serving',
+    'servable-status--not-serving': status === 'NotServing',
+    'servable-status--starting': status === 'Starting'
+  }"
+>
+  <hydro-icon
+    *ngSwitchCase="'Serving'"
+    class="servable-status__icon"
+    type="circle-check"
+  ></hydro-icon>
+  <hydro-icon
+    *ngSwitchCase="'Starting'"
+    class="servable-status__icon"
+    type="clock"
+  ></hydro-icon>
+  <hydro-icon
+    *ngSwitchDefault
+    class="servable-status__icon"
+    type="circle-x"
+  ></hydro-icon>
+</div>

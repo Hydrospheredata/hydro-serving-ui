@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 import { DeploymentConfig } from '@app/core/data/types';
-import { tap } from 'rxjs/operators';
+import { DialogsService } from '@app/modules/dialogs/dialogs.service';
+import {
+  DEPLOYMENT_CONFIG_TOKEN,
+  DialogDeleteDeploymentConfigComponent,
+} from '@app/modules/dialogs/components';
 
 @Component({
   selector: 'hs-deployment-config-details',
@@ -12,10 +16,20 @@ import { tap } from 'rxjs/operators';
 export class DeploymentConfigDetailsComponent implements OnInit {
   config$: Observable<DeploymentConfig>;
   editMode: boolean;
-  constructor(private readonly facade: DeploymentConfigsFacade) {}
+  constructor(
+    private readonly facade: DeploymentConfigsFacade,
+    private readonly dialog: DialogsService
+  ) {}
 
   ngOnInit() {
     this.config$ = this.facade.selectedConfig();
+  }
+
+  removeConfig(config: DeploymentConfig) {
+    this.dialog.createDialog({
+      component: DialogDeleteDeploymentConfigComponent,
+      providers: [{ provide: DEPLOYMENT_CONFIG_TOKEN, useValue: config }],
+    });
   }
 
   onDelete(name: string) {

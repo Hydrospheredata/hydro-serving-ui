@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
-import {PreserveFormService} from './preserve-form.service';
 import { Router } from '@angular/router';
-import { DeploymentConfig } from '@app/core/data/types';
+import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
+import { PreserveFormService } from './preserve-form.service';
 
 @Component({
   selector: 'hs-dc-form',
@@ -18,7 +17,7 @@ export class DcFormComponent implements OnInit {
     private readonly facade: DeploymentConfigsFacade,
     private router: Router,
     private formPreserver: PreserveFormService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.form = this.formPreserver.retrieveForm() ? this.formPreserver.retrieveForm() : this.formPreserver.defaultForm();
@@ -39,7 +38,7 @@ export class DcFormComponent implements OnInit {
 
   onSave() {
     let value = this.formPreserver.parseDC(this.form);
-    this.facade.update(value);
+    this.facade.add(value);
     this.formPreserver.clearForm();
     this.router.navigate([`deployment_configs/${value.name}`]);
   }
