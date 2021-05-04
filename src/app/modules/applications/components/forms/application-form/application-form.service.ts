@@ -6,13 +6,12 @@ import {
   AbstractControl,
 } from '@angular/forms';
 
+import { CustomValidatorsService } from '@app/core/custom-validators.service';
+import { Application } from '@app/core/data/types';
 import {
   IModelVariantFormData,
   ModelVariantFormService,
 } from '../model-variant-form/model-variant-form.service';
-
-import { CustomValidatorsService } from '@app/core/custom-validators.service';
-import { Application } from '@app/core/data/types';
 
 export interface StageFormData {
   modelVariants: IModelVariantFormData[];
@@ -81,8 +80,6 @@ export class ApplicationFormService {
   }
 
   public addStageControl(stage = this.defaultStageData()): void {
-
-
     this.stages.push(this.buildStageGroup(stage));
   }
 

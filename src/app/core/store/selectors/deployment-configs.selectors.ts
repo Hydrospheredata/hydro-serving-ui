@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { defaultDepConfig } from '@app/modules/deployment-configs/mocks/depconfig.mock';
 import { State, adapter } from '../states/deployment-configs.state';
 import { selectRouterParams } from './router.selectors';
 
@@ -23,3 +24,8 @@ export const selectSelectedDeploymentConfig = createSelector(
     );
   }
 );
+
+export const selectDefaultDeploymentConfig = createSelector(
+  selectAllConfigs,
+  configs => configs.find(dc => dc.name === defaultDepConfig)
+)

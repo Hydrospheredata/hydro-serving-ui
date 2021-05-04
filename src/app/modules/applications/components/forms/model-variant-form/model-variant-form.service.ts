@@ -1,120 +1,94 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { take, tap, map } from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  combineLatest,
+  merge,
+  Observable,
+  Subject,
+  Subscription
+} from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import { CustomValidatorsService } from '@app/core/custom-validators.service';
-
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
-
-import {
-  ModelVersion,
-  Model,
-  IModelVariant,
-  ModelVersionStatus, DeploymentConfig,
-} from '@app/core/data/types';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
+import {
+  DeploymentConfig,
+  IModelVariant,
+  ModelVersion,
+} from '@app/core/data/types';
 
 export interface IModelVariantFormData {
   weight: number;
   modelId?: number;
-  modelVersionId: number;
+  modelVersion: ModelVersion;
   deploymentConfigName: string;
 }
 
 @Injectable()
 export class ModelVariantFormService implements OnDestroy {
-  private allModelVersions: ModelVersion[];
-  private allModelVersionsSub: Subscription;
-  private modelVersions = new BehaviorSubject<ModelVersion[]>([]);
-  private models: Model[];
-  private modelsSub: Subscription;
-  private depConfigs: DeploymentConfig[];
-  private depConfigsSub: Subscription;
-
-  private currentModelVersion = new BehaviorSubject<ModelVersion>(undefined);
+  private defaultFormData = new BehaviorSubject<IModelVariantFormData>(null);
+  private selectedModelId = new Subject<number>();
+  private readonly modelVersions$: Observable<ModelVersion[]>;
+  private modelVariantFormDataSub: Subscription;
 
   constructor(
     private readonly modelVersionsFacade: ModelVersionsFacade,
     private readonly modelsFacade: ModelsFacade,
     private readonly depConfigsFacade: DeploymentConfigsFacade,
-    private readonly customValidators: CustomValidatorsService
+    private readonly customValidators: CustomValidatorsService,
   ) {
-    this.allModelVersionsSub = this.modelVersionsFacade
-      .allModelVersions()
-      .pipe(map(mvs => mvs.filter(mv => !mv.isExternal)))
-      .subscribe(
-        allModelVersions => (this.allModelVersions = allModelVersions)
-      );
+    const currentModelId$: Observable<number> = merge(
+      this.selectedModelId,
+      this.modelsFacade.firstModel().pipe(map(_ => _.id)),
+    )
 
-    this.modelsSub = this.modelsFacade
-      .allModels()
-      .subscribe(models => (this.models = models));
+    this.modelVersions$ = currentModelId$.pipe(
+      switchMap((modelId: number) =>
+        this.modelVersionsFacade
+          .modelVersionsByModelId(modelId)
+          .pipe(
+            map(modelVersions =>
+              modelVersions.filter(
+                mv => mv.isReleasedAndInternal,
+              ),
+            ),
+          ),
+      ),
+    );
 
-    this.depConfigsSub = this.depConfigsFacade
-      .getAll()
-      .subscribe(depConfigs => this.depConfigs = depConfigs)
-  }
+    this.modelVariantFormDataSub = combineLatest(
+      [
+        this.modelVersions$,
+        this.depConfigsFacade.defaultDepConfig(),
+      ],
+    ).subscribe(
+      ([modelVersions, depConfig]) => {
+        const nextDefaultFormData: IModelVariantFormData = {
+          weight: 100,
+          modelId: modelVersions[0].model.id,
+          modelVersion: modelVersions[0],
+          deploymentConfigName: depConfig.name,
+        };
 
-  public getModelVersions(): Observable<any> {
-    return this.modelVersions.asObservable();
-  }
-
-  public updateModelVersionList(modelId: number): void {
-    this.modelVersionsFacade
-      .modelVersionsByModelId(modelId)
-      .pipe(
-        take(1),
-        map(modelVersions =>
-          modelVersions.filter(
-            mv => mv.status === ModelVersionStatus.Released || mv.isExternal
-          )
-        ),
-        tap(modelVersions => {
-          this.modelVersions.next(modelVersions);
-        })
-      )
-      .subscribe();
-  }
-
-  public getDefaultModelVersion(): ModelVersion {
-    const currentModelVersionsArray: ModelVersion[] = this.modelVersions
-      .getValue()
-      .filter(mv => !mv.isExternal);
-
-    if (currentModelVersionsArray.length) {
-      return currentModelVersionsArray[0];
-    }
-  }
-
-  public getDefaultDepConfig(): DeploymentConfig {
-    return this.depConfigs.find(depConfig =>
-      depConfig.name === 'hydrosphere_manager_default'
+        this.defaultFormData.next(nextDefaultFormData);
+      },
     );
   }
 
-  public defaultModelVariantFormData(): IModelVariantFormData {
-    const modelId = this.defaultModelId();
-    this.updateModelVersionList(modelId);
-    const modelVersion = this.getDefaultModelVersion();
-    const depConfig = this.getDefaultDepConfig();
-
-    return {
-      weight: 100,
-      modelId,
-      modelVersionId: modelVersion && modelVersion.id,
-      deploymentConfigName: depConfig.name
-    };
+  defaultModelVariantFormData(): IModelVariantFormData {
+    return this.defaultFormData.getValue();
   }
 
-  public modelVariantToModelVariantFormData(
-    modelVariant: IModelVariant
+  modelVariantToModelVariantFormData(
+    modelVariant: IModelVariant,
   ): IModelVariantFormData {
     return {
       weight: modelVariant.weight,
       modelId: modelVariant.modelVersion.model.id,
-      modelVersionId: modelVariant.modelVersion.id,
+      modelVersion: modelVariant.modelVersion,
       deploymentConfigName:
         (modelVariant.deploymentConfiguration &&
           modelVariant.deploymentConfiguration.name) ||
@@ -122,8 +96,8 @@ export class ModelVariantFormService implements OnDestroy {
     };
   }
 
-  public buildModelVariantFormGroup(
-    modelVariantFormData: IModelVariantFormData = this.defaultModelVariantFormData()
+  buildModelVariantFormGroup(
+    modelVariantFormData: IModelVariantFormData = this.defaultModelVariantFormData(),
   ): FormGroup {
     return new FormGroup({
       weight: new FormControl(modelVariantFormData.weight, [
@@ -132,41 +106,32 @@ export class ModelVariantFormService implements OnDestroy {
       ]),
       modelId: new FormControl(
         modelVariantFormData.modelId,
-        this.customValidators.required()
+        this.customValidators.required(),
       ),
-      modelVersionId: new FormControl(
-        modelVariantFormData.modelVersionId,
-        this.customValidators.required()
+      modelVersion: new FormControl(
+        modelVariantFormData.modelVersion,
+        this.customValidators.required(),
       ),
       deploymentConfigName: new FormControl(
         modelVariantFormData.deploymentConfigName,
-        this.customValidators.required()
+        this.customValidators.required(),
       ),
     });
   }
 
-  public getCurrentModelVersion(): Observable<ModelVersion> {
-    return this.currentModelVersion.asObservable();
+  getCurrentModelVersions(): Observable<ModelVersion[]> {
+    return this.modelVersions$;
   }
 
-  public setCurrentModelVersion(modelVersionId): void {
-    const modelVersion = this.allModelVersions.find(
-      mV => mV.id === modelVersionId
-    );
-
-    if (modelVersion) {
-      this.currentModelVersion.next(modelVersion);
-    }
+  getDeploymentConfigs(): Observable<DeploymentConfig[]> {
+    return this.depConfigsFacade.getAll();
   }
 
-  ngOnDestroy() {
-    this.modelsSub.unsubscribe();
-    this.allModelVersionsSub.unsubscribe();
+  ngOnDestroy(): void {
+    this.modelVariantFormDataSub.unsubscribe();
   }
 
-  private defaultModelId() {
-    if (this.models[0]) {
-      return this.models[0].id;
-    }
+  selectModelId(modelId: number): void {
+    this.selectedModelId.next(modelId);
   }
 }

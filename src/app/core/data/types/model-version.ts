@@ -74,4 +74,8 @@ export class ModelVersion {
   get contractOutputs(): Output[] {
     return this.modelSignature.outputs;
   }
+
+  isReleasedAndInternal(): Boolean {
+    return this.status === ModelVersionStatus.Released && !this.isExternal;
+  }
 }

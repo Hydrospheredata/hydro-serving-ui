@@ -109,13 +109,13 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
 
   private createNewModelVariantData(modelVariant): IModelVariantFormData {
     const newModelVariant: IModelVariantFormData = {
-      modelVersionId: modelVariant.modelVersion.id,
+      modelVersion: modelVariant.modelVersion,
       weight: Number(modelVariant.weight),
       deploymentConfigName: modelVariant.deploymentConfigName,
     };
 
     if (modelVariant === this.selectedModelVariant) {
-      newModelVariant.modelVersionId = this.latestModelVersion.id;
+      newModelVariant.modelVersion = this.latestModelVersion;
     }
 
     return newModelVariant;

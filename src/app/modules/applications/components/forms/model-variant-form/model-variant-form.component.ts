@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import {
   Component,
   Input,
@@ -14,7 +12,8 @@ import { Model, ModelVersion, DeploymentConfig } from '@app/core/data/types';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 
-import { ModelVariantFormService } from './model-variant-form.service';
+import { Observable, of } from 'rxjs';
+import { IModelVariantFormData, ModelVariantFormService } from './model-variant-form.service';
 
 @Component({
   selector: 'hs-model-variant-form',
@@ -34,13 +33,14 @@ export class ModelVariantFormComponent implements OnInit {
   modelVersions$: Observable<ModelVersion[]>;
   deploymentConfigs$: Observable<DeploymentConfig[]>;
   selectedModelVersion$: Observable<ModelVersion>;
+  currentFormData: IModelVariantFormData;
 
   get modelControl(): FormControl {
     return this.group.get('modelId') as FormControl;
   }
 
   get modelVersionControl(): FormControl {
-    return this.group.get('modelVersionId') as FormControl;
+    return this.group.get('modelVersion') as FormControl;
   }
 
   get weightControl(): FormControl {
@@ -54,40 +54,24 @@ export class ModelVariantFormComponent implements OnInit {
   constructor(
     private modelsFacade: ModelsFacade,
     private deploymentConfFacade: DeploymentConfigsFacade,
-    @Self() private modelVariantFormService: ModelVariantFormService
+    @Self() private formService: ModelVariantFormService,
   ) {
-    this.modelVersions$ = this.modelVariantFormService
-      .getModelVersions()
-      .pipe(map(mvs => mvs.filter(mv => !mv.isExternal)));
+    this.modelVersions$ = formService.getCurrentModelVersions();
+    this.currentFormData = formService.defaultModelVariantFormData();
+    this.deploymentConfigs$ = formService.getDeploymentConfigs();
 
-    this.selectedModelVersion$ = this.modelVariantFormService.getCurrentModelVersion();
-
-    this.deploymentConfigs$ = this.deploymentConfFacade.getAll();
+    this.selectedModelVersion$ = of(undefined);
   }
 
   ngOnInit() {
-    this.modelVariantFormService.updateModelVersionList(
-      this.modelControl.value
-    );
-
-    this.modelVariantFormService.setCurrentModelVersion(
-      this.modelVersionControl.value
-    );
-
+    this.onModelIdChange(this.modelControl.value);
     this.subscribeToModelIdChange();
-    this.subscribeToModelVersionIdChange();
   }
 
   public onModelIdChange(modelId): void {
-    this.modelVariantFormService.updateModelVersionList(modelId);
-
-    const modelVersion = this.modelVariantFormService.getDefaultModelVersion();
-
-    this.modelVersionControl.setValue(modelVersion ? modelVersion.id : null);
-  }
-
-  public onModelVersionChange(modelVersionId: number): void {
-    this.modelVariantFormService.setCurrentModelVersion(modelVersionId);
+    this.formService.selectModelId(modelId);
+    const modelVersion = this.formService.defaultModelVariantFormData().modelVersion;
+    this.modelVersionControl.setValue(modelVersion || null);
   }
 
   public onDelete(): void {
@@ -97,12 +81,6 @@ export class ModelVariantFormComponent implements OnInit {
   private subscribeToModelIdChange(): void {
     this.modelControl.valueChanges.subscribe(modelId => {
       this.onModelIdChange(modelId);
-    });
-  }
-
-  private subscribeToModelVersionIdChange(): void {
-    this.modelVersionControl.valueChanges.subscribe(modelVersionId => {
-      this.onModelVersionChange(modelVersionId);
     });
   }
 }

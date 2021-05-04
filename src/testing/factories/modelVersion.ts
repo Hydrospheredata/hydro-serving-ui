@@ -26,6 +26,9 @@ export const MockModelVersion1Model1: ModelVersion = {
   get contractOutputs(): Output[] {
     return [];
   },
+  isReleasedAndInternal(): Boolean {
+    return true;
+  },
   id: 1,
   image: MockImage,
   created: new Date().toString(),
@@ -37,7 +40,7 @@ export const MockModelVersion1Model1: ModelVersion = {
   status: ModelVersionStatus.Released,
   applications: [],
   metadata: {},
-  isExternal: false,
+  isExternal: true,
 };
 
 export const MockModelVersion2Model1: ModelVersion = {
@@ -46,6 +49,9 @@ export const MockModelVersion2Model1: ModelVersion = {
   },
   get contractOutputs(): Output[] {
     return [];
+  },
+  isReleasedAndInternal(): Boolean {
+    return true;
   },
   id: 2,
   image: MockImage,
@@ -68,6 +74,9 @@ export const MockModelVersion3Model2: ModelVersion = {
   get contractOutputs(): Output[] {
     return [];
   },
+  isReleasedAndInternal(): Boolean {
+    return true;
+  },
   id: 3,
   image: MockImage,
   created: new Date().toString(),
@@ -89,6 +98,9 @@ export const FailedModelVersion: ModelVersion = {
   get contractOutputs(): Output[] {
     return [];
   },
+  isReleasedAndInternal(): Boolean {
+    return true;
+  },
   id: 4,
   image: MockImage,
   created: new Date().toString(),
@@ -109,6 +121,9 @@ export const AssemblingModelVersion: ModelVersion = {
   },
   get contractOutputs(): Output[] {
     return [];
+  },
+  isReleasedAndInternal(): Boolean {
+    return true;
   },
   id: 5,
   image: MockImage,

@@ -11,6 +11,11 @@ export const selectAllModelVersions = createSelector(
   selectAll
 );
 
+export const selectInternalModelVersions = createSelector(
+  selectAllModelVersions,
+  modelVersions => modelVersions.filter(mv => mv.isExternal !== true)
+);
+
 export const selectModelVersionEntities = createSelector(
   selectModelVersionsState,
   selectEntities
@@ -60,3 +65,10 @@ export const selectSiblingModelVersions = ({
       modelVersion => modelVersion.id !== modelVersionId
     );
   });
+
+export const selectFirstModelVersion = createSelector(
+  selectAllModelVersions,
+  modelVersions => modelVersions
+    ? modelVersions => modelVersions.filter(mv => mv.isExternal !== true)
+    : modelVersions[0]
+);

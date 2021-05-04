@@ -67,16 +67,17 @@
           <span>
             Applications
           </span>
-          <button
-            class="model-version__item-button create-application-button"
-            hs-button
-            kind="flat"
-            color="primary"
-            (click)="onAddApplication(modelVersion)"
-            [disabled]="!isReleased"
+          <ng-container
+            *ngTemplateOutlet="
+              !(isButtonEnabled() | async)
+                ? wrapper
+                : button;
+              context: {
+                modelVersion: modelVersion
+              }
+            "
           >
-            create application
-          </button>
+          </ng-container>
         </div>
         <div class="model-version__applications">
           <table class="hydro-table">
@@ -184,3 +185,45 @@
   <!--  </div>-->
   <!--</ng-template>-->
 </div>
+
+<ng-template
+  #wrapper
+  let-modelVersion="modelVersion"
+>
+  <div
+    tippy
+    [tippyOptions]="{
+      content: 'Deployment config required',
+      arrow: false,
+      theme: 'basic',
+      placement: 'bottom'
+    }"
+  >
+    <button
+      class="model-version__item-button create-application-button"
+      hs-button
+      kind="flat"
+      color="primary"
+      (click)="onAddApplication(modelVersion, depConfig)"
+      disabled
+    >
+      create application
+    </button>
+  </div>
+</ng-template>
+
+<ng-template
+  #button
+  let-modelVersion="modelVersion"
+>
+  <button
+    class="model-version__item-button create-application-button"
+    hs-button
+    kind="flat"
+    color="primary"
+    (click)="onAddApplication(modelVersion, depConfig)"
+  >
+    create application
+  </button>
+</ng-template>
+

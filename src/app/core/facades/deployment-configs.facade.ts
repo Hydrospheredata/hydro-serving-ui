@@ -10,7 +10,9 @@ import {
 } from '../store/actions/deployment-configs.actions';
 import { State } from '../store/states/deployment-configs.state';
 import {
-  selectAllConfigs, selectDepConfigLoaded,
+  selectAllConfigs,
+  selectDefaultDeploymentConfig,
+  selectDepConfigLoaded,
   selectSelectedDeploymentConfig,
 } from '../store/selectors/deployment-configs.selectors';
 
@@ -43,6 +45,10 @@ export class DeploymentConfigsFacade {
 
   selectedConfig(): Observable<DeploymentConfig> {
     return this.store.pipe(select(selectSelectedDeploymentConfig));
+  }
+
+  defaultDepConfig(): Observable<DeploymentConfig> {
+    return this.store.pipe(select(selectDefaultDeploymentConfig));
   }
 
   loadAll(): void {

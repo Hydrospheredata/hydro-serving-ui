@@ -16,6 +16,8 @@ import {
   selectModelVersionById,
   selectModelVersionsLoaded,
   selectModelVersionEntities,
+  selectFirstModelVersion,
+  selectInternalModelVersions,
 } from '../store/selectors/model-versions.selectors';
 
 import { GetModelVersions } from '../store/actions/model-versions.actions';
@@ -32,8 +34,16 @@ export class ModelVersionsFacade {
     return this.store.pipe(select(selectAllModelVersions));
   }
 
+  internalModelVersions(): Observable<ModelVersion[]> {
+    return this.store.pipe(select(selectInternalModelVersions));
+  }
+
   allModelVersionsEntities() {
     return this.store.pipe(select(selectModelVersionEntities));
+  }
+
+  getFirstModelVersion() {
+    return this.store.pipe(select(selectFirstModelVersion));
   }
 
   selectedModelVersion(): Observable<ModelVersion> {
@@ -58,7 +68,7 @@ export class ModelVersionsFacade {
     return this.store.pipe(select(selectModelVersionById(id)));
   }
 
-  modelVersionsByModelId(id: number) {
+  modelVersionsByModelId(id: number): Observable<ModelVersion[]> {
     return this.store.pipe(select(selectAllModelVersionsByModelId(id)));
   }
 

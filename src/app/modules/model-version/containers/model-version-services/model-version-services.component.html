@@ -36,7 +36,7 @@
         context: {
           name: 'Drift Report',
           iconName: 'drift_report',
-          message: (serviceStatuses$ | async)?.statuses?.stat?.description
+          message: (serviceStatuses$ | async)?.statuses?.stat?.message
         }
       "
     >
@@ -82,7 +82,15 @@
   let-name="name"
   let-iconName="iconName"
 >
-  <div [hs-tooltip]="message">
+  <div
+    tippy
+    [tippyOptions]="{
+      content: message,
+      arrow: false,
+      theme: 'basic',
+      placement: 'bottom'
+    }"
+  >
     <div class="mv-services__item mv-services__item--unsupported">
       <hydro-icon
         [type]="iconName"
