@@ -14,6 +14,7 @@ export interface ApplicationCreatingRequest {
       }>;
     }>;
   };
+  deploymentConfiguration: DeploymentConfig;
 }
 
 export interface IKafkaStreaming {
@@ -66,6 +67,7 @@ export interface IApplication {
   status: string;
   error?: string;
   message?: string;
+  deploymentConfiguration: DeploymentConfig
 }
 
 export class Application implements IApplication {
@@ -82,6 +84,7 @@ export class Application implements IApplication {
   status: string;
   message?: string;
   favorite: boolean;
+  deploymentConfiguration: DeploymentConfig
 
   constructor(props: any = {}) {
     if (props.id) {
@@ -102,5 +105,6 @@ export class Application implements IApplication {
     this.status = props.status;
     this.message = props.message;
     this.favorite = props.favorite || false;
+    this.deploymentConfiguration = props.deploymentConfiguration;
   }
 }

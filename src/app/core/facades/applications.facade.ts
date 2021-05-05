@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Update, ToggleFavorite } from '../store/actions/applications.actions';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { ModelVersion } from '@app/core/data/types';
+import { DeploymentConfig, ModelVersion } from '@app/core/data/types';
 import { Application, ApplicationCreatingRequest } from '@app/core/data/types';
 import { NameGenerator } from '@app/core/name-generator';
 import { HydroServingState } from '@app/core/store/states/root.state';
@@ -15,7 +14,13 @@ import {
   selectApplicationLoaded,
 } from '@app/core/store/selectors/applications.selectors';
 
-import { Add, Delete, Get } from '../store/actions/applications.actions';
+import {
+  Add,
+  Delete,
+  Get,
+  Update,
+  ToggleFavorite
+} from '../store/actions/applications.actions';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationsFacade {
@@ -32,7 +37,7 @@ export class ApplicationsFacade {
     this.store.dispatch(Delete({ application }));
   }
 
-  createApplicationFromModelVersion(modelVersion: ModelVersion) {
+  createApplicationFromModelVersion(modelVersion: ModelVersion, depConfig: DeploymentConfig) {
     this.allApplications()
       .pipe(first())
       .subscribe(applications => {
@@ -61,6 +66,7 @@ export class ApplicationsFacade {
               },
             ],
           },
+          deploymentConfiguration: depConfig
         });
       });
   }

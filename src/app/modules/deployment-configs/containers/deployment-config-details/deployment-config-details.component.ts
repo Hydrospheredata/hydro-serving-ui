@@ -7,6 +7,7 @@ import {
   DEPLOYMENT_CONFIG_TOKEN,
   DialogDeleteDeploymentConfigComponent,
 } from '@app/modules/dialogs/components';
+import { defaultDepConfig } from '@app/modules/deployment-configs/mocks/depconfig.mock';
 
 @Component({
   selector: 'hs-deployment-config-details',
@@ -16,6 +17,7 @@ import {
 export class DeploymentConfigDetailsComponent implements OnInit {
   config$: Observable<DeploymentConfig>;
   editMode: boolean;
+  defaultDepConfig: string;
   constructor(
     private readonly facade: DeploymentConfigsFacade,
     private readonly dialog: DialogsService
@@ -23,6 +25,7 @@ export class DeploymentConfigDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.config$ = this.facade.selectedConfig();
+    this.defaultDepConfig = defaultDepConfig;
   }
 
   removeConfig(config: DeploymentConfig) {

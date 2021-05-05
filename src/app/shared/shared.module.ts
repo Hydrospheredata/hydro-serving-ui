@@ -37,6 +37,7 @@ const directives = [
   D.ShowInZenModeDirective,
   D.ScaleImageDirective,
   D.PixelToCanvasDirective,
+  D.TippyDirective,
 ];
 
 const components = [

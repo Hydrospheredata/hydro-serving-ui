@@ -1,28 +1,26 @@
 <div class="applications-page">
-  <div class="applications-page__sidebar">
+    <div class="applications-page__sidebar">
     <hs-sidebar
       [sidebarData]="applications$ | async"
       [selectedItem]="selectedApplication$ | async"
       (filtered)="handleFilter($event)"
       (bookmarked)="handleBookmark($event)"
       (clicked)="handleSidebarClick($event)"
-      ><button
-        class="applications-page__button"
-        hs-button
-        kind="flat"
-        color="primary"
-        (click)="addApplication()"
-        [disabled]="!(someModelVersionIsReleased$ | async)"
-        #button
       >
-        create application
-      </button></hs-sidebar
-    >
+      <div class="button">
+        <ng-container
+          *ngIf="!(isButtonEnabled() | async);
+          then wrapper
+          else button"
+        >
+        </ng-container>
+      </div>
+    </hs-sidebar>
   </div>
   <div class="applications-page__body">
     <router-outlet></router-outlet>
     <div
-      *ngIf="!(someModelVersionIsReleased$ | async)"
+      *ngIf="!(someModelVersionIsReleased() | async)"
       class="applications-page__message"
     >
       <a
@@ -35,3 +33,34 @@
     </div>
   </div>
 </div>
+
+<ng-template #wrapper>
+  <div
+    tippy
+    [tippyOptions]="{
+      content: 'Deployment config required',
+      arrow: false,
+      theme: 'basic',
+      placement: 'bottom'
+    }"
+  >
+    <ng-container *ngTemplateOutlet="button; context: { disable: true }">
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template
+  #button
+  let-disable="disable"
+>
+    <button
+      class="applications-page__button"
+      hs-button
+      kind="flat"
+      color="primary"
+      (click)="addApplication()"
+      [disabled]="disable"
+    >
+      create application
+    </button>
+</ng-template>

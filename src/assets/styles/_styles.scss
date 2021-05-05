@@ -19,6 +19,7 @@
 @import 'error.scss';
 @import 'expandable.scss';
 @import 'icons.scss';
+@import '~tippy.js/dist/tippy.css';
 
 * {
   -webkit-box-sizing: border-box;
@@ -210,3 +211,9 @@ a.hydro-link {
     vertical-align: middle;
   }
 }
+
+.tippy-box[data-theme~='basic'] {
+  background: $neutral-color-200;
+  color: $neutral-color-900;
+}
+

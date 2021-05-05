@@ -10,6 +10,7 @@ import {
   MockModelVersion3Model2,
 } from '@testing/factories/modelVersion';
 import { MockSignature1 } from '@testing/factories/signature';
+import { MockDeploymentConfig1 } from '@testing/factories/deployment-config';
 
 const applicationBuilder = new ApplicationBuilder();
 export const application: Application = applicationBuilder.build({});
@@ -48,4 +49,5 @@ export const MockApplication: Application = {
   kafkaStreaming: [],
   status: ApplicationStatus.Ready,
   favorite: false,
+  deploymentConfiguration: MockDeploymentConfig1
 };

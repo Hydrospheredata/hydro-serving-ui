@@ -7,15 +7,15 @@ import {
   StageFormData,
 } from './application-form.service';
 import {
-  ModelVariantFormService,
   IModelVariantFormData,
+  ModelVariantFormService,
 } from '../model-variant-form/model-variant-form.service';
 
 @Component({
   selector: 'hs-application-form',
   templateUrl: './application-form.component.html',
   styleUrls: ['./application-form.component.scss'],
-  providers: [ModelVariantFormService, ApplicationFormService],
+  providers: [ ModelVariantFormService, ApplicationFormService],
 })
 export class ApplicationFormComponent implements OnInit {
   @Output() submitHandle: EventEmitter<any> = new EventEmitter();
@@ -49,7 +49,7 @@ export class ApplicationFormComponent implements OnInit {
     const stages: StageFormData[] = this.applicationForm.value.stages;
 
     const toModelVariant = (modelVariant: IModelVariantFormData) => ({
-      modelVersionId: modelVariant.modelVersionId,
+      modelVersionId: modelVariant.modelVersion.id,
       weight: Number(modelVariant.weight),
       deploymentConfigName: modelVariant.deploymentConfigName
         ? modelVariant.deploymentConfigName

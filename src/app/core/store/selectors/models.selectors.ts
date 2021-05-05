@@ -53,3 +53,8 @@ export const selectSelectedModel = createSelector(
     return router.params && entities[router.params.modelName];
   }
 );
+
+export const selectFirstModel = createSelector(
+  selectAllModels,
+  models => models.length > 0 ? models[0] : null
+);

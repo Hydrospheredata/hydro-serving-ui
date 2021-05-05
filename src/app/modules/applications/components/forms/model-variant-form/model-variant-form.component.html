@@ -29,7 +29,7 @@
         </label>
         <mdl-select
           #modelVerSelect
-          formControlName="modelVersionId"
+          formControlName="modelVersion"
           [autocomplete]="true"
         >
           <mdl-option
@@ -38,10 +38,11 @@
                 | async
                 | matchSorter: 'modelVersion':modelVerSelect.searchQuery
             "
-            [value]="modelVersion.id"
+            [value]="modelVersion"
             >{{ modelVersion.modelVersion }}</mdl-option
           >
         </mdl-select>
+
       </div>
 
       <div
@@ -66,22 +67,22 @@
         </ul>
       </div>
     </div>
-    <div class="service__row">
+    <div class="service__row" *ngIf="modelVersionControl.value as modelVersion">
       <div class="service__field service__field--runtime">
         <span class="service__field-label">Runtime</span>
         <span class="docker-image">
           <span class="docker-image__name">
-            {{ (selectedModelVersion$ | async).runtime?.name }}
+            {{ modelVersion.runtime?.name }}
           </span>
           <span class="docker-image__tag"
-            >: {{ (selectedModelVersion$ | async).runtime?.tag }}
+            >: {{ modelVersion.runtime?.tag }}
           </span>
         </span>
       </div>
       <div class="service__field service__field--hostSelector">
         <label class="service__field-label">Host selector</label>
         <span>
-          {{ (selectedModelVersion$ | async)?.hostSelector?.name || '-' }}
+          {{ modelVersion?.hostSelector?.name || '-' }}
         </span>
       </div>
       <div class="service__field">
