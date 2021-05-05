@@ -40,7 +40,7 @@ export const MockModelVersion1Model1: ModelVersion = {
   status: ModelVersionStatus.Released,
   applications: [],
   metadata: {},
-  isExternal: true,
+  isExternal: false,
 };
 
 export const MockModelVersion2Model1: ModelVersion = {

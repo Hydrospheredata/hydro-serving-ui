@@ -186,10 +186,7 @@
   <!--</ng-template>-->
 </div>
 
-<ng-template
-  #wrapper
-  let-modelVersion="modelVersion"
->
+<ng-template #wrapper>
   <div
     tippy
     [tippyOptions]="{
@@ -199,22 +196,15 @@
       placement: 'bottom'
     }"
   >
-    <button
-      class="model-version__item-button create-application-button"
-      hs-button
-      kind="flat"
-      color="primary"
-      (click)="onAddApplication(modelVersion, depConfig)"
-      disabled
-    >
-      create application
-    </button>
+    <ng-container *ngTemplateOutlet="button; context: { disable: true }">
+    </ng-container>
   </div>
 </ng-template>
 
 <ng-template
   #button
   let-modelVersion="modelVersion"
+  let-disable="disable"
 >
   <button
     class="model-version__item-button create-application-button"
@@ -222,6 +212,7 @@
     kind="flat"
     color="primary"
     (click)="onAddApplication(modelVersion, depConfig)"
+    [disabled]="disable"
   >
     create application
   </button>

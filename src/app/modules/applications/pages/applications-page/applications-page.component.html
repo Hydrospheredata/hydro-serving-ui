@@ -44,26 +44,22 @@
       placement: 'bottom'
     }"
   >
-    <button
-      class="applications-page__button"
-      hs-button
-      kind="flat"
-      color="primary"
-      (click)="addApplication()"
-      disabled
-    >
-      create application
-    </button>
+    <ng-container *ngTemplateOutlet="button; context: { disable: true }">
+    </ng-container>
   </div>
 </ng-template>
 
-<ng-template #button>
+<ng-template
+  #button
+  let-disable="disable"
+>
     <button
       class="applications-page__button"
       hs-button
       kind="flat"
       color="primary"
       (click)="addApplication()"
+      [disabled]="disable"
     >
       create application
     </button>
