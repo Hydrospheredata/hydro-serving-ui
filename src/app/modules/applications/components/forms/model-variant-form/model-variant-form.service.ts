@@ -18,6 +18,7 @@ import {
   DeploymentConfig,
   IModelVariant,
   ModelVersion,
+  ModelVersionStatus
 } from '@app/core/data/types';
 
 export interface IModelVariantFormData {
@@ -52,7 +53,7 @@ export class ModelVariantFormService implements OnDestroy {
           .pipe(
             map(modelVersions =>
               modelVersions.filter(
-                mv => mv.isReleasedAndInternal,
+                mv => !mv.isExternal && mv.status === ModelVersionStatus.Released
               ),
             ),
           ),
