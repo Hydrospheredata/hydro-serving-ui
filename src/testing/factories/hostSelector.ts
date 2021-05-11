@@ -1,5 +1,8 @@
-export const MockHostSelector = {
-  id: 1,
-  name: 'CPU',
-  placeholder: 'mockHostSelectorPlaceHolder',
-};
+import { Factory } from 'fishery';
+
+export const MockHostSelector = Factory.define(
+  ({ sequence }) => ({
+    id: sequence,
+    name: 'CPU',
+    placeholder: 'mockHostSelectorPlaceHolder',
+}));
