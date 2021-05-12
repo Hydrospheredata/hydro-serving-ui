@@ -12,14 +12,16 @@ import {
   MockRuntime3,
   MockRuntime2,
 } from '@testing/factories/runtime';
+import { Factory } from 'fishery';
 
-export const MockModelSignature: ModelSignature = {
+export const MockModelSignature = Factory.define<ModelSignature>(() => ({
   signatureName: 'test',
   outputs: [],
   inputs: [],
-};
+}));
 
-export const MockModelVersion1Model1: ModelVersion = {
+export const MockModelVersion1Model1 = Factory.define<ModelVersion, ModelSignature>(
+  ({ sequence }) => ({
   get contractInputs(): Input[] {
     return [];
   },
@@ -29,112 +31,40 @@ export const MockModelVersion1Model1: ModelVersion = {
   isReleasedAndInternal(): Boolean {
     return true;
   },
-  id: 1,
-  image: MockImage,
+  id: sequence,
+  image: MockImage.build(),
   created: new Date().toString(),
   finished: new Date().toString(),
   modelVersion: 1,
-  modelSignature: MockModelSignature,
-  runtime: MockRuntime,
-  model: MockModel1,
+  modelSignature: MockModelSignature.build(),
+  runtime: MockRuntime.build(),
+  model: MockModel1.build(),
   status: ModelVersionStatus.Released,
   applications: [],
   metadata: {},
   isExternal: false,
-};
+}));
 
-export const MockModelVersion2Model1: ModelVersion = {
-  get contractInputs(): Input[] {
-    return [];
-  },
-  get contractOutputs(): Output[] {
-    return [];
-  },
-  isReleasedAndInternal(): Boolean {
-    return true;
-  },
-  id: 2,
-  image: MockImage,
-  created: new Date().toString(),
-  finished: new Date().toString(),
+export const MockModelVersion2Model1 = MockModelVersion1Model1.build({
   modelVersion: 2,
-  modelSignature: MockModelSignature,
   runtime: MockRuntime3,
-  model: MockModel1,
-  status: ModelVersionStatus.Released,
   applications: ['app1', 'app2'],
-  metadata: {},
-  isExternal: false,
-};
+});
 
-export const MockModelVersion3Model2: ModelVersion = {
-  get contractInputs(): Input[] {
-    return [];
-  },
-  get contractOutputs(): Output[] {
-    return [];
-  },
-  isReleasedAndInternal(): Boolean {
-    return true;
-  },
-  id: 3,
-  image: MockImage,
-  created: new Date().toString(),
-  finished: new Date().toString(),
-  modelVersion: 1,
-  modelSignature: MockModelSignature,
+export const MockModelVersion3Model2 = MockModelVersion1Model1.build({
   runtime: MockRuntime2,
   model: MockModel2,
-  status: ModelVersionStatus.Released,
   applications: ['app1', 'app2'],
-  metadata: {},
-  isExternal: false,
-};
+});
 
-export const FailedModelVersion: ModelVersion = {
-  get contractInputs(): Input[] {
-    return [];
-  },
-  get contractOutputs(): Output[] {
-    return [];
-  },
-  isReleasedAndInternal(): Boolean {
-    return true;
-  },
-  id: 4,
-  image: MockImage,
-  created: new Date().toString(),
-  finished: new Date().toString(),
-  modelVersion: 1,
-  modelSignature: MockModelSignature,
+export const FailedModelVersion = MockModelVersion1Model1.build({
   runtime: MockRuntime2,
   model: MockModel2,
   status: ModelVersionStatus.Failed,
-  applications: [],
-  metadata: {},
-  isExternal: false,
-};
+});
 
-export const AssemblingModelVersion: ModelVersion = {
-  get contractInputs(): Input[] {
-    return [];
-  },
-  get contractOutputs(): Output[] {
-    return [];
-  },
-  isReleasedAndInternal(): Boolean {
-    return true;
-  },
-  id: 5,
-  image: MockImage,
-  created: new Date().toString(),
-  finished: new Date().toString(),
-  modelVersion: 1,
-  modelSignature: MockModelSignature,
+export const AssemblingModelVersion = MockModelVersion1Model1.build({
   runtime: MockRuntime2,
   model: MockModel2,
   status: ModelVersionStatus.Assembling,
-  applications: [],
-  metadata: {},
-  isExternal: false,
-};
+});
