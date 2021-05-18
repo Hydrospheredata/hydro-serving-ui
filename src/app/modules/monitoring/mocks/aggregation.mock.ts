@@ -3,7 +3,7 @@ import { MockModelVersion1Model1 } from '@testing/factories/modelVersion';
 
 export function mockAggregationWithId(id): Aggregation {
   return {
-    modelVersion: MockModelVersion1Model1,
+    modelVersion: MockModelVersion1Model1.build(),
     batchesChecks: {},
     featuresChecks: {},
     from: undefined,

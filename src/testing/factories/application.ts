@@ -11,36 +11,37 @@ import {
 } from '@testing/factories/modelVersion';
 import { MockSignature1 } from '@testing/factories/signature';
 import { MockDeploymentConfig1 } from '@testing/factories/deployment-config';
+import { Factory } from 'fishery';
 
 const applicationBuilder = new ApplicationBuilder();
 export const application: Application = applicationBuilder.build({});
 
-const MockService: IModelVariant = {
+const MockService = Factory.define<IModelVariant>(() => ({
   weight: 100,
-  modelVersion: MockModelVersion1Model1,
-};
+  modelVersion: MockModelVersion1Model1.build(),
+}));
 
-const MockService2: IModelVariant = {
-  weight: 100,
+const MockService2 = MockService.build({
   modelVersion: MockModelVersion3Model2,
-};
+});
 
-export const MockApplication: Application = {
-  id: 1,
-  signature: MockSignature1,
+export const MockApplication = Factory.define<Application>(
+  ({ sequence }) => ({
+  id: sequence,
+  signature: MockSignature1.build(),
   name: 'app1',
   executionGraph: {
-    stages: [
-      {
-        modelVariants: [MockService],
-        signature: 'signature',
-      },
-      {
-        modelVariants: [MockService2],
-        signature: 'signature',
-      },
-    ],
-  },
+  stages: [
+    {
+      modelVariants: [MockService.build()],
+      signature: 'signature',
+    },
+    {
+      modelVariants: [MockService2],
+      signature: 'signature',
+    },
+  ],
+},
   namespace: 'namespace',
   input: '',
   output: '',
@@ -49,5 +50,5 @@ export const MockApplication: Application = {
   kafkaStreaming: [],
   status: ApplicationStatus.Ready,
   favorite: false,
-  deploymentConfiguration: MockDeploymentConfig1
-};
+  deploymentConfiguration: MockDeploymentConfig1.build(),
+}));

@@ -1,6 +1,7 @@
 import { MetricSpecification } from '@app/core/data/types';
+import { Factory } from 'fishery';
 
-export const MockMetricSpecification: MetricSpecification = {
+export const MockMetricSpecification = Factory.define<MetricSpecification>(() => ({
   id: 'id',
   name: 'counter',
   config: {
@@ -9,4 +10,4 @@ export const MockMetricSpecification: MetricSpecification = {
     modelVersionId: 1,
   },
   modelVersionId: 1,
-};
+}));
