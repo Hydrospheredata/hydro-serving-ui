@@ -1,6 +1,8 @@
 @import 'variables';
 
 .servable-status {
+  width: 200px;
+
   &--serving {
     color: $supportive-color-green-600;
   }
@@ -9,8 +11,24 @@
   }
   &--starting {
   }
+  &--unknown,
+  &--serving--message {
+    color: $accent-color-800;
+  }
   &__icon {
     width: 16px;
     height: 16px;
+  }
+}
+
+.servable-tooltip {
+  &__title {
+    font-family: $font-family-bold
+  }
+
+  &__link {
+    display: inline-block;
+    margin-top: 7px;
+    color: $primary-color-700;
   }
 }

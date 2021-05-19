@@ -16,8 +16,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app.router';
 import { CoreModule } from './core/core.module';
 import { DialogsModule } from './modules/dialogs/dialogs.module';
+import { SharedModule } from '@app/shared/shared.module';
+import { ModelVersionLogComponent } from '@app/modules/model-version/components';
 
 @NgModule({
+  entryComponents: [ModelVersionLogComponent],
   declarations: [AppComponent],
   imports: [
     BrowserModule,
@@ -25,7 +28,8 @@ import { DialogsModule } from './modules/dialogs/dialogs.module';
     LayoutModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    DialogsModule
+    DialogsModule,
+    SharedModule,
   ],
   providers: [
     HydroConfigService,

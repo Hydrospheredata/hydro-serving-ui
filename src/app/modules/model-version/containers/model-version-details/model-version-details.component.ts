@@ -1,16 +1,11 @@
 import {
   Component,
   OnInit,
-  ComponentRef,
-  ViewChild,
-  ViewContainerRef,
-  ComponentFactoryResolver, OnDestroy,
+  OnDestroy
 } from '@angular/core';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ServablesFacade } from '@app/core/facades/servables.facade';
 import { FieldsService } from '@app/modules/profiler/fields.service';
-import { ServableLogsComponent } from '@app/modules/servables/containers/servable-logs/servable-logs.component';
-import { ModelVersionLogComponent } from '../../components';
 
 import { Observable, combineLatest, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -22,15 +17,13 @@ import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { HydroConfigService } from '@app/core/hydro-config.service';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
+import { LogsService } from '@app/modules/model-version/logs.service';
 
 @Component({
   templateUrl: './model-version-details.component.html',
   styleUrls: ['./model-version-details.component.scss'],
 })
 export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('logContainer', { read: ViewContainerRef })
-  logContainer: ViewContainerRef;
-
   modelVersion$: Observable<ModelVersion>;
   servables$: Observable<Servable[]>;
   applications$: Observable<Application[]>;
@@ -38,22 +31,18 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
 
   isReleased: boolean = true;
   isFailed: boolean = false;
-  private current: ComponentRef<
-    ModelVersionLogComponent | ServableLogsComponent
-  >;
-  globalLog: boolean = false;
   depConfig: DeploymentConfig;
   depConfigSub: Subscription;
 
   constructor(
-    private resolver: ComponentFactoryResolver,
     private readonly facade: ModelVersionsFacade,
     private readonly hsConfig: HydroConfigService,
     private readonly applicationsFacade: ApplicationsFacade,
     private readonly servablesFacade: ServablesFacade,
     private readonly modelsFacade: ModelsFacade,
     private readonly depConfigsFacade: DeploymentConfigsFacade,
-    private readonly fields: FieldsService
+    private readonly fields: FieldsService,
+    private readonly logs: LogsService
   ) {}
 
   ngOnInit() {
@@ -106,7 +95,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     );
   }
 
-  someModelVersionIsReleased(): Observable<Boolean> {
+  someModelVersionIsReleased(): Observable<boolean> {
     return this.modelsFacade.someModelVersionIsReleased();
   }
 
@@ -115,17 +104,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
   }
 
   showBuildLog(modelVersionId: number) {
-    this.logContainer.clear();
-    const factory = this.resolver.resolveComponentFactory(
-      ModelVersionLogComponent
-    );
-    const component = this.logContainer.createComponent(factory);
-
-    this.current = component;
-    component.instance.modelVersion = modelVersionId;
-    component.instance.closed.subscribe(() => this.closeGlobalLog());
-    component.changeDetectorRef.detectChanges();
-    this.toggleGlobalLog();
+    this.logs.showBuildLog(modelVersionId);
   }
 
   onAddApplication(modelVersion: ModelVersion, depConfig: DeploymentConfig) {
@@ -133,26 +112,6 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
   }
 
   showServableLogs(name: string) {
-    this.logContainer.clear();
-    const factory = this.resolver.resolveComponentFactory(
-      ServableLogsComponent
-    );
-
-    const component = this.logContainer.createComponent(factory);
-    this.current = component;
-    component.instance.servableName = name;
-    component.instance.closed.subscribe(() => this.closeGlobalLog());
-    component.changeDetectorRef.detectChanges();
-    this.toggleGlobalLog();
-  }
-
-  toggleGlobalLog(): void {
-    this.globalLog = !this.globalLog;
-  }
-
-  closeGlobalLog(): void {
-    this.current.destroy();
-    this.logContainer.clear();
-    this.globalLog = false;
+    this.logs.showServableLogs(name);
   }
 }

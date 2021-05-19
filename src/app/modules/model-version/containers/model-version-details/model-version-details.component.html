@@ -160,13 +160,6 @@
     </div>
   </div>
 
-  <div class="log" [ngClass]="{ 'log--is-visible': globalLog }">
-    <div class="log__layout" (click)="closeGlobalLog()"></div>
-    <div class="log__content">
-      <ng-container #logContainer></ng-container>
-    </div>
-  </div>
-
   <!--<ng-template #modelVersionStatus let-status>-->
   <!--  <div [ngSwitch]="status">-->
   <!--    <div *ngSwitchCase="'released'">-->
@@ -184,7 +177,6 @@
   <!--    <div *ngSwitchDefault>{{ status }}</div>-->
   <!--  </div>-->
   <!--</ng-template>-->
-</div>
 
 <ng-template #wrapper>
   <div
@@ -217,4 +209,3 @@
     create application
   </button>
 </ng-template>
-

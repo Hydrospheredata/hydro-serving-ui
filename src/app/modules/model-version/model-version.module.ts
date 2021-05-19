@@ -17,7 +17,6 @@ import {
 } from './containers';
 
 @NgModule({
-  entryComponents: [ModelVersionLogComponent],
   declarations: [
     ModelVersionPageComponent,
     ModelVersionDetailsComponent,
