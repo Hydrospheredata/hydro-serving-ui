@@ -19,6 +19,18 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "@ctrl/ngx-codemirror",
+              "codemirror/mode/javascript/javascript.js",
+              "codemirror/addon/edit/matchbrackets.js",
+              "codemirror/addon/edit/closebrackets.js",
+              "codemirror/addon/display/placeholder.js",
+              "rxjs/internal/operators",
+              "unique-names-generator",
+              "js-yaml",
+              "highcharts"
+            ],
             "assets": [
               {
                 "glob": "**/fonts/**",
@@ -74,9 +86,7 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -97,9 +107,7 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
