@@ -16,10 +16,9 @@ export class LogsService {
   private current: ComponentRef<
     ModelVersionLogComponent | ServableLogsComponent
     >;
-  globalLog: boolean = false;
 
-  logIsVisible: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  logIsVisible$: Observable<boolean> = this.logIsVisible.asObservable();
+  private logIsVisible: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public logIsVisible$: Observable<boolean> = this.logIsVisible.asObservable();
 
   constructor(
     private resolver: ComponentFactoryResolver
