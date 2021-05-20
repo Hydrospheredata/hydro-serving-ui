@@ -11,7 +11,9 @@
   }
   &--starting {
   }
-  &--unknown,
+  &--unknown {
+    color: $primary-color-500;
+  }
   &--serving--message {
     color: $accent-color-800;
   }
