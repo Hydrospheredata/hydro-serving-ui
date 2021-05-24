@@ -1,30 +1,43 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Servable } from '@app/core/data/types';
+import { Component, Input } from '@angular/core';
+import { Servable, Status } from '@app/core/data/types';
+import { LogsService } from '@app/modules/model-version/logs.service';
 
 @Component({
   selector: 'hs-servable-status-icon',
   templateUrl: './servable-status-icon.component.html',
   styleUrls: ['./servable-status-icon.component.scss'],
 })
-export class ServableStatusIconComponent implements OnInit {
-  @Input()
-  servable: Servable;
 
-  constructor() {}
+export class ServableStatusIconComponent {
+  @Input() servable: Servable;
+
+  constructor(
+    public logs: LogsService
+  ) {}
 
   get status(): string {
     return this.servable.status;
   }
 
-  get message(): string {
-    let res = `Servable: ${this.servable.name}\n`;
-
-    if (this.servable.message) {
-      res += `\n Message: ${this.servable.message}`;
-    }
-
-    return res;
+  get name(): string {
+    return this.servable.name;
   }
 
-  ngOnInit(): void {}
+  get message(): string {
+    return this.servable.message;
+  }
+
+  get iconClass(): any {
+    return {
+      'servable-status--serving': this.status === Status.Serving,
+      'servable-status--not-serving': this.status === Status.NotServing,
+      'servable-status--starting': this.status === Status.Starting,
+      'servable-status--unknown': this.status === Status.Undefined,
+      'servable-status--serving--message': this.status === Status.Warning,
+    };
+  }
+
+  public showServableLogs(name) {
+    this.logs.showServableLogs(name);
+  }
 }

@@ -160,32 +160,6 @@
     </div>
   </div>
 
-  <div class="log" [ngClass]="{ 'log--is-visible': globalLog }">
-    <div class="log__layout" (click)="closeGlobalLog()"></div>
-    <div class="log__content">
-      <ng-container #logContainer></ng-container>
-    </div>
-  </div>
-
-  <!--<ng-template #modelVersionStatus let-status>-->
-  <!--  <div [ngSwitch]="status">-->
-  <!--    <div *ngSwitchCase="'released'">-->
-  <!--      <hydro-icon-->
-  <!--        class="model-version__details-status-icon model-version__details-status-icon--released"-->
-  <!--        type="circle-check"-->
-  <!--      ></hydro-icon>-->
-  <!--    </div>-->
-  <!--    <div *ngSwitchCase="'failed'">-->
-  <!--      <hydro-icon-->
-  <!--        class="model-version__details-status-icon model-version__details-status-icon--failed"-->
-  <!--        type="circle-x"-->
-  <!--      ></hydro-icon>-->
-  <!--    </div>-->
-  <!--    <div *ngSwitchDefault>{{ status }}</div>-->
-  <!--  </div>-->
-  <!--</ng-template>-->
-</div>
-
 <ng-template #wrapper>
   <div
     tippy
@@ -217,4 +191,3 @@
     create application
   </button>
 </ng-template>
-

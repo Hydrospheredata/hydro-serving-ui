@@ -5,3 +5,4 @@ export * from './sort-by.pipe';
 export * from './time-ago.pipe';
 export * from './iterate-as-array.pipe';
 export * from './field-shape.pipe';
+export * from './mapped-servable.pipe';

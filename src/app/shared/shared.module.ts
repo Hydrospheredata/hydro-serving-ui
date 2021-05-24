@@ -27,6 +27,7 @@ const pipes = [
   P.SortByPipe,
   P.TimeAgoPipe,
   P.FieldShapePipe,
+  P.MappedServablePipe,
 ];
 
 const directives = [
@@ -56,6 +57,7 @@ const components = [
   C.TensorImageListComponent,
   C.ServiceAvailabilityComponent,
   C.AlertMessageComponent,
+  C.LogComponent,
 ];
 
 @NgModule({

@@ -2,7 +2,13 @@ import { ModelVersion } from './model-version';
 import { Observable } from 'rxjs';
 import { DeploymentConfig } from './deployment-config';
 
-type ServableStatus = 'Serving' | 'NotServing' | 'Starting';
+export enum Status {
+  Serving = 'Serving',
+  NotServing = 'NotServing',
+  Starting = 'Starting',
+  Undefined = 'Undefined',
+  Warning = 'Warning',
+}
 
 export class Servable {
   modelVersion: ModelVersion;
@@ -13,4 +19,11 @@ export class Servable {
   message?: string;
   logStream: Observable<any>;
   deploymentConfiguration?: DeploymentConfig;
+}
+
+export class MappedServable {
+  fullName: string;
+  name?: string;
+  status: string;
+  message?: string;
 }
