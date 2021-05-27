@@ -15,7 +15,7 @@ export class ServiceStatusesEffects {
           return this.serviceStatusService.loadSupported(action.payload).pipe(
             map(res => {
                 const payload = {
-                  id: action.payload.id,
+                  id: action.payload,
                   statuses: res
                 }
                 return GetSuccess({ payload })

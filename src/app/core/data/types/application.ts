@@ -1,23 +1,21 @@
-import { Servable } from '@app/core/data/types/servable';
-import { ModelVersion } from './model-version';
-import { ISignature } from './signature';
 import { DeploymentConfig } from './deployment-config';
+import {Signature} from '@app/core/data/types/signature';
 
 export interface ApplicationCreatingRequest {
   name: string;
   kafkaStreaming: any[];
   executionGraph: {
-    stages: Array<{
-      modelVariants: Array<{
+    stages: {
+      modelVariants: {
         modelVersionId: number;
         weight: number;
-      }>;
-    }>;
+      }[];
+    }[];
   };
   deploymentConfiguration: DeploymentConfig;
 }
 
-export interface IKafkaStreaming {
+export interface KafkaStreaming {
   sourceTopic: string;
   destinationTopic: string;
   consumerId?: string;
@@ -39,44 +37,28 @@ export enum ApplicationStatus {
 }
 
 export interface Stage {
-  modelVariants: IModelVariant[];
+  modelVariants: ModelVariant[];
   signature: string;
 }
 
-export interface IModelVariant {
-  servable?: Servable;
-  modelVersion: ModelVersion;
+export interface ModelVariant {
+  servableName?: string;
+  modelVersionId: number;
   weight: number;
-  deploymentConfiguration?: DeploymentConfig;
+  deploymentConfigurationName: string;
 }
 
-export interface IExecutionGraph {
+export interface ExecutionGraph {
   stages: Stage[];
 }
 
-export interface IApplication {
+export class Application {
   id?: number;
-  signature?: ISignature;
+  signature?: Signature;
   name: string;
-  executionGraph: IExecutionGraph;
-  kafkaStreaming?: IKafkaStreaming[];
-  input: string;
-  output: string;
+  executionGraph: ExecutionGraph;
   namespace?: string;
-  testStatus?: TestStatus;
-  status: string;
-  error?: string;
-  message?: string;
-  deploymentConfiguration: DeploymentConfig
-}
-
-export class Application implements IApplication {
-  id?: number;
-  signature?: ISignature;
-  name: string;
-  executionGraph: IExecutionGraph;
-  namespace?: string;
-  kafkaStreaming?: IKafkaStreaming[];
+  kafkaStreaming?: KafkaStreaming[];
   input: string;
   output: string;
   testStatus?: TestStatus;

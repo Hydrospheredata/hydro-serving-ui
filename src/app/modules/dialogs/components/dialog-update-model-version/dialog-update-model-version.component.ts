@@ -1,12 +1,12 @@
 import { Component, InjectionToken, Inject, OnDestroy } from '@angular/core';
-import { IModelVariantFormData } from '@app/modules/applications/components/forms/model-variant-form/model-variant-form.service';
+import { ModelVariantFormData } from '@app/modules/applications/components/forms/model-variant-form/model-variant-form.service';
 import { isEqual } from 'lodash';
 
 import {
   Application,
   Stage,
   ModelVersion,
-  IModelVariant,
+  ModelVariant,
 } from '@app/core/data/types';
 import { Observable, Subject, of } from 'rxjs';
 import { tap, catchError, takeUntil, take, map } from 'rxjs/operators';
@@ -35,7 +35,7 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     public dialog: DialogsService,
     private facade: ApplicationsFacade,
     private applicationBuilder: ApplicationBuilder,
-    @Inject(SELECTED_MODEL_VARIANT) private selectedModelVariant: IModelVariant,
+    @Inject(SELECTED_MODEL_VARIANT) private selectedModelVariant: ModelVariant,
     @Inject(LATEST_MODEL_VERSION) private latestModelVersion: ModelVersion
   ) {}
 
@@ -97,7 +97,7 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     }, []);
   }
 
-  private reduceModelVariantsData(modelVariants): IModelVariantFormData[] {
+  private reduceModelVariantsData(modelVariants): ModelVariantFormData[] {
     return modelVariants.reduce(
       (newModelVarianats, modelVariant) => [
         ...newModelVarianats,
@@ -107,8 +107,8 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     );
   }
 
-  private createNewModelVariantData(modelVariant): IModelVariantFormData {
-    const newModelVariant: IModelVariantFormData = {
+  private createNewModelVariantData(modelVariant): ModelVariantFormData {
+    const newModelVariant: ModelVariantFormData = {
       modelVersion: modelVariant.modelVersion,
       weight: Number(modelVariant.weight),
       deploymentConfigName: modelVariant.deploymentConfigName,

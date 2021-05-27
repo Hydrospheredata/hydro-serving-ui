@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   Application,
-  IModelVariant,
+  ModelVariant,
   ApplicationStatus,
-  ModelVersionServiceStatusesEntity, ModelVersion,
+  ModelVersionServiceStatusesEntity, ModelVersion, ModelVersionId,
 } from '@app/core/data/types';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ServiceStatusesFacade } from '@app/core/facades/service-statuses.facade';
@@ -28,7 +28,7 @@ import { Dictionary } from '@ngrx/entity';
 
 interface MenuState {
   showed: boolean;
-  context?: IModelVariant | null;
+  context?: ModelVariant | null;
   top: number;
   left: number;
   statuses: ModelVersionServiceStatusesEntity
@@ -41,10 +41,10 @@ const initialMenuState: MenuState = {
   statuses: null
 };
 
-function getModelVersions(value: Application): ModelVersion[] {
+function getModelVersionsIds(value: Application): ModelVersionId[] {
   return _.flatten(value.executionGraph.stages.map(stage =>
     stage.modelVariants.map(modelVariant =>
-      modelVariant.modelVersion)
+      modelVariant.modelVersionId)
   ));
 }
 
@@ -84,14 +84,14 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
       }),
       map(tuple => {
         const [app, statuses] = tuple;
-        const mvs = getModelVersions(app);
-        return mvs.filter(mv => statuses[mv.id] == undefined);
+        const mvsId = getModelVersionsIds(app);
+        return mvsId.filter(id => statuses[id] === undefined);
       }),
-      filter(mvs => {
-        return mvs.length > 0;
+      filter(ids => {
+        return ids.length > 0;
       }),
-      tap(mvs => {
-        return mvs.forEach(mv => this.serviceFacade.loadAll(mv));
+      tap(ids => {
+        return ids.forEach(id => this.serviceFacade.loadAll(id));
       })
     ).subscribe();
   }
@@ -144,16 +144,16 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
   public onClickModelVariant(
     evt: MouseEvent,
-    modelVariant: IModelVariant
+    modelVariant: ModelVariant
   ): void {
-    this.serviceFacade.selectServiceStatusesById(modelVariant.modelVersion.id)
+    this.serviceFacade.selectServiceStatusesById(modelVariant.modelVersionId)
       .subscribe(statuses => {
         this.menu.next({
           showed: true,
           context: modelVariant,
           left: evt.clientX - 12,
           top: evt.clientY - 12,
-          statuses: statuses
+          statuses: statuses,
         });
     })
   }

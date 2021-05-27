@@ -22,7 +22,7 @@ export class ModelVersionServicesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.serviceFacade.loadAll(this.modelVersion);
+    this.serviceFacade.loadAll(this.modelVersion.id);
     this.serviceStatuses$ = this.serviceStatusesById$(this.modelVersion.id);
   }
 }

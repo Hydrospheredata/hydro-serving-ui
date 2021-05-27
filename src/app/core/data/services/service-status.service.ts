@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@app/core/data/services/http.service';
 import {
   createServiceSupportOnFailure,
-  ModelVersion,
+  ModelVersion, ModelVersionId,
   ModelVersionServicesStatus,
   ServiceSupported,
 } from '@app/core/data/types';
@@ -20,10 +20,10 @@ export class ServiceStatusService {
 
   constructor(private http: HttpService) {}
 
-  loadSupported(modelVersion: ModelVersion): Observable<ModelVersionServicesStatus> {
+  loadSupported(modelVersionId: ModelVersionId): Observable<ModelVersionServicesStatus> {
     const toRequest = endpoint =>
       this.http
-        .get<ServiceSupported>(endpoint, { params: { model_version_id: `${modelVersion.id}` } })
+        .get<ServiceSupported>(endpoint, { params: { model_version_id: `${modelVersionId}` } })
         .pipe(
           catchError(err => {
             return of(createServiceSupportOnFailure(err))

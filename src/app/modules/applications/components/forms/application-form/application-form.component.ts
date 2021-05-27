@@ -1,13 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormArray, FormGroup, AbstractControl } from '@angular/forms';
 
-import { Application } from '@app/core/data/types';
+import {Application, ModelVersion} from '@app/core/data/types';
 import {
   ApplicationFormService,
   StageFormData,
 } from './application-form.service';
 import {
-  IModelVariantFormData,
+  ModelVariantFormData,
   ModelVariantFormService,
 } from '../model-variant-form/model-variant-form.service';
 
@@ -20,6 +20,7 @@ import {
 export class ApplicationFormComponent implements OnInit {
   @Output() submitHandle: EventEmitter<any> = new EventEmitter();
   @Input() application: Application;
+  @Input() modelVersions: ModelVersion[]
 
   public applicationForm: FormGroup;
 
@@ -34,7 +35,7 @@ export class ApplicationFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.applicationForm = this.formService.initForm(this.application);
+    this.applicationForm = this.formService.initForm(this.application, this.modelVersions);
   }
 
   public addStageControl() {
@@ -48,7 +49,7 @@ export class ApplicationFormComponent implements OnInit {
   public normalizeStageControlsValue() {
     const stages: StageFormData[] = this.applicationForm.value.stages;
 
-    const toModelVariant = (modelVariant: IModelVariantFormData) => ({
+    const toModelVariant = (modelVariant: ModelVariantFormData) => ({
       modelVersionId: modelVariant.modelVersion.id,
       weight: Number(modelVariant.weight),
       deploymentConfigName: modelVariant.deploymentConfigName

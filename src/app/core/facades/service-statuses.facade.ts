@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { ModelVersion, ModelVersionServiceStatusesEntity } from '@app/core/data/types';
+import { ModelVersionId, ModelVersionServiceStatusesEntity} from '@app/core/data/types';
 import { HydroServingState } from '@app/core/store/states/root.state';
 import { Get } from '@app/core/store/actions/service-statuses.actions';
 import { selectServiceStatusesById, allStatusesEntities } from '@app/core/store/selectors/service-statuses.selectors';
@@ -12,8 +12,8 @@ import { selectServiceStatusesById, allStatusesEntities } from '@app/core/store/
 export class ServiceStatusesFacade {
   constructor(private readonly store: Store<HydroServingState>) {}
 
-  loadAll(modelVersion: ModelVersion): void {
-    this.store.dispatch(Get({ payload: modelVersion }));
+  loadAll(id: ModelVersionId): void {
+    this.store.dispatch(Get({ payload: id }));
   }
 
   allStatusesEntities() {
