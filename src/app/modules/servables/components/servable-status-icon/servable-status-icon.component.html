@@ -43,7 +43,7 @@
 </div>
 
 <div #messageContent>
-  <div class="servable-tooltip">
+  <div class="servable-tooltip" (click)="$event.stopPropagation()">
     <div class="servable-tooltip__title">Servable</div>
     <div class="servable-tooltip__name">{{ name }}</div>
     <div *ngIf="message" class="servable-tooltip__text">{{ message }}</div>
