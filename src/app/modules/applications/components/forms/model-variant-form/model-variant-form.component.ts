@@ -13,7 +13,10 @@ import { ModelsFacade } from '@app/core/facades/models.facade';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 
 import { Observable, of } from 'rxjs';
-import { IModelVariantFormData, ModelVariantFormService } from './model-variant-form.service';
+import {
+  IModelVariantFormData,
+  ModelVariantFormService,
+} from './model-variant-form.service';
 
 @Component({
   selector: 'hs-model-variant-form',
@@ -54,7 +57,7 @@ export class ModelVariantFormComponent implements OnInit {
   constructor(
     private modelsFacade: ModelsFacade,
     private deploymentConfFacade: DeploymentConfigsFacade,
-    @Self() private formService: ModelVariantFormService,
+    @Self() private formService: ModelVariantFormService
   ) {
     this.modelVersions$ = formService.getCurrentModelVersions();
     this.currentFormData = formService.defaultModelVariantFormData();
@@ -70,7 +73,8 @@ export class ModelVariantFormComponent implements OnInit {
 
   public onModelIdChange(modelId): void {
     this.formService.selectModelId(modelId);
-    const modelVersion = this.formService.defaultModelVariantFormData().modelVersion;
+    const modelVersion = this.formService.defaultModelVariantFormData()
+      .modelVersion;
     this.modelVersionControl.setValue(modelVersion || null);
   }
 

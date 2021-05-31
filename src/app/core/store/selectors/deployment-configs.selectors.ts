@@ -28,4 +28,4 @@ export const selectSelectedDeploymentConfig = createSelector(
 export const selectDefaultDeploymentConfig = createSelector(
   selectAllConfigs,
   configs => configs.find(dc => dc.name === defaultDepConfig)
-)
+);

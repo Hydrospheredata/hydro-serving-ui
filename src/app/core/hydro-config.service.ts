@@ -8,7 +8,7 @@ export interface HydroConfig {
 
 const defaultConfig: HydroConfig = {
   showHeader: true,
-  liftMetadata: false
+  liftMetadata: false,
 };
 
 @Injectable({

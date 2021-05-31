@@ -17,7 +17,7 @@
         class="batch-metrics__table-row"
         *ngFor="let batchName of batchesNames"
       >
-        <td class="batch-metrics__table-cell  batch-metrics__table-label">
+        <td class="batch-metrics__table-cell batch-metrics__table-label">
           {{ batchName }}
         </td>
         <td
@@ -25,16 +25,16 @@
           *ngFor="let feature of aggregation.batchesChecks | keyvalue"
         >
           <div [ngSwitch]="checkStatus(feature.value[batchName])">
-            <hydro-icon
+            <hs-icon
               class="check__icon check__icon--success"
               *ngSwitchCase="'success'"
               type="icon-check-success"
-            ></hydro-icon>
-            <hydro-icon
+            ></hs-icon>
+            <hs-icon
               *ngSwitchCase="'fail'"
               class="check__icon check__icon--fail"
               type="icon-cancel"
-            ></hydro-icon>
+            ></hs-icon>
             <span *ngSwitchDefault>n/a</span>
           </div>
         </td>

@@ -15,10 +15,10 @@ import {
 import { Observable, Subscription, Subject, fromEvent, iif, of } from 'rxjs';
 import { tap, mergeMap, retryWhen, takeUntil } from 'rxjs/operators';
 
-type LogItem =  {
-  logText: string,
-  count: number
-}
+type LogItem = {
+  logText: string;
+  count: number;
+};
 
 @Component({
   selector: 'hs-logs',
@@ -48,45 +48,49 @@ export class LogsComponent
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.logSubscription = this.logs$.pipe(
-      takeUntil(this.destroy),
-      retryWhen(errors => errors.pipe(
-        tap(() => {
-          if(this.retryCount === 3) {
-            this.activateRetryButton = true;
-            this.error = 'Internal error, stream was stopped.';
-          } else {
-            this.retryCount++;
-            this.error = `Internal error, retrying the request (${this.retryCount}/3)...`;
-          }
-          this.cdr.detectChanges();
-        }),
-        mergeMap(() => iif(
-          () => this.activateRetryButton,
-          fromEvent<any>(this.retryButton.nativeElement, 'click').pipe(
+    this.logSubscription = this.logs$
+      .pipe(
+        takeUntil(this.destroy),
+        retryWhen(errors =>
+          errors.pipe(
             tap(() => {
-              this.error = '';
+              if (this.retryCount === 3) {
+                this.activateRetryButton = true;
+                this.error = 'Internal error, stream was stopped.';
+              } else {
+                this.retryCount++;
+                this.error = `Internal error, retrying the request (${this.retryCount}/3)...`;
+              }
               this.cdr.detectChanges();
-            })
-          ),
-          of(null)
-        )),
-      ))
-    ).subscribe(
-      (val: string) => {
+            }),
+            mergeMap(() =>
+              iif(
+                () => this.activateRetryButton,
+                fromEvent<any>(this.retryButton.nativeElement, 'click').pipe(
+                  tap(() => {
+                    this.error = '';
+                    this.cdr.detectChanges();
+                  })
+                ),
+                of(null)
+              )
+            )
+          )
+        )
+      )
+      .subscribe((val: string) => {
         this.error = '';
         let newLogs = val.trim().split('\n');
         newLogs.forEach(log => {
-          if(log === this.lastLog) {
+          if (log === this.lastLog) {
             this.logs[this.logs.length - 1].count++;
           } else {
-            this.logs.push({logText: log, count: 1});
+            this.logs.push({ logText: log, count: 1 });
             this.lastLog = log;
           }
         });
         this.cdr.detectChanges();
-      }
-    );
+      });
   }
 
   ngAfterViewInit(): void {

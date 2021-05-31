@@ -22,10 +22,14 @@
             "allowedCommonJsDependencies": [
               "lodash",
               "@ctrl/ngx-codemirror",
+              "@app/modules/monitoring/components/checks/check-chart_v2/check-chart_v2.component",
               "codemirror/mode/javascript/javascript.js",
               "codemirror/addon/edit/matchbrackets.js",
               "codemirror/addon/edit/closebrackets.js",
               "codemirror/addon/display/placeholder.js",
+              "rxjs/operators",
+              "rxjs/Subject",
+              "rxjs/Subscription",
               "rxjs/internal/operators",
               "unique-names-generator",
               "js-yaml",
@@ -154,14 +158,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
             ]
           }
         }
@@ -184,11 +185,11 @@
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
+            "lintFilePatterns": [
+              "e2e//**/*.ts",
+              "e2e//**/*.html"
             ]
           }
         }
@@ -197,6 +198,7 @@
   },
   "defaultProject": "hydro-serving-ui",
   "cli": {
-    "analytics": "c39403f0-e387-4559-95b6-48c900593a6e"
+    "analytics": "c39403f0-e387-4559-95b6-48c900593a6e",
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

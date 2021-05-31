@@ -7,9 +7,9 @@
           [formControl]="parent.get('config').get('model')"
           label="Choose monitoring model"
         >
-          <mdl-option *ngFor="let model of models" [value]="model">{{
-            model.name
-          }}</mdl-option>
+          <mdl-option *ngFor="let model of models" [value]="model"
+            >{{ model.name }}</mdl-option
+          >
         </mdl-select>
       </div>
       <div class="config__cell">
@@ -58,10 +58,7 @@
         <ng-container
           *ngIf="
             parent.get('config').get('threshold').dirty &&
-              parent
-                .get('config')
-                .get('threshold')
-                .getError('pattern');
+              parent.get('config').get('threshold').getError('pattern');
             let error
           "
         >

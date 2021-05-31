@@ -8,5 +8,6 @@ export class ChartsComponent {
   @Input() timeInterval: any;
   @Input() detailedCharts: any;
   @Input() siblingModelVersions: any;
-  @Output('addedModelVersionIdToCompare') addedModelVersionIdToCompare: EventEmitter<any> = new EventEmitter();
+  @Output()
+  addedModelVersionIdToCompare: EventEmitter<any> = new EventEmitter();
 }

@@ -7,7 +7,7 @@ import { toHeatmapData } from '../../utils/to-heatmap-data';
   templateUrl: './bivariate-report.component.html',
   styleUrls: ['./bivariate-report.component.scss'],
 })
-export class BivariateReportComponent implements OnInit {
+export class BivariateReportComponent {
   @Input() set bivariateReports(reports: BivariateReport[]) {
     this.productionHeatmapConfig = undefined;
     this.trainingHeatmapConfig = undefined;
@@ -48,8 +48,6 @@ export class BivariateReportComponent implements OnInit {
   };
 
   constructor() {}
-
-  ngOnInit() {}
 
   changeSelectedBivariateReport(report: BivariateReport): void {
     this.bivariateReport = report;

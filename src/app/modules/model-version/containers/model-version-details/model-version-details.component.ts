@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy
-} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ServablesFacade } from '@app/core/facades/servables.facade';
 import { FieldsService } from '@app/modules/profiler/fields.service';
@@ -12,7 +8,12 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { neitherNullNorUndefined } from '@app/utils';
 
-import { ModelVersion, Servable, Application, DeploymentConfig } from '@app/core/data/types';
+import {
+  ModelVersion,
+  Servable,
+  Application,
+  DeploymentConfig,
+} from '@app/core/data/types';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { HydroConfigService } from '@app/core/hydro-config.service';
 import { ModelsFacade } from '@app/core/facades/models.facade';
@@ -73,7 +74,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
 
     this.depConfigSub = this.depConfigsFacade
       .defaultDepConfig()
-      .subscribe(depConfig => this.depConfig = depConfig);
+      .subscribe(depConfig => (this.depConfig = depConfig));
   }
 
   ngOnDestroy() {
@@ -82,16 +83,12 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
 
   isButtonEnabled() {
     return combineLatest([
-        this.someModelVersionIsReleased(),
-        this.getDepConfigs(),
-      ],
-    ).pipe(
-      map(([
-       someReleased,
-       depConfigs,
-       ]) => {
+      this.someModelVersionIsReleased(),
+      this.getDepConfigs(),
+    ]).pipe(
+      map(([someReleased, depConfigs]) => {
         return someReleased && depConfigs.length > 0;
-      }),
+      })
     );
   }
 
@@ -108,7 +105,10 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
   }
 
   onAddApplication(modelVersion: ModelVersion, depConfig: DeploymentConfig) {
-    this.applicationsFacade.createApplicationFromModelVersion(modelVersion, depConfig);
+    this.applicationsFacade.createApplicationFromModelVersion(
+      modelVersion,
+      depConfig
+    );
   }
 
   showServableLogs(name: string) {

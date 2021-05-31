@@ -1,5 +1,8 @@
 import { createAction, props } from '@ngrx/store';
-import { ModelVersion, ModelVersionServiceStatusesEntity } from '../../data/types';
+import {
+  ModelVersion,
+  ModelVersionServiceStatusesEntity,
+} from '../../data/types';
 
 export const Get = createAction(
   '[ServiceStatus] Get services statuses',
@@ -13,4 +16,3 @@ export const GetFail = createAction(
   '[ServiceStatus] Get services statuses with fail',
   props<{ error: string }>()
 );
-

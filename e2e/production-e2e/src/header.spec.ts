@@ -1,4 +1,9 @@
-import { Page, Browser, ElementHandle, HTMLOrSVGElementHandle } from 'playwright';
+import {
+  Page,
+  Browser,
+  ElementHandle,
+  HTMLOrSVGElementHandle,
+} from 'playwright';
 import appConfig from '../app-config';
 import initializeBrowser from '../helpers/initializeBrowser';
 

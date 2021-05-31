@@ -7,13 +7,10 @@ import { LogsService } from '@app/modules/model-version/logs.service';
   templateUrl: './servable-status-icon.component.html',
   styleUrls: ['./servable-status-icon.component.scss'],
 })
-
 export class ServableStatusIconComponent {
   @Input() servable: Servable;
 
-  constructor(
-    public logs: LogsService
-  ) {}
+  constructor(public logs: LogsService) {}
 
   get status(): string {
     return this.servable.status;

@@ -12,7 +12,7 @@ import { ServiceStatus } from '@app/core/data/types';
     [status]="status.status"
   >
     <ng-content></ng-content>
-  </hs-service-availability>`,
+  </hs-service-availability> `,
 })
 export class StatAvailabilityComponent implements OnInit {
   status$: Observable<{ status: ServiceStatus; message: string }>;

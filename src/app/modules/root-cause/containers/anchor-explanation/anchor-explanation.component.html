@@ -32,7 +32,7 @@
     <div class="anchor__explanations">
       <table>
         <tr *ngFor="let expl of explanations; index as i">
-          <td class="anchor__operator">{{ i == 0 ? 'if' : 'and' }}</td>
+          <td class="anchor__operator">{{ i === 0 ? 'if' : 'and' }}</td>
           <td>{{ expl }}</td>
         </tr>
       </table>

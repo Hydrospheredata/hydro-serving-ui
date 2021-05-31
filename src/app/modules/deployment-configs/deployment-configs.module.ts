@@ -18,6 +18,11 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
     DcFormComponent,
   ],
   exports: [],
-  imports: [SharedModule, DeploymentConfigsRoutingModule, ReactiveFormsModule, CodemirrorModule],
+  imports: [
+    SharedModule,
+    DeploymentConfigsRoutingModule,
+    ReactiveFormsModule,
+    CodemirrorModule,
+  ],
 })
 export class DeploymentConfigsModule {}

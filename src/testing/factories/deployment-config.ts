@@ -1,8 +1,7 @@
 import { DeploymentConfig } from '@app/core/data/types';
 import { Factory } from 'fishery';
 
-export const MockDeploymentConfig1 = Factory.define<DeploymentConfig>(
-  () => ({
+export const MockDeploymentConfig1 = Factory.define<DeploymentConfig>(() => ({
   name: 'test1',
   container: null,
   pod: null,

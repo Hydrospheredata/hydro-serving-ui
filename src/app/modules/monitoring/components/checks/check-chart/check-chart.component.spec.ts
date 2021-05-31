@@ -13,7 +13,7 @@ describe('CheckChartComponent', () => {
     TestBed.configureTestingModule({
       declarations: [CheckChartComponent],
       imports: [SharedModule, HsD3Module],
-      providers: [{provide: MonitoringPageService, useValue: {}}],
+      providers: [{ provide: MonitoringPageService, useValue: {} }],
     }).compileComponents();
   }));
 

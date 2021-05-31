@@ -44,9 +44,6 @@ export class ScaleImageDirective implements OnInit {
     }
 
     const transformStr = `transform: scale(${scale}); transform-origin: 0 0`;
-    (this.el.nativeElement as HTMLElement).setAttribute(
-      'style',
-      transformStr
-    );
+    (this.el.nativeElement as HTMLElement).setAttribute('style', transformStr);
   }
 }

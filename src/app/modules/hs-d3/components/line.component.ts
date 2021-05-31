@@ -9,8 +9,8 @@ import {
 import { easeLinear, line, select, curveMonotoneX } from 'd3';
 
 @Component({
-  selector: '[hs-d3line]',
-  template: ` <svg:path #path></svg:path> `,
+  selector: 'hs-d3line',
+  template: `<svg:path #path></svg:path> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class D3LineComponent implements OnChanges {

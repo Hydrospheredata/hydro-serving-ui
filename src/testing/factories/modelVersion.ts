@@ -20,8 +20,10 @@ export const MockModelSignature = Factory.define<ModelSignature>(() => ({
   inputs: [],
 }));
 
-export const MockModelVersion1Model1 = Factory.define<ModelVersion, ModelSignature>(
-  ({ sequence }) => ({
+export const MockModelVersion1Model1 = Factory.define<
+  ModelVersion,
+  ModelSignature
+>(({ sequence }) => ({
   get contractInputs(): Input[] {
     return [];
   },

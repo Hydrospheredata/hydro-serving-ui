@@ -15,7 +15,7 @@ import { Model } from '@app/core/data/types/model';
   templateUrl: './models-page.component.html',
   styleUrls: ['./models-page.component.scss'],
 })
-export class ModelsPageComponent implements OnDestroy, OnInit {
+export class ModelsPageComponent implements OnDestroy {
   visibleModels$: Observable<Model[]>;
   selectedModel$: Observable<Model> = this.modelsFacade.selectedModel();
   metricModelsAreHidden$: Observable<boolean>;
@@ -28,28 +28,26 @@ export class ModelsPageComponent implements OnDestroy, OnInit {
     private modelsFacade: ModelsFacade,
     private router: Router,
     private zenMode: ZenModeService,
-    private modelsSidebarService: ModelsSidebarService
+    private modelsSidebarService: ModelsSidebarService,
   ) {
     this.visibleModels$ = this.modelsSidebarService.visibleModels();
     this.metricModelsAreHidden$ = this.modelsSidebarService.metricModelsAreHidden();
 
     this.routerEvents$ = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
+      filter(event => event instanceof NavigationEnd),
     );
     this.isRootUrl$ = this.routerEvents$.pipe(
-      map(event => ModelsPageComponent.isRootModelsUrl(event))
+      map(event => ModelsPageComponent.isRootModelsUrl(event)),
     );
 
     this.redirectToFirstEntity = this.isRootUrl$
       .pipe(
         filter(isRoot => isRoot),
         take(1),
-        tap(_ => this.redirectToFirst())
+        tap(_ => this.redirectToFirst()),
       )
       .subscribe();
   }
-
-  ngOnInit(): void {}
 
   get isZenMode$(): Observable<boolean> {
     return this.zenMode.isZenMode$;
@@ -75,7 +73,7 @@ export class ModelsPageComponent implements OnDestroy, OnInit {
     this.visibleModels$
       .pipe(
         filter(models => models.length > 0),
-        take(1)
+        take(1),
       )
       .subscribe(models => {
         this.router.navigate([`models/${models[0].name}`]);

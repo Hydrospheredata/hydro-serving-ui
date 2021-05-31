@@ -2,13 +2,13 @@
   <div class="application__header">
     <div class="application__header-buttons application__header-buttons--right">
       <button
-        hs-button
+        hsButton
         kind="flat"
         color="cyan"
         [disabled]="!isReady(application.status)"
         (click)="testApplication(application)"
       >
-        <hydro-icon class="hs-button__icon" type="icon-start"></hydro-icon>
+        <hs-icon class="hs-button__icon" type="icon-start"></hs-icon>
         Test
       </button>
       <button
@@ -17,7 +17,7 @@
         color="primary"
         (click)="editApplication(application)"
       >
-        <hydro-icon class="hs-button__icon" type="icon-edit"></hydro-icon>
+        <hs-icon class="hs-button__icon" type="icon-edit"></hs-icon>
         Edit
       </button>
       <button
@@ -26,7 +26,7 @@
         color="warning"
         (click)="removeApplication(application)"
       >
-        <hydro-icon class="hs-button__icon" type="icon-remove"></hydro-icon>
+        <hs-icon class="hs-button__icon" type="icon-remove"></hs-icon>
         remove
       </button>
     </div>
@@ -53,9 +53,9 @@
               *ngFor="let item of kafka | iterateAsArray"
             >
               <span class="content-info__sublist-item-title">{{ item }}</span>
-              <span class="content-info__sublist-item-value">{{
-                kafka[item]
-              }}</span>
+              <span class="content-info__sublist-item-value"
+                >{{ kafka[item] }}</span
+              >
             </li>
           </ol>
         </li>
@@ -92,11 +92,11 @@
               (handleClick)="updateModelVersionDialog($event, modelVariant)"
             >
               <span hs-tooltip="Model has new version">
-                <hydro-icon
+                <hs-icon
                   type="icon-upgrade"
                   class="icon model-variant__version-new-icon"
                 >
-                </hydro-icon>
+                </hs-icon>
               </span>
             </div>
             <div class="application__model-variant-model-version model-version">

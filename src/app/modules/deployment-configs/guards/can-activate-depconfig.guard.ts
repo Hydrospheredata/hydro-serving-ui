@@ -20,7 +20,9 @@ export class CanActivateDeploymentConfigGuard implements CanActivate {
       switchMap(() => this.facade.getAll()),
       switchMap(depconfigs => {
         const depConfigName = routerSnapshot.params.name;
-        const depConfigExist = depconfigs.some(({ name }) => name === depConfigName);
+        const depConfigExist = depconfigs.some(
+          ({ name }) => name === depConfigName
+        );
 
         if (depConfigExist) {
           return of(true);

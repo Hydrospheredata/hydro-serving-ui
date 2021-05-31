@@ -1,5 +1,8 @@
 <div class="check-chart_v2">
-  <div *ngIf="series.length == 0; else chart" class="check-chart_v2__no-data_v2">
+  <div
+    *ngIf="series.length === 0; else chart"
+    class="check-chart_v2__no-data_v2"
+  >
     <div>no data available</div>
   </div>
   <ng-template #chart>

@@ -1,7 +1,7 @@
 <div class="visualization">
-  <hs-alert-message *ngIf="message$ | async as message">{{
-    message
-  }}</hs-alert-message>
+  <hs-alert-message *ngIf="message$ | async as message"
+    >{{ message }}</hs-alert-message
+  >
   <div
     *ngIf="(status$ | async) === 'PENDING' || (status$ | async) === 'STARTED'"
     class="visualization__loader"
@@ -35,8 +35,8 @@
               [value]="colorizer"
             >
               <span class="colorizer">
-                <span class="colorizer__type">{{ colorizer.type }}: </span
-                >{{ colorizer.name }}
+                <span class="colorizer__type">{{ colorizer.type }}: </span>{{
+                colorizer.name }}
               </span></mdl-option
             >
           </mdl-select>

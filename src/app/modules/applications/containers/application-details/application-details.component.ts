@@ -3,7 +3,8 @@ import {
   Application,
   IModelVariant,
   ApplicationStatus,
-  ModelVersionServiceStatusesEntity, ModelVersion,
+  ModelVersionServiceStatusesEntity,
+  ModelVersion,
 } from '@app/core/data/types';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ServiceStatusesFacade } from '@app/core/facades/service-statuses.facade';
@@ -19,7 +20,7 @@ import {
   SELECTED_DEL_APPLICATION,
 } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/internal/operators';
@@ -31,21 +32,22 @@ interface MenuState {
   context?: IModelVariant | null;
   top: number;
   left: number;
-  statuses: ModelVersionServiceStatusesEntity
+  statuses: ModelVersionServiceStatusesEntity;
 }
 const initialMenuState: MenuState = {
   showed: false,
   context: null,
   top: 0,
   left: 0,
-  statuses: null
+  statuses: null,
 };
 
 function getModelVersions(value: Application): ModelVersion[] {
-  return _.flatten(value.executionGraph.stages.map(stage =>
-    stage.modelVariants.map(modelVariant =>
-      modelVariant.modelVersion)
-  ));
+  return _.flatten(
+    value.executionGraph.stages.map(stage =>
+      stage.modelVariants.map(modelVariant => modelVariant.modelVersion),
+    ),
+  );
 }
 
 @Component({
@@ -58,7 +60,7 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
   menu$: Observable<MenuState>;
   private menu: BehaviorSubject<MenuState> = new BehaviorSubject(
-    initialMenuState
+    initialMenuState,
   );
 
   mv$: Observable<Dictionary<ModelVersionServiceStatusesEntity>>;
@@ -67,7 +69,7 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
   constructor(
     private readonly dialog: DialogsService,
     private readonly facade: ApplicationsFacade,
-    private readonly serviceFacade: ServiceStatusesFacade
+    private readonly serviceFacade: ServiceStatusesFacade,
   ) {
     this.menu$ = this.menu.asObservable();
   }
@@ -77,23 +79,25 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
     this.mv$ = this.serviceFacade.allStatusesEntities();
 
-    this.mvSubscription = combineLatest([this.application$, this.mv$]).pipe(
-      filter(tuple => {
-        const [app, statuses] = tuple;
-        return app !== undefined;
-      }),
-      map(tuple => {
-        const [app, statuses] = tuple;
-        const mvs = getModelVersions(app);
-        return mvs.filter(mv => statuses[mv.id] == undefined);
-      }),
-      filter(mvs => {
-        return mvs.length > 0;
-      }),
-      tap(mvs => {
-        return mvs.forEach(mv => this.serviceFacade.loadAll(mv));
-      })
-    ).subscribe();
+    this.mvSubscription = combineLatest([this.application$, this.mv$])
+      .pipe(
+        filter(tuple => {
+          const [app, statuses] = tuple;
+          return app !== undefined;
+        }),
+        map(tuple => {
+          const [app, statuses] = tuple;
+          const mvs = getModelVersions(app);
+          return mvs.filter(mv => statuses[mv.id] == undefined);
+        }),
+        filter(mvs => {
+          return mvs.length > 0;
+        }),
+        tap(mvs => {
+          return mvs.forEach(mv => this.serviceFacade.loadAll(mv));
+        }),
+      )
+      .subscribe();
   }
 
   ngOnDestroy() {
@@ -144,18 +148,19 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
   public onClickModelVariant(
     evt: MouseEvent,
-    modelVariant: IModelVariant
+    modelVariant: IModelVariant,
   ): void {
-    this.serviceFacade.selectServiceStatusesById(modelVariant.modelVersion.id)
+    this.serviceFacade
+      .selectServiceStatusesById(modelVariant.modelVersion.id)
       .subscribe(statuses => {
         this.menu.next({
           showed: true,
           context: modelVariant,
           left: evt.clientX - 12,
           top: evt.clientY - 12,
-          statuses: statuses
+          statuses: statuses,
         });
-    })
+      });
   }
 
   public onMouseLeave(): void {
@@ -165,7 +170,7 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
       context: menuState.context,
       top: menuState.top,
       left: menuState.left,
-      statuses: menuState.statuses
+      statuses: menuState.statuses,
     });
   }
 }

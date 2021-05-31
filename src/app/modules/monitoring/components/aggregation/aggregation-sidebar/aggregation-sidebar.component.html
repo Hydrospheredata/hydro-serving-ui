@@ -4,11 +4,13 @@
     <input
       id="rangeFilter"
       class="agg-sidebar__date-picker"
-      [owlDateTimeTrigger]="dt10"
-      [owlDateTime]="dt10"
-      [selectMode]="'range'"
-      [values]="dtrange"
-      (dateTimeChange)="handleDateTimeFromChange($event.value)"
+      ngxDaterangepickerMd
+      startKey="minDate"
+      endKey="maxDate"
+      [(ngModel)]="selected"
+      timePicker="true"
+      timePickerSeconds="true"
+      (datesUpdated)="handleDateTimeFromChange($event)"
     />
     <span
       *ngIf="showResetFilter"
@@ -17,22 +19,20 @@
     >
       reset filter
     </span>
-
-    <owl-date-time #dt10></owl-date-time>
   </div>
 
   <div class="agg-sidebar__row">
     <span class="agg-sidebar__header">Total</span>
     <span class="agg-sidebar__label">Batches: </span
-    ><span class="agg-sidebar__count">{{
-      aggregationsList.totalBatchesCount
-    }}</span>
+    ><span class="agg-sidebar__count"
+      >{{ aggregationsList.totalBatchesCount }}</span
+    >
   </div>
   <div class="agg-sidebar__row">
     <span class="agg-sidebar__header">Displayed</span>
     <span class="agg-sidebar__label">Batches: </span
-    ><span class="agg-sidebar__count">{{
-      aggregationsList.showedBatchesCount
-    }}</span>
+    ><span class="agg-sidebar__count"
+      >{{ aggregationsList.showedBatchesCount }}</span
+    >
   </div>
 </div>

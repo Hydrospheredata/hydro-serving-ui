@@ -18,7 +18,10 @@ describe('CreatePlotBand', () => {
         threshold: 6,
         data: [1, 2, 5, 25, 8, 3, 7, 10, 1],
       };
-      expect(result.create(dataWithValues)).toEqual([{from: 3, to: 4}, {from: 6, to: 7}]);
+      expect(result.create(dataWithValues)).toEqual([
+        { from: 3, to: 4 },
+        { from: 6, to: 7 },
+      ]);
     });
   });
 });

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-model-version-page',
+  selector: 'hs-model-version-page',
   templateUrl: './model-version-page.component.html',
   styleUrls: ['./model-version-page.component.scss'],
 })

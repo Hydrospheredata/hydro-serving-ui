@@ -29,14 +29,14 @@ export class ApplicationsPageComponent implements OnDestroy {
     private modelsFacade: ModelsFacade,
     private depConfigsFacade: DeploymentConfigsFacade,
     private dialog: DialogsService,
-    private router: Router,
+    private router: Router
   ) {
     this.selectedApplication$ = this.facade.selectedApplication();
 
     this.routerSub = this.router.events
       .pipe(
         filter(event => this.isRootApplicationsUrl(event)),
-        tap(_ => this.redirectToFirst()),
+        tap(_ => this.redirectToFirst())
       )
       .subscribe();
 
@@ -45,16 +45,12 @@ export class ApplicationsPageComponent implements OnDestroy {
 
   isButtonEnabled() {
     return combineLatest([
-        this.someModelVersionIsReleased(),
-        this.getDepConfigs(),
-      ],
-    ).pipe(
-      map(([
-             someReleased,
-             depConfigs,
-           ]) => {
+      this.someModelVersionIsReleased(),
+      this.getDepConfigs(),
+    ]).pipe(
+      map(([someReleased, depConfigs]) => {
         return someReleased && depConfigs.length > 0;
-      }),
+      })
     );
   }
 
