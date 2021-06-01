@@ -1,4 +1,4 @@
-FROM node:13.12.0 AS build
+FROM node:15.14.0 AS build
 
 WORKDIR /opt/ng
 

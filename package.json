@@ -68,7 +68,7 @@
     "ng2-charts": "^1.6.0",
     "ng5-slider": "^1.2.4",
     "ngx-daterangepicker-material": "^4.0.1",
-    "node": "^16.1.0",
+    "node": "^15.14.0",
     "ramda": "^0.27.0",
     "rxjs": "^6.6.3",
     "rxjs-compat": "^6.6.7",
