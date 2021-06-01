@@ -1,45 +1,55 @@
 {
-  "env": {
-    "browser": true,
-    "es6": true
-  },
-  "extends": "eslint:recommended",
-  "parser": "typescript-eslint-parser",
-  "plugins": [
-    "typescript"
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
   ],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "sourceType": "module"
-  },
-  "globals": {
-    "angular": true
-  },
-  "rules": {
-    "indent": [
-      "error",
-      4
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "no-extra-semi": "error",
-    "no-unused-vars": "off",
-    "no-undef": "off",
-    "no-empty-pattern": "error",
-    "no-multi-spaces": [
-      "error",
-      {
-        "ignoreEOLComments": true
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json",
+          "e2e/tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "prefix": "hs",
+            "type": "element"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "prefix": "hs",
+            "style": "camelCase",
+            "type": "attribute"
+          }
+        ],
+        "@angular-eslint/component-class-suffix": "off",
+        "@angular-eslint/contextual-lifecycle": "off"
       }
-    ],
-    "typescript/no-unused-vars": "off"
-  }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/template/no-negated-async": "off"
+      }
+    }
+  ]
 }

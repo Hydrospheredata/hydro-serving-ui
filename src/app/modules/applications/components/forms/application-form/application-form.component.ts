@@ -15,7 +15,7 @@ import {
   selector: 'hs-application-form',
   templateUrl: './application-form.component.html',
   styleUrls: ['./application-form.component.scss'],
-  providers: [ ModelVariantFormService, ApplicationFormService],
+  providers: [ModelVariantFormService, ApplicationFormService],
 })
 export class ApplicationFormComponent implements OnInit {
   @Output() submitHandle: EventEmitter<any> = new EventEmitter();

@@ -23,21 +23,37 @@ describe('ApplicationsPageComponent', () => {
 
   const mockedApplicationsFacade: ApplicationsFacade = mock(ApplicationsFacade);
   const mockedModelsFacade: ModelsFacade = mock(ModelsFacade);
-  const mockedDeploymentConfigsFacade: DeploymentConfigsFacade = mock(DeploymentConfigsFacade);
+  const mockedDeploymentConfigsFacade: DeploymentConfigsFacade = mock(
+    DeploymentConfigsFacade
+  );
   const mockedDialogsService: DialogsService = mock(DialogsService);
 
   when(mockedModelsFacade.someModelVersionIsReleased()).thenReturn(of(true));
-  when(mockedDeploymentConfigsFacade.getAll()).thenReturn(of([MockDeploymentConfig1.build()]));
+  when(mockedDeploymentConfigsFacade.getAll()).thenReturn(
+    of([MockDeploymentConfig1.build()])
+  );
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ApplicationsPageComponent],
       imports: [SharedModule, RouterTestingModule, HttpClientTestingModule],
       providers: [
-        { provide: ApplicationsFacade, useFactory: () => instance(mockedApplicationsFacade) },
-        { provide: ModelsFacade, useFactory: () => instance(mockedModelsFacade) },
-        { provide: DeploymentConfigsFacade, useFactory: () => instance(mockedDeploymentConfigsFacade) },
-        { provide: DialogsService, useFactory: () => instance(mockedDialogsService) },
+        {
+          provide: ApplicationsFacade,
+          useFactory: () => instance(mockedApplicationsFacade),
+        },
+        {
+          provide: ModelsFacade,
+          useFactory: () => instance(mockedModelsFacade),
+        },
+        {
+          provide: DeploymentConfigsFacade,
+          useFactory: () => instance(mockedDeploymentConfigsFacade),
+        },
+        {
+          provide: DialogsService,
+          useFactory: () => instance(mockedDialogsService),
+        },
       ],
     }).compileComponents();
   }));

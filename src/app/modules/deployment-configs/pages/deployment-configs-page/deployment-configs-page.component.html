@@ -6,20 +6,20 @@
       (filtered)="handleFilter($event)"
       (clicked)="handleSidebarClick($event)"
     >
-     <button
-      class="button deployment-config-page__button"
-      hs-button
-      kind="flat"
-      color="primary"
-      (click)="addDeploymentConfig()"
-      #button
-     >
-      create config
-    </button>
+      <button
+        class="button deployment-config-page__button"
+        hs-button
+        kind="flat"
+        color="primary"
+        (click)="addDeploymentConfig()"
+        #button
+      >
+        create config
+      </button>
     </hs-sidebar>
   </div>
   <div class="deployment-config-page__body" *ngIf="configs$ | async as configs">
-    <ng-container *ngIf="configs && configs.length || toggle; else notify">
+    <ng-container *ngIf="(configs && configs.length) || toggle; else notify">
       <router-outlet></router-outlet>
     </ng-container>
   </div>
@@ -30,10 +30,9 @@
         class="deployment-config-page__message-link"
         href="https://docs.hydrosphere.io/quickstart/tutorials/deployment-configuration"
         target="_blank"
-      >Upload</a
+        >Upload</a
       >
       first deployment config
     </div>
   </ng-template>
 </div>
-

@@ -1,9 +1,7 @@
 <ng-content></ng-content>
-<div class="tooltip-wrapper" >
+<div class="tooltip-wrapper">
   <ng-template #tpl>
-    <span
-      class="tooltip"
-      [ngClass]="{ 'tooltip--is-hidden': hidden }"
+    <span class="tooltip" [ngClass]="{ 'tooltip--is-hidden': hidden }"
       >{{ text }}</span
     ></ng-template
   >

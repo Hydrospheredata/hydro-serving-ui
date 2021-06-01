@@ -6,7 +6,7 @@ import {
   merge,
   Observable,
   Subject,
-  Subscription
+  Subscription,
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -18,7 +18,7 @@ import {
   DeploymentConfig,
   IModelVariant,
   ModelVersion,
-  ModelVersionStatus
+  ModelVersionStatus,
 } from '@app/core/data/types';
 
 export interface IModelVariantFormData {
@@ -39,12 +39,12 @@ export class ModelVariantFormService implements OnDestroy {
     private readonly modelVersionsFacade: ModelVersionsFacade,
     private readonly modelsFacade: ModelsFacade,
     private readonly depConfigsFacade: DeploymentConfigsFacade,
-    private readonly customValidators: CustomValidatorsService,
+    private readonly customValidators: CustomValidatorsService
   ) {
     const currentModelId$: Observable<number> = merge(
       this.selectedModelId,
-      this.modelsFacade.firstModel().pipe(map(_ => _.id)),
-    )
+      this.modelsFacade.firstModel().pipe(map(_ => _.id))
+    );
 
     this.modelVersions$ = currentModelId$.pipe(
       switchMap((modelId: number) =>
@@ -53,30 +53,27 @@ export class ModelVariantFormService implements OnDestroy {
           .pipe(
             map(modelVersions =>
               modelVersions.filter(
-                mv => !mv.isExternal && mv.status === ModelVersionStatus.Released
-              ),
-            ),
-          ),
-      ),
+                mv =>
+                  !mv.isExternal && mv.status === ModelVersionStatus.Released
+              )
+            )
+          )
+      )
     );
 
-    this.modelVariantFormDataSub = combineLatest(
-      [
-        this.modelVersions$,
-        this.depConfigsFacade.defaultDepConfig(),
-      ],
-    ).subscribe(
-      ([modelVersions, depConfig]) => {
-        const nextDefaultFormData: IModelVariantFormData = {
-          weight: 100,
-          modelId: modelVersions[0].model.id,
-          modelVersion: modelVersions[0],
-          deploymentConfigName: depConfig.name,
-        };
+    this.modelVariantFormDataSub = combineLatest([
+      this.modelVersions$,
+      this.depConfigsFacade.defaultDepConfig(),
+    ]).subscribe(([modelVersions, depConfig]) => {
+      const nextDefaultFormData: IModelVariantFormData = {
+        weight: 100,
+        modelId: modelVersions[0].model.id,
+        modelVersion: modelVersions[0],
+        deploymentConfigName: depConfig.name,
+      };
 
-        this.defaultFormData.next(nextDefaultFormData);
-      },
-    );
+      this.defaultFormData.next(nextDefaultFormData);
+    });
   }
 
   defaultModelVariantFormData(): IModelVariantFormData {
@@ -84,7 +81,7 @@ export class ModelVariantFormService implements OnDestroy {
   }
 
   modelVariantToModelVariantFormData(
-    modelVariant: IModelVariant,
+    modelVariant: IModelVariant
   ): IModelVariantFormData {
     return {
       weight: modelVariant.weight,
@@ -98,7 +95,7 @@ export class ModelVariantFormService implements OnDestroy {
   }
 
   buildModelVariantFormGroup(
-    modelVariantFormData: IModelVariantFormData = this.defaultModelVariantFormData(),
+    modelVariantFormData: IModelVariantFormData = this.defaultModelVariantFormData()
   ): FormGroup {
     return new FormGroup({
       weight: new FormControl(modelVariantFormData.weight, [
@@ -107,15 +104,15 @@ export class ModelVariantFormService implements OnDestroy {
       ]),
       modelId: new FormControl(
         modelVariantFormData.modelId,
-        this.customValidators.required(),
+        this.customValidators.required()
       ),
       modelVersion: new FormControl(
         modelVariantFormData.modelVersion,
-        this.customValidators.required(),
+        this.customValidators.required()
       ),
       deploymentConfigName: new FormControl(
         modelVariantFormData.deploymentConfigName,
-        this.customValidators.required(),
+        this.customValidators.required()
       ),
     });
   }

@@ -14,25 +14,28 @@ const enum ServicesEndpoints {
   visualization = 'visualization/supported',
 }
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ServiceStatusService {
-
   constructor(private http: HttpService) {}
 
-  loadSupported(modelVersion: ModelVersion): Observable<ModelVersionServicesStatus> {
+  loadSupported(
+    modelVersion: ModelVersion
+  ): Observable<ModelVersionServicesStatus> {
     const toRequest = endpoint =>
       this.http
-        .get<ServiceSupported>(endpoint, { params: { model_version_id: `${modelVersion.id}` } })
+        .get<ServiceSupported>(endpoint, {
+          params: { model_version_id: `${modelVersion.id}` },
+        })
         .pipe(
           catchError(err => {
-            return of(createServiceSupportOnFailure(err))
+            return of(createServiceSupportOnFailure(err));
           })
-        )
+        );
 
     return forkJoin({
       stat: toRequest(ServicesEndpoints.stat),
       visualization: toRequest(ServicesEndpoints.visualization),
-    })
+    });
   }
 }

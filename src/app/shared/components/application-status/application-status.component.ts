@@ -3,7 +3,7 @@ import { ApplicationStatus } from '@app/core/data/types';
 
 @Component({
   selector: 'hs-application-status',
-  template: '<hydro-icon [ngClass]="classMap" [type]="type"></hydro-icon>',
+  template: '<hs-icon [ngClass]="classMap" [type]="type"></hs-icon>',
   styleUrls: ['./application-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

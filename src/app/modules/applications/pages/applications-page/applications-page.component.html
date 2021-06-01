@@ -1,17 +1,15 @@
 <div class="applications-page">
-    <div class="applications-page__sidebar">
+  <div class="applications-page__sidebar">
     <hs-sidebar
       [sidebarData]="applications$ | async"
       [selectedItem]="selectedApplication$ | async"
       (filtered)="handleFilter($event)"
       (bookmarked)="handleBookmark($event)"
       (clicked)="handleSidebarClick($event)"
-      >
+    >
       <div class="button">
         <ng-container
-          *ngIf="!(isButtonEnabled() | async);
-          then wrapper
-          else button"
+          *ngIf="!(isButtonEnabled() | async); then wrapper; else button"
         >
         </ng-container>
       </div>
@@ -29,14 +27,14 @@
         target="_blank"
         >Upload</a
       >
-       your first model
+      your first model
     </div>
   </div>
 </div>
 
 <ng-template #wrapper>
   <div
-    tippy
+    hsTippy
     [tippyOptions]="{
       content: 'Deployment config required',
       arrow: false,

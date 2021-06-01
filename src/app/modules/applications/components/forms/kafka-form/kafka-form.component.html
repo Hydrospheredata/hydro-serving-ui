@@ -10,25 +10,25 @@
   </label>
   <div *ngFor="let kafkaSource of kafkaFormArray.controls; index as i">
     <div [formGroup]="kafkaSource" class="kafka__item">
-      <hydro-input-text
+      <hs-input-text
         class="kafka__input"
         name="inputTopic"
         formControlName="sourceTopic"
         label="input topic"
       >
-      </hydro-input-text>
-      <hydro-input-text
+      </hs-input-text>
+      <hs-input-text
         class="kafka__input"
         name="outputTopic"
         formControlName="destinationTopic"
         label="destination topic"
       >
-      </hydro-input-text>
-      <hydro-icon
+      </hs-input-text>
+      <hs-icon
         type="icon-remove"
         class="icon kafka__icon"
         (click)="removeKafkaControlAtIndex(i)"
-      ></hydro-icon>
+      ></hs-icon>
     </div>
   </div>
 

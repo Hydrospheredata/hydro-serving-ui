@@ -25,23 +25,22 @@ const MockService2 = MockService.build({
   modelVersion: MockModelVersion3Model2,
 });
 
-export const MockApplication = Factory.define<Application>(
-  ({ sequence }) => ({
+export const MockApplication = Factory.define<Application>(({ sequence }) => ({
   id: sequence,
   signature: MockSignature1.build(),
   name: 'app1',
   executionGraph: {
-  stages: [
-    {
-      modelVariants: [MockService.build()],
-      signature: 'signature',
-    },
-    {
-      modelVariants: [MockService2],
-      signature: 'signature',
-    },
-  ],
-},
+    stages: [
+      {
+        modelVariants: [MockService.build()],
+        signature: 'signature',
+      },
+      {
+        modelVariants: [MockService2],
+        signature: 'signature',
+      },
+    ],
+  },
   namespace: 'namespace',
   input: '',
   output: '',

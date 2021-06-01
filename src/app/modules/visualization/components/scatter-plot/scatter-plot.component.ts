@@ -43,7 +43,7 @@ interface Link {
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
+export class ScatterPlotComponent implements OnChanges {
   private static removeLines() {
     select('.scatter-plot__links').selectAll('line').remove();
   }
@@ -125,9 +125,6 @@ export class ScatterPlotComponent implements OnChanges, AfterViewInit, OnInit {
       (changes.data && changes.data.currentValue) || this.data;
     this.render(dataChanges);
   }
-
-  ngOnInit(): void {}
-  ngAfterViewInit() {}
 
   private render({
     points,

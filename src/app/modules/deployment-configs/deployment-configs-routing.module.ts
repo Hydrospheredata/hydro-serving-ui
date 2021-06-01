@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { DeploymentConfigDetailsComponent } from './containers';
 import { DeploymentConfigsPageComponent } from './pages';
-import {DcFormComponent} from './components/dc-tree/dc-form/dc-form.component'
+import { DcFormComponent } from './components/dc-tree/dc-form/dc-form.component';
 import { CanActivateDeploymentConfigGuard } from '@app/modules/deployment-configs/guards/can-activate-depconfig.guard';
 @NgModule({
   imports: [
@@ -14,15 +14,14 @@ import { CanActivateDeploymentConfigGuard } from '@app/modules/deployment-config
         children: [
           {
             path: 'create',
-            component: DcFormComponent
+            component: DcFormComponent,
           },
           {
             path: ':name',
             component: DeploymentConfigDetailsComponent,
-            canActivate: [CanActivateDeploymentConfigGuard]
+            canActivate: [CanActivateDeploymentConfigGuard],
           },
         ],
-
       },
     ]),
   ],

@@ -1,7 +1,7 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector: 'hydro-icon',
+  selector: 'hs-icon',
   templateUrl: './icons.template.html',
   styleUrls: ['./icons.component.scss'],
   encapsulation: ViewEncapsulation.None,

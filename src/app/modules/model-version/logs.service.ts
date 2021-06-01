@@ -2,7 +2,7 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   Injectable,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { ModelVersionLogComponent } from '@app/modules/model-version/components';
 import { ServableLogsComponent } from '@app/modules/servables/containers';
@@ -15,14 +15,14 @@ export class LogsService {
   public viewContainerRef: ViewContainerRef;
   private current: ComponentRef<
     ModelVersionLogComponent | ServableLogsComponent
-    >;
+  >;
 
-  private logIsVisible: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private logIsVisible: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
   public logIsVisible$: Observable<boolean> = this.logIsVisible.asObservable();
 
-  constructor(
-    private resolver: ComponentFactoryResolver
-  ) {}
+  constructor(private resolver: ComponentFactoryResolver) {}
 
   public showBuildLog(modelVersionId: number) {
     this.viewContainerRef.clear();

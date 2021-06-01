@@ -67,7 +67,7 @@ export interface IApplication {
   status: string;
   error?: string;
   message?: string;
-  deploymentConfiguration: DeploymentConfig
+  deploymentConfiguration: DeploymentConfig;
 }
 
 export class Application implements IApplication {
@@ -84,7 +84,7 @@ export class Application implements IApplication {
   status: string;
   message?: string;
   favorite: boolean;
-  deploymentConfiguration: DeploymentConfig
+  deploymentConfiguration: DeploymentConfig;
 
   constructor(props: any = {}) {
     if (props.id) {

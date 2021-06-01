@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import * as Highcharts from "highcharts";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  ViewEncapsulation,
+} from '@angular/core';
+import * as Highcharts from 'highcharts';
 import { CreatePlotBand, PlotBandData } from './createPlotBand.service';
 import { ChartConfig } from '@app/modules/monitoring/models';
 import { MonitoringPageService } from '@app/modules/monitoring/containers/monitoring-page/monitoring-page.service';
@@ -9,11 +16,11 @@ export interface PlotBand {
   to: number;
 }
 
-const noData = require('highcharts/modules/no-data-to-display')
-noData(Highcharts)
+const noData = require('highcharts/modules/no-data-to-display');
+noData(Highcharts);
 
 @Component({
-  selector: 'hs-check-chart_v2',
+  selector: 'hs-check-chart-v2',
   templateUrl: './check-chart_v2.component.html',
   styleUrls: ['./check-chart_v2.component.scss'],
   encapsulation: ViewEncapsulation.None,
@@ -27,7 +34,6 @@ export class CheckChartComponentV2 implements OnChanges {
   series: ChartConfig['series'];
 
   @Input() set config(cfg: ChartConfig) {
-
     this.cfg = cfg;
 
     this.name = cfg.name;
@@ -39,53 +45,59 @@ export class CheckChartComponentV2 implements OnChanges {
 
   updateFormInput: boolean = true;
 
-  constructor(public createPlotBand: CreatePlotBand, public monitoringPageService: MonitoringPageService) {}
+  constructor(
+    public createPlotBand: CreatePlotBand,
+    public monitoringPageService: MonitoringPageService
+  ) {}
 
   chartOptions = {
     title: {},
     tooltip: {},
     series: [
       {
-        name: "test",
+        name: 'test',
         data: [],
-        type: "spline"
-      }
+        type: 'spline',
+      },
     ],
     lang: {},
     noData: {},
     xAxis: {
-      plotBands: []
+      plotBands: [],
     },
     yAxis: {
       title: {
-        text: undefined
+        text: undefined,
       },
-      plotLines: []
+      plotLines: [],
     },
     plotOptions: {
       spline: {
         lineWidth: 2,
         states: {
           hover: {
-            lineWidth: 2
-          }
+            lineWidth: 2,
+          },
         },
         marker: {
-          enabled: false
+          enabled: false,
         },
       },
       series: {
         cursor: 'pointer',
         point: {
-          events: {}
-        }
-      }
+          events: {},
+        },
+      },
     },
   };
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.config) {
-      if (changes.config.currentValue && changes.config.currentValue.series.length !== 0) {
+      if (
+        changes.config.currentValue &&
+        changes.config.currentValue.series.length !== 0
+      ) {
         this.updateData(changes.config.currentValue);
         this.addPlotLine(changes.config.currentValue);
         this.addPlotBand(changes.config.currentValue);
@@ -98,53 +110,52 @@ export class CheckChartComponentV2 implements OnChanges {
     this.chartOptions = {
       tooltip: {
         headerFormat: undefined,
-        pointFormat:
-          `<span style="color: #4098d7; font-weight: bold">
+        pointFormat: `<span style="color: #4098d7; font-weight: bold">
            ${cfg.series[0].name}</span>: <b>{point.y}</b>`,
         crosshairs: {
-          color: 'lightgrey'
-        }
+          color: 'lightgrey',
+        },
       },
       title: {
-        text: `${cfg.name}`
+        text: `${cfg.name}`,
       },
       series: [
         {
           name: `${cfg.series[0].name}`,
           data: cfg.series[0].data,
-          type: "spline"
-        }
+          type: 'spline',
+        },
       ],
       lang: {
-        noData: "no data available"
+        noData: 'no data available',
       },
       noData: {
         style: {
           fontWeight: 'bold',
           fontSize: '14px',
-          color: '#bcccdc'
-        }
+          color: '#bcccdc',
+        },
       },
       xAxis: {
-        plotBands: []
+        plotBands: [],
       },
       yAxis: {
         title: {
-          text: undefined
+          text: undefined,
         },
-        plotLines: []
+        plotLines: [],
       },
       plotOptions: {
         spline: {
           lineWidth: 2,
           states: {
             hover: {
-              lineWidth: 2
-            }
+              lineWidth: 2,
+            },
           },
           marker: {
-            enabled: false
-          }
+            enabled: false,
+          },
         },
         series: {
           cursor: 'pointer',
@@ -152,30 +163,30 @@ export class CheckChartComponentV2 implements OnChanges {
             events: {
               click: function () {
                 self.monitoringPageService.showCheckDetails(null, this.x);
-              }
-            }
-          }
-        }
-      }
-    }
+              },
+            },
+          },
+        },
+      },
+    };
   }
 
   addPlotLine(cfg: ChartConfig) {
     this.chartOptions.yAxis.plotLines = [
-        {
-          color: "#cf1124",
-          value: cfg.threshold,
-          width: 2,
-          dashStyle: "Dash"
-        }
-    ]
+      {
+        color: '#cf1124',
+        value: cfg.threshold,
+        width: 2,
+        dashStyle: 'Dash',
+      },
+    ];
   }
 
   addPlotBand(cfg: ChartConfig) {
     const pbd: PlotBandData = {
       data: cfg.series[0].data,
-      threshold: cfg.threshold
-    }
+      threshold: cfg.threshold,
+    };
 
     const result = this.createPlotBand.create(pbd);
     let plotBands = [];
@@ -184,10 +195,10 @@ export class CheckChartComponentV2 implements OnChanges {
     let i = 0;
     while (i < toArr.length) {
       plotBands.push({
-        color: "#e12d39",
+        color: '#e12d39',
         width: 2,
         from: fromArr[i],
-        to: toArr[i]
+        to: toArr[i],
       });
       i++;
     }

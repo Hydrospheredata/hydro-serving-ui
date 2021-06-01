@@ -5,8 +5,6 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './header-nav.component.html',
   styleUrls: ['./header-nav.component.scss'],
 })
-export class HeaderNavComponent implements OnInit {
+export class HeaderNavComponent {
   constructor() {}
-
-  ngOnInit() {}
 }

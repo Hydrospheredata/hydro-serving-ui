@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
-import { load as loadYaml }  from 'js-yaml' ;
+import { load as loadYaml } from 'js-yaml';
 import { DeploymentConfig } from '@app/core/data/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PreserveFormService {
-
-  constructor() { }
+  constructor() {}
 
   saveForm(form): void {
-    localStorage.setItem("formValue", JSON.stringify(form));
+    localStorage.setItem('formValue', JSON.stringify(form));
   }
 
   retrieveForm() {
-    if(localStorage.getItem("formValue") !== null) {
-      return JSON.parse(localStorage.getItem("formValue"));
+    if (localStorage.getItem('formValue') !== null) {
+      return JSON.parse(localStorage.getItem('formValue'));
     } else {
       return null;
     }
@@ -23,7 +22,7 @@ export class PreserveFormService {
 
   validateForm(form: string): void {
     let value = loadYaml(form) as DeploymentConfig;
-    if(!value.name) {
+    if (!value.name) {
       throw new Error('Valid name is required!');
     }
   }

@@ -6,9 +6,7 @@ import { CheckCollection } from '../../../../models';
   templateUrl: './aggregation-details-sidebar.component.html',
   styleUrls: ['./aggregation-details-sidebar.component.scss'],
 })
-export class AggregationDetailsSidebarComponent implements OnInit {
+export class AggregationDetailsSidebarComponent {
   @Input() checkCollection: CheckCollection;
   constructor() {}
-
-  ngOnInit() {}
 }

@@ -38,4 +38,3 @@ export const AddDeploymentConfigFail = createAction(
   '[Deployment config] add deployment configuration with fail',
   props<{ error: string }>()
 );
-

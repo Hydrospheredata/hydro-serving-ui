@@ -2,9 +2,9 @@
   <span *ngIf="modelVersion.isExternal" class="model-version__external"
     >ext.</span
   >
-  <span class="model-version__model-version">{{
-    modelVersion.modelVersion
-  }}</span>
+  <span class="model-version__model-version"
+    >{{ modelVersion.modelVersion }}</span
+  >
 </td>
 <td class="hydro-table-body__cell">
   <hs-model-version-status
@@ -37,9 +37,9 @@
   </ng-container>
 </td>
 <td class="hydro-table-body__cell">
-  <hydro-icon class="model-version__icon" type="icon-arrow-right"></hydro-icon>
+  <hs-icon class="model-version__icon" type="icon-arrow-right"></hs-icon>
 </td>
 
 <ng-template #blockIcon>
-  <hydro-icon class="model-version__icon" type="block"></hydro-icon>
+  <hs-icon class="model-version__icon" type="block"></hs-icon>
 </ng-template>

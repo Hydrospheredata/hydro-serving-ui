@@ -46,13 +46,11 @@ import {
     ]),
   ],
 })
-export class RequestsComponent implements OnInit {
+export class RequestsComponent {
   @Input() requests: Check[];
   @Output() checkClicked: EventEmitter<Check> = new EventEmitter();
 
   constructor() {}
-
-  ngOnInit() {}
 
   onClick(check: Check): void {
     this.checkClicked.next(check);

@@ -23,10 +23,7 @@ export class ServableLogsComponent implements OnInit {
   logs$: Observable<string>;
   servableName: string;
 
-  constructor(
-    private logService: LogService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private logService: LogService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.logs$ = this.logService

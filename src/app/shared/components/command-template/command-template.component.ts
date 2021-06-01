@@ -10,7 +10,7 @@ import { CommandCreatorFactory } from '@app/core/command-creator-factory.service
 import { Application } from '@app/core/data/types';
 
 @Component({
-  selector: 'hydro-command-template',
+  selector: 'hs-command-template',
   templateUrl: './command-template.component.html',
   styleUrls: ['./command-template.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
