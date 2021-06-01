@@ -38,9 +38,9 @@ export class ServablesEffects {
         map(() => deleteServableSuccess({ name })),
         catchError(error => {
           this.snackbarService.show({
-            message: error.replaceAll(",", ", ")
+            message: error.replaceAll(',', ', '),
           });
-          return of(deleteServableFailed( {error} ));
+          return of(deleteServableFailed({ error }));
         })
       )
     )

@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 
 @Component({
   selector: 'hs-gradient-legend',
-  template: `<div class="gradient-legend" #anchor></div>`,
+  template: `<div class="gradient-legend" #anchor></div> `,
   styleUrls: ['./gradient-legend.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

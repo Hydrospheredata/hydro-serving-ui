@@ -2,7 +2,7 @@
   <div class="mv-services__title">Services</div>
   <div class="mv-services__list">
     <div class="mv-services__item">
-      <hydro-icon type="monitoring" class="mv-services__icon"></hydro-icon>
+      <hs-icon type="monitoring" class="mv-services__icon"></hs-icon>
       <button
         class="mv-services__button"
         hs-button
@@ -46,7 +46,7 @@
 
 <ng-template #visualizationTile>
   <div class="mv-services__item">
-    <hydro-icon type="data_projection" class="mv-services__icon"></hydro-icon>
+    <hs-icon type="data_projection" class="mv-services__icon"></hs-icon>
     <button
       class="mv-services__button"
       hs-button
@@ -62,7 +62,7 @@
 
 <ng-template #monitoringTile>
   <div class="mv-services__item">
-    <hydro-icon type="drift_report" class="mv-services__icon"></hydro-icon>
+    <hs-icon type="drift_report" class="mv-services__icon"></hs-icon>
     <button
       class="mv-services__button"
       hs-button
@@ -83,7 +83,7 @@
   let-iconName="iconName"
 >
   <div
-    tippy
+    hsTippy
     [tippyOptions]="{
       content: message,
       arrow: false,
@@ -92,10 +92,10 @@
     }"
   >
     <div class="mv-services__item mv-services__item--unsupported">
-      <hydro-icon
+      <hs-icon
         [type]="iconName"
         class="mv-services__icon mv-services__icon--unsupported"
-      ></hydro-icon>
+      ></hs-icon>
       <p class="mv-services__text">
         {{ name }}
       </p>

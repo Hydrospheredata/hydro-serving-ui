@@ -11,81 +11,95 @@
           <div
             [ngSwitch]="serviceInfo.value.status"
             [ngClass]="{
-              'service__icon--available': serviceInfo.value.status === 'Available',
-              'service__icon--failed': serviceInfo.value.status === 'Failed' 
-              || serviceInfo.value.status === 'Closed for OSS',
+              'service__icon--available':
+                serviceInfo.value.status === 'Available',
+              'service__icon--failed':
+                serviceInfo.value.status === 'Failed' ||
+                serviceInfo.value.status === 'Closed for OSS',
               'service__icon--unknown': serviceInfo.value.status === 'Unknown'
             }"
           >
-            <hydro-icon
+            <hs-icon
               *ngSwitchCase="'Available'"
               class="service__icon"
-              type="circle-check">
-            </hydro-icon>
-            <hydro-icon
+              type="circle-check"
+            >
+            </hs-icon>
+            <hs-icon
               *ngSwitchCase="'Failed'"
               class="service__icon"
-              type="circle-x">
-            </hydro-icon>
-            <hydro-icon
+              type="circle-x"
+            >
+            </hs-icon>
+            <hs-icon
               *ngSwitchCase="'Unknown'"
               class="service__icon"
-              type="help">
-            </hydro-icon>
-            <hydro-icon
+              type="help"
+            >
+            </hs-icon>
+            <hs-icon
               *ngSwitchCase="'Closed for OSS'"
               class="service__icon"
-              type="circle-x">
-            </hydro-icon>
+              type="circle-x"
+            >
+            </hs-icon>
           </div>
         </div>
         <h5 class="service__title" mdl-card-subtitle-text>
           {{ serviceInfo.value.name || serviceInfo.key }}
         </h5>
-        <mdl-chip 
-          class="service__chip" 
-          mdl-label="v. {{ (serviceInfo.value.version.length > 5) 
-          ? (serviceInfo.value.version | slice:0:4)+'...'
-          :(serviceInfo.value.version) }}"
+        <mdl-chip
+          class="service__chip"
+          mdl-label="v. {{
+            serviceInfo.value.version.length > 5
+              ? (serviceInfo.value.version | slice: 0:4) + '...'
+              : serviceInfo.value.version
+          }}"
         >
         </mdl-chip>
       </div>
       <mdl-card-supporting-text class="service__text">
         <div class="service__text-key">Git current branch</div>
-        <div class="service__text-value">{{ serviceInfo.value.gitCurrentBranch }}</div>
+        <div class="service__text-value">
+          {{ serviceInfo.value.gitCurrentBranch }}
+        </div>
       </mdl-card-supporting-text>
 
       <mdl-card-supporting-text class="service__text">
         <div class="service__text-key">Git current tags</div>
         <div class="service__text-value">
-          {{ serviceInfo.value.gitCurrentTags && serviceInfo.value.gitCurrentTags.length > 0 
-            ? serviceInfo.value.gitCurrentTags 
-            : '-' 
-          }}
+          {{ serviceInfo.value.gitCurrentTags &&
+          serviceInfo.value.gitCurrentTags.length > 0 ?
+          serviceInfo.value.gitCurrentTags : '-' }}
         </div>
       </mdl-card-supporting-text>
 
       <mdl-card-supporting-text class="service__text">
         <div class="service__text-key">Git head commit</div>
-        <div class="service__text-value service__text-commit">{{ serviceInfo.value.gitHeadCommit }}</div>
+        <div class="service__text-value service__text-commit">
+          {{ serviceInfo.value.gitHeadCommit }}
+        </div>
       </mdl-card-supporting-text>
 
       <div class="service__footer">
-        <mdl-chip 
-        class="service__chip" 
-        *ngIf="serviceInfo.value.hasOwnProperty('scalaVersion')" 
-        mdl-label="scala version: {{serviceInfo.value.scalaVersion}}">
-      </mdl-chip>
-        <mdl-chip 
-        class="service__chip" 
-        *ngIf="serviceInfo.value.sbtVersion" 
-        mdl-label="sbt version: {{serviceInfo.value.sbtVersion}}">
-      </mdl-chip>
-        <mdl-chip 
-        class="service__chip" 
-        *ngIf="serviceInfo.value.pythonVersion" 
-        mdl-label="python version: {{serviceInfo.value.pythonVersion}}">
-      </mdl-chip>
+        <mdl-chip
+          class="service__chip"
+          *ngIf="serviceInfo.value.hasOwnProperty('scalaVersion')"
+          mdl-label="scala version: {{ serviceInfo.value.scalaVersion }}"
+        >
+        </mdl-chip>
+        <mdl-chip
+          class="service__chip"
+          *ngIf="serviceInfo.value.sbtVersion"
+          mdl-label="sbt version: {{ serviceInfo.value.sbtVersion }}"
+        >
+        </mdl-chip>
+        <mdl-chip
+          class="service__chip"
+          *ngIf="serviceInfo.value.pythonVersion"
+          mdl-label="python version: {{ serviceInfo.value.pythonVersion }}"
+        >
+        </mdl-chip>
       </div>
     </mdl-card>
   </div>

@@ -61,13 +61,14 @@ export class MonitoringPageService implements OnDestroy {
   }
 
   showCheckDetails(checkId?: CheckId, checkIdx?: number): void {
-    if(checkIdx && !checkId) {
-      this.checksSubscription = this.monitoringStore.getChecks().pipe(
-        take(1)
-      ).subscribe(checks => {
-        checkId = checks.getChecks()[checkIdx - 1].id;
-        this.monitoringStore.showChecksDetails(checkId);
-      });
+    if (checkIdx && !checkId) {
+      this.checksSubscription = this.monitoringStore
+        .getChecks()
+        .pipe(take(1))
+        .subscribe(checks => {
+          checkId = checks.getChecks()[checkIdx - 1].id;
+          this.monitoringStore.showChecksDetails(checkId);
+        });
     } else this.monitoringStore.showChecksDetails(checkId);
   }
 
@@ -79,7 +80,7 @@ export class MonitoringPageService implements OnDestroy {
     this.monitoringStore.clearMonitoringPage();
     this.destroy$.next();
     this.destroy$.complete();
-    if(this.checksSubscription) this.checksSubscription.unsubscribe();
+    if (this.checksSubscription) this.checksSubscription.unsubscribe();
   }
 
   loadChecks(): void {

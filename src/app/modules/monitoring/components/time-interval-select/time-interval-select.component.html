@@ -6,8 +6,8 @@
     [(ngModel)]="chartTimeWidth"
     (change)="onChangeTimeWidth($event)"
   >
-    <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms">{{
-      param.text
-    }}</mdl-option>
+    <mdl-option *ngFor="let param of chartTimeWidthParams" [value]="param.ms"
+      >{{ param.text }}</mdl-option
+    >
   </mdl-select>
 </div>

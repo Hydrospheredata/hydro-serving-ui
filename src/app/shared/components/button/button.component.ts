@@ -1,4 +1,10 @@
-import { Component, ElementRef, Input, OnInit, ViewEncapsulation, } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 
 type buttonKinds = 'base' | 'flat' | 'stroked';
 type buttonColors = 'base' | 'primary' | 'accent' | 'warning' | 'cyan';
@@ -17,7 +23,11 @@ export class ButtonComponent implements OnInit {
 
   ngOnInit() {
     (this.elRef.nativeElement as HTMLElement).classList.add('hs-button');
-    (this.elRef.nativeElement as HTMLElement).classList.add(`hs-button--${this.kind}`);
-    (this.elRef.nativeElement as HTMLElement).classList.add(`hs-button--${this.kind}-${this.color}`);
+    (this.elRef.nativeElement as HTMLElement).classList.add(
+      `hs-button--${this.kind}`,
+    );
+    (this.elRef.nativeElement as HTMLElement).classList.add(
+      `hs-button--${this.kind}-${this.color}`,
+    );
   }
 }

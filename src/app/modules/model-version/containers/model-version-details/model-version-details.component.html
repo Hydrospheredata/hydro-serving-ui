@@ -21,9 +21,9 @@
               <span class="model-version__details-list-title">Runtime</span>
               <span class="model-version__details-list-value">
                 <span>{{ modelVersion.runtime?.name }}</span
-                ><span class="runtime__tag">{{
-                  modelVersion.runtime?.tag
-                }}</span>
+                ><span class="runtime__tag"
+                  >{{ modelVersion.runtime?.tag }}</span
+                >
               </span>
             </li>
           </ol>
@@ -69,9 +69,7 @@
           </span>
           <ng-container
             *ngTemplateOutlet="
-              !(isButtonEnabled() | async)
-                ? wrapper
-                : button;
+              !(isButtonEnabled() | async) ? wrapper : button;
               context: {
                 modelVersion: modelVersion
               }
@@ -105,10 +103,10 @@
                 <td
                   class="hydro-table-body__cell model-version__applications--small"
                 >
-                  <hydro-icon
+                  <hs-icon
                     class="model-version__applications-icon"
                     type="icon-arrow-right"
-                  ></hydro-icon>
+                  ></hs-icon>
                 </td>
               </tr>
             </tbody>
@@ -150,7 +148,8 @@
       [ngClass]="{
         'lift-metadata': this.hsConfig.config.liftMetadata,
         'model-version__row': true
-      }">
+      }"
+    >
       <div class="model-version__col-12">
         <div class="model-version__item-header">Metadata</div>
         <section class="model-version__metadata">
@@ -160,34 +159,31 @@
     </div>
   </div>
 
-<ng-template #wrapper>
-  <div
-    tippy
-    [tippyOptions]="{
-      content: 'Deployment config required',
-      arrow: false,
-      theme: 'basic',
-      placement: 'bottom'
-    }"
-  >
-    <ng-container *ngTemplateOutlet="button; context: { disable: true }">
-    </ng-container>
-  </div>
-</ng-template>
+  <ng-template #wrapper>
+    <div
+      tippy
+      [tippyOptions]="{
+        content: 'Deployment config required',
+        arrow: false,
+        theme: 'basic',
+        placement: 'bottom'
+      }"
+    >
+      <ng-container *ngTemplateOutlet="button; context: { disable: true }">
+      </ng-container>
+    </div>
+  </ng-template>
 
-<ng-template
-  #button
-  let-modelVersion="modelVersion"
-  let-disable="disable"
->
-  <button
-    class="model-version__item-button create-application-button"
-    hs-button
-    kind="flat"
-    color="primary"
-    (click)="onAddApplication(modelVersion, depConfig)"
-    [disabled]="disable"
-  >
-    create application
-  </button>
-</ng-template>
+  <ng-template #button let-modelVersion="modelVersion" let-disable="disable">
+    <button
+      class="model-version__item-button create-application-button"
+      hs-button
+      kind="flat"
+      color="primary"
+      (click)="onAddApplication(modelVersion, depConfig)"
+      [disabled]="disable"
+    >
+      create application
+    </button>
+  </ng-template>
+</div>

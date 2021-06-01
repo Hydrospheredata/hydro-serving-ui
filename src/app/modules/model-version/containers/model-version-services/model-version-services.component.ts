@@ -2,7 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { Observable } from 'rxjs';
 
-import { ModelVersion, ModelVersionServiceStatusesEntity } from '@app/core/data/types';
+import {
+  ModelVersion,
+  ModelVersionServiceStatusesEntity,
+} from '@app/core/data/types';
 import { ServiceStatusesFacade } from '@app/core/facades/service-statuses.facade';
 
 @Component({
@@ -17,7 +20,9 @@ export class ModelVersionServicesComponent implements OnInit {
 
   constructor(private readonly serviceFacade: ServiceStatusesFacade) {}
 
-  serviceStatusesById$(id: number): Observable<ModelVersionServiceStatusesEntity> {
+  serviceStatusesById$(
+    id: number
+  ): Observable<ModelVersionServiceStatusesEntity> {
     return this.serviceFacade.selectServiceStatusesById(id);
   }
 

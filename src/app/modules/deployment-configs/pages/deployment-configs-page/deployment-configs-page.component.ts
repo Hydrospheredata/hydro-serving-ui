@@ -25,7 +25,7 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
 
   constructor(
     private readonly facade: DeploymentConfigsFacade,
-    private readonly router: Router,
+    private readonly router: Router
   ) {
     this.error$ = this.error.asObservable();
 

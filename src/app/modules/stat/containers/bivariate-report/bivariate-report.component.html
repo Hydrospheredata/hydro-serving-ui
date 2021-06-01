@@ -8,9 +8,9 @@
           [(ngModel)]="bivariateReport"
           (change)="changeSelectedBivariateReport($event)"
         >
-          <mdl-option *ngFor="let biReport of reports" [value]="biReport">{{
-            biReport.feature_2
-          }}</mdl-option>
+          <mdl-option *ngFor="let biReport of reports" [value]="biReport"
+            >{{ biReport.feature_2 }}</mdl-option
+          >
         </mdl-select>
       </div>
     </div>

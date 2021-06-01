@@ -3,7 +3,7 @@ import {
   Component,
   HostListener,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { LogsService } from '@app/modules/model-version/logs.service';
 import { Observable } from 'rxjs';
@@ -18,9 +18,7 @@ export class LogComponent implements AfterViewInit {
   logContainer: ViewContainerRef;
   isVisible$: Observable<boolean>;
 
-  constructor(
-    private readonly logs: LogsService
-  ) {
+  constructor(private readonly logs: LogsService) {
     this.isVisible$ = logs.logIsVisible$;
   }
 

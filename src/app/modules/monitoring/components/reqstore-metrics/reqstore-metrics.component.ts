@@ -37,5 +37,5 @@ export class ReqstoreMetricsComponent {
     b: KeyValue<number, string>
   ): number => {
     return a.key - b.key;
-  }
+  };
 }

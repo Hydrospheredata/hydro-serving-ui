@@ -30,7 +30,9 @@ export const selectSelectedModelVersion = createSelector(
     let mv = null;
 
     if (modelName && version) {
-      mv = versions.find(mv => mv.model.name === modelName && mv.modelVersion === version);
+      mv = versions.find(
+        mv => mv.model.name === modelName && mv.modelVersion === version
+      );
       return mv;
     }
   }
@@ -68,7 +70,8 @@ export const selectSiblingModelVersions = ({
 
 export const selectFirstModelVersion = createSelector(
   selectAllModelVersions,
-  modelVersions => modelVersions
-    ? modelVersions => modelVersions.filter(mv => mv.isExternal !== true)
-    : modelVersions[0]
+  modelVersions =>
+    modelVersions
+      ? modelVersions => modelVersions.filter(mv => mv.isExternal !== true)
+      : modelVersions[0]
 );

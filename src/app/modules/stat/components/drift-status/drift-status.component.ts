@@ -13,7 +13,7 @@ type DriftStatusIconType = 'icon-error-outline' | 'check' | 'warning';
   styleUrls: ['./drift-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DriftStatusComponent implements OnInit {
+export class DriftStatusComponent {
   @Input() drift: number;
   @Input() size: number = 16;
   @Input() justIcon: boolean = true;
@@ -26,7 +26,6 @@ export class DriftStatusComponent implements OnInit {
   }
 
   constructor() {}
-  ngOnInit() {}
 
   get iconType(): DriftStatusIconType {
     if (this.drift === 0 || this.drift <= 0.25) {

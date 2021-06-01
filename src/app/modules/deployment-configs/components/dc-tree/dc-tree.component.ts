@@ -6,9 +6,7 @@ import { DeploymentConfig } from '@app/core/data/types';
   templateUrl: './dc-tree.component.html',
   styleUrls: ['./dc-tree.component.scss'],
 })
-export class DcTreeComponent implements OnInit {
+export class DcTreeComponent {
   @Input() config: DeploymentConfig;
   constructor() {}
-
-  ngOnInit() {}
 }

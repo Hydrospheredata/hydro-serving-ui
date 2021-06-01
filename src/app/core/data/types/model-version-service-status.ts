@@ -5,12 +5,12 @@ export interface ServiceSupported {
 }
 
 export interface ModelVersionServicesStatus {
-  [serviceName: string]: ServiceSupported
+  [serviceName: string]: ServiceSupported;
 }
 
 export interface ModelVersionServiceStatusesEntity {
-  id: number,
-  statuses: ModelVersionServicesStatus
+  id: number;
+  statuses: ModelVersionServicesStatus;
 }
 
 export function createServiceSupportOnFailure(error: string): ServiceSupported {

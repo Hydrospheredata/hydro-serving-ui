@@ -50,10 +50,10 @@
         <td class="metrics__table-cell">
           <div class="metric__actions" *ngIf="!metric.id.startsWith('fake-id')">
             <div class="metric__action" (click)="onDeleteMetric(metric.id)">
-              <hydro-icon
-                class="hs-button__icon metric__action-icon "
+              <hs-icon
+                class="hs-button__icon metric__action-icon"
                 type="icon-remove"
-              ></hydro-icon>
+              ></hs-icon>
             </div>
           </div>
         </td>

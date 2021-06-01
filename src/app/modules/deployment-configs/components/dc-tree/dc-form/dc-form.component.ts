@@ -6,7 +6,7 @@ import { PreserveFormService } from './preserve-form.service';
 @Component({
   selector: 'hs-dc-form',
   templateUrl: './dc-form.component.html',
-  styleUrls: ['./dc-form.component.scss']
+  styleUrls: ['./dc-form.component.scss'],
 })
 export class DcFormComponent implements OnInit {
   form: string;
@@ -20,7 +20,9 @@ export class DcFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.form = this.formPreserver.retrieveForm() ? this.formPreserver.retrieveForm() : this.formPreserver.defaultForm();
+    this.form = this.formPreserver.retrieveForm()
+      ? this.formPreserver.retrieveForm()
+      : this.formPreserver.defaultForm();
     this.onChange(this.form);
   }
 
@@ -30,7 +32,7 @@ export class DcFormComponent implements OnInit {
       this.formIsValid = true;
       this.formPreserver.saveForm(this.form);
       this.warning = '';
-    } catch(err) {
+    } catch (err) {
       this.formIsValid = false;
       this.warning = err;
     }

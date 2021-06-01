@@ -1,17 +1,21 @@
-// tslint:disable:variable-name
+/* eslint-disable @typescript-eslint/naming-convention, no-underscore-dangle, id-blacklist, id-match */
 import { Component, Input, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgModel } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NgModel,
+} from '@angular/forms';
 
 const noop = (_?: any) => {};
 
 @Component({
-  selector: 'hydro-input-text',
+  selector: 'hs-input-text',
   templateUrl: './input-text.component.html',
   styleUrls: ['./input-text.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      // tslint:disable-next-line:no-forward-ref
+      // eslint-disable-next-line @angular-eslint/no-forward-ref
       useExisting: forwardRef(() => InputTextComponent),
       multi: true,
     },

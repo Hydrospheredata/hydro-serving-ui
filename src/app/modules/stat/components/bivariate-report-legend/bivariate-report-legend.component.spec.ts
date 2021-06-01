@@ -8,9 +8,8 @@ describe('BivariateReportLegendComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BivariateReportLegendComponent ]
-    })
-    .compileComponents();
+      declarations: [BivariateReportLegendComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
