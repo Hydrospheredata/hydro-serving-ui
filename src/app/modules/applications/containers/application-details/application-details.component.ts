@@ -23,7 +23,7 @@ import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 import * as _ from 'lodash';
 
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/internal/operators';
+import { map, tap } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
 import { Dictionary } from '@ngrx/entity';
 

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { exhaustMap, map, catchError } from 'rxjs/internal/operators';
+import { exhaustMap, map, catchError } from 'rxjs/operators';
 
 import { SnackbarService } from '../../snackbar.service';
 
