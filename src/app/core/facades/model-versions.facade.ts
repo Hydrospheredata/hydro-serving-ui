@@ -49,7 +49,7 @@ export class ModelVersionsFacade {
   selectedModelVersion(): Observable<ModelVersion> {
     return this.store.pipe(
       select(selectSelectedModelVersion),
-      neitherNullNorUndefined
+      neitherNullNorUndefined,
     );
   }
 
@@ -58,13 +58,13 @@ export class ModelVersionsFacade {
       neitherNullNorUndefined,
       switchMap(({ model: { id: modelId }, id: modelVersionId }) =>
         this.store.pipe(
-          select(selectSiblingModelVersions({ modelId, modelVersionId }))
-        )
-      )
+          select(selectSiblingModelVersions({ modelId, modelVersionId })),
+        ),
+      ),
     );
   }
 
-  modelVersionById(id: string): Observable<ModelVersion> {
+  modelVersionById(id: number): Observable<ModelVersion> {
     return this.store.pipe(select(selectModelVersionById(id)));
   }
 

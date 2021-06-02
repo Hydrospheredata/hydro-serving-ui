@@ -1,24 +1,24 @@
-import {Injectable, OnDestroy} from '@angular/core';
-import {FormControl, FormGroup} from '@angular/forms';
+import { Injectable, OnDestroy } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import {
   BehaviorSubject,
   combineLatest,
   merge,
   Observable,
   Subject,
-  Subscription
+  Subscription,
 } from 'rxjs';
-import {map, switchMap} from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
-import {CustomValidatorsService} from '@app/core/custom-validators.service';
-import {ModelsFacade} from '@app/core/facades/models.facade';
-import {ModelVersionsFacade} from '@app/core/facades/model-versions.facade';
-import {DeploymentConfigsFacade} from '@app/core/facades/deployment-configs.facade';
+import { CustomValidatorsService } from '@app/core/custom-validators.service';
+import { ModelsFacade } from '@app/core/facades/models.facade';
+import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
+import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 import {
-  DeploymentConfig, Model,
+  DeploymentConfig,
   ModelVariant,
   ModelVersion,
-  ModelVersionStatus
+  ModelVersionStatus,
 } from '@app/core/data/types';
 
 export interface ModelVariantFormData {
@@ -43,7 +43,7 @@ export class ModelVariantFormService implements OnDestroy {
   ) {
     const currentModelId$: Observable<number> = merge(
       this.selectedModelId,
-      this.modelsFacade.firstModel().pipe(map(_ => _.id))
+      this.modelsFacade.firstModel().pipe(map(_ => _.id)),
     );
 
     this.modelVersions$ = currentModelId$.pipe(
@@ -53,30 +53,27 @@ export class ModelVariantFormService implements OnDestroy {
           .pipe(
             map(modelVersions =>
               modelVersions.filter(
-                mv => !mv.isExternal && mv.status === ModelVersionStatus.Released
+                mv =>
+                  !mv.isExternal && mv.status === ModelVersionStatus.Released,
               ),
             ),
           ),
       ),
     );
 
-    this.modelVariantFormDataSub = combineLatest(
-      [
-        this.modelVersions$,
-        this.depConfigsFacade.defaultDepConfig(),
-      ],
-    ).subscribe(
-      ([modelVersions, depConfig]) => {
-        const nextDefaultFormData: ModelVariantFormData = {
-          weight: 100,
-          modelId: modelVersions[0].model.id,
-          modelVersion: modelVersions[0],
-          deploymentConfigName: depConfig.name,
-        };
+    this.modelVariantFormDataSub = combineLatest([
+      this.modelVersions$,
+      this.depConfigsFacade.defaultDepConfig(),
+    ]).subscribe(([modelVersions, depConfig]) => {
+      const nextDefaultFormData: ModelVariantFormData = {
+        weight: 100,
+        modelId: modelVersions[0].model.id,
+        modelVersion: modelVersions[0],
+        deploymentConfigName: depConfig.name,
+      };
 
-        this.defaultFormData.next(nextDefaultFormData);
-      },
-    );
+      this.defaultFormData.next(nextDefaultFormData);
+    });
   }
 
   defaultModelVariantFormData(): ModelVariantFormData {
@@ -85,9 +82,11 @@ export class ModelVariantFormService implements OnDestroy {
 
   modelVariantToModelVariantFormData(
     modelVariant: ModelVariant,
-    modelVersions: ModelVersion[]
+    modelVersions: ModelVersion[],
   ): ModelVariantFormData {
-    const modelVersion = modelVersions.find(mv => mv.id === modelVariant.modelVersionId)
+    const modelVersion = modelVersions.find(
+      mv => mv.id === modelVariant.modelVersionId,
+    );
 
     return {
       weight: modelVariant.weight,

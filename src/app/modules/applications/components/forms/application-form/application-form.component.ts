@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormArray, FormGroup, AbstractControl } from '@angular/forms';
 
-import {Application, ModelVersion} from '@app/core/data/types';
+import { Application, ModelVersion } from '@app/core/data/types';
 import {
   ApplicationFormService,
   StageFormData,
@@ -20,7 +20,7 @@ import {
 export class ApplicationFormComponent implements OnInit {
   @Output() submitHandle: EventEmitter<any> = new EventEmitter();
   @Input() application: Application;
-  @Input() modelVersions: ModelVersion[]
+  @Input() modelVersions: ModelVersion[];
 
   public applicationForm: FormGroup;
 
@@ -35,7 +35,10 @@ export class ApplicationFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.applicationForm = this.formService.initForm(this.application, this.modelVersions);
+    this.applicationForm = this.formService.initForm(
+      this.application,
+      this.modelVersions,
+    );
   }
 
   public addStageControl() {
@@ -93,7 +96,7 @@ export class ApplicationFormComponent implements OnInit {
 
   public onModelVariantDelete(
     stage: AbstractControl,
-    modelVariantIdx: number
+    modelVariantIdx: number,
   ): void {
     const modelVariants = stage.get('modelVariants') as FormArray;
     modelVariants.removeAt(modelVariantIdx);

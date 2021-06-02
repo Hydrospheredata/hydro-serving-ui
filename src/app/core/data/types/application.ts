@@ -1,5 +1,5 @@
 import { DeploymentConfig } from './deployment-config';
-import {Signature} from '@app/core/data/types/signature';
+import { Signature } from '@app/core/data/types/signature';
 
 export interface ApplicationCreatingRequest {
   name: string;
@@ -66,7 +66,7 @@ export class Application {
   status: string;
   message?: string;
   favorite: boolean;
-  deploymentConfiguration: DeploymentConfig
+  deploymentConfiguration: DeploymentConfig;
 
   constructor(props: any = {}) {
     if (props.id) {

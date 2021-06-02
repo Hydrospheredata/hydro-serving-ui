@@ -21,7 +21,7 @@ export class ModelVersionServicesComponent implements OnInit {
   constructor(private readonly serviceFacade: ServiceStatusesFacade) {}
 
   serviceStatusesById$(
-    id: number
+    id: number,
   ): Observable<ModelVersionServiceStatusesEntity> {
     return this.serviceFacade.selectServiceStatusesById(id);
   }

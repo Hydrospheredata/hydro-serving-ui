@@ -14,12 +14,13 @@ import { tap, catchError, takeUntil, take, map } from 'rxjs/operators';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ApplicationBuilder } from '@app/core/data/builders';
 import { DialogsService } from '../../dialogs.service';
+import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 
 export const SELECTED_MODEL_VARIANT = new InjectionToken<any>(
-  'selected model variant'
+  'selected model variant',
 );
 export const LATEST_MODEL_VERSION = new InjectionToken<ModelVersion>(
-  'latest model version'
+  'latest model version',
 );
 @Component({
   templateUrl: './dialog-update-model-version.component.html',
@@ -27,16 +28,16 @@ export const LATEST_MODEL_VERSION = new InjectionToken<ModelVersion>(
 })
 export class DialogUpdateModelVersionComponent implements OnDestroy {
   private destroySubscriptions: Subject<any> = new Subject<any>();
-  private selectedApplication$: Observable<
-    Application
-  > = this.facade.selectedApplication();
+  private selectedApplication$: Observable<Application> =
+    this.facade.selectedApplication();
 
   constructor(
     public dialog: DialogsService,
     private facade: ApplicationsFacade,
+    private modelVersionsFacade: ModelVersionsFacade,
     private applicationBuilder: ApplicationBuilder,
     @Inject(SELECTED_MODEL_VARIANT) private selectedModelVariant: ModelVariant,
-    @Inject(LATEST_MODEL_VERSION) private latestModelVersion: ModelVersion
+    @Inject(LATEST_MODEL_VERSION) private latestModelVersion: ModelVersion,
   ) {}
 
   onClose(): void {
@@ -53,16 +54,32 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     this.destroySubscriptions.complete();
   }
 
-  get inputsEqual(): boolean {
-    const oldInputs = this.selectedModelVariant.modelVersion.contractInputs;
-    const newInputs = this.latestModelVersion.modelSignature.inputs;
-    return isEqual(oldInputs, newInputs);
+  get inputsEqual(): Observable<boolean> {
+    return this.getModelVersionById(
+      this.selectedModelVariant.modelVersionId,
+    ).pipe(
+      map(res => {
+        const oldInputs = res.contractInputs;
+        const newInputs = this.latestModelVersion.modelSignature.inputs;
+        return isEqual(oldInputs, newInputs);
+      }),
+    );
   }
 
-  get outputsEqual(): boolean {
-    const oldOutputs = this.selectedModelVariant.modelVersion.contractOutputs;
-    const newOutputs = this.latestModelVersion.modelSignature.outputs;
-    return isEqual(oldOutputs, newOutputs);
+  get outputsEqual(): Observable<boolean> {
+    return this.getModelVersionById(
+      this.selectedModelVariant.modelVersionId,
+    ).pipe(
+      map(res => {
+        const oldOutputs = res.contractOutputs;
+        const newOutputs = this.latestModelVersion.modelSignature.outputs;
+        return isEqual(oldOutputs, newOutputs);
+      }),
+    );
+  }
+
+  private getModelVersionById(id: number) {
+    return this.modelVersionsFacade.modelVersionById(id);
   }
 
   private updateImmediatly(): void {
@@ -81,7 +98,7 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
           return of(err);
         }),
         take(1),
-        takeUntil(this.destroySubscriptions)
+        takeUntil(this.destroySubscriptions),
       )
       .subscribe();
   }
@@ -103,7 +120,7 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
         ...newModelVarianats,
         this.createNewModelVariantData(modelVariant),
       ],
-      []
+      [],
     );
   }
 
