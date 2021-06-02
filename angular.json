@@ -89,7 +89,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
-              "optimization": true,
+              "optimization": false,
               "sourceMap": false,
               "namedChunks": false,
               "aot": true,
