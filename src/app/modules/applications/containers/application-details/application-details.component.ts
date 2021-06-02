@@ -6,6 +6,7 @@ import {
   ModelVersionServiceStatusesEntity,
   Servable,
   ModelVersionId,
+  ModelVersion,
 } from '@app/core/data/types';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ServiceStatusesFacade } from '@app/core/facades/service-statuses.facade';
@@ -24,7 +25,7 @@ import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 import * as _ from 'lodash';
 
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { map, mergeAll, tap } from 'rxjs/internal/operators';
+import { map, tap } from 'rxjs/internal/operators';
 import { filter } from 'rxjs/operators';
 import { Dictionary } from '@ngrx/entity';
 import { ServablesFacade } from '@app/core/facades/servables.facade';
@@ -109,11 +110,11 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     this.mvSubscription.unsubscribe();
   }
 
-  public getServableByName(name: string): Observable<Servable[]> {
-    return this.servablesFacade.selectServableByName(name);
+  public getServablesByName(name: string): Observable<Servable[]> {
+    return this.servablesFacade.selectServablesByName(name);
   }
 
-  public getModelVersionById(id: number) {
+  public getModelVersionById(id: ModelVersionId): Observable<ModelVersion> {
     return this.modelVersionsFacade.modelVersionById(id);
   }
 

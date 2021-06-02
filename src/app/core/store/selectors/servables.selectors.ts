@@ -33,7 +33,7 @@ export const selectServablesByModelVersionId = (id: number) =>
     state.filter(servable => servable.modelVersion.id === id),
   );
 
-export const selectServableByName = (name: string) =>
+export const selectServablesByName = (name: string) =>
   createSelector(selectAllServables, state =>
     state.filter(servable => servable.fullName === name),
   );

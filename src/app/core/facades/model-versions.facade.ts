@@ -5,7 +5,7 @@ import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { ModelVersion } from '@app/core/data/types';
+import { ModelVersion, ModelVersionId } from '@app/core/data/types';
 import { HydroServingState } from '@app/core/store/states/root.state';
 
 import {
@@ -64,7 +64,7 @@ export class ModelVersionsFacade {
     );
   }
 
-  modelVersionById(id: number): Observable<ModelVersion> {
+  modelVersionById(id: ModelVersionId): Observable<ModelVersion> {
     return this.store.pipe(select(selectModelVersionById(id)));
   }
 

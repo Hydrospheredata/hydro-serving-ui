@@ -80,7 +80,7 @@
           >
             <div
               class="application__model-variant-servable"
-              *ngIf="getServableByName(modelVariant.servableName) | async as servables"
+              *ngIf="getServablesByName(modelVariant.servableName) | async as servables"
             >
               <hs-servable-status-icon
                 *ngFor="let servable of servables"
