@@ -9,6 +9,7 @@
 /coverage
 /node_modules
 /e2e/production-e2e/node_modules
+/ui_tests/node_modules
 
 # IDEs and editors
 /.idea
