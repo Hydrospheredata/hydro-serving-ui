@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, first } from 'rxjs/internal/operators';
+import { map, first } from 'rxjs/operators';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { Model, ModelVersion } from '@app/core/data/types';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';

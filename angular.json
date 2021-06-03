@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": false
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -13,7 +16,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "outputPath": "hydro-serving-ui",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -27,10 +29,6 @@
               "codemirror/addon/edit/matchbrackets.js",
               "codemirror/addon/edit/closebrackets.js",
               "codemirror/addon/display/placeholder.js",
-              "rxjs/operators",
-              "rxjs/Subject",
-              "rxjs/Subscription",
-              "rxjs/internal/operators",
               "unique-names-generator",
               "js-yaml",
               "highcharts"
@@ -87,49 +85,36 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
+                },
+                {
+                  "replace": "src/app/build-specifics/index.ts",
+                  "with": "src/app/build-specifics/index.prod.ts"
                 }
               ],
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+              "outputHashing": "all"
             },
-            "tm": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.tm.ts"
-                }
-              ],
-              "optimization": true,
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "browserTarget": "hydro-serving-ui:build"
-          },
           "configurations": {
             "production": {
               "browserTarget": "hydro-serving-ui:build:production"
+            },
+            "development": {
+              "browserTarget": "hydro-serving-ui:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -196,9 +181,5 @@
       }
     }
   },
-  "defaultProject": "hydro-serving-ui",
-  "cli": {
-    "analytics": "c39403f0-e387-4559-95b6-48c900593a6e",
-    "defaultCollection": "@angular-eslint/schematics"
-  }
+  "defaultProject": "hydro-serving-ui"
 }

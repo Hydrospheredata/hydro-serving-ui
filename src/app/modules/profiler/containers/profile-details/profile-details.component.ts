@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { FieldsService } from '@app/modules/profiler/fields.service';
 import { Observable, Subject, combineLatest } from 'rxjs';
-import { take, switchMap, map } from 'rxjs/internal/operators';
+import { take, switchMap, map } from 'rxjs/operators';
 
 import { ProfilerFacade } from '@app/core/facades/profiler.facade';
 import { Profiles } from '@app/core/data/types';

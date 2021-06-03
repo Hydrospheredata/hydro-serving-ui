@@ -18,7 +18,8 @@
       "extends": [
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
+        "plugin:rxjs/recommended"
       ],
       "rules": {
         "@angular-eslint/component-selector": [
@@ -37,7 +38,8 @@
           }
         ],
         "@angular-eslint/component-class-suffix": "off",
-        "@angular-eslint/contextual-lifecycle": "off"
+        "@angular-eslint/contextual-lifecycle": "off",
+        "rxjs/no-internal": "error"
       }
     },
     {

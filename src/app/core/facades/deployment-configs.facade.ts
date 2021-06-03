@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { map, debounceTime } from 'rxjs/internal/operators';
+import { map, debounceTime } from 'rxjs/operators';
 import { DeploymentConfig } from '../data/types';
 import {
   AddDeploymentConfig,
