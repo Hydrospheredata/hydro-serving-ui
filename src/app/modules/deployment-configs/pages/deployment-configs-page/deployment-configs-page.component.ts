@@ -3,7 +3,7 @@ import { Router, Event, NavigationEnd } from '@angular/router';
 
 import { Observable, Subject, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { first } from 'rxjs/internal/operators';
+import { first } from 'rxjs/operators';
 
 import { DeploymentConfig } from '@app/core/data/types';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';

@@ -3,7 +3,7 @@ import { MonitoringService } from '../../services';
 import { LoadChecks, LoadChecksSuccess } from '../../store';
 import { Injectable } from '@angular/core';
 import { createEffect, Actions, ofType } from '@ngrx/effects';
-import { switchMap, map } from 'rxjs/internal/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 @Injectable()
 export class ChecksEffects {

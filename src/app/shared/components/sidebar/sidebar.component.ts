@@ -11,7 +11,7 @@ import {
 import { HydroConfigService } from '@app/core/hydro-config.service';
 import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/internal/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Application, Model, DeploymentConfig } from '@app/core/data/types';
 
 @Component({

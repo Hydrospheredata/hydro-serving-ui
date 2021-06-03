@@ -6,7 +6,7 @@ import {
 } from '@ngrx/router-store';
 import { HttpClientModule } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { extModules } from '../build-specifics';
 
 import { CustomRouterStateSerializer } from './store/states/router.state';
 import { initialState } from './store/states/root.state';
@@ -26,7 +26,7 @@ import {
   imports: [
     HttpClientModule,
     StoreModule.forRoot(reducers, { initialState }),
-    StoreDevtoolsModule.instrument(),
+    extModules,
     EffectsModule.forRoot([
       ApplicationsEffects,
       ModelsEffects,
