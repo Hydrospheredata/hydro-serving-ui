@@ -1,6 +1,5 @@
-import { ModelVersion } from './model-version';
+import { ModelVersionId } from './model-version';
 import { Observable } from 'rxjs';
-import { DeploymentConfig } from './deployment-config';
 
 export enum Status {
   Serving = 'Serving',
@@ -11,14 +10,14 @@ export enum Status {
 }
 
 export class Servable {
-  modelVersion: ModelVersion;
+  modelVersionId: ModelVersionId;
   fullName: string;
   name?: string;
   status: string;
   statusMessage?: string;
   message?: string;
   logStream: Observable<any>;
-  deploymentConfiguration?: DeploymentConfig;
+  deploymentConfigurationName?: string;
 }
 
 export class MappedServable {

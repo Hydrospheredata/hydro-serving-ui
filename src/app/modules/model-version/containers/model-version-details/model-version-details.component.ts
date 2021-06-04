@@ -43,7 +43,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     private readonly modelsFacade: ModelsFacade,
     private readonly depConfigsFacade: DeploymentConfigsFacade,
     private readonly fields: FieldsService,
-    private readonly logs: LogsService
+    private readonly logs: LogsService,
   ) {}
 
   ngOnInit() {
@@ -57,17 +57,17 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([modelVersion, servables]) => {
         return servables.filter(
-          servable => servable.modelVersion.id === modelVersion.id
+          servable => servable.modelVersionId === modelVersion.id,
         );
-      })
+      }),
     );
 
     this.applications$ = this.modelVersion$.pipe(
       switchMap(modelVersions =>
         this.applicationsFacade.selectApplicationsByNames(
-          modelVersions.applications
-        )
-      )
+          modelVersions.applications,
+        ),
+      ),
     );
 
     this.fields$ = this.fields.getFields();
@@ -88,7 +88,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
     ]).pipe(
       map(([someReleased, depConfigs]) => {
         return someReleased && depConfigs.length > 0;
-      })
+      }),
     );
   }
 
@@ -107,7 +107,7 @@ export class ModelVersionDetailsComponent implements OnInit, OnDestroy {
   onAddApplication(modelVersion: ModelVersion, depConfig: DeploymentConfig) {
     this.applicationsFacade.createApplicationFromModelVersion(
       modelVersion,
-      depConfig
+      depConfig,
     );
   }
 
