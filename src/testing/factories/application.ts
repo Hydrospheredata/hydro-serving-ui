@@ -1,14 +1,10 @@
 import { ApplicationBuilder } from '@app/core/data/builders/application.builder';
 import {
   Application,
-  IModelVariant,
+  ModelVariant,
   TestStatus,
   ApplicationStatus,
 } from '@app/core/data/types';
-import {
-  MockModelVersion1Model1,
-  MockModelVersion3Model2,
-} from '@testing/factories/modelVersion';
 import { MockSignature1 } from '@testing/factories/signature';
 import { MockDeploymentConfig1 } from '@testing/factories/deployment-config';
 import { Factory } from 'fishery';
@@ -16,13 +12,14 @@ import { Factory } from 'fishery';
 const applicationBuilder = new ApplicationBuilder();
 export const application: Application = applicationBuilder.build({});
 
-const MockService = Factory.define<IModelVariant>(() => ({
+const MockService = Factory.define<ModelVariant>(() => ({
   weight: 100,
-  modelVersion: MockModelVersion1Model1.build(),
+  modelVersionId: 1,
+  deploymentConfigurationName: 'default',
 }));
 
 const MockService2 = MockService.build({
-  modelVersion: MockModelVersion3Model2,
+  modelVersionId: 2,
 });
 
 export const MockApplication = Factory.define<Application>(({ sequence }) => ({

@@ -26,7 +26,7 @@ import {
 export class ApplicationsFacade {
   constructor(
     private readonly store: Store<HydroServingState>,
-    private nameGenerator: NameGenerator
+    private nameGenerator: NameGenerator,
   ) {}
 
   loadAll(): void {
@@ -39,7 +39,7 @@ export class ApplicationsFacade {
 
   createApplicationFromModelVersion(
     modelVersion: ModelVersion,
-    depConfig: DeploymentConfig
+    depConfig: DeploymentConfig,
   ) {
     this.allApplications()
       .pipe(first())

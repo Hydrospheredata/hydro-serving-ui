@@ -3,7 +3,7 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import {
-  ModelVersion,
+  ModelVersionId,
   ModelVersionServiceStatusesEntity,
 } from '@app/core/data/types';
 import { HydroServingState } from '@app/core/store/states/root.state';
@@ -17,8 +17,8 @@ import {
 export class ServiceStatusesFacade {
   constructor(private readonly store: Store<HydroServingState>) {}
 
-  loadAll(modelVersion: ModelVersion): void {
-    this.store.dispatch(Get({ payload: modelVersion }));
+  loadAll(id: ModelVersionId): void {
+    this.store.dispatch(Get({ payload: id }));
   }
 
   allStatusesEntities() {
@@ -26,7 +26,7 @@ export class ServiceStatusesFacade {
   }
 
   selectServiceStatusesById(
-    id: number
+    id: number,
   ): Observable<ModelVersionServiceStatusesEntity> {
     return this.store.pipe(select(selectServiceStatusesById(id)));
   }

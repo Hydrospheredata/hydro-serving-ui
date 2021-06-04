@@ -30,7 +30,7 @@ export const MockModelVersion1Model1 = Factory.define<
   get contractOutputs(): Output[] {
     return [];
   },
-  isReleasedAndInternal(): Boolean {
+  isReleasedAndInternal(): boolean {
     return true;
   },
   id: sequence,

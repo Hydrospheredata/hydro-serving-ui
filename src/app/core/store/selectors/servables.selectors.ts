@@ -9,12 +9,12 @@ const { selectEntities, selectAll } = adapter.getSelectors();
 
 export const selectAllServables = createSelector(
   selectServablesState,
-  selectAll
+  selectAll,
 );
 
 export const selectServablesEntities = createSelector(
   selectServablesState,
-  selectEntities
+  selectEntities,
 );
 
 export const selectCurrentServable = createSelector(
@@ -26,9 +26,14 @@ export const selectCurrentServable = createSelector(
     } catch {
       return null;
     }
-  }
+  },
 );
 export const selectServablesByModelVersionId = (id: number) =>
   createSelector(selectAllServables, state =>
-    state.filter(servable => servable.modelVersion.id === id)
+    state.filter(servable => servable.modelVersion.id === id),
+  );
+
+export const selectServablesByName = (name: string) =>
+  createSelector(selectAllServables, state =>
+    state.filter(servable => servable.fullName === name),
   );

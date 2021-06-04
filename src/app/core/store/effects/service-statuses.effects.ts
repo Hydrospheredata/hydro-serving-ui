@@ -19,22 +19,22 @@ export class ServiceStatusesEffects {
           map(
             res => {
               const payload = {
-                id: action.payload.id,
+                id: action.payload,
                 statuses: res,
               };
               return GetSuccess({ payload });
             },
             catchError(error => {
               return of(GetFail({ error }));
-            })
-          )
+            }),
+          ),
         );
-      })
-    )
+      }),
+    ),
   );
 
   constructor(
     private actions$: Actions,
-    private serviceStatusService: ServiceStatusService
+    private serviceStatusService: ServiceStatusService,
   ) {}
 }

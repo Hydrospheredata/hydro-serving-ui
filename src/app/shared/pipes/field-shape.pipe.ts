@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { IShape } from '@app/core/data/types';
+import { Shape } from '@app/core/data/types';
 
 @Pipe({ name: 'fieldShape' })
 export class FieldShapePipe implements PipeTransform {
-  transform(shape: IShape): string {
+  transform(shape: Shape): string {
     if (shape === undefined) {
       return 'any shape';
     } else if (shape.dims && shape.dims.length === 0) {

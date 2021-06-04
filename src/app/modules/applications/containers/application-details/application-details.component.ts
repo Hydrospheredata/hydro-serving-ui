@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   Application,
-  IModelVariant,
+  ModelVariant,
   ApplicationStatus,
   ModelVersionServiceStatusesEntity,
+  Servable,
+  ModelVersionId,
   ModelVersion,
 } from '@app/core/data/types';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
@@ -26,10 +28,12 @@ import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { filter } from 'rxjs/operators';
 import { Dictionary } from '@ngrx/entity';
+import { ServablesFacade } from '@app/core/facades/servables.facade';
+import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 
 interface MenuState {
   showed: boolean;
-  context?: IModelVariant | null;
+  context?: ModelVariant | null;
   top: number;
   left: number;
   statuses: ModelVersionServiceStatusesEntity;
@@ -42,10 +46,10 @@ const initialMenuState: MenuState = {
   statuses: null,
 };
 
-function getModelVersions(value: Application): ModelVersion[] {
+function getModelVersionsIds(value: Application): ModelVersionId[] {
   return _.flatten(
     value.executionGraph.stages.map(stage =>
-      stage.modelVariants.map(modelVariant => modelVariant.modelVersion),
+      stage.modelVariants.map(modelVariant => modelVariant.modelVersionId),
     ),
   );
 }
@@ -70,6 +74,8 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     private readonly dialog: DialogsService,
     private readonly facade: ApplicationsFacade,
     private readonly serviceFacade: ServiceStatusesFacade,
+    private readonly servablesFacade: ServablesFacade,
+    private readonly modelVersionsFacade: ModelVersionsFacade,
   ) {
     this.menu$ = this.menu.asObservable();
   }
@@ -87,14 +93,14 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
         }),
         map(tuple => {
           const [app, statuses] = tuple;
-          const mvs = getModelVersions(app);
-          return mvs.filter(mv => statuses[mv.id] == undefined);
+          const mvsId = getModelVersionsIds(app);
+          return mvsId.filter(id => statuses[id] === undefined);
         }),
-        filter(mvs => {
-          return mvs.length > 0;
+        filter(ids => {
+          return ids.length > 0;
         }),
-        tap(mvs => {
-          return mvs.forEach(mv => this.serviceFacade.loadAll(mv));
+        tap(ids => {
+          return ids.forEach(id => this.serviceFacade.loadAll(id));
         }),
       )
       .subscribe();
@@ -102,6 +108,14 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.mvSubscription.unsubscribe();
+  }
+
+  public getServablesByName(name: string): Observable<Servable[]> {
+    return this.servablesFacade.selectServablesByName(name);
+  }
+
+  public getModelVersionById(id: ModelVersionId): Observable<ModelVersion> {
+    return this.modelVersionsFacade.modelVersionById(id);
   }
 
   public updateModelVersionDialog(lastModelVersion, modelVariant) {
@@ -114,14 +128,14 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public testApplication(application): void {
+  public testApplication(application: Application): void {
     this.dialog.createDialog({
       component: DialogTestComponent,
       providers: [{ provide: SELECTED_APPLICATION, useValue: application }],
     });
   }
 
-  public editApplication(application): void {
+  public editApplication(application: Application): void {
     this.dialog.createDialog({
       component: DialogUpdateApplicationComponent,
       providers: [{ provide: SELECTED_UPD_APPLICATION, useValue: application }],
@@ -148,10 +162,10 @@ export class ApplicationDetailsComponent implements OnInit, OnDestroy {
 
   public onClickModelVariant(
     evt: MouseEvent,
-    modelVariant: IModelVariant,
+    modelVariant: ModelVariant,
   ): void {
     this.serviceFacade
-      .selectServiceStatusesById(modelVariant.modelVersion.id)
+      .selectServiceStatusesById(modelVariant.modelVersionId)
       .subscribe(statuses => {
         this.menu.next({
           showed: true,

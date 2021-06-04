@@ -38,8 +38,10 @@ export type ModelVersionMetadata = { is_metric?: boolean } & {
   [key: string]: string;
 };
 
+export type ModelVersionId = number;
+
 export class ModelVersion {
-  public id: number;
+  public id: ModelVersionId;
   public image: Image;
   public created: string;
   public finished: string;
@@ -75,7 +77,7 @@ export class ModelVersion {
     return this.modelSignature.outputs;
   }
 
-  isReleasedAndInternal(): Boolean {
+  isReleasedAndInternal(): boolean {
     return this.status === ModelVersionStatus.Released && !this.isExternal;
   }
 }

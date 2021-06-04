@@ -16,12 +16,12 @@ import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 import {
   DeploymentConfig,
-  IModelVariant,
+  ModelVariant,
   ModelVersion,
   ModelVersionStatus,
 } from '@app/core/data/types';
 
-export interface IModelVariantFormData {
+export interface ModelVariantFormData {
   weight: number;
   modelId?: number;
   modelVersion: ModelVersion;
@@ -30,7 +30,7 @@ export interface IModelVariantFormData {
 
 @Injectable()
 export class ModelVariantFormService implements OnDestroy {
-  private defaultFormData = new BehaviorSubject<IModelVariantFormData>(null);
+  private defaultFormData = new BehaviorSubject<ModelVariantFormData>(null);
   private selectedModelId = new Subject<number>();
   private readonly modelVersions$: Observable<ModelVersion[]>;
   private modelVariantFormDataSub: Subscription;
@@ -39,11 +39,11 @@ export class ModelVariantFormService implements OnDestroy {
     private readonly modelVersionsFacade: ModelVersionsFacade,
     private readonly modelsFacade: ModelsFacade,
     private readonly depConfigsFacade: DeploymentConfigsFacade,
-    private readonly customValidators: CustomValidatorsService
+    private readonly customValidators: CustomValidatorsService,
   ) {
     const currentModelId$: Observable<number> = merge(
       this.selectedModelId,
-      this.modelsFacade.firstModel().pipe(map(_ => _.id))
+      this.modelsFacade.firstModel().pipe(map(_ => _.id)),
     );
 
     this.modelVersions$ = currentModelId$.pipe(
@@ -54,18 +54,18 @@ export class ModelVariantFormService implements OnDestroy {
             map(modelVersions =>
               modelVersions.filter(
                 mv =>
-                  !mv.isExternal && mv.status === ModelVersionStatus.Released
-              )
-            )
-          )
-      )
+                  !mv.isExternal && mv.status === ModelVersionStatus.Released,
+              ),
+            ),
+          ),
+      ),
     );
 
     this.modelVariantFormDataSub = combineLatest([
       this.modelVersions$,
       this.depConfigsFacade.defaultDepConfig(),
     ]).subscribe(([modelVersions, depConfig]) => {
-      const nextDefaultFormData: IModelVariantFormData = {
+      const nextDefaultFormData: ModelVariantFormData = {
         weight: 100,
         modelId: modelVersions[0].model.id,
         modelVersion: modelVersions[0],
@@ -76,26 +76,28 @@ export class ModelVariantFormService implements OnDestroy {
     });
   }
 
-  defaultModelVariantFormData(): IModelVariantFormData {
+  defaultModelVariantFormData(): ModelVariantFormData {
     return this.defaultFormData.getValue();
   }
 
   modelVariantToModelVariantFormData(
-    modelVariant: IModelVariant
-  ): IModelVariantFormData {
+    modelVariant: ModelVariant,
+    modelVersions: ModelVersion[],
+  ): ModelVariantFormData {
+    const modelVersion = modelVersions.find(
+      mv => mv.id === modelVariant.modelVersionId,
+    );
+
     return {
       weight: modelVariant.weight,
-      modelId: modelVariant.modelVersion.model.id,
-      modelVersion: modelVariant.modelVersion,
-      deploymentConfigName:
-        (modelVariant.deploymentConfiguration &&
-          modelVariant.deploymentConfiguration.name) ||
-        '',
+      modelId: modelVersion.model.id,
+      modelVersion: modelVersion,
+      deploymentConfigName: modelVariant.deploymentConfigurationName,
     };
   }
 
   buildModelVariantFormGroup(
-    modelVariantFormData: IModelVariantFormData = this.defaultModelVariantFormData()
+    modelVariantFormData: ModelVariantFormData = this.defaultModelVariantFormData(),
   ): FormGroup {
     return new FormGroup({
       weight: new FormControl(modelVariantFormData.weight, [
@@ -104,15 +106,15 @@ export class ModelVariantFormService implements OnDestroy {
       ]),
       modelId: new FormControl(
         modelVariantFormData.modelId,
-        this.customValidators.required()
+        this.customValidators.required(),
       ),
       modelVersion: new FormControl(
         modelVariantFormData.modelVersion,
-        this.customValidators.required()
+        this.customValidators.required(),
       ),
       deploymentConfigName: new FormControl(
         modelVariantFormData.deploymentConfigName,
-        this.customValidators.required()
+        this.customValidators.required(),
       ),
     });
   }
