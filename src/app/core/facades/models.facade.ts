@@ -60,22 +60,22 @@ export class ModelsFacade {
       select(selectAllModelVersions),
       map(modelVersions =>
         modelVersions.some(
-          ({ status }) => status === ModelVersionStatus.Released
-        )
-      )
+          ({ status }) => status === ModelVersionStatus.Released,
+        ),
+      ),
     );
   }
 
   selectedModelVersions(): Observable<ModelVersion[]> {
     const selectedModel$ = this.selectedModel();
     const selectedModelVersions$ = this.store.pipe(
-      select(selectAllModelVersions)
+      select(selectAllModelVersions),
     );
 
     return combineLatest([selectedModel$, selectedModelVersions$]).pipe(
       map(([model, modelVersions]) => {
         return modelVersions.filter(mv => mv.model.id === model.id);
-      })
+      }),
     );
   }
 
