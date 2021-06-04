@@ -5,8 +5,7 @@ import { DialogAddApplicationComponent } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { filter, first, tap } from 'rxjs/operators';
-import { map } from 'rxjs/internal/operators';
+import { filter, first, tap, map } from 'rxjs/operators';
 
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ModelsFacade } from '@app/core/facades/models.facade';

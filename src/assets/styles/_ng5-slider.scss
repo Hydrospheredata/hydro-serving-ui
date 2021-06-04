@@ -1,16 +1,16 @@
 // added .app to selector for more selector weight
 @import 'variables';
 .hs-slider {
-  .ng5-slider {
+  .ngx-slider {
     margin: 24px 0 12px;
   }
-  .ng5-slider .ng5-slider-bar {
+  .ngx-slider .ngx-slider-bar {
     height: 2px;
   }
-  .ng5-slider .ng5-slider-selection {
+  .ngx-slider .ngx-slider-selection {
     background: $primary-color-500;
   }
-  .ng5-slider .ng5-slider-pointer {
+  .ngx-slider .ngx-slider-pointer {
     width: 12px;
     height: 12px;
     top: -5px;
@@ -18,20 +18,20 @@
     border-radius: 6px;
   }
 
-  .ng5-slider .ng5-slider-pointer:after {
+  .ngx-slider .ngx-slider-pointer:after {
     display: none;
   }
 
-  .ng5-slider .ng5-slider-bubble {
+  .ngx-slider .ngx-slider-bubble {
     bottom: 14px;
   }
 
-  .ng5-slider .ng5-slider-limit {
+  .ngx-slider .ngx-slider-limit {
     font-family: $font-family-bold;
     color: $neutral-color-700;
   }
 
-  .ng5-slider .ng5-slider-bubble {
+  .ngx-slider .ngx-slider-bubble {
     cursor: default;
     bottom: 8px;
     padding: 1px 3px;
@@ -39,11 +39,11 @@
     font-size: 12px;
   }
 
-  .ng5-slider .ng5-slider-tick {
+  .ngx-slider .ngx-slider-tick {
     display: none;
   }
 
-  .ng5-slider .ng5-slider-tick.ng5-slider-selected {
+  .ngx-slider .ngx-slider-tick.ngx-slider-selected {
     background: $primary-color-500;
   }
 }

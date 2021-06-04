@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators/tap';
 
 import { Store, select } from '@ngrx/store';
 import { Injectable } from '@angular/core';
