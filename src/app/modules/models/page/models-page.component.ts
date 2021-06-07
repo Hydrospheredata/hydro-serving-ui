@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd, Event } from '@angular/router';
 
 import { Observable, Subscription } from 'rxjs';
-import { filter, take, tap, map } from 'rxjs/operators';
+import { filter, take, map } from 'rxjs/operators';
 
 import { ZenModeService } from '@app/core/zenmode.service';
 import { ModelsSidebarService } from './models-sidebar.service';
@@ -31,7 +31,8 @@ export class ModelsPageComponent implements OnDestroy {
     private modelsSidebarService: ModelsSidebarService,
   ) {
     this.visibleModels$ = this.modelsSidebarService.visibleModels();
-    this.metricModelsAreHidden$ = this.modelsSidebarService.metricModelsAreHidden();
+    this.metricModelsAreHidden$ =
+      this.modelsSidebarService.metricModelsAreHidden();
 
     this.routerEvents$ = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -43,8 +44,7 @@ export class ModelsPageComponent implements OnDestroy {
     this.redirectToFirstEntity = this.isRootUrl$
       .pipe(
         filter(isRoot => isRoot),
-        take(1),
-        tap(_ => this.redirectToFirst()),
+        map(_ => this.redirectToFirst()),
       )
       .subscribe();
   }
@@ -82,7 +82,7 @@ export class ModelsPageComponent implements OnDestroy {
 
   private static isRootModelsUrl(event: Event): boolean {
     const isRoot =
-      event instanceof NavigationEnd && event.url.split('/').length <= 3;
+      event instanceof NavigationEnd && event.url.split('/').length <= 2;
 
     return isRoot;
   }

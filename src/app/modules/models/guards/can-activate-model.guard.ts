@@ -14,7 +14,7 @@ export class CanActivateModelGuard implements CanActivate {
     private facade: ModelsFacade,
     private modelVersionFacade: ModelVersionsFacade,
     private mdlSnackbarService: MdlSnackbarService,
-    private router: Router
+    private router: Router,
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
@@ -24,7 +24,7 @@ export class CanActivateModelGuard implements CanActivate {
       switchMap(() => this.facade.allModels()),
       switchMap(models => {
         const model: Model = models.find(
-          curModel => curModel.name === modelName
+          curModel => curModel.name === modelName,
         );
 
         if (model) {
@@ -34,7 +34,7 @@ export class CanActivateModelGuard implements CanActivate {
           this.redirectToDefault();
           return of(false);
         }
-      })
+      }),
     );
   }
 
@@ -50,8 +50,6 @@ export class CanActivateModelGuard implements CanActivate {
   }
 
   private loaded(): Observable<boolean> {
-    return this.modelVersionFacade
-      .areModelVersionsLoaded()
-      .pipe(first(value => value === true));
+    return this.facade.areModelsLoaded().pipe(first(loaded => loaded));
   }
 }
