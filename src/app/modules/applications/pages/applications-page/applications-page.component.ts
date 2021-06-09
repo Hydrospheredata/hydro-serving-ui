@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Event, NavigationEnd, Router } from '@angular/router';
+import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
 
 import { DialogAddApplicationComponent } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
@@ -11,6 +11,7 @@ import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 import { Application, DeploymentConfig } from '@app/core/data/types';
+import { IsRootUrlService } from '@app/core/is-root-url.service';
 
 @Component({
   selector: 'hs-applications-page',
@@ -20,7 +21,9 @@ import { Application, DeploymentConfig } from '@app/core/data/types';
 export class ApplicationsPageComponent implements OnDestroy {
   applications$: Observable<Application[]>;
   selectedApplication$: Observable<Application>;
+  isRootUrl$: Observable<boolean>;
 
+  private routerEvents$: Observable<Event>;
   private routerSub: Subscription;
 
   constructor(
@@ -28,14 +31,22 @@ export class ApplicationsPageComponent implements OnDestroy {
     private modelsFacade: ModelsFacade,
     private depConfigsFacade: DeploymentConfigsFacade,
     private dialog: DialogsService,
-    private router: Router
+    private router: Router,
+    private rootUrlService: IsRootUrlService,
   ) {
     this.selectedApplication$ = this.facade.selectedApplication();
 
-    this.routerSub = this.router.events
+    this.routerEvents$ = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+    );
+    this.isRootUrl$ = this.routerEvents$.pipe(
+      map((event: RouterEvent) => this.rootUrlService.isRootUrl(event)),
+    );
+
+    this.routerSub = this.isRootUrl$
       .pipe(
-        filter(event => this.isRootApplicationsUrl(event)),
-        tap(_ => this.redirectToFirst())
+        filter(isRoot => isRoot),
+        tap(_ => this.redirectToFirst()),
       )
       .subscribe();
 
@@ -49,7 +60,7 @@ export class ApplicationsPageComponent implements OnDestroy {
     ]).pipe(
       map(([someReleased, depConfigs]) => {
         return someReleased && depConfigs.length > 0;
-      })
+      }),
     );
   }
 
@@ -88,9 +99,5 @@ export class ApplicationsPageComponent implements OnDestroy {
     this.applications$.pipe(first(apps => apps.length > 0)).subscribe(apps => {
       this.router.navigate([`applications/${apps[0].name}`]);
     });
-  }
-
-  private isRootApplicationsUrl(event: Event): boolean {
-    return event instanceof NavigationEnd && event.url.split('/').length <= 2;
   }
 }

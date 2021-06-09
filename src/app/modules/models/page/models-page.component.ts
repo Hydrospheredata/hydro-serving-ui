@@ -1,14 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd, Event } from '@angular/router';
+import { Router, NavigationEnd, Event, RouterEvent } from '@angular/router';
 
 import { Observable, Subscription } from 'rxjs';
-import { filter, take, map } from 'rxjs/operators';
+import { filter, map, tap, first } from 'rxjs/operators';
 
 import { ZenModeService } from '@app/core/zenmode.service';
 import { ModelsSidebarService } from './models-sidebar.service';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 
 import { Model } from '@app/core/data/types/model';
+import { IsRootUrlService } from '@app/core/is-root-url.service';
 
 @Component({
   selector: 'hs-models-page',
@@ -29,6 +30,7 @@ export class ModelsPageComponent implements OnDestroy {
     private router: Router,
     private zenMode: ZenModeService,
     private modelsSidebarService: ModelsSidebarService,
+    private rootUrlService: IsRootUrlService,
   ) {
     this.visibleModels$ = this.modelsSidebarService.visibleModels();
     this.metricModelsAreHidden$ =
@@ -38,13 +40,13 @@ export class ModelsPageComponent implements OnDestroy {
       filter(event => event instanceof NavigationEnd),
     );
     this.isRootUrl$ = this.routerEvents$.pipe(
-      map(event => ModelsPageComponent.isRootModelsUrl(event)),
+      map((event: RouterEvent) => this.rootUrlService.isRootUrl(event)),
     );
 
     this.redirectToFirstEntity = this.isRootUrl$
       .pipe(
         filter(isRoot => isRoot),
-        map(_ => this.redirectToFirst()),
+        tap(_ => this.redirectToFirst()),
       )
       .subscribe();
   }
@@ -71,20 +73,10 @@ export class ModelsPageComponent implements OnDestroy {
 
   private redirectToFirst() {
     this.visibleModels$
-      .pipe(
-        filter(models => models.length > 0),
-        take(1),
-      )
+      .pipe(first(models => models.length > 0))
       .subscribe(models => {
         this.router.navigate([`models/${models[0].name}`]);
       });
-  }
-
-  private static isRootModelsUrl(event: Event): boolean {
-    const isRoot =
-      event instanceof NavigationEnd && event.url.split('/').length <= 2;
-
-    return isRoot;
   }
 
   toggleHideMetricModels(hide: boolean) {
