@@ -17,7 +17,7 @@ export class ServableStatusIconComponent {
   }
 
   get name(): string {
-    return this.servable.name;
+    return this.servable.fullName;
   }
 
   get message(): string {
