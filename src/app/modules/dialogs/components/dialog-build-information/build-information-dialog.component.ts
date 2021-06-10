@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BuildInformationService } from '@app/core/build-information.service';
-import { UiBuildInfo, UiBuildInfoService } from '@app/core/ui-build-info.service';
+import {
+  UiBuildInfo,
+  UiBuildInfoService,
+} from '@app/core/ui-build-info.service';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 import { Observable } from 'rxjs';
 
@@ -15,7 +18,7 @@ export class BuildInformationDialogComponent implements OnInit {
   constructor(
     private uiBuildInfo: UiBuildInfoService,
     private buildInfo: BuildInformationService,
-    private dialog: DialogsService
+    private dialog: DialogsService,
   ) {
     this.uiBI = uiBuildInfo.config;
   }

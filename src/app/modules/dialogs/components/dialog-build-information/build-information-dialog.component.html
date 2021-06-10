@@ -1,5 +1,4 @@
 <div class="build-info">
-  {{ uiBI | json }}
   <div class="build-info__title">Build information</div>
   <div class="build-info__card">
     <mdl-card
@@ -104,7 +103,13 @@
       </div>
     </mdl-card>
   </div>
-  <div class="build-info__buttons">
-    <button hs-button hsAutofocused (click)="onClose()">close</button>
+  <div class="build-info__footer">
+    <div class="build-info__data">
+      <div class="build-info__data-version">UI: {{uiBI.version}}</div>
+      <div class="build-info__data-commit">Commit: {{(uiBI.gitHeadCommit | slice: 0:5) + '..'}}</div>
+    </div>
+    <div class="build-info__buttons">
+      <button hs-button hsAutofocused (click)="onClose()">close</button>
+    </div>
   </div>
 </div>
