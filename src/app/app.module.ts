@@ -18,6 +18,7 @@ import { CoreModule } from './core/core.module';
 import { DialogsModule } from './modules/dialogs/dialogs.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { ModelVersionLogComponent } from '@app/modules/model-version/components';
+import { UiBuildInfoService } from './core/ui-build-info.service';
 
 @NgModule({
   entryComponents: [ModelVersionLogComponent],
@@ -37,6 +38,12 @@ import { ModelVersionLogComponent } from '@app/modules/model-version/components'
       provide: APP_INITIALIZER,
       useFactory: (hsCfg: HydroConfigService) => () => hsCfg.loadConfig(),
       deps: [HydroConfigService],
+      multi: true,
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (buildInfo: UiBuildInfoService) => () => buildInfo.loadConfig(),
+      deps: [UiBuildInfoService],
       multi: true,
     },
     {
