@@ -1,11 +1,11 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { DialogAddApplicationComponent } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 
-import { combineLatest, Observable, Subscription } from 'rxjs';
-import { filter, tap, map } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ModelsFacade } from '@app/core/facades/models.facade';
@@ -18,10 +18,9 @@ import { RedirectService } from '@app/core/redirect.service';
   templateUrl: './applications-page.component.html',
   styleUrls: ['./applications-page.component.scss'],
 })
-export class ApplicationsPageComponent implements OnDestroy {
+export class ApplicationsPageComponent {
   applications$: Observable<Application[]>;
   selectedApplication$: Observable<Application>;
-  private routerSub: Subscription;
 
   constructor(
     private facade: ApplicationsFacade,
@@ -34,17 +33,7 @@ export class ApplicationsPageComponent implements OnDestroy {
     this.applications$ = facade.allApplications();
     this.selectedApplication$ = this.facade.selectedApplication();
 
-    this.routerSub = this.redirectService.isRootUrl$
-      .pipe(
-        filter(isRoot => isRoot),
-        tap(_ =>
-          this.redirectService.redirectToFirst(
-            this.applications$,
-            'applications',
-          ),
-        ),
-      )
-      .subscribe();
+    this.redirectService.redirectToFirst(this.applications$, 'applications');
   }
 
   isButtonEnabled() {
@@ -64,10 +53,6 @@ export class ApplicationsPageComponent implements OnDestroy {
 
   getDepConfigs(): Observable<DeploymentConfig[]> {
     return this.depConfigsFacade.getAll();
-  }
-
-  ngOnDestroy() {
-    this.routerSub.unsubscribe();
   }
 
   addApplication(): void {

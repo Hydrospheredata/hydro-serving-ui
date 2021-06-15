@@ -1,8 +1,7 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { ZenModeService } from '@app/core/zenmode.service';
 import { ModelsSidebarService } from './models-sidebar.service';
@@ -16,13 +15,11 @@ import { RedirectService } from '@app/core/redirect.service';
   templateUrl: './models-page.component.html',
   styleUrls: ['./models-page.component.scss'],
 })
-export class ModelsPageComponent implements OnDestroy {
+export class ModelsPageComponent {
   visibleModels$: Observable<Model[]>;
   selectedModel$: Observable<Model> = this.modelsFacade.selectedModel();
   metricModelsAreHidden$: Observable<boolean>;
   isRootUrl$: Observable<boolean>;
-
-  private redirectToFirstEntity: Subscription;
 
   constructor(
     private modelsFacade: ModelsFacade,
@@ -35,23 +32,12 @@ export class ModelsPageComponent implements OnDestroy {
     this.metricModelsAreHidden$ =
       this.modelsSidebarService.metricModelsAreHidden();
     this.isRootUrl$ = this.redirectService.isRootUrl$;
-
-    this.redirectToFirstEntity = this.redirectService.isRootUrl$
-      .pipe(
-        filter(isRoot => isRoot),
-        tap(_ =>
-          this.redirectService.redirectToFirst(this.visibleModels$, 'models'),
-        ),
-      )
-      .subscribe();
+    // TODO
+    this.redirectService.redirectToFirst(this.visibleModels$, 'models');
   }
 
   get isZenMode$(): Observable<boolean> {
     return this.zenMode.isZenMode$;
-  }
-
-  ngOnDestroy() {
-    this.redirectToFirstEntity.unsubscribe();
   }
 
   handleFilter(str: string): void {

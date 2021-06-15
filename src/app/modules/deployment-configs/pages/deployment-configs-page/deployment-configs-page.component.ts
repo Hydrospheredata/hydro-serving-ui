@@ -1,8 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Observable, Subject, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
 import { DeploymentConfig } from '@app/core/data/types';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
@@ -21,7 +20,6 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
   private all$: Observable<DeploymentConfig[]>;
   private error: Subject<string> = new Subject<string>();
 
-  private routerSub: Subscription;
   private toggle: boolean;
 
   constructor(
@@ -36,14 +34,7 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
 
     this.selectedConfig$ = this.facade.selectedConfig();
 
-    this.routerSub = this.redirectService.isRootUrl$
-      .pipe(
-        filter(isRoot => isRoot),
-        tap(_ =>
-          this.redirectService.redirectToFirst(this.all$, 'deployment_configs'),
-        ),
-      )
-      .subscribe();
+    this.redirectService.redirectToFirst(this.all$, 'deployment_configs');
 
     this.toggle = false;
   }
@@ -54,7 +45,6 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.routerSub.unsubscribe();
     this.toggle = false;
   }
 
