@@ -32,7 +32,6 @@ export class ModelsPageComponent {
     this.metricModelsAreHidden$ =
       this.modelsSidebarService.metricModelsAreHidden();
     this.isRootUrl$ = this.redirectService.isRootUrl$;
-    // TODO
     this.redirectService.redirectToFirst(this.visibleModels$, 'models');
   }
 
