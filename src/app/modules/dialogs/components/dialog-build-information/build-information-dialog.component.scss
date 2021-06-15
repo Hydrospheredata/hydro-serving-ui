@@ -7,13 +7,33 @@
     font-size: 14px;
     letter-spacing: 1px;
     color: $neutral-color-1000;
-    margin-bottom: 24px
+    margin-bottom: 24px;
   }
 
   &__card {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+  }
+
+  &__data {
+    display: flex;
+    justify-content: flex-start;
+
+    &-version,
+    &-commit {
+      color: $neutral-color-700;
+    }
+    &-version {
+      margin-right: 20px;
+    }
   }
 
   &__buttons {
