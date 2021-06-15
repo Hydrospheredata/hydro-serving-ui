@@ -1,15 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd, Event, RouterEvent } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { Observable, Subscription } from 'rxjs';
-import { filter, map, tap, first } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 
 import { ZenModeService } from '@app/core/zenmode.service';
 import { ModelsSidebarService } from './models-sidebar.service';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 
 import { Model } from '@app/core/data/types/model';
-import { IsRootUrlService } from '@app/core/is-root-url.service';
+import { RedirectService } from '@app/core/redirect.service';
 
 @Component({
   selector: 'hs-models-page',
@@ -22,7 +22,6 @@ export class ModelsPageComponent implements OnDestroy {
   metricModelsAreHidden$: Observable<boolean>;
   isRootUrl$: Observable<boolean>;
 
-  private routerEvents$: Observable<Event>;
   private redirectToFirstEntity: Subscription;
 
   constructor(
@@ -30,23 +29,19 @@ export class ModelsPageComponent implements OnDestroy {
     private router: Router,
     private zenMode: ZenModeService,
     private modelsSidebarService: ModelsSidebarService,
-    private rootUrlService: IsRootUrlService,
+    private redirectService: RedirectService,
   ) {
     this.visibleModels$ = this.modelsSidebarService.visibleModels();
     this.metricModelsAreHidden$ =
       this.modelsSidebarService.metricModelsAreHidden();
+    this.isRootUrl$ = this.redirectService.isRootUrl$;
 
-    this.routerEvents$ = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-    );
-    this.isRootUrl$ = this.routerEvents$.pipe(
-      map((event: RouterEvent) => this.rootUrlService.isRootUrl(event)),
-    );
-
-    this.redirectToFirstEntity = this.isRootUrl$
+    this.redirectToFirstEntity = this.redirectService.isRootUrl$
       .pipe(
         filter(isRoot => isRoot),
-        tap(_ => this.redirectToFirst()),
+        tap(_ =>
+          this.redirectService.redirectToFirst(this.visibleModels$, 'models'),
+        ),
       )
       .subscribe();
   }
@@ -69,14 +64,6 @@ export class ModelsPageComponent implements OnDestroy {
 
   handleSidebarClick(model: Model): void {
     this.router.navigate([`models/${model.name}`]);
-  }
-
-  private redirectToFirst() {
-    this.visibleModels$
-      .pipe(first(models => models.length > 0))
-      .subscribe(models => {
-        this.router.navigate([`models/${models[0].name}`]);
-      });
   }
 
   toggleHideMetricModels(hide: boolean) {

@@ -1,13 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router, Event, NavigationEnd, RouterEvent } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { Observable, Subject, Subscription } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
-import { first } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 
 import { DeploymentConfig } from '@app/core/data/types';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
-import { IsRootUrlService } from '@app/core/is-root-url.service';
+import { RedirectService } from '@app/core/redirect.service';
 
 @Component({
   selector: 'hs-deployment-configs-page',
@@ -18,19 +17,17 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
   configs$: Observable<DeploymentConfig[]>;
   selectedConfig$: Observable<DeploymentConfig>;
   error$: Observable<string>;
-  isRootUrl$: Observable<boolean>;
 
   private all$: Observable<DeploymentConfig[]>;
   private error: Subject<string> = new Subject<string>();
 
-  private routerEvents$: Observable<Event>;
   private routerSub: Subscription;
   private toggle: boolean;
 
   constructor(
     private readonly facade: DeploymentConfigsFacade,
     private readonly router: Router,
-    private rootUrlService: IsRootUrlService,
+    private redirectService: RedirectService,
   ) {
     this.error$ = this.error.asObservable();
 
@@ -39,17 +36,12 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
 
     this.selectedConfig$ = this.facade.selectedConfig();
 
-    this.routerEvents$ = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-    );
-    this.isRootUrl$ = this.routerEvents$.pipe(
-      map((event: RouterEvent) => this.rootUrlService.isRootUrl(event)),
-    );
-
-    this.routerSub = this.isRootUrl$
+    this.routerSub = this.redirectService.isRootUrl$
       .pipe(
         filter(isRoot => isRoot),
-        tap(_ => this.redirectToFirst()),
+        tap(_ =>
+          this.redirectService.redirectToFirst(this.all$, 'deployment_configs'),
+        ),
       )
       .subscribe();
 
@@ -72,11 +64,5 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
 
   handleFilter(filter: string): void {
     this.facade.onFilter(filter);
-  }
-
-  private redirectToFirst() {
-    this.all$.pipe(first(configs => configs.length > 0)).subscribe(configs => {
-      this.router.navigate([`deployment_configs/${configs[0].name}`]);
-    });
   }
 }
