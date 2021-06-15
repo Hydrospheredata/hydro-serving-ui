@@ -10,7 +10,8 @@ export interface RouterStateUrl {
 
 @Injectable()
 export class CustomRouterStateSerializer
-  implements RouterStateSerializer<RouterStateUrl> {
+  implements RouterStateSerializer<RouterStateUrl>
+{
   serialize(routerState: RouterStateSnapshot): RouterStateUrl {
     let route = routerState.root;
     let params = {};

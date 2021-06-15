@@ -38,14 +38,14 @@ export class ModelVersionsEffects {
           switchMap(data => {
             const modelVersions = data.map(
               this.modelVersionBuilder.build,
-              this.modelVersionBuilder
+              this.modelVersionBuilder,
             );
 
             const models: Model[] = _.uniqBy(
               modelVersions.map(mv => mv.model),
               function (model: ModelDTO) {
                 return model.id;
-              }
+              },
             )
               .map(this.modelBuilder.build, this.modelBuilder)
               .map(model => {
@@ -57,7 +57,7 @@ export class ModelVersionsEffects {
 
             return of(
               GetModelVersionsSuccess({ payload: modelVersions }),
-              GetModelsSuccess({ payload: models })
+              GetModelsSuccess({ payload: models }),
             );
           }),
           catchError(error => {
@@ -66,10 +66,10 @@ export class ModelVersionsEffects {
               message: `Failed to load model versions`,
             });
             return of(GetModelVersionsFail({ error }));
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   addModelVersion$ = createEffect(() =>
@@ -78,7 +78,7 @@ export class ModelVersionsEffects {
       withLatestFrom(this.store.pipe(select(selectAllModels))),
       exhaustMap(([{ modelVersion }, models]) => {
         const modelExist = models.some(
-          model => model.name === modelVersion.model.name
+          model => model.name === modelVersion.model.name,
         );
 
         if (modelExist) {
@@ -88,11 +88,11 @@ export class ModelVersionsEffects {
 
           return concat(
             of(AddModel({ model })),
-            of(AddModelVersionSuccess({ modelVersion }))
+            of(AddModelVersionSuccess({ modelVersion })),
           );
         }
-      })
-    )
+      }),
+    ),
   );
 
   constructor(
@@ -102,6 +102,6 @@ export class ModelVersionsEffects {
     private actions$: Actions,
     private snackbar: SnackbarService,
     private store: Store<HydroServingState>,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
   ) {}
 }

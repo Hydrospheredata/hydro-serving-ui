@@ -3,6 +3,7 @@
   "ignorePatterns": [
     "projects/**/*"
   ],
+  "plugins": ["unused-imports"],
   "overrides": [
     {
       "files": [
@@ -39,7 +40,9 @@
         ],
         "@angular-eslint/component-class-suffix": "off",
         "@angular-eslint/contextual-lifecycle": "off",
-        "rxjs/no-internal": "error"
+        "rxjs/no-internal": "error",
+        "rxjs/no-implicit-any-catch": "off",
+        "unused-imports/no-unused-imports": "error"
       }
     },
     {

@@ -12,7 +12,7 @@ export class CanActivateApplicationGuard implements CanActivate {
   constructor(
     private facade: ApplicationsFacade,
     private router: Router,
-    public mdlSnackbarService: MdlSnackbarService
+    public mdlSnackbarService: MdlSnackbarService,
   ) {}
 
   canActivate(routerSnapshot: ActivatedRouteSnapshot): Observable<boolean> {
@@ -29,7 +29,7 @@ export class CanActivateApplicationGuard implements CanActivate {
           this.redirect();
           return of(false);
         }
-      })
+      }),
     );
   }
 
