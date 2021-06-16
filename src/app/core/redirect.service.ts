@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
 
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { IsRootUrlService } from '@app/core/is-root-url.service';
 
 type EntityWithName = { name: string };
@@ -35,7 +35,7 @@ export class RedirectService implements OnDestroy {
     this.redirectToFirstEntity = combineLatest([this.isRootUrl$, entities$])
       .pipe(
         filter(([isRoot]) => isRoot),
-        tap(([_, entities]) => entities.length > 0),
+        filter(([_, entities]) => entities.length > 0),
       )
       .subscribe(([_, entities]) => {
         this.router.navigate([`${params}/${entities[0].name}`]);
