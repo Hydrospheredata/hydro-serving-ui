@@ -1,0 +1,134 @@
+name: release
+on:
+  push:
+    branches:
+      - master
+      - main
+      
+  workflow_dispatch:
+    inputs:
+      version:
+        description: release version, ommit for patch
+        default: ''
+
+# Secrets:
+#   DOCKERHUB_USERNAME - also used as the dockerhub repository url
+#   DOCKERHUB_PASSWORD
+#   HYDRO_SERVING_TOKEN - github token with write access to hydro-serving repo
+
+env:
+  HYDRO_SERVING_REPO: Hydrospheredata/hydro-serving-ui
+  IMAGE: hydro-serving-ui # name of the built image
+  
+jobs:
+  Build_and_publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1 
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        
+    - name: Build and push
+      id: docker_build
+      uses: docker/build-push-action@v2
+      with:
+        push: true
+        tags: hydrosphere/${{ env.IMAGE }}:${{ github.sha }}
+        
+    - name: Image digest
+      run: echo ${{ steps.docker_build.outputs.digest }} 
+      
+    - name: Upload docker image artifact
+      uses: ishworkh/docker-image-artifact-upload@v1
+      with:
+        image: "hydrosphere/${{ env.IMAGE }}:${{ github.sha }}"
+        
+    - name: Update image version in hydro-serving repo
+      if: github.event_name == 'push'
+      uses: aurelien-baudet/workflow-dispatch@v2.1.1
+      with:
+        workflow: "Local release"
+        token: ${{ secrets.HYDRO_SERVING_TOKEN }}
+        repo: ${{ env.HYDRO_SERVING_REPO }}
+        inputs: '{"service_image_name":"${{ env.IMAGE }}", "registry_url":"${{ secrets.DOCKERHUB_USERNAME }}", "tag":"${{ github.sha }}"}'
+      
+  Release:
+    needs: [Build_and_publish]
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+        
+      - name: Bump version
+        if: github.event.inputs.version == ''
+        id: bump
+        uses: codacy/git-version@2.4.0
+        
+      - name: Set VERSION variable
+        if: github.event.inputs.version == ''
+        run: echo VERSION=${{ steps.bump.outputs.version }} >> $GITHUB_ENV
+        
+      - name: Set VERSION variable
+        if: github.event.inputs.version != ''
+        run: echo VERSION=${{ github.event.inputs.version }} >> $GITHUB_ENV
+        
+      - name: Docker Image Artifact Download
+        uses: ishworkh/docker-image-artifact-download@v1
+        with:
+          image: "hydrosphere/${{ env.IMAGE }}:${{ github.sha }}"
+          
+      - name: Docker Login
+        uses: docker/login-action@v1.9.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          
+      - name: Retag image
+        run: "docker tag hydrosphere/${{ env.IMAGE }}:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:v${{ env.VERSION }}"
+      
+      - name: Push image
+        run: "docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:v${{ env.VERSION }}"
+
+      - name: Commit new version
+        run: "echo ${{ env.VERSION }} > version"
+
+      - name: Push to repo
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Releasing $IMAGE_NAME:$TAG" -a
+          git push
+          
+      - name: Tag commit
+        run: "git tag v${{ env.VERSION }}"
+        
+      - name: Push tag
+        run: "git push --tags"
+        # TODO: update grpc version
+        
+  Status:
+    runs-on: ubuntu-latest
+    needs: [Build_and_publish, Release]
+    if: always()
+    steps:
+      - uses: martialonline/workflow-status@v2
+        id: check
+      - run: |
+          echo "release status: ${{  steps.check.outputs.status  }}"
+        
+      
