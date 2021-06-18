@@ -61,7 +61,7 @@ jobs:
         workflow: "Local release"
         token: ${{ secrets.HYDRO_SERVING_TOKEN }}
         repo: ${{ env.HYDRO_SERVING_REPO }}
-        inputs: '{"service_image_name":"${{ env.IMAGE }}", "registry_url":"${{ secrets.DOCKERHUB_USERNAME }}", "tag":"${{ github.sha }}"}'
+        inputs: '{"service_image_name":"${{ env.IMAGE }}", "registry_url":"hydrosphere", "tag":"${{ github.sha }}"}'
       
   Release:
     needs: [Build_and_publish]
@@ -99,10 +99,10 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
           
       - name: Retag image
-        run: "docker tag hydrosphere/${{ env.IMAGE }}:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:v${{ env.VERSION }}"
+        run: "docker tag hydrosphere/${{ env.IMAGE }}:${{ github.sha }} hydrosphere/${{ env.IMAGE }}:v${{ env.VERSION }}"
       
       - name: Push image
-        run: "docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE }}:v${{ env.VERSION }}"
+        run: "docker push hydrosphere/${{ env.IMAGE }}:v${{ env.VERSION }}"
 
       - name: Commit new version
         run: "echo ${{ env.VERSION }} > version"
