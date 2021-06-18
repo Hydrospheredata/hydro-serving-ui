@@ -2,9 +2,6 @@ name: ci
 on: pull_request
 
 # Secrets:
-#   SONAR_ORGANIZATION - sonarcloud organization key
-#   SONAR_PROJECTKEY   - sonarcloud organization key
-#   SONAR_TOKEN        - sonarcloud security token
 #   DOCKERHUB_USERNAME - also used as the dockerhub repository url
 #   DOCKERHUB_PASSWORD
 
@@ -66,23 +63,4 @@ jobs:
           
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}  
-        
-  Static_analysis:
-    runs-on: ubuntu-latest
-    steps: 
-      - uses: actions/checkout@v2
-        with:
-        # Disabling shallow clone is recommended for improving relevancy of reporting
-          fetch-depth: 0
-          
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v1.6
-        with:
-          args: >
-            -Dsonar.verbose=true
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECTKEY }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       
