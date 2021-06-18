@@ -37,6 +37,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install npm dependency
+        run: npm install 
+
       - name: Run Jasmine tests
         run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
 
