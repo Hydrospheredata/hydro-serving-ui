@@ -4,4 +4,8 @@
   </span>
   <hs-header-nav></hs-header-nav>
   <hs-header-info></hs-header-info>
+  <div class="menu-trigger" #trigger>
+    <hs-menu-trigger [isActive]="isSidebarOpened" (opened)="openSidebar()" (closed)="closeSidebar()"></hs-menu-trigger>
+  </div>
+  <hs-menu *ngIf="isSidebarOpened" class="menu" [(isSidebarOpened)]="isSidebarOpened" #menu></hs-menu>
 </header>

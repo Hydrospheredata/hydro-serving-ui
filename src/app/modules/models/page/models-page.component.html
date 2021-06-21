@@ -1,11 +1,14 @@
-<div class="models-page">
-  <div class="models-page__sidebar" hsHideInZenMode>
+<div class="models-page" #page>
+  <hs-sidebar-toggler class="models-page__sidebar-toggler" [(isOpen)]="isOpen">
+  </hs-sidebar-toggler>
+  <div [ngClass]="{'models-page__sidebar_open': isOpen}" class="models-page__sidebar" hsHideInZenMode>
     <hs-sidebar
       [sidebarData]="visibleModels$ | async"
       [selectedItem]="selectedModel$ | async"
       (filtered)="handleFilter($event)"
       (bookmarked)="handleToggleFavoriteModel($event)"
       (clicked)="handleSidebarClick($event)"
+      [(isOpen)]="isOpen"
     >
       <div class="models-page__hider hide">
         <mdl-checkbox

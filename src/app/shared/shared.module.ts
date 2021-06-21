@@ -8,6 +8,8 @@ import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import * as P from './pipes';
 import * as C from './components';
 import * as D from './directives';
+import { MenuComponent } from './components/menu/menu.component';
+import { SidebarTogglerComponent } from './components/sidebar-toggler/sidebar-toggler.component';
 
 const reExportedModules = [
   NgxSliderModule,
@@ -58,11 +60,25 @@ const components = [
   C.ServiceAvailabilityComponent,
   C.AlertMessageComponent,
   C.LogComponent,
+  C.MenuTriggerComponent,
+  C.MenuComponent,
 ];
 
 @NgModule({
-  declarations: [...pipes, ...components, ...directives],
+  declarations: [
+    ...pipes,
+    ...components,
+    ...directives,
+    MenuComponent,
+    SidebarTogglerComponent,
+  ],
   imports: [...reExportedModules],
-  exports: [...reExportedModules, ...components, ...pipes, ...directives],
+  exports: [
+    ...reExportedModules,
+    ...components,
+    ...pipes,
+    ...directives,
+    SidebarTogglerComponent,
+  ],
 })
 export class SharedModule {}

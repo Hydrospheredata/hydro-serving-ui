@@ -86,3 +86,15 @@
     font-family: $font-family-regular;
   }
 }
+
+:host-context(.ls-md) {
+  .sidebar {
+    &__button {
+      margin-top: 10px;
+    }
+
+    &__header {
+      padding-top: 30px;
+    }
+  }
+}

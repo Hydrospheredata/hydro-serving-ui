@@ -1,7 +1,6 @@
 import {
   Directive,
   ElementRef,
-  OnInit,
   OnDestroy,
   HostListener,
   Input,

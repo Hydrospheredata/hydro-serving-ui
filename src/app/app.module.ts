@@ -1,6 +1,6 @@
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, Inject } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, DOCUMENT } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HydroConfigService } from '@app/core/hydro-config.service';
 import { LayoutModule } from '@app/layout/layout.module';
@@ -19,6 +19,7 @@ import { DialogsModule } from './modules/dialogs/dialogs.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { ModelVersionLogComponent } from '@app/modules/model-version/components';
 import { UiBuildInfoService } from './core/ui-build-info.service';
+import { LayoutObserver } from '@app/core/layout-observer/layout-observer.service';
 
 @NgModule({
   entryComponents: [ModelVersionLogComponent],
@@ -42,7 +43,8 @@ import { UiBuildInfoService } from './core/ui-build-info.service';
     },
     {
       provide: APP_INITIALIZER,
-      useFactory: (buildInfo: UiBuildInfoService) => () => buildInfo.loadConfig(),
+      useFactory: (buildInfo: UiBuildInfoService) => () =>
+        buildInfo.loadConfig(),
       deps: [UiBuildInfoService],
       multi: true,
     },
@@ -63,4 +65,11 @@ import { UiBuildInfoService } from './core/ui-build-info.service';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    private layoutObserver: LayoutObserver,
+  ) {
+    this.layoutObserver.injectTo(document.body).subscribe();
+  }
+}

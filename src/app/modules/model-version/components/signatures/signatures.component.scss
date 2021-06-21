@@ -40,7 +40,7 @@
     }
   }
   &__cell {
-    padding: 0 4px; 
+    padding: 0 4px;
   }
   &__icon {
     height: 18px;
@@ -64,5 +64,13 @@
   &--anyType {
     border-bottom: 2px black dotted;
     cursor: default;
+  }
+}
+
+:host-context(.ls-xs) {
+  .signature {
+    &__name {
+      border-bottom: none;
+    }
   }
 }

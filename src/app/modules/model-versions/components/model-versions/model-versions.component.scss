@@ -19,3 +19,25 @@
     width: 100%;
   }
 }
+
+:host-context(.ls-sm) {
+  .hydro-table {
+    &-head {
+      &__cell:last-child {
+        display: none;
+      }
+    }
+  }
+}
+
+:host-context(.ls-xs) {
+  .hydro-table {
+    &-head {
+      &__cell:nth-child(3) {
+        display: none;
+      }
+    }
+  }
+}
+
+
