@@ -1,4 +1,5 @@
 @import 'variables';
+
 .applications-page {
   display: flex;
   overflow: hidden;
@@ -25,3 +26,28 @@
     }
   }
 }
+
+:host-context(.mr-md) {
+  .applications-page {
+    &__sidebar-toggler {
+      display: none;
+    }
+  }
+}
+
+:host-context(.ls-md) {
+  .applications-page {
+    &__sidebar {
+      left: -250px;
+      position: absolute;
+      height: 100%;
+      z-index: -3;
+      transition: all 0.3s ease-in-out;
+      &_open {
+        left: 0;
+        z-index: 3;
+      }
+    }
+  }
+}
+

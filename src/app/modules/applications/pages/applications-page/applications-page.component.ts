@@ -21,6 +21,7 @@ import { RedirectService } from '@app/core/redirect.service';
 export class ApplicationsPageComponent {
   applications$: Observable<Application[]>;
   selectedApplication$: Observable<Application>;
+  isOpen = false;
 
   constructor(
     private facade: ApplicationsFacade,

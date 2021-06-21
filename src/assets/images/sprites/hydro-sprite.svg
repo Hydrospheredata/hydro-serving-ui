@@ -301,9 +301,9 @@ fill: #CB6E17;
    </g>
   </g>
  </g>
-</symbol><symbol viewBox="0 0 24 24" id="merge" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/><path d="M0 0h24v24H0z" fill="none"/></symbol><symbol viewBox="0 0 24 24" id="monitoring" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></symbol><symbol id="next" viewBox="0 0 612 612" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+</symbol><symbol viewBox="0 0 24 24" fill="#000000" id="menu-list" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path d="M0 0h24v24H0V0z"/><path d="M0 0h24v24H0V0z" opacity=".87"/></g><path fill="currentColor" d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7zm-4 6h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></symbol><symbol viewBox="0 0 24 24" id="merge" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/><path d="M0 0h24v24H0z" fill="none"/></symbol><symbol viewBox="0 0 24 24" id="monitoring" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path fill="currentColor" d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></symbol><symbol id="next" viewBox="0 0 612 612" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
 <g>
-	<g id="by_x31_0_25_">
+	<g id="bz_x31_0_25_">
 		<g>
 			<path fill="currentColor" d="M306,0C136.992,0,0,136.992,0,306s136.992,306,306,306c168.988,0,306-136.992,306-306S475.008,0,306,0z M306,573.75
 				C158.125,573.75,38.25,453.875,38.25,306C38.25,158.125,158.125,38.25,306,38.25c147.875,0,267.75,119.875,267.75,267.75

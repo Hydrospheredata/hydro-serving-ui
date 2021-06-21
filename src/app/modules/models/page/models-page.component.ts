@@ -20,6 +20,7 @@ export class ModelsPageComponent {
   selectedModel$: Observable<Model> = this.modelsFacade.selectedModel();
   metricModelsAreHidden$: Observable<boolean>;
   isRootUrl$: Observable<boolean>;
+  isOpen = false;
 
   constructor(
     private modelsFacade: ModelsFacade,

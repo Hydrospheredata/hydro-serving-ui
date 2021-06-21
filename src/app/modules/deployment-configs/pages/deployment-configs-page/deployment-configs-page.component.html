@@ -1,10 +1,13 @@
 <div class="deployment-config-page">
-  <div class="deployment-config-page__sidebar" hsHideInZenMode>
+  <hs-sidebar-toggler class="deployment-config-page__sidebar-toggler" [(isOpen)]="isOpen">
+  </hs-sidebar-toggler>
+  <div [ngClass]="{'deployment-config-page__sidebar_open': isOpen}" class="deployment-config-page__sidebar" hsHideInZenMode>
     <hs-sidebar
       [sidebarData]="configs$ | async"
       [selectedItem]="selectedConfig$ | async"
       (filtered)="handleFilter($event)"
       (clicked)="handleSidebarClick($event)"
+      [(isOpen)]="isOpen"
     >
       <button
         class="button deployment-config-page__button"

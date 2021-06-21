@@ -83,6 +83,7 @@
   let-iconName="iconName"
 >
   <div
+    class="mv-services__item mv-services__item--unsupported"
     hsTippy
     [tippyOptions]="{
       content: message,
@@ -91,14 +92,12 @@
       placement: 'bottom'
     }"
   >
-    <div class="mv-services__item mv-services__item--unsupported">
-      <hs-icon
-        [type]="iconName"
-        class="mv-services__icon mv-services__icon--unsupported"
-      ></hs-icon>
-      <p class="mv-services__text">
-        {{ name }}
-      </p>
-    </div>
+    <hs-icon
+      [type]="iconName"
+      class="mv-services__icon mv-services__icon--unsupported"
+    ></hs-icon>
+    <p class="mv-services__text">
+      {{ name }}
+    </p>
   </div>
 </ng-template>

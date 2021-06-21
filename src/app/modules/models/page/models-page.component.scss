@@ -12,7 +12,7 @@
   }
 
   &__main {
-    width: 100%;
+    width: calc(100% - 50px);
     height: 100%;
   }
 
@@ -23,6 +23,30 @@
       margin: 0 auto;
       min-width: 1100px;
       max-width: 1100px;
+    }
+  }
+}
+
+:host-context(.mr-md) {
+  .models-page {
+    &__sidebar-toggler {
+      display: none;
+    }
+  }
+}
+
+:host-context(.ls-md) {
+  .models-page {
+    &__sidebar {
+      left: -250px;
+      position: absolute;
+      height: 100%;
+      z-index: -3;
+      transition: all 0.3s ease-in-out;
+      &_open {
+        left: 0;
+        z-index: 3;
+      }
     }
   }
 }

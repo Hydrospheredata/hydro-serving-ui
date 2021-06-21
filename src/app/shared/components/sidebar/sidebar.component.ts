@@ -22,6 +22,8 @@ import { Application, Model, DeploymentConfig } from '@app/core/data/types';
 export class SidebarComponent implements AfterViewInit, OnDestroy {
   @Input() sidebarData: Application[] | Model[] | DeploymentConfig[] = [];
   @Input() selectedItem: Application | Model | DeploymentConfig;
+  @Input() isOpen: boolean;
+  @Output() isOpenChange = new EventEmitter<boolean>();
   @Output() clicked: EventEmitter<Model | Application> = new EventEmitter();
   @Output() filtered: EventEmitter<string> = new EventEmitter();
   @Output() bookmarked: EventEmitter<Model | Application> = new EventEmitter();
@@ -46,6 +48,8 @@ export class SidebarComponent implements AfterViewInit, OnDestroy {
   }
 
   handleClick(item: Model | Application): void {
+    this.isOpen = !this.isOpen;
+    this.isOpenChange.emit(this.isOpen);
     this.clicked.emit(item);
   }
 

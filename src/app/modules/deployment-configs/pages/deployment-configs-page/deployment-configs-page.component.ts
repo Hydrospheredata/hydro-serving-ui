@@ -16,6 +16,7 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
   configs$: Observable<DeploymentConfig[]>;
   selectedConfig$: Observable<DeploymentConfig>;
   error$: Observable<string>;
+  isOpen = false;
 
   private all$: Observable<DeploymentConfig[]>;
   private error: Subject<string> = new Subject<string>();

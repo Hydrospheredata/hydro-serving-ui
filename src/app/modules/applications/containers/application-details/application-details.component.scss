@@ -277,3 +277,49 @@
     opacity: 1;
   }
 }
+
+:host-context(.ls-lg) {
+  .application {
+    &__body {
+      margin-top: 25px;
+    }
+  }
+}
+
+:host-context(.ls-md) {
+  .application {
+    &__body {
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+
+    &__stages {
+      margin: 0;
+    }
+  }
+}
+
+:host-context(.ls-sm) {
+  .application {
+    &__body {
+      flex-direction: column;
+    }
+
+    &__stages {
+      align-items: flex-start;
+    }
+  }
+}
+
+:host-context(.ls-xs) {
+  .application {
+    &__body {
+      flex-direction: column;
+    }
+
+    &__stages {
+      flex-direction: row;
+    }
+  }
+}
+

@@ -1,0 +1,8 @@
+<aside class="sidebar-toggler" #toggler>
+  <ng-container *ngIf="isOpen; else closed" #toggleButton>
+    <hs-icon class="sidebar-toggler__icon" type="close" (click)="handleClick($event)"></hs-icon>
+  </ng-container>
+  <ng-template #closed #toggleButton>
+    <hs-icon class="sidebar-toggler__icon" type="menu-list" (click)="handleClick($event)"></hs-icon>
+  </ng-template>
+</aside>

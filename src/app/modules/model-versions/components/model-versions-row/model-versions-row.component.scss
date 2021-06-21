@@ -42,3 +42,23 @@
     color: $neutral-color-700;
   }
 }
+
+:host-context(.ls-sm) {
+  .hydro-table {
+    &-body {
+      &__cell:last-child {
+        display: none;
+      }
+    }
+  }
+}
+
+:host-context(.ls-xs) {
+  .hydro-table {
+    &-body {
+      &__cell:nth-child(3) {
+        display: none;
+      }
+    }
+  }
+}

@@ -1,11 +1,14 @@
 <div class="applications-page">
-  <div class="applications-page__sidebar">
+  <hs-sidebar-toggler class="applications-page__sidebar-toggler" [(isOpen)]="isOpen">
+  </hs-sidebar-toggler>
+  <div [ngClass]="{'applications-page__sidebar_open': isOpen}" class="applications-page__sidebar">
     <hs-sidebar
       [sidebarData]="applications$ | async"
       [selectedItem]="selectedApplication$ | async"
       (filtered)="handleFilter($event)"
       (bookmarked)="handleBookmark($event)"
       (clicked)="handleSidebarClick($event)"
+      [(isOpen)]="isOpen"
     >
       <div class="button">
         <ng-container
