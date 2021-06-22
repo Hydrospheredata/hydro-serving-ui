@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonitoringAvailabilityComponent implements OnInit {
-  status$: Observable<{ status: ServiceStatus; message: string }>;
+  status$: Observable<{ status: ServiceStatus; message?: string }>;
 
   constructor(private buildInfo: BuildInformationService) {}
 

@@ -15,7 +15,7 @@ import { ServiceStatus } from '@app/core/data/types';
   </hs-service-availability> `,
 })
 export class VisualizationAvailabilityComponent implements OnInit {
-  status$: Observable<{ status: ServiceStatus; message: string }>;
+  status$: Observable<{ status: ServiceStatus; message?: string }>;
 
   constructor(private buildInfo: BuildInformationService) {}
 

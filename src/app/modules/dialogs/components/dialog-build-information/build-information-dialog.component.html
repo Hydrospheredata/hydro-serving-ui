@@ -49,6 +49,7 @@
           {{ serviceInfo.value.name || serviceInfo.key }}
         </h5>
         <mdl-chip
+          *ngIf="serviceInfo.value.version"
           class="service__chip"
           mdl-label="v. {{
             serviceInfo.value.version.length > 5
@@ -58,48 +59,50 @@
         >
         </mdl-chip>
       </div>
-      <mdl-card-supporting-text class="service__text">
-        <div class="service__text-key">Git current branch</div>
-        <div class="service__text-value">
-          {{ serviceInfo.value.gitCurrentBranch }}
-        </div>
-      </mdl-card-supporting-text>
+      <div *ngIf="serviceInfo.value.status === 'Available'">
+        <mdl-card-supporting-text *ngIf="serviceInfo.value.gitCurrentBranch" class="service__text">
+          <div class="service__text-key">Git current branch</div>
+          <div class="service__text-value">
+            {{ serviceInfo.value.gitCurrentBranch }}
+          </div>
+        </mdl-card-supporting-text>
 
-      <mdl-card-supporting-text class="service__text">
-        <div class="service__text-key">Git current tags</div>
-        <div class="service__text-value">
-          {{ serviceInfo.value.gitCurrentTags &&
+        <mdl-card-supporting-text *ngIf="serviceInfo.value.gitCurrentTags" class="service__text">
+          <div class="service__text-key">Git current tags</div>
+          <div class="service__text-value">
+            {{ serviceInfo.value.gitCurrentTags &&
           serviceInfo.value.gitCurrentTags.length > 0 ?
-          serviceInfo.value.gitCurrentTags : '-' }}
-        </div>
-      </mdl-card-supporting-text>
+            serviceInfo.value.gitCurrentTags : '-' }}
+          </div>
+        </mdl-card-supporting-text>
 
-      <mdl-card-supporting-text class="service__text">
-        <div class="service__text-key">Git head commit</div>
-        <div class="service__text-value service__text-commit">
-          {{ serviceInfo.value.gitHeadCommit }}
-        </div>
-      </mdl-card-supporting-text>
+        <mdl-card-supporting-text *ngIf="serviceInfo.value.gitHeadCommit" class="service__text">
+          <div class="service__text-key">Git head commit</div>
+          <div class="service__text-value service__text-commit">
+            {{ serviceInfo.value.gitHeadCommit }}
+          </div>
+        </mdl-card-supporting-text>
 
-      <div class="service__footer">
-        <mdl-chip
-          class="service__chip"
-          *ngIf="serviceInfo.value.hasOwnProperty('scalaVersion')"
-          mdl-label="scala version: {{ serviceInfo.value.scalaVersion }}"
-        >
-        </mdl-chip>
-        <mdl-chip
-          class="service__chip"
-          *ngIf="serviceInfo.value.sbtVersion"
-          mdl-label="sbt version: {{ serviceInfo.value.sbtVersion }}"
-        >
-        </mdl-chip>
-        <mdl-chip
-          class="service__chip"
-          *ngIf="serviceInfo.value.pythonVersion"
-          mdl-label="python version: {{ serviceInfo.value.pythonVersion }}"
-        >
-        </mdl-chip>
+        <div class="service__footer">
+          <mdl-chip
+            class="service__chip"
+            *ngIf="serviceInfo.value.scalaVersion"
+            mdl-label="scala version: {{ serviceInfo.value.scalaVersion }}"
+          >
+          </mdl-chip>
+          <mdl-chip
+            class="service__chip"
+            *ngIf="serviceInfo.value.sbtVersion"
+            mdl-label="sbt version: {{ serviceInfo.value.sbtVersion }}"
+          >
+          </mdl-chip>
+          <mdl-chip
+            class="service__chip"
+            *ngIf="serviceInfo.value.pythonVersion"
+            mdl-label="python version: {{ serviceInfo.value.pythonVersion }}"
+          >
+          </mdl-chip>
+        </div>
       </div>
     </mdl-card>
   </div>

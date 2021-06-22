@@ -88,9 +88,10 @@
               ></hs-servable-status-icon>
             </div>
             <div
+              *ngIf="getModelVersionById(modelVariant.modelVersionId) | async as modelVersion"
               class="application__model-variant-update tooltip"
               hsUpdateModelVersion
-              [modelVersion]="getModelVersionById(modelVariant.modelVersionId) | async"
+              [modelVersion]="modelVersion"
               (handleClick)="updateModelVersionDialog($event, modelVariant)"
             >
               <span hs-tooltip="Model has new version">
