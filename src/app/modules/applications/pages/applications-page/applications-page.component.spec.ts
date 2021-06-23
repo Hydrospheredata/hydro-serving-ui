@@ -15,6 +15,7 @@ import { SharedModule } from '@app/shared/shared.module';
 import { instance, mock, when } from 'ts-mockito';
 import { MockDeploymentConfig1 } from '@testing/factories/deployment-config';
 import { ApplicationsPageComponent } from './applications-page.component';
+import { RedirectService } from '@app/core/redirect.service';
 
 describe('ApplicationsPageComponent', () => {
   let component: ApplicationsPageComponent;
@@ -27,6 +28,7 @@ describe('ApplicationsPageComponent', () => {
     DeploymentConfigsFacade
   );
   const mockedDialogsService: DialogsService = mock(DialogsService);
+  const mockedRedirectService: RedirectService = mock(RedirectService);
 
   when(mockedModelsFacade.someModelVersionIsReleased()).thenReturn(of(true));
   when(mockedDeploymentConfigsFacade.getAll()).thenReturn(
@@ -53,6 +55,10 @@ describe('ApplicationsPageComponent', () => {
         {
           provide: DialogsService,
           useFactory: () => instance(mockedDialogsService),
+        },
+        {
+          provide: RedirectService,
+          useFactory: () => instance(mockedRedirectService),
         },
       ],
     }).compileComponents();
