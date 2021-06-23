@@ -1,5 +1,5 @@
 import { Output, Input, Component, EventEmitter } from '@angular/core';
-import { IApplication } from '@app/core/data/types';
+import { Application } from '@app/core/data/types';
 
 @Component({
   selector: 'hs-application-form',
@@ -7,5 +7,5 @@ import { IApplication } from '@app/core/data/types';
 })
 export class ApplicationFormComponent {
   @Output() submitHandle: EventEmitter<any> = new EventEmitter();
-  @Input() application: IApplication;
+  @Input() application: Application;
 }

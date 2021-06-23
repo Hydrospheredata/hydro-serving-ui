@@ -8,16 +8,20 @@ import {
   AddDeploymentConfigSuccess,
 } from '../actions/deployment-configs.actions';
 
-import { State, initialState, adapter } from '../states/deployment-configs.state';
+import {
+  State,
+  initialState,
+  adapter,
+} from '../states/deployment-configs.state';
 
 export const deploymentConfigReducer = createReducer(
   initialState,
   on(GetDeploymentConfigs, state => ({ ...state, loading: true })),
-  on(GetDeploymentConfigsSuccess, (state, { payload}) => {
-    return adapter.setAll(payload, {...state, loaded: true, loading: false});
+  on(GetDeploymentConfigsSuccess, (state, { payload }) => {
+    return adapter.setAll(payload, { ...state, loaded: true, loading: false });
   }),
   on(GetDeploymentConfigsFail, state => ({ ...state, loading: false })),
-  on(DeleteDeploymentConfigSuccess, (state, { name}) => {
+  on(DeleteDeploymentConfigSuccess, (state, { name }) => {
     return adapter.removeOne(name, state);
   }),
   on(AddDeploymentConfigSuccess, (state, { payload }) => {

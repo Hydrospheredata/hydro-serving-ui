@@ -1,30 +1,24 @@
-interface IDim {
+interface Dim {
     size: number;
     name: string;
 }
 
-export interface IShape {
-    dims: IDim[];
+export interface Shape {
+    dims: Dim[];
     unknownRank?: boolean;
 }
-export interface IField {
+export interface Field {
     profile: string;
     dtype?: string;
     name?: string;
-    shape?: IShape;
-    subfields?: IField[];
+    shape?: Shape;
+    subfields?: Field[];
 }
 
-export interface ISignature {
-    signatureName: string;
-    inputs: IField[];
-    outputs: IField[];
-}
-
-export class Signature implements ISignature {
+export class Signature {
     public signatureName: string;
-    public inputs: IField[];
-    public outputs: IField[];
+    public inputs: Field[];
+    public outputs: Field[];
 
     constructor(props: any = {}) {
         this.signatureName = props.signatureName;

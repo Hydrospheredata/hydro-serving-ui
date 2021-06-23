@@ -13,7 +13,7 @@ export class BuildInformationDirective {
     this.dialog.createDialog({
       component: BuildInformationDialogComponent,
       styles: {
-        width: '600px',
+        width: '1000px',
       },
     });
   }

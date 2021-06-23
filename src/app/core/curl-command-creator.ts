@@ -2,7 +2,6 @@ import { Application } from '@app/core/data/types';
 import { CommandCreator } from './command-creator';
 
 export class CurlCommandCreator extends CommandCreator {
-
   private static removeNewLineSymbolsFromString(str: string = ''): string {
     return str === null ? '' : str.replace(/[\r\n]+/g, ' ');
   }

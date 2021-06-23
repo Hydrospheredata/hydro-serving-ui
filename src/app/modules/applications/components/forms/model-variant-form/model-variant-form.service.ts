@@ -6,7 +6,7 @@ import {
   merge,
   Observable,
   Subject,
-  Subscription
+  Subscription,
 } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -16,12 +16,12 @@ import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 import {
   DeploymentConfig,
-  IModelVariant,
+  ModelVariant,
   ModelVersion,
-  ModelVersionStatus
+  ModelVersionStatus,
 } from '@app/core/data/types';
 
-export interface IModelVariantFormData {
+export interface ModelVariantFormData {
   weight: number;
   modelId?: number;
   modelVersion: ModelVersion;
@@ -30,7 +30,7 @@ export interface IModelVariantFormData {
 
 @Injectable()
 export class ModelVariantFormService implements OnDestroy {
-  private defaultFormData = new BehaviorSubject<IModelVariantFormData>(null);
+  private defaultFormData = new BehaviorSubject<ModelVariantFormData>(null);
   private selectedModelId = new Subject<number>();
   private readonly modelVersions$: Observable<ModelVersion[]>;
   private modelVariantFormDataSub: Subscription;
@@ -44,7 +44,7 @@ export class ModelVariantFormService implements OnDestroy {
     const currentModelId$: Observable<number> = merge(
       this.selectedModelId,
       this.modelsFacade.firstModel().pipe(map(_ => _.id)),
-    )
+    );
 
     this.modelVersions$ = currentModelId$.pipe(
       switchMap((modelId: number) =>
@@ -53,52 +53,51 @@ export class ModelVariantFormService implements OnDestroy {
           .pipe(
             map(modelVersions =>
               modelVersions.filter(
-                mv => !mv.isExternal && mv.status === ModelVersionStatus.Released
+                mv =>
+                  !mv.isExternal && mv.status === ModelVersionStatus.Released,
               ),
             ),
           ),
       ),
     );
 
-    this.modelVariantFormDataSub = combineLatest(
-      [
-        this.modelVersions$,
-        this.depConfigsFacade.defaultDepConfig(),
-      ],
-    ).subscribe(
-      ([modelVersions, depConfig]) => {
-        const nextDefaultFormData: IModelVariantFormData = {
-          weight: 100,
-          modelId: modelVersions[0].model.id,
-          modelVersion: modelVersions[0],
-          deploymentConfigName: depConfig.name,
-        };
+    this.modelVariantFormDataSub = combineLatest([
+      this.modelVersions$,
+      this.depConfigsFacade.defaultDepConfig(),
+    ]).subscribe(([modelVersions, depConfig]) => {
+      const nextDefaultFormData: ModelVariantFormData = {
+        weight: 100,
+        modelId: modelVersions[0].model.id,
+        modelVersion: modelVersions[0],
+        deploymentConfigName: depConfig.name,
+      };
 
-        this.defaultFormData.next(nextDefaultFormData);
-      },
-    );
+      this.defaultFormData.next(nextDefaultFormData);
+    });
   }
 
-  defaultModelVariantFormData(): IModelVariantFormData {
+  defaultModelVariantFormData(): ModelVariantFormData {
     return this.defaultFormData.getValue();
   }
 
   modelVariantToModelVariantFormData(
-    modelVariant: IModelVariant,
-  ): IModelVariantFormData {
+    modelVariant: ModelVariant,
+    modelVersions: ModelVersion[],
+  ): ModelVariantFormData {
+    const modelVersion = modelVersions.find(
+      mv => mv.id === modelVariant.modelVersionId,
+    );
+
     return {
       weight: modelVariant.weight,
-      modelId: modelVariant.modelVersion.model.id,
-      modelVersion: modelVariant.modelVersion,
-      deploymentConfigName:
-        (modelVariant.deploymentConfiguration &&
-          modelVariant.deploymentConfiguration.name) ||
-        '',
+      modelId: modelVersion.model.id,
+      modelVersion: modelVersion,
+      deploymentConfigName: modelVariant.deploymentConfigurationName,
     };
   }
 
   buildModelVariantFormGroup(
-    modelVariantFormData: IModelVariantFormData = this.defaultModelVariantFormData(),
+    modelVariantFormData: ModelVariantFormData = this.defaultModelVariantFormData(),
   ): FormGroup {
     return new FormGroup({
       weight: new FormControl(modelVariantFormData.weight, [

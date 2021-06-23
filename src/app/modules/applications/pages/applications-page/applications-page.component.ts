@@ -1,28 +1,26 @@
-import { Component, OnDestroy } from '@angular/core';
-import { Event, NavigationEnd, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { DialogAddApplicationComponent } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 
-import { combineLatest, Observable, Subscription } from 'rxjs';
-import { filter, first, tap } from 'rxjs/operators';
-import { map } from 'rxjs/internal/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 import { Application, DeploymentConfig } from '@app/core/data/types';
+import { RedirectService } from '@app/core/redirect.service';
 
 @Component({
   selector: 'hs-applications-page',
   templateUrl: './applications-page.component.html',
   styleUrls: ['./applications-page.component.scss'],
 })
-export class ApplicationsPageComponent implements OnDestroy {
+export class ApplicationsPageComponent {
   applications$: Observable<Application[]>;
   selectedApplication$: Observable<Application>;
-
-  private routerSub: Subscription;
 
   constructor(
     private facade: ApplicationsFacade,
@@ -30,29 +28,20 @@ export class ApplicationsPageComponent implements OnDestroy {
     private depConfigsFacade: DeploymentConfigsFacade,
     private dialog: DialogsService,
     private router: Router,
+    private redirectService: RedirectService,
   ) {
+    this.applications$ = facade.allApplications();
     this.selectedApplication$ = this.facade.selectedApplication();
 
-    this.routerSub = this.router.events
-      .pipe(
-        filter(event => this.isRootApplicationsUrl(event)),
-        tap(_ => this.redirectToFirst()),
-      )
-      .subscribe();
-
-    this.applications$ = facade.allApplications();
+    this.redirectService.redirectToFirst(this.applications$, 'applications');
   }
 
   isButtonEnabled() {
     return combineLatest([
-        this.someModelVersionIsReleased(),
-        this.getDepConfigs(),
-      ],
-    ).pipe(
-      map(([
-             someReleased,
-             depConfigs,
-           ]) => {
+      this.someModelVersionIsReleased(),
+      this.getDepConfigs(),
+    ]).pipe(
+      map(([someReleased, depConfigs]) => {
         return someReleased && depConfigs.length > 0;
       }),
     );
@@ -64,10 +53,6 @@ export class ApplicationsPageComponent implements OnDestroy {
 
   getDepConfigs(): Observable<DeploymentConfig[]> {
     return this.depConfigsFacade.getAll();
-  }
-
-  ngOnDestroy() {
-    this.routerSub.unsubscribe();
   }
 
   addApplication(): void {
@@ -87,15 +72,5 @@ export class ApplicationsPageComponent implements OnDestroy {
 
   handleSidebarClick({ name }: Application): void {
     this.router.navigate([`applications/${name}`]);
-  }
-
-  private redirectToFirst() {
-    this.applications$.pipe(first(apps => apps.length > 0)).subscribe(apps => {
-      this.router.navigate([`applications/${apps[0].name}`]);
-    });
-  }
-
-  private isRootApplicationsUrl(event: Event): boolean {
-    return event instanceof NavigationEnd && event.url.split('/').length <= 2;
   }
 }

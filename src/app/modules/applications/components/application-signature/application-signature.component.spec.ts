@@ -8,9 +8,8 @@ describe('ApplicationSignatureComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ApplicationSignatureComponent ]
-    })
-    .compileComponents();
+      declarations: [ApplicationSignatureComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

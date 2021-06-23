@@ -11,7 +11,7 @@ import {
   ModelVersion,
   Application,
   Stage,
-  IModelVariant,
+  ModelVariant,
 } from '../../data/types';
 
 import {
@@ -62,8 +62,7 @@ const modelVersionReducer = createReducer(
   ),
   on(AddApplicationSuccess, UpdateApplicationSuccess, (state, { payload }) => {
     const application = payload;
-    let updates: Update<ModelVersion>[] = [];
-    //
+
     const toUpdate = (app: Application) => (
       modelVersion: ModelVersion
     ): Update<ModelVersion> => {
@@ -77,13 +76,12 @@ const modelVersionReducer = createReducer(
     };
 
     try {
-      const a = getApplicationsModelVariants(application);
-      const b = a.map(getModelVersion);
-      const c = b.map(getId);
-      const d = c.map(toModelVersion(state.entities));
-      const e = d.map(toUpdate(application)).filter(_ => !!_);
+      const variants: ModelVariant[] = getApplicationsModelVariants(application);
+      const modelVersionIds: number[] = variants.map(getId);
+      const modelVersions = modelVersionIds.map(toModelVersion(state.entities));
+      const updates = modelVersions.map(toUpdate(application)).filter(upd => !!upd);
 
-      return adapter.updateMany(e, state);
+      return adapter.updateMany(updates, state);
     } catch (e) {
       console.error(e);
       return state;
@@ -132,17 +130,14 @@ export const {
 // TODO: move utils
 function getApplicationsModelVariants(
   application: Application
-): IModelVariant[] {
+): ModelVariant[] {
   const stages = application.executionGraph.stages;
   const getModelVariants = (stage: Stage) => stage.modelVariants;
   return _.flatMap(stages, getModelVariants);
 }
 
-function getModelVersion(el: { modelVersion: ModelVersion }): ModelVersion {
-  return el.modelVersion;
-}
-function getId(el: { id: number }): number {
-  return el.id;
+function getId(el: { modelVersionId: number }): number {
+  return el.modelVersionId;
 }
 function toModelVersion(dict: Dictionary<ModelVersion>) {
   return (id: number): ModelVersion => dict[id];

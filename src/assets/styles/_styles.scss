@@ -1,4 +1,3 @@
-@import '~ng-pick-datetime/assets/style/picker.min.css';
 @import 'ng5-slider';
 @import 'fonts.scss';
 @import 'variables.scss';
@@ -215,5 +214,6 @@ a.hydro-link {
 .tippy-box[data-theme~='basic'] {
   background: $neutral-color-200;
   color: $neutral-color-900;
+  max-width: 500px;
 }
 

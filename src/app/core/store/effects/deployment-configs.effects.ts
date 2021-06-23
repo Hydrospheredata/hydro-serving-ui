@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { exhaustMap, map, catchError } from 'rxjs/internal/operators';
+import { exhaustMap, map, catchError } from 'rxjs/operators';
 
 import { SnackbarService } from '../../snackbar.service';
 
@@ -28,7 +28,9 @@ export class DeploymentConfigsEffects {
       exhaustMap(() =>
         this.depConfigsService
           .getAll()
-          .pipe(map(configs => GetDeploymentConfigsSuccess({ payload: configs })))
+          .pipe(
+            map(configs => GetDeploymentConfigsSuccess({ payload: configs }))
+          )
       )
     )
   );
@@ -37,24 +39,23 @@ export class DeploymentConfigsEffects {
     this.actions$.pipe(
       ofType(AddDeploymentConfig),
       switchMap(({ depConfig }) => {
-          return this.depConfigsService.addConfig(depConfig).pipe(
-            map(response => {
-              this.snackbar.show({
-                message: 'Deployment config was successfully added',
-              });
+        return this.depConfigsService.addConfig(depConfig).pipe(
+          map(response => {
+            this.snackbar.show({
+              message: 'Deployment config was successfully added',
+            });
 
-              this.router.navigate(['/deployment_configs', response.name]);
-              return AddDeploymentConfigSuccess({ payload: depConfig });
-            }),
-            catchError(error => {
-              this.snackbar.show({
-                message: `Error: ${error}`,
-              });
-              return of(AddDeploymentConfigFail({ error }));
-            })
-          )
-        }
-      )
+            this.router.navigate(['/deployment_configs', response.name]);
+            return AddDeploymentConfigSuccess({ payload: depConfig });
+          }),
+          catchError(error => {
+            this.snackbar.show({
+              message: `Error: ${error}`,
+            });
+            return of(AddDeploymentConfigFail({ error }));
+          })
+        );
+      })
     )
   );
 

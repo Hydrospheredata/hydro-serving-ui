@@ -2,7 +2,7 @@ import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ApplicationService } from '@app/core/data/services/application.service';
-import { switchMap } from 'rxjs/internal/operators';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class TestApplicationFacade {

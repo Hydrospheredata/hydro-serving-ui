@@ -43,10 +43,10 @@ export class ModelsEffects {
           catchError(error => {
             this.snackbar.show({ message: 'Failed to load models' });
             return of(GetModelsFail({ error }));
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   deleteModel$ = createEffect(() =>
@@ -66,10 +66,10 @@ export class ModelsEffects {
               message: `Error: ${error}`,
             });
             return of(DeleteModelFail({ error }));
-          })
+          }),
         );
-      })
-    )
+      }),
+    ),
   );
 
   toggleFavorite$ = createEffect(
@@ -80,9 +80,9 @@ export class ModelsEffects {
           model.favorite
             ? this.favoriteService.remove(model.name)
             : this.favoriteService.add(model.name);
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   constructor(
@@ -91,6 +91,6 @@ export class ModelsEffects {
     private actions$: Actions,
     private snackbar: SnackbarService,
     private router: Router,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
   ) {}
 }

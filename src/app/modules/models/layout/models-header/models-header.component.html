@@ -40,10 +40,10 @@
       <span class="models-header__model-version-ver"
         >{{ modelVersion.modelVersion }}
       </span>
-      <hydro-icon
+      <hs-icon
         class="models-header__model-version-icon"
         type="icon-right"
-      ></hydro-icon>
+      ></hs-icon>
     </div>
     <div class="models-header__siblings" #siblings>
       <div
@@ -51,9 +51,9 @@
         *ngFor="let sibling of siblings$ | async"
         (click)="onClickSibling(sibling)"
       >
-        <span class="models-header__sibling-ver">{{
-          sibling.modelVersion
-        }}</span>
+        <span class="models-header__sibling-ver"
+          >{{ sibling.modelVersion }}</span
+        >
       </div>
     </div>
   </div>

@@ -54,7 +54,6 @@ export const selectSelectedModel = createSelector(
   }
 );
 
-export const selectFirstModel = createSelector(
-  selectAllModels,
-  models => models.length > 0 ? models[0] : null
+export const selectFirstModel = createSelector(selectAllModels, models =>
+  models.length > 0 ? models[0] : null
 );

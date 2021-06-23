@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RequestDetailsModule } from '@app/modules/request-details/request-details.module';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
-
+// import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 import { SharedModule } from '@app/shared/shared.module';
 import { HsD3Module } from '@app/modules/hs-d3/hs-d3.module';
 import { MonitoringRoutingModule } from './monitoring-routing.module';
@@ -81,8 +81,9 @@ import { CheckChartComponentV2 } from '@app/modules/monitoring/components/checks
     AddComparableComponent,
   ],
   imports: [
-    OwlDateTimeModule,
-    OwlNativeDateTimeModule,
+    // OwlDateTimeModule,
+    // OwlNativeDateTimeModule,
+    NgxDaterangepickerMd.forRoot(),
     SharedModule,
     StoreModule.forFeature('monitoring', reducer),
     EffectsModule.forFeature([
@@ -95,7 +96,7 @@ import { CheckChartComponentV2 } from '@app/modules/monitoring/components/checks
     MonitoringRoutingModule,
     RequestDetailsModule,
     HsD3Module,
-    HighchartsChartModule
+    HighchartsChartModule,
   ],
   exports: [MonitoringPageComponent],
 })

@@ -11,7 +11,7 @@ import { ChartConfig } from '../../models';
 import { CustomMetricsFacade } from '@app/modules/monitoring/containers/custom-metrics/custom-metrics.facade';
 
 @Component({
-  selector: 'hs-custom-metrics_v2',
+  selector: 'hs-custom-metrics-v2',
   templateUrl: './custom-metrics_v2.component.html',
   styleUrls: ['./custom-metrics_v2.component.scss'],
   providers: [MetricChartsState, CustomMetricsFacade],

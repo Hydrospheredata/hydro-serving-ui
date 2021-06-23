@@ -1,26 +1,57 @@
-<div
-  [hs-tooltip]="message"
-  class="servable-status"
-  [ngSwitch]="status"
-  [ngClass]="{
-    'servable-status--serving': status === 'Serving',
-    'servable-status--not-serving': status === 'NotServing',
-    'servable-status--starting': status === 'Starting'
-  }"
->
-  <hydro-icon
-    *ngSwitchCase="'Serving'"
-    class="servable-status__icon"
-    type="circle-check"
-  ></hydro-icon>
-  <hydro-icon
-    *ngSwitchCase="'Starting'"
-    class="servable-status__icon"
-    type="clock"
-  ></hydro-icon>
-  <hydro-icon
-    *ngSwitchDefault
-    class="servable-status__icon"
-    type="circle-x"
-  ></hydro-icon>
+<div>
+  <div
+    hsTippy
+    [tippyOptions]="{
+      content: messageContent,
+      arrow: false,
+      theme: 'basic',
+      placement: 'bottom',
+      allowHTML: true,
+      interactive: true,
+      zIndex: 1
+    }"
+    class="servable-status"
+    [ngSwitch]="status"
+    [ngClass]="iconClass"
+  >
+    <hs-icon
+      *ngSwitchCase="'Undefined'"
+      class="servable-status__icon"
+      type="help"
+    ></hs-icon>
+    <hs-icon
+      *ngSwitchCase="'Serving'"
+      class="servable-status__icon"
+      type="circle-check"
+    ></hs-icon>
+    <hs-icon
+      *ngSwitchCase="'Starting'"
+      class="servable-status__icon"
+      type="clock"
+    ></hs-icon>
+    <hs-icon
+      *ngSwitchCase="'Warning'"
+      class="servable-status__icon"
+      type="warning"
+    ></hs-icon>
+    <hs-icon
+      *ngSwitchDefault
+      class="servable-status__icon"
+      type="circle-x"
+    ></hs-icon>
+  </div>
+</div>
+
+<div #messageContent>
+  <div class="servable-tooltip" (click)="$event.stopPropagation()">
+    <div class="servable-tooltip__title">Servable</div>
+    <div class="servable-tooltip__name">{{ name }}</div>
+    <div *ngIf="message" class="servable-tooltip__text">{{ message }}</div>
+    <a
+      class="hydro-link servable-tooltip__link"
+      (click)="showServableLogs(name)"
+    >
+      show logs
+    </a>
+  </div>
 </div>

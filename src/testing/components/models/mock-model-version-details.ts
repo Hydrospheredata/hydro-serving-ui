@@ -1,12 +1,6 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  ViewChild,
-  ViewContainerRef,
-  Input,
-} from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, Input } from '@angular/core';
 import { Servable } from '@app/core/data/types';
-import { ModelVersion, ISignature } from '@app/core/data/types';
+import { ModelVersion, Signature } from '@app/core/data/types';
 
 @Component({
   selector: 'hs-model-version-details',
@@ -18,7 +12,7 @@ export class ModelVersionDetailsComponent {
 
   @Input() modelVersion: ModelVersion;
   @Input() servables: Servable[];
-  @Input() signature: ISignature;
+  @Input() signature: Signature;
   @Input() services: any = [
     { name: 'monitoring', status: 'ok' },
     { name: 'profiler', status: 'ok' },

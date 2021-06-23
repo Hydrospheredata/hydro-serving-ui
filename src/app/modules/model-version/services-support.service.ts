@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '@app/core/data/services/http.service';
 import { Observable, of, forkJoin, BehaviorSubject } from 'rxjs';
 import { catchError, shareReplay, distinctUntilChanged } from 'rxjs/operators';
-import { ModelVersion, ModelVersionServicesStatus, ServiceSupported } from '@app/core/data/types';
+import {
+  ModelVersion,
+  ModelVersionServicesStatus,
+  ServiceSupported,
+} from '@app/core/data/types';
 
 const enum ServicesEndpoints {
   stat = 'stat/support',
@@ -34,7 +38,9 @@ export class ServicesSupportService {
     forkJoin({
       stat: toRequest(ServicesEndpoints.stat),
       visualization: toRequest(ServicesEndpoints.visualization),
-    }).subscribe(res => {this.servicesSupport.next(res)});
+    }).subscribe(res => {
+      this.servicesSupport.next(res);
+    });
   }
 
   getServiceSupported(): Observable<ModelVersionServicesStatus> {

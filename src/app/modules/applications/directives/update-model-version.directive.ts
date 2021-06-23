@@ -19,8 +19,7 @@ import { tap, filter, take } from 'rxjs/operators';
 @Directive({
   selector: '[hsUpdateModelVersion]',
 })
-export class UpdateModelVersionDirective
-  implements OnInit, OnDestroy, OnChanges {
+export class UpdateModelVersionDirective implements OnDestroy, OnChanges {
   @Input() modelVersion: ModelVersion;
   @Output() handleClick: EventEmitter<any> = new EventEmitter();
 
@@ -29,7 +28,7 @@ export class UpdateModelVersionDirective
 
   constructor(
     public el: ElementRef,
-    private modelVersionsFacade: ModelVersionsFacade
+    private modelVersionsFacade: ModelVersionsFacade,
   ) {}
 
   @HostListener('click')
@@ -67,12 +66,10 @@ export class UpdateModelVersionDirective
             el.style.display = 'none';
           }
         }),
-        take(1)
+        take(1),
       )
       .subscribe();
   }
-
-  ngOnInit() {}
 
   ngOnDestroy() {
     this.modelVersionSub.unsubscribe();

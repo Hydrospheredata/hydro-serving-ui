@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { ISignature } from '@app/core/data/types';
+import { Signature } from '@app/core/data/types';
 
 @Component({
-  selector: 'hydro-signatures',
+  selector: 'hs-signatures',
   template: '',
 })
 export class SignaturesComponent {
-  @Input() signature: ISignature;
+  @Input() signature: Signature;
 }

@@ -8,8 +8,8 @@ import {
 import * as d3 from 'd3';
 
 @Component({
-  selector: '[hs-d3area]',
-  template: ` <svg:path #path></svg:path> `,
+  selector: 'hs-d3area',
+  template: `<svg:path #path></svg:path> `,
 })
 export class D3AreaComponent implements AfterViewInit {
   @ViewChild('path', { read: ElementRef, static: true })

@@ -4,11 +4,13 @@
   </div>
   <hs-error-message [hidden]="!error">
     {{ error }}
-    <button [hidden]="!activateRetryButton" class="log__retry" #retryButton>Retry</button>
+    <button [hidden]="!activateRetryButton" class="log__retry" #retryButton>
+      Retry
+    </button>
   </hs-error-message>
   <div class="log__body" #logBody>
     <table>
-        <tr
+      <tr
         class="log__item"
         *ngFor="let item of logs; index as i; trackBy: trackByFn"
       >
@@ -21,14 +23,14 @@
     </table>
   </div>
   <div class="log__scroller" *ngIf="!autoScroll" (click)="scrollDown()">
-    <hydro-icon
+    <hs-icon
       class="icon log__scroller-icon"
       type="icon-arrow-down"
-    ></hydro-icon>
+    ></hs-icon>
   </div>
-  <hydro-icon
+  <hs-icon
     class="icon log__close-icon"
     type="icon-close-sidebar"
     (click)="onClose()"
-  ></hydro-icon>
+  ></hs-icon>
 </section>

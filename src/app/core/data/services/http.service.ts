@@ -23,7 +23,10 @@ interface IHydroHttpOptions {
   providedIn: 'root',
 })
 export class HttpService {
-  constructor(public http: HttpClient, @Inject(HS_BASE_URL) public url: string) {}
+  constructor(
+    public http: HttpClient,
+    @Inject(HS_BASE_URL) public url: string
+  ) {}
 
   get<T>(url: string, options?: IHydroHttpOptions) {
     return this.http

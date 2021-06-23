@@ -1,6 +1,6 @@
 <form class="application-form" [formGroup]="applicationForm" #formElement>
   <div class="application-name">
-    <hydro-input-text
+    <hs-input-text
       label="application name"
       formControlName="applicationName"
       name="applicationName"
@@ -8,7 +8,7 @@
         applicationForm.get('applicationName').dirty &&
         applicationForm.get('applicationName').errors
       "
-    ></hydro-input-text>
+    ></hs-input-text>
   </div>
   <div formArrayName="stages">
     <div
@@ -26,13 +26,13 @@
           (click)="removeStage(stageIdx)"
           *ngIf="showRemoveStageButton()"
         >
-          <hydro-icon
+          <hs-icon
             type="icon-remove"
             class="icon"
             (click)="removeStage(stageIdx)"
           >
             remove
-          </hydro-icon>
+          </hs-icon>
         </span>
       </div>
       <ng-container *ngIf="stage.get('modelVariants'); let modelVariants">

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: '[hs-tooltip]',
+  selector: 'hs-tooltip',
   templateUrl: './tooltip.component.html',
   styleUrls: ['./tooltip.component.scss'],
 })

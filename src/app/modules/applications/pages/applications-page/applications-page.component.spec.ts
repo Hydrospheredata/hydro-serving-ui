@@ -15,6 +15,7 @@ import { SharedModule } from '@app/shared/shared.module';
 import { instance, mock, when } from 'ts-mockito';
 import { MockDeploymentConfig1 } from '@testing/factories/deployment-config';
 import { ApplicationsPageComponent } from './applications-page.component';
+import { RedirectService } from '@app/core/redirect.service';
 
 describe('ApplicationsPageComponent', () => {
   let component: ApplicationsPageComponent;
@@ -23,21 +24,42 @@ describe('ApplicationsPageComponent', () => {
 
   const mockedApplicationsFacade: ApplicationsFacade = mock(ApplicationsFacade);
   const mockedModelsFacade: ModelsFacade = mock(ModelsFacade);
-  const mockedDeploymentConfigsFacade: DeploymentConfigsFacade = mock(DeploymentConfigsFacade);
+  const mockedDeploymentConfigsFacade: DeploymentConfigsFacade = mock(
+    DeploymentConfigsFacade
+  );
   const mockedDialogsService: DialogsService = mock(DialogsService);
+  const mockedRedirectService: RedirectService = mock(RedirectService);
 
   when(mockedModelsFacade.someModelVersionIsReleased()).thenReturn(of(true));
-  when(mockedDeploymentConfigsFacade.getAll()).thenReturn(of([MockDeploymentConfig1.build()]));
+  when(mockedDeploymentConfigsFacade.getAll()).thenReturn(
+    of([MockDeploymentConfig1.build()])
+  );
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ApplicationsPageComponent],
       imports: [SharedModule, RouterTestingModule, HttpClientTestingModule],
       providers: [
-        { provide: ApplicationsFacade, useFactory: () => instance(mockedApplicationsFacade) },
-        { provide: ModelsFacade, useFactory: () => instance(mockedModelsFacade) },
-        { provide: DeploymentConfigsFacade, useFactory: () => instance(mockedDeploymentConfigsFacade) },
-        { provide: DialogsService, useFactory: () => instance(mockedDialogsService) },
+        {
+          provide: ApplicationsFacade,
+          useFactory: () => instance(mockedApplicationsFacade),
+        },
+        {
+          provide: ModelsFacade,
+          useFactory: () => instance(mockedModelsFacade),
+        },
+        {
+          provide: DeploymentConfigsFacade,
+          useFactory: () => instance(mockedDeploymentConfigsFacade),
+        },
+        {
+          provide: DialogsService,
+          useFactory: () => instance(mockedDialogsService),
+        },
+        {
+          provide: RedirectService,
+          useFactory: () => instance(mockedRedirectService),
+        },
       ],
     }).compileComponents();
   }));

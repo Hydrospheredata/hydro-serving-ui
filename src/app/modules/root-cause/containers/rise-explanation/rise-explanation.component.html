@@ -53,7 +53,7 @@
           </td>
           <td class="probabilities__table-cell">
             <div class="images__compare">
-                <canvas
+              <canvas
                 hsPixelToCanvas
                 hsScaleImage
                 [pixels]="originalImage"
@@ -67,10 +67,9 @@
                 [pixels]="getPixels(item.mask)"
                 [width]="imageWidth"
                 [height]="imageHeight"
-                [ngStyle]="{'transform': 'translateX(-' + imageWidth + ')'}"
+                [ngStyle]="{ transform: 'translateX(-' + imageWidth + ')' }"
               ></canvas>
             </div>
-
           </td>
         </tr>
       </table>

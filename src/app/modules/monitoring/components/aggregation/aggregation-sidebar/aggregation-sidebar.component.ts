@@ -30,6 +30,7 @@ export class AggregationSidebarComponent implements OnInit {
   }> = new EventEmitter<{ from: Date; to: Date }>();
 
   dtrange: any;
+  selected: { startDate; endDate };
 
   constructor() {}
 
@@ -37,8 +38,11 @@ export class AggregationSidebarComponent implements OnInit {
     this.dtrange = [this.minDate, this.maxDate];
   }
 
-  handleDateTimeFromChange([from, to]: [Date, Date]): void {
-    this.dateTimeRangeChanged.next({ from, to });
+  handleDateTimeFromChange($event): void {
+    this.dateTimeRangeChanged.next({
+      from: $event.startDate._d,
+      to: $event.endDate._d,
+    });
   }
 
   get showResetFilter(): boolean {
@@ -46,7 +50,8 @@ export class AggregationSidebarComponent implements OnInit {
   }
 
   resetFilter() {
-    this.dtrange = [this.minDate, this.maxDate];
+    this.selected.startDate = this.minDate;
+    this.selected.endDate = this.maxDate;
     this.filterDateRangeReset.next();
   }
 }

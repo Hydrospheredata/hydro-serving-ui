@@ -1,27 +1,115 @@
 <div class="build-info">
   <div class="build-info__title">Build information</div>
-  <div
-    class="build-info__service service"
-    *ngFor="let serviceInfo of buildInfo$ | async | keyvalue"
-  >
-    <div class="service__title">
-      {{ serviceInfo.value.name || serviceInfo.key }}
-    </div>
-    <table class="service__table">
-      <tr
-        class="serice__table-row"
-        *ngFor="let item of serviceInfo.value | keyvalue"
-      >
-        <td class="service__table-cell service__table-key">{{ item.key }}</td>
-        <td class="service__table-cell service__table-value">
-          {{ item.value }}
-        </td>
-      </tr>
-    </table>
+  <div class="build-info__card">
+    <mdl-card
+      class="service"
+      *ngFor="let serviceInfo of buildInfo$ | async | keyvalue"
+      mdl-shadow="3"
+    >
+      <div class="service__header">
+        <div class="service__icons">
+          <div
+            [ngSwitch]="serviceInfo.value.status"
+            [ngClass]="{
+              'service__icon--available':
+                serviceInfo.value.status === 'Available',
+              'service__icon--failed':
+                serviceInfo.value.status === 'Failed' ||
+                serviceInfo.value.status === 'Closed for OSS',
+              'service__icon--unknown': serviceInfo.value.status === 'Unknown'
+            }"
+          >
+            <hs-icon
+              *ngSwitchCase="'Available'"
+              class="service__icon"
+              type="circle-check"
+            >
+            </hs-icon>
+            <hs-icon
+              *ngSwitchCase="'Failed'"
+              class="service__icon"
+              type="circle-x"
+            >
+            </hs-icon>
+            <hs-icon
+              *ngSwitchCase="'Unknown'"
+              class="service__icon"
+              type="help"
+            >
+            </hs-icon>
+            <hs-icon
+              *ngSwitchCase="'Closed for OSS'"
+              class="service__icon"
+              type="circle-x"
+            >
+            </hs-icon>
+          </div>
+        </div>
+        <h5 class="service__title" mdl-card-subtitle-text>
+          {{ serviceInfo.value.name || serviceInfo.key }}
+        </h5>
+        <mdl-chip
+          class="service__chip"
+          mdl-label="v. {{
+            serviceInfo.value.version.length > 5
+              ? (serviceInfo.value.version | slice: 0:4) + '...'
+              : serviceInfo.value.version
+          }}"
+        >
+        </mdl-chip>
+      </div>
+      <mdl-card-supporting-text class="service__text">
+        <div class="service__text-key">Git current branch</div>
+        <div class="service__text-value">
+          {{ serviceInfo.value.gitCurrentBranch }}
+        </div>
+      </mdl-card-supporting-text>
+
+      <mdl-card-supporting-text class="service__text">
+        <div class="service__text-key">Git current tags</div>
+        <div class="service__text-value">
+          {{ serviceInfo.value.gitCurrentTags &&
+          serviceInfo.value.gitCurrentTags.length > 0 ?
+          serviceInfo.value.gitCurrentTags : '-' }}
+        </div>
+      </mdl-card-supporting-text>
+
+      <mdl-card-supporting-text class="service__text">
+        <div class="service__text-key">Git head commit</div>
+        <div class="service__text-value service__text-commit">
+          {{ serviceInfo.value.gitHeadCommit }}
+        </div>
+      </mdl-card-supporting-text>
+
+      <div class="service__footer">
+        <mdl-chip
+          class="service__chip"
+          *ngIf="serviceInfo.value.hasOwnProperty('scalaVersion')"
+          mdl-label="scala version: {{ serviceInfo.value.scalaVersion }}"
+        >
+        </mdl-chip>
+        <mdl-chip
+          class="service__chip"
+          *ngIf="serviceInfo.value.sbtVersion"
+          mdl-label="sbt version: {{ serviceInfo.value.sbtVersion }}"
+        >
+        </mdl-chip>
+        <mdl-chip
+          class="service__chip"
+          *ngIf="serviceInfo.value.pythonVersion"
+          mdl-label="python version: {{ serviceInfo.value.pythonVersion }}"
+        >
+        </mdl-chip>
+      </div>
+    </mdl-card>
   </div>
-  <div class="build-info__buttons">
-    <button hs-button hsAutofocused (click)="onClose()">close</button>
+  <div class="build-info__footer">
+    <div class="build-info__data">
+      <div class="build-info__data-version">UI: {{uiBI.version}}</div>
+      <div class="build-info__data-commit">Commit: {{(uiBI.gitHeadCommit | slice: 0:5) + '..'}}</div>
+    </div>
+    <div class="build-info__buttons">
+      <button hs-button hsAutofocused (click)="onClose()">close</button>
+    </div>
   </div>
 </div>
-
-<ng-template #na>...</ng-template>

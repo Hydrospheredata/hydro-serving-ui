@@ -1,6 +1,4 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { Observable, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Application, TestStatus } from '../../data/types';
 
 import { selectRouterState } from '../selectors/router.selectors';
@@ -15,12 +13,12 @@ export const selectApplicationsEntities = createSelector(state, selectEntities);
 
 export const selectNonFavoriteApplications = createSelector(
   selectAllApplications,
-  apps => apps.filter(_ => !_.favorite)
+  apps => apps.filter(_ => !_.favorite),
 );
 
 export const selectFavoriteApplications = createSelector(
   selectAllApplications,
-  apps => apps.filter(_ => _.favorite)
+  apps => apps.filter(_ => _.favorite),
 );
 
 // public nonFavoriteApplications$ = this.filteredApplications$.pipe(
@@ -38,43 +36,43 @@ export const selectFavoriteApplications = createSelector(
 
 export const selectApplicationLoaded = createSelector(
   state,
-  state => state.loaded
+  state => state.loaded,
 );
 export const selectSelectedApplication = createSelector(
   selectApplicationsEntities,
   selectRouterState,
   (entities, router): Application => {
     return router.state && entities[router.state.params.name];
-  }
+  },
 );
 export const getSelectedApplicationName = createSelector(
   selectSelectedApplication,
-  (application: Application): string => application && application.name
+  (application: Application): string => application && application.name,
 );
 export const getSelectedApplicationSignatureName = createSelector(
   selectSelectedApplication,
   (application: Application): string => {
     return application && application.signature.signatureName;
-  }
+  },
 );
 export const getSelectedApplicationId = createSelector(
   selectSelectedApplication,
-  (application: Application): number => application && application.id
+  (application: Application): number => application && application.id,
 );
 export const getSelectedApplicationInput = createSelector(
   selectSelectedApplication,
-  (application: Application): string => application && application.input
+  (application: Application): string => application && application.input,
 );
 export const getSelectedApplicationOutput = createSelector(
   selectSelectedApplication,
-  (application: Application): string => application && application.output
+  (application: Application): string => application && application.output,
 );
 export const getSelectedApplicationTestStatus = createSelector(
   selectSelectedApplication,
   (application: Application): TestStatus =>
-    application && application.testStatus
+    application && application.testStatus,
 );
 export const selectApplicationsByNames = (names: string[]) =>
   createSelector(selectApplicationsEntities, dict =>
-    names.map(name => dict[name])
+    names.map(name => dict[name]),
   );

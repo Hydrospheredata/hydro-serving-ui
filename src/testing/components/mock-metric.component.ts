@@ -5,6 +5,6 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   template: '',
 })
 export class MetricComponent {
-    @Input() metric;
-    @Output() deleteMetric = new EventEmitter();
+  @Input() metric;
+  @Output() deleteMetric = new EventEmitter();
 }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { takeUntil } from 'rxjs/internal/operators';
+import { takeUntil } from 'rxjs/operators';
 import { ModelVersion } from '@app/core/data/types';
 import { Observable, Subject } from 'rxjs';
 import { AddComparableFacade } from './add-comparable.facade';

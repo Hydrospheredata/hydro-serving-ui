@@ -1,11 +1,11 @@
 <div class="test-application">
   <div class="test-application">
-    <hydro-icon
+    <hs-icon
       type="icon-close"
       class="icon test-application__close-icon"
       (click)="onClose()"
       б
-    ></hydro-icon>
+    ></hs-icon>
     <p class="application-name">{{ application.name }}</p>
     <div class="warning-container" *ngIf="generatingInputError">
       Couldn't generate input. <br />
@@ -73,22 +73,22 @@
           </form>
         </mdl-tab-panel>
         <mdl-tab-panel mdl-tab-panel-title="cURL">
-          <hydro-command-template
+          <hs-command-template
             type="curl"
             [input]="input"
             [application]="application"
             [isValidInput]="isValidInput"
           >
-          </hydro-command-template>
+          </hs-command-template>
         </mdl-tab-panel>
         <mdl-tab-panel mdl-tab-panel-title="Python">
-          <hydro-command-template
+          <hs-command-template
             type="grpc"
             [input]="input"
             [application]="application"
             [isValidInput]="isValidInput"
           >
-          </hydro-command-template>
+          </hs-command-template>
         </mdl-tab-panel>
       </mdl-tabs>
     </div>
