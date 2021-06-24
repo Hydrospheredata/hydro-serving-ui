@@ -1,6 +1,8 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { BuildInformationService } from '@app/core/build-information.service';
-import { ServiceStatus } from '@app/core/data/types';
+import {
+  BuildInfo,
+  BuildInformationService,
+} from '@app/core/build-information.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,7 +12,7 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonitoringAvailabilityComponent implements OnInit {
-  status$: Observable<{ status: ServiceStatus; message?: string }>;
+  status$: Observable<BuildInfo>;
 
   constructor(private buildInfo: BuildInformationService) {}
 

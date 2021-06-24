@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BuildInformationService } from '@app/core/build-information.service';
+import {
+  BuildInfo,
+  BuildInformationService,
+} from '@app/core/build-information.service';
 import { Observable } from 'rxjs';
-import { ServiceStatus } from '@app/core/data/types';
 
 @Component({
   selector: 'hs-stat-availability',
@@ -15,7 +17,7 @@ import { ServiceStatus } from '@app/core/data/types';
   </hs-service-availability> `,
 })
 export class StatAvailabilityComponent implements OnInit {
-  status$: Observable<{ status: ServiceStatus; message?: string }>;
+  status$: Observable<BuildInfo>;
 
   constructor(private buildInfo: BuildInformationService) {}
 

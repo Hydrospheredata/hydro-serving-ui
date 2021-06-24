@@ -54,6 +54,15 @@
       font-size: 12px;
     }
   }
+  &__empty {
+    position: absolute;
+    top: 22%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: $neutral-color-400;
+    font-family: $font-family-bold;
+    font-size: 12px;
+  }
 }
 
 .metric {

@@ -24,9 +24,8 @@ import { MetricsFacade } from '../../../monitoring/store/facades/metrics.facade'
 export class DialogMetricsComponent implements OnInit {
   layout: boolean = false;
   metrics$: Observable<MetricSpecification[]>;
-  modelVersion$: Observable<
-    ModelVersion
-  > = this.modelVersionsFacade.selectedModelVersion();
+  modelVersion$: Observable<ModelVersion> =
+    this.modelVersionsFacade.selectedModelVersion();
 
   @ViewChild('container', { read: ViewContainerRef, static: true })
   private vcr: ViewContainerRef;
@@ -35,7 +34,7 @@ export class DialogMetricsComponent implements OnInit {
     private dialog: DialogsService,
     private resolver: ComponentFactoryResolver,
     private metricsFacade: MetricsFacade,
-    private modelVersionsFacade: ModelVersionsFacade
+    private modelVersionsFacade: ModelVersionsFacade,
   ) {}
 
   onAddMetric(modelVersion: ModelVersion) {
@@ -44,7 +43,7 @@ export class DialogMetricsComponent implements OnInit {
       this.layout = true;
       this.vcr.clear();
       const factory = this.resolver.resolveComponentFactory(
-        DialogMetricComponent
+        DialogMetricComponent,
       );
       const component = this.vcr.createComponent(factory);
       component.instance.modelVersion = modelVersion;
@@ -71,7 +70,7 @@ export class DialogMetricsComponent implements OnInit {
       this.layout = true;
       this.vcr.clear();
       const factory = this.resolver.resolveComponentFactory(
-        DialogDeleteMetricComponent
+        DialogDeleteMetricComponent,
       );
       const component = this.vcr.createComponent(factory);
       component.instance.metricId = metricId;

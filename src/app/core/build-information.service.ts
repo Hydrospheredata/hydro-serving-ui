@@ -19,7 +19,7 @@ const enum HydroServicesEndpoints {
   visualization = 'visualization/buildinfo',
 }
 
-interface BuildInfo {
+export interface BuildInfo {
   status: ServiceStatus;
   message?: string;
   [p: string]: string;
@@ -65,7 +65,7 @@ export class BuildInformationService {
 
   getStatus<K extends keyof typeof HydroServicesEndpoints>(
     serviceName: K,
-  ): Observable<{ status: ServiceStatus; message?: string }> {
+  ): Observable<BuildInfo> {
     return this.buildInfo$.pipe(pluck(serviceName));
   }
 
