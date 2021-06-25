@@ -1,11 +1,20 @@
 <div class="dialog__content model__delete">
   <span class="dialog__content--question">Remove model?</span>
-  <p class="dialog__text dialog__text--is-alert model-delete__name">{{ name }}</p>
+  <p class="dialog__text dialog__text--is-alert model-delete__name">
+    {{ name }}
+  </p>
   <div class="dialog__buttons dialog__buttons--column">
     <button hs-button (click)="onClose()">
       cancel
     </button>
-    <button hs-button kind="flat" color="warning" (click)="onDelete()" hsAutofocused class="model-delete__button">
+    <button
+      hs-button
+      kind="flat"
+      color="warning"
+      (click)="onDelete()"
+      hsAutofocused
+      class="model-delete__button"
+    >
       Remove
     </button>
   </div>

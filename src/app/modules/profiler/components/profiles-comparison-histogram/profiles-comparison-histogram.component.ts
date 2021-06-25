@@ -14,12 +14,10 @@ import { HIGHCHART_COLORS } from './highchart-colors';
 
 @Component({
   selector: 'hs-profiles-comparison-histogram',
-  template: `
-    <div class="comparison-histogram">
-      <p class="comparison-histogram__header">Comparison histogram</p>
-      <div #chartContainer></div>
-    </div>
-  `,
+  template: `<div class="comparison-histogram">
+    <p class="comparison-histogram__header">Comparison histogram</p>
+    <div #chartContainer></div>
+  </div> `,
   styleUrls: ['./profiles-comparison-histogram.component.scss'],
 })
 export class ProfilesComparisonHistogramComponent

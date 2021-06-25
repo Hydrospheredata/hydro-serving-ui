@@ -1,22 +1,22 @@
 <div class="app-header">
-  <hydro-icon
+  <hs-icon
     *ngIf="canLoadOlder"
     (click)="onLoadOlder()"
     class="app-header__icon"
     type="next"
   >
-  </hydro-icon>
+  </hs-icon>
   <div class="app-header__range">
     <div>
       <span>{{ aggregationList.dateFrom | hsFormatDate }}</span> -
       <span>{{ aggregationList.dateTo | hsFormatDate }}</span>
     </div>
   </div>
-  <hydro-icon
+  <hs-icon
     *ngIf="canLoadNewer"
     (click)="onLoadNewer()"
     class="app-header__icon app-header__icon--rotated"
     type="next"
   >
-  </hydro-icon>
+  </hs-icon>
 </div>

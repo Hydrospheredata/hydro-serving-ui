@@ -20,15 +20,17 @@ export const MockModelSignature = Factory.define<ModelSignature>(() => ({
   inputs: [],
 }));
 
-export const MockModelVersion1Model1 = Factory.define<ModelVersion, ModelSignature>(
-  ({ sequence }) => ({
+export const MockModelVersion1Model1 = Factory.define<
+  ModelVersion,
+  ModelSignature
+>(({ sequence }) => ({
   get contractInputs(): Input[] {
     return [];
   },
   get contractOutputs(): Output[] {
     return [];
   },
-  isReleasedAndInternal(): Boolean {
+  isReleasedAndInternal(): boolean {
     return true;
   },
   id: sequence,

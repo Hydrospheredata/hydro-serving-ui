@@ -22,10 +22,7 @@ export class ModelVersionLogComponent implements OnInit {
 
   logs$: Observable<string>;
 
-  constructor(
-    private logService: LogService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private logService: LogService, private cdr: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.logs$ = this.logService

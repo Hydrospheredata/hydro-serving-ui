@@ -22,42 +22,51 @@
         <td class="metrics__table-cell metrics__table-head">Threshold</td>
         <td class="metrics__table-cell metrics__table-head">Actions</td>
       </tr>
-      <tr
-        class="metrics__table-row"
-        *ngFor="let metric of metrics$ | async"
-        [ngClass]="{
+      <ng-container *ngIf="metrics$ | async as metrics">
+        <ng-container *ngIf="metrics.length > 0; else emptyMetrics">
+          <tr
+            class="metrics__table-row"
+            *ngFor="let metric of metrics$ | async"
+            [ngClass]="{
           'metrics__table-row--disabled': metric.id.startsWith('fake-id')
         }"
-      >
-        <td class="metrics__table-cell">{{ metric.name }}</td>
-        <td class="metrics__table-cell">
-          <ng-container
-            *ngIf="
+          >
+            <td class="metrics__table-cell">{{ metric.name }}</td>
+            <td class="metrics__table-cell">
+              <ng-container
+                *ngIf="
               modelVersionById$(metric.config?.modelVersionId)
                 | async as modelVersion
             "
-          >
-            {{ modelVersion.model.name }}:{{ modelVersion.modelVersion }}
-          </ng-container>
-        </td>
-        <td class="metrics__table-cell">
-          {{ metric.config?.servable?.fullName }}
-        </td>
-        <td class="metrics__table-cell">
-          {{ metric.config?.thresholdCmpOperator?.kind }}
-        </td>
-        <td class="metrics__table-cell">{{ metric.config?.threshold }}</td>
-        <td class="metrics__table-cell">
-          <div class="metric__actions" *ngIf="!metric.id.startsWith('fake-id')">
-            <div class="metric__action" (click)="onDeleteMetric(metric.id)">
-              <hydro-icon
-                class="hs-button__icon metric__action-icon "
-                type="icon-remove"
-              ></hydro-icon>
-            </div>
+              >
+                {{ modelVersion.model.name }}:{{ modelVersion.modelVersion }}
+              </ng-container>
+            </td>
+            <td class="metrics__table-cell">
+              {{ metric.config?.servable?.fullName }}
+            </td>
+            <td class="metrics__table-cell">
+              {{ metric.config?.thresholdCmpOperator?.kind }}
+            </td>
+            <td class="metrics__table-cell">{{ metric.config?.threshold }}</td>
+            <td class="metrics__table-cell">
+              <div class="metric__actions" *ngIf="!metric.id.startsWith('fake-id')">
+                <div class="metric__action" (click)="onDeleteMetric(metric.id)">
+                  <hs-icon
+                    class="hs-button__icon metric__action-icon"
+                    type="icon-remove"
+                  ></hs-icon>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-template #emptyMetrics>
+          <div class="metrics__empty">
+            Metrics list is empty
           </div>
-        </td>
-      </tr>
+        </ng-template>
+      </ng-container>
     </table>
   </div>
 

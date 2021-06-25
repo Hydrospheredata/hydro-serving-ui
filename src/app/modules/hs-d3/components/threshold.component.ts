@@ -7,17 +7,15 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: '[hs-d3threshold]',
-  template: `
-    <svg:line
-      x1="0"
-      [attr.x2]="x2"
-      [attr.y1]="y1"
-      [attr.y2]="y2"
-      stroke="#E12D39"
-      stroke-dasharray="10px"
-    ></svg:line>
-  `,
+  selector: 'hs-d3threshold',
+  template: `<svg:line
+    x1="0"
+    [attr.x2]="x2"
+    [attr.y1]="y1"
+    [attr.y2]="y2"
+    stroke="#E12D39"
+    stroke-dasharray="10px"
+  ></svg:line> `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class D3ThresholdComponent implements OnChanges {

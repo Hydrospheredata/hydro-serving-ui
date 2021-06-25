@@ -11,8 +11,14 @@ class CommonStatistics {
     this.distinctCount = props.distinctCount;
     this.missing = props.missing;
 
-    this.uniquePerc = Math.min(Math.floor(this.distinctCount / (this.count - this.missing) * 100), 100);
-    this.missingPerc = Math.min(Math.floor(this.missing / this.count * 100), 100);
+    this.uniquePerc = Math.min(
+      Math.floor((this.distinctCount / (this.count - this.missing)) * 100),
+      100
+    );
+    this.missingPerc = Math.min(
+      Math.floor((this.missing / this.count) * 100),
+      100
+    );
   }
 }
 
@@ -138,7 +144,9 @@ export class DoubleProfile implements Profile {
     this.timestamp = props.timestamp;
     this.commonStatistics = new CommonStatistics(props.commonStatistics);
     this.quantileStatistics = new QuantileStatistics(props.quantileStatistics);
-    this.descriptiveStatistics = new DescriptiveStatistics(props.descriptiveStatistics);
+    this.descriptiveStatistics = new DescriptiveStatistics(
+      props.descriptiveStatistics
+    );
     this.histogram = new Histogram(props.histogram);
   }
 }

@@ -53,20 +53,20 @@
     [ngSwitch]="status"
     [ngClass]="{ 'servable__status--serving': status === 'Serving' }"
   >
-    <hydro-icon
+    <hs-icon
       *ngSwitchCase="'Serving'"
       class="servable__status-icon"
       type="circle-check"
-    ></hydro-icon>
-    <hydro-icon
+    ></hs-icon>
+    <hs-icon
       *ngSwitchCase="'Starting'"
       class="servable__status-icon"
       type="clock"
-    ></hydro-icon>
-    <hydro-icon
+    ></hs-icon>
+    <hs-icon
       *ngSwitchDefault
       class="servable__status-icon"
       type="circle-x"
-    ></hydro-icon>
+    ></hs-icon>
   </div>
 </ng-template>

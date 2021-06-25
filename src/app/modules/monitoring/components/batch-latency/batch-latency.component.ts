@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
 } from '@angular/core';
 import { ColorPaletteService } from '@app/core/color-palette.service';
 import { CheckCollection, ChartConfig } from '../../models';
@@ -15,7 +15,7 @@ import { CheckCollection, ChartConfig } from '../../models';
   styleUrls: ['./batch-latency.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BatchLatencyComponent implements OnInit {
+export class BatchLatencyComponent {
   @Input() set requests(reqs: CheckCollection) {
     const data: number[] = reqs.getLatency();
 
@@ -46,6 +46,4 @@ export class BatchLatencyComponent implements OnInit {
   };
 
   constructor(private colorPalette: ColorPaletteService) {}
-
-  ngOnInit() {}
 }

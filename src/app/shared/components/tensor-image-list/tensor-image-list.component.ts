@@ -12,7 +12,7 @@ import { ImageHelperService } from '@app/core/image-helper.service';
   templateUrl: './tensor-image-list.component.html',
   styleUrls: ['./tensor-image-list.component.scss'],
 })
-export class TensorImageListComponent implements OnInit, OnChanges {
+export class TensorImageListComponent implements OnChanges {
   @Input() pixels;
   @Input() tensorProto;
   imagesCount: number;
@@ -22,8 +22,6 @@ export class TensorImageListComponent implements OnInit, OnChanges {
 
   readonly elementsForRGBA = 4;
   constructor(private imageHelper: ImageHelperService) {}
-
-  ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.pixels || changes.tensorProto) {

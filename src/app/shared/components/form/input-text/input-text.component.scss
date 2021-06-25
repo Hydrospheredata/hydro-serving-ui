@@ -34,6 +34,8 @@
   }
 
   &__errors {
+    display: flex;
+    align-items: center;
     background: $supportive-color-red-500;
     color: $neutral-color-100;
     position: absolute;
@@ -43,5 +45,22 @@
     width: 100%;
     top: calc(100% + 4px);
     border-radius: 4px;
+  }
+
+  &__error{
+    position: relative;
+    padding-left: 10px;
+    margin-right: 7px;
+    &::before {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: white;
+      border-radius: 50%;
+      top: 50%;
+      left: 2%;
+      transform: translate(-50%, -50%);
+    }
   }
 }

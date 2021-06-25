@@ -1,21 +1,23 @@
 <div class="model-version-status" [ngSwitch]="status">
   <div *ngSwitchCase="'released'">
-    <hydro-icon
+    <hs-icon
       class="model-version-status__icon model-version-status--released"
       type="circle-check"
-    ></hydro-icon>
+    ></hs-icon>
   </div>
   <div *ngSwitchCase="'failed'">
-    <hydro-icon
+    <hs-icon
       class="model-version-status__icon model-version-status--failed"
       type="circle-x"
-    ></hydro-icon>
+    ></hs-icon>
   </div>
   <div *ngSwitchCase="'assembling'">
-    <hydro-icon
+    <hs-icon
       class="model-version-status__icon model-version-status--assembling"
       type="clock"
-    ></hydro-icon>
+    ></hs-icon>
   </div>
-  <div *ngSwitchDefault class="model-version-status--undefined">{{ status }}</div>
+  <div *ngSwitchDefault class="model-version-status--undefined">
+    {{ status }}
+  </div>
 </div>

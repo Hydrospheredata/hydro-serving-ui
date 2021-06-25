@@ -20,7 +20,7 @@ import { CanActivateModelGuard } from './guards/can-activate-model.guard';
             path: ':modelName/:modelVersionNumber',
             loadChildren: () =>
               import('../model-version/model-version.module').then(
-                m => m.ModelVersionModule
+                m => m.ModelVersionModule,
               ),
           },
           // {

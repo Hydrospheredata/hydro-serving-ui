@@ -1,7 +1,7 @@
-import { IField, ISignature } from '@app/core/data/types';
+import { Field, ISignature } from '@app/core/data/types';
 import { Factory } from 'fishery';
 
-const SimpleInput = Factory.define<IField>(() => ({
+const SimpleInput = Factory.define<Field>(() => ({
   profile: 'TEXT',
   name: 'simple_input_1',
   dtype: 'DTYPE',
@@ -10,7 +10,7 @@ const SimpleInput = Factory.define<IField>(() => ({
   },
 }));
 
-const SimpleOutput = Factory.define<IField>(() => ({
+const SimpleOutput = Factory.define<Field>(() => ({
   profile: 'TEXT',
   name: 'simple_output_1',
   dtype: 'DTYPE',

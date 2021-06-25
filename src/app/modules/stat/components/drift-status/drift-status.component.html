@@ -5,10 +5,10 @@
     padding: justIcon ? '1px' : '2px 8px'
   }"
 >
-  <hydro-icon
+  <hs-icon
     class="drift-status__icon"
     [type]="iconType"
     [ngStyle]="stylesMap"
-  ></hydro-icon>
+  ></hs-icon>
   <span class="drift-status__text" *ngIf="!justIcon">{{ statusText }}</span>
 </div>

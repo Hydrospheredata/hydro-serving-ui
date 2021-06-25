@@ -19,14 +19,14 @@ import {
   Delete,
   Get,
   Update,
-  ToggleFavorite
+  ToggleFavorite,
 } from '../store/actions/applications.actions';
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationsFacade {
   constructor(
     private readonly store: Store<HydroServingState>,
-    private nameGenerator: NameGenerator
+    private nameGenerator: NameGenerator,
   ) {}
 
   loadAll(): void {
@@ -37,7 +37,10 @@ export class ApplicationsFacade {
     this.store.dispatch(Delete({ application }));
   }
 
-  createApplicationFromModelVersion(modelVersion: ModelVersion, depConfig: DeploymentConfig) {
+  createApplicationFromModelVersion(
+    modelVersion: ModelVersion,
+    depConfig: DeploymentConfig,
+  ) {
     this.allApplications()
       .pipe(first())
       .subscribe(applications => {
@@ -66,7 +69,7 @@ export class ApplicationsFacade {
               },
             ],
           },
-          deploymentConfiguration: depConfig
+          deploymentConfiguration: depConfig,
         });
       });
   }

@@ -1,0 +1,6 @@
+<div class="log" [ngClass]="{ 'log--is-visible': isVisible$ | async }">
+  <div class="log__layout" (click)="closeGlobalLog()"></div>
+  <div class="log__content">
+    <ng-container #logContainer></ng-container>
+  </div>
+</div>

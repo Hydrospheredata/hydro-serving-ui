@@ -1,10 +1,16 @@
 <div class="comparable">
   <div class="comparable__filter">
-    <hydro-input-text bordered [formControl]="modelVerFilter"></hydro-input-text>
+    <hydro-input-text
+      bordered
+      [formControl]="modelVerFilter"
+    ></hydro-input-text>
   </div>
-  <div class="comparable__item" *ngFor="let modelVersion of modelVersions$ | async"
-       (click)="onSelectModelVersion(modelVersion)">
-    <div> {{ modelVersion.model.name }}</div>
-    <div class="comparable__version"> {{modelVersion.modelVersion}}</div>
+  <div
+    class="comparable__item"
+    *ngFor="let modelVersion of modelVersions$ | async"
+    (click)="onSelectModelVersion(modelVersion)"
+  >
+    <div>{{ modelVersion.model.name }}</div>
+    <div class="comparable__version">{{ modelVersion.modelVersion }}</div>
   </div>
 </div>

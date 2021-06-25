@@ -4,7 +4,10 @@
       Errors
     </div>
   </div>
-  <div class="error-check__count" [ngClass]="{'error-check__count--failed': errorsCount > 0}">
+  <div
+    class="error-check__count"
+    [ngClass]="{ 'error-check__count--failed': errorsCount > 0 }"
+  >
     {{ errorsCount }}
   </div>
   <button

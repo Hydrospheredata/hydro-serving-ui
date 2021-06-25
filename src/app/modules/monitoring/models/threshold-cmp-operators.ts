@@ -1,4 +1,10 @@
-export type CmpOperators = 'Eq' | 'NotEq' | 'Greater' | 'Less' | 'GreaterEq' | 'LessEq';
+export type CmpOperators =
+  | 'Eq'
+  | 'NotEq'
+  | 'Greater'
+  | 'Less'
+  | 'GreaterEq'
+  | 'LessEq';
 export const cmpOperators: Array<{ kind: CmpOperators }> = [
   { kind: 'Eq' },
   { kind: 'NotEq' },

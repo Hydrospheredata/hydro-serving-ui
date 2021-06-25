@@ -1,5 +1,5 @@
-import { Options } from 'ng5-slider';
-import { debounceTime } from 'rxjs/internal/operators';
+import { Options } from '@angular-slider/ngx-slider';
+import { debounceTime } from 'rxjs/operators';
 
 import {
   Component,

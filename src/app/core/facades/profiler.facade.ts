@@ -4,7 +4,7 @@ import { HydroServingState } from '@app/core/store/states/root.state';
 import { Store, select } from '@ngrx/store';
 import { neitherNullNorUndefined } from '@app/utils';
 import { Observable, timer } from 'rxjs';
-import { switchMap, map, share } from 'rxjs/internal/operators';
+import { switchMap, map, share } from 'rxjs/operators';
 
 import { selectRouterParams } from '../store/selectors/router.selectors';
 import { ProfilerService } from '../data/services/profiler.service';

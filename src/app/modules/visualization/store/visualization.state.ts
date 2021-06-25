@@ -1,7 +1,7 @@
 import { Colorizer } from '../models';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { shareReplay } from 'rxjs/internal/operators';
+import { shareReplay } from 'rxjs/operators';
 import { pluck } from '@app/utils';
 import { VisualizationResponse, ETaskState } from '../models';
 import { VisualizationParams } from '../models/visualization-params';

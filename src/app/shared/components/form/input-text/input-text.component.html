@@ -1,9 +1,9 @@
 <div class="hs-input">
-  <label *ngIf="label" class="hs-input__label" [attr.for]="name">{{
-    label
-  }}</label>
+  <label *ngIf="label" class="hs-input__label" [attr.for]="name"
+    >{{ label }}</label
+  >
   <div class="hs-input__control">
-    <hydro-icon *ngIf="icon" class="hs-input__icon" [type]="icon"></hydro-icon>
+    <hs-icon *ngIf="icon" class="hs-input__icon" [type]="icon"></hs-icon>
     <input [ngClass]="inputClassMap" [(ngModel)]="value" [attr.id]="name" />
     <ng-container *ngIf="errors">
       <div class="hs-input__errors">

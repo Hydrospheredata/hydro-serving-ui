@@ -5,8 +5,6 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './header-info.component.html',
   styleUrls: ['./header-info.component.scss'],
 })
-export class HeaderInfoComponent implements OnInit {
+export class HeaderInfoComponent {
   constructor() {}
-
-  ngOnInit() {}
 }

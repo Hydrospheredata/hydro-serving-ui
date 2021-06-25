@@ -5,8 +5,7 @@
     </hs-error-message>
   </div>
 
-  {{ selectedField$ | async | json }}
-  {{ fields$ | async | json }}
+  {{ selectedField$ | async | json }} {{ fields$ | async | json }}
 
   <!--  <div class="profiles__header" *ngIf="(fields$ | async).length > 0; else name">-->
   <!--    <div class="profiles__header-row">-->

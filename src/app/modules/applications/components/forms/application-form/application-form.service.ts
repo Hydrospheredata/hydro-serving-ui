@@ -7,14 +7,14 @@ import {
 } from '@angular/forms';
 
 import { CustomValidatorsService } from '@app/core/custom-validators.service';
-import { Application } from '@app/core/data/types';
+import { Application, ModelVersion } from '@app/core/data/types';
 import {
-  IModelVariantFormData,
+  ModelVariantFormData,
   ModelVariantFormService,
 } from '../model-variant-form/model-variant-form.service';
 
 export interface StageFormData {
-  modelVariants: IModelVariantFormData[];
+  modelVariants: ModelVariantFormData[];
 }
 
 interface ExecutionGraphFormData {
@@ -33,14 +33,17 @@ export class ApplicationFormService {
   constructor(
     private fb: FormBuilder,
     private modelVariantFormService: ModelVariantFormService,
-    private customValidators: CustomValidatorsService
+    private customValidators: CustomValidatorsService,
   ) {}
 
-  public initForm(application: Application): FormGroup {
+  public initForm(
+    application: Application,
+    modelVersions: ModelVersion[] = [],
+  ): FormGroup {
     let data: FormData;
 
     if (application) {
-      data = this.applicationToFormData(application);
+      data = this.applicationToFormData(application, modelVersions);
     } else {
       data = this.defaultFormData();
     }
@@ -58,11 +61,18 @@ export class ApplicationFormService {
     return this.form;
   }
 
-  public applicationToFormData(application: Application): FormData {
+  public applicationToFormData(
+    application: Application,
+    modelVersions: ModelVersion[],
+  ): FormData {
     const stages = application.executionGraph.stages.map(stage => {
-      const modelVariants: IModelVariantFormData[] = stage.modelVariants.map(
-        this.modelVariantFormService.modelVariantToModelVariantFormData,
-        this.modelVariantFormService
+      const modelVariants: ModelVariantFormData[] = stage.modelVariants.map(
+        mv =>
+          this.modelVariantFormService.modelVariantToModelVariantFormData(
+            mv,
+            modelVersions,
+          ),
+        this.modelVariantFormService,
       );
       return { ...stage, modelVariants };
     });
@@ -86,23 +96,23 @@ export class ApplicationFormService {
   public addModelVariantToStage(stageControl: AbstractControl): void {
     const modelVariants = stageControl.get('modelVariants') as FormArray;
     modelVariants.push(
-      this.modelVariantFormService.buildModelVariantFormGroup()
+      this.modelVariantFormService.buildModelVariantFormGroup(),
     );
   }
 
   private buildStageGroup(stage): FormGroup {
     const modelVariants = stage.modelVariants.map(
-      (modelVariant: IModelVariantFormData) => {
+      (modelVariant: ModelVariantFormData) => {
         return this.modelVariantFormService.buildModelVariantFormGroup(
-          modelVariant
+          modelVariant,
         );
-      }
+      },
     );
 
     return this.fb.group({
       modelVariants: this.fb.array(
         modelVariants,
-        this.customValidators.weightValidation()
+        this.customValidators.weightValidation(),
       ),
     });
   }

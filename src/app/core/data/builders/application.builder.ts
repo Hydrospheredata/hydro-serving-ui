@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Application, ISignature } from '../types';
+import { Application, Signature } from '../types';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class ApplicationBuilder {
 
   private toApplication(props): Application {
     let id: number;
-    let signature: ISignature;
+    let signature: Signature;
 
     if (props.id) {
       id = props.id;

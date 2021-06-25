@@ -6,9 +6,9 @@
 
 <ng-template #bodySection>
   <div class="stat__body">
-    <hs-error-message *ngIf="error$ | async as error; else report">{{
-      error
-    }}</hs-error-message>
+    <hs-error-message *ngIf="error$ | async as error; else report"
+      >{{ error }}</hs-error-message
+    >
   </div>
 </ng-template>
 
@@ -38,10 +38,10 @@
           class="report__warning"
         >
           <span [drift]="warning.drift_probability_per_feature" hsColorByDrift>
-            <hydro-icon
+            <hs-icon
               class="report__warning-icon"
               type="icon-error-outline"
-            ></hydro-icon>
+            ></hs-icon>
           </span>
           <div class="report__warning-msg">
             {{ warning.message }}

@@ -9,5 +9,5 @@ export const adapter: EntityAdapter<ModelVersionServiceStatusesEntity> = createE
 
 export const initialState: State = {
   ids: [],
-  entities: {}
+  entities: {},
 };

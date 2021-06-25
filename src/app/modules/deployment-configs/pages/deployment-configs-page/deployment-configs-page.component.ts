@@ -1,12 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Router, Event, NavigationEnd } from '@angular/router';
+import { Router } from '@angular/router';
 
-import { Observable, Subject, Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
-import { first } from 'rxjs/internal/operators';
+import { Observable, Subject } from 'rxjs';
 
 import { DeploymentConfig } from '@app/core/data/types';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
+import { RedirectService } from '@app/core/redirect.service';
 
 @Component({
   selector: 'hs-deployment-configs-page',
@@ -20,12 +19,13 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
 
   private all$: Observable<DeploymentConfig[]>;
   private error: Subject<string> = new Subject<string>();
-  private routerSub: Subscription;
+
   private toggle: boolean;
 
   constructor(
     private readonly facade: DeploymentConfigsFacade,
     private readonly router: Router,
+    private redirectService: RedirectService,
   ) {
     this.error$ = this.error.asObservable();
 
@@ -34,12 +34,7 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
 
     this.selectedConfig$ = this.facade.selectedConfig();
 
-    this.routerSub = this.router.events
-      .pipe(
-        filter(event => this.isRootUrl(event)),
-        tap(_ => this.redirectToFirst())
-      )
-      .subscribe();
+    this.redirectService.redirectToFirst(this.all$, 'deployment_configs');
 
     this.toggle = false;
   }
@@ -50,7 +45,6 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.routerSub.unsubscribe();
     this.toggle = false;
   }
 
@@ -60,15 +54,5 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
 
   handleFilter(filter: string): void {
     this.facade.onFilter(filter);
-  }
-
-  private redirectToFirst() {
-    this.all$.pipe(first(configs => configs.length > 0)).subscribe(configs => {
-      this.router.navigate([`deployment_configs/${configs[0].name}`]);
-    });
-  }
-
-  private isRootUrl(event: Event): boolean {
-    return event instanceof NavigationEnd && event.url.split('/').length <= 2;
   }
 }
