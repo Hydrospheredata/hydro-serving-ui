@@ -17,7 +17,7 @@ on:
 #   HYDRO_SERVING_TOKEN - github token with write access to hydro-serving repo
 
 env:
-  HYDRO_SERVING_REPO: Hydrospheredata/hydro-serving-ui
+  HYDRO_SERVING_REPO: Hydrospheredata/hydro-serving
   IMAGE: hydro-serving-ui # name of the built image
   
 jobs:
@@ -58,7 +58,7 @@ jobs:
       if: github.event_name == 'push'
       uses: aurelien-baudet/workflow-dispatch@v2.1.1
       with:
-        workflow: Local_release
+        workflow: Local release
         token: ${{ secrets.HYDRO_SERVING_TOKEN }}
         repo: ${{ env.HYDRO_SERVING_REPO }}
         inputs: '{"service_image_name":"${{ env.IMAGE }}", "registry_url":"hydrosphere", "tag":"${{ github.sha }}"}'
