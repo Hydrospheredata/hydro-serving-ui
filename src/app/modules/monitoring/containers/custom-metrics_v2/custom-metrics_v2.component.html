@@ -12,21 +12,28 @@
     </button>
   </div>
   <div class="custom-metrics__config" *ngIf="chartConfigs$ | async as configs">
-    <!--    <hs-model-versions-tags-->
-    <!--      *ngIf="configs.length"-->
-    <!--      (listChanged)="comparableModelVersionsChanged($event)"-->
-    <!--    ></hs-model-versions-tags>-->
+<!--        <hs-model-versions-tags-->
+<!--          *ngIf="configs.length"-->
+<!--          (listChanged)="comparableModelVersionsChanged($event)"-->
+<!--        ></hs-model-versions-tags>-->
     <div
       *ngIf="(comparableModelVersions$ | async).length"
       class="custom-metrics__header-regime-selector"
     ></div>
   </div>
-  <div class="charts">
-    <div
-      class="charts__item"
-      *ngFor="let chartConfig of chartConfigs$ | async; trackBy: trackByFn"
-    >
-      <hs-check-chart_v2 [config]="chartConfig"></hs-check-chart_v2>
-    </div>
+  <div class="charts" *ngIf="chartConfigs$ | async as configs">
+    <ng-container *ngIf="configs.length > 0; else notification">
+      <div
+        class="charts__item"
+        *ngFor="let chartConfig of configs; trackBy: trackByFn"
+      >
+        <hs-check-chart_v2 [config]="chartConfig"></hs-check-chart_v2>
+      </div>
+    </ng-container>
+    <ng-template #notification>
+      <div class="charts__notification">
+        Metrics list is empty
+      </div>
+    </ng-template>
   </div>
 </div>

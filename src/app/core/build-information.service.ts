@@ -19,16 +19,20 @@ const enum HydroServicesEndpoints {
   visualization = 'visualization/buildinfo',
 }
 
-interface BuildInfo {
-  [p: string]: any;
+export interface BuildInfo {
+  status: ServiceStatus;
+  message?: string;
+  [p: string]: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class BuildInformationService {
-  private buildInfo$: Observable<BuildInfo>;
+  private buildInfo$: Observable<{ [serviceName: string]: BuildInfo }>;
   private buildInfo: BehaviorSubject<{
-    [serviceName: string]: any;
-  }> = new BehaviorSubject<BuildInfo>({});
+    [serviceName: string]: BuildInfo;
+  }> = new BehaviorSubject<{
+    [serviceName: string]: BuildInfo;
+  }>({});
 
   constructor(private http: HttpService) {
     this.buildInfo$ = this.buildInfo
@@ -42,7 +46,7 @@ export class BuildInformationService {
         map((res: any) => {
           return { ...res, status: ServiceStatus.AVAILABLE };
         }),
-        catchError(err => this.handleError(err))
+        catchError(err => this.handleError(err)),
       );
 
     return forkJoin({
@@ -55,17 +59,17 @@ export class BuildInformationService {
     }).subscribe(infos => this.buildInfo.next(infos));
   }
 
-  getBuildInfo(): Observable<BuildInfo> {
+  getBuildInfo(): Observable<{ [serviceName: string]: BuildInfo }> {
     return this.buildInfo$.pipe(distinctUntilChanged());
   }
 
   getStatus<K extends keyof typeof HydroServicesEndpoints>(
-    serviceName: K
-  ): Observable<{ status: ServiceStatus; message: string }> {
+    serviceName: K,
+  ): Observable<BuildInfo> {
     return this.buildInfo$.pipe(pluck(serviceName));
   }
 
-  private handleError(error: string): Observable<any> {
+  private handleError(error: string): Observable<BuildInfo> {
     const is501Error = /501/i.test(error);
 
     if (is501Error) {
