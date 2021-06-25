@@ -83,6 +83,7 @@
   let-iconName="iconName"
 >
   <div
+    *ngIf="message"
     hsTippy
     [tippyOptions]="{
       content: message,
