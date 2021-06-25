@@ -58,7 +58,7 @@ jobs:
       if: github.event_name == 'push'
       uses: aurelien-baudet/workflow-dispatch@v2.1.1
       with:
-        workflow: "Local release"
+        workflow: "Local_release"
         token: ${{ secrets.HYDRO_SERVING_TOKEN }}
         repo: ${{ env.HYDRO_SERVING_REPO }}
         inputs: '{"service_image_name":"${{ env.IMAGE }}", "registry_url":"hydrosphere", "tag":"${{ github.sha }}"}'
