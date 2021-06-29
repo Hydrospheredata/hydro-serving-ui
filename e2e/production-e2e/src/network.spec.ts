@@ -2,9 +2,13 @@ import { Browser, Page } from 'playwright';
 import appConfig from '../app-config';
 import initializeBrowser from '../helpers/initializeBrowser';
 
-fdescribe('Network', () => {
+describe('Network', () => {
   let browser: Browser;
   let page: Page;
+
+  beforeEach(() => {
+    jest.setTimeout(30000);
+  });
 
   beforeAll(async () => {
     await initializeBrowser().then(config => {
@@ -21,14 +25,14 @@ fdescribe('Network', () => {
     const responses = await Promise.all([
       ...appConfig.endpoints.map(endpoint =>
         page.waitForResponse(
-          `${appConfig.url}/api/v${appConfig.apiVersion}/${endpoint}`
-        )
+          `${appConfig.url}/api/v${appConfig.apiVersion}/${endpoint}`,
+        ),
       ),
       page.goto(appConfig.url),
     ]);
 
     const allResponsesHave200Status = responses.every(
-      res => res.status() === 200
+      res => res.status() === 200,
     );
     expect(allResponsesHave200Status).toBe(true);
   });
