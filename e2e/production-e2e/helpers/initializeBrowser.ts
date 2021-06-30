@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, chromium, Page } from 'playwright';
-const config = require('../../playwright.config');
+const config = require('../playwright.config');
 
 export default async function initializeBrowser(): Promise<{
   browser: Browser;
