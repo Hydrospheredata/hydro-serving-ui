@@ -10,7 +10,17 @@ on:
       version:
         description: release version, ommit for patch
         default: ''
+        required: false
 
+      bump:
+        description: bump rule (major|feature|bug|rc)
+        default: bug
+        required: false
+
+      release:
+        description: release type (local|global)
+        default: local
+        required: false 
 # Secrets:
 #   DOCKERHUB_USERNAME - also used as the dockerhub repository url
 #   DOCKERHUB_PASSWORD
@@ -19,9 +29,13 @@ on:
 env:
   HYDRO_SERVING_REPO: Hydrospheredata/hydro-serving
   IMAGE: hydro-serving-ui # name of the built image
+  REGISTRY: hydrosphere
   
 jobs:
   Build_and_publish:
+    if: |
+     github.event_name == 'workflow_dispatch' || 
+     github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -38,22 +52,63 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
-        
+
+    # Bump service version  
+    - name: Get latest tag
+      id: get-latest-tag
+      uses: actions-ecosystem/action-get-latest-tag@v1
+
+    - name: Bump release version
+      id: bump_version
+      uses: christian-draeger/increment-semantic-version@1.0.2
+      with:
+        current-version: ${{ steps.get-latest-tag.outputs.tag }}
+        version-fragment: ${{ github.event.inputs.bump }}
+
+    - name: Set VERSION variable
+      if: github.event.inputs.version == '' && github.event_name == 'workflow_dispatch'
+      run: echo VERSION=${{ steps.bump_version.outputs.next-version }} >> $GITHUB_ENV
+      
+    - name: Set VERSION variable
+      if: github.event.inputs.version != '' && github.event_name == 'workflow_dispatch'
+      run: echo VERSION=${{ github.event.inputs.version }} >> $GITHUB_ENV
+
+    - name: Set VERSION variable
+      if: github.event_name == 'push'
+      run: echo VERSION=${{ github.sha }} >> $GITHUB_ENV
+  
     - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v2
       with:
         push: true
-        tags: hydrosphere/${{ env.IMAGE }}:${{ github.sha }}
+        tags: hydrosphere/${{ env.IMAGE }}:${{ env.VERSION }}
         
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }} 
+
+      # Commit changes
+    - name: Commit new version
+      if: github.event_name == 'workflow_dispatch'
+      run: "echo ${{ env.VERSION }} > version"
+
+    - name: Push to repo
+      if: github.event_name == 'workflow_dispatch'
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git commit -m "Releasing ${{ env.IMAGE }}:${{ env.VERSION }}" -a
+        git push
+          
+    - name: Tag commit
+      if: github.event_name == 'workflow_dispatch'
+      run: "git tag ${{ env.VERSION }}"
       
-    # - name: Upload docker image artifact
-    #   uses: ishworkh/docker-image-artifact-upload@v1
-    #   with:
-    #     image: "hydrosphere/${{ env.IMAGE }}:${{ github.sha }}"
-        
+    - name: Push tag
+      if: github.event_name == 'workflow_dispatch'
+      run: "git push --tags"
+              
+      # Update helm chart and compose
     - name: Update image version in hydro-serving repo
       if: github.event_name == 'push'
       uses: aurelien-baudet/workflow-dispatch@v2.1.1
@@ -61,74 +116,10 @@ jobs:
         workflow: Local release
         token: ${{ secrets.HYDRO_SERVING_TOKEN }}
         repo: ${{ env.HYDRO_SERVING_REPO }}
-        inputs: '{"service_image_name":"${{ env.IMAGE }}", "registry_url":"hydrosphere", "tag":"${{ github.sha }}"}'
+        inputs: '{"service_image_name":"${{ env.IMAGE }}", "registry_url":"${{ env.REGISTRY }}", "tag":"${{ env.VERSION }}"}'
       
-  Release:
-    needs: [Build_and_publish]
-    if: github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-        
-      - name: Bump version
-        if: github.event.inputs.version == ''
-        id: bump
-        uses: codacy/git-version@2.4.0
-        
-      - name: Set VERSION variable
-        if: github.event.inputs.version == ''
-        run: echo VERSION=${{ steps.bump.outputs.version }} >> $GITHUB_ENV
-        
-      - name: Set VERSION variable
-        if: github.event.inputs.version != ''
-        run: echo VERSION=${{ github.event.inputs.version }} >> $GITHUB_ENV
-        
-      - name: Docker Image Artifact Download
-        uses: ishworkh/docker-image-artifact-download@v1
-        with:
-          image: "hydrosphere/${{ env.IMAGE }}:${{ github.sha }}"
-          
-      - name: Docker Login
-        uses: docker/login-action@v1.9.0
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-          
-      - name: Retag image
-        run: "docker tag hydrosphere/${{ env.IMAGE }}:${{ github.sha }} hydrosphere/${{ env.IMAGE }}:v${{ env.VERSION }}"
-      
-      - name: Push image
-        run: "docker push hydrosphere/${{ env.IMAGE }}:v${{ env.VERSION }}"
-
-      - name: Commit new version
-        run: "echo ${{ env.VERSION }} > version"
-
-      - name: Push to repo
-        run: |
-          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git commit -m "Releasing $IMAGE_NAME:$TAG" -a
-          git push
-          
-      - name: Tag commit
-        run: "git tag v${{ env.VERSION }}"
-        
-      - name: Push tag
-        run: "git push --tags"
-        # TODO: update grpc version
-        
-  Status:
-    runs-on: ubuntu-latest
-    needs: [Build_and_publish, Release]
-    if: always()
-    steps:
-      - uses: martialonline/workflow-status@v2
-        id: check
-      - run: |
-          echo "release status: ${{  steps.check.outputs.status  }}"
-        
-      
+    - uses: martialonline/workflow-status@v2
+      id: check
+    - run: |
+        echo "release status: ${{  steps.check.outputs.status  }}"
+      # TODO: add more info
