@@ -1,4 +1,4 @@
-name: release
+name: Release
 on:
   push:
     branches:
@@ -7,35 +7,51 @@ on:
       
   workflow_dispatch:
     inputs:
-      version:
-        description: release version, ommit for patch
-        default: ''
-        required: false
-
       bump:
         description: bump rule (major|feature|bug|rc)
         default: bug
+        required: false
+
+      version:
+        description: release version, ommit for patch
+        default: ''
         required: false
 
       release:
         description: release type (local|global)
         default: local
         required: false 
+
 # Secrets:
 #   DOCKERHUB_USERNAME - also used as the dockerhub repository url
 #   DOCKERHUB_PASSWORD
 #   HYDRO_SERVING_TOKEN - github token with write access to hydro-serving repo
 
 env:
-  HYDRO_SERVING_REPO: Hydrospheredata/hydro-serving
+  HYDRO_SERVING_REPO: ${{ github.repository_owner }}/hydro-serving
   IMAGE: hydro-serving-ui # name of the built image
   REGISTRY: hydrosphere
-  
+
 jobs:
+  Verify_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get latest tag
+        id: get-latest-tag
+        uses: actions-ecosystem/action-get-latest-tag@v1
+
+    outputs:
+      latest_version: ${{ steps.get-latest-tag.outputs.tag }}
+
   Build_and_publish:
-    if: |
-     github.event_name == 'workflow_dispatch' || 
-     github.event_name == 'push'
+    needs: Verify_version
+    if: >
+      needs.Verify_version.outputs.latest_version != github.event.inputs.version && (
+      github.event_name == 'workflow_dispatch' || 
+      github.event_name == 'push')
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -76,7 +92,7 @@ jobs:
     - name: Set VERSION variable
       if: github.event_name == 'push'
       run: echo VERSION=${{ github.sha }} >> $GITHUB_ENV
-  
+        
     - name: Build and push
       id: docker_build
       uses: docker/build-push-action@v2
@@ -86,8 +102,16 @@ jobs:
         
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }} 
+        
+    - name: Update image version in hydro-serving repo
+      if: github.event_name == 'push'
+      uses: aurelien-baudet/workflow-dispatch@v2.1.1
+      with:
+        workflow: Local release
+        token: ${{ secrets.HYDRO_SERVING_TOKEN }}
+        repo: ${{ env.HYDRO_SERVING_REPO }}
+        inputs: '{"service_image_name":"${{ env.IMAGE }}", "registry_url":"${{ env.REGISTRY }}", "tag":"${{ env.VERSION }}"}'
 
-      # Commit changes
     - name: Commit new version
       if: github.event_name == 'workflow_dispatch'
       run: "echo ${{ env.VERSION }} > version"
@@ -97,29 +121,21 @@ jobs:
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git commit -m "Releasing ${{ env.IMAGE }}:${{ env.VERSION }}" -a
+        git commit -m "Releasing $IMAGE_NAME:$TAG" -a
         git push
-          
+        
     - name: Tag commit
       if: github.event_name == 'workflow_dispatch'
-      run: "git tag ${{ env.VERSION }}"
+      run: "git tag v${{ env.VERSION }}"
       
     - name: Push tag
       if: github.event_name == 'workflow_dispatch'
       run: "git push --tags"
-              
-      # Update helm chart and compose
-    - name: Update image version in hydro-serving repo
-      if: github.event_name == 'push'
-      uses: aurelien-baudet/workflow-dispatch@v2.1.1
-      with:
-        workflow: Local release
-        token: ${{ secrets.HYDRO_SERVING_TOKEN }}
-        repo: ${{ env.HYDRO_SERVING_REPO }}
-        inputs: '{"service_image_name":"${{ env.IMAGE }}", "registry_url":"${{ env.REGISTRY }}", "tag":"${{ env.VERSION }}"}'
-      
+        
     - uses: martialonline/workflow-status@v2
       id: check
     - run: |
         echo "release status: ${{  steps.check.outputs.status  }}"
-      # TODO: add more info
+        echo "Releasing ${{ env.IMAGE }}:${{ env.VERSION }}"
+        
+      
