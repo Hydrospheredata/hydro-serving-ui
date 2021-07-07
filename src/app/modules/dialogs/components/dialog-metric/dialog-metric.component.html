@@ -1,12 +1,12 @@
 <div class="dform">
   <form [formGroup]="form" class="form">
-    <hydro-input-text
+    <hs-input-text
       class="metric__name"
       name="metricName"
       label="Metric Name"
       formControlName="name"
     >
-    </hydro-input-text>
+    </hs-input-text>
     <ng-container
       *ngIf="
         form.get('name').dirty && form.get('name').getError('format');

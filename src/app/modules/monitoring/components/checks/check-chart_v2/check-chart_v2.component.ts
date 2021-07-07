@@ -10,6 +10,7 @@ import * as Highcharts from 'highcharts';
 import { CreatePlotBand, PlotBandData } from './createPlotBand.service';
 import { ChartConfig } from '@app/modules/monitoring/models';
 import { MonitoringPageService } from '@app/modules/monitoring/containers/monitoring-page/monitoring-page.service';
+import { initializeChartOptions } from '@app/modules/monitoring/components/checks/check-chart_v2/initializeChartOptions';
 
 export interface PlotBand {
   from: number;
@@ -47,52 +48,16 @@ export class CheckChartComponentV2 implements OnChanges {
 
   constructor(
     public createPlotBand: CreatePlotBand,
-    public monitoringPageService: MonitoringPageService
+    public monitoringPageService: MonitoringPageService,
   ) {}
 
-  chartOptions = {
-    title: {},
-    tooltip: {},
-    series: [
-      {
-        name: 'test',
-        data: [],
-        type: 'spline',
-      },
-    ],
-    lang: {},
-    noData: {},
-    xAxis: {
-      plotBands: [],
-    },
-    yAxis: {
-      title: {
-        text: undefined,
-      },
-      plotLines: [],
-    },
-    plotOptions: {
-      spline: {
-        lineWidth: 2,
-        states: {
-          hover: {
-            lineWidth: 2,
-          },
-        },
-        marker: {
-          enabled: false,
-        },
-      },
-      series: {
-        cursor: 'pointer',
-        point: {
-          events: {},
-        },
-      },
-    },
-  };
+  chartOptions;
 
   ngOnChanges(changes: SimpleChanges): void {
+    if (changes.config.firstChange) {
+      this.chartOptions = initializeChartOptions(changes.config);
+    }
+
     if (changes.config) {
       if (
         changes.config.currentValue &&
@@ -106,65 +71,32 @@ export class CheckChartComponentV2 implements OnChanges {
   }
 
   updateData(cfg: ChartConfig) {
+    console.log('config', this.cfg);
     let self = this;
-    this.chartOptions = {
-      tooltip: {
-        headerFormat: undefined,
-        pointFormat: `<span style="color: #4098d7; font-weight: bold">
+
+    this.chartOptions.tooltip = {
+      headerFormat: undefined,
+      pointFormat: `<span style='color: #4098d7; font-weight: bold'>
            ${cfg.series[0].name}</span>: <b>{point.y}</b>`,
-        crosshairs: {
-          color: 'lightgrey',
-        },
+      crosshairs: {
+        color: 'lightgrey',
       },
-      title: {
-        text: `${cfg.name}`,
+    };
+
+    this.chartOptions.series = [
+      {
+        name: `${cfg.series[0].name}`,
+        data: cfg.series[0].data,
+        type: 'spline',
       },
-      series: [
-        {
-          name: `${cfg.series[0].name}`,
-          data: cfg.series[0].data,
-          type: 'spline',
-        },
-      ],
-      lang: {
-        noData: 'no data available',
-      },
-      noData: {
-        style: {
-          fontWeight: 'bold',
-          fontSize: '14px',
-          color: '#bcccdc',
-        },
-      },
-      xAxis: {
-        plotBands: [],
-      },
-      yAxis: {
-        title: {
-          text: undefined,
-        },
-        plotLines: [],
-      },
-      plotOptions: {
-        spline: {
-          lineWidth: 2,
-          states: {
-            hover: {
-              lineWidth: 2,
-            },
-          },
-          marker: {
-            enabled: false,
-          },
-        },
-        series: {
-          cursor: 'pointer',
-          point: {
-            events: {
-              click: function () {
-                self.monitoringPageService.showCheckDetails(null, this.x);
-              },
-            },
+    ];
+
+    this.chartOptions.plotOptions.series = {
+      cursor: 'pointer',
+      point: {
+        events: {
+          click: function () {
+            self.monitoringPageService.showCheckDetails(null, this.x);
           },
         },
       },
