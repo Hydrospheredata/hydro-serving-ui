@@ -11,7 +11,7 @@ export const selectAllConfigs = createSelector(state, selectAll);
 
 export const selectDepConfigLoaded = createSelector(
   state,
-  state => state.loaded
+  state => state.loaded,
 );
 
 export const selectSelectedDeploymentConfig = createSelector(
@@ -22,10 +22,10 @@ export const selectSelectedDeploymentConfig = createSelector(
       router.params &&
       configs.find(config => config.name === router.params.name)
     );
-  }
+  },
 );
 
 export const selectDefaultDeploymentConfig = createSelector(
   selectAllConfigs,
-  configs => configs.find(dc => dc.name === defaultDepConfig)
+  configs => configs.find(dc => dc.name === defaultDepConfig),
 );

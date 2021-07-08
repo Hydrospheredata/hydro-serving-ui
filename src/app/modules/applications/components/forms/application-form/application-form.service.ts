@@ -7,7 +7,11 @@ import {
 } from '@angular/forms';
 
 import { CustomValidatorsService } from '@app/core/custom-validators.service';
-import { Application, ModelVersion } from '@app/core/data/types';
+import {
+  Application,
+  DeploymentConfig,
+  ModelVersion,
+} from '@app/core/data/types';
 import {
   ModelVariantFormData,
   ModelVariantFormService,
@@ -29,6 +33,8 @@ export interface FormData {
 @Injectable()
 export class ApplicationFormService {
   private form: FormGroup;
+  public modelVersions: ModelVersion[];
+  public depConfig: DeploymentConfig;
 
   constructor(
     private fb: FormBuilder,
@@ -39,8 +45,12 @@ export class ApplicationFormService {
   public initForm(
     application: Application,
     modelVersions: ModelVersion[] = [],
+    depConfig: DeploymentConfig,
   ): FormGroup {
     let data: FormData;
+
+    this.modelVersions = modelVersions;
+    this.depConfig = depConfig;
 
     if (application) {
       data = this.applicationToFormData(application, modelVersions);
@@ -96,7 +106,9 @@ export class ApplicationFormService {
   public addModelVariantToStage(stageControl: AbstractControl): void {
     const modelVariants = stageControl.get('modelVariants') as FormArray;
     modelVariants.push(
-      this.modelVariantFormService.buildModelVariantFormGroup(),
+      this.modelVariantFormService.buildModelVariantFormGroup(
+        this.defaultModelVariantData(),
+      ),
     );
   }
 
@@ -124,9 +136,19 @@ export class ApplicationFormService {
   private defaultStageData(): StageFormData {
     return {
       modelVariants: [
-        this.modelVariantFormService.defaultModelVariantFormData(),
+        this.modelVariantFormService.defaultModelVariantFormData(
+          this.modelVersions,
+          this.depConfig,
+        ),
       ],
     };
+  }
+
+  private defaultModelVariantData(): ModelVariantFormData {
+    return this.modelVariantFormService.defaultModelVariantFormData(
+      this.modelVersions,
+      this.depConfig,
+    );
   }
 
   private defaultFormData(): FormData {

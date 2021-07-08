@@ -1,6 +1,8 @@
 <hs-application-form
   (submitHandle)="onSubmit($event)"
   [application]="application"
+  [modelVersions]="modelVersions$ | async"
+  [deploymentConfig]="deploymentConfig$ | async"
   #form
 >
 </hs-application-form>

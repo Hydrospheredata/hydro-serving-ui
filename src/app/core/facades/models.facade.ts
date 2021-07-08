@@ -11,6 +11,7 @@ import {
   selectAllModelVersions,
   selectFirstModel,
   selectModelsLoaded,
+  selectModelsWithReleasedVersions,
 } from '@app/core/store/selectors';
 import { HydroServingState } from '../store/states/root.state';
 import {
@@ -39,6 +40,10 @@ export class ModelsFacade {
 
   allModels(): Observable<Model[]> {
     return this.store.pipe(select(selectAllModels));
+  }
+
+  modelsWithReleasedVersions(): Observable<Model[]> {
+    return this.store.pipe(select(selectModelsWithReleasedVersions));
   }
 
   firstModel(): Observable<Model> {

@@ -18,6 +18,7 @@ import {
   selectModelVersionEntities,
   selectFirstModelVersion,
   selectInternalModelVersions,
+  selectInternalReleasedNonMetricModelVersions,
 } from '../store/selectors/model-versions.selectors';
 
 import { GetModelVersions } from '../store/actions/model-versions.actions';
@@ -74,5 +75,11 @@ export class ModelVersionsFacade {
 
   areModelVersionsLoaded(): Observable<boolean> {
     return this.store.pipe(select(selectModelVersionsLoaded));
+  }
+
+  internalReleasedNonMetricModelVersions(): Observable<ModelVersion[]> {
+    return this.store.pipe(
+      select(selectInternalReleasedNonMetricModelVersions),
+    );
   }
 }

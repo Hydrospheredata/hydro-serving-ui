@@ -1,7 +1,11 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormArray, FormGroup, AbstractControl } from '@angular/forms';
 
-import { Application, ModelVersion } from '@app/core/data/types';
+import {
+  Application,
+  DeploymentConfig,
+  ModelVersion,
+} from '@app/core/data/types';
 import {
   ApplicationFormService,
   StageFormData,
@@ -21,6 +25,7 @@ export class ApplicationFormComponent implements OnInit {
   @Output() submitHandle: EventEmitter<any> = new EventEmitter();
   @Input() application: Application;
   @Input() modelVersions: ModelVersion[];
+  @Input() deploymentConfig: DeploymentConfig;
 
   public applicationForm: FormGroup;
 
@@ -38,6 +43,7 @@ export class ApplicationFormComponent implements OnInit {
     this.applicationForm = this.formService.initForm(
       this.application,
       this.modelVersions,
+      this.deploymentConfig,
     );
   }
 

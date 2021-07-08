@@ -1,5 +1,7 @@
 <hs-application-form
   (submitHandle)="onSubmit($event)"
+  [modelVersions]="modelVersions$ | async"
+  [deploymentConfig]="deploymentConfig$ | async"
   #form
 ></hs-application-form>
 <div class="dialog__footer">

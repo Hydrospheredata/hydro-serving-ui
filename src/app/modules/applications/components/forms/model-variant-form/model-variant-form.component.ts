@@ -12,8 +12,10 @@ import { Model, ModelVersion, DeploymentConfig } from '@app/core/data/types';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
 
-import { Observable, of } from 'rxjs';
+import { merge, Observable, of } from 'rxjs';
 import { ModelVariantFormService } from './model-variant-form.service';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 
 @Component({
   selector: 'hs-model-variant-form',
@@ -28,7 +30,7 @@ export class ModelVariantFormComponent implements OnInit {
 
   @Output() delete = new EventEmitter();
 
-  models$: Observable<Model[]> = this.modelsFacade.allModels();
+  models$: Observable<Model[]> = this.modelsFacade.modelsWithReleasedVersions();
   modelVersions$: Observable<ModelVersion[]>;
   deploymentConfigs$: Observable<DeploymentConfig[]>;
   selectedModelVersion$: Observable<ModelVersion>;
@@ -47,33 +49,45 @@ export class ModelVariantFormComponent implements OnInit {
 
   constructor(
     private modelsFacade: ModelsFacade,
+    private readonly modelVersionsFacade: ModelVersionsFacade,
     private deploymentConfFacade: DeploymentConfigsFacade,
     @Self() private formService: ModelVariantFormService,
   ) {
-    this.modelVersions$ = formService.getCurrentModelVersions();
     this.deploymentConfigs$ = formService.getDeploymentConfigs();
 
     this.selectedModelVersion$ = of(undefined);
   }
 
   ngOnInit() {
-    this.onModelIdChange(this.modelControl.value);
-    this.subscribeToModelIdChange();
-  }
+    const modelVersions$ = this.modelControl.valueChanges.pipe(
+      switchMap((modelId: number) =>
+        this.modelVersionsFacade
+          .internalReleasedNonMetricModelVersions()
+          .pipe(
+            map(modelVersions =>
+              modelVersions.filter(mv => mv.model.id === modelId),
+            ),
+          ),
+      ),
+      tap(mv => this.modelVersionControl.setValue(mv[0])),
+    );
 
-  public onModelIdChange(modelId): void {
-    this.formService.selectModelId(modelId);
-    const modelVersion = this.formService.defaultModelVariantFormData().modelVersion;
-    this.modelVersionControl.setValue(modelVersion || null);
+    const initialModelVersions$ = of(this.group.value.modelId).pipe(
+      switchMap((modelId: number) =>
+        this.modelVersionsFacade
+          .internalReleasedNonMetricModelVersions()
+          .pipe(
+            map(modelVersions =>
+              modelVersions.filter(mv => mv.model.id === modelId),
+            ),
+          ),
+      ),
+    );
+
+    this.modelVersions$ = merge(initialModelVersions$, modelVersions$);
   }
 
   public onDelete(): void {
     this.delete.emit(this.index);
-  }
-
-  private subscribeToModelIdChange(): void {
-    this.modelControl.valueChanges.subscribe(modelId => {
-      this.onModelIdChange(modelId);
-    });
   }
 }
