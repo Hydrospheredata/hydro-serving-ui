@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { State, adapter } from '../states/model-versions.state';
 import * as fromRouter from '../selectors/router.selectors';
+import { ModelVersionStatus } from '@app/core/data/types';
 
 const selectModelVersionsState = createFeatureSelector<State>('modelVersions');
 const { selectAll, selectEntities } = adapter.getSelectors();
@@ -47,9 +48,9 @@ export const selectModelVersionsLoaded = createSelector(
   state => state.loaded,
 );
 export const selectAllModelVersionsByModelId = (id: number) =>
-  createSelector(selectAllModelVersions, modelVersions =>
-    modelVersions.filter(modelVersion => modelVersion.model.id === id),
-  );
+  createSelector(selectAllModelVersions, modelVersions => {
+    return modelVersions.filter(modelVersion => modelVersion.model.id === id);
+  });
 export const selectModelVersionById = id =>
   createSelector(
     selectModelVersionEntities,
@@ -74,4 +75,16 @@ export const selectFirstModelVersion = createSelector(
     modelVersions
       ? modelVersions => modelVersions.filter(mv => mv.isExternal !== true)
       : modelVersions[0],
+);
+
+export const selectInternalReleasedNonMetricModelVersions = createSelector(
+  selectAllModelVersions,
+  mvs => {
+    return mvs.filter(
+      mv =>
+        !mv.isExternal &&
+        mv.status === ModelVersionStatus.Released &&
+        !mv.metadata.is_metric,
+    );
+  },
 );

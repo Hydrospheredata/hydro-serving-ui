@@ -47,7 +47,7 @@ const modelVersionReducer = createReducer(
   initialState,
   on(GetModelVersions, state => ({ ...state, loading: true })),
   on(GetModelVersionsSuccess, (state, { payload }) =>
-    adapter.addMany(payload, { ...state, loaded: true, loading: false })
+    adapter.addMany(payload, { ...state, loaded: true, loading: false }),
   ),
   on(GetModelVersionsFail, state => ({
     ...state,
@@ -55,31 +55,34 @@ const modelVersionReducer = createReducer(
     loading: true,
   })),
   on(AddModelVersionSuccess, (state, { modelVersion }) =>
-    adapter.upsertOne(modelVersion, state)
+    adapter.upsertOne(modelVersion, state),
   ),
   on(DeleteModelVersionSuccess, (state, { modelVersionId }) =>
-    adapter.removeOne(modelVersionId, state)
+    adapter.removeOne(modelVersionId, state),
   ),
   on(AddApplicationSuccess, UpdateApplicationSuccess, (state, { payload }) => {
     const application = payload;
 
-    const toUpdate = (app: Application) => (
-      modelVersion: ModelVersion
-    ): Update<ModelVersion> => {
-      const applicationNames: string[] = modelVersion.applications;
-      if (!applicationNames.includes(app.name)) {
-        return {
-          id: modelVersion.id,
-          changes: { applications: [...applicationNames, app.name] },
-        };
-      }
-    };
+    const toUpdate =
+      (app: Application) =>
+      (modelVersion: ModelVersion): Update<ModelVersion> => {
+        const applicationNames: string[] = modelVersion.applications;
+        if (!applicationNames.includes(app.name)) {
+          return {
+            id: modelVersion.id,
+            changes: { applications: [...applicationNames, app.name] },
+          };
+        }
+      };
 
     try {
-      const variants: ModelVariant[] = getApplicationsModelVariants(application);
+      const variants: ModelVariant[] =
+        getApplicationsModelVariants(application);
       const modelVersionIds: number[] = variants.map(getId);
       const modelVersions = modelVersionIds.map(toModelVersion(state.entities));
-      const updates = modelVersions.map(toUpdate(application)).filter(upd => !!upd);
+      const updates = modelVersions
+        .map(toUpdate(application))
+        .filter(upd => !!upd);
 
       return adapter.updateMany(updates, state);
     } catch (e) {
@@ -89,22 +92,23 @@ const modelVersionReducer = createReducer(
   }),
   on(DeleteApplicationSuccess, (state, { applicationName }) => {
     const modelVersions: ModelVersion[] = Object.values(state.entities);
-    const hasApplication = (applicationName: string) => (
-      modelVersion: ModelVersion
-    ): boolean => modelVersion.applications.includes(applicationName);
+    const hasApplication =
+      (applicationName: string) =>
+      (modelVersion: ModelVersion): boolean =>
+        modelVersion.applications.includes(applicationName);
 
-    const toUpdate = (applicationName: string) => (
-      modelVersion: ModelVersion
-    ): Update<ModelVersion> => {
-      return {
-        id: modelVersion.id,
-        changes: {
-          applications: modelVersion.applications.filter(
-            _ => _ !== applicationName
-          ),
-        },
+    const toUpdate =
+      (applicationName: string) =>
+      (modelVersion: ModelVersion): Update<ModelVersion> => {
+        return {
+          id: modelVersion.id,
+          changes: {
+            applications: modelVersion.applications.filter(
+              _ => _ !== applicationName,
+            ),
+          },
+        };
       };
-    };
 
     try {
       const mvs = modelVersions.filter(hasApplication(applicationName));
@@ -114,7 +118,7 @@ const modelVersionReducer = createReducer(
     } catch (e) {
       return state;
     }
-  })
+  }),
 );
 
 export function reducer(state: State, action: Action): State {
@@ -129,7 +133,7 @@ export const {
 
 // TODO: move utils
 function getApplicationsModelVariants(
-  application: Application
+  application: Application,
 ): ModelVariant[] {
   const stages = application.executionGraph.stages;
   const getModelVariants = (stage: Stage) => stage.modelVariants;
