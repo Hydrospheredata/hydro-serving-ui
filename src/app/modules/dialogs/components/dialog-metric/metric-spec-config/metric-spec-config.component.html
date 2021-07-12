@@ -48,13 +48,13 @@
         </mdl-select>
       </div>
       <div class="config__cell">
-        <hydro-input-text
+        <hs-input-text
           name="threshold"
           label="Threshold"
           [formControl]="parent.get('config').get('threshold')"
           bordered="true"
         >
-        </hydro-input-text>
+        </hs-input-text>
         <ng-container
           *ngIf="
             parent.get('config').get('threshold').dirty &&

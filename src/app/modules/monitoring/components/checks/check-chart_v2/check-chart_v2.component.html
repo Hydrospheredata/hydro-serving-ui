@@ -1,17 +1,9 @@
 <div class="check-chart_v2">
-  <div
-    *ngIf="series.length === 0; else chart"
-    class="check-chart_v2__no-data_v2"
+  <highcharts-chart
+    [Highcharts]="Highcharts"
+    [options]="chartOptions"
+    [(update)]="updateFormInput"
+    style="width: 100%; height: 300px; display: block;"
   >
-    <div>no data available</div>
-  </div>
-  <ng-template #chart>
-    <highcharts-chart
-      [Highcharts]="Highcharts"
-      [options]="chartOptions"
-      [(update)]="updateFormInput"
-      style="width: 100%; height: 300px; display: block;"
-    >
-    </highcharts-chart>
-  </ng-template>
+  </highcharts-chart>
 </div>

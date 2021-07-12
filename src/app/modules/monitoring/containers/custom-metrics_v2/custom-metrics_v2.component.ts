@@ -23,7 +23,7 @@ export class CustomMetricsComponentV2 implements OnInit {
 
   constructor(
     private facade: CustomMetricsFacade,
-    private dialog: DialogsService
+    private dialog: DialogsService,
   ) {}
 
   ngOnInit() {
