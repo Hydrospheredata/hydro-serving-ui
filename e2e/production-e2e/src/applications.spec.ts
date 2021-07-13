@@ -6,19 +6,22 @@ import {
 } from 'playwright';
 import appConfig from '../app-config';
 import initializeBrowser from '../helpers/initializeBrowser';
+import { ActionsHelper } from '../helpers/actions';
 
 describe('Applications page test', () => {
   let browser: Browser;
   let page: Page;
+  let actionsHelper: ActionsHelper;
 
   beforeEach(() => {
-    jest.setTimeout(30000);
+    jest.setTimeout(50000);
   });
 
   beforeAll(async () => {
     await initializeBrowser().then(config => {
       browser = config.browser;
       page = config.page;
+      actionsHelper = new ActionsHelper(page);
     });
 
     await page.goto(appConfig.applicationsUrl);
@@ -65,8 +68,8 @@ describe('Applications page test', () => {
       expect(sidebarInput).toBeTruthy();
     });
 
-    it('should contain two applications', async () => {
-      expect(sidebarItems.length).toEqual(2);
+    it('should contain one application', async () => {
+      expect(sidebarItems.length).toEqual(1);
     });
 
     it('should show create application form', async () => {
@@ -80,15 +83,17 @@ describe('Applications page test', () => {
 
     it('should create application', async () => {
       input = await form.$('.hs-input__input');
-      input.fill('test_application');
+      await input.fill('test_application');
       await addApplicationButton.click();
     }, 30000);
 
     it('the list should be replenished with a new application', async () => {
+      await page.goto(appConfig.applicationsUrl);
+      await page.waitForResponse('http://localhost/api/v2/application');
       sidebar = await page.$('.applications-page__sidebar');
       sidebarList = await sidebar.$('.sidebar__list');
       sidebarItems = await sidebarList.$$('.sidebar__item');
-      await expect(sidebarItems.length).toEqual(3);
+      await expect(sidebarItems.length).toEqual(2);
     });
   });
 
@@ -98,6 +103,11 @@ describe('Applications page test', () => {
     let headerButtons: ElementHandle<HTMLOrSVGElement>;
     let buttons: HTMLOrSVGElementHandle[];
     let body: ElementHandle<HTMLOrSVGElement>;
+    let deleteBtn: ElementHandle<HTMLOrSVGElement>;
+    let createDialog: ElementHandle<HTMLOrSVGElement>;
+    let createDialogContent: ElementHandle<HTMLOrSVGElement>;
+    let createDialogButtons: ElementHandle<HTMLOrSVGElement>;
+    let removeApplicationButton: ElementHandle<HTMLOrSVGElement>;
 
     beforeAll(async () => {
       applicationsPage = await page.$('.applications-page__body');
@@ -105,6 +115,7 @@ describe('Applications page test', () => {
       headerButtons = await header.$('.application__header-buttons');
       buttons = await headerButtons.$$('.hs-button');
       body = await applicationsPage.$('.application__body');
+      deleteBtn = await headerButtons.$('.hs-button--flat-warning');
     });
 
     it('exists', async () => {
@@ -115,5 +126,19 @@ describe('Applications page test', () => {
     it('header should contain three buttons', async () => {
       expect(buttons.length).toEqual(3);
     });
+
+    it('should show dialog of remove application', async () => {
+      await deleteBtn.click();
+      createDialog = await page.$('.dialog__container');
+      createDialogContent = await createDialog.$('.dialog__content');
+      createDialogButtons = await createDialogContent.$('.dialog__buttons');
+      removeApplicationButton = await createDialogButtons.$('.hs-button--flat-warning');
+
+      expect(createDialogContent).toBeTruthy();
+    }, 30000);
+
+    it('should remove application', async () => {
+      await actionsHelper.removeApplication();
+    }, 30000);
   });
 });

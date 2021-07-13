@@ -12,7 +12,7 @@ describe('Models page test', () => {
   let page: Page;
 
   beforeEach(() => {
-    jest.setTimeout(30000);
+    jest.setTimeout(50000);
   });
 
   beforeAll(async () => {
