@@ -1,21 +1,18 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from '@app/shared/shared.module';
 import {
-  ExplanationDialogComponent,
   AnchorExplanationComponent,
   RiseExplanationComponent,
 } from './containers';
-import { ExplanationComponent } from './containers/explanation/explanation.component';
+import { ExplanationButtonComponent } from './containers/explanation-button/explanation-button.component';
 
 @NgModule({
-  entryComponents: [ExplanationDialogComponent],
   declarations: [
-    ExplanationDialogComponent,
     RiseExplanationComponent,
     AnchorExplanationComponent,
-    ExplanationComponent,
+    ExplanationButtonComponent,
   ],
   imports: [SharedModule],
-  exports: [ExplanationComponent],
+  exports: [ExplanationButtonComponent, AnchorExplanationComponent],
 })
 export class RootCauseModule {}

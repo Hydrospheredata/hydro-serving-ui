@@ -20,14 +20,21 @@ const DIALOGS = [
   C.DialogMetricsComponent,
   C.DialogRequestsErrorsComponent,
   C.BuildInformationDialogComponent,
+  C.ExplanationDialogComponent,
 ];
 
 import { MetricSpecConfigComponent } from './components/dialog-metric/metric-spec-config/metric-spec-config.component';
+import { RootCauseModule } from '@app/modules/root-cause/root-cause.module';
 
 @NgModule({
   entryComponents: [...DIALOGS],
   declarations: [...DIALOGS, DialogComponent, MetricSpecConfigComponent],
-  imports: [SharedModule, ApplicationsModule, CodemirrorModule],
+  imports: [
+    SharedModule,
+    ApplicationsModule,
+    CodemirrorModule,
+    RootCauseModule,
+  ],
   exports: [DialogComponent],
 })
 export class DialogsModule {}

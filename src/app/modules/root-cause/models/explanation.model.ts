@@ -3,6 +3,7 @@ export const enum ExplanationStatus {
   failed = 'FAILED',
   notSupported = 'NOT_SUPPORTED',
   notCalled = 'NOT_CALLED',
+  started = 'STARTED',
 }
 
 export interface Explanation {

@@ -12,3 +12,4 @@ export * from './dialog-metrics/dialog-metrics.component';
 export * from './dialog-delete-metric/dialog-delete-metric.component';
 export * from './dialog-requests-errors/dialog-requests-errors.component';
 export * from './dialog-build-information/build-information-dialog.component';
+export * from './explanation-dialog/explanation-dialog.component';

@@ -26,16 +26,12 @@
 
   <ng-container *ngIf="!check.error">
     <span class="raw-checks__label">ouputs</span>
-    <hs-explanation
-      *ngIf="!modelVersion.isExternal"
-      [modelVersionId]="modelVersion.id"
-      [requestId]="check.id"
-    ></hs-explanation>
     <div class="raw-checks__table-wrapper">
       <table class="raw-checks__table">
         <tr class="raw-checks__head-row">
           <td class="raw-checks__cell raw-checks__head-cell">
             name
+
           </td>
           <td
             [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4"
@@ -50,16 +46,25 @@
           </ng-container>
         </tr>
         <ng-container
-          *ngTemplateOutlet="row; context: { $implicit: outputKeys }"
+          *ngTemplateOutlet="row; context: { $implicit: outputKeys, isOutput: true }"
         ></ng-container>
       </table>
     </div>
   </ng-container>
 </div>
 
-<ng-template #row let-keys>
+<ng-template #row let-keys let-isOutput=isOutput>
   <tr *ngFor="let key of keys" class="raw-checks__row">
-    <td class="raw-checks__cell">{{ key }}</td>
+    <td class="raw-checks__cell">
+      <hs-exp-button
+        *ngIf="isOutput"
+        [modelVersionId]="modelVersion.id"
+        [outputField]="key"
+        [requestId]="check.id">
+
+      </hs-exp-button>
+      {{ key }}
+    </td>
     <td
       [attr.colspan]="hasRawChecksExceptOverall ? 1 : 4"
       class="raw-checks__cell"

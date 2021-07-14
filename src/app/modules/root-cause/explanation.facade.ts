@@ -1,16 +1,17 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { SnackbarService } from '@app/core/snackbar.service';
-import { Explanation, ExplanationStatus } from '../../models';
-import { RootCauseApiService } from '../../services';
-import { RootCauseState } from '../../store/state';
-import { Observable, Subject, timer, of, merge } from 'rxjs';
+import { Explanation, ExplanationStatus } from './models';
+import { RootCauseApiService } from './services';
+import { RootCauseState } from './store/state';
+import { merge, Observable, of, Subject, timer } from 'rxjs';
 import {
+  catchError,
+  debounceTime,
   exhaustMap,
+  switchMap,
   takeUntil,
   takeWhile,
   tap,
-  switchMap,
-  debounceTime,
 } from 'rxjs/operators';
 
 @Injectable()
@@ -22,7 +23,7 @@ export class ExplanationFacade implements OnDestroy {
   constructor(
     private readonly state: RootCauseState,
     private readonly api: RootCauseApiService,
-    private readonly snackbar: SnackbarService
+    private readonly snackbar: SnackbarService,
   ) {}
 
   ngOnDestroy() {
@@ -33,24 +34,31 @@ export class ExplanationFacade implements OnDestroy {
   createExplanation(
     model_version_id,
     explained_request_id,
-    method = 'anchor'
+    method = 'anchor',
+    output_field,
   ): void {
     this.api
       .createExplanation({
         explained_request_id,
         method,
-        model_version_id,
+        model_version_id: model_version_id,
+        output_field,
       })
       .pipe(
-        switchMap(() => this.poll(model_version_id, explained_request_id)),
-        takeUntil(this.destroy$)
+        switchMap(() =>
+          this.poll(model_version_id, explained_request_id, output_field),
+        ),
+        takeUntil(this.destroy$),
       )
       .subscribe(
         explanation => this.state.setExplanation(explanation),
         error => {
           console.error(error);
-          this.snackbar.show({ message: `Couldn't get explanation` });
-        }
+          this.state.setExplanation({
+            state: ExplanationStatus.failed,
+            description: `Internal error was occurred`,
+          });
+        },
       );
   }
 
@@ -58,12 +66,18 @@ export class ExplanationFacade implements OnDestroy {
     return this.state.getExplanation();
   }
 
-  loadExplanation(requestId, modelVersionId, method = 'anchor'): void {
+  loadExplanation(
+    requestId,
+    modelVersionId,
+    method = 'anchor',
+    output_field,
+  ): void {
     this.api
       .getExplanation({
         explained_request_id: requestId,
         method,
         model_version_id: modelVersionId,
+        output_field,
       })
       .pipe(
         tap(_ => this.stopPoll$.next()),
@@ -75,20 +89,29 @@ export class ExplanationFacade implements OnDestroy {
             case ExplanationStatus.notSupported:
               return of(explanation);
             default:
-              return this.poll(modelVersionId, requestId);
+              return this.poll(modelVersionId, requestId, output_field);
           }
-        })
+        }),
+        catchError(err =>
+          of<Explanation>({
+            state: ExplanationStatus.failed,
+            description: `Internal error was occurred`,
+          }),
+        ),
       )
       .subscribe(
         explanation => this.state.setExplanation(explanation),
         error => {
           console.error(error);
-          this.snackbar.show({ message: `Couldn't get explanation` });
-        }
+          this.state.setExplanation({
+            state: ExplanationStatus.failed,
+            description: `Internal error was occurred`,
+          });
+        },
       );
   }
 
-  private poll(model_version_id, explained_request_id) {
+  private poll(model_version_id, explained_request_id, output_field) {
     return timer(0, this.pollingInterval).pipe(
       debounceTime(this.pollingInterval / 2),
       exhaustMap(() =>
@@ -96,10 +119,11 @@ export class ExplanationFacade implements OnDestroy {
           model_version_id,
           explained_request_id,
           method: 'anchor',
-        })
+          output_field,
+        }),
       ),
       takeWhile(exp => exp.state !== ExplanationStatus.success, true),
-      takeUntil(merge(this.destroy$, this.stopPoll$))
+      takeUntil(merge(this.destroy$, this.stopPoll$)),
     );
   }
 }

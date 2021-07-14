@@ -60,6 +60,7 @@
   }
   &__body {
     display: flex;
+    align-items: center;
     color: $neutral-color-800;
   }
   &__precision {
@@ -68,7 +69,7 @@
   &__operator {
     font-family: $font-family-bold;
     color: $neutral-color-800;
-    text-transform: uppercase;
+    //text-transform: uppercase;
   }
   &__accent {
     color: $neutral-color-800;
@@ -78,7 +79,7 @@
     flex-direction: column;
     & table {
       & > tbody > tr {
-        line-height: 18px;
+        //line-height: 18px;
         & > td {
           padding: 0 2px;
         }
