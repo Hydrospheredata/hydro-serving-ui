@@ -50,6 +50,7 @@ describe('Applications page test', () => {
     let input: ElementHandle<HTMLOrSVGElement>;
     let createDialogButtons: ElementHandle<HTMLOrSVGElement>;
     let addApplicationButton: ElementHandle<HTMLOrSVGElement>;
+    let initialLength: number;
 
     beforeAll(async () => {
       sidebar = await page.$('.applications-page__sidebar');
@@ -60,16 +61,13 @@ describe('Applications page test', () => {
       sidebarItems = await sidebarList.$$('.sidebar__item');
       createApplicationButton = await sidebarButton.$('.applications-page__button');
       createDialog = await page.$('.dialog__container');
+      initialLength = sidebarItems.length;
     });
 
     it('exists', async () => {
       expect(sidebar).toBeTruthy();
       expect(sidebarButton).toBeTruthy();
       expect(sidebarInput).toBeTruthy();
-    });
-
-    it('should contain one application', async () => {
-      expect(sidebarItems.length).toEqual(1);
     });
 
     it('should show create application form', async () => {
@@ -93,7 +91,7 @@ describe('Applications page test', () => {
       sidebar = await page.$('.applications-page__sidebar');
       sidebarList = await sidebar.$('.sidebar__list');
       sidebarItems = await sidebarList.$$('.sidebar__item');
-      await expect(sidebarItems.length).toEqual(2);
+      await expect(sidebarItems.length).toEqual(initialLength + 1);
     });
   });
 
