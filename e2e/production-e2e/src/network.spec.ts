@@ -36,4 +36,13 @@ describe('Network', () => {
     );
     expect(allResponsesHave200Status).toBe(true);
   });
+
+  it('should return models', async () => {
+    const [response] = await Promise.all([
+      page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`),
+      page.goto(appConfig.modelPageUrl)
+    ]);
+    const res = await response.json();
+    expect(res.length).toBeGreaterThanOrEqual(1);
+  });
 });

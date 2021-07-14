@@ -87,10 +87,6 @@ describe('Models page test', () => {
         expect(tableHeaders.length).toEqual(6);
       });
 
-      it('table body should contain one row', async () => {
-        expect(tableRows.length).toEqual(1);
-      });
-
       it('after clicked shows model version page', async () => {
         await tableRows[0].click();
       });
