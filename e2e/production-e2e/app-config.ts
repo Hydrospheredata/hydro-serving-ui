@@ -3,6 +3,8 @@ const modelPageUrl = 'http://localhost/models/infer';
 const modelVersionPageUrl = 'http://localhost/models/infer/1';
 const applicationsUrl = 'http://localhost/applications';
 const deploymentConfigsUrl = 'http://localhost/deployment_configs';
+const apiVersion = 2;
+const api = `api/v${apiVersion}`;
 
 export default {
   url,
@@ -10,6 +12,7 @@ export default {
   modelVersionPageUrl,
   applicationsUrl,
   deploymentConfigsUrl,
-  apiVersion: 2,
+  api,
+  apiVersion,
   endpoints: ['model/version', 'application', 'deployment_configuration'],
 };

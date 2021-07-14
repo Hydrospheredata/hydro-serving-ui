@@ -25,7 +25,7 @@ describe('Applications page test', () => {
     });
 
     await page.goto(appConfig.applicationsUrl);
-    await page.waitForResponse('http://localhost/api/v2/application');
+    await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[1]}`);
   });
 
   afterAll(async () => {
@@ -89,7 +89,7 @@ describe('Applications page test', () => {
 
     it('the list should be replenished with a new application', async () => {
       await page.goto(appConfig.applicationsUrl);
-      await page.waitForResponse('http://localhost/api/v2/application');
+      await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[1]}`);
       sidebar = await page.$('.applications-page__sidebar');
       sidebarList = await sidebar.$('.sidebar__list');
       sidebarItems = await sidebarList.$$('.sidebar__item');

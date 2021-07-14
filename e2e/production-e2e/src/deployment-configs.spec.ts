@@ -20,7 +20,7 @@ describe('Deployment configs page test', () => {
     });
 
     await page.goto(appConfig.deploymentConfigsUrl);
-    await page.waitForResponse('http://localhost/api/v2/deployment_configuration');
+    await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[2]}`);
   });
 
   afterAll(async () => {

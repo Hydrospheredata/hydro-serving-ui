@@ -22,7 +22,7 @@ describe('Models page test', () => {
     });
 
     await page.goto(appConfig.modelPageUrl);
-    await page.waitForResponse('http://localhost/api/v2/model/version');
+    await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`);
   });
 
   afterAll(async () => {

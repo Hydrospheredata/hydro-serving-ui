@@ -24,7 +24,7 @@ describe('Model version page test', () => {
     });
 
     await page.goto(appConfig.modelVersionPageUrl);
-    await page.waitForResponse('http://localhost/api/v2/model/version');
+    await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`);
   });
 
   afterAll(async () => {
