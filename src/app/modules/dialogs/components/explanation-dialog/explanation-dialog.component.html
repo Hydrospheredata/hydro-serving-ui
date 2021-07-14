@@ -1,0 +1,70 @@
+<div class="dialog__content exp">
+  <div>
+    <p class="exp__title">Explanation for</p>
+
+    <div class="exp__params">
+      <div class="exp__params-item">
+        <div class="exp__params-key">Model version id:</div>
+        <div class="exp__params-value">{{ modelVersionId}}</div>
+      </div>
+      <div class="exp__params-item">
+        <div class="exp__params-key">Request id:</div>
+        <div class="exp__params-value">{{ requestId}}</div>
+      </div>
+      <div class="exp__params-item">
+        <div class="exp__params-key">Method:</div>
+        <div class="exp__params-value">{{ method}}</div>
+      </div>
+      <div class="exp__params-item">
+        <div class="exp__params-key">Output field:</div>
+        <div class="exp__params-value">{{ outputField}}</div>
+      </div>
+    </div>
+  </div>
+
+  <ng-container *ngIf="explanation$ | async as explanation; else waiting">
+    <ng-container [ngSwitch]="explanation.state">
+      <div *ngSwitchCase="'SUCCESS'">
+        <div class="exp__status exp__status--success">
+          <hs-icon class="exp__status-icon exp__status-icon--success" [type]="'icon-check-success'"></hs-icon>
+          <div class="exp__status-text">{{explanation.description}}</div>
+        </div>
+
+        <div>
+          <hs-anchor-explanation [explanation]="explanation.result"></hs-anchor-explanation>
+        </div>
+      </div>
+      <div *ngSwitchCase="'NOT_SUPPORTED'">
+        <div class="exp__status exp__status--not-supported">
+          <hs-icon class="exp__status-icon exp__status-icon--not-supported" [type]="'icon-warning'"></hs-icon>
+          <div class="exp__status-text">{{explanation.description}}</div>
+        </div>
+      </div>
+      <div *ngSwitchCase="'STARTED'">
+        <div class="exp__status exp__status--started">
+          <hs-icon class="exp__status-icon exp__status-icon--started" [type]="'icon-pending'"></hs-icon>
+          <div class="exp__status-text">{{explanation.description}}</div>
+        </div>
+      </div>
+      <div *ngSwitchCase="'FAILED'">
+        <div class="exp__status exp__status--failed">
+          <hs-icon class="exp__status-icon exp__status-icon--failed" [type]="'icon-check-fail'"></hs-icon>
+          <div class="exp__status-text">{{explanation.description}}</div>
+        </div>
+      </div>
+    </ng-container>
+
+  </ng-container>
+
+  <ng-template #waiting>
+    Waiting for some response...
+  </ng-template>
+
+  <div class="dialog__buttons">
+    <div class="dialog__buttons dialog__buttons--column">
+      <button hs-button (click)="closeDialog()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

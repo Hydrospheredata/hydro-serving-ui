@@ -1,0 +1,10 @@
+@import "variables";
+
+.exp-button {
+  display: inline-block;
+  &__icon {
+    color: $primary-color-700;
+    width: 18px;
+    height: 18px;
+  }
+}

@@ -15,7 +15,7 @@ const initialState: State = {
 export class RootCauseState {
   private state$: Observable<State>;
   private state: BehaviorSubject<State> = new BehaviorSubject<State>(
-    initialState
+    initialState,
   );
 
   constructor() {
@@ -25,7 +25,7 @@ export class RootCauseState {
   getExplanation(): Observable<Explanation | null> {
     return this.state$.pipe(
       map(({ explanation }) => explanation),
-      distinctUntilChanged()
+      distinctUntilChanged(),
     );
   }
 
