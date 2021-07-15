@@ -31,7 +31,7 @@
     <ng-container
       *ngTemplateOutlet="
         (serviceStatuses$ | async)?.statuses?.stat?.supported
-          ? monitoringTile
+          ? statTile
           : notSupported;
         context: {
           name: 'Drift Report',
@@ -60,7 +60,7 @@
   </div>
 </ng-template>
 
-<ng-template #monitoringTile>
+<ng-template #statTile>
   <div class="mv-services__item">
     <hs-icon type="drift_report" class="mv-services__icon"></hs-icon>
     <button
