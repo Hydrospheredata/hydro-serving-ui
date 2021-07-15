@@ -5,12 +5,11 @@
       id="rangeFilter"
       class="agg-sidebar__date-picker"
       ngxDaterangepickerMd
-      startKey="minDate"
-      endKey="maxDate"
       [(ngModel)]="selected"
       timePicker="true"
       timePickerSeconds="true"
-      (datesUpdated)="handleDateTimeFromChange($event)"
+      (input)="dateRangeFired = true"
+      (datesUpdated)="dateRangeFired ? handleDateTimeFromChange($event) : null"
     />
     <span
       *ngIf="showResetFilter"
