@@ -71,7 +71,6 @@ export class CheckChartComponentV2 implements OnChanges {
   }
 
   updateData(cfg: ChartConfig) {
-    console.log('config', this.cfg);
     let self = this;
 
     this.chartOptions.tooltip = {

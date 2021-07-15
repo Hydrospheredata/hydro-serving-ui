@@ -31,7 +31,7 @@ export class AggregationSidebarComponent implements OnInit {
 
   dtrange: any;
   selected: { startDate; endDate };
-
+  dateRangeFired = false;
   constructor() {}
 
   ngOnInit() {
