@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { map, debounceTime } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { DeploymentConfig } from '../data/types';
 import {
   AddDeploymentConfig,
   DeleteDeploymentConfig,
   GetDeploymentConfigs,
+  ToggleFavorite,
 } from '../store/actions/deployment-configs.actions';
 import { State } from '../store/states/deployment-configs.state';
 import {
@@ -29,19 +30,36 @@ export class DeploymentConfigsFacade {
     this.all$ = store.pipe(select(selectAllConfigs));
   }
 
+  allDepConfigs(): Observable<DeploymentConfig[]> {
+    return this.store.pipe(select(selectAllConfigs));
+  }
+
   getAll(): Observable<DeploymentConfig[]> {
     return this.all$;
   }
 
   filtered(): Observable<DeploymentConfig[]> {
-    return combineLatest([this.filterString$, this.getAll()]).pipe(
+    return combineLatest([this.filterString$, this.allDepConfigs()]).pipe(
       map(([filter, configs]) => {
         return filter
           ? configs.filter(({ name }) => name.includes(filter))
           : configs;
-      })
+      }),
     );
   }
+
+  nonFavoriteDepConfigs$ = this.filtered().pipe(
+    map(configs => configs.filter(config => !config.favorite)),
+  );
+
+  favoriteDepConfigs$ = this.filtered().pipe(
+    map(configs => configs.filter(config => config.favorite)),
+  );
+
+  visibleDepConfigs$: Observable<DeploymentConfig[]> = combineLatest(
+    this.favoriteDepConfigs$,
+    this.nonFavoriteDepConfigs$,
+  ).pipe(map(([favorites, nonFavorites]) => [...favorites, ...nonFavorites]));
 
   selectedConfig(): Observable<DeploymentConfig> {
     return this.store.pipe(select(selectSelectedDeploymentConfig));
@@ -69,5 +87,9 @@ export class DeploymentConfigsFacade {
 
   areDepConfigsLoaded() {
     return this.store.pipe(select(selectDepConfigLoaded));
+  }
+
+  toggleFavorite(depConfig: DeploymentConfig) {
+    this.store.dispatch(ToggleFavorite({ payload: { depConfig } }));
   }
 }

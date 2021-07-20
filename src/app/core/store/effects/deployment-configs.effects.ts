@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { exhaustMap, map, catchError } from 'rxjs/operators';
 
 import { SnackbarService } from '../../snackbar.service';
@@ -18,21 +18,29 @@ import {
   AddDeploymentConfig,
   AddDeploymentConfigSuccess,
   AddDeploymentConfigFail,
+  ToggleFavorite,
 } from '../actions/deployment-configs.actions';
+import { FavoriteService } from '@app/core/favorite.service';
 
 @Injectable()
 export class DeploymentConfigsEffects {
   getAllDeploymentConfigs$ = createEffect(() =>
     this.actions$.pipe(
       ofType(GetDeploymentConfigs),
-      exhaustMap(() =>
-        this.depConfigsService
-          .getAll()
-          .pipe(
-            map(configs => GetDeploymentConfigsSuccess({ payload: configs }))
-          )
-      )
-    )
+      switchMap(() =>
+        this.depConfigsService.getAll().pipe(
+          map(res => {
+            const configs = res.map(config => {
+              return {
+                ...config,
+                favorite: this.favoriteService.isFavorite(config.name),
+              };
+            });
+            return GetDeploymentConfigsSuccess({ payload: configs });
+          }),
+        ),
+      ),
+    ),
   );
 
   addConfig$ = createEffect(() =>
@@ -53,10 +61,10 @@ export class DeploymentConfigsEffects {
               message: `Error: ${error}`,
             });
             return of(AddDeploymentConfigFail({ error }));
-          })
+          }),
         );
-      })
-    )
+      }),
+    ),
   );
 
   deleteConfig$ = createEffect(() =>
@@ -76,16 +84,30 @@ export class DeploymentConfigsEffects {
               message: `Error: ${error}`,
             });
             return of(DeleteDeploymentConfigFail({ error }));
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
+  );
+
+  toggleFavorite$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ToggleFavorite),
+        tap(({ payload: { depConfig } }) => {
+          depConfig.favorite
+            ? this.favoriteService.remove(depConfig.name)
+            : this.favoriteService.add(depConfig.name);
+        }),
+      ),
+    { dispatch: false },
   );
 
   constructor(
     private readonly actions$: Actions,
     private router: Router,
     private readonly depConfigsService: DeploymentConfigsService,
-    private readonly snackbar: SnackbarService
+    private readonly snackbar: SnackbarService,
+    private favoriteService: FavoriteService,
   ) {}
 }

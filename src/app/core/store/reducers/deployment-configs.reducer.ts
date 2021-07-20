@@ -6,6 +6,7 @@ import {
   DeleteDeploymentConfigSuccess,
   GetDeploymentConfigsFail,
   AddDeploymentConfigSuccess,
+  ToggleFavorite,
 } from '../actions/deployment-configs.actions';
 
 import {
@@ -26,7 +27,23 @@ export const deploymentConfigReducer = createReducer(
   }),
   on(AddDeploymentConfigSuccess, (state, { payload }) => {
     return adapter.addOne(payload, state);
-  })
+  }),
+  on(
+    ToggleFavorite,
+    (
+      state,
+      {
+        payload: {
+          depConfig: { name, favorite },
+        },
+      },
+    ) => {
+      return adapter.updateOne(
+        { id: name, changes: { favorite: !favorite } },
+        state,
+      );
+    },
+  ),
 );
 
 export function reducer(state: State, action: Action): State {

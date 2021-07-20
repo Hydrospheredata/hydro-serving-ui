@@ -19,6 +19,7 @@ import { RedirectService } from '@app/core/redirect.service';
   styleUrls: ['./applications-page.component.scss'],
 })
 export class ApplicationsPageComponent {
+  allApplications$: Observable<Application[]>;
   applications$: Observable<Application[]>;
   selectedApplication$: Observable<Application>;
 
@@ -30,10 +31,11 @@ export class ApplicationsPageComponent {
     private router: Router,
     private redirectService: RedirectService,
   ) {
-    this.applications$ = facade.allApplications();
-    this.selectedApplication$ = this.facade.selectedApplication();
+    this.allApplications$ = facade.allApplications();
+    this.selectedApplication$ = facade.selectedApplication();
+    this.applications$ = facade.visibleApplications();
 
-    this.redirectService.redirectToFirst(this.applications$, 'applications');
+    this.redirectService.redirectToFirst(this.allApplications$, 'applications');
   }
 
   isButtonEnabled() {
@@ -63,7 +65,7 @@ export class ApplicationsPageComponent {
   }
 
   handleFilter(filterStr: string): void {
-    // this.facade.onFilter(filterStr);
+    this.facade.onFilter(filterStr);
   }
 
   handleBookmark(application: Application): void {
