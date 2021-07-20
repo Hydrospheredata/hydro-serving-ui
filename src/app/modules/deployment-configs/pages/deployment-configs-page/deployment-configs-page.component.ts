@@ -30,7 +30,7 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
     this.error$ = this.error.asObservable();
 
     this.all$ = this.facade.getAll();
-    this.configs$ = this.facade.filtered();
+    this.configs$ = this.facade.visibleDepConfigs$;
 
     this.selectedConfig$ = this.facade.selectedConfig();
 
@@ -54,5 +54,9 @@ export class DeploymentConfigsPageComponent implements OnDestroy {
 
   handleFilter(filter: string): void {
     this.facade.onFilter(filter);
+  }
+
+  handleBookmark(config: DeploymentConfig): void {
+    this.facade.toggleFavorite(config);
   }
 }

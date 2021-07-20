@@ -94,10 +94,15 @@ export interface Pod {
   };
 }
 
-export interface DeploymentConfig {
+export class DeploymentConfig {
   name: string;
   hpa: Hpa;
   deployment: { replicaCount: number };
   container: Container;
   pod: Pod;
+  favorite: boolean = false;
+
+  constructor(props: any = {}) {
+    this.favorite = props.favorite || false;
+  }
 }

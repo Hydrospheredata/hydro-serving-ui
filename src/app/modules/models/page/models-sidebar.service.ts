@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { Model } from '@app/core/data/types';
 
@@ -28,7 +28,7 @@ export class ModelsSidebarService {
     return this.metricModelsAreHidden().pipe(
       switchMap(hidden => {
         return hidden ? this.nonMetricModels$ : this.allModels$;
-      })
+      }),
     );
   }
 
@@ -44,19 +44,19 @@ export class ModelsSidebarService {
           filtered = models.filter(model => model.name.includes(filterStr));
         }
         return filtered;
-      })
+      }),
     );
   }
 
   nonFavoriteModels(): Observable<Model[]> {
     return this.filteredModels().pipe(
-      map(models => models.filter(model => !model.favorite))
+      map(models => models.filter(model => !model.favorite)),
     );
   }
 
   favoriteModels(): Observable<Model[]> {
     return this.filteredModels().pipe(
-      map(models => models.filter(model => model.favorite))
+      map(models => models.filter(model => model.favorite)),
     );
   }
 
@@ -67,7 +67,7 @@ export class ModelsSidebarService {
     ]).pipe(
       map(([fav, nonFav]) => {
         return [...fav, ...nonFav];
-      })
+      }),
     );
   }
 

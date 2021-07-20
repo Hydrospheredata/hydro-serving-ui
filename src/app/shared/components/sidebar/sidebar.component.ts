@@ -22,9 +22,11 @@ import { Application, Model, DeploymentConfig } from '@app/core/data/types';
 export class SidebarComponent implements AfterViewInit, OnDestroy {
   @Input() sidebarData: Application[] | Model[] | DeploymentConfig[] = [];
   @Input() selectedItem: Application | Model | DeploymentConfig;
-  @Output() clicked: EventEmitter<Model | Application> = new EventEmitter();
+  @Output() clicked: EventEmitter<Model | Application | DeploymentConfig> =
+    new EventEmitter();
   @Output() filtered: EventEmitter<string> = new EventEmitter();
-  @Output() bookmarked: EventEmitter<Model | Application> = new EventEmitter();
+  @Output() bookmarked: EventEmitter<Model | Application | DeploymentConfig> =
+    new EventEmitter();
 
   @ContentChild('button', { static: true }) button: ElementRef;
   @ContentChild('.hide', { static: true }) hide: ElementRef;
@@ -40,12 +42,12 @@ export class SidebarComponent implements AfterViewInit, OnDestroy {
     });
   }
 
-  toggleBookmark(item: Model | Application): void {
+  toggleBookmark(item: Model | Application | DeploymentConfig): void {
     event.stopPropagation();
     this.bookmarked.emit(item);
   }
 
-  handleClick(item: Model | Application): void {
+  handleClick(item: Model | Application | DeploymentConfig): void {
     this.clicked.emit(item);
   }
 
