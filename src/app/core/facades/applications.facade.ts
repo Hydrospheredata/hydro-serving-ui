@@ -103,10 +103,13 @@ export class ApplicationsFacade {
     map(apps => apps.filter(app => app.favorite)),
   );
 
-  visibleApplications$: Observable<Application[]> = combineLatest(
-    this.favoriteApplications$,
-    this.nonFavoriteApplications$,
-  ).pipe(map(([favorites, nonFavorites]) => [...favorites, ...nonFavorites]));
+  visibleApplications(): Observable<Application[]> {
+      return combineLatest(
+        this.favoriteApplications$,
+        this.nonFavoriteApplications$,
+      ).pipe(map(([favorites, nonFavorites]) => [...favorites, ...nonFavorites]));
+  }
+
 
   selectedApplication(): Observable<Application> {
     return this.store.pipe(select(selectSelectedApplication));

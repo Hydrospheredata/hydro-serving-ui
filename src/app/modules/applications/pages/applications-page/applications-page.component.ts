@@ -33,7 +33,7 @@ export class ApplicationsPageComponent {
   ) {
     this.allApplications$ = facade.allApplications();
     this.selectedApplication$ = facade.selectedApplication();
-    this.applications$ = facade.visibleApplications$;
+    this.applications$ = facade.visibleApplications();
 
     this.redirectService.redirectToFirst(this.allApplications$, 'applications');
   }
