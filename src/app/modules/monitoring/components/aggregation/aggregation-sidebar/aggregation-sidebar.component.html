@@ -6,10 +6,12 @@
       class="agg-sidebar__date-picker"
       ngxDaterangepickerMd
       [(ngModel)]="selected"
+      startKey="startDate"
+      endKey="endDate"
       timePicker="true"
       timePickerSeconds="true"
       (input)="dateRangeFired = true"
-      (datesUpdated)="dateRangeFired ? handleDateTimeFromChange($event) : null"
+      (datesUpdated)="handleDateTimeFromChange($event)"
     />
     <span
       *ngIf="showResetFilter"
