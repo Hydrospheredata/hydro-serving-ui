@@ -30,7 +30,6 @@ export class AggregationSidebarComponent implements OnInit {
   }> = new EventEmitter<{ from: Date; to: Date }>();
 
   selected: { startDate; endDate };
-  dateRangeFired = false;
 
   constructor() {}
 
