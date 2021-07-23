@@ -199,7 +199,7 @@ export class CheckChartComponentV2 implements OnChanges {
     let i = 0;
     while (i < toArr.length) {
       plotBands.push({
-        color: '#e12d39',
+        color: '#ff9b9b',
         width: 2,
         from: fromArr[i],
         to: toArr[i],
