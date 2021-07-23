@@ -1,7 +1,6 @@
 @import 'variables';
 .applications-page {
   display: flex;
-  overflow: hidden;
   height: 100%;
   &__button {
     width: 100%;
@@ -23,5 +22,19 @@
     &-link {
       color: $primary-color-700;
     }
+  }
+  &__icon {
+    position: absolute;
+    right: 50%;
+    top: 11%;
+    transform: translateX(50%) scale(1.3);
+  }
+  &__btn {
+    position: absolute;
+    top: 29%;
+    left: 50%;
+    width: 14%;
+    height: 3%;
+    transform: translateX(-48%);
   }
 }

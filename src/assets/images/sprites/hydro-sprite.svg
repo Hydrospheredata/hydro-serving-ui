@@ -106,7 +106,7 @@
         <path d="M18 3 H25 V10 L23 8 V5 H20"/>
         <path d="M25 18 V25 H18 L20 23 H23 V20"/>
         <path d="M10 25 H3 V18 L5 20 V23 H8"/>
-    </g>         
+    </g>
 </symbol><symbol viewBox="0 0 12 12" id="icon-arrow">
     <path fill="currentColor" d="M0 7 l6 -7 6 7 h-4 v5 h-4 v-5 z"/>
 </symbol><symbol viewBox="0 0 24 24" id="icon-arrow-down" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></symbol><symbol viewBox="0 0 20.57 38" id="icon-arrow-left">
@@ -332,10 +332,61 @@ fill: #CB6E17;
   <path d="m69.253906 350.285156c14.160156 0 25.640625-11.480468 25.640625-25.644531 0-14.160156-11.480469-25.640625-25.640625-25.640625-14.164062 0-25.644531 11.480469-25.644531 25.640625.019531 14.15625 11.488281 25.628906 25.644531 25.644531zm0 0"/>
 </g>
 </symbol><symbol viewBox="0 0 24 24" id="show">
-  <path d="M2,12 
-           C6,4 18,4 22,12 
+  <path d="M2,12
+           C6,4 18,4 22,12
            C18,20 6,20 2,12" fill="none" stroke="black" strokeWidth="2"/>
   <circle cx="12" cy="12" r="4"/>
 </symbol><symbol viewBox="0 0 24 24" id="split" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0V0z" fill="none"/><path fill="currentColor" d="M3 15h8v-2H3v2zm0 4h8v-2H3v2zm0-8h8V9H3v2zm0-6v2h8V5H3zm10 0h8v14h-8V5z"/></symbol><symbol viewBox="0 0 24 24" id="warning" xmlns="http://www.w3.org/2000/svg">
   <path d="M0 0h24v24H0z" fill="none"/>
-  <path fill="currentColor" d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></symbol></svg>
+  <path fill="currentColor" d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></symbol>
+  <symbol viewBox="0 0 480 480" id="icon-schema" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0V0z" fill="none"/><g>
+    <path style="fill:#78B9EB;" d="M288,88h-96v48h48h48V88z"/>
+    <path style="fill:#78B9EB;" d="M64,264h48h48v-48h-48H64V264z"/>
+    <path style="fill:#78B9EB;" d="M8,392h80v-48H48H8V392z"/>
+    <path style="fill:#78B9EB;" d="M264,392h80v-48h-40h-40V392z"/>
+    <path style="fill:#78B9EB;" d="M416,216h-48h-48v48h48h48V216z"/>
+  </g>
+    <path style="fill:#1E81CE;" d="M472,336h-32v-32c0-4.418-3.582-8-8-8h-56v-24h40c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-40
+	v-32c0-4.418-3.582-8-8-8H248v-24h40c4.418,0,8-3.582,8-8V88c0-4.418-3.582-8-8-8h-96c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8
+	h40v24H112c-4.418,0-8,3.582-8,8v32H64c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h40v24H48c-4.418,0-8,3.582-8,8v32H8
+	c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h80c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8H56v-24h112v24h-32
+	c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h80c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-32v-32c0-4.418-3.582-8-8-8h-56v-24
+	h40c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-40v-24h240v24h-40c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h40v24h-56
+	c-4.418,0-8,3.582-8,8v32h-32c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h80c4.418,0,8-3.582,8-8v-48c0-4.418-3.582-8-8-8h-32v-24
+	h112v24h-32c-4.418,0-8,3.582-8,8v48c0,4.418,3.582,8,8,8h80c4.418,0,8-3.582,8-8v-48C480,339.582,476.418,336,472,336z M200,96h80
+	v32h-80V96z M80,384H16v-32h64V384z M208,384h-64v-32h64V384z M152,256H72v-32h80V256z M328,224h80v32h-80V224z M336,384h-64v-32h64
+	V384z M464,384h-64v-32h64V384z"/>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+    <g>
+    </g>
+  </symbol>
+</svg>
+
+

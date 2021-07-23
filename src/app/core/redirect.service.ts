@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Event, NavigationEnd, Router, RouterEvent } from '@angular/router';
 
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { filter, first, map, takeWhile } from 'rxjs/operators';
+import { filter, map, takeWhile } from 'rxjs/operators';
 import { IsRootUrlService } from '@app/core/is-root-url.service';
 
 type EntityWithName = { name: string };
@@ -25,7 +25,7 @@ export class RedirectService implements OnDestroy {
     );
     this.isRootUrl$ = this.routerEvents$.pipe(
       map((event: RouterEvent) => {
-        return this.rootUrlService.isRootUrl(event)
+        return this.rootUrlService.isRootUrl(event);
       }),
     );
   }
@@ -36,12 +36,17 @@ export class RedirectService implements OnDestroy {
   ) {
     this.redirectToFirstEntity = combineLatest([this.routerEvents$, entities$])
       .pipe(
-        filter(([event]) => this.rootUrlService.isRootUrl(event as RouterEvent)),
-        filter(([_, entities]) => entities.length > 0),
-        takeWhile(([event,]) => this.sameUri(this.extractUriName(event as NavigationEnd), entityUri))
+        filter(([event]) =>
+          this.rootUrlService.isRootUrl(event as RouterEvent),
+        ),
+        takeWhile(([event]) =>
+          this.sameUri(this.extractUriName(event as NavigationEnd), entityUri),
+        ),
       )
       .subscribe(([_, entities]) => {
-        this.router.navigate([`${entityUri}/${entities[0].name}`]);
+        entities.length
+          ? this.router.navigate([`${entityUri}/${entities[0].name}`])
+          : this.router.navigate([`${entityUri}`]);
       });
   }
 
@@ -50,10 +55,10 @@ export class RedirectService implements OnDestroy {
   }
 
   private sameUri(navigaterUri: string, settedUri: string): boolean {
-    return navigaterUri == settedUri
+    return navigaterUri == settedUri;
   }
 
   private extractUriName(event: NavigationEnd): string {
-    return (event as NavigationEnd).url.split('/').filter(_ => _)[0]
+    return (event as NavigationEnd).url.split('/').filter(_ => _)[0];
   }
 }
