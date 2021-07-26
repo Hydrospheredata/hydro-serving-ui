@@ -25,14 +25,15 @@ describe('ApplicationsPageComponent', () => {
   const mockedApplicationsFacade: ApplicationsFacade = mock(ApplicationsFacade);
   const mockedModelsFacade: ModelsFacade = mock(ModelsFacade);
   const mockedDeploymentConfigsFacade: DeploymentConfigsFacade = mock(
-    DeploymentConfigsFacade
+    DeploymentConfigsFacade,
   );
   const mockedDialogsService: DialogsService = mock(DialogsService);
   const mockedRedirectService: RedirectService = mock(RedirectService);
 
+  when(mockedApplicationsFacade.allApplications()).thenReturn(of([]));
   when(mockedModelsFacade.someModelVersionIsReleased()).thenReturn(of(true));
   when(mockedDeploymentConfigsFacade.getAll()).thenReturn(
-    of([MockDeploymentConfig1.build()])
+    of([MockDeploymentConfig1.build()]),
   );
 
   beforeEach(async(() => {
@@ -75,10 +76,36 @@ describe('ApplicationsPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('page', () => {
+    let buttonDE: DebugElement;
+    let title: DebugElement;
+    let subtitle: DebugElement;
+    let icon: DebugElement;
+
+    beforeEach(() => {
+      buttonDE = debugElement.query(By.css('.applications-page__content-btn'));
+      title = debugElement.query(By.css('.applications-page__content-title'));
+      subtitle = debugElement.query(
+        By.css('.applications-page__content-subtitle'),
+      );
+      icon = debugElement.query(By.css('.applications-page__icon'));
+    });
+
+    describe('when applications list is empty', () => {
+      it('should exist', () => {
+        expect(buttonDE).toBeTruthy();
+        expect(title).toBeTruthy();
+        expect(subtitle).toBeTruthy();
+        expect(icon).toBeTruthy();
+      });
+    });
+  });
+
   describe('add application button', () => {
     let buttonDE: DebugElement;
+
     beforeEach(() => {
-      buttonDE = debugElement.query(By.css('.applications-page__button'));
+      buttonDE = debugElement.query(By.css('.applications-page__content-btn'));
     });
 
     describe('when some modelVersion released and depConfigs exist', () => {

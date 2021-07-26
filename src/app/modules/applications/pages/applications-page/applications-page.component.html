@@ -16,22 +16,20 @@
     </hs-sidebar>
   </div>
   <div class="applications-page__body">
-    <ng-container *ngIf="applications.length; else emptyPage">
-      <router-outlet></router-outlet>
-      <div
-        *ngIf="!(someModelVersionIsReleased() | async)"
-        class="applications-page__message"
+    <router-outlet></router-outlet>
+    <div
+      *ngIf="!(someModelVersionIsReleased() | async)"
+      class="applications-page__message"
+    >
+      <a
+        class="applications-page__message-link"
+        href="https://docs.hydrosphere.io/quickstart/getting-started"
+        target="_blank"
+      >Upload</a
       >
-        <a
-          class="applications-page__message-link"
-          href="https://docs.hydrosphere.io/quickstart/getting-started"
-          target="_blank"
-        >Upload</a
-        >
-        your first model
-      </div>
-    </ng-container>
-    <ng-template #emptyPage>
+      your first model
+    </div>
+    <ng-container *ngIf="!applications.length">
       <hs-icon class="applications-page__icon" type="icon-applications"></hs-icon>
       <div class="applications-page__content">
         <div class="applications-page__content-text">
@@ -52,7 +50,7 @@
           create application
         </button>
       </div>
-    </ng-template>
+    </ng-container>
   </div>
 </div>
 
