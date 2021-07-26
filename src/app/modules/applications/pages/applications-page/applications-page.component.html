@@ -32,16 +32,26 @@
       </div>
     </ng-container>
     <ng-template #emptyPage>
-      <hs-icon class="applications-page__icon" type="icon-schema"></hs-icon>
-      <button
-        class="applications-page__btn"
-        hs-button
-        kind="flat"
-        color="primary"
-        (click)="addApplication()"
-      >
-        create application
-      </button>
+      <hs-icon class="applications-page__icon" type="icon-applications"></hs-icon>
+      <div class="applications-page__content">
+        <div class="applications-page__content-text">
+          <div class="applications-page__content-title">
+            Create an application
+          </div>
+          <div class="applications-page__content-subtitle">
+            The Application handles monitoring of your models and can perform A/B traffic splits.
+          </div>
+        </div>
+        <button
+          class="applications-page__content-btn"
+          hs-button
+          kind="flat"
+          color="primary"
+          (click)="addApplication()"
+        >
+          create application
+        </button>
+      </div>
     </ng-template>
   </div>
 </div>
