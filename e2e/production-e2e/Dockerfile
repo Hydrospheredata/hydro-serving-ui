@@ -1,4 +1,4 @@
-FROM ubuntu:bionic
+FROM python:3.8.2-slim-buster
 
 # 1. Install node12
 RUN apt-get update && apt-get install -y curl && \
@@ -41,16 +41,14 @@ RUN apt-get install -y libdbus-glib-1-2
 RUN apt-get install -y xvfb
 
 # Run everything after as non-privileged user.
-
 WORKDIR /usr/src/app
 
 COPY package.json .
 
+RUN pip install hs==3.0.0a18
 RUN npm install
 
 COPY . .
 
-RUN ls
-
-CMD [ "npm", "test" ]
+ENTRYPOINT [ "bash", "test.sh" ]
 

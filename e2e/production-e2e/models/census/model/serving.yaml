@@ -1,0 +1,76 @@
+kind: Model
+name: "census"
+payload:
+  - "src/"
+  - "requirements.txt"
+  - "model.joblib"
+  - "encoders.joblib"
+runtime: "hydrosphere/serving-runtime-python-3.7:3.0.0-dev4"
+install-command: "pip install -r requirements.txt"
+training-data: "train.csv"
+metadata:
+  documentation: "https://docs.hydrosphere.io/quickstart/tutorials/train-and-deploy-census-income-classification-model"
+contract:
+  name: "predict"
+  inputs:
+    age:
+      shape: scalar
+      type: int64
+      profile: numerical
+    workclass:
+      shape: scalar
+      type: string
+      profile: categorical
+    fnlwgt:
+      shape: scalar
+      type: int64
+      profile: numerical
+    education:
+      shape: scalar
+      type: string
+      profile: categorical
+    educational-num:
+      shape: scalar
+      type: int64
+      profile: numerical
+    marital-status:
+      shape: scalar
+      type: string
+      profile: categorical
+    occupation:
+      shape: scalar
+      type: string
+      profile: categorical
+    relationship:
+      shape: scalar
+      type: string
+      profile: categorical
+    race:
+      shape: scalar
+      type: string
+      profile: categorical
+    gender:
+      shape: scalar
+      type: string
+      profile: categorical
+    capital-gain:
+      shape: scalar
+      type: int64
+      profile: numerical
+    capital-loss:
+      shape: scalar
+      type: int64
+      profile: numerical
+    hours-per-week:
+      shape: scalar
+      type: int64
+      profile: categorical
+    native-country:
+      shape: scalar
+      type: string
+      profile: categorical
+  outputs:
+    income:
+      shape: scalar
+      type: string
+      profile: categorical
