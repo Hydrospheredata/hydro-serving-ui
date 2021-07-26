@@ -3,14 +3,11 @@ E2E test with Playwright + Jest as test runner
 
 ### ENV's
 * **URL** : string - defaul: http://localhost
-
-### Argumets
-* **LoadModel**: boolean - set true for upload census model from /models
-* **Sever**: string - server url for cluster (needed for hs cli)
+* **LOAD_MODEL**: boolean - set true for upload census model from /models
 
 ### Local run
 ```sh
 npm install
 docker build -t prod-e2e .
-docker run --network=host --env URL=http://localhost prod-e2e true http://localhost
+docker run --network=host -e URL=http://localhost -e LOAD_MODEL=true prod-e2e
 ```
