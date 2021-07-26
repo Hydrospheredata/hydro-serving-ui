@@ -61,6 +61,9 @@ export class CheckChartComponentV2 implements OnChanges {
         type: 'spline',
       },
     ],
+    credits: {
+      enabled: false,
+    },
     lang: {},
     noData: {},
     xAxis: {
@@ -130,6 +133,9 @@ export class CheckChartComponentV2 implements OnChanges {
           type: 'spline',
         },
       ],
+      credits: {
+        enabled: false,
+      },
       lang: {
         noData: 'no data available',
       },
