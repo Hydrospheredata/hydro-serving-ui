@@ -1,5 +1,5 @@
-<div class="applications-page">
-  <div class="applications-page__sidebar">
+<div *ngIf="allApplications$ | async as applications" class="applications-page">
+  <div *ngIf="applications.length" class="applications-page__sidebar">
     <hs-sidebar
       [sidebarData]="applications$ | async"
       [selectedItem]="selectedApplication$ | async"
@@ -25,10 +25,32 @@
         class="applications-page__message-link"
         href="https://docs.hydrosphere.io/quickstart/getting-started"
         target="_blank"
-        >Upload</a
+      >Upload</a
       >
       your first model
     </div>
+    <ng-container *ngIf="!applications.length">
+      <hs-icon class="applications-page__icon" type="icon-applications"></hs-icon>
+      <div class="applications-page__content">
+        <div class="applications-page__content-text">
+          <div class="applications-page__content-title">
+            Create an application
+          </div>
+          <div class="applications-page__content-subtitle">
+            The Application handles monitoring of your models and can perform A/B traffic splits.
+          </div>
+        </div>
+        <button
+          class="applications-page__content-btn"
+          hs-button
+          kind="flat"
+          color="primary"
+          (click)="addApplication()"
+        >
+          create application
+        </button>
+      </div>
+    </ng-container>
   </div>
 </div>
 

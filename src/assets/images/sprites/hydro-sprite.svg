@@ -106,7 +106,7 @@
         <path d="M18 3 H25 V10 L23 8 V5 H20"/>
         <path d="M25 18 V25 H18 L20 23 H23 V20"/>
         <path d="M10 25 H3 V18 L5 20 V23 H8"/>
-    </g>         
+    </g>
 </symbol><symbol viewBox="0 0 12 12" id="icon-arrow">
     <path fill="currentColor" d="M0 7 l6 -7 6 7 h-4 v5 h-4 v-5 z"/>
 </symbol><symbol viewBox="0 0 24 24" id="icon-arrow-down" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/><path fill="none" d="M0 0h24v24H0V0z"/></symbol><symbol viewBox="0 0 20.57 38" id="icon-arrow-left">
