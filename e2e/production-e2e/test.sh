@@ -3,16 +3,19 @@
 loadCensusModel=$1
 server=$2
 
-if [ "$loadCensusModel" == true ]
+echo $URL
+echo $LOAD_MODEL
+
+if [ $LOAD_MODEL == true ]
 then
-  if [ -z $server ]
+  if [ -z $URL ]
   then 
     echo "Server wasn't provided"
     exit 1
   fi
 
   echo "Upload model"
-  hs cluster add --name="local" --server="$server"
+  hs cluster add --name="local" --server=$URL
   hs apply -f models/census/model/serving.yaml
 
   echo "Run test"
