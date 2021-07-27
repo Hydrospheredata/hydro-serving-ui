@@ -93,12 +93,19 @@ jobs:
       if: github.event_name == 'push'
       run: echo VERSION=${{ github.sha }} >> $GITHUB_ENV
         
-    - name: Build and push
+    - name: Build image
       id: docker_build
       uses: docker/build-push-action@v2
       with:
-        push: true
+        push: false
         tags: hydrosphere/${{ env.IMAGE }}:${{ env.VERSION }}
+
+    - uses: azure/container-scan@v0
+      with:
+        image-name: hydrosphere/${{ env.IMAGE }}:${{ env.VERSION }}
+    
+    - name: Push Image
+      run: docker push hydrosphere/${{ env.IMAGE }}:${{ env.VERSION }}
         
     - name: Image digest
       run: echo ${{ steps.docker_build.outputs.digest }} 

@@ -66,4 +66,7 @@ jobs:
           
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}  
-      
+
+      - uses: azure/container-scan@v0
+        with:
+          image-name: hydrosphere/${{ env.IMAGE }}:${{ github.sha }}
