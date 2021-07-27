@@ -90,7 +90,7 @@
               <tr
                 *ngFor="let application of applications$ | async"
                 class="hydro-table-body__row hydro-table-body__row--hoverable"
-                [routerLink]="['/applications', application]"
+                [routerLink]="['/applications', application.name]"
               >
                 <td class="hydro-table-body__cell">
                   {{ application.name }}
