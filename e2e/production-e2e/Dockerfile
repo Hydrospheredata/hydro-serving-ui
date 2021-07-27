@@ -1,4 +1,4 @@
-FROM python:3.8.2-slim-buster
+FROM python:3.8.2-slim-buster as base
 
 # 1. Install node12
 RUN apt-get update && apt-get install -y curl && \
@@ -40,14 +40,17 @@ RUN apt-get install -y libdbus-glib-1-2
 # 6. (Optional) Install XVFB if there's a need to run browsers in headful mode
 RUN apt-get install -y xvfb
 
-# Run everything after as non-privileged user.
-WORKDIR /usr/src/app
-
+FROM base as build
 COPY package.json .
-
-RUN pip install hs==3.0.0a18
 RUN npm install
 
+# Run everything after as non-privileged user.
+FROM base as runtime
+
+WORKDIR /usr/src/app
+
+RUN pip install hs==3.0.0a18
+COPY --from=build node_modules node_modules
 COPY . .
 
 ENTRYPOINT [ "bash", "test.sh" ]

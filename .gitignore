@@ -50,3 +50,4 @@ src/environments/environment.ts
 
 docker/hydro-serving-ui
 bumpversion.cfg
+.hs
