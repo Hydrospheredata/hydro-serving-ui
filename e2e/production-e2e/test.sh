@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 
-loadCensusModel=$1
-server=$2
-
-echo $URL
-echo $LOAD_MODEL
-
-if [ $LOAD_MODEL == true ]
+if [ $LOAD_MODEL ]
 then
   if [ -z $URL ]
   then 

@@ -5,7 +5,7 @@ payload:
   - "requirements.txt"
   - "model.joblib"
   - "encoders.joblib"
-runtime: "hydrosphere/serving-runtime-python-3.7:3.0.0-dev4"
+runtime: "hydrosphere/serving-runtime-python-3.7:3.0.0-alpha.1"
 install-command: "pip install -r requirements.txt"
 training-data: "train.csv"
 metadata:

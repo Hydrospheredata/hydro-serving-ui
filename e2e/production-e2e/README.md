@@ -7,7 +7,6 @@ E2E test with Playwright + Jest as test runner
 
 ### Local run
 ```sh
-npm install
 docker build -t prod-e2e .
 docker run --network=host -e URL=http://localhost -e LOAD_MODEL=true prod-e2e
 ```
