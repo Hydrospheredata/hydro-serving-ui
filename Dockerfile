@@ -69,4 +69,4 @@ CMD envsubst '${GATEWAY_HOST} ${GATEWAY_GRPC_PORT}' < /etc/nginx/conf.d/grpc/inc
 #
   && envsubst '${INGRESS_PATH}' < /etc/nginx/conf.d/http/include.root.template > /etc/nginx/conf.d/http/include.root \
 #
-  && exec /usr/bin/openresty -g 'daemon off;'
+  && exec /usr/local/openresty/bin/openresty -g 'daemon off;'
