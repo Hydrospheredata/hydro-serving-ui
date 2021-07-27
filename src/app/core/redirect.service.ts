@@ -36,7 +36,6 @@ export class RedirectService implements OnDestroy {
   ) {
     this.redirectToFirstEntity = combineLatest([this.routerEvents$, entities$])
       .pipe(
-        tap(console.dir),
         filter(([event]) =>
           this.rootUrlService.isRootUrl(event as RouterEvent),
         ),
