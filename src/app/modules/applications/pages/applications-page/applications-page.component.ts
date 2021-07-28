@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { DialogAddApplicationComponent } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
@@ -39,13 +39,8 @@ export class ApplicationsPageComponent {
   }
 
   isButtonEnabled() {
-    return combineLatest([
-      this.someModelVersionIsReleased(),
-      this.getDepConfigs(),
-    ]).pipe(
-      map(([someReleased, depConfigs]) => {
-        return someReleased && depConfigs.length > 0;
-      }),
+    return this.someModelVersionIsReleased().pipe(
+      map(someReleased => someReleased),
     );
   }
 

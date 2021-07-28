@@ -28,7 +28,7 @@ export class SidebarComponent implements AfterViewInit, OnDestroy {
   @Output() bookmarked: EventEmitter<Model | Application | DeploymentConfig> =
     new EventEmitter();
 
-  @ContentChild('button', { static: true }) button: ElementRef;
+  @ContentChild('.button', { static: true }) button: ElementRef;
   @ContentChild('.hide', { static: true }) hide: ElementRef;
 
   filter: FormControl = new FormControl('');
