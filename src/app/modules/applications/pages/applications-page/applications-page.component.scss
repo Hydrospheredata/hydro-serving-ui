@@ -59,6 +59,11 @@
       padding: 11px;
       font-size: 16px;
       margin-top: 45px;
+      &[disabled] {
+        background-color: $primary-color-700;
+        color: $neutral-color-100;;
+        opacity: 0.3;
+      }
     }
   }
 }

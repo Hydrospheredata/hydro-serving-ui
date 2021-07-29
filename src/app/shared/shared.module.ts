@@ -58,6 +58,8 @@ const components = [
   C.ServiceAvailabilityComponent,
   C.AlertMessageComponent,
   C.LogComponent,
+  C.CodeContainerComponent,
+  C.SnippetComponent,
 ];
 
 @NgModule({
