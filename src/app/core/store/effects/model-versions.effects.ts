@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ModelDTO, Model } from '@app/core/data/types';
+import { ModelDTO, Model, Stage, ModelVariant } from '@app/core/data/types';
 import { FavoriteService } from '@app/core/favorite.service';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
@@ -20,6 +20,8 @@ import { ModelVersionService } from '../../data/services/model-version.service';
 import { HydroServingState } from '../states/root.state';
 import { selectAllModels } from '../selectors/models.selectors';
 import { AddModel, GetModelsSuccess } from '../actions/models.actions';
+import { AddSuccess } from '../actions/applications.actions';
+
 import {
   GetModelVersions,
   GetModelVersionsSuccess,
@@ -27,6 +29,7 @@ import {
   AddModelVersionSuccess,
   AddModelVersion,
 } from '../actions/model-versions.actions';
+import { selectModelVersionEntities } from '@app/core/store/selectors';
 
 @Injectable()
 export class ModelVersionsEffects {
@@ -91,6 +94,30 @@ export class ModelVersionsEffects {
             of(AddModelVersionSuccess({ modelVersion })),
           );
         }
+      }),
+    ),
+  );
+
+  addApplication$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AddSuccess),
+      withLatestFrom(this.store.pipe(select(selectModelVersionEntities))),
+      exhaustMap(([{ payload: application }, modelVersionsDict]) => {
+        const stages = application.executionGraph.stages;
+        const variants: ModelVariant[] = _.flatMap(
+          stages,
+          (stage: Stage) => stage.modelVariants,
+        );
+        const ids = _.map(variants, (mv: ModelVariant) => mv.modelVersionId);
+        const modelVersions = ids.map(id => modelVersionsDict[id]);
+
+        const modelVersionsUpdated = modelVersions.map(mv => {
+          return mv.clone({
+            applications: [...mv.applications, application.name],
+          });
+        });
+
+        return of(GetModelVersionsSuccess({ payload: modelVersionsUpdated }));
       }),
     ),
   );

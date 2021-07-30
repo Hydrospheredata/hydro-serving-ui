@@ -33,9 +33,9 @@ export class Aggregation {
     this.modelVersion = modelVersion;
   }
 
-  private static extractFeatureChecks(
-    params: any
-  ): { [featureName: string]: AggregationCheck } {
+  private static extractFeatureChecks(params: any): {
+    [featureName: string]: AggregationCheck;
+  } {
     const featuresChecks = Object.create(null);
 
     for (const featureNameKey in params) {

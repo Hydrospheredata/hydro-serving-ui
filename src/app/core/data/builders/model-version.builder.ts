@@ -4,6 +4,7 @@ import {
   ModelVersionStatus,
   ModelVersionDTO,
 } from '../types/model-version';
+import { ModelSignature } from '@app/core/data/types';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class ModelVersionBuilder {
       created: props.created,
       finished: props.finished,
       modelVersion: props.modelVersion,
-      modelSignature: props.modelSignature,
+      modelSignature: new ModelSignature(props.modelSignature),
       runtime: props.runtime,
       model: props.model,
       hostSelector: props.hostSelector,
