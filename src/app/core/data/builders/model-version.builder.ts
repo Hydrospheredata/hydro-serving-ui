@@ -24,7 +24,6 @@ export class ModelVersionBuilder {
       modelSignature: new ModelSignature(props.modelSignature),
       runtime: props.runtime,
       model: props.model,
-      hostSelector: props.hostSelector,
       status:
         (props.status && ModelVersionStatus[props.status]) ||
         ModelVersionStatus.Undefined,

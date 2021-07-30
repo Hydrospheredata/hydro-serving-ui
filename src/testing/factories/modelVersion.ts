@@ -33,6 +33,7 @@ export const MockModelVersion1Model1 = Factory.define<
   isReleasedAndInternal(): boolean {
     return true;
   },
+  clone: mv => new ModelVersion(mv),
   id: sequence,
   image: MockImage.build(),
   created: new Date().toString(),

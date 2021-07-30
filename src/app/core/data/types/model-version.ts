@@ -3,16 +3,6 @@ import { Image } from './image';
 import { Runtime } from './runtime';
 import { ModelDTO } from './model';
 
-export type HostSelector = {
-  name: string;
-  id: number;
-  nodeSelector: {
-    additionalProp1: string;
-    additionalProp3: string;
-    additionalProp2: string;
-  };
-};
-
 export interface ModelVersionDTO {
   id: number;
   created: string;
@@ -25,7 +15,6 @@ export interface ModelVersionDTO {
   applications: string[];
   image: { sha256: string; name: string; tag: string };
   runtime: { sha256: string; name: string; tag: string };
-  hostSelector: HostSelector;
   isExternal: boolean;
 }
 
@@ -55,7 +44,6 @@ export class ModelVersion {
   public applications: string[];
   public metadata: ModelVersionMetadata;
   public isExternal: boolean;
-  public hostSelector?: HostSelector;
 
   constructor(props: Partial<ModelVersion>) {
     this.id = props.id;
@@ -70,7 +58,6 @@ export class ModelVersion {
     this.applications = props.applications;
     this.metadata = props.metadata;
     this.isExternal = props.isExternal;
-    this.hostSelector = props.hostSelector;
   }
 
   get contractInputs(): Input[] {
