@@ -33,6 +33,9 @@ export const MockModelVersion1Model1 = Factory.define<
   isReleasedAndInternal(): boolean {
     return true;
   },
+  addApplication(applicationName: string): ModelVersion {
+    return MockModelVersion1Model1.build();
+  },
   id: sequence,
   image: MockImage.build(),
   created: new Date().toString(),

@@ -2,6 +2,7 @@ import { ModelSignature, Input, Output } from './model-contract';
 import { Image } from './image';
 import { Runtime } from './runtime';
 import { ModelDTO } from './model';
+import * as _ from 'lodash';
 
 export interface ModelVersionDTO {
   id: number;
@@ -15,15 +16,6 @@ export interface ModelVersionDTO {
   applications: string[];
   image: { sha256: string; name: string; tag: string };
   runtime: { sha256: string; name: string; tag: string };
-  hostSelector: {
-    name: string;
-    id: number;
-    nodeSelector: {
-      additionalProp1: string;
-      additionalProp3: string;
-      additionalProp2: string;
-    };
-  };
   isExternal: boolean;
 }
 
@@ -54,13 +46,13 @@ export class ModelVersion {
   public metadata: ModelVersionMetadata;
   public isExternal: boolean;
 
-  constructor(props: ModelVersionDTO) {
+  constructor(props: Partial<ModelVersion>) {
     this.id = props.id;
     this.image = props.image;
     this.created = props.created;
     this.finished = props.finished;
     this.modelVersion = props.modelVersion;
-    this.modelSignature = new ModelSignature(props.modelSignature);
+    this.modelSignature = props.modelSignature;
     this.runtime = props.runtime;
     this.model = props.model;
     this.status = props.status;
@@ -79,5 +71,12 @@ export class ModelVersion {
 
   isReleasedAndInternal(): boolean {
     return this.status === ModelVersionStatus.Released && !this.isExternal;
+  }
+
+  addApplication(applicationName: string): ModelVersion {
+    const newApp = _.cloneDeep<ModelVersion>(this);
+    newApp.applications = [...newApp.applications, ...applicationName];
+
+    return newApp;
   }
 }
