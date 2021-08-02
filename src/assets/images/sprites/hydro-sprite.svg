@@ -118,7 +118,7 @@
 <path d="M0 0h24v24H0z" fill="none"/></symbol><symbol viewBox="0 0 24 24" id="icon-close-sidebar" xmlns="http://www.w3.org/2000/svg">
 <path fill="currentColor" d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"/>
 <path fill="none" d="M0 0h24v24H0V0z"/>
-</symbol><symbol viewBox="0 0 24 24" id="icon-cloud" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></symbol><symbol viewBox="0 0 24 24" fill="currentColor" id="icon-copy" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></symbol><symbol viewBox="0 0 24 24" id="icon-done" xmlns="http://www.w3.org/2000/svg">
+</symbol><symbol viewBox="0 0 24 24" id="icon-cloud" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></symbol><symbol viewBox="0 0 24 24" fill="#0f609b" id="icon-copy" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"/><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></symbol><symbol viewBox="0 0 24 24" id="icon-done" xmlns="http://www.w3.org/2000/svg">
     <path fill="none" d="M0 0h24v24H0z"/>
     <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
 </symbol><symbol viewBox="0 0 9.25 14" id="icon-edit">

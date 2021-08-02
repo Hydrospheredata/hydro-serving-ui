@@ -14,5 +14,3 @@ export * from './tensor-image-list/tensor-image-list.component';
 export * from './service-availability/service-availability.component';
 export * from './alert-message/alert-message.component';
 export * from './log/log.component';
-export * from './code-container/code-container.component';
-export * from './snippet/snippet.component';
