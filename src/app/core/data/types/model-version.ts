@@ -2,6 +2,7 @@ import { ModelSignature, Input, Output } from './model-contract';
 import { Image } from './image';
 import { Runtime } from './runtime';
 import { ModelDTO } from './model';
+import * as _ from 'lodash';
 
 export interface ModelVersionDTO {
   id: number;
@@ -72,7 +73,10 @@ export class ModelVersion {
     return this.status === ModelVersionStatus.Released && !this.isExternal;
   }
 
-  clone(update: Partial<ModelVersion>): ModelVersion {
-    return new ModelVersion({ ...this, ...update });
+  addApplication(applicationName: string): ModelVersion {
+    const newApp = _.cloneDeep<ModelVersion>(this);
+    newApp.applications = [...newApp.applications, ...applicationName];
+
+    return newApp;
   }
 }

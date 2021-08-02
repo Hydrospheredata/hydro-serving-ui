@@ -104,6 +104,7 @@ export class ModelVersionsEffects {
       withLatestFrom(this.store.pipe(select(selectModelVersionEntities))),
       exhaustMap(([{ payload: application }, modelVersionsDict]) => {
         const stages = application.executionGraph.stages;
+
         const variants: ModelVariant[] = _.flatMap(
           stages,
           (stage: Stage) => stage.modelVariants,
@@ -112,9 +113,7 @@ export class ModelVersionsEffects {
         const modelVersions = ids.map(id => modelVersionsDict[id]);
 
         const modelVersionsUpdated = modelVersions.map(mv => {
-          return mv.clone({
-            applications: [...mv.applications, application.name],
-          });
+          return mv.addApplication(application.name);
         });
 
         return of(GetModelVersionsSuccess({ payload: modelVersionsUpdated }));
