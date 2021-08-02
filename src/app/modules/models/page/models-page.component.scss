@@ -42,8 +42,9 @@
     display: flex;
     flex-direction: column;
     position: absolute;
-    top: 50%;
+    top: calc(50% + 36px);
     left: 10%;
+    max-height: 80vh;
     transform: translateY(-50%);
     &-text {
       display: flex;
@@ -59,7 +60,7 @@
       margin-top: 24px;
     }
     &-message {
-      margin-top: 45px;
+      margin-top: 55px;
       display: flex;
       align-items: center;
     }
