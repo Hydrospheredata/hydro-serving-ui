@@ -9,6 +9,7 @@ import { ModelsFacade } from '@app/core/facades/models.facade';
 
 import { Model } from '@app/core/data/types/model';
 import { RedirectService } from '@app/core/redirect.service';
+import { ModelUploadingCommandsService } from '@app/core/model-uploading-commands.service';
 
 @Component({
   selector: 'hs-models-page',
@@ -20,6 +21,7 @@ export class ModelsPageComponent {
   selectedModel$: Observable<Model> = this.modelsFacade.selectedModel();
   metricModelsAreHidden$: Observable<boolean>;
   isRootUrl$: Observable<boolean>;
+  commands: string[] = [];
 
   constructor(
     private modelsFacade: ModelsFacade,
@@ -27,12 +29,14 @@ export class ModelsPageComponent {
     private zenMode: ZenModeService,
     private modelsSidebarService: ModelsSidebarService,
     private redirectService: RedirectService,
+    private modelUploadingCommands: ModelUploadingCommandsService,
   ) {
     this.visibleModels$ = this.modelsSidebarService.visibleModels();
     this.metricModelsAreHidden$ =
       this.modelsSidebarService.metricModelsAreHidden();
     this.isRootUrl$ = this.redirectService.isRootUrl$;
     this.redirectService.redirectToFirst(this.visibleModels$, 'models');
+    this.commands = modelUploadingCommands.getCommands();
   }
 
   get isZenMode$(): Observable<boolean> {

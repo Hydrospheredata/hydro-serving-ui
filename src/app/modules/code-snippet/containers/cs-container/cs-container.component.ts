@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { commands } from '@app/helpers/model-uploading-commands';
 
 @Component({
@@ -7,7 +7,7 @@ import { commands } from '@app/helpers/model-uploading-commands';
   styleUrls: ['./cs-container.component.scss'],
 })
 export class CsContainerComponent {
-  public commands: string[];
+  @Input() commands: string[];
   constructor() {
     this.commands = commands;
   }
