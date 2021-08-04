@@ -26,3 +26,7 @@ export const DeleteModelVersionSuccess = createAction(
   '[Model Version] deleted with success',
   props<{ modelVersionId: number }>(),
 );
+export const UpdateModelVersions = createAction(
+  '[Model Version] update many',
+  props<{ payload: ModelVersion[] }>(),
+);

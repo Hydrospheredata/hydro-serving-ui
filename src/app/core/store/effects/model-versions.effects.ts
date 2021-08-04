@@ -1,4 +1,10 @@
-import { ModelDTO, Model, ModelVersionStatus } from '@app/core/data/types';
+import {
+  ModelDTO,
+  Model,
+  ModelVersionStatus,
+  ModelVariant,
+  Stage,
+} from '@app/core/data/types';
 import { Injectable } from '@angular/core';
 import { FavoriteService } from '@app/core/favorite.service';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
@@ -21,6 +27,8 @@ import { ModelVersionService } from '../../data/services/model-version.service';
 import { HydroServingState } from '../states/root.state';
 import { selectAllModels } from '../selectors/models.selectors';
 import { AddModel, GetModelsSuccess } from '../actions/models.actions';
+import { AddSuccess } from '../actions/applications.actions';
+
 import {
   GetModelVersions,
   GetModelVersionsSuccess,
@@ -34,6 +42,7 @@ import {
   NotifySuccess,
   NotifyWarning,
 } from '../actions/notifications.actions';
+import { selectModelVersionEntities } from '@app/core/store/selectors';
 
 @Injectable()
 export class ModelVersionsEffects {
@@ -128,6 +137,29 @@ export class ModelVersionsEffects {
     this.actions$.pipe(
       ofType(DeleteModelVersionSuccess),
       switchMap(_ => of(NotifyWarning(`Model version: ${_} has been deleted`))),
+    ),
+  );
+
+  addApplication$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AddSuccess),
+      withLatestFrom(this.store.pipe(select(selectModelVersionEntities))),
+      exhaustMap(([{ payload: application }, modelVersionsDict]) => {
+        const stages = application.executionGraph.stages;
+
+        const variants: ModelVariant[] = _.flatMap(
+          stages,
+          (stage: Stage) => stage.modelVariants,
+        );
+        const ids = _.map(variants, (mv: ModelVariant) => mv.modelVersionId);
+        const modelVersions = ids.map(id => modelVersionsDict[id]);
+
+        const modelVersionsUpdated = modelVersions.map(mv => {
+          return mv.addApplication(application.name);
+        });
+
+        return of(GetModelVersionsSuccess({ payload: modelVersionsUpdated }));
+      }),
     ),
   );
 

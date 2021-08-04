@@ -1,5 +1,5 @@
-<div class="models-page">
-  <div class="models-page__sidebar" hsHideInZenMode>
+<div *ngIf="visibleModels$ | async as models" class="models-page">
+  <div *ngIf="models.length" class="models-page__sidebar" hsHideInZenMode>
     <hs-sidebar
       [sidebarData]="visibleModels$ | async"
       [selectedItem]="selectedModel$ | async"
@@ -26,6 +26,29 @@
       [ngClass]="{ 'models-page__body--zenMode': isZenMode$ | async }"
     >
       <router-outlet></router-outlet>
+      <ng-container *ngIf="!models.length">
+        <hs-icon class="models-page__icon" type="icon-models"></hs-icon>
+        <div class="models-page__content">
+          <div class="models-page__content-text">
+            <div class="models-page__content-title">
+              Create a model
+            </div>
+            <div class="models-page__content-subtitle">
+              The Model consumes provided inputs and produces predictions or transformations.
+            </div>
+            <cs-container></cs-container>
+            <div class="models-page__content-message">
+              <hs-icon class="models-page__content-icon" type="icon-upload"></hs-icon>
+              <a
+                class="models-page__content-link"
+                href="https://docs.hydrosphere.io/quickstart/getting-started"
+                target="_blank"
+              >How to upload model</a
+              >
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

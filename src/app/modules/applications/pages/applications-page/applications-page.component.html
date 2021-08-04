@@ -7,28 +7,19 @@
       (bookmarked)="handleBookmark($event)"
       (clicked)="handleSidebarClick($event)"
     >
-      <div class="button">
-        <ng-container
-          *ngIf="!(isButtonEnabled() | async); then wrapper; else button"
-        >
-        </ng-container>
-      </div>
+      <button
+        class="button applications-page__button"
+        hs-button
+        kind="flat"
+        color="primary"
+        (click)="addApplication()"
+      >
+      create application
+      </button>
     </hs-sidebar>
   </div>
   <div class="applications-page__body">
     <router-outlet></router-outlet>
-    <div
-      *ngIf="!(someModelVersionIsReleased() | async)"
-      class="applications-page__message"
-    >
-      <a
-        class="applications-page__message-link"
-        href="https://docs.hydrosphere.io/quickstart/getting-started"
-        target="_blank"
-      >Upload</a
-      >
-      your first model
-    </div>
     <ng-container *ngIf="!applications.length">
       <hs-icon class="applications-page__icon" type="icon-applications"></hs-icon>
       <div class="applications-page__content">
@@ -40,15 +31,12 @@
             The Application handles monitoring of your models and can perform A/B traffic splits.
           </div>
         </div>
-        <button
-          class="applications-page__content-btn"
-          hs-button
-          kind="flat"
-          color="primary"
-          (click)="addApplication()"
-        >
-          create application
-        </button>
+        <div>
+          <ng-container
+            *ngIf="!(isButtonEnabled() | async); then wrapper; else button"
+          >
+          </ng-container>
+        </div>
       </div>
     </ng-container>
   </div>
@@ -58,10 +46,11 @@
   <div
     hsTippy
     [tippyOptions]="{
-      content: 'Deployment config required',
+      content: 'There are no released model versions',
       arrow: false,
       theme: 'basic',
-      placement: 'bottom'
+      placement: 'bottom-start',
+      delay: 100
     }"
   >
     <ng-container *ngTemplateOutlet="button; context: { disable: true }">
@@ -74,7 +63,7 @@
   let-disable="disable"
 >
     <button
-      class="applications-page__button"
+      class="applications-page__content-btn"
       hs-button
       kind="flat"
       color="primary"

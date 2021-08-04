@@ -7,6 +7,7 @@ import { ModelsHeaderZenModeComponent } from './layout/models-header/models-head
 import { ModelsHeaderComponent } from './layout/models-header/models-header.component';
 import { ModelsRoutingModule } from './models-routing.module';
 import { ModelsPageComponent } from './page/models-page.component';
+import { CodeSnippetModule } from '@app/modules/code-snippet/code-snippet.module';
 
 @NgModule({
   entryComponents: [],
@@ -16,6 +17,11 @@ import { ModelsPageComponent } from './page/models-page.component';
     ModelsHeaderComponent,
     ModelsHeaderZenModeComponent,
   ],
-  imports: [SharedModule, ModelVersionsModule, ModelsRoutingModule],
+  imports: [
+    SharedModule,
+    ModelVersionsModule,
+    ModelsRoutingModule,
+    CodeSnippetModule,
+  ],
 })
 export class ModelsModule {}
