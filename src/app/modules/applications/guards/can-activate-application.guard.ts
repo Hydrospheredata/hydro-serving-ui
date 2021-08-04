@@ -1,9 +1,10 @@
-import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, CanActivate } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
+import { Store } from '@ngrx/store';
+import { NotifyWarning } from '@app/core/store/actions/notifications.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class CanActivateApplicationGuard implements CanActivate {
   constructor(
     private facade: ApplicationsFacade,
     private router: Router,
-    public mdlSnackbarService: MdlSnackbarService,
+    private store: Store,
   ) {}
 
   canActivate(routerSnapshot: ActivatedRouteSnapshot): Observable<boolean> {
@@ -38,10 +39,9 @@ export class CanActivateApplicationGuard implements CanActivate {
   }
 
   private showMessage(name: string): void {
-    this.mdlSnackbarService.showSnackbar({
-      message: `Application with name: ${name} doesn't exist`,
-      timeout: 5000,
-    });
+    this.store.dispatch(
+      NotifyWarning(`Application with name: ${name} doesn't exist`),
+    );
   }
 
   private loaded(): Observable<boolean> {

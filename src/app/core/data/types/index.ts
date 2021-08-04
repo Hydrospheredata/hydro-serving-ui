@@ -12,3 +12,4 @@ export * from './service-status';
 export * from './signature';
 export * from './tensor-proto';
 export * from './model-version-service-status';
+export * from './notifications';

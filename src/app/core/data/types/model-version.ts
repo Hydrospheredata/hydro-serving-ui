@@ -73,6 +73,10 @@ export class ModelVersion {
     return this.status === ModelVersionStatus.Released && !this.isExternal;
   }
 
+  nameWithId(): string {
+    return `${this.model.name}: ${this.modelVersion}`;
+  }
+
   addApplication(applicationName: string): ModelVersion {
     const newApp = _.cloneDeep<ModelVersion>(this);
     newApp.applications = [...newApp.applications, ...applicationName];

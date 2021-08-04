@@ -18,6 +18,10 @@ export const AddModelVersionSuccess = createAction(
   '[Model Version] added with success',
   props<{ modelVersion: ModelVersion }>(),
 );
+export const UpsertModelVersion = createAction(
+  '[Model Version] upsert',
+  props<{ modelVersion: ModelVersion }>(),
+);
 export const DeleteModelVersionSuccess = createAction(
   '[Model Version] deleted with success',
   props<{ modelVersionId: number }>(),

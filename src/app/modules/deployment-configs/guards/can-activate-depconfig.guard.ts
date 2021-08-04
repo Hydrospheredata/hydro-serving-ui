@@ -1,9 +1,10 @@
-import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, CanActivate } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
+import { Store } from '@ngrx/store';
+import { NotifyWarning } from '@app/core/store/actions/notifications.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class CanActivateDeploymentConfigGuard implements CanActivate {
   constructor(
     private facade: DeploymentConfigsFacade,
     private router: Router,
-    public mdlSnackbarService: MdlSnackbarService
+    private store: Store,
   ) {}
 
   canActivate(routerSnapshot: ActivatedRouteSnapshot): Observable<boolean> {
@@ -21,7 +22,7 @@ export class CanActivateDeploymentConfigGuard implements CanActivate {
       switchMap(depconfigs => {
         const depConfigName = routerSnapshot.params.name;
         const depConfigExist = depconfigs.some(
-          ({ name }) => name === depConfigName
+          ({ name }) => name === depConfigName,
         );
 
         if (depConfigExist) {
@@ -31,7 +32,7 @@ export class CanActivateDeploymentConfigGuard implements CanActivate {
           this.redirect();
           return of(false);
         }
-      })
+      }),
     );
   }
 
@@ -40,10 +41,9 @@ export class CanActivateDeploymentConfigGuard implements CanActivate {
   }
 
   private showMessage(name: string): void {
-    this.mdlSnackbarService.showSnackbar({
-      message: `Deployment config with name: ${name} doesn't exist`,
-      timeout: 5000,
-    });
+    this.store.dispatch(
+      NotifyWarning(`Deployment config with name: ${name} doesn't exist`),
+    );
   }
 
   private loaded(): Observable<boolean> {

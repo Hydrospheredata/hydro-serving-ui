@@ -15,6 +15,7 @@ import {
   GetModelVersionsFail,
   DeleteModelVersionSuccess,
   UpdateModelVersions,
+  UpsertModelVersion,
 } from '../actions/model-versions.actions';
 
 export interface State extends EntityState<ModelVersion> {
@@ -49,6 +50,9 @@ const modelVersionReducer = createReducer(
   ),
   on(DeleteModelVersionSuccess, (state, { modelVersionId }) =>
     adapter.removeOne(modelVersionId, state),
+  ),
+  on(UpsertModelVersion, (state, { modelVersion }) =>
+    adapter.upsertOne(modelVersion, state),
   ),
   on(UpdateModelVersions, (state, { payload: modelVersions }) =>
     adapter.addMany(modelVersions, { ...state }),

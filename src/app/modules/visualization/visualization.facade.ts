@@ -11,7 +11,7 @@ import { Check } from '../monitoring/models';
 import { MonitoringService } from '../monitoring/services';
 
 import { neitherNullNorUndefined } from '@app/utils';
-import { Observable, of, Subject, timer, concat, never } from 'rxjs';
+import { Observable, of, Subject, timer, concat } from 'rxjs';
 import {
   catchError,
   map,
@@ -29,6 +29,7 @@ import { VisualizationApi } from './services';
 import { VisualizationState } from './store/visualization.state';
 import * as R from 'ramda';
 import * as D3 from 'd3';
+import { Notify } from '@app/core/store/actions/notifications.actions';
 
 export type ColorBy = 'class_label' | 'metric';
 
@@ -45,20 +46,20 @@ export class VisualizationFacade implements OnDestroy {
     private modelVersionsFacade: ModelVersionsFacade,
     private colorizerFabric: ColorizerFabric,
     private state: VisualizationState,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
   ) {
     this.colors$ = this.getSelectedColorizer().pipe(
       neitherNullNorUndefined,
       map(colorizer => colorizer.getColors()),
       startWith([]),
-      shareReplay(1)
+      shareReplay(1),
     );
 
     this.selectedCheck$ = this.getSelectedId().pipe(
       neitherNullNorUndefined,
       switchMap(id => this.monitoringApi.getCheck(id)),
       map(bareCheck => new Check(bareCheck)),
-      shareReplay(1)
+      shareReplay(1),
     );
   }
 
@@ -115,7 +116,7 @@ export class VisualizationFacade implements OnDestroy {
   getSelectedId() {
     return this.getSelectedPointIndex().pipe(
       withLatestFrom(this.getRequestsIds()),
-      map(([index, ids]) => ids[index])
+      map(([index, ids]) => ids[index]),
     );
   }
 
@@ -151,10 +152,10 @@ export class VisualizationFacade implements OnDestroy {
         const trainYCoordinates: number[] = getYCoordinates(training_data);
 
         const [minX, maxX] = D3.extent(
-          R.concat(prodXCoordinates, trainXCoordinates)
+          R.concat(prodXCoordinates, trainXCoordinates),
         );
         const [minY, maxY] = D3.extent(
-          R.concat(prodYCoordinates, trainYCoordinates)
+          R.concat(prodYCoordinates, trainYCoordinates),
         );
 
         return {
@@ -165,7 +166,7 @@ export class VisualizationFacade implements OnDestroy {
           minY,
           maxY,
         };
-      })
+      }),
     );
   }
 
@@ -207,25 +208,29 @@ export class VisualizationFacade implements OnDestroy {
                   takeWhile(({ state }) => state !== ETaskState.success),
                   catchError(err => {
                     this.state.setError(err);
-                    this.snackbar.show({ message: err });
-                    return of();
-                  })
+                    return of(
+                      Notify({
+                        kind: 'error',
+                        message: err,
+                      }),
+                    );
+                  }),
                 ),
                 this.getModelVersion().pipe(
                   switchMap(mv => this.api.getParams(mv.id)),
                   tap(params => {
                     this.state.setParams(params);
-                  })
-                )
+                  }),
+                ),
               );
             }),
             catchError(err => {
               this.state.setError(err);
               return of();
-            })
-          )
+            }),
+          ),
         ),
-        takeUntil(this.destroy.asObservable())
+        takeUntil(this.destroy.asObservable()),
       )
       .subscribe();
   }
@@ -247,11 +252,10 @@ export class VisualizationFacade implements OnDestroy {
               this.loadEmbedding();
             }),
             catchError(err => {
-              this.snackbar.show({ message: err });
-              return never();
-            })
+              return of(Notify({ kind: 'error', message: err }));
+            }),
           );
-        })
+        }),
       )
       .subscribe();
   }
@@ -268,7 +272,7 @@ export class VisualizationFacade implements OnDestroy {
           data: payload.data,
           coloringType: payload.coloring_type,
           classes: payload.classes,
-        })
+        }),
       );
     }
 
@@ -278,7 +282,7 @@ export class VisualizationFacade implements OnDestroy {
           name,
           data: payload.scores,
           metric: payload,
-        })
+        }),
       );
     }
     return res;

@@ -5,7 +5,7 @@ import { selectRouterParams } from './router.selectors';
 
 const state = createFeatureSelector<State>('deploymentConfigs');
 
-const { selectAll } = adapter.getSelectors();
+const { selectAll, selectIds, selectEntities } = adapter.getSelectors();
 
 export const selectAllConfigs = createSelector(state, selectAll);
 
@@ -13,6 +13,9 @@ export const selectDepConfigLoaded = createSelector(
   state,
   state => state.loaded,
 );
+
+export const selectDepConfigEntitites = createSelector(state, selectEntities);
+export const selectDepConfigIds = createSelector(state, selectIds);
 
 export const selectSelectedDeploymentConfig = createSelector(
   selectAllConfigs,

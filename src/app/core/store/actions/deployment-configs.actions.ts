@@ -17,6 +17,10 @@ export const DeleteDeploymentConfig = createAction(
   '[Deployment config] delete',
   props<{ name: string }>(),
 );
+export const SseDeleteDeploymentConfigEvent = createAction(
+  '[SSE Deployment config] delete',
+  props<{ name: string }>(),
+);
 export const DeleteDeploymentConfigSuccess = createAction(
   '[Deployment config] successful deletion',
   props<{ name: string }>(),
@@ -28,6 +32,10 @@ export const DeleteDeploymentConfigFail = createAction(
 
 export const AddDeploymentConfig = createAction(
   '[Deployment config] add deployment configuration',
+  props<{ depConfig: DeploymentConfig }>(),
+);
+export const SseAddDeploymentConfigEvent = createAction(
+  '[SSE Deployment config] add deployment configuration',
   props<{ depConfig: DeploymentConfig }>(),
 );
 export const AddDeploymentConfigSuccess = createAction(
