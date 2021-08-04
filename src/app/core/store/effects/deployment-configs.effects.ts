@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { concatMap, switchMap, tap } from 'rxjs/operators';
 import { exhaustMap, map, catchError } from 'rxjs/operators';
 
 import { SnackbarService } from '../../snackbar.service';
@@ -19,8 +19,16 @@ import {
   AddDeploymentConfigSuccess,
   AddDeploymentConfigFail,
   ToggleFavorite,
+  SseAddDeploymentConfigEvent,
+  SseDeleteDeploymentConfigEvent,
 } from '../actions/deployment-configs.actions';
 import { FavoriteService } from '@app/core/favorite.service';
+import {
+  NotifyError,
+  NotifySuccess,
+  NotifyWarning,
+} from '../actions/notifications.actions';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class DeploymentConfigsEffects {
@@ -48,22 +56,41 @@ export class DeploymentConfigsEffects {
       ofType(AddDeploymentConfig),
       switchMap(({ depConfig }) => {
         return this.depConfigsService.addConfig(depConfig).pipe(
-          map(response => {
-            this.snackbar.show({
-              message: 'Deployment config was successfully added',
-            });
+          concatMap(depConfig => {
+            this.router.navigate(['/deployment_configs', depConfig.name]);
 
-            this.router.navigate(['/deployment_configs', response.name]);
-            return AddDeploymentConfigSuccess({ payload: depConfig });
+            return [{ type: 'NOOP' }];
           }),
           catchError(error => {
-            this.snackbar.show({
-              message: `Error: ${error}`,
-            });
-            return of(AddDeploymentConfigFail({ error }));
+            return of(
+              AddDeploymentConfigFail({ error }),
+              NotifyError(`Error: ${error}`),
+            );
           }),
         );
       }),
+    ),
+  );
+
+  sseAddEvent = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SseAddDeploymentConfigEvent),
+      switchMap(({ depConfig }) =>
+        of(AddDeploymentConfigSuccess({ payload: depConfig })),
+      ),
+    ),
+  );
+
+  addSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AddDeploymentConfigSuccess),
+      switchMap(({ payload: depConfig }) =>
+        of(
+          NotifySuccess(
+            `Deployment config: ${depConfig.name} was successfully added`,
+          ),
+        ),
+      ),
     ),
   );
 
@@ -72,21 +99,34 @@ export class DeploymentConfigsEffects {
       ofType(DeleteDeploymentConfig),
       exhaustMap(({ name }) =>
         this.depConfigsService.delete(name).pipe(
-          map(() => {
+          switchMap(() => {
             this.router.navigate(['deployment_configs']);
-            this.snackbar.show({
-              message: 'Deployment config was successfully deleted',
-            });
-            return DeleteDeploymentConfigSuccess({ name });
+            return [{ type: 'NOOP' }];
           }),
           catchError(error => {
-            this.snackbar.show({
-              message: `Error: ${error}`,
-            });
-            return of(DeleteDeploymentConfigFail({ error }));
+            return of(
+              DeleteDeploymentConfigFail({ error }),
+              NotifyError(`Error: ${error}`),
+            );
           }),
         ),
       ),
+    ),
+  );
+
+  sseDeleteConfig = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SseDeleteDeploymentConfigEvent),
+      switchMap(({ name }) => of(DeleteDeploymentConfigSuccess({ name }))),
+    ),
+  );
+
+  deleteSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DeleteDeploymentConfigSuccess),
+      switchMap(({ name }) => {
+        return of(NotifyWarning(`Deployment config: ${name} has been deleted`));
+      }),
     ),
   );
 
@@ -109,5 +149,6 @@ export class DeploymentConfigsEffects {
     private readonly depConfigsService: DeploymentConfigsService,
     private readonly snackbar: SnackbarService,
     private favoriteService: FavoriteService,
+    private store: Store,
   ) {}
 }

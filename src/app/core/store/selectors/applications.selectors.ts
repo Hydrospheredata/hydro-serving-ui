@@ -6,10 +6,11 @@ import { State, adapter } from '../states/applications.state';
 
 const state = createFeatureSelector<State>('applications');
 
-const { selectAll, selectEntities } = adapter.getSelectors();
+const { selectAll, selectEntities, selectIds } = adapter.getSelectors();
 
 export const selectAllApplications = createSelector(state, selectAll);
 export const selectApplicationsEntities = createSelector(state, selectEntities);
+export const selectApplicationIds = createSelector(state, selectIds);
 
 export const selectNonFavoriteApplications = createSelector(
   selectAllApplications,

@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     private readonly modelVersionsFacade: ModelVersionsFacade,
     private readonly servablesFacade: ServablesFacade,
     private readonly deploymentConfigFacade: DeploymentConfigsFacade,
-    private readonly svgSprite: SvgSpriteService
+    private readonly svgSprite: SvgSpriteService,
   ) {
     this.dialogOutletService.setDefaultViewContainerRef(this.viewContainerRef);
 

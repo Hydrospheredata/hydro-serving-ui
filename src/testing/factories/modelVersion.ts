@@ -45,6 +45,7 @@ export const MockModelVersion1Model1 = Factory.define<
   applications: [],
   metadata: {},
   isExternal: false,
+  nameWithId: () => 'name',
 }));
 
 export const MockModelVersion2Model1 = MockModelVersion1Model1.build({

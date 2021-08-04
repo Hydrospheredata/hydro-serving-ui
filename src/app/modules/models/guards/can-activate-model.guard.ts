@@ -1,4 +1,3 @@
-import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
@@ -7,13 +6,15 @@ import { switchMap, first } from 'rxjs/operators';
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { Model } from '@app/core/data/types';
+import { Store } from '@ngrx/store';
+import { NotifyWarning } from '@app/core/store/actions/notifications.actions';
 
 @Injectable({ providedIn: 'root' })
 export class CanActivateModelGuard implements CanActivate {
   constructor(
     private facade: ModelsFacade,
     private modelVersionFacade: ModelVersionsFacade,
-    private mdlSnackbarService: MdlSnackbarService,
+    private store: Store,
     private router: Router,
   ) {}
 
@@ -39,10 +40,9 @@ export class CanActivateModelGuard implements CanActivate {
   }
 
   private showMessage(modelName: string): void {
-    this.mdlSnackbarService.showSnackbar({
-      message: `Models with name = ${modelName} doesn't exist`,
-      timeout: 5000,
-    });
+    this.store.dispatch(
+      NotifyWarning(`Models with name = ${modelName} doesn't exist`),
+    );
   }
 
   private redirectToDefault(): void {

@@ -80,4 +80,8 @@ export class ModelVersion {
   isReleasedAndInternal(): boolean {
     return this.status === ModelVersionStatus.Released && !this.isExternal;
   }
+
+  nameWithId(): string {
+    return `${this.model.name}: ${this.modelVersion}`;
+  }
 }

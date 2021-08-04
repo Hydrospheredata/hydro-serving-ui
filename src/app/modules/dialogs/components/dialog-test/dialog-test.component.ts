@@ -6,11 +6,9 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { MdlSnackbarService } from '@angular-mdl/core';
-import { SnackbarService } from '@app/core/snackbar.service';
 import { TestApplicationFacade } from './test-application.facade';
 import { TestStatus, Application } from '@app/core/data/types';
-import { Observable, concat, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
@@ -24,12 +22,12 @@ import { CodemirrorComponent } from '@ctrl/ngx-codemirror';
 import { tap } from 'rxjs/operators';
 
 export const SELECTED_APPLICATION = new InjectionToken<Application>(
-  'selectedApplication'
+  'selectedApplication',
 );
 @Component({
   templateUrl: './dialog-test.component.html',
   styleUrls: ['./dialog-test.component.scss'],
-  providers: [MdlSnackbarService, TestApplicationFacade],
+  providers: [TestApplicationFacade],
 })
 export class DialogTestComponent implements OnInit {
   inputValid$: Observable<boolean>;
@@ -50,11 +48,10 @@ export class DialogTestComponent implements OnInit {
   outputCodeMirror: CodemirrorComponent;
 
   constructor(
-    private snackbar: SnackbarService,
     public dialog: DialogsService,
     private facade: ApplicationsFacade,
     private testAppFacade: TestApplicationFacade,
-    @Inject(SELECTED_APPLICATION) public application: Application
+    @Inject(SELECTED_APPLICATION) public application: Application,
   ) {
     this.inputOptions = {
       matchBrackets: true,
@@ -93,7 +90,7 @@ export class DialogTestComponent implements OnInit {
           this.generatingInput = false;
           this.input = JSON.stringify({});
           this.generatingInputError = err;
-        }
+        },
       );
   }
 

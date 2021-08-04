@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { exhaustMap, map, catchError, tap } from 'rxjs/operators';
+import { exhaustMap, map, catchError } from 'rxjs/operators';
 
 import {
   getAll,
@@ -16,6 +16,7 @@ import {
 } from '../actions/servables.actions';
 import { ServableService } from '../../data/services/servable.service';
 import { SnackbarService } from '@app/core/snackbar.service';
+import { NotifyError } from '../actions/notifications.actions';
 
 @Injectable()
 export class ServablesEffects {
@@ -25,9 +26,9 @@ export class ServablesEffects {
     exhaustMap(() =>
       this.servablesService.getAll().pipe(
         map(servables => getAllSuccess({ servables })),
-        catchError(error => of(getAllFailed({ error })))
-      )
-    )
+        catchError(error => of(getAllFailed({ error }))),
+      ),
+    ),
   );
 
   @Effect()
@@ -37,13 +38,13 @@ export class ServablesEffects {
       this.servablesService.delete(name).pipe(
         map(() => deleteServableSuccess({ name })),
         catchError(error => {
-          this.snackbarService.show({
-            message: error.replaceAll(',', ', '),
-          });
-          return of(deleteServableFailed({ error }));
-        })
-      )
-    )
+          return of(
+            deleteServableFailed({ error }),
+            NotifyError(error.replaceAll(',', ', ')),
+          );
+        }),
+      ),
+    ),
   );
 
   @Effect()
@@ -52,14 +53,14 @@ export class ServablesEffects {
     exhaustMap(({ name }) =>
       this.servablesService.get(name).pipe(
         map(servable => getServableSuccess({ servable })),
-        catchError(error => of(getServableFailed({ error })))
-      )
-    )
+        catchError(error => of(getServableFailed({ error }))),
+      ),
+    ),
   );
 
   constructor(
     private actions$: Actions,
     private servablesService: ServableService,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
   ) {}
 }

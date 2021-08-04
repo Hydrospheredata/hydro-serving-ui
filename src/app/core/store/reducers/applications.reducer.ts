@@ -22,7 +22,7 @@ const applicationReducer = createReducer(
   initialState,
   on(Get, state => ({ ...state, loading: true })),
   on(GetSuccess, (state, { payload }) =>
-    adapter.setAll(payload, { ...state, loaded: true, loading: false })
+    adapter.setAll(payload, { ...state, loaded: true, loading: false }),
   ),
   on(GetFail, state => ({ ...state, loading: false })),
   on(AddSuccess, (state, { payload }) => adapter.addOne(payload, state)),
@@ -38,8 +38,8 @@ const applicationReducer = createReducer(
             input,
           },
         },
-        state
-      )
+        state,
+      ),
   ),
   on(Test, (state, { payload: { name } }) =>
     adapter.updateOne(
@@ -50,8 +50,8 @@ const applicationReducer = createReducer(
           error: '',
         },
       },
-      state
-    )
+      state,
+    ),
   ),
   on(TestSuccess, (state, { payload: { name, output } }) =>
     adapter.updateOne(
@@ -63,8 +63,8 @@ const applicationReducer = createReducer(
           testStatus: TestStatus.Success,
         },
       },
-      state
-    )
+      state,
+    ),
   ),
   on(TestFail, (state, { payload: { name, error } }) =>
     adapter.updateOne(
@@ -76,12 +76,13 @@ const applicationReducer = createReducer(
           error,
         },
       },
-      state
-    )
+      state,
+    ),
   ),
-  on(DeleteSuccess, (state, { applicationName }) =>
-    adapter.removeOne(applicationName, state)
-  ),
+  on(DeleteSuccess, (state, { applicationName }) => {
+    debugger;
+    return adapter.removeOne(applicationName, state);
+  }),
   on(
     ToggleFavorite,
     (
@@ -90,14 +91,14 @@ const applicationReducer = createReducer(
         payload: {
           application: { name, favorite },
         },
-      }
+      },
     ) => {
       return adapter.updateOne(
         { id: name, changes: { favorite: !favorite } },
-        state
+        state,
       );
-    }
-  )
+    },
+  ),
 );
 
 export function reducer(state: State, action: Action): State {
