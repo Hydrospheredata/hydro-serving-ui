@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { commands } from '@app/helpers/model-uploading-commands';
 
 @Component({
   selector: 'cs-container',
@@ -8,7 +7,6 @@ import { commands } from '@app/helpers/model-uploading-commands';
 })
 export class CsContainerComponent {
   @Input() commands: string[];
-  constructor() {
-    this.commands = commands;
-  }
+
+  constructor() {}
 }
