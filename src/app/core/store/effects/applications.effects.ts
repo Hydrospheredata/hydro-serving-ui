@@ -128,9 +128,6 @@ export class ApplicationsEffects {
         ofType(SseUpdateEvent),
         switchMap(({ application }) => {
           switch (application.status) {
-            case ApplicationStatus.Failed:
-              return of(NotifyError('Application has been failed'));
-
             case ApplicationStatus.Ready:
               return [
                 UpdateSuccess({ payload: application }),
@@ -139,7 +136,7 @@ export class ApplicationsEffects {
                 ),
               ];
             default:
-              return of({ type: 'NOOP' });
+              return of(UpdateSuccess({ payload: application }));
           }
         }),
       ),
