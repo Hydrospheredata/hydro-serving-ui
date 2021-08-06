@@ -9,6 +9,7 @@ export class ModelUploadingCommandsService {
     return [
       'pip install hs',
       `hs cluster add --name=cluster --server=${this.url}`,
+      'hs cluster use cluster',
       'git clone https://github.com/Hydrospheredata/hydro-serving-example.git',
       'cd examples/custom_metrics/census/models/model',
       'hs apply -f serving.yaml',
