@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { HydroServingState } from '@app/core/store/states/root.state';
 import { Store, select } from '@ngrx/store';
 import { neitherNullNorUndefined } from '@app/utils';
-import { Observable, timer } from 'rxjs';
-import { switchMap, map, share } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { selectRouterParams } from '../store/selectors/router.selectors';
 import { ProfilerService } from '../data/services/profiler.service';
@@ -16,7 +16,7 @@ export class ProfilerFacade {
   private readonly polling;
   constructor(
     private store: Store<HydroServingState>,
-    private profilerService: ProfilerService
+    private profilerService: ProfilerService,
   ) {}
 
   selectedField(): Observable<string> {
@@ -25,7 +25,7 @@ export class ProfilerFacade {
       map(({ params }) => {
         return params && params['featureName'];
       }),
-      neitherNullNorUndefined
+      neitherNullNorUndefined,
     );
   }
 
@@ -35,7 +35,7 @@ export class ProfilerFacade {
 
   loadProfiles: (modelVerId, fieldName) => Observable<Profiles> = (
     modelVerId,
-    fieldName
+    fieldName,
   ) => {
     return this.profilerService
       .getProfiles(modelVerId, fieldName)
