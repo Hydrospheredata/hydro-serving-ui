@@ -23,7 +23,7 @@ export class ProfileDetailsComponent {
     private readonly modelVersionsFacade: ModelVersionsFacade,
     private readonly profilerFacade: ProfilerFacade,
     private readonly router: Router,
-    private readonly fieldsService: FieldsService
+    private readonly fieldsService: FieldsService,
   ) {
     this.selectedField$ = profilerFacade.selectedField();
 
@@ -31,7 +31,9 @@ export class ProfileDetailsComponent {
       this.modelVersionsFacade.selectedModelVersion(),
       this.selectedField$,
     ]).pipe(
-      switchMap(([mv, field]) => this.profilerFacade.loadProfiles(mv.id, field))
+      switchMap(([mv, field]) =>
+        this.profilerFacade.loadProfiles(mv.id, field),
+      ),
     );
 
     this.fields$ = combineLatest([

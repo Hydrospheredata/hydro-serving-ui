@@ -13,11 +13,11 @@ class CommonStatistics {
 
     this.uniquePerc = Math.min(
       Math.floor((this.distinctCount / (this.count - this.missing)) * 100),
-      100
+      100,
     );
     this.missingPerc = Math.min(
       Math.floor((this.missing / this.count) * 100),
-      100
+      100,
     );
   }
 }
@@ -145,7 +145,7 @@ export class DoubleProfile implements Profile {
     this.commonStatistics = new CommonStatistics(props.commonStatistics);
     this.quantileStatistics = new QuantileStatistics(props.quantileStatistics);
     this.descriptiveStatistics = new DescriptiveStatistics(
-      props.descriptiveStatistics
+      props.descriptiveStatistics,
     );
     this.histogram = new Histogram(props.histogram);
   }
@@ -158,18 +158,28 @@ export class Profiles {
   constructor(props: any = {}) {
     this.trainingProfile = null;
     if (props.training) {
-      if (props.training.kind === 'NumericalProfile') {
-        this.trainingProfile = new DoubleProfile(props.training);
-      } else if (props.training.kind === 'TextProfile') {
-        this.trainingProfile = new TextProfile(props.training);
+      if (props.training['NumericalProfile']) {
+        this.trainingProfile = new DoubleProfile(
+          props.training['NumericalProfile'],
+        );
+        this.trainingProfile.kind = 'NumericalProfile';
+      } else if (props.training['TextProfile']) {
+        this.trainingProfile = new TextProfile(props.training['TextProfile']);
+        this.trainingProfile.kind = 'TextProfile';
       }
     }
     this.productionProfile = null;
     if (props.production) {
-      if (props.production.kind === 'NumericalProfile') {
-        this.productionProfile = new DoubleProfile(props.production);
-      } else if (props.production.kind === 'TextProfile') {
-        this.productionProfile = new TextProfile(props.production);
+      if (props.production['NumericalProfile']) {
+        this.productionProfile = new DoubleProfile(
+          props.production['NumericalProfile'],
+        );
+        this.productionProfile.kind = 'NumericalProfile';
+      } else if (props.production['TextProfile']) {
+        this.productionProfile = new TextProfile(
+          props.production['TextProfile'],
+        );
+        this.productionProfile.kind = 'TextProfile';
       }
     }
   }
