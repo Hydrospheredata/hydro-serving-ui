@@ -7,7 +7,7 @@ import {
   ServiceSupported,
 } from '@app/core/data/types';
 import { forkJoin, Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 const enum ServicesEndpoints {
   stat = 'stat/support',
@@ -28,6 +28,12 @@ export class ServiceStatusService {
           params: { model_version_id: `${modelVersionId}` },
         })
         .pipe(
+          map<ServiceSupported, ServiceSupported>(res => {
+            return {
+              supported: res.supported,
+              message: res.message || res.description || 'Empty message',
+            };
+          }),
           catchError(err => {
             return of(createServiceSupportOnFailure(err));
           }),

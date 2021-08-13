@@ -1,16 +1,14 @@
-import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
+import { NotifierService } from 'angular-notifier';
+import { notificationType } from './data/types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SnackbarService {
-  constructor(private mdlSnackBar: MdlSnackbarService) {}
+  constructor(private notifier: NotifierService) {}
 
-  show({ message }: { message: string }) {
-    this.mdlSnackBar.showSnackbar({
-      message,
-      timeout: 5000,
-    });
+  notify(type: notificationType = 'default', message: string) {
+    this.notifier.notify(type, message);
   }
 }

@@ -13,7 +13,6 @@ import {
   LoadMetricsFail,
   AddMetric,
   AddMetricSuccess,
-  AddMetricFail,
   DeleteMetric,
   DeleteMetricSuccess,
   DeleteMetricFail,
@@ -22,6 +21,7 @@ import {
 import { MetricSpecification } from '@app/core/data/types';
 import { of } from 'rxjs';
 import { switchMap, map, catchError } from 'rxjs/operators';
+import { Notify } from '@app/core/store/actions/notifications.actions';
 
 @Injectable()
 export class MetricsEffects {
@@ -30,23 +30,20 @@ export class MetricsEffects {
       ofType(AddMetric),
       switchMap(action =>
         this.metricsService.addMetricSpecification(action.aggregation).pipe(
-          map(response => {
-            this.snackbar.show({
-              message: 'Metric was successfully added',
-            });
-            return AddMetricSuccess({
-              payload: new MetricSpecification(response),
-            });
+          switchMap(response => {
+            return [
+              AddMetricSuccess({
+                payload: new MetricSpecification(response),
+              }),
+              Notify({
+                kind: 'success',
+                message: 'Metric was successfully added',
+              }),
+            ];
           }),
-          catchError(error => {
-            this.snackbar.show({
-              message: `Error: ${error}`,
-            });
-            return of(AddMetricFail({ error }));
-          })
-        )
-      )
-    )
+        ),
+      ),
+    ),
   );
 
   deleteMetric$ = createEffect(() =>
@@ -54,19 +51,24 @@ export class MetricsEffects {
       ofType(DeleteMetric),
       switchMap(({ id }) => {
         return this.metricsService.deleteMetricSpecification(id).pipe(
-          map(() => {
-            this.snackbar.show({ message: 'Metric was deleted' });
-            return DeleteMetricSuccess({ payload: { id } });
+          switchMap(() => {
+            return [
+              DeleteMetricSuccess({ payload: { id } }),
+              Notify({
+                kind: 'warning',
+                message: 'Metric has been deleted',
+              }),
+            ];
           }),
           catchError(error => {
-            this.snackbar.show({
-              message: `Error: ${error}`,
-            });
-            return of(DeleteMetricFail({ error }));
-          })
+            return of(
+              DeleteMetricFail({ error }),
+              Notify({ kind: 'error', message: `Error: ${error}` }),
+            );
+          }),
         );
-      })
-    )
+      }),
+    ),
   );
 
   loadMetrics$ = createEffect(() =>
@@ -76,12 +78,17 @@ export class MetricsEffects {
       switchMap(({ id }) => {
         return this.metricsService.getMetricSpecifications(`${id}`).pipe(
           map(metricSettings =>
-            LoadMetricsSuccess({ payload: metricSettings })
+            LoadMetricsSuccess({ payload: metricSettings }),
           ),
-          catchError(error => of(LoadMetricsFail({ error })))
+          catchError(error =>
+            of(
+              LoadMetricsFail({ error }),
+              Notify({ kind: 'error', message: "Couldn't load metrics" }),
+            ),
+          ),
         );
-      })
-    )
+      }),
+    ),
   );
 
   constructor(
@@ -89,6 +96,6 @@ export class MetricsEffects {
     private metricsService: MetricsService,
     private modelVersionsFacade: ModelVersionsFacade,
     private store: Store<HydroServingState>,
-    private snackbar: SnackbarService
+    private snackbar: SnackbarService,
   ) {}
 }

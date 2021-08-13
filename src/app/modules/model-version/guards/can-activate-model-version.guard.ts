@@ -1,4 +1,3 @@
-import { MdlSnackbarService } from '@angular-mdl/core';
 import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable, of, combineLatest } from 'rxjs';
@@ -6,14 +5,16 @@ import { switchMap, first } from 'rxjs/operators';
 
 import { ModelsFacade } from '@app/core/facades/models.facade';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
+import { Store } from '@ngrx/store';
+import { NotifyWarning } from '@app/core/store/actions/notifications.actions';
 
 @Injectable({ providedIn: 'root' })
 export class CanActivateModelVersionGuard implements CanActivate {
   constructor(
-    private mdlSnackbarService: MdlSnackbarService,
+    private store: Store,
     private router: Router,
     private modelsFacade: ModelsFacade,
-    private modelVersionsFacade: ModelVersionsFacade
+    private modelVersionsFacade: ModelVersionsFacade,
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
@@ -26,7 +27,7 @@ export class CanActivateModelVersionGuard implements CanActivate {
         const modelVersionExists = modelVersions.some(
           modelVersion =>
             modelVersion.modelVersion === modelVersionNumber &&
-            modelVersion.model.name === modelName
+            modelVersion.model.name === modelName,
         );
 
         if (modelVersionExists) {
@@ -36,7 +37,7 @@ export class CanActivateModelVersionGuard implements CanActivate {
           this.router.navigate(['models', modelName]);
           return of(false);
         }
-      })
+      }),
     );
   }
 
@@ -47,15 +48,16 @@ export class CanActivateModelVersionGuard implements CanActivate {
     ]).pipe(
       first(
         ([modelsLoaded, modelVersionsLoaded]) =>
-          modelsLoaded && modelVersionsLoaded
-      )
+          modelsLoaded && modelVersionsLoaded,
+      ),
     );
   }
 
   private showMessage(modelName: string, modelVersionNumber: number): void {
-    this.mdlSnackbarService.showSnackbar({
-      message: `Models version: ${modelVersionNumber} doesn't exist for model with name:${modelName}`,
-      timeout: 5000,
-    });
+    this.store.dispatch(
+      NotifyWarning(
+        `Models version: ${modelVersionNumber} doesn't exist for model with name:${modelName}`,
+      ),
+    );
   }
 }

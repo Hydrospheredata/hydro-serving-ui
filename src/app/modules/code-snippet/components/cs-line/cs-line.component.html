@@ -1,0 +1,31 @@
+<div class="snippet">
+  <input class="snippet__line" value="{{command}}" readonly="readonly" #line>
+  <ng-container *ngIf="!copy; else copied">
+    <div
+      class="snippet__icon"
+      hsTippy
+      [tippyOptions]="{
+      content: 'Copy code snippet',
+      arrow: false,
+      theme: 'basic',
+      placement: 'bottom',
+      zIndex: 1
+      }"
+      (click)="copySnippet(line)"
+    ></div>
+  </ng-container>
+  <ng-template #copied>
+    <div
+      class="snippet__icon-copied"
+      hsTippy
+      [tippyOptions]="{
+      content: 'Code copied',
+      arrow: false,
+      theme: 'basic',
+      placement: 'bottom',
+      zIndex: 1
+      }"
+      (click)="copySnippet(line)"
+    ></div>
+  </ng-template>
+</div>

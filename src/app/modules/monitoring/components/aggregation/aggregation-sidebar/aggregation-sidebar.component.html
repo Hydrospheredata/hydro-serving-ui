@@ -5,9 +5,9 @@
       id="rangeFilter"
       class="agg-sidebar__date-picker"
       ngxDaterangepickerMd
-      startKey="minDate"
-      endKey="maxDate"
       [(ngModel)]="selected"
+      startKey="startDate"
+      endKey="endDate"
       timePicker="true"
       timePickerSeconds="true"
       (datesUpdated)="handleDateTimeFromChange($event)"

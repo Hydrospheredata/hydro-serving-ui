@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 
 import { DeploymentConfig, ModelVersion } from '@app/core/data/types';
 import { Application, ApplicationCreatingRequest } from '@app/core/data/types';
@@ -24,6 +24,9 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class ApplicationsFacade {
+  private readonly filterString = new BehaviorSubject('');
+  private readonly filterString$ = this.filterString.asObservable();
+
   constructor(
     private readonly store: Store<HydroServingState>,
     private nameGenerator: NameGenerator,
@@ -82,6 +85,32 @@ export class ApplicationsFacade {
     return this.store.pipe(select(selectAllApplications));
   }
 
+  filteredApplications(): Observable<Application[]> {
+    return combineLatest([this.filterString$, this.allApplications()]).pipe(
+      map(([filter, applications]) => {
+        return filter
+          ? applications.filter(({ name }) => name.includes(filter))
+          : applications;
+      }),
+    );
+  }
+
+  nonFavoriteApplications$ = this.filteredApplications().pipe(
+    map(apps => apps.filter(app => !app.favorite)),
+  );
+
+  favoriteApplications$ = this.filteredApplications().pipe(
+    map(apps => apps.filter(app => app.favorite)),
+  );
+
+  visibleApplications(): Observable<Application[]> {
+      return combineLatest(
+        this.favoriteApplications$,
+        this.nonFavoriteApplications$,
+      ).pipe(map(([favorites, nonFavorites]) => [...favorites, ...nonFavorites]));
+  }
+
+
   selectedApplication(): Observable<Application> {
     return this.store.pipe(select(selectSelectedApplication));
   }
@@ -100,5 +129,9 @@ export class ApplicationsFacade {
 
   areApplicationsLoaded() {
     return this.store.pipe(select(selectApplicationLoaded));
+  }
+
+  onFilter(str: string): void {
+    this.filterString.next(str);
   }
 }

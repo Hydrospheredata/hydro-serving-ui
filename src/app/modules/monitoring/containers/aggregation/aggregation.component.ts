@@ -34,10 +34,11 @@ export class AggregationComponent implements OnInit {
         this.inputNames = agg ? agg.inputNames : undefined;
         this.outputNames = agg ? agg.outputNames : undefined;
         this.metricNames = agg ? agg.metricNames : undefined;
-      })
+      }),
     );
 
-    this.selectedAggregation$ = this.aggregationService.getSelectedAggregation();
+    this.selectedAggregation$ =
+      this.aggregationService.getSelectedAggregation();
 
     this.canLoadOlder$ = this.aggregationService.canLoadOlder();
     this.canLoadNewer$ = this.aggregationService.canLoadNewer();

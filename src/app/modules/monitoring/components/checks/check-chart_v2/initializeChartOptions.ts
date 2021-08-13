@@ -13,6 +13,13 @@ export const initializeChartOptions = config => {
     credits: {
       enabled: false,
     },
+    series: [
+      {
+        name: '',
+        data: [],
+        type: 'spline',
+      },
+    ],
     lang: {
       noData: 'no data available',
     },

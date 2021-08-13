@@ -1,8 +1,8 @@
 const url = process.env.URL || 'http://localhost';
-const modelPageUrl = 'http://localhost/models/infer';
-const modelVersionPageUrl = 'http://localhost/models/infer/1';
-const applicationsUrl = 'http://localhost/applications';
-const deploymentConfigsUrl = 'http://localhost/deployment_configs';
+const modelPageUrl = url + '/models/infer';
+const modelVersionPageUrl = url + '/models/infer/1';
+const applicationsUrl = url + '/applications';
+const deploymentConfigsUrl = url + '/deployment_configs';
 const apiVersion = 2;
 const api = `api/v${apiVersion}`;
 

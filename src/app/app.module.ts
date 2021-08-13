@@ -42,7 +42,8 @@ import { UiBuildInfoService } from './core/ui-build-info.service';
     },
     {
       provide: APP_INITIALIZER,
-      useFactory: (buildInfo: UiBuildInfoService) => () => buildInfo.loadConfig(),
+      useFactory: (buildInfo: UiBuildInfoService) => () =>
+        buildInfo.loadConfig(),
       deps: [UiBuildInfoService],
       multi: true,
     },

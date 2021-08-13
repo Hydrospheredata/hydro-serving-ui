@@ -1,0 +1,21 @@
+@import 'variables';
+
+.notifier__notification--error {
+  background-color: $supportive-color-red-400;
+  opacity: 0.8;
+}
+
+.notifier__notification--info {
+  background-color: $primary-color-300;
+  opacity: 0.8;
+}
+
+.notifier__notification--success {
+  background-color: $supportive-color-green-400;
+  opacity: 0.8;
+}
+
+.notifier__notification--warning {
+  background-color: $accent-color-600;
+  opacity: 0.7;
+}

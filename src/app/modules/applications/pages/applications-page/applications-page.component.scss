@@ -1,7 +1,6 @@
 @import 'variables';
 .applications-page {
   display: flex;
-  overflow: hidden;
   height: 100%;
   &__button {
     width: 100%;
@@ -22,6 +21,49 @@
 
     &-link {
       color: $primary-color-700;
+    }
+  }
+  &__icon {
+    width: 500px;
+    height: 100%;
+    color: $primary-color-800;
+    opacity: 0.2;
+    position: fixed;
+    right: 12%;
+    max-height: 80vh;
+    top: calc(50% + 36px);
+    transform: translate(50%, -50%) scale(1.1);
+  }
+  &__content {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    transform: translateY(-50%);
+    &-text {
+      display: flex;
+      flex-direction: column;
+    }
+    &-title {
+      font-family: $font-family-regular;
+      font-size: $title-font-size * 1.5;
+    }
+    &-subtitle {
+      font-size: $base-font-size;
+      color: $label-color;
+      margin-top: 24px;
+    }
+    &-btn {
+      width: 36%;
+      padding: 11px;
+      font-size: 16px;
+      margin-top: 45px;
+      &[disabled] {
+        background-color: $primary-color-700;
+        color: $neutral-color-100;;
+        opacity: 0.3;
+      }
     }
   }
 }

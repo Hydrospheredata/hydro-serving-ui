@@ -1,0 +1,37 @@
+@import "src/assets/styles/variables";
+
+.snippet {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  &__line {
+    border: none;
+    color: #000;
+    font-family: $font-family-mono;
+    font-size: 15px;
+    width: 100%;
+    caret: unset;
+  }
+  &__icon {
+    opacity: 0.3;
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    background-image: url("~assets/images/_icons/icon-copy.svg");
+
+    &:hover {
+      opacity: 0.9;
+      transition: 0.3s ease all;
+    }
+
+    &-copied {
+      opacity: 0.9;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      background-image: url("~assets/images/_icons/icon-copy.svg");
+    }
+  }
+}

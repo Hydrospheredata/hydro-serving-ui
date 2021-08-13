@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { DialogAddApplicationComponent } from '@app/modules/dialogs/components';
 import { DialogsService } from '@app/modules/dialogs/dialogs.service';
 
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
@@ -19,6 +19,7 @@ import { RedirectService } from '@app/core/redirect.service';
   styleUrls: ['./applications-page.component.scss'],
 })
 export class ApplicationsPageComponent {
+  allApplications$: Observable<Application[]>;
   applications$: Observable<Application[]>;
   selectedApplication$: Observable<Application>;
 
@@ -30,20 +31,16 @@ export class ApplicationsPageComponent {
     private router: Router,
     private redirectService: RedirectService,
   ) {
-    this.applications$ = facade.allApplications();
-    this.selectedApplication$ = this.facade.selectedApplication();
+    this.allApplications$ = facade.allApplications();
+    this.selectedApplication$ = facade.selectedApplication();
+    this.applications$ = facade.visibleApplications();
 
-    this.redirectService.redirectToFirst(this.applications$, 'applications');
+    this.redirectService.redirectToFirst(this.allApplications$, 'applications');
   }
 
   isButtonEnabled() {
-    return combineLatest([
-      this.someModelVersionIsReleased(),
-      this.getDepConfigs(),
-    ]).pipe(
-      map(([someReleased, depConfigs]) => {
-        return someReleased && depConfigs.length > 0;
-      }),
+    return this.someModelVersionIsReleased().pipe(
+      map(someReleased => someReleased),
     );
   }
 
@@ -63,7 +60,7 @@ export class ApplicationsPageComponent {
   }
 
   handleFilter(filterStr: string): void {
-    // this.facade.onFilter(filterStr);
+    this.facade.onFilter(filterStr);
   }
 
   handleBookmark(application: Application): void {

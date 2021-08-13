@@ -1,5 +1,11 @@
+import {
+  ModelDTO,
+  Model,
+  ModelVersionStatus,
+  ModelVariant,
+  Stage,
+} from '@app/core/data/types';
 import { Injectable } from '@angular/core';
-import { ModelDTO, Model } from '@app/core/data/types';
 import { FavoriteService } from '@app/core/favorite.service';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
@@ -9,6 +15,7 @@ import {
   switchMap,
   exhaustMap,
   withLatestFrom,
+  map,
 } from 'rxjs/operators';
 import * as _ from 'lodash';
 
@@ -20,13 +27,22 @@ import { ModelVersionService } from '../../data/services/model-version.service';
 import { HydroServingState } from '../states/root.state';
 import { selectAllModels } from '../selectors/models.selectors';
 import { AddModel, GetModelsSuccess } from '../actions/models.actions';
+import { AddSuccess } from '../actions/applications.actions';
+
 import {
   GetModelVersions,
   GetModelVersionsSuccess,
   GetModelVersionsFail,
-  AddModelVersionSuccess,
   AddModelVersion,
+  DeleteModelVersionSuccess,
+  UpsertModelVersion,
 } from '../actions/model-versions.actions';
+import {
+  NotifyError,
+  NotifySuccess,
+  NotifyWarning,
+} from '../actions/notifications.actions';
+import { selectModelVersionEntities } from '@app/core/store/selectors';
 
 @Injectable()
 export class ModelVersionsEffects {
@@ -62,10 +78,11 @@ export class ModelVersionsEffects {
           }),
           catchError(error => {
             console.error(error);
-            this.snackbar.show({
-              message: `Failed to load model versions`,
-            });
-            return of(GetModelVersionsFail({ error }));
+
+            return of(
+              GetModelVersionsFail({ error }),
+              NotifyError('Failed to load model versions'),
+            );
           }),
         ),
       ),
@@ -82,15 +99,66 @@ export class ModelVersionsEffects {
         );
 
         if (modelExist) {
-          return of(AddModelVersionSuccess({ modelVersion }));
+          return of(UpsertModelVersion({ modelVersion }));
         } else {
           const model = this.modelBuilder.build(modelVersion.model);
 
           return concat(
             of(AddModel({ model })),
-            of(AddModelVersionSuccess({ modelVersion })),
+            of(UpsertModelVersion({ modelVersion })),
           );
         }
+      }),
+    ),
+  );
+
+  upsertModelVersion$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(UpsertModelVersion),
+      map(({ modelVersion }) => {
+        switch (modelVersion.status) {
+          case ModelVersionStatus.Failed:
+            return NotifyError(
+              `Model version: ${modelVersion.nameWithId()} failed`,
+            );
+
+          case ModelVersionStatus.Released:
+            return NotifySuccess(
+              `Model version: ${modelVersion.nameWithId()} has been released`,
+            );
+          default:
+            return { type: 'NOOP' };
+        }
+      }),
+    ),
+  );
+
+  deleteModelVersionsSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DeleteModelVersionSuccess),
+      switchMap(_ => of(NotifyWarning(`Model version: ${_} has been deleted`))),
+    ),
+  );
+
+  addApplication$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AddSuccess),
+      withLatestFrom(this.store.pipe(select(selectModelVersionEntities))),
+      exhaustMap(([{ payload: application }, modelVersionsDict]) => {
+        const stages = application.executionGraph.stages;
+
+        const variants: ModelVariant[] = _.flatMap(
+          stages,
+          (stage: Stage) => stage.modelVariants,
+        );
+        const ids = _.map(variants, (mv: ModelVariant) => mv.modelVersionId);
+        const modelVersions = ids.map(id => modelVersionsDict[id]);
+
+        const modelVersionsUpdated = modelVersions.map(mv => {
+          return mv.addApplication(application.name);
+        });
+
+        return of(GetModelVersionsSuccess({ payload: modelVersionsUpdated }));
       }),
     ),
   );

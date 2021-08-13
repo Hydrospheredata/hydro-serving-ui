@@ -3,28 +3,19 @@ import {
   EntityAdapter,
   createEntityAdapter,
   Update,
-  Dictionary,
 } from '@ngrx/entity';
 import { createReducer, on, Action } from '@ngrx/store';
-import * as _ from 'lodash';
-import {
-  ModelVersion,
-  Application,
-  Stage,
-  ModelVariant,
-} from '../../data/types';
+import { ModelVersion } from '../../data/types';
 
-import {
-  AddSuccess as AddApplicationSuccess,
-  UpdateSuccess as UpdateApplicationSuccess,
-  DeleteSuccess as DeleteApplicationSuccess,
-} from '../actions/applications.actions';
+import { DeleteSuccess as DeleteApplicationSuccess } from '../actions/applications.actions';
 import {
   GetModelVersions,
   GetModelVersionsSuccess,
   AddModelVersionSuccess,
   GetModelVersionsFail,
   DeleteModelVersionSuccess,
+  UpdateModelVersions,
+  UpsertModelVersion,
 } from '../actions/model-versions.actions';
 
 export interface State extends EntityState<ModelVersion> {
@@ -60,36 +51,12 @@ const modelVersionReducer = createReducer(
   on(DeleteModelVersionSuccess, (state, { modelVersionId }) =>
     adapter.removeOne(modelVersionId, state),
   ),
-  on(AddApplicationSuccess, UpdateApplicationSuccess, (state, { payload }) => {
-    const application = payload;
-
-    const toUpdate =
-      (app: Application) =>
-      (modelVersion: ModelVersion): Update<ModelVersion> => {
-        const applicationNames: string[] = modelVersion.applications;
-        if (!applicationNames.includes(app.name)) {
-          return {
-            id: modelVersion.id,
-            changes: { applications: [...applicationNames, app.name] },
-          };
-        }
-      };
-
-    try {
-      const variants: ModelVariant[] =
-        getApplicationsModelVariants(application);
-      const modelVersionIds: number[] = variants.map(getId);
-      const modelVersions = modelVersionIds.map(toModelVersion(state.entities));
-      const updates = modelVersions
-        .map(toUpdate(application))
-        .filter(upd => !!upd);
-
-      return adapter.updateMany(updates, state);
-    } catch (e) {
-      console.error(e);
-      return state;
-    }
-  }),
+  on(UpsertModelVersion, (state, { modelVersion }) =>
+    adapter.upsertOne(modelVersion, state),
+  ),
+  on(UpdateModelVersions, (state, { payload: modelVersions }) =>
+    adapter.addMany(modelVersions, { ...state }),
+  ),
   on(DeleteApplicationSuccess, (state, { applicationName }) => {
     const modelVersions: ModelVersion[] = Object.values(state.entities);
     const hasApplication =
@@ -130,19 +97,3 @@ export const {
   selectEntities: selectModelVersionsEntities,
   selectIds: selectModelVersionsIds,
 } = adapter.getSelectors();
-
-// TODO: move utils
-function getApplicationsModelVariants(
-  application: Application,
-): ModelVariant[] {
-  const stages = application.executionGraph.stages;
-  const getModelVariants = (stage: Stage) => stage.modelVariants;
-  return _.flatMap(stages, getModelVariants);
-}
-
-function getId(el: { modelVersionId: number }): number {
-  return el.modelVersionId;
-}
-function toModelVersion(dict: Dictionary<ModelVersion>) {
-  return (id: number): ModelVersion => dict[id];
-}

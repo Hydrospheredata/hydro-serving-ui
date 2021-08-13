@@ -11,6 +11,7 @@ export const MockDeploymentConfig1 = Factory.define<DeploymentConfig>(() => ({
     maxReplicas: 10,
     cpuUtilization: 80,
   },
+  favorite: false,
 }));
 
 export const MockDeploymentConfig2 = MockDeploymentConfig1.build({

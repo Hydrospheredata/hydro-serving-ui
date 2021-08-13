@@ -51,52 +51,130 @@ export class CheckChartComponentV2 implements OnChanges {
     public monitoringPageService: MonitoringPageService,
   ) {}
 
-  chartOptions;
+  chartOptions = {
+    title: {},
+    tooltip: {},
+    series: [
+      {
+        name: 'test',
+        data: [],
+        type: 'spline',
+      },
+    ],
+    credits: {
+      enabled: false,
+    },
+    lang: {},
+    noData: {},
+    xAxis: {
+      plotBands: [],
+    },
+    yAxis: {
+      title: {
+        text: undefined,
+      },
+      plotLines: [],
+    },
+    plotOptions: {
+      spline: {
+        lineWidth: 2,
+        states: {
+          hover: {
+            lineWidth: 2,
+          },
+        },
+        marker: {
+          enabled: false,
+        },
+      },
+      series: {
+        cursor: 'pointer',
+        point: {
+          events: {},
+        },
+      },
+    },
+  };
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.config.firstChange) {
       this.chartOptions = initializeChartOptions(changes.config);
     }
 
-    if (changes.config) {
-      if (
-        changes.config.currentValue &&
-        changes.config.currentValue.series.length !== 0
-      ) {
-        this.updateData(changes.config.currentValue);
-        this.addPlotLine(changes.config.currentValue);
-        this.addPlotBand(changes.config.currentValue);
-      }
+    if (
+      changes.config.currentValue &&
+      changes.config.currentValue.series.length !== 0
+    ) {
+      this.updateData(changes.config.currentValue);
+      this.addPlotLine(changes.config.currentValue);
+      this.addPlotBand(changes.config.currentValue);
     }
   }
 
   updateData(cfg: ChartConfig) {
-    console.log('config', this.cfg);
     let self = this;
 
-    this.chartOptions.tooltip = {
-      headerFormat: undefined,
-      pointFormat: `<span style='color: #4098d7; font-weight: bold'>
+    this.chartOptions = {
+      tooltip: {
+        headerFormat: undefined,
+        pointFormat: `<span style="color: #4098d7; font-weight: bold">
            ${cfg.series[0].name}</span>: <b>{point.y}</b>`,
-      crosshairs: {
-        color: 'lightgrey',
+        crosshairs: {
+          color: 'lightgrey',
+        },
       },
-    };
-
-    this.chartOptions.series = [
-      {
-        name: `${cfg.series[0].name}`,
-        data: cfg.series[0].data,
-        type: 'spline',
+      title: {
+        text: `${cfg.name}`,
       },
-    ];
-
-    this.chartOptions.plotOptions.series = {
-      cursor: 'pointer',
-      point: {
-        events: {
-          click: function () {
-            self.monitoringPageService.showCheckDetails(null, this.x);
+      series: [
+        {
+          name: `${cfg.series[0].name}`,
+          data: cfg.series[0].data,
+          type: 'spline',
+        },
+      ],
+      credits: {
+        enabled: false,
+      },
+      lang: {
+        noData: 'no data available',
+      },
+      noData: {
+        style: {
+          fontWeight: 'bold',
+          fontSize: '14px',
+          color: '#bcccdc',
+        },
+      },
+      xAxis: {
+        plotBands: [],
+      },
+      yAxis: {
+        title: {
+          text: undefined,
+        },
+        plotLines: [],
+      },
+      plotOptions: {
+        spline: {
+          lineWidth: 2,
+          states: {
+            hover: {
+              lineWidth: 2,
+            },
+          },
+          marker: {
+            enabled: false,
+          },
+        },
+        series: {
+          cursor: 'pointer',
+          point: {
+            events: {
+              click: function () {
+                self.monitoringPageService.showCheckDetails(null, this.x);
+              },
+            },
           },
         },
       },
@@ -127,7 +205,7 @@ export class CheckChartComponentV2 implements OnChanges {
     let i = 0;
     while (i < toArr.length) {
       plotBands.push({
-        color: '#e12d39',
+        color: '#ff9b9b',
         width: 2,
         from: fromArr[i],
         to: toArr[i],

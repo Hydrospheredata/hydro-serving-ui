@@ -4,6 +4,7 @@
       [sidebarData]="configs$ | async"
       [selectedItem]="selectedConfig$ | async"
       (filtered)="handleFilter($event)"
+      (bookmarked)="handleBookmark($event)"
       (clicked)="handleSidebarClick($event)"
     >
       <button

@@ -12,9 +12,6 @@ import {
   Add,
   AddSuccess,
   AddFail,
-  Update,
-  UpdateSuccess,
-  UpdateFail,
   Delete,
   DeleteSuccess,
   DeleteFail,
@@ -27,14 +24,21 @@ import {
   TestFail,
   SetInput,
   ToggleFavorite,
+  SseDeleteEvent,
+  SseUpdateEvent,
+  UpdateSuccess,
+  Update,
 } from '../actions/applications.actions';
-import { selectSelectedApplication } from '../selectors/applications.selectors';
+import {
+  selectApplicationIds,
+  selectSelectedApplication,
+} from '../selectors/applications.selectors';
 import { SnackbarService } from '../../snackbar.service';
 
 import { HydroServingState } from '@app/core/store/states/root.state';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { Application } from '@app/core/data/types';
+import { select, Store } from '@ngrx/store';
+import { Application, ApplicationStatus } from '@app/core/data/types';
 import { of } from 'rxjs';
 import {
   switchMap,
@@ -43,8 +47,14 @@ import {
   skip,
   map,
   tap,
+  concatMap,
 } from 'rxjs/operators';
-
+import {
+  Notify,
+  NotifyError,
+  NotifySuccess,
+  NotifyWarning,
+} from '../actions/notifications.actions';
 @Injectable()
 export class ApplicationsEffects {
   getApplications$ = createEffect(() =>
@@ -64,12 +74,14 @@ export class ApplicationsEffects {
             return GetSuccess({ payload: applications });
           }),
           catchError(error => {
-            this.snackbar.show({ message: 'Failed to load applications' });
-            return of(GetFail({ error }));
-          })
-        )
-      )
-    )
+            return of(
+              GetFail({ error }),
+              NotifyError('Failed to load applications'),
+            );
+          }),
+        ),
+      ),
+    ),
   );
 
   addApplication$ = createEffect(() =>
@@ -78,24 +90,17 @@ export class ApplicationsEffects {
       switchMap(({ application }) =>
         this.applicationsService.addApplication(application).pipe(
           map(response => {
-            this.snackbar.show({
-              message: 'Application was successfully added',
-            });
-
             this.router.navigate(['/applications', response.name]);
 
             const app = this.applicationBuilder.build(response);
             return AddSuccess({ payload: app });
           }),
           catchError(error => {
-            this.snackbar.show({
-              message: `Error: ${error}`,
-            });
-            return of(AddFail({ error }));
-          })
-        )
-      )
-    )
+            return of(AddFail({ error }), NotifyError(`Error: ${error}`));
+          }),
+        ),
+      ),
+    ),
   );
 
   updateApplication$ = createEffect(() =>
@@ -104,21 +109,38 @@ export class ApplicationsEffects {
       switchMap(({ application }) =>
         this.applicationsService.updateApplication(application).pipe(
           map(response => {
-            this.snackbar.show({
-              message: 'Application was successfully updated',
-            });
+            this.router.navigate(['/applications', response.name]);
+
             const app = this.applicationBuilder.build(response);
-            return UpdateSuccess({ payload: app });
+            return AddSuccess({ payload: app });
           }),
           catchError(error => {
-            this.snackbar.show({
-              message: `Error: ${error}`,
-            });
-            return of(UpdateFail({ error }));
-          })
-        )
-      )
-    )
+            return of(AddFail({ error }), NotifyError(`Error: ${error}`));
+          }),
+        ),
+      ),
+    ),
+  );
+
+  updateFromSSE$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(SseUpdateEvent),
+        switchMap(({ application }) => {
+          switch (application.status) {
+            case ApplicationStatus.Ready:
+              return [
+                UpdateSuccess({ payload: application }),
+                NotifySuccess(
+                  `Application: ${application.name} is ready for serving`,
+                ),
+              ];
+            default:
+              return of(UpdateSuccess({ payload: application }));
+          }
+        }),
+      ),
+    {},
   );
 
   deleteApplication$ = createEffect(() =>
@@ -126,22 +148,36 @@ export class ApplicationsEffects {
       ofType(Delete),
       switchMap(({ application: { name } }) =>
         this.applicationsService.deleteApplication(name).pipe(
-          map(() => {
+          switchMap(() => {
             this.router.navigate(['applications']);
-            this.snackbar.show({
-              message: 'Application has been deleted',
-            });
-            return DeleteSuccess({ applicationName: name });
+            return [{ type: 'NOOP' }];
           }),
           catchError(error => {
-            this.snackbar.show({
-              message: `Error: ${error}`,
-            });
-            return of(DeleteFail({ error }));
-          })
-        )
-      )
-    )
+            return of(
+              DeleteFail({ error }),
+              Notify({ kind: 'error', message: error }),
+            );
+          }),
+        ),
+      ),
+    ),
+  );
+
+  deleteFromSSE$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SseDeleteEvent),
+      withLatestFrom(this.store.pipe(select(selectApplicationIds))),
+      concatMap(([{ applicationName }, ids]) => {
+        if ((ids as string[]).includes(applicationName)) {
+          return [
+            DeleteSuccess({ applicationName }),
+            NotifyWarning(`Application: ${applicationName} has been deleted`),
+          ];
+        } else {
+          return of({ type: 'NOOP' });
+        }
+      }),
+    ),
   );
 
   generateInputs$ = createEffect(() =>
@@ -159,10 +195,10 @@ export class ApplicationsEffects {
           }),
           catchError(error => {
             return of(GenerateInputFail({ error }));
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   setInputs$ = createEffect(() =>
@@ -173,8 +209,8 @@ export class ApplicationsEffects {
       withLatestFrom(this.store.select(selectSelectedApplication)),
       switchMap(([input, { name }]) => {
         return of(SetInputSuccess({ payload: { name, input } }));
-      })
-    )
+      }),
+    ),
   );
 
   testApplication$ = createEffect(() =>
@@ -189,12 +225,12 @@ export class ApplicationsEffects {
                 name,
                 output: JSON.stringify(output, undefined, 2),
               },
-            })
+            }),
           ),
-          catchError(error => of(TestFail({ payload: { name, error } })))
-        )
-      )
-    )
+          catchError(error => of(TestFail({ payload: { name, error } }))),
+        ),
+      ),
+    ),
   );
 
   toggleFavorite$ = createEffect(
@@ -205,9 +241,9 @@ export class ApplicationsEffects {
           application.favorite
             ? this.favoriteService.remove(application.name)
             : this.favoriteService.add(application.name);
-        })
+        }),
       ),
-    { dispatch: false }
+    { dispatch: false },
   );
 
   constructor(
@@ -217,6 +253,6 @@ export class ApplicationsEffects {
     private applicationBuilder: ApplicationBuilder,
     private snackbar: SnackbarService,
     private store: Store<HydroServingState>,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
   ) {}
 }

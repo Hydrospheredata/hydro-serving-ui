@@ -21,6 +21,7 @@ import {
   DeploymentConfigsEffects,
   ServiceStatusesEffects,
 } from './store/effects';
+import { NotificationEffects } from './store/effects/notifications.effects';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import {
       ServablesEffects,
       DeploymentConfigsEffects,
       ServiceStatusesEffects,
+      NotificationEffects,
     ]),
     StoreRouterConnectingModule.forRoot({
       stateKey: 'router',

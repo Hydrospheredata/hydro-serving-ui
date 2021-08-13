@@ -17,6 +17,7 @@ import * as fromApplications from './store/actions/applications.actions';
 import * as fromModelVersions from './store/actions/model-versions.actions';
 import * as fromServables from './store/actions/servables.actions';
 import * as fromDepConfigs from './store/actions/deployment-configs.actions';
+import { SnackbarService } from './snackbar.service';
 
 const enum SSEEvents {
   ModelRemove = 'ModelRemove',
@@ -70,8 +71,9 @@ export class SseService {
   constructor(
     private store: Store<HydroServingState>,
     private applicationBuilder: ApplicationBuilder,
+    private snackbar: SnackbarService,
     private modelVersionBuilder: ModelVersionBuilder,
-    @Inject(HS_BASE_URL) private baseUrl: string
+    @Inject(HS_BASE_URL) private baseUrl: string,
   ) {}
 
   createConnection() {
@@ -89,16 +91,22 @@ export class SseService {
 
   private updateApplication(data: Application) {
     const application = this.applicationBuilder.build(data);
-    return fromApplications.UpdateSuccess({ payload: application });
+
+    return fromApplications.SseUpdateEvent({
+      application,
+    });
   }
 
   private deleteApplication(applicationName: string) {
-    return fromApplications.DeleteSuccess({ applicationName });
+    return fromApplications.SseDeleteEvent({ applicationName });
   }
 
   private updateModelVersion(data: ModelVersion) {
     const modelVersion = this.modelVersionBuilder.build(data);
-    return fromModelVersions.AddModelVersion({ modelVersion });
+
+    return fromModelVersions.UpsertModelVersion({
+      modelVersion,
+    });
   }
 
   private deleteModelVerions(modelVersionId: number) {
@@ -114,11 +122,11 @@ export class SseService {
   }
 
   private deleteDepConfig(name: string) {
-    return fromDepConfigs.DeleteDeploymentConfigSuccess({ name });
+    return fromDepConfigs.SseDeleteDeploymentConfigEvent({ name });
   }
 
-  private addDepConfig(config: DeploymentConfig) {
-    return fromDepConfigs.AddDeploymentConfigSuccess({ payload: config });
+  private addDepConfig(depConfig: DeploymentConfig) {
+    return fromDepConfigs.SseAddDeploymentConfigEvent({ depConfig });
   }
 
   private addEventHandler(item: [string, any]) {

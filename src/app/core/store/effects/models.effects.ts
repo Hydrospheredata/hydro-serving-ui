@@ -21,6 +21,8 @@ import {
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, catchError, switchMap } from 'rxjs/operators';
+import { NotifierService } from 'angular-notifier';
+import { NotifyError, NotifyWarning } from '../actions/notifications.actions';
 
 @Injectable()
 export class ModelsEffects {
@@ -41,8 +43,10 @@ export class ModelsEffects {
             return GetModelsSuccess({ payload: models });
           }),
           catchError(error => {
-            this.snackbar.show({ message: 'Failed to load models' });
-            return of(GetModelsFail({ error }));
+            return of(
+              GetModelsFail({ error }),
+              NotifyError('Failed to load models'),
+            );
           }),
         ),
       ),
@@ -54,18 +58,18 @@ export class ModelsEffects {
       ofType(DeleteModel),
       switchMap(({ modelId }) => {
         return this.modelsService.deleteModel(modelId).pipe(
-          map(() => {
+          switchMap(() => {
             this.router.navigate(['models']);
-            this.snackbar.show({
-              message: 'Model has been deleted',
-            });
-            return DeleteModelSuccess({ modelId });
+            return [
+              DeleteModelSuccess({ modelId }),
+              NotifyWarning('Model has been deleted'),
+            ];
           }),
           catchError(error => {
-            this.snackbar.show({
-              message: `Error: ${error}`,
-            });
-            return of(DeleteModelFail({ error }));
+            return of(
+              DeleteModelFail({ error }),
+              NotifyError(`Error: ${error}`),
+            );
           }),
         );
       }),
@@ -92,5 +96,6 @@ export class ModelsEffects {
     private snackbar: SnackbarService,
     private router: Router,
     private favoriteService: FavoriteService,
+    private norufierService: NotifierService,
   ) {}
 }

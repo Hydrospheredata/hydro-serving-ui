@@ -53,6 +53,7 @@
   &__item {
     flex: 1;
     margin: 0 4px;
+    overflow: auto;
 
     &-header {
       display: flex;
