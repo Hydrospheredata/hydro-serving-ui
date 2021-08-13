@@ -1,0 +1,4 @@
+kind: "Application"
+name: "census_application"
+singular:
+  model: "census:1"

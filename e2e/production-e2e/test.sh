@@ -11,6 +11,10 @@ then
   echo "Upload model"
   hs cluster add --name="local" --server=$URL
   hs apply -f models/census/model/serving.yaml
+  if [ $CREATE_APPLICATION ]
+    echo "Upload application"
+    hs apply -f models/census/application/serving.yaml
+  fi
 
   echo "Run test"
   npm run test
