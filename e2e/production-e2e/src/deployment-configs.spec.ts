@@ -9,10 +9,6 @@ describe('Deployment configs page test', () => {
   let browser: Browser;
   let page: Page;
 
-  beforeEach(() => {
-    jest.setTimeout(50000);
-  });
-
   beforeAll(async () => {
     await initializeBrowser().then(config => {
       browser = config.browser;

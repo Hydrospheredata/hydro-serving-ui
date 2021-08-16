@@ -3,7 +3,7 @@
 if [ $LOAD_MODEL ]
 then
   if [ -z $URL ]
-  then 
+  then
     echo "Server wasn't provided"
     exit 1
   fi
@@ -12,16 +12,16 @@ then
   hs cluster add --name="local" --server=$URL
   hs apply -f models/census/model/serving.yaml
   if [ $CREATE_APPLICATION ]
+  then
     echo "Upload application"
     hs apply -f models/census/application/serving.yaml
   fi
 
   echo "Run test"
   npm run test
-else 
+else
   echo "Run test"
   npm run test
 fi
 
 
-  

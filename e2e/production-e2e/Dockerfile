@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y libwoff1 \
                       libgles2 \
                       libvpx5 \
                       # 2. Install Chromium dependencies
-                      libnss3 \ 
+                      libnss3 \
                       libxss1 \
                       libasound2 \
                       # 3. Install Firefox dependencies
@@ -34,24 +34,22 @@ RUN apt-get update && apt-get install -y libwoff1 \
 #     && mkdir -p /home/pwuser/Downloads \
 #     && chown -R pwuser:pwuser /home/pwuser
 
-# Create non-root user
-RUN groupadd --gid 1000 hydro \
-  && useradd --uid 1000 --gid hydro --shell /bin/bash --create-home hydro
-
 
 FROM base as build
-USER hydro
-WORKDIR /home/hydro/app
-COPY --chown=hydro:hydro package.json /home/hydro/app
+COPY package.json .
 RUN npm install
 
 
 # Run everything after as non-privileged user.
 FROM base as runtime
-WORKDIR /usr/src/app
+
 RUN pip install hs==3.0.0a18
+# Create non-root user
+RUN groupadd --gid 1000 hydro \
+  && useradd --uid 1000 --gid hydro --shell /bin/bash --create-home hydro
+WORKDIR /hydro
 USER hydro
-COPY --chown=hydro:hydro --from=build /home/hydro/app/node_modules node_modules
+COPY --chown=hydro:hydro --from=build node_modules node_modules
 COPY --chown=hydro:hydro . .
 
 ENTRYPOINT [ "bash", "test.sh" ]

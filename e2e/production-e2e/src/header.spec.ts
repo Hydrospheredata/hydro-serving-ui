@@ -1,28 +1,22 @@
 import {
   Page,
   Browser,
-  ElementHandle,
-  HTMLOrSVGElementHandle,
 } from 'playwright';
 import appConfig from '../app-config';
 import initializeBrowser from '../helpers/initializeBrowser';
+import { ModelsHelper } from '../helpers/models.helper';
 
 describe('Header test', () => {
   let browser: Browser;
   let page: Page;
-
-  beforeEach(() => {
-    jest.setTimeout(30000);
-  });
+  let modelsHelper: ModelsHelper;
 
   beforeAll(async () => {
     await initializeBrowser().then(config => {
       browser = config.browser;
       page = config.page;
+      modelsHelper = new ModelsHelper(page);
     });
-
-    await page.goto(appConfig.url);
-    await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`);
   });
 
   afterAll(async () => {
@@ -34,103 +28,75 @@ describe('Header test', () => {
   });
 
   describe('header', () => {
-    let header: ElementHandle<HTMLOrSVGElement>;
-
     beforeEach(() => {
       jest.setTimeout(30000);
     });
 
     beforeAll(async () => {
-      header = await page.$('hs-header header');
+      await page.goto(appConfig.url);
+      await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`);
     });
 
     it('exists', async () => {
-      expect(header).toBeTruthy();
+      await expect(await modelsHelper.getHeader()).toBeTruthy();
     });
 
     describe('navigation', () => {
-      let navigation: HTMLOrSVGElementHandle;
-      let logo: HTMLOrSVGElementHandle;
-
-      beforeEach(async () => {
-        navigation = await header.$('.header-nav');
-        logo = await header.$('.header__logo');
-      });
-
       it('exists', async () => {
-        expect(navigation).toBeTruthy();
+        await expect(await modelsHelper.getNavigation()).toBeTruthy();
       });
 
       it('has logo', async () => {
-        expect(logo).toBeTruthy();
+        await expect(await modelsHelper.getLogo()).toBeTruthy();
       });
 
       it('has three main links', async () => {
-        const linksCount = await navigation.$$eval('a', links => links.length);
-        expect(linksCount).toBe(3);
+        await expect(await modelsHelper.getLinksCount()).toBe(3);
       });
 
       describe('models link', () => {
-        let link: HTMLOrSVGElementHandle;
-
-        beforeAll(async () => {
-          link = await navigation.$('a:first-of-type');
-        });
-
         it('exist', async () => {
-          expect(link).toBeTruthy();
+          await expect(await modelsHelper.getModelsLink()).toBeTruthy();
         });
 
         it('has right name', async () => {
-          expect(await link.evaluate(el => el.textContent)).toBe('Models');
+          await expect(await modelsHelper.getModelsLinkText()).toBe('Models');
         });
 
         it('after clicked show models page', async () => {
-          await link.click();
+          await modelsHelper.clickOnModelsLink();
         });
       });
 
       describe('applications link', () => {
-        let link: HTMLOrSVGElementHandle;
-
-        beforeAll(async () => {
-          link = await navigation.$('a:nth-of-type(2)');
-        });
-
         it('exist', async () => {
-          expect(link).toBeTruthy();
+          await expect(await modelsHelper.getApplicationsLink()).toBeTruthy();
         });
 
         it('has right name', async () => {
-          expect(await link.evaluate(el => el.textContent)).toBe(
+          await expect(await modelsHelper.getApplicationsLinkText()).toBe(
             'Applications',
           );
         });
 
         it('after clicked show applications page', async () => {
-          await link.click();
+          await modelsHelper.clickOnApplicationsLink();
         });
       });
 
       describe('deployment configs link', () => {
-        let link: HTMLOrSVGElementHandle;
-
-        beforeAll(async () => {
-          link = await navigation.$('a:last-of-type');
-        });
-
         it('exist', async () => {
-          expect(link).toBeTruthy();
+          await expect(await modelsHelper.getDeploymentConfigsLink()).toBeTruthy();
         });
 
         it('has right name', async () => {
-          expect(await link.evaluate(el => el.textContent)).toBe(
+          await expect(await modelsHelper.getDeploymentConfigsLinkText()).toBe(
             'Deployment configs',
           );
         });
 
         it('after clicked show deployment configs page', async () => {
-          await link.click();
+          await modelsHelper.clickOnDeploymentConfigsLink();
         });
       });
     });
