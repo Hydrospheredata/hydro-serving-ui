@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Application } from '../../data/types';
+import { Application, ApplicationUpdateRequest } from '../../data/types';
 
 export const Get = createAction('[Application] Get all applications');
 export const GetSuccess = createAction(
@@ -39,7 +39,7 @@ export const AddFail = createAction(
 
 export const Update = createAction(
   '[Application] update application',
-  props<{ application: Application }>(),
+  props<{ application: ApplicationUpdateRequest }>(),
 );
 export const UpdateSuccess = createAction(
   '[Application] update application with success',

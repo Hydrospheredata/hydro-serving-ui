@@ -3,7 +3,11 @@ import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 
-import { DeploymentConfig, ModelVersion } from '@app/core/data/types';
+import {
+  ApplicationUpdateRequest,
+  DeploymentConfig,
+  ModelVersion,
+} from '@app/core/data/types';
 import { Application, ApplicationCreatingRequest } from '@app/core/data/types';
 import { NameGenerator } from '@app/core/name-generator';
 import { HydroServingState } from '@app/core/store/states/root.state';
@@ -104,12 +108,11 @@ export class ApplicationsFacade {
   );
 
   visibleApplications(): Observable<Application[]> {
-      return combineLatest(
-        this.favoriteApplications$,
-        this.nonFavoriteApplications$,
-      ).pipe(map(([favorites, nonFavorites]) => [...favorites, ...nonFavorites]));
+    return combineLatest(
+      this.favoriteApplications$,
+      this.nonFavoriteApplications$,
+    ).pipe(map(([favorites, nonFavorites]) => [...favorites, ...nonFavorites]));
   }
-
 
   selectedApplication(): Observable<Application> {
     return this.store.pipe(select(selectSelectedApplication));
@@ -119,7 +122,7 @@ export class ApplicationsFacade {
     return this.store.pipe(select(selectApplicationsByNames(names)));
   }
 
-  editApplication(application: Application): void {
+  editApplication(application: ApplicationUpdateRequest): void {
     this.store.dispatch(Update({ application }));
   }
 

@@ -15,6 +15,21 @@ export interface ApplicationCreatingRequest {
   deploymentConfiguration: DeploymentConfig;
 }
 
+export interface ApplicationUpdateRequest {
+  name: string;
+  kafkaStreaming?: any[];
+  executionGraph: {
+    stages: {
+      modelVariants: {
+        modelVersionId: number;
+        weight: number;
+        deploymentConfigName: string;
+      }[];
+    }[];
+  };
+  deploymentConfiguration: DeploymentConfig;
+}
+
 export interface KafkaStreaming {
   sourceTopic: string;
   destinationTopic: string;

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from '@environments/environment';
-import { Application } from '../types/application';
+import { Application, ApplicationUpdateRequest } from '../types/application';
 import { HttpService } from './http.service';
 
 @Injectable({
@@ -20,7 +20,9 @@ export class ApplicationService {
     return this.http.get<Application[]>(this.baseApiUrl);
   }
 
-  public updateApplication(application: Application): Observable<Application> {
+  public updateApplication(
+    application: ApplicationUpdateRequest,
+  ): Observable<Application> {
     return this.http
       .put(this.baseApiUrl, application)
       .pipe(map((res: Response): any => res));
@@ -34,7 +36,7 @@ export class ApplicationService {
 
   public generateInputs(appName: string) {
     return this.http.get<string>(
-      `${this.baseApiUrl}/generateInputs/${appName}`
+      `${this.baseApiUrl}/generateInputs/${appName}`,
     );
   }
 

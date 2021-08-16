@@ -11,6 +11,7 @@ import { ModelVariantFormService } from '@app/modules/applications/components/fo
 import { Observable } from 'rxjs';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
 import { DeploymentConfigsFacade } from '@app/core/facades/deployment-configs.facade';
+import { applicationToUpdateRequest } from '@app/core/data/utils';
 
 export let SELECTED_UPD_APPLICATION = new InjectionToken<Application>(
   'selectedApplication',
@@ -43,7 +44,9 @@ export class DialogUpdateApplicationComponent {
 
   public onSubmit(formData) {
     formData.id = this.application.id;
-    this.facade.editApplication(new Application(formData));
+    this.facade.editApplication(
+      applicationToUpdateRequest(new Application(formData)),
+    );
     this.onClose();
   }
 }

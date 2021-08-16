@@ -23,7 +23,7 @@ export class AggregationService implements OnDestroy {
 
   constructor(
     private monitoringStore: MonitoringFacade,
-    private paginator: AggregationPaginator
+    private paginator: AggregationPaginator,
   ) {
     this.aggregationList$ = this.monitoringStore
       .getAggregationList()
@@ -61,12 +61,12 @@ export class AggregationService implements OnDestroy {
           return this.paginator.canLoadOlder(
             aggregations.totalBatchesCount,
             aggregations.showedBatchesCount,
-            offset
+            offset,
           );
         } else {
           return false;
         }
-      })
+      }),
     );
   }
 
@@ -93,7 +93,7 @@ export class AggregationService implements OnDestroy {
             return;
           }
         }),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroy$),
       )
       .subscribe();
   }
@@ -123,7 +123,7 @@ export class AggregationService implements OnDestroy {
             to: new Date(range.to * 1000),
           }
         );
-      })
+      }),
     );
   }
 
