@@ -1,20 +1,20 @@
 import { Component, InjectionToken, Inject, OnDestroy } from '@angular/core';
-import { ModelVariantFormData } from '@app/modules/applications/components/forms/model-variant-form/model-variant-form.service';
 import { isEqual } from 'lodash';
 
 import {
   Application,
-  Stage,
   ModelVersion,
   ModelVariant,
+  Stage,
 } from '@app/core/data/types';
 import { Observable, Subject, of } from 'rxjs';
-import { tap, catchError, takeUntil, take, map } from 'rxjs/operators';
+import { catchError, takeUntil, take, map } from 'rxjs/operators';
 
 import { ApplicationsFacade } from '@app/core/facades/applications.facade';
 import { ApplicationBuilder } from '@app/core/data/builders';
 import { DialogsService } from '../../dialogs.service';
 import { ModelVersionsFacade } from '@app/core/facades/model-versions.facade';
+import { applicationToUpdateRequest } from '@app/core/data/utils';
 
 export const SELECTED_MODEL_VARIANT = new InjectionToken<any>(
   'selected model variant',
@@ -86,12 +86,9 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
     this.selectedApplication$
       .pipe(
         map(application => {
-          const stages = this.reduceStages(application.executionGraph.stages);
-          return { ...application, executionGraph: { stages } };
-        }),
-        tap(newApplicationData => {
-          const application = this.applicationBuilder.build(newApplicationData);
-          this.facade.editApplication(application);
+          this.facade.editApplication(
+            applicationToUpdateRequest(this.updateModelVariant(application)),
+          );
         }),
         catchError(err => {
           console.error(err);
@@ -103,38 +100,24 @@ export class DialogUpdateModelVersionComponent implements OnDestroy {
       .subscribe();
   }
 
-  private reduceStages(stages: Stage[]): Stage[] {
-    return stages.reduce((newStages, stage) => {
-      return [
-        ...newStages,
-        {
-          modelVariants: this.reduceModelVariantsData(stage.modelVariants),
-        },
-      ];
-    }, []);
-  }
+  private updateModelVariant(app: Application): Application {
+    const stages = app.executionGraph.stages;
+    const newStages: Stage[] = stages.map(stage => {
+      return {
+        signature: stage.signature,
+        modelVariants: stage.modelVariants.map(mv => {
+          if (mv == this.selectedModelVariant) {
+            return {
+              ...mv,
+              modelVersionId: this.latestModelVersion.id,
+            };
+          } else {
+            return mv;
+          }
+        }),
+      };
+    });
 
-  private reduceModelVariantsData(modelVariants): ModelVariantFormData[] {
-    return modelVariants.reduce(
-      (newModelVarianats, modelVariant) => [
-        ...newModelVarianats,
-        this.createNewModelVariantData(modelVariant),
-      ],
-      [],
-    );
-  }
-
-  private createNewModelVariantData(modelVariant): ModelVariantFormData {
-    const newModelVariant: ModelVariantFormData = {
-      modelVersion: modelVariant.modelVersion,
-      weight: Number(modelVariant.weight),
-      deploymentConfigName: modelVariant.deploymentConfigName,
-    };
-
-    if (modelVariant === this.selectedModelVariant) {
-      newModelVariant.modelVersion = this.latestModelVersion;
-    }
-
-    return newModelVariant;
+    return { ...app, executionGraph: { stages: newStages } };
   }
 }
