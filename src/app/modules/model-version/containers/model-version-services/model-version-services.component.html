@@ -1,46 +1,53 @@
 <div class="mv-services">
   <div class="mv-services__title">Services</div>
   <div class="mv-services__list">
-    <div class="mv-services__item">
-      <hs-icon type="monitoring" class="mv-services__icon"></hs-icon>
-      <button
-        class="mv-services__button"
-        hs-button
-        kind="flat"
-        color="primary"
-        [routerLink]="['./monitoring']"
-        queryParamsHandling="merge"
-      >
-        monitoring
-      </button>
+    <div class="mv-service">
+      <div class="mv-services__item">
+        <hs-icon type="monitoring" class="mv-services__icon"></hs-icon>
+        <button
+          class="mv-services__button"
+          hs-button
+          kind="flat"
+          color="primary"
+          [routerLink]="['./monitoring']"
+          queryParamsHandling="merge"
+        >
+          monitoring
+        </button>
+      </div>
     </div>
 
-    <ng-container
-      *ngTemplateOutlet="
-        (serviceStatuses$ | async)?.statuses?.visualization?.supported
-          ? visualizationTile
-          : notSupported;
-        context: {
-          name: 'Data projection',
-          iconName: 'data_projection',
-          message: (serviceStatuses$ | async)?.statuses?.visualization?.message
-        }
-      "
-    >
-    </ng-container>
-    <ng-container
-      *ngTemplateOutlet="
-        (serviceStatuses$ | async)?.statuses?.stat?.supported
-          ? statTile
-          : notSupported;
-        context: {
-          name: 'Drift Report',
-          iconName: 'drift_report',
-          message: (serviceStatuses$ | async)?.statuses?.stat?.message
-        }
-      "
-    >
-    </ng-container>
+    <div class="mv-service">
+      <ng-container
+        *ngTemplateOutlet="
+          (serviceStatuses$ | async)?.statuses?.visualization?.supported
+            ? visualizationTile
+            : notSupported;
+          context: {
+            name: 'Data projection',
+            iconName: 'data_projection',
+            message: (serviceStatuses$ | async)?.statuses?.visualization?.message
+          }
+        "
+      >
+      </ng-container>
+    </div>
+
+    <div class="mv-service">
+      <ng-container
+        *ngTemplateOutlet="
+          (serviceStatuses$ | async)?.statuses?.stat?.supported
+            ? statTile
+            : notSupported;
+          context: {
+            name: 'Drift Report',
+            iconName: 'drift_report',
+            message: (serviceStatuses$ | async)?.statuses?.stat?.message
+          }
+        "
+      >
+      </ng-container>
+    </div>
   </div>
 </div>
 

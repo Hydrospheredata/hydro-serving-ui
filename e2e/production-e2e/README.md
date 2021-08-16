@@ -4,7 +4,7 @@ E2E test with Playwright + Jest as test runner
 
 ### ENV's
 
-* **URL** : string - defaul: <http://localhost>
+* **URL** : string - default: <http://localhost>
 * **LOAD_MODEL**: boolean - set true for upload census model from /models
 * **CREATE_APPLICATION**: boolean - set true for create application for census model
 
@@ -12,5 +12,5 @@ E2E test with Playwright + Jest as test runner
 
 ```sh
 docker build -t prod-e2e .
-docker run --network=host -e URL=http://localhost -e LOAD_MODEL=true prod-e2e
+docker run --network=host -e URL=http://localhost -e LOAD_MODEL=true -e CREATE_APPLICATION=true prod-e2e
 ```

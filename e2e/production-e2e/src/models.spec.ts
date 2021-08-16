@@ -1,28 +1,22 @@
 import {
   Page,
   Browser,
-  ElementHandle,
-  HTMLOrSVGElementHandle,
 } from 'playwright';
 import appConfig from '../app-config';
 import initializeBrowser from '../helpers/initializeBrowser';
+import { ModelsHelper } from '../helpers/models.helper';
 
 describe('Models page test', () => {
   let browser: Browser;
   let page: Page;
-
-  beforeEach(() => {
-    jest.setTimeout(50000);
-  });
+  let modelsHelper: ModelsHelper;
 
   beforeAll(async () => {
     await initializeBrowser().then(config => {
       browser = config.browser;
       page = config.page;
+      modelsHelper = new ModelsHelper(page);
     });
-
-    await page.goto(appConfig.modelPageUrl);
-    await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`);
   });
 
   afterAll(async () => {
@@ -34,65 +28,45 @@ describe('Models page test', () => {
   });
 
   describe('models header', () => {
-    let header: ElementHandle<HTMLOrSVGElement>;
-    let headerTile: ElementHandle<HTMLOrSVGElement>;
-    let button: ElementHandle<HTMLOrSVGElement>;
-
     beforeAll(async () => {
-      header = await page.$('.models-page__header');
-      headerTile = await header.$('.models-header__model-name');
-      button = await header.$('button');
+      await page.goto(appConfig.modelPageUrl);
+      await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`);
     });
 
     it('exists', async () => {
-      expect(header).toBeTruthy();
+      await expect(await modelsHelper.getModelsHeader()).toBeTruthy();
     });
 
     it('has model name', async () => {
-      expect(headerTile).toBeTruthy();
+      await expect(await modelsHelper.getModelsHeaderTile()).toBeTruthy();
     });
 
     it('has delete button', async () => {
-      expect(button).toBeTruthy();
+      await expect(await modelsHelper.getModelsButton()).toBeTruthy();
     });
   });
 
   describe('model versions', () => {
-    let title: ElementHandle<HTMLOrSVGElement>;
-    let table: ElementHandle<HTMLOrSVGElement>;
-    let tableHeader: ElementHandle<HTMLOrSVGElement>;
-    let tableBody: ElementHandle<HTMLOrSVGElement>;
-    let tableHeaders: HTMLOrSVGElementHandle[];
-    let tableRows: HTMLOrSVGElementHandle[];
-
     beforeAll(async () => {
-      title = await page.$('.model-versions__header');
-      table = await page.$('.hydro-table.model-versions__table');
-      tableHeader = await table.$('.hydro-table-head');
-      tableBody = await table.$('.hydro-table-body');
-      tableHeaders = await tableHeader.$$('.hydro-table-head__cell');
-      tableRows = await tableBody.$$('hs-model-versions-row');
+      await page.goto(appConfig.modelPageUrl);
+      await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`);
     });
 
     it('title should exist', async () => {
-      expect(title).toBeTruthy();
+      await expect(await modelsHelper.getModelsTitle()).toBeTruthy();
     });
 
     describe('model versions table', () => {
       it('table should exist', async () => {
-        expect(table).toBeTruthy();
+        await expect(await modelsHelper.getModelsTable()).toBeTruthy();
       });
 
       it('table header should contain six headers', async () => {
-        expect(tableHeaders.length).toEqual(6);
+        await expect(await modelsHelper.getModelsTableHeadersLength()).toEqual(6);
       });
 
-      // it('table body should contain one row', async () => {
-      //   expect(tableRows.length).toEqual(1);
-      // });
-
       it('after clicked shows model version page', async () => {
-        await tableRows[0].click();
+        await modelsHelper.clickOnModelsTableRow();
       });
     });
   });

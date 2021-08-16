@@ -6,10 +6,6 @@ describe('Network', () => {
   let browser: Browser;
   let page: Page;
 
-  beforeEach(() => {
-    jest.setTimeout(30000);
-  });
-
   beforeAll(async () => {
     await initializeBrowser().then(config => {
       browser = config.browser;
@@ -35,5 +31,14 @@ describe('Network', () => {
       res => res.status() === 200,
     );
     expect(allResponsesHave200Status).toBe(true);
+  });
+
+  it('should return models', async () => {
+    const [response] = await Promise.all([
+      page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`),
+      page.goto(appConfig.modelPageUrl)
+    ]);
+    const res = await response.json();
+    expect(res.length).toBeGreaterThanOrEqual(1);
   });
 });
