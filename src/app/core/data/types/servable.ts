@@ -17,7 +17,7 @@ export class Servable {
   statusMessage?: string;
   message?: string;
   logStream: Observable<any>;
-  deploymentConfigurationName?: string;
+  deploymentConfigurationName: string;
 }
 
 export class MappedServable {

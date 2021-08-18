@@ -1,6 +1,5 @@
 import { Servable } from '@app/core/data/types';
 import { of } from 'rxjs';
-import { MockDeploymentConfig1 } from '@testing/factories/deployment-config';
 import { Factory } from 'fishery';
 
 export const MockServable = Factory.define<Servable>(() => ({
@@ -11,5 +10,5 @@ export const MockServable = Factory.define<Servable>(() => ({
   statusMessage: '',
   message: '',
   logStream: of(),
-  deploymentConfiguration: MockDeploymentConfig1.build(),
+  deploymentConfigurationName: 'dep_config',
 }));
