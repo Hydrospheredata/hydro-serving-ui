@@ -1,4 +1,4 @@
-import { Field, ISignature } from '@app/core/data/types';
+import { Field, Signature } from '@app/core/data/types';
 import { Factory } from 'fishery';
 
 const SimpleInput = Factory.define<Field>(() => ({
@@ -33,7 +33,7 @@ const CompositeSignature = {
   subfields: [SimpleInput, SimpleInput2],
 };
 
-export const MockSignature1 = Factory.define<ISignature>(() => ({
+export const MockSignature1 = Factory.define<Signature>(() => ({
   signatureName: 'signature_1',
   inputs: [SimpleInput.build()],
   outputs: [SimpleOutput.build()],

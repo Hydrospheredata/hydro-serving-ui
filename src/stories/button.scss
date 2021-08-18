@@ -1,0 +1,143 @@
+@import 'variables';
+
+.hs-button {
+  background: transparent;
+  border: none;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 6px 12px;
+  text-transform: capitalize;
+  transition: 0.3s color cubic-bezier(0.075, 0.82, 0.165, 1);
+  cursor: pointer;
+
+  &[disabled] {
+    cursor: default;
+  }
+
+  &__icon {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.hs-button--base {
+  color: $neutral-color-1000;
+
+  &:not([disabled]):hover {
+    background: $neutral-color-100;
+  }
+
+  &-primary {
+    color: $primary-color-700;
+
+    &:not([disabled]):hover {
+      background: $primary-color-100;
+    }
+  }
+
+  &-accent {
+    color: $accent-color-700;
+
+    &:not([disabled]):hover {
+      background: $accent-color-100;
+    }
+  }
+
+  &-warning {
+    color: $supportive-color-red-700;
+
+    &:not([disabled]):hover {
+      background: $supportive-color-red-100;
+    }
+  }
+
+  &-cyan {
+    color: $supportive-color-cyan-700;
+
+    &:not([disabled]):hover {
+      background: $supportive-color-cyan-100;
+    }
+  }
+
+  &[disabled] {
+    color: $neutral-color-200;
+  }
+}
+
+.hs-button--stroked {
+  color: $neutral-color-1000;
+  border: 1px solid $neutral-color-200;
+  padding: 5px 11px;
+
+  &:not([disabled]):hover {
+    background: $neutral-color-100;
+  }
+
+  &-primary {
+    color: $primary-color-700;
+
+    &:not([disabled]):hover {
+      background: $primary-color-100;
+    }
+  }
+
+  &-accent {
+    color: $accent-color-700;
+
+    &:not([disabled]):hover {
+      background: $accent-color-100;
+    }
+  }
+
+  &-warning {
+    color: $supportive-color-red-700;
+
+    &:not([disabled]):hover {
+      background: $supportive-color-red-100;
+    }
+  }
+
+  &-cyan {
+    color: $supportive-color-cyan-700;
+
+    &:not([disabled]):hover {
+      background: $supportive-color-cyan-100;
+    }
+  }
+
+  &[disabled] {
+    color: $neutral-color-200;
+    border-color: $neutral-color-100;
+  }
+}
+
+.hs-button--flat {
+  color: $neutral-color-1000;
+  background: white;
+
+  &-primary {
+    background: $primary-color-700;
+    color: $neutral-color-100;
+  }
+
+  &-accent {
+    background: $accent-color-700;
+    color: $neutral-color-100;
+  }
+
+  &-warning {
+    background: $supportive-color-red-700;
+    color: $neutral-color-100;
+  }
+
+  &-cyan {
+    background: $supportive-color-cyan-700;
+    color: $neutral-color-100;
+  }
+
+  &[disabled] {
+    background-color: $neutral-color-100;
+    color: $neutral-color-200;
+  }
+}

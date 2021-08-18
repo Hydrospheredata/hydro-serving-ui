@@ -3,7 +3,9 @@
   "compilerOptions": {
     "outDir": "../hydro-serving-ui",
     "baseUrl": "./",
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
   "files": [
     "main.ts",
@@ -14,5 +16,8 @@
   ],
   "angularCompilerOptions": {
     "enableIvy": true
-  }
+  },
+  "exclude": [
+    "**/*.stories.*"
+  ]
 }
