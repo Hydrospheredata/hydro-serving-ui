@@ -31,6 +31,7 @@ env:
   HYDRO_SERVING_REPO: ${{ github.repository_owner }}/hydro-serving
   IMAGE: hydro-serving-ui # name of the built image
   REGISTRY: hydrosphere
+  VERSION: ${{ github.event.inputs.version }}
 
 jobs:
   Verify_version:
@@ -49,7 +50,7 @@ jobs:
   Build_and_publish:
     needs: Verify_version
     if: >
-      needs.Verify_version.outputs.latest_version != github.event.inputs.version && (
+      needs.Verify_version.outputs.latest_version != env.VERSION && (
       github.event_name == 'workflow_dispatch' || 
       github.event_name == 'push')
     runs-on: ubuntu-latest
@@ -82,12 +83,12 @@ jobs:
         version-fragment: ${{ github.event.inputs.bump }}
 
     - name: Set VERSION variable
-      if: github.event.inputs.version == '' && github.event_name == 'workflow_dispatch'
+      if: env.VERSION == '' && github.event_name == 'workflow_dispatch'
       run: echo VERSION=${{ steps.bump_version.outputs.next-version }} >> $GITHUB_ENV
       
     - name: Set VERSION variable
-      if: github.event.inputs.version != '' && github.event_name == 'workflow_dispatch'
-      run: echo VERSION=${{ github.event.inputs.version }} >> $GITHUB_ENV
+      if: env.VERSION != '' && github.event_name == 'workflow_dispatch'
+      run: echo VERSION=${{ env.VERSION }} >> $GITHUB_ENV
 
     - name: Set VERSION variable
       if: github.event_name == 'push'
