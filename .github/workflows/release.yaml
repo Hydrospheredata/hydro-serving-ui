@@ -50,7 +50,7 @@ jobs:
   Build_and_publish:
     needs: Verify_version
     if: >
-      needs.Verify_version.outputs.latest_version != ${{ env.VERSION }} && (
+      needs.Verify_version.outputs.latest_version != '$VERSION' && (
       github.event_name == 'workflow_dispatch' || 
       github.event_name == 'push')
     runs-on: ubuntu-latest
