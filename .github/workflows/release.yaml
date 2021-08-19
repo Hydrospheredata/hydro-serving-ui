@@ -122,21 +122,21 @@ jobs:
       run: |
         git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git commit -m "Releasing $IMAGE_NAME:$TAG" -a --allow-empty
+        git commit -m "Releasing ${{ env.IMAGE }}:${{ env.VERSION }}" -a --allow-empty
         git push
         
-    - name: Tag commit
+    - name: Reports
+      id: generate-output
+      run: echo "::set-output name=tag-output::${{ env.VERSION }}"
+
+    - name: Create github release
       if: github.event_name == 'workflow_dispatch'
-      run: "git tag v${{ env.VERSION }}"
-      
-    - name: Push tag
-      if: github.event_name == 'workflow_dispatch'
-      run: "git push --tags"
-        
-    - uses: martialonline/workflow-status@v2
-      id: check
-    - run: |
-        echo "release status: ${{  steps.check.outputs.status  }}"
-        echo "Releasing ${{ env.IMAGE }}:${{ env.VERSION }}"
+      uses: meeDamian/github-release@2.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ env.VERSION }}
+
+    outputs:
+      tag: ${{ steps.generate-output.outputs.tag-output }}
         
       
