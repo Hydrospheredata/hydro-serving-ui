@@ -29,7 +29,6 @@ describe('Model version page test', () => {
 
   describe('page structure', () => {
     beforeAll(async () => {
-      // jest.setTimeout(60000);
       await page.goto(appConfig.modelVersionPageUrl);
       await page.waitForResponse(`${appConfig.url}/${appConfig.api}/${appConfig.endpoints[0]}`);
     });

@@ -71,7 +71,7 @@ export class ApplicationsPage {
   }
 
   async formInput() {
-    let form = await this.applicationForm();
+    let form = await this.page.waitForSelector(this.applicationFormSelector);
     return await form.$(this.formInputSelector);
   }
 

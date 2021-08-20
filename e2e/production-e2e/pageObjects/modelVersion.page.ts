@@ -219,7 +219,7 @@ export class ModelVersionPage {
   }
 
   async signaturesTable() {
-    let signatures = await this.signatures();
+    let signatures = await this.page.waitForSelector(this.signaturesSelector);
     return await signatures.$(this.signaturesTableSelector);
   }
 
