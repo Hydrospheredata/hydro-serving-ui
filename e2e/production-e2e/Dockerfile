@@ -3,7 +3,8 @@ FROM nikolaik/python-nodejs:python3.7-nodejs12-slim as base
 LABEL maintainer="support@hydrosphere.io"
 
                       # 1. Install WebKit dependencies
-RUN apt-get update && apt-get install -y libwoff1 \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+                      libwoff1 \
                       libopus0 \
                       libwebp6 \
                       libwebpdemux2 \
@@ -19,7 +20,7 @@ RUN apt-get update && apt-get install -y libwoff1 \
                       libgles2 \
                       libvpx5 \
                       # 2. Install Chromium dependencies
-                      libnss3 \
+                      libnss3 \ 
                       libxss1 \
                       libasound2 \
                       # 3. Install Firefox dependencies
@@ -43,7 +44,7 @@ RUN npm install
 # Run everything after as non-privileged user.
 FROM base as runtime
 
-RUN pip install hs==3.0.0a18
+RUN pip install hs==3.0.0
 # Create non-root user
 RUN groupadd --gid 1000 hydro \
   && useradd --uid 1000 --gid hydro --shell /bin/bash --create-home hydro
