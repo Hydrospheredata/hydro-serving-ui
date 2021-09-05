@@ -1,3 +1,5 @@
 location / {
-  sub_filter '<base href="/" />' '<base href="$INGRESS_PATH" />';
+  sub_filter '<base href="/' '<base href="$INGRESS_PATH';
+  sub_filter_types "*";
+  sub_filter_once off;
 }
