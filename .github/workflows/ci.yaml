@@ -63,6 +63,9 @@ jobs:
         with:
           push: false
           tags: hydrosphere/${{ env.IMAGE }}:${{ github.sha }}
+          build-args: |
+            GIT_HEAD_COMMIT=${{ github.sha }}
+            GIT_CURRENT_BRANCH=${{ github.ref }}
           
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}  

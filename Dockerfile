@@ -1,8 +1,10 @@
+# syntax=docker/dockerfile:1
 FROM node:14.16.1 AS build
 
 WORKDIR /opt/ng
 
-RUN apt-get update && apt-get install git
+RUN apt-get update && apt-get install -y --no-install-recommends git && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY package.json package-lock.json ./
 RUN npm install
@@ -10,14 +12,21 @@ RUN npm install
 COPY . ./
 RUN npm run build-prod
 
-RUN printf '{"version":"%s", "gitHeadCommit":"%s","gitCurrentBranch":"%s", "nodeVersion":"%s"}\n' "$(cat version)" "$(git rev-parse HEAD)" "$(git rev-parse --abbrev-ref HEAD)" "$(node --version)" >> buildinfo.json
+ARG GIT_HEAD_COMMIT
+ARG GIT_CURRENT_BRANCH
+RUN if [ -z "$GIT_HEAD_COMMIT" ] ; then \
+    printf '{"name": "ui", "version":"%s", "gitHeadCommit":"%s","gitCurrentBranch":"%s", "nodeVersion":"%s"}\n' "$(cat version)" "$(git rev-parse HEAD)" "$(git rev-parse --abbrev-ref HEAD)" "$(node --version)" >> buildinfo.json ; else \
+    printf '{"name": "ui", "version":"%s", "gitHeadCommit":"%s","gitCurrentBranch":"%s", "nodeVersion":"%s"}\n' "$(cat version)" "$GIT_HEAD_COMMIT" "$GIT_CURRENT_BRANCH" "$(node --version)" >> buildinfo.json ; \
+    fi
 
-FROM openresty/openresty:1.19.3.2-focal
+FROM openresty/openresty:1.19.9.1-0-amzn2
+LABEL maintainer="support@hydrosphere.io"
 
-RUN  apt update && apt install -y gettext
+RUN yum update -y && yum clean all
 
 RUN useradd -u 42069 --create-home --shell /bin/bash app && \
     chown -R app:app /usr/local/openresty/
+
 USER app
 
 ENV OSS=true;
