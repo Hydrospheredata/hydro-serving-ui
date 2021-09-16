@@ -22,7 +22,7 @@ RUN if [ -z "$GIT_HEAD_COMMIT" ] ; then \
 FROM openresty/openresty:1.19.9.1-0-amzn2
 LABEL maintainer="support@hydrosphere.io"
 
-RUN yum update -y && yum clean all
+RUN yum update -y && yum upgrade -y && yum clean all
 
 RUN useradd -u 42069 --create-home --shell /bin/bash app && \
     chown -R app:app /usr/local/openresty/
