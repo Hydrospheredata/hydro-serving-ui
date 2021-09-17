@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
                       libopus0 \
                       libwebp6 \
                       libwebpdemux2 \
-                      libenchant1c2a \
+                      libenchant-2-2 \
                       libgudev-1.0-0 \
                       libsecret-1-0 \
                       libhyphen0 \
@@ -16,9 +16,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
                       libegl1 \
                       libnotify4 \
                       libxslt1.1 \
-                      libevent-2.1-6 \
+                      libevent-2.1-7 \
                       libgles2 \
-                      libvpx5 \
+                      libvpx6 \
                       # 2. Install Chromium dependencies
                       libnss3 \ 
                       libxss1 \
