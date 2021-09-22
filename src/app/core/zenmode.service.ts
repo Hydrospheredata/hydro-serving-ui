@@ -10,7 +10,7 @@ export class ZenModeService {
   isZenMode$: Observable<boolean>;
   constructor(private route: ActivatedRoute) {
     this.isZenMode$ = this.route.queryParams.pipe(
-      map(queryParams => (queryParams && queryParams.zenMode) || false)
+      map(queryParams => (queryParams && queryParams.zenMode) || false),
     );
   }
 }

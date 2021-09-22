@@ -9,5 +9,6 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent {
   isZenMode$: Observable<boolean> = this.zenMode.isZenMode$;
+
   constructor(private zenMode: ZenModeService) {}
 }

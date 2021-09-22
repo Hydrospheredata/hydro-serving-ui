@@ -11,7 +11,7 @@ import { catchError } from 'rxjs/operators';
 export class SvgSpriteService {
   constructor(
     private http: HttpClient,
-    @Inject(APP_BASE_HREF) private href: string
+    @Inject(APP_BASE_HREF) private href: string,
   ) {}
 
   public loadSvgSprite() {
@@ -32,7 +32,7 @@ export class SvgSpriteService {
         catchError((err: HttpErrorResponse) => {
           console.error(`Can't load svg sprite. Error: ${err.message}`);
           return of('');
-        })
+        }),
       )
       .subscribe(res => {
         const insert = () =>
