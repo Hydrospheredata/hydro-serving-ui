@@ -6,6 +6,14 @@ import { SharedModule } from '@app/shared/shared.module';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { getNativeElement } from '@testing/helpers';
 import { SidebarComponent } from './sidebar.component';
+import { HydroConfigService } from '@app/core/hydro-config.service';
+
+const hydroConfig: Partial<HydroConfigService> = {
+  config: {
+    showHeader: true,
+    liftMetadata: true,
+  },
+};
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -16,6 +24,7 @@ describe('SidebarComponent', () => {
     TestBed.configureTestingModule({
       declarations: [],
       imports: [SharedModule, RouterTestingModule, HttpClientTestingModule],
+      providers: [{ provide: HydroConfigService, useValue: hydroConfig }],
     }).compileComponents();
   }));
 
@@ -34,7 +43,6 @@ describe('SidebarComponent', () => {
 
   it('show message if data is empty', () => {
     const de = debugElement.query(By.css('.sidebar__message'));
-
     expect(de).toBeTruthy();
     expect(getNativeElement(de).textContent).toEqual('list is empty');
   });
