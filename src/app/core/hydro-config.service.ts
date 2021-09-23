@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { APP_BASE_HREF } from '@angular/common';
 
 export interface HydroConfig {
   showHeader: boolean;
@@ -16,11 +17,14 @@ const defaultConfig: HydroConfig = {
 })
 export class HydroConfigService {
   public config: HydroConfig = defaultConfig;
-  constructor(private readonly http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    @Inject(APP_BASE_HREF) private href: string,
+  ) {}
 
   loadConfig() {
     return this.http
-      .get<HydroConfig>(`/assets/config.json`)
+      .get<HydroConfig>(`${this.href}assets/config.json`)
       .toPromise()
       .then((data: any) => (this.config = data))
       .catch((_: any) => {
