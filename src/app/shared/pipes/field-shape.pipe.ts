@@ -9,7 +9,7 @@ export class FieldShapePipe implements PipeTransform {
     } else if (shape.dims && shape.dims.length === 0) {
       return 'scalar';
     } else if (shape.dims && shape.dims.length > 0) {
-      return shape.dims.map(dim => dim.size).join(', ');
+      return shape.dims.join(', ');
     }
   }
 }
